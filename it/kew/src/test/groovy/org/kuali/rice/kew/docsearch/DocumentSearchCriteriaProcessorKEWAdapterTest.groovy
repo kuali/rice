@@ -37,7 +37,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "initiatorPrincipalName", fieldLabel: "Initiator", fieldType: "text" ],
         [ propertyName: "approverPrincipalName", fieldLabel: "Approver", fieldType: "text" ],
         [ propertyName: "viewerPrincipalName", fieldLabel: "Viewer", fieldType: "text" ],
-        [ propertyName: "groupViewerName", fieldLabel: "Group Viewer", fieldType: "text" ],
+        [ propertyName: "groupViewerName", fieldLabel: "Group Viewer", fieldType: "lookupreadonly" ],
         [ propertyName: "documentId", fieldLabel: "Document Id", fieldType: "text" ],
         [ propertyName: "applicationDocumentId", fieldLabel: "Application Document Id", fieldType: "text" ],
         [ propertyName: "statusCode", fieldLabel: "Document Status", fieldType: "multiselect" ],

@@ -384,11 +384,11 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardString",
         		new String[]  {"TESTSTRING|moretext", "!MoreText"   , "!anotherStr!testString", "!anotherStr&&!MoreText"  , "!SomeString"      ,
         					"*str*"                 , "More????"    , "*e*n?"                 , "???String"               , "*te*&&!????String", "!test??????"       , "anotherStr..MoreText",
-        					"testString..MoreText"  , ">=testString", "<=anotherStr|>MoreText", "<testString&&!anotherStr", ">abc"             , "<anotherOne&&>text",
-        					">More????"             , "<*test*"},
+        					"testString..MoreText"  , ">=testString", "<=anotherStr|>MoreText", "<=testString&&!anotherStr", ">=abc"             , "<=anotherOne&&>=text",
+        					">=More????"             , "<=*test*"},
         			new int[] {2                    , 2             , 1                       , 1                         , 3                  ,
         					2                       , 1             , 1                       , 0                         , 1                  , 2                   , 2 /*1*/               ,
-        					-1                       , 1             , 2                       , 1                         , 3                  , 0                   ,
+        					-1                       , 1             , 2                       , 2                         , 3                  , 0                   ,
         					2                       , 2});
 
         // ensure multiple values work
@@ -398,8 +398,8 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
         // Ensure that wildcards work on searchable long attributes, and ensure the string-specific wildcards are not being utilized.
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
-        		new String[]  {"99??", "*2"       , "!33"         , "<9984", ">432", "<=33", ">=432", ">33&&<9984", "<=100000&&>=20", ">9984&&<33", "432..9984",
-        					"9999..1", "<432|>432", ">=9000|<=100", "!", ">-76"},
+        		new String[]  {"99??", "*2"       , "!33"         , "<9984", ">=433", "<34", ">=432", ">=34&&<9984", "<100000&&>=20", ">=9984&&<33", "431..<9985",
+        					"9999..1", "<432|>432", ">=9000|<=100", "!", ">=-76"},
         			new int[] {-1     , -1          , 2             , 2      , 1     , 1     , 2      , 1           , 3               , 0           , 2 /*1*/    ,
         					-1        , 2          , 2             , -1 , 3});
 
@@ -410,8 +410,8 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
         // Ensure that wildcards work on searchable float attributes, and ensure the string-specific wildcards are not being utilized.
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
-        		new String[]  {"38.1???", "!-0.765", "*80*"                , "<80000.65432"   , ">0"                  , "<=-0.765", ">=38.1357", "<38.1358", "<-0.5|>0.5", ">=-0.765&&<=-0.765", ">38.1357&&<80000.65432",
-        					"-50..50"   , "100..10", "<=38.1357|>=38.1357" , ">123.4567|<0.11", "-1.1..38.1357&&<3.3"},
+        		new String[]  {"38.1???", "!-0.765", "*80*"                , "<80000.65432"   , ">=0"                  , "<-0.763", ">=38.1357", "<38.1358", "<-0.5|>0.5", ">=-0.765&&<=-0.765", ">=38.1358&&<80000.65432",
+        					"-50..<50"   , "100..10", "<38.1358|>=38.1357" , ">=123.4567|<0.11", "-1.1..<38.1357&&<3.3"},
         			new int[] {-1        , 2        , -1                     , 2                , 2                     , 1         , 2          , 2         , 3           , 1                   , 0                       ,
         					2           , -1        , 3                     , 2                , 1});
 
@@ -424,9 +424,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         // Ensure that wildcards work on searchable datetime attributes, and ensure the string-specific wildcards are not being utilized.
         /* 06/24/2009, 07/08/2010, 12/12/2012 */
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardDatetime",
-        		new String[]  {"??/??/20??"            , "12/12/20*"               , "!07/08/2010"           , ">06/24/2009", "<07/08/2010", ">=12/12/2012", "<=05/06/2011", ">06/24/2009&&<=07/08/2010",
-        					">=01/01/2001&&<06/24/2009", "11/29/1990..12/31/2009"  , "12/13/2100..08/09/1997",
-        					"<06/24/2009|>=12/12/2012" , "<=06/24/2009|>07/08/2010", ">02/31/2011"},
+        		new String[]  {"??/??/20??"            , "12/12/20*"               , "!07/08/2010"           , ">=06/25/2009", "<07/08/2010", ">=12/12/2012", "<05/06/2011", ">=06/25/2009&&<07/09/2010",
+        					">=01/01/2001&&<06/24/2009", "11/29/1990..<12/31/2009"  , "12/13/2100..<08/09/1997",
+        					"<06/24/2009|>=12/12/2012" , "<06/25/2009|>=07/09/2010", ">02/31/2011"},
         			new int[] {-1                      , -1                         , 2 /* supports NOT operator*/, 2            , 1            , 1             , 2             , 1                          ,
         					0                          , 1                         , -1                       ,
         					1                          , 2                         , -1});
@@ -592,20 +592,20 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         criteria.setDocumentTypeName(documentTypeName);
         criteria.setDateApprovedFrom(new DateTime(2010, 1, 1, 0, 0));
         criteria.setDateApprovedTo(new DateTime(2011, 1, 1, 0, 0));
-        addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, ">= " + DocumentSearchInternalUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)));
+        String fieldValue = ">= " + DocumentSearchInternalUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS));
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, fieldValue);
 
         Map<String, String[]> fields = new DocumentSearchCriteriaTranslatorImpl().translateCriteriaToFields(criteria.build());
         System.err.println(fields);
         String lowerBoundField = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
         String upperBoundField = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
+
         assertNotNull(fields.get(lowerBoundField));
         assertNotNull(fields.get(upperBoundField));
-        assertEquals(new DateTime(2010, 1, 1, 0, 0).toString(), fields.get(lowerBoundField)[0]);
-        assertEquals(new DateTime(2011, 1, 1, 0, 0).toString(), fields.get(upperBoundField)[0]);
+        assertNotNull(fields.get(lowerBoundField)[0]);
+        assertNull(fields.get(upperBoundField)[0]);
 
-        for (Map.Entry<String, List<String>> entry: criteria.getDocumentAttributeValues().entrySet()) {
-            assertEquals(new HashSet(entry.getValue()), new HashSet(Arrays.asList(fields.get(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey()))));
-        }
+        assertEquals(DocumentSearchInternalUtils.getDisplayValueWithDateOnly(new Timestamp(new DateTime(2007, 3, 15, 0, 0).toDateTime().getMillis())), fields.get(lowerBoundField)[0]);
     }
     
 }

@@ -502,42 +502,46 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     // assuming null values are not an error condition
                     continue;
                 }
-                // if it's not empty. see if it's a range
-                Range r = null;
-                if (StringUtils.isNotEmpty(value)) {
-                    r = SearchExpressionUtils.parseRange(value);
-                }
-                if (r != null) {
-                    // hey, it looks like a range
-                    boolean errs = false;
-                    if (!field.searchDefinition.isRangedSearch()) {
-                        errs = true;
-                        errors.add(RemotableAttributeError.Builder.create(field.name, "field does not support ranged searches but range search expression detected").build());
-                    } else {
-                        // only check bounds if range search is specified
-                        // XXX: FIXME: disabling these pedantic checks as they are causing annoying test breakages
-                        if (PEDANTIC_BOUNDS_VALIDATION) {
-                            // this is not actually an error. just disregard case-sensitivity for data types that don't support it
-                            /*if (!attributeValue.allowsCaseInsensitivity() && Boolean.FALSE.equals(field.searchDefinition.getRangeBoundOptions().caseSensitive)) {
-                                errs = true;
-                                errors.add(RemotableAttributeError.Builder.create(field.name, "attribute data type does not support case insensitivity but case-insensitivity specified in attribute definition").build());
-                            }*/
-                            if (r.getLowerBoundValue() != null && r.isLowerBoundInclusive() != field.searchDefinition.lowerBound.inclusive) {
-                                errs = true;
-                                errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on lower bound inclusivity.  Range is: " + r.isLowerBoundInclusive() + " Attrib is: " + field.searchDefinition.lowerBound.inclusive).build());
-                            }
-                            if (r.getUpperBoundValue() != null && r.isUpperBoundInclusive() != field.searchDefinition.upperBound.inclusive) {
-                                errs = true;
-                                errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on upper bound inclusivity.  Range is: " + r.isUpperBoundInclusive() + " Attrib is: " + field.searchDefinition.upperBound.inclusive).build());
+                // this is just a war of attrition, need real parsing
+                String[] clauses = SearchExpressionUtils.splitOnClauses(value);
+                for (String clause: clauses) {
+                    // if it's not empty. see if it's a range
+                    Range r = null;
+                    if (StringUtils.isNotEmpty(value)) {
+                        r = SearchExpressionUtils.parseRange(value);
+                    }
+                    if (r != null) {
+                        // hey, it looks like a range
+                        boolean errs = false;
+                        if (!field.searchDefinition.isRangedSearch()) {
+                            errs = true;
+                            errors.add(RemotableAttributeError.Builder.create(field.name, "field does not support ranged searches but range search expression detected").build());
+                        } else {
+                            // only check bounds if range search is specified
+                            // XXX: FIXME: disabling these pedantic checks as they are causing annoying test breakages
+                            if (PEDANTIC_BOUNDS_VALIDATION) {
+                                // this is not actually an error. just disregard case-sensitivity for data types that don't support it
+                                /*if (!attributeValue.allowsCaseInsensitivity() && Boolean.FALSE.equals(field.searchDefinition.getRangeBoundOptions().caseSensitive)) {
+                                    errs = true;
+                                    errors.add(RemotableAttributeError.Builder.create(field.name, "attribute data type does not support case insensitivity but case-insensitivity specified in attribute definition").build());
+                                }*/
+                                if (r.getLowerBoundValue() != null && r.isLowerBoundInclusive() != field.searchDefinition.lowerBound.inclusive) {
+                                    errs = true;
+                                    errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on lower bound inclusivity.  Range is: " + r.isLowerBoundInclusive() + " Attrib is: " + field.searchDefinition.lowerBound.inclusive).build());
+                                }
+                                if (r.getUpperBoundValue() != null && r.isUpperBoundInclusive() != field.searchDefinition.upperBound.inclusive) {
+                                    errs = true;
+                                    errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on upper bound inclusivity.  Range is: " + r.isUpperBoundInclusive() + " Attrib is: " + field.searchDefinition.upperBound.inclusive).build());
+                                }
                             }
                         }
-                    }
 
-                    if (!errs) {
-                        rangeValues.add(r);
+                        if (!errs) {
+                            rangeValues.add(r);
+                        }
+                    } else {
+                        terminalValues.add(value);
                     }
-                } else {
-                    terminalValues.add(value);
                 }
             }
 

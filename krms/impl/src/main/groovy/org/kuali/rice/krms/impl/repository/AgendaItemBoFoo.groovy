@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krms.api.repository.agenda.AgendaItem
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition
 
 // NOTE: this class is temporarily renamed to get it out of the way.  See AgendaItemBo.java
 public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
@@ -116,9 +116,9 @@ public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-	static AgendaItem to(AgendaItemBo bo) {
+	static AgendaItemDefinition to(AgendaItemBo bo) {
 		if (bo == null) { return null }
-		AgendaItem.Builder builder = AgendaItem.Builder.create(bo.getId(), bo.getAgendaId())
+		AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(bo.getId(), bo.getAgendaId())
 		builder.setRuleId( bo.getRuleId() )
 		builder.setSubAgendaId( bo.getSubAgendaId() )
 		builder.setWhenTrueId( bo.getWhenTrueId() )
@@ -128,10 +128,10 @@ public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
 		return builder.build()	
 		// NOTE: should we create tree nodes (whenTrue, whenFalse, always) ??
 		//   If so, we would end up creating the entire sub-tree.
-		//   If we do want to create the entire tree, having AgendaItem implement AgendaItemContract would be easier
+		//   If we do want to create the entire tree, having AgendaItemDefinition implement AgendaItemDefinitionContract would be easier
 		//   so we could recursively build it out.
 		
-//		return org.kuali.rice.krms.api.repository.agenda.AgendaItem.Builder.create(bo).build()
+//		return org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition.Builder.create(bo).build()
 	}
 
    /**
@@ -139,7 +139,7 @@ public class AgendaItemBoFoo extends PersistableBusinessObjectBase {
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static AgendaItemBo from(AgendaItem im) {
+   static AgendaItemBo from(AgendaItemDefinition im) {
 	   if (im == null) { return null }
 
 	   AgendaItemBo bo = new AgendaItemBo()

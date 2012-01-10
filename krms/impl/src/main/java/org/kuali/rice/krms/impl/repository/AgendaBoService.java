@@ -18,7 +18,7 @@ package org.kuali.rice.krms.impl.repository;
 import java.util.Set;
 
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 
 /**
  * This is the interface for accessing KRMS repository Agenda related
@@ -78,55 +78,55 @@ public interface AgendaBoService {
 	public Set<AgendaDefinition> getAgendasByContextId(String contextId);
 	
     /**
-     * This will create an {@link AgendaItem} in the repository exactly like
+     * This will create an {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition} in the repository exactly like
      * the parameter passed in.
      *
-     * @param agendaItem  The AgendaItem to create
-     * @throws IllegalArgumentException if the AgendaItem is null
-     * @throws IllegalStateException if the AgendaItem already exists in the system
+     * @param agendaItem  The AgendaItemDefinition to create
+     * @throws IllegalArgumentException if the AgendaItemDefinition is null
+     * @throws IllegalStateException if the AgendaItemDefinition already exists in the system
      */
-	public AgendaItem createAgendaItem(AgendaItem agendaItem);
+	public AgendaItemDefinition createAgendaItem(AgendaItemDefinition agendaItem);
 	
     /**
-     * This will update an existing {@link AgendaItem}.
+     * This will update an existing {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition}.
      *
-     * @param agendaItem  The AgendaItem to update
-     * @throws IllegalArgumentException if the AgendaItem is null
-     * @throws IllegalStateException if the AgendaItem does not exists in the system
+     * @param agendaItem  The AgendaItemDefinition to update
+     * @throws IllegalArgumentException if the AgendaItemDefinition is null
+     * @throws IllegalStateException if the AgendaItemDefinition does not exists in the system
      */	
-	public void updateAgendaItem(AgendaItem agendaItem);
+	public void updateAgendaItem(AgendaItemDefinition agendaItem);
 	
     /**
-     * This will create an {@link AgendaItem} in the repository exactly like
-     * the parameter passed in.  The AgendaItem will be linked to an existing
-     * AgendaItem in the relationship provided. Linking the AgendaItems effectively
+     * This will create an {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition} in the repository exactly like
+     * the parameter passed in.  The AgendaItemDefinition will be linked to an existing
+     * AgendaItemDefinition in the relationship provided. Linking the AgendaItems effectively
      * builds a tree of AgendaItems that may be traversed by the engine.
      *
-     * @param agendaItem  The AgendaItem to create
-     * @param parentId  The id of the existing AgendaItem to be linked with the
-     *  newly created AgendaItem 
+     * @param agendaItem  The AgendaItemDefinition to create
+     * @param parentId  The id of the existing AgendaItemDefinition to be linked with the
+     *  newly created AgendaItemDefinition
      * @param position. A boolean used to specify the relationship between the
      *  linked AgendaItems.
-     *  <p> If the position parameter is true, the new AgendaItem is linked as the next 
-     *  AgendaItem to be evaluated if the parent AgendaItem evaluates to TRUE.
-     *  <p> If the position parameter is false, the new AgendaItem is linked as the next 
-     *  AgendaItem to be evaluated if the parent AgendaItem evaluates to FALSE.
-     *  <p> If the position parameter is null,  the new AgendaItem is linked as the next 
-     *  AgendaItem to be evaluated after any true or false branches of the tree have
+     *  <p> If the position parameter is true, the new AgendaItemDefinition is linked as the next
+     *  AgendaItemDefinition to be evaluated if the parent AgendaItemDefinition evaluates to TRUE.
+     *  <p> If the position parameter is false, the new AgendaItemDefinition is linked as the next
+     *  AgendaItemDefinition to be evaluated if the parent AgendaItemDefinition evaluates to FALSE.
+     *  <p> If the position parameter is null,  the new AgendaItemDefinition is linked as the next
+     *  AgendaItemDefinition to be evaluated after any true or false branches of the tree have
      *  been traversed.
-     * @throws IllegalArgumentException if the AgendaItem is null
-     * @throws IllegalStateException if the parent AgendaItem does not already exists in the system
+     * @throws IllegalArgumentException if the AgendaItemDefinition is null
+     * @throws IllegalStateException if the parent AgendaItemDefinition does not already exists in the system
      */
-	public void addAgendaItem(AgendaItem agendaItem, String parentId, Boolean position);
+	public void addAgendaItem(AgendaItemDefinition agendaItem, String parentId, Boolean position);
 	
     /**
-     * Retrieves an AgendaItem from the repository based on the given agenda id.
+     * Retrieves an AgendaItemDefinition from the repository based on the given agenda id.
      *
-     * @param id the id of the AgendaItem to retrieve
-     * @return an {@link AgendaItem} identified by the given id.  
+     * @param id the id of the AgendaItemDefinition to retrieve
+     * @return an {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition} identified by the given id.
      * A null reference is returned if an invalid or non-existent id is supplied.
      */
-	public AgendaItem getAgendaItemById(String id);
+	public AgendaItemDefinition getAgendaItemById(String id);
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart

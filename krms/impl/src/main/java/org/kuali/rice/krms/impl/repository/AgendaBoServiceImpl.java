@@ -30,7 +30,7 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
@@ -149,7 +149,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
      * This overridden method creates a new Agenda in the repository
      */
     @Override
-    public AgendaItem createAgendaItem(AgendaItem agendaItem) {
+    public AgendaItemDefinition createAgendaItem(AgendaItemDefinition agendaItem) {
         if (agendaItem == null){
             throw new IllegalArgumentException("agendaItem is null");
         }
@@ -169,20 +169,20 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
      * This overridden method updates an existing Agenda in the repository
      */
     @Override
-    public void updateAgendaItem(AgendaItem agendaItem) {
+    public void updateAgendaItem(AgendaItemDefinition agendaItem) {
         if (agendaItem == null){
             throw new IllegalArgumentException("agendaItem is null");
         }
         final String agendaItemIdKey = agendaItem.getId();
-        final AgendaItem existing = getAgendaItemById(agendaItemIdKey);
+        final AgendaItemDefinition existing = getAgendaItemById(agendaItemIdKey);
         if (existing == null) {
             throw new IllegalStateException("the agenda item does not exist: " + agendaItem);
         }
-        final AgendaItem toUpdate;
+        final AgendaItemDefinition toUpdate;
         if (existing.getId().equals(agendaItem.getId())) {
             toUpdate = agendaItem;
         } else {
-            final AgendaItem.Builder builder = AgendaItem.Builder.create(agendaItem);
+            final AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(agendaItem);
             builder.setId(existing.getId());
             toUpdate = builder.build();
         }
@@ -191,25 +191,25 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     }
 
     /**
-     * This overridden method adds a new AgendaItem to the repository
+     * This overridden method adds a new AgendaItemDefinition to the repository
      */
     @Override
-    public void addAgendaItem(AgendaItem agendaItem, String parentId, Boolean position) {
+    public void addAgendaItem(AgendaItemDefinition agendaItem, String parentId, Boolean position) {
         if (agendaItem == null){
             throw new IllegalArgumentException("agendaItem is null");
         }
-        AgendaItem parent = null;
+        AgendaItemDefinition parent = null;
         if (parentId != null){
             parent = getAgendaItemById(parentId);
             if (parent == null){
                 throw new IllegalStateException("parent agendaItem does not exist in repository. parentId = " + parentId);
             }
         }
-        // create new AgendaItem
-        final AgendaItem toCreate;
+        // create new AgendaItemDefinition
+        final AgendaItemDefinition toCreate;
         if (agendaItem.getId() == null) {
             SequenceAccessorService sas = getSequenceAccessorService();
-            final AgendaItem.Builder builder = AgendaItem.Builder.create(agendaItem);
+            final AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(agendaItem);
             final String newId =sas.getNextAvailableSequenceNumber(
                     "KRMS_AGENDA_ITM_S", AgendaItemBo.class).toString();
             builder.setId(newId);
@@ -221,7 +221,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
         // link it to it's parent (for whenTrue/whenFalse, sibling for always
         if (parentId != null) {
-            final AgendaItem.Builder builder = AgendaItem.Builder.create(parent);
+            final AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(parent);
             if (position == null){
                 builder.setAlwaysId( toCreate.getId() );
             } else if (position.booleanValue()){
@@ -229,16 +229,16 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
             } else if (!position.booleanValue()){
                 builder.setWhenFalseId( toCreate.getId() );
             }
-            final AgendaItem parentToUpdate = builder.build();
+            final AgendaItemDefinition parentToUpdate = builder.build();
             updateAgendaItem( parentToUpdate );
         }
     }
 
     /**
-     * This overridden method retrieves an AgendaItem from the repository
+     * This overridden method retrieves an AgendaItemDefinition from the repository
      */
     @Override
-    public AgendaItem getAgendaItemById(String id) {
+    public AgendaItemDefinition getAgendaItemById(String id) {
         if (StringUtils.isBlank(id)){
             throw new IllegalArgumentException("agenda item id is null");
         }

@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 /**
@@ -281,10 +281,10 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	* @param bo the mutable business object
 	* @return the immutable object
 	*/
-   static AgendaItem to(AgendaItemBo bo) {
+   static AgendaItemDefinition to(AgendaItemBo bo) {
 	   if (bo == null) { return null; }
-	   org.kuali.rice.krms.api.repository.agenda.AgendaItem.Builder builder = 
-		   org.kuali.rice.krms.api.repository.agenda.AgendaItem.Builder.create(bo.getId(), bo.getAgendaId());
+	   AgendaItemDefinition.Builder builder =
+		   AgendaItemDefinition.Builder.create(bo.getId(), bo.getAgendaId());
 	   builder.setRuleId(bo.getRuleId());
 	   builder.setSubAgendaId(bo.getSubAgendaId());
 	   builder.setWhenTrueId(bo.getWhenTrueId());
@@ -299,7 +299,7 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	* @param im immutable object
 	* @return the mutable bo
 	*/
-   static AgendaItemBo from(AgendaItem im) {
+   static AgendaItemBo from(AgendaItemDefinition im) {
 	   if (im == null) { return null; }
 
 	   AgendaItemBo bo = new AgendaItemBo();

@@ -148,7 +148,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		if (StringUtils.isBlank(agendaItemId)){
 			return null;
 		}
-		// Get AgendaItem Business Object from database
+		// Get AgendaItemDefinition Business Object from database
 		// NOTE: if we read agendaItem one at a time from db.   Could consider linking in OJB and getting all at once
 		AgendaItemBo agendaItemBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaItemBo.class, agendaItemId);
 		

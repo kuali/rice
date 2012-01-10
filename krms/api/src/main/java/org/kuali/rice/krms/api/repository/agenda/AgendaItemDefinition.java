@@ -32,31 +32,31 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 /**
- * Concrete model object implementation of KRMS Repository AgendaItem 
+ * Concrete model object implementation of KRMS Repository AgendaItemDefinition
  * immutable. 
- * Instances of AgendaItem can be (un)marshalled to and from XML.
+ * Instances of AgendaItemDefinition can be (un)marshalled to and from XML.
  *
- * @see AgendaItemContract
+ * @see AgendaItemDefinitionContract
  */
-@XmlRootElement(name = AgendaItem.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = AgendaItemDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AgendaItem.Constants.TYPE_NAME, propOrder = {
-		AgendaItem.Elements.ID,
-		AgendaItem.Elements.AGENDA_ID,
-		AgendaItem.Elements.RULE_ID,
-		AgendaItem.Elements.SUB_AGENDA_ID,
-		AgendaItem.Elements.WHEN_TRUE_ID,
-		AgendaItem.Elements.WHEN_FALSE_ID,
-		AgendaItem.Elements.ALWAYS_ID,
-		AgendaItem.Elements.RULE,
-		AgendaItem.Elements.SUB_AGENDA,
-		AgendaItem.Elements.WHEN_TRUE,
-		AgendaItem.Elements.WHEN_FALSE,
-		AgendaItem.Elements.ALWAYS,
+@XmlType(name = AgendaItemDefinition.Constants.TYPE_NAME, propOrder = {
+		AgendaItemDefinition.Elements.ID,
+		AgendaItemDefinition.Elements.AGENDA_ID,
+		AgendaItemDefinition.Elements.RULE_ID,
+		AgendaItemDefinition.Elements.SUB_AGENDA_ID,
+		AgendaItemDefinition.Elements.WHEN_TRUE_ID,
+		AgendaItemDefinition.Elements.WHEN_FALSE_ID,
+		AgendaItemDefinition.Elements.ALWAYS_ID,
+		AgendaItemDefinition.Elements.RULE,
+		AgendaItemDefinition.Elements.SUB_AGENDA,
+		AgendaItemDefinition.Elements.WHEN_TRUE,
+		AgendaItemDefinition.Elements.WHEN_FALSE,
+		AgendaItemDefinition.Elements.ALWAYS,
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaItem extends AbstractDataTransferObject implements AgendaItemContract {
+public final class AgendaItemDefinition extends AbstractDataTransferObject implements AgendaItemDefinitionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -79,11 +79,11 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
 	@XmlElement(name = Elements.SUB_AGENDA, required=false)
 	private AgendaDefinition subAgenda;
 	@XmlElement(name = Elements.WHEN_TRUE, required=false)
-	private AgendaItem whenTrue;
+	private AgendaItemDefinition whenTrue;
 	@XmlElement(name = Elements.WHEN_FALSE, required=false)
-	private AgendaItem whenFalse;
+	private AgendaItemDefinition whenFalse;
 	@XmlElement(name = Elements.ALWAYS, required=false)
-	private AgendaItem always;
+	private AgendaItemDefinition always;
 	
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -97,7 +97,7 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
      * This constructor should never be called.  
      * It is only present for use during JAXB unmarshalling. 
      */
-    private AgendaItem() {
+    private AgendaItemDefinition() {
     	this.id = null;
     	this.agendaId = null;
     	this.ruleId = null;
@@ -117,12 +117,12 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
     }
     
     /**
-	 * Constructs a KRMS Repository AgendaItem object from the given builder.  
+	 * Constructs a KRMS Repository AgendaItemDefinition object from the given builder.
 	 * This constructor is private and should only ever be invoked from the builder.
 	 * 
-	 * @param builder the Builder from which to construct the AgendaItem
+	 * @param builder the Builder from which to construct the AgendaItemDefinition
 	 */
-    private AgendaItem(Builder builder) {
+    private AgendaItemDefinition(Builder builder) {
     	this.id = builder.getId();
     	this.agendaId = builder.getAgendaId();
     	this.ruleId = builder.getRuleId();
@@ -185,17 +185,17 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
 	}
 
 	@Override
-	public AgendaItem getWhenTrue() {
+	public AgendaItemDefinition getWhenTrue() {
 		return this.whenTrue; 
 	}
 
 	@Override
-	public AgendaItem getWhenFalse() {
+	public AgendaItemDefinition getWhenFalse() {
 		return this.whenFalse; 
 	}
 
 	@Override
-	public AgendaItem getAlways() {
+	public AgendaItemDefinition getAlways() {
 		return this.always; 
 	}
 
@@ -205,9 +205,9 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
     }
         
 	/**
-     * This builder is used to construct instances of KRMS Repository AgendaItem.  It enforces the constraints of the {@link AgendaItemContract}.
+     * This builder is used to construct instances of KRMS Repository AgendaItemDefinition.  It enforces the constraints of the {@link AgendaItemDefinitionContract}.
      */
-    public static class Builder implements AgendaItemContract, ModelBuilder, Serializable {
+    public static class Builder implements AgendaItemDefinitionContract, ModelBuilder, Serializable {
 		
         private String id;
         private String agendaId;
@@ -221,9 +221,9 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
         private RuleDefinition.Builder rule;
         private AgendaDefinition.Builder subAgenda;
         
-        private AgendaItem.Builder whenTrue;
-        private AgendaItem.Builder whenFalse;
-        private AgendaItem.Builder always;
+        private AgendaItemDefinition.Builder whenTrue;
+        private AgendaItemDefinition.Builder whenFalse;
+        private AgendaItemDefinition.Builder always;
         
 
 		/**
@@ -233,17 +233,26 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
         	setId(id);
         	setAgendaId(agendaId);
         }
-        
+
+        /**
+         * Create a builder with the given parameters.
+         *
+         * @param id
+         * @param agendaId
+         * @return Builder
+         */
         public static Builder create(String id, String agendaId){
         	return new Builder(id, agendaId);
         }
+
         /**
-         * Creates a builder by populating it with data from the given {@link AgendaItemContract}.
+         * Creates a builder by populating it with data from the given {@link AgendaItemDefinitionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
+         * @throws IllegalArgumentException if the contract is null
          */
-        public static Builder create(AgendaItemContract contract) {
+        public static Builder create(AgendaItemDefinitionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
         	}
@@ -261,13 +270,13 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
         		builder.setSubAgenda( AgendaDefinition.Builder.create( contract.getSubAgenda()));
         	}
         	if (contract.getWhenTrue() != null){
-        		builder.setWhenTrue( AgendaItem.Builder.create( contract.getWhenTrue()));
+        		builder.setWhenTrue( AgendaItemDefinition.Builder.create( contract.getWhenTrue()));
         	}
         	if (contract.getWhenFalse() != null){
-        		builder.setWhenFalse( AgendaItem.Builder.create( contract.getWhenFalse()));
+        		builder.setWhenFalse( AgendaItemDefinition.Builder.create( contract.getWhenFalse()));
         	}
         	if (contract.getAlways() != null){
-        		builder.setAlways( AgendaItem.Builder.create( contract.getAlways()));
+        		builder.setAlways( AgendaItemDefinition.Builder.create( contract.getAlways()));
         	}
             builder.setVersionNumber(contract.getVersionNumber());
         	return builder;
@@ -276,26 +285,23 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the primary id. (may be null), must not be or blank.
-		 * </p><p>This value is generated by the system.
-		 * For new items (not yet persisted) this field is null. 
-		 * For existing items this field is the generated id. 
+		 * @param agendaItemId the agenda item id to set, may be null, must not be blank
+         * <p>The agenda item id is generated by the system.  For new agenda items (not yet persisted) this field is null.
+         *    For existing agenda items this field is the generated id.</p>
 		 * @throws IllegalArgumentException if the id is blank
 		 */
-
-        public void setId(String id) {
-            if (id != null && StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("agendaItemId is empty or whitespace.");
+        public void setId(String agendaItemId) {
+            if (id != null && StringUtils.isBlank(agendaItemId)) {
+                throw new IllegalArgumentException("agendaItemId must be null or non-blank");
             }
-			this.id = id;
+			this.id = agendaItemId;
 		}
 
-
         /**
-         * 
-         * This method ...
-         * 
-         * @param agendaId
+         * Set the value of the agenda id on this builder to the given value.
+         *
+         * @param agendaId the agenda id of the agenda item to set, must not be null or blank
+         * @throws IllegalArgumentException if the agenda id is null or blank
          */
         public void setAgendaId(String agendaId) {
             if (StringUtils.isBlank(agendaId)) {
@@ -303,47 +309,91 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
             }
 			this.agendaId = agendaId;
 		}
-		
+
+        /**
+         * Set the value of the rule id on this builder to the given value.
+         * @param ruleId the rule id of the agenda item to set
+         */
 		public void setRuleId(String ruleId) {
 			this.ruleId = ruleId;
 		}
 
+        /**
+         * Set the value of the sub agenda id on this builder to the given value.
+         * @param subAgendaId the sub agenda id of the agenda item to set
+         */
 		public void setSubAgendaId(String subAgendaId) {
 			this.subAgendaId = subAgendaId;
 		}
 
+        /**
+         * Set the value of the agenda item id for the "when true" condition on this builder to the given value.
+         * @param whenTrueId the agenda item id for the "when true" condition of the agenda item to set
+         */
 		public void setWhenTrueId(String whenTrueId) {
 			this.whenTrueId = whenTrueId;
 		}
 
+        /**
+         * Set the value of the agenda item id for the "when false" condition on this builder to the given value.
+         * @param whenFalseId the agenda item id for the "when false" condition of the agenda item to set
+         */
 		public void setWhenFalseId(String whenFalseId) {
 			this.whenFalseId = whenFalseId;
 		}
 
+        /**
+         * Set the value of the agenda item id for the "always" condition on this builder to the given value.
+         * @param alwaysId the agenda item id for the "always" condition of the agenda item to set
+         */
 		public void setAlwaysId(String alwaysId) {
 			this.alwaysId = alwaysId;
 		}
 
+        /**
+         * Set the value of the rule on this builder to the given value.
+         * @param rule the rule of the agenda item to set
+         */
 		public void setRule(RuleDefinition.Builder rule) {
 			this.rule = rule;
 		}
 
+        /**
+         * Set the value of the sub agenda on this builder to the given value.
+         * @param subAgenda the sub agenda of the agenda item to set
+         */
 		public void setSubAgenda(AgendaDefinition.Builder subAgenda) {
 			this.subAgenda = subAgenda;
 		}
 
-		public void setWhenTrue(AgendaItem.Builder whenTrue) {
+        /**
+         * Set the value of the agenda item for the "when true" condition on this builder to the given value.
+         * @param whenTrue the agenda item for the "when true" condition of the agenda item to set
+         */
+		public void setWhenTrue(AgendaItemDefinition.Builder whenTrue) {
 			this.whenTrue = whenTrue;
 		}
 
-		public void setWhenFalse(AgendaItem.Builder whenFalse) {
+        /**
+         * Set the value of the agenda item for the "when false" condition on this builder to the given value.
+         * @param whenFalse the agenda item for the "when false" condition of the agenda item to set
+         */
+		public void setWhenFalse(AgendaItemDefinition.Builder whenFalse) {
 			this.whenTrue = whenFalse;
 		}
 
-		public void setAlways(AgendaItem.Builder always) {
+        /**
+         * Set the value of the agenda item for the "always" condition on this builder to the given value.
+         * @param always the agenda item for the "always" condition of the agenda item to set
+         */
+		public void setAlways(AgendaItemDefinition.Builder always) {
 			this.always = always;
 		}
 
+        /**
+         * Set the value of the version number on this builder to the given value.
+         * @param versionNumber the version number set
+         */
 		public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }
@@ -394,17 +444,17 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
 		}
 
 		@Override
-		public AgendaItem.Builder getWhenTrue() {
+		public AgendaItemDefinition.Builder getWhenTrue() {
 			return whenTrue;
 		}
 
 		@Override
-		public AgendaItem.Builder getWhenFalse() {
+		public AgendaItemDefinition.Builder getWhenFalse() {
 			return whenFalse;
 		}
 
 		@Override
-		public AgendaItem.Builder getAlways() {
+		public AgendaItemDefinition.Builder getAlways() {
 			return always;
 		}
 
@@ -414,13 +464,13 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
         }
 
 		/**
-		 * Builds an instance of a AgendaItem based on the current state of the builder.
+		 * Builds an instance of a AgendaItemDefinition based on the current state of the builder.
 		 * 
-		 * @return the fully-constructed AgendaItem
+		 * @return the fully-constructed AgendaItemDefinition
 		 */
         @Override
-        public AgendaItem build() {
-            return new AgendaItem(this);
+        public AgendaItemDefinition build() {
+            return new AgendaItemDefinition(this);
         }
 		
     }
@@ -429,7 +479,7 @@ public final class AgendaItem extends AbstractDataTransferObject implements Agen
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "AgendaItem";
+		final static String ROOT_ELEMENT_NAME = "AgendaItemDefinition";
 		final static String TYPE_NAME = "AgendaItemType";
 	}
 	

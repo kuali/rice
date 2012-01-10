@@ -37,7 +37,7 @@ import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
@@ -216,10 +216,10 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
             AgendaDefinition.Builder.create(null, "testAgenda", krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
         agendaDef = agendaBoService.createAgenda(agendaDef);
 
-        AgendaItem.Builder agendaItemBuilder1 = AgendaItem.Builder.create(null, agendaDef.getId());
+        AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
         agendaItemBuilder1.setRuleId(createRuleDefinition1(contextDefinition, nameSpace).getId());
 
-        AgendaItem agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
+        AgendaItemDefinition agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
 
         AgendaDefinition.Builder agendaDefBuilder1 = AgendaDefinition.Builder.create(agendaDef);
         agendaDefBuilder1.setAttributes(Collections.singletonMap("Event", eventName));

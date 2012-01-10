@@ -31,6 +31,7 @@ import java.util.List;
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
     @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME}, allEntries = true)
     void versionAndSave(DocumentType documentType);
+
     @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME}, allEntries = true)
     void save(DocumentType documentType);
     List findAllCurrentRootDocuments();

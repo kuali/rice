@@ -74,7 +74,7 @@ public interface RoleService {
      */
     @WebMethod(operationName="createRole")
     @WebResult(name = "role")
-    @CacheEvict(value={Role.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME}, allEntries = true)
     Role createRole(@WebParam(name = "role") Role role)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -87,7 +87,7 @@ public interface RoleService {
      */
     @WebMethod(operationName="updateRole")
     @WebResult(name = "role")
-    @CacheEvict(value={Role.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME}, allEntries = true)
     Role updateRole(@WebParam(name = "role") Role role)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -378,7 +378,7 @@ public interface RoleService {
 	 * namespace code and name with the supplied set of qualifications.
 	 */
     @WebMethod(operationName = "assignPrincipalToRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void assignPrincipalToRole(@WebParam(name="principalId") String principalId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -389,7 +389,7 @@ public interface RoleService {
 	 * namespace code and name with the supplied set of qualifications.
 	 */
     @WebMethod(operationName = "assignGroupToRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void assignGroupToRole(@WebParam(name="groupId") String groupId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -400,7 +400,7 @@ public interface RoleService {
 	 * namespace code and name with the supplied set of qualifications.
 	 */
     @WebMethod(operationName = "assignRoleToRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void assignRoleToRole(@WebParam(name="roleId") String roleId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -411,7 +411,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "createRoleMember")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember createRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -420,11 +420,11 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "updateRoleMember")
     @WebResult(name = "roleMember")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember updateRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     @WebMethod(operationName = "createRoleResponsibilityAction")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleResponsibilityAction createRoleResponsibilityAction(@WebParam(name = "roleResponsibilityAction") RoleResponsibilityAction roleResponsibilityAction) throws RiceIllegalArgumentException;
 
 	/**
@@ -432,14 +432,14 @@ public interface RoleService {
 	 * with the specified namespace code and name with the supplied set of qualifications.
 	 */
     @WebMethod(operationName = "createDelegateType")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     DelegateType createDelegateType(@WebParam(name="delegateType") DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
 	 * Updates a delegation type, including attached members
 	 */
     @WebMethod(operationName = "updateDelegateType")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     DelegateType updateDelegateType(@WebParam(name="delegateType") DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -447,7 +447,7 @@ public interface RoleService {
      * with the specified namespace code and role name.
      */
     @WebMethod(operationName = "removePrincipalFromRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removePrincipalFromRole(@WebParam(name="principalId") String principalId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -458,7 +458,7 @@ public interface RoleService {
      * with the specified namespace code and role name.
      */
     @WebMethod(operationName = "removeGroupFromRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removeGroupFromRole(@WebParam(name="groupId") String groupId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -469,7 +469,7 @@ public interface RoleService {
      * with the specified namespace code and role name.
      */
     @WebMethod(operationName = "removeRoleFromRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removeRoleFromRole(@WebParam(name="roleId") String roleId,
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
@@ -479,6 +479,6 @@ public interface RoleService {
      * Assigns the given permission to the given role
      */
     @WebMethod(operationName = "assignPermissionToRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void assignPermissionToRole(@WebParam(name = "permissionId") String permissionId, @WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 }

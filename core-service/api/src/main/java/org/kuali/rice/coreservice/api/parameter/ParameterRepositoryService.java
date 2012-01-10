@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -48,8 +49,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="createParameter")
     @WebResult(name = "parameter")
-    //why do we need to clear the parameter cache when creating a new parameter?
-    //@CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
     Parameter createParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -71,7 +71,11 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="updateParameter")
     @WebResult(name = "parameter")
-    @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
+    @Caching(evict={
+            @CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
+            @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValueAsBoolean}' + 'key=' + #p0.getParameterKey().getCacheKey()"),
+            @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValuesAsString}' + 'key=' + #p0.getParameterKey().getCacheKey()")
+    })
     Parameter updateParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -233,7 +237,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getSubParameterValueAsString")
     @WebResult(name = "value")
-    @Cacheable(value= Parameter.Cache.NAME, key="'{getSubParameterValueAsString}' + 'key=' + #p0.getCacheKey() + '|' + 'subParameterName=' + #p1")
+    //@Cacheable(value= Parameter.Cache.NAME, key="'{getSubParameterValueAsString}' + 'key=' + #p0.getCacheKey() + '|' + 'subParameterName=' + #p1")
     String getSubParameterValueAsString(@WebParam(name = "key") ParameterKey key,
                                         @WebParam(name = "subParameterName") String subParameterName)
             throws RiceIllegalArgumentException;
@@ -286,7 +290,7 @@ public interface ParameterRepositoryService {
     @XmlElementWrapper(name = "values", required = true)
     @XmlElement(name = "value", required = false)
     @WebResult(name = "values")
-    @Cacheable(value= Parameter.Cache.NAME, key="'{getSubParameterValuesAsString}' + 'key=' + #p0.getCacheKey() + '|' + 'subParameterName=' + #p1")
+    //@Cacheable(value= Parameter.Cache.NAME, key="'{getSubParameterValuesAsString}' + 'key=' + #p0.getCacheKey() + '|' + 'subParameterName=' + #p1")
     Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key,
                                                      @WebParam(name = "subParameterName") String subParameterName)
             throws RiceIllegalArgumentException;

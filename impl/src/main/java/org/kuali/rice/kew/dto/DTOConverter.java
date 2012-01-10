@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
@@ -56,6 +57,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -157,7 +159,13 @@ public class DTOConverter {
             for (WorkflowAttributeDefinition definitionVO : definitions) {
                 AttributeDefinition definition = convertWorkflowAttributeDefinition(definitionVO);
                 ExtensionDefinition extensionDefinition = definition.getExtensionDefinition();
-                Object attribute = ExtensionUtils.loadExtension(extensionDefinition);
+
+                Object attribute = null;
+                attribute = GlobalResourceLoader.getObject(definition.getObjectDefinition());
+                if (attribute == null) {
+                    attribute = GlobalResourceLoader.getService(QName.valueOf(
+                            definition.getExtensionDefinition().getResourceDescriptor()));
+                }
 
                 if (attribute instanceof XmlConfiguredAttribute) {
                     ((XmlConfiguredAttribute)attribute).setExtensionDefinition(RuleAttribute.to(definition.getRuleAttribute()));

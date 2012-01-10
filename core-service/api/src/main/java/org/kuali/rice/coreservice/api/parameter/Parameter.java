@@ -172,6 +172,10 @@ public final class Parameter extends AbstractDataTransferObject implements Param
     public String getObjectId() {
         return objectId;
     }
+    
+    public ParameterKey getParameterKey() {
+        return ParameterKey.create(this.applicationId, this.namespaceCode, this.componentCode, this.name);
+    }
 
     /**
      * This builder constructs an Parameter enforcing the constraints of the {@link ParameterContract}.

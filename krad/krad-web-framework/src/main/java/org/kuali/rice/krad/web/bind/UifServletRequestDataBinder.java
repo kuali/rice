@@ -123,30 +123,29 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                 String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
                 viewType = StringUtils.isBlank(viewTypeName) ? form.getViewTypeName() : ViewType.valueOf(viewTypeName);
 
-                if (viewType == null) {
-                    view = getViewFromPreviousModel(form);
-                    if (view == null) {
-                        throw new RuntimeException("Could not find enough information to fetch the required view. "
-                                + " Checked the model retrieved from session for both viewTypeName and viewId");
-                    }
-                } else {
+                if (viewType != null) {
                     Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(
                             request.getParameterMap());
-                    try {
-                        view = getViewService().getViewByType(viewType, parameterMap);
-                    } catch (RuntimeException rtex) {
-                        view = getViewFromPreviousModel(form);
-                        // if we didn't find one, just re-throw
-                        if (view == null) {
-                            throw rtex;
-                        }
+                    view = getViewService().getViewByType(viewType, parameterMap);
+                }
+
+                // if view not found attempt to find one based on the cached form
+                if (view == null) {
+                    view = getViewFromPreviousModel(form);
+
+                    if (view != null) {
                         LOG.warn("Obtained viewId from cached form, this may not be safe!");
                     }
                 }
             }
 
-            form.setViewId(view.getId());
-            form.setView(view);
+            if (view != null) {
+                form.setViewId(view.getId());
+                form.setView(view);
+            } else {
+                form.setViewId(null);
+                form.setView(null);
+            }
         }
 
         form.postBind((HttpServletRequest) request);

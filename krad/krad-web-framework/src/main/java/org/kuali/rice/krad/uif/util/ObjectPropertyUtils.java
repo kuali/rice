@@ -103,7 +103,7 @@ public class ObjectPropertyUtils {
 	public static BeanWrapper wrapObject(Object object) {
 		BeanWrapper beanWrapper = new BeanWrapperImpl(object);
 		beanWrapper.setAutoGrowNestedPaths(true);
-		
+
 		return beanWrapper;
 	}
 

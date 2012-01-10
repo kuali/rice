@@ -49,6 +49,7 @@ public final class KRADConstants {
     public static final String SYSTEM_USER = "kr";
 
     public static final String KRAD_URL_KEY = "krad.url";
+    public static final String KRAD_INQUIRY_URL_KEY = "krad.inquiry.url";
     public static final String KRAD_LOOKUP_URL_KEY = "krad.lookup.url";
 
     public static final String PARAM_MAINTENANCE_VIEW_MODE = "maintenanceViewMode";

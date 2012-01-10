@@ -22,7 +22,7 @@
     <li><portal:portalLink displayTitle="true" title="Component"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&namespaceCode=KR-WKFLW&code=ActionList&dataObjectClassName=org.kuali.rice.core.impl.component.ComponentBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Person"
-                           url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&principalId=admin&dataObjectClassName=org.kuali.rice.kim.impl.identity.PersonImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&principalId=admin&dataObjectClassName=org.kuali.rice.kim.api.identity.Person&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Group"
                            url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=1&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Role"
@@ -41,7 +41,7 @@
   <strong>KIM Lookups</strong>
   <ul class="chan">
     <li><portal:portalLink displayTitle="true" title="Person"
-                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.impl.identity.PersonImpl&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.api.identity.Person&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Group"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kim.impl.group.GroupBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Role"

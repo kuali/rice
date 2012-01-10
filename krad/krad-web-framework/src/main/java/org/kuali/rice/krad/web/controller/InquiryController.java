@@ -16,13 +16,18 @@
 package org.kuali.rice.krad.web.controller;
 
 import java.util.Collections;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -35,9 +40,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Controller for <code>InquiryView</code> screens which handle
- * initial requests for the inquiry and actions coming from the
- * inquiry view such as export
+ * Controller for <code>InquiryView</code> screens which handle initial requests for the inquiry and
+ * actions coming from the inquiry view such as export
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -55,7 +59,12 @@ public class InquiryController extends UifControllerBase {
     }
 
     /**
-     * Invoked to display the inquiry view for a data object record
+     * Invoked to request an inquiry view for a data object class
+     *
+     * <p>
+     * Checks if the data object is externalizable and we need to redirect to the appropriate inquiry URL, else
+     * continues with the inquiry view display
+     * </p>
      *
      * <p>
      * Data object class name and values for a primary or alternate key set must
@@ -74,6 +83,28 @@ public class InquiryController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         InquiryForm inquiryForm = (InquiryForm) form;
 
+        // if request is not a redirect, determine if we need to redirect for an externalizable object inquiry
+        if (!inquiryForm.isRedirectedInquiry()) {
+            Class inquiryObjectClass = null;
+            try {
+                inquiryObjectClass = Class.forName(inquiryForm.getDataObjectClassName());
+            } catch (ClassNotFoundException e) {
+                throw new RiceRuntimeException("Unable to get class for name: " + inquiryForm.getDataObjectClassName());
+            }
+
+            ModuleService responsibleModuleService =
+                    KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
+            if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
+                String inquiryUrl = responsibleModuleService.getExternalizableDataObjectInquiryUrl(inquiryObjectClass,
+                        KRADUtils.convertRequestMapToProperties(request.getParameterMap()));
+
+                Properties redirectUrlProps = new Properties();
+                redirectUrlProps.put(UifParameters.REDIRECTED_INQUIRY, "true");
+
+                return performRedirect(form, inquiryUrl, redirectUrlProps);
+            }
+        }
+
         // initialize data object class in inquirable
         try {
             inquiryForm.getInquirable().setDataObjectClass(Class.forName(inquiryForm.getDataObjectClassName()));
@@ -84,40 +115,44 @@ public class InquiryController extends UifControllerBase {
         }
 
         // invoke inquirable to retrieve inquiry data object
-        Object dataObject = inquiryForm.getInquirable()
-                .retrieveDataObject(KRADUtils.translateRequestParameterMap(request.getParameterMap()));
+        Object dataObject = inquiryForm.getInquirable().retrieveDataObject(KRADUtils.translateRequestParameterMap(
+                request.getParameterMap()));
 
         if (dataObject == null && GlobalVariables.getMessageMap().hasNoMessages()) {
             LOG.error("The record you have inquired on does not exist.");
             inquiryForm.setView(getViewService().getViewById("InquiryNoResultView"));
-//            throw new UnsupportedOperationException("The record you have inquired on does not exist.");
+            //            throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         inquiryForm.setDataObject(dataObject);
 
-        return getUIFModelAndView(inquiryForm);
+        return super.start(form, result, request, response);
     }
-    
+
     /**
      * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
      */
     @RequestMapping(params = "methodToCall=export")
     public ModelAndView export(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception  {
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
         InquiryForm inquiryForm = (InquiryForm) form;
-        
+
         Object dataObject = inquiryForm.getDataObject();
-        
         if (dataObject != null) {
-            DataObjectEntry dataObjectEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(inquiryForm.getDataObjectClassName());
+            DataObjectEntry dataObjectEntry =
+                    KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                            inquiryForm.getDataObjectClassName());
+
             Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
             if (exporterClass != null) {
                 Exporter exporter = exporterClass.newInstance();
+
                 response.setContentType(KRADConstants.XML_MIME_TYPE);
                 response.setHeader("Content-disposition", "attachment; filename=export.xml");
-                exporter.export(dataObjectEntry.getDataObjectClass(), Collections.singletonList(dataObject), KRADConstants.XML_FORMAT, response.getOutputStream());
+                exporter.export(dataObjectEntry.getDataObjectClass(), Collections.singletonList(dataObject),
+                        KRADConstants.XML_FORMAT, response.getOutputStream());
             }
         }
-        
-         return null;
+
+        return null;
     }
 }

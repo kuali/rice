@@ -57,12 +57,11 @@ public class ViewServiceImpl implements ViewService {
 
         View view = dataDictionaryService.getViewById(viewId);
         if (view == null) {
-            LOG.error("View not found for id: " + viewId);
-            throw new RuntimeException("View not found for id: " + viewId);
+            LOG.warn("View not found for id: " + viewId);
+        } else {
+            LOG.debug("Updating view status to CREATED for view: " + view.getId());
+            view.setViewStatus(ViewStatus.CREATED);
         }
-
-        LOG.debug("Updating view status to CREATED for view: " + view.getId());
-        view.setViewStatus(ViewStatus.CREATED);
 
         return view;
     }
@@ -90,12 +89,11 @@ public class ViewServiceImpl implements ViewService {
 
         View view = dataDictionaryService.getViewByTypeIndex(viewType, indexKey);
         if (view == null) {
-            LOG.error("View not found for type: " + viewType);
-            throw new RuntimeException("View not found for type: " + viewType);
+            LOG.warn("View not found for type: " + viewType);
+        } else {
+            LOG.debug("Updating view status to CREATED for view: " + view.getId());
+            view.setViewStatus(ViewStatus.CREATED);
         }
-
-        LOG.debug("Updating view status to CREATED for view: " + view.getId());
-        view.setViewStatus(ViewStatus.CREATED);
 
         return view;
     }

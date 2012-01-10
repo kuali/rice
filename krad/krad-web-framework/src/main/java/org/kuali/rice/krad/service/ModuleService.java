@@ -24,10 +24,10 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.Properties;
 
 /**
- * This interface defines service methods for modules.
+ * Defines service methods for module services
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -93,10 +93,12 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * @param fieldValues
      * @return
      */
-    public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass, Map<String, Object> fieldValues);
+    public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass,
+            Map<String, Object> fieldValues);
 
     /**
-     * This method gets the list of externalizable business objects, given its type and a map of primary keys and values.
+     * This method gets the list of externalizable business objects, given its type and a map of primary keys and
+     * values.
      *
      * @param businessObjectClass
      * @param fieldValues
@@ -106,7 +108,8 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
             Class<T> businessObjectClass, Map<String, Object> fieldValues);
 
     /**
-     * This method gets the list of externalizable business objects for lookup, given its type and a map of primary keys and values.
+     * This method gets the list of externalizable business objects for lookup, given its type and a map of primary keys
+     * and values.
      *
      * @param <T>
      * @param businessObjectClass
@@ -118,22 +121,53 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
             Class<T> businessObjectClass, Map<String, Object> fieldValues, boolean unbounded);
 
     /**
-     * This method returns a URL so that the inquiry framework may redirect a user to the appropriate (possibly external) website
+     * Returns a URL so that the inquiry framework may redirect a user to the appropriate (possibly
+     * external) website at which to view inquiry information
+     *
+     * @param inquiryDataObjectClass - a {@link ExternalizableBusinessObject} managed by this module
+     * @param parameters - any inquiry parameters, and the primary key values of the inquiry class would be
+     * in here
+     * @return String URL where externalizable object information may be viewed
+     */
+    public String getExternalizableDataObjectInquiryUrl(Class<?> inquiryDataObjectClass, Properties parameters);
+
+    /**
+     * Returns a URL so that the lookup framework may redirect a user to the appropriate (possibly
+     * external) website at which to the data for the object may be searched
+     *
+     * @param inquiryDataObjectClass - a {@link ExternalizableBusinessObject} managed by this module
+     * @param parameters - any parameters for the lookup call
+     * @return String URL where externalizable object information may be searched
+     */
+    public String getExternalizableDataObjectLookupUrl(Class<?> inquiryDataObjectClass, Properties parameters);
+
+    /**
+     * This method returns a URL so that the inquiry framework may redirect a user to the appropriate (possibly
+     * external) website
      * at which to view inquiry information.
      *
      * @param inquiryBusinessObjectClass a {@link ExternalizableBusinessObject} managed by this module
-     * @param parameters                 any inquiry parameters, and the primary key values of the inquiryBusinessObjectClass would be in here
+     * @param parameters any inquiry parameters, and the primary key values of the inquiryBusinessObjectClass would be
+     * in here
      * @return a URL where externalizable business object information may be viewed.
+     * @deprecated legacy KNS call, replaced by {@link #getExternalizableDataObjectInquiryUrl(Class, java.util.Properties)}
+     * in KRAD
      */
-    public String getExternalizableBusinessObjectInquiryUrl(Class inquiryBusinessObjectClass, Map<String, String[]> parameters);
+    @Deprecated
+    public String getExternalizableBusinessObjectInquiryUrl(Class inquiryBusinessObjectClass,
+            Map<String, String[]> parameters);
 
     /**
      * This method gets the lookup url for the given externalizable business object properties.
      *
      * @param parameters
      * @return
+     * @deprecated legacy KNS call, replaced by {@link #getExternalizableDataObjectLookupUrl(Class, java.util.Properties)}
+     * in KRAD
      */
-    public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass, Map<String, String> parameters);
+    @Deprecated
+    public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass,
+            Map<String, String> parameters);
 
     /**
      * This method retrieves the externalizable business object, if it is not already populated
@@ -141,7 +175,6 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      *
      * @param businessObject
      * @param currentInstanceExternalizableBO
-     *
      * @param externalizableRelationshipName
      * @return
      */
@@ -191,8 +224,9 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
     /**
      * For a given ExternalizableBusinessObject interface, return the implementation class provided by this module.
      */
-    public <E extends ExternalizableBusinessObject> Class<E> getExternalizableBusinessObjectImplementation(Class<E> externalizableBusinessObjectInterface);
-    
+    public <E extends ExternalizableBusinessObject> Class<E> getExternalizableBusinessObjectImplementation(
+            Class<E> externalizableBusinessObjectInterface);
+
     /**
      * This method determines whether or not this module is currently locked
      */

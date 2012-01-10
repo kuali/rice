@@ -31,13 +31,16 @@ import org.kuali.rice.krad.uif.view.InquiryView;
  */
 public class InquiryForm extends UifFormBase {
     private static final long serialVersionUID = 4733144086378429410L;
-    private static final Logger LOG = Logger.getLogger(InquiryForm.class);
 
     private String dataObjectClassName;
     private Object dataObject;
 
+    private boolean redirectedInquiry;
+
     public InquiryForm() {
         setViewTypeName(ViewType.INQUIRY);
+
+        redirectedInquiry = false;
     }
 
     /**
@@ -92,6 +95,25 @@ public class InquiryForm extends UifFormBase {
      */
     public void setDataObject(Object dataObject) {
         this.dataObject = dataObject;
+    }
+
+    /**
+     * Indicates whether the requested was redirected from the inquiry framework due to an external object
+     * request. This prevents the framework from performing another redirect check
+     *
+     * @return boolean true if request was a redirect, false if not
+     */
+    public boolean isRedirectedInquiry() {
+        return redirectedInquiry;
+    }
+
+    /**
+     * Setter for the redirected request indicator
+     *
+     * @param redirectedInquiry
+     */
+    public void setRedirectedInquiry(boolean redirectedInquiry) {
+        this.redirectedInquiry = redirectedInquiry;
     }
 
     /**

@@ -23,12 +23,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.Lookupable;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -73,13 +77,41 @@ public class LookupController extends UifControllerBase {
 //        }
     }
 
+    /**
+     * Invoked to request an lookup view for a data object class
+     *
+     * <p>
+     * Checks if the data object is externalizable and we need to redirect to the appropriate lookup URL, else
+     * continues with the lookup view display
+     * </p>
+     */
     @RequestMapping(params = "methodToCall=start")
     @Override
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
 
-        suppressActionsIfNeeded(lookupForm);
+        // if request is not a redirect, determine if we need to redirect for an externalizable object lookup
+        if (!lookupForm.isRedirectedLookup()) {
+            Class lookupObjectClass = null;
+            try {
+                lookupObjectClass = Class.forName(lookupForm.getDataObjectClassName());
+            } catch (ClassNotFoundException e) {
+                throw new RiceRuntimeException("Unable to get class for name: " + lookupForm.getDataObjectClassName());
+            }
+
+            ModuleService responsibleModuleService =
+                    KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(lookupObjectClass);
+            if (responsibleModuleService != null && responsibleModuleService.isExternalizable(lookupObjectClass)) {
+                String lookupUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(lookupObjectClass,
+                        KRADUtils.convertRequestMapToProperties(request.getParameterMap()));
+
+                Properties redirectUrlProps = new Properties();
+                redirectUrlProps.put(UifParameters.REDIRECTED_LOOKUP, "true");
+
+                return performRedirect(form, lookupUrl, redirectUrlProps);
+            }
+        }
 
         return super.start(lookupForm, result, request, response);
     }

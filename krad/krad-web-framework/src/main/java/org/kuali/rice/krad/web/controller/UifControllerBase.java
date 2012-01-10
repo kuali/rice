@@ -135,8 +135,10 @@ public abstract class UifControllerBase {
 
         // check view authorization
         // TODO: this needs to be invoked for each request
-        String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
-        checkViewAuthorization(form, methodToCall);
+        if (form.getView() != null) {
+            String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
+            checkViewAuthorization(form, methodToCall);
+        }
 
         return getUIFModelAndView(form);
     }
@@ -476,28 +478,16 @@ public abstract class UifControllerBase {
             ModuleService responsibleModuleService =
                     KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(lookupObjectClass);
             if (responsibleModuleService != null && responsibleModuleService.isExternalizable(lookupObjectClass)) {
-                Class<? extends ExternalizableBusinessObject> implLookupObjectClass =
-                        responsibleModuleService.getExternalizableBusinessObjectImplementation(
-                                lookupObjectClass.asSubclass(ExternalizableBusinessObject.class));
+                String lookupUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(lookupObjectClass,
+                        lookupParameters);
 
-                if (implLookupObjectClass != null) {
-                    lookupParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, implLookupObjectClass.getName());
-                } else {
-                    throw new RuntimeException(
-                            "Unable to find implementation class for EBO: " + lookupObjectClass.getName());
+                Properties externalInquiryProperties = new Properties();
+                if (lookupParameters.containsKey(UifParameters.LIGHTBOX_CALL)) {
+                    externalInquiryProperties.put(UifParameters.LIGHTBOX_CALL, lookupParameters.get(
+                            UifParameters.LIGHTBOX_CALL));
                 }
 
-                // TODO: should call module service to get full URL, but right now it is coded to direct to the KNS lookups
-                //                Map<String, String> parameterMap = new HashMap<String, String>();
-                //                Enumeration<Object> e = lookupParameters.keys();
-                //                while (e.hasMoreElements()) {
-                //                    String paramName = (String) e.nextElement();
-                //                    parameterMap.put(paramName, lookupParameters.getProperty(paramName));
-                //                }
-                //
-                //                String lookupUrl = responsibleModuleService.getExternalizableBusinessObjectLookupUrl(lookupObjectClass,
-                //                        parameterMap);
-                //                return performRedirect(form, lookupUrl, new Properties());
+                return performRedirect(form, lookupUrl, externalInquiryProperties);
             }
         }
 
@@ -593,7 +583,8 @@ public abstract class UifControllerBase {
      *
      * @param form - current form instance
      * @param baseUrl - base url to redirect to
-     * @param urlParameters - properties containing key/value pairs for the url parameters
+     * @param urlParameters - properties containing key/value pairs for the url parameters, if null or empty,
+     * the baseUrl will be used as the full URL
      * @return ModelAndView configured to redirect to the given URL
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {

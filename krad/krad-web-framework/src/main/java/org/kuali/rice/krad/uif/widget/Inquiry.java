@@ -183,10 +183,8 @@ public class Inquiry extends WidgetBase {
                 parameterValue = parameterValue.toString();
             }
 
-            // Encrypt value if it is a field that has restriction that prevents
-            // a value from being shown to user, because we don't want the
-            // browser history to store the restricted
-            // attribute's value in the URL
+            // Encrypt value if it is a field that has restriction that prevents a value from being shown to
+            // user, because we don't want the browser history to store the restricted attributes value in the URL
             if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
                 try {
@@ -201,24 +199,19 @@ public class Inquiry extends WidgetBase {
             urlParameters.put(inquiryParameter.getValue(), parameterValue);
         }
 
-        // check for EBOs and adjust inquiry
+        // build inquiry URL
+        String inquiryUrl = "";
+
+        // check for EBOs for an alternate inquiry URL
         ModuleService responsibleModuleService =
                 KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
         if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
-            Class<? extends ExternalizableBusinessObject> implLookupObjectClass =
-                    responsibleModuleService.getExternalizableBusinessObjectImplementation(
-                            inquiryObjectClass.asSubclass(ExternalizableBusinessObject.class));
-
-            // TODO: this should set base inquiry URL from module service as well, but right now set for KNS
-            if (implLookupObjectClass != null) {
-                urlParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, implLookupObjectClass.getName());
-            } else {
-                throw new RuntimeException(
-                        "Unable to find implementation class for EBO: " + inquiryObjectClass.getName());
-            }
+            inquiryUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(inquiryObjectClass,
+                    urlParameters);
+        } else {
+            inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
         }
 
-        String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
         getInquiryLinkField().setHrefText(inquiryUrl);
 
         // set inquiry title

@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 /**
@@ -434,6 +435,49 @@ public final class KRADUtils {
         }
 
         return propertyKeyValues;
+    }
+
+    /**
+     * Utility method to convert a Map to a Properties object
+     *
+     * @param parameters - map to convert
+     * @return Properties object containing all the map entries
+     */
+    public static Properties convertMapToProperties(Map<String, String> parameters) {
+        Properties properties = new Properties();
+
+        if (parameters != null) {
+            for (Map.Entry<String, String> parameter : parameters.entrySet()) {
+                properties.put(parameter.getKey(), parameter.getValue());
+            }
+        }
+
+        return properties;
+    }
+
+    /**
+     * Utility method to convert a Request Parameters Map to a Properties object
+     *
+     * <p>
+     * Multiple values for a parameter are joined together with comma delimiter
+     * </p>
+     *
+     * @param requestParameters - map to convert
+     * @return Properties object containing all the map entries
+     */
+    public static Properties convertRequestMapToProperties(Map<String, String[]> requestParameters) {
+        Properties properties = new Properties();
+
+        if (requestParameters != null) {
+            for (Map.Entry<String, String[]> parameter : requestParameters.entrySet()) {
+                String[] parameterValue = parameter.getValue();
+                String parameterValueString = StringUtils.join(parameterValue, ",");
+
+                properties.put(parameter.getKey(), parameterValueString);
+            }
+        }
+
+        return properties;
     }
 
     public static boolean containsSensitiveDataPatternMatch(String fieldValue) {

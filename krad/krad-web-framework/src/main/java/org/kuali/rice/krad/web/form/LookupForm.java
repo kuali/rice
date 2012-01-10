@@ -56,6 +56,8 @@ public class LookupForm extends UifFormBase {
 
     private Collection<?> searchResults;
 
+    private boolean redirectedLookup;
+
     public LookupForm() {
         super();
 
@@ -63,6 +65,7 @@ public class LookupForm extends UifFormBase {
         atLeastOneRowReturnable = false;
         atLeastOneRowHasActions = false;
         multipleValuesSelect = false;
+        redirectedLookup = false;
 
         criteriaFields = new HashMap<String, String>();
         fieldConversions = new HashMap<String, String>();
@@ -79,8 +82,8 @@ public class LookupForm extends UifFormBase {
         try {
             Lookupable lookupable = getLookupable();
             if (lookupable == null) {
-                LOG.error("Lookupable not found for view id " + getView().getId());
-                throw new RuntimeException("Lookupable not found for view id " + getView().getId());
+                // assume lookupable will be set by controller or a redirect will happen
+                return;
             }
 
             if (StringUtils.isBlank(getDataObjectClassName())) {
@@ -137,20 +140,11 @@ public class LookupForm extends UifFormBase {
     }
 
     public Lookupable getLookupable() {
-        ViewHelperService viewHelperService = getView().getViewHelperService();
-        if (viewHelperService == null) {
-            LOG.error("ViewHelperService is null.");
-            throw new RuntimeException("ViewHelperService is null.");
+        if ((getView() != null) && Lookupable.class.isAssignableFrom(getView().getViewHelperService().getClass())) {
+            return (Lookupable) getView().getViewHelperService();
         }
 
-        if (!Lookupable.class.isAssignableFrom(viewHelperService.getClass())) {
-            LOG.error("ViewHelperService class '" + viewHelperService.getClass().getName() +
-                    "' is not assignable from '" + Lookupable.class + "'");
-            throw new RuntimeException("ViewHelperService class '" + viewHelperService.getClass().getName() +
-                    "' is not assignable from '" + Lookupable.class + "'");
-        }
-
-        return (Lookupable) viewHelperService;
+        return null;
     }
 
     public String getDataObjectClassName() {
@@ -257,5 +251,24 @@ public class LookupForm extends UifFormBase {
 
     public void setAtLeastOneRowHasActions(boolean atLeastOneRowHasActions) {
         this.atLeastOneRowHasActions = atLeastOneRowHasActions;
+    }
+
+    /**
+     * Indicates whether the requested was redirected from the lookup framework due to an external object
+     * request. This prevents the framework from performing another redirect check
+     *
+     * @return boolean true if request was a redirect, false if not
+     */
+    public boolean isRedirectedLookup() {
+        return redirectedLookup;
+    }
+
+    /**
+     * Setter for the redirected request indicator
+     *
+     * @param redirectedLookup
+     */
+    public void setRedirectedLookup(boolean redirectedLookup) {
+        this.redirectedLookup = redirectedLookup;
     }
 }

@@ -22,13 +22,11 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 
 /**
- * This is a description of what this class does - jjhanso don't forget to fill this in.
+ * Module service implementation for the Rice KRAD module
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class KRADModuleService extends ModuleServiceBase {
-
     protected List<String> businessObjects;
 
     @Override
@@ -38,8 +36,11 @@ public class KRADModuleService extends ModuleServiceBase {
                 return true;
             }
         }
+
         if (ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
-            Class externalizableBusinessObjectInterface = ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(businessObjectClass);
+            Class externalizableBusinessObjectInterface =
+                    ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(
+                            businessObjectClass);
             if (externalizableBusinessObjectInterface != null) {
                 Map<Class, Class> validEBOs = getModuleConfiguration().getExternalizableBusinessObjectImplementations();
                 if (validEBOs != null) {
@@ -49,6 +50,7 @@ public class KRADModuleService extends ModuleServiceBase {
                 }
             }
         }
+
         return false;
     }
 

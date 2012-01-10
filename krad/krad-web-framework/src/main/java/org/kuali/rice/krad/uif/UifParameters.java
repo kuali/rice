@@ -41,6 +41,8 @@ public class UifParameters {
     public static final String LOOKUP_COLLECTION_NAME = "lookupCollectionName";
     public static final String MULTIPLE_VALUES_SELECT = "multipleValuesSelect";
 	public static final String READ_ONLY_FIELDS = "readOnlyFields";
+    public static final String REDIRECTED_INQUIRY = "redirectedInquiry";
+    public static final String REDIRECTED_LOOKUP = "redirectedLookup";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
 	public static final String RENDER_FULL_VIEW = "renderFullView";
 	public static final String RETURN_LOCATION = "returnLocation";

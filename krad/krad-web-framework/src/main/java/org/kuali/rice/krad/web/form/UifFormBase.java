@@ -92,6 +92,8 @@ public class UifFormBase implements ViewModel {
         renderFullView = true;
         defaultsApplied = false;
 
+        formHistory = new History();
+
         readOnlyFieldsList = new ArrayList<String>();
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
@@ -304,15 +306,7 @@ public class UifFormBase implements ViewModel {
      * @return Properties action parameters
      */
     public Properties getActionParametersAsProperties() {
-        Properties actionProperties = new Properties();
-
-        if (actionParameters != null) {
-            for (Map.Entry<String, String> actionParameter : actionParameters.entrySet()) {
-                actionProperties.put(actionParameter.getKey(), actionParameter.getValue());
-            }
-        }
-
-        return actionProperties;
+        return KRADUtils.convertMapToProperties(actionParameters);
     }
 
     /**

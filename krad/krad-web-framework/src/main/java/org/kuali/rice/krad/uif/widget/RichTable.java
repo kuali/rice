@@ -150,15 +150,15 @@ public class RichTable extends WidgetBase {
                 tableToolsColumnOptions.append(colOptions + " , ");
             }
 
-            //if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
+            // if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
             if (!StringUtils.isEmpty(getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
-                //get the contents of the JS array string
+                // get the contents of the JS array string
                 String jsArray = getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
                 int startBrace = StringUtils.indexOf(jsArray,"[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + " , ");
             } else {
-                    //use layout manager sortableColumns and hiddenColumns if set
+                    // use layout manager sortableColumns and hiddenColumns if set
                     Set<String> currentSortableColumns =  getSortableColumns();
                     Set<String> currentHiddenColumns =  getHiddenColumns();
                     if (layoutManager instanceof TableLayoutManager) {
@@ -172,24 +172,24 @@ public class RichTable extends WidgetBase {
                     }
                 // TODO: does this handle multiple rows correctly?
                 for (Component component : collectionGroup.getItems()) {
-                    // For FieldGroup, get the first field from that group
+                    // for FieldGroup, get the first field from that group
                     if (component instanceof FieldGroup) {
                         component = ((FieldGroup) component).getItems().get(0);
                     }
 
                     if (component instanceof DataField) {
                         DataField field = (DataField) component;
-                        //if a field is marked as invisible in hiddenColumns, append options and skip sorting
+                        // if a field is marked as invisible in hiddenColumns, append options and skip sorting
                         if (currentHiddenColumns != null && currentHiddenColumns.contains(field.getPropertyName())) {
                             tableToolsColumnOptions.append("{" + UifConstants.TableToolsKeys.VISIBLE + ": " + UifConstants.TableToolsValues.FALSE + "}, ");
-                        //if sortableColumns is present and a field is marked as sortable or unspecified
+                        // if sortableColumns is present and a field is marked as sortable or unspecified
                         } else if (currentSortableColumns != null && !currentSortableColumns.isEmpty()) {
                             if (currentSortableColumns.contains(field.getPropertyName())) {
                                 tableToolsColumnOptions.append(getDataFieldColumnOptions(collectionGroup, field) + ", ");
                             } else {
                                 tableToolsColumnOptions.append("{'" + UifConstants.TableToolsKeys.SORTABLE + "': " + UifConstants.TableToolsValues.FALSE + "}, ");
                             }
-                        } else {//sortable columns not defined
+                        } else {// sortable columns not defined
                             String colOptions = getDataFieldColumnOptions(collectionGroup, field);
                             tableToolsColumnOptions.append(colOptions + " , ");
                         }
@@ -216,6 +216,7 @@ public class RichTable extends WidgetBase {
 
     /**
      * construct the column options for a data field
+     *
      * @param collectionGroup - the collectionGroup in which the data field is defined
      * @param field - the field to construction options for
      * @return - options as valid for datatable

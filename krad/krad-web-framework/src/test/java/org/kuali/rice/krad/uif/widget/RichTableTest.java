@@ -98,13 +98,11 @@ public class RichTableTest {
     @Test
     /**
      * test whether a hidden column, when marked as sortable is still hidden
-     * @throws Exception
      */
      public void testComponentOptionsHideColumnOnRichTable() {
         Set<String> hiddenColumns = new HashSet<String>();
         hiddenColumns.add("employeeId");
         Set<String> sortableColumns = new HashSet<String>();
-        //sortableColumns.add("employeeId");
         sortableColumns.add("positionTitle");
         richTable.setSortableColumns(sortableColumns);
         richTable.setHiddenColumns(hiddenColumns);
@@ -115,17 +113,16 @@ public class RichTableTest {
     @Test
     /**
      * test that sortableColumns and hiddenColumns, when set on layoutManager, override those properties on the richTable
-     * @throws Exception
      */
      public void testComponentOptionsHideColumnOnLayoutManager() {
-        //set rich table properties
+        // set rich table properties
         Set<String> richTableHiddenColumns = new HashSet<String>();
         richTableHiddenColumns.add("employeeId");
         Set<String> sortableColumns = new HashSet<String>();
         sortableColumns.add("positionTitle");
         richTable.setSortableColumns(sortableColumns);
         richTable.setHiddenColumns(richTableHiddenColumns);
-        //set layout manager properties
+        // set layout manager properties
         Set<String> lmHiddenColumns = new HashSet<String>();
         lmHiddenColumns.add("contactEmail");
         Set<String> lmSortableColumns = new HashSet<String>();
@@ -137,10 +134,16 @@ public class RichTableTest {
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
     }
 
+    /**
+     * a common method to test rich table options
+     *
+     * @param optionsOnGroup - a string in JSON format of the options set on the collection group
+     * @param optionsOnRichTable - a string in JSON format of the options set on the rich table
+     * @param optionKey - a string with the rich table option key being tested
+     */
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
         richTable.getComponentOptions().put(optionKey, optionsOnGroup);
         richTable.performFinalize(new View(), new UifFormBase(), group);
-        //assertNotNull(richTable.getComponentOptions().get(optionKey));
         assertEquals(optionsOnRichTable,richTable.getComponentOptions().get(optionKey));
     }
 }

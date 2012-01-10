@@ -478,7 +478,7 @@ function collapseDisclosures() {
 function createTable(tableId, options) {
     jq(document).ready(function() {
         var oTable = jq("#" + tableId).dataTable(options);
-        //allow table column size recalculation on window resize
+        // allow table column size recalculation on window resize
         jq(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
         } );

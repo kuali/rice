@@ -27,7 +27,7 @@
 
     <properties>
     	<maven.skip.packaging>false</maven.skip.packaging>
-        <maven.failsafe.skip>true</maven.failsafe.skip>
+        <!--<maven.failsafe.skip>true</maven.failsafe.skip>-->
     </properties>
 
     <dependencies>

@@ -147,27 +147,72 @@ public class DocumentSearchTest extends KEWTestCase {
           results = docSearchService.lookupDocuments(principalId, criteria.build());
           assertEquals(0, results.getSearchResults().size());
          }
-//       @Test public void testDocSearch_startAtIndex() throws Exception {
-//
-//          String[] docIds = routeTestDocs();
-//
-//          String principalId = getPrincipalId("bmcgough");
-//
-//          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-//          criteria.setDocumentTypeName("SearchDocType");
-//          criteria.setMaxResults(5);
-//          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-//          assertEquals(3, results.getSearchResults().size());
-//          criteria.setStartAtIndex(1);
-//          // TODO finish this test
-//          results = docSearchService.lookupDocuments(principalId, criteria.build());
-//          assertEquals(2, results.getSearchResults().size());
-//
-//
-//
-//      }
 
+       @Test public void testDocSearch_startAtIndex() throws Exception {
 
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setStartAtIndex(1);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(2, results.getSearchResults().size());
+      }
+
+    @Test public void testDocSearch_startAtIndexMoreThanResuls() throws Exception {
+
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setStartAtIndex(5);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(0, results.getSearchResults().size());
+
+      }
+
+     @Test public void testDocSearch_startAtIndexNegative() throws Exception {
+
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setStartAtIndex(-1);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(0, results.getSearchResults().size());
+
+      }
+    @Test public void testDocSearch_startAtIndexZero() throws Exception {
+
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setStartAtIndex(0);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+
+      }
 
     /**
      * Tests that performing a search automatically saves the last search criteria

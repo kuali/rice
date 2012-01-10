@@ -233,8 +233,16 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         Map<String, DocumentSearchResult.Builder> resultMap = new HashMap<String, DocumentSearchResult.Builder>();
         PerformanceLogger perfLog = new PerformanceLogger();
         int iteration = 0;
+        int startAt = (criteria.getStartAtIndex()==null) ? 0 : criteria.getStartAtIndex();
+        maxResultCap += startAt;
         boolean resultSetHasNext = resultSet.next();
-        while ( resultSetHasNext && resultMap.size() < maxResultCap && iteration++ < fetchLimit) {
+        while ( resultSetHasNext && resultMap.size() < maxResultCap && iteration++ < fetchLimit && startAt >= 0) {
+
+            if(iteration <= startAt) {
+                resultSetHasNext = resultSet.next();
+                continue;
+            }
+
             DocumentSearchResult.Builder resultBuilder = processRow(criteria, searchAttributeStatement, resultSet);
             String documentId = resultBuilder.getDocument().getDocumentId();
             if (!resultMap.containsKey(documentId)) {

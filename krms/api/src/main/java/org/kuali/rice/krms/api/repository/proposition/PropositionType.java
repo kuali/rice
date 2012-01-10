@@ -22,18 +22,29 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO... 
- * 
+ * Enumeration for PropositionTypes.  SIMPLE or COMPOUND.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public enum PropositionType implements Coded {
 
+    /**
+     * use this flag with the static factory to get a {@link PropositionType} Compound
+     */
 	COMPOUND("C"),
+
+    /**
+     * use this flag with the static factory to get a {@link PropositionType} Simple
+     */
 	SIMPLE("S");
 	
 	private final String code;
-	
+
+    /**
+     * Create a PropositionType of the given code
+     * @param code
+     */
 	private PropositionType(String code) {
 		this.code = code;
 	}
@@ -54,7 +65,13 @@ public enum PropositionType implements Coded {
 			VALID_TYPE_CODES.add(propositionType.getCode());
 		}
 	}
-	
+
+    /**
+     * Create a PropositionType for the given code
+     * @param code to type the PropositionType
+     * @return PropositionType of the given code
+     * @throws IllegalArgumentException if the given code does not exist
+     */
 	public static PropositionType fromCode(String code) {
 		if (code == null) {
 			return null;
@@ -68,7 +85,7 @@ public enum PropositionType implements Coded {
 	}
 	
 	static final class Adapter extends EnumStringAdapter<PropositionType> {
-		
+        @Override
 		protected Class<PropositionType> getEnumClass() {
 			return PropositionType.class;
 		}

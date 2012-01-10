@@ -49,7 +49,7 @@
     <property name="shortLabel" value="Code"/>
     <property name="maxLength" value="40"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="validCharactersConstraint">
       <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="false"/>
@@ -69,7 +69,7 @@
       <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="Uif-TextControl" p:size="100"/>
     </property>
     <property name="required" value="true"/>
     <property name="summary" value="Name identifying the book type."/>
@@ -86,7 +86,7 @@
       <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="Uif-TextControl" p:size="100"/>
     </property>
     <property name="required" value="false"/>
     <property name="summary" value="Description identifying the book type."/>
@@ -102,42 +102,42 @@
       <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="controlField">
-      <bean parent="CheckboxControl"/>
+      <bean parent="Uif-CheckboxControl"/>
     </property>
     <property name="summary" value="Active Indicator"/>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/>
     <property name="label" value="Active Indicator"/>
     <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
-  <bean id="BookType-InquiryView" parent="InquiryView">
+  <bean id="BookType-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Book Type Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="Items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="title" value="Book Type Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="typeCode"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="description"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="typeCode"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
-        <bean parent="CollectionGroupSection">
+        <bean parent="Uif-Disclosure-StackedCollectionSection">
           <property name="title" value="Books"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
           <property name="propertyName" value="books"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="title"/>
-              <bean parent="InputField" p:propertyName="isbn"/>
-              <bean parent="InputField" p:propertyName="price"/>
-              <bean parent="InputField" p:propertyName="rating"/>
-              <bean parent="InputField" p:propertyName="publisher"/>
-              <bean parent="InputField" p:propertyName="publicationDate"/>
+              <bean parent="Uif-InputField" p:propertyName="title"/>
+              <bean parent="Uif-InputField" p:propertyName="isbn"/>
+              <bean parent="Uif-InputField" p:propertyName="price"/>
+              <bean parent="Uif-InputField" p:propertyName="rating"/>
+              <bean parent="Uif-InputField" p:propertyName="publisher"/>
+              <bean parent="Uif-InputField" p:propertyName="publicationDate"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -150,22 +150,22 @@
       </list>
     </property>
   </bean>
-  <bean id="BookType-LookupView" parent="LookupView">
+  <bean id="BookType-LookupView" parent="Uif-LookupView">
     <property name="title" value="Book Type Lookup"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="typeCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="typeCode"/>
-        <bean parent="InputField" p:propertyName="name"/>
-        <bean parent="InputField" p:propertyName="description"/>
-        <bean parent="InputField" p:propertyName="active"/>
+        <bean parent="Uif-InputField" p:propertyName="typeCode"/>
+        <bean parent="Uif-InputField" p:propertyName="name"/>
+        <bean parent="Uif-InputField" p:propertyName="description"/>
+        <bean parent="Uif-InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>  

@@ -55,7 +55,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Id"/>
@@ -66,7 +66,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Agenda Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="agendaId"/>
     <property name="label" value="Agenda Id"/>
@@ -77,7 +77,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="ruleId"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="ruleId"/>
     <property name="label" value="Rule Id"/>
@@ -88,7 +88,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Sub-Agenda Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="subAgendaId"/>
     <property name="label" value="Sub-Agenda Id"/>
@@ -99,7 +99,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="whenTrue"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="whenTrueId"/>
     <property name="label" value="whenTrue Id"/>
@@ -110,7 +110,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="whenFalse"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="whenFalseId"/>
     <property name="label" value="whenFalse Id"/>
@@ -121,7 +121,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Always"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="alwaysId"/>
     <property name="label" value="Always Id"/>
@@ -132,7 +132,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="ruleId"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="ruleId"/>
     <property name="label" value="Agenda Item ruleId"/>
@@ -145,64 +145,64 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Always"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Always"/>
   </bean -->  
     
-  <bean id="AgendaItemBo-LookupView" parent="LookupView">
+  <bean id="AgendaItemBo-LookupView" parent="Uif-LookupView">
     <property name="title" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaItemBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="ruleId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="subAgendaId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="whenTrueId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="whenFalseId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="alwaysId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="ruleId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAgendaId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="whenTrueId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="whenFalseId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="alwaysId" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="ruleId" />
-        <bean parent="InputField" p:propertyName="subAgendaId" />
-        <bean parent="InputField" p:propertyName="whenTrueId" />
-        <bean parent="InputField" p:propertyName="whenFalseId" />
-        <bean parent="InputField" p:propertyName="alwaysId" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="ruleId" />
+        <bean parent="Uif-InputField" p:propertyName="subAgendaId" />
+        <bean parent="Uif-InputField" p:propertyName="whenTrueId" />
+        <bean parent="Uif-InputField" p:propertyName="whenFalseId" />
+        <bean parent="Uif-InputField" p:propertyName="alwaysId" />
       </list>
     </property>
   </bean>
   
-  <bean id="AgendaItemBo-InquiryView" parent="InquiryView">
+  <bean id="AgendaItemBo-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Agenda Item Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-            <bean parent="Page" p:id="page1">
+            <bean parent="Uif-Page" p:id="page1">
                 <property name="items">
                     <list>
-                      <bean parent="GroupSectionGridLayout">
+                      <bean parent="Uif-Disclosure-GridSection">
                           <property name="layoutManager.numberOfColumns" value="2"/>
                           <property name="items">
                             <list>
-                              <bean parent="InputField" p:propertyName="id"/>
-                              <bean parent="InputField" p:propertyName="ruleId"/>
+                              <bean parent="Uif-InputField" p:propertyName="id"/>
+                              <bean parent="Uif-InputField" p:propertyName="ruleId"/>
                             </list>
                           </property>
                           <property name="title" value="Agenda Item Attributes"/>
                       </bean>
-                                   <bean parent="CollectionGroupSection">
+                                   <bean parent="Uif-Disclosure-StackedCollectionSection">
 						              <property name="title" value="Always"/>  
 						              <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaItemBo"/>
 						              <property name="propertyName" value="alwaysList"/>
 						              <property name="items">
 						                <list>
-						                  <bean parent="InputField" p:propertyName="id"/>
-						                  <bean parent="InputField" p:propertyName="ruleId"/>
+						                  <bean parent="Uif-InputField" p:propertyName="id"/>
+						                  <bean parent="Uif-InputField" p:propertyName="ruleId"/>
 						                </list>
 						              </property>      
 						              <property name="layoutManager.summaryTitle" value="Agenda Item"/> 

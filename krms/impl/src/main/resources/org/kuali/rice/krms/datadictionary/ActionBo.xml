@@ -49,7 +49,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Action Id"/>
@@ -60,7 +60,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Action Name"/>
@@ -71,7 +71,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Action Namespace"/>
@@ -82,7 +82,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Type Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="name" value="typeId"/>
     <property name="label" value="Action Type Id"/>
@@ -93,7 +93,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Description"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="description"/>
     <property name="label" value="Action Description"/>
@@ -104,7 +104,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Rule Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="name" value="ruleId"/>
     <property name="label" value="Rule Id"/>
@@ -115,70 +115,70 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Sequence"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="5"/>
+      <bean parent="Uif-TextControl" p:size="5"/>
     </property>
     <property name="name" value="sequenceNumber"/>
     <property name="label" value="Sequence Number"/>
   </bean>
    
-  <bean id="ActionBo-LookupView" parent="LookupView">
+  <bean id="ActionBo-LookupView" parent="Uif-LookupView">
     <property name="title" value="Action Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ActionBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="description" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="ruleId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="typeId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="description" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="ruleId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="namespace" />
-        <bean parent="InputField" p:propertyName="description" />
-        <bean parent="InputField" p:propertyName="typeId" />
-        <bean parent="InputField" p:propertyName="ruleId" />
-        <bean parent="InputField" p:propertyName="sequenceNumber" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="namespace" />
+        <bean parent="Uif-InputField" p:propertyName="description" />
+        <bean parent="Uif-InputField" p:propertyName="typeId" />
+        <bean parent="Uif-InputField" p:propertyName="ruleId" />
+        <bean parent="Uif-InputField" p:propertyName="sequenceNumber" />
       </list>
     </property>
   </bean>
   
-  <bean id="ActionBo-InquiryView" parent="InquiryView">
+  <bean id="ActionBo-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Action Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-		  <bean parent="GroupSection">
+		  <bean parent="Uif-Disclosure-BoxSection">
 			<property name="title" value="Action" />
 			<property name="items">
 			  <list>
-			    <bean parent="GroupGridBodyOnly">
+			    <bean parent="Uif-GridGroup">
 				  <property name="layoutManager.numberOfColumns" value="2" />
 				  <property name="items">
 					<list>
-						<bean parent="InputField" p:propertyName="id" />
-						<bean parent="InputField" p:propertyName="name" />
-						<bean parent="InputField" p:propertyName="namespace" />
-						<bean parent="InputField" p:propertyName="description" />
-						<bean parent="InputField" p:propertyName="ruleId" />
+						<bean parent="Uif-InputField" p:propertyName="id" />
+						<bean parent="Uif-InputField" p:propertyName="name" />
+						<bean parent="Uif-InputField" p:propertyName="namespace" />
+						<bean parent="Uif-InputField" p:propertyName="description" />
+						<bean parent="Uif-InputField" p:propertyName="ruleId" />
 					</list>
 				  </property>
 			    </bean>
 <!-- 			    
-			    <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="2">
+			    <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="2">
 				  <property name="title" value="Action Attributes" />
 				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionAttributeBo" />
 				  <property name="propertyName" value="attributeBos" />
 				  <property name="layoutManager.renderSequenceField" value="false" />
 				  <property name="items">
 				    <list>
-					  <bean parent="InputField" p:propertyName="attributeDefinition.name" />
-					  <bean parent="InputField" p:propertyName="value" />
+					  <bean parent="Uif-InputField" p:propertyName="attributeDefinition.name" />
+					  <bean parent="Uif-InputField" p:propertyName="value" />
 				    </list>
 				   </property>
 			    </bean>

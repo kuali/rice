@@ -104,9 +104,13 @@ function handlePropositionNodeClick(parentLiNode) {
     if (selectedItemTracker.val() == propositionId) {
         // if this item is already selected, deselect it
         selectedItemTracker.val('');
+        disableTreeButtons(); // disableButtons.js
+        enableAddButton(); // disableButtons.js
+        enableRefreshButton(); // disableButtons.js
     } else {
         selectedItemTracker.val(propositionId);
         markNodeAsSelected(parentLiNode);
+        enableTreeButtons(); // disableButtons.js
     }
 }
 function initRuleTree(componentId){
@@ -146,13 +150,13 @@ function initRuleTree(componentId){
             var selectedItemTracker = getSelectedPropositionInput();
             var selectedItemId = selectedItemTracker.val();
 
-            if (selectedItemId == propositionId) {
+            if ((typeof selectedItemId !== "undefined") && (selectedItemId == propositionId)) {
                 markNodeAsSelected(this.parentNode);
             }
 
             var cutItemTracker = getCutPropositionInput();
             var cutItemId = cutItemTracker.val();
-            if (cutItemId == propositionId) {
+            if ((typeof cutItemId !== "undefined") && (cutItemId == propositionId)) {
                 jq(this.parentNode).addClass('ruleCutSelected');
                 cutItemTracker.val(cutItemId);
             } else {

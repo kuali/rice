@@ -151,6 +151,15 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 			setSequenceNumber(sequenceNumber);
         }
 
+        /**
+         * Create a builder using the given values
+         * @param id
+         * @param propId
+         * @param value
+         * @param parameterType
+         * @param sequenceNumber
+         * @return Builder
+         */
         public static Builder create(String id, String propId, String value, String parameterType, Integer sequenceNumber) {
         	return new Builder(id, propId, value, parameterType, sequenceNumber);
         }
@@ -178,27 +187,44 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 		 */
         public void setId(String id) {
             if (id != null && StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id is blank");
+                throw new IllegalArgumentException("id must not be null or blank");
             }
             this.id = id;
         }
 
+        /**
+         * Sets the value of the propId on this builder to the given value.
+         *
+         * @param propId the propId value to set, must not be null or blank
+         * @throws IllegalArgumentException if the propId is null or blank
+         */
 		public void setPropId(String propId) {
 		    // have to be able to create it with a null propId for chicken/egg reasons.
             if (null != propId && StringUtils.isBlank(propId)) {
-                throw new IllegalArgumentException("propId must be null or non-blank");
+                throw new IllegalArgumentException("propId must be not be null or blank");
             }
 			this.propId = propId;
 		}
 
+        /**
+         * Sets the value of the value on this builder to the given value.
+         *
+         * @param value the value value to set, must not be null or blank
+         * @throws IllegalArgumentException if the value is null or blank
+         */
 		public void setValue(String value) {
-			// TODO:  isBlank  or is null ???
             if (StringUtils.isBlank(value)) {
-                throw new IllegalArgumentException("value is blank");
+                throw new IllegalArgumentException("value must not be null or blank");
             }
 			this.value = value;
 		}
-		
+
+        /**
+         * Sets the value of the parameterType on this builder to the given value.
+         *
+         * @param parameterType the value parameterType to set, must not be null or blank
+         * @throws IllegalArgumentException if the parameterType is null, blank, or invalid
+         */
 		public void setParameterType(String parameterType) {
 			if (StringUtils.isBlank(parameterType)){
 	                throw new IllegalArgumentException("parameter type is null or blank");
@@ -209,14 +235,25 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 			// TODO: check against valid values
 			this.parameterType = parameterType;
 		}
-		
+
+        /**
+         * Sets the value of the sequenceNumber on this builder to the given value.
+         *
+         * @param sequenceNumber the value sequenceNumber to set, must not be null or blank
+         * @throws IllegalArgumentException if the sequenceNumber is null, blank, or invalid
+         */
 		public void setSequenceNumber(Integer sequenceNumber) {
 			if (sequenceNumber == null) {
-                throw new IllegalArgumentException("parameter type is blank");				
+                throw new IllegalArgumentException("sequenceNumber type is blank");
 			}
 			this.sequenceNumber = sequenceNumber;
 		}
-		
+
+        /**
+         * Sets the value of the proposition on this builder to the given value.
+         *
+         * @param proposition the value proposition to set
+         */
 		public void setProposition(PropositionDefinition.Builder proposition) {
 		    if (proposition != null && !StringUtils.isBlank(proposition.getId())) {
 		        setPropId(proposition.getId());
@@ -224,6 +261,11 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 		    this.proposition = proposition;
 		}
 
+        /**
+         * Sets the value of the versionNumber on this builder to the given value.
+         *
+         * @param versionNumber the value versionNumber to set
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

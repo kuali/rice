@@ -39,6 +39,10 @@ public enum ValidationActionType implements Coded {
 
     private final String code;
 
+    /**
+     * Create a ValidaitonAction of the given typeCode
+     * @param typeCode
+     */
     private ValidationActionType(String typeCode) {
         this.code = typeCode;
     }

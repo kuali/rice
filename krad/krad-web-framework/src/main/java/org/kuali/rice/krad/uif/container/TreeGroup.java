@@ -174,7 +174,8 @@ public class TreeGroup extends Group implements DataBinding{
         int childIndex = 0;
         for (Node<Object, String> childDataNode : nodeData.getChildren()) {
             String nextBindingPrefix = bindingPrefix + ".children[" + childIndex + "]";
-            Node<Group, MessageField> childNode = buildTreeNode(childDataNode, nextBindingPrefix, "_node_" + childIndex + ("root".equals(parentNode) ? "_parent_" : "_parent") + parentNode);
+            Node<Group, MessageField> childNode = buildTreeNode(childDataNode, nextBindingPrefix,
+                    "_node_" + childIndex + ("root".equals(parentNode) ? "_parent_" : "_parent") + parentNode);
 
             nodeChildren.add(childNode);
 
@@ -187,7 +188,7 @@ public class TreeGroup extends Group implements DataBinding{
     }
 
     /**
-     * This method gets the NodePrototype to use for the given Node
+     * Gets the NodePrototype to use for the given Node
      */
     private NodePrototype getNodePrototype(Node<Object, String> nodeData) {
         NodePrototype result = null;
@@ -197,16 +198,20 @@ public class TreeGroup extends Group implements DataBinding{
 
             // somewhat lame fallback - to do this right we'd find all entries that are assignable from the data class
             // and then figure out which one is the closest relative
-            if (result == null)
+            if (result == null) {
                 for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
                     if (prototypeEntry.getKey().isAssignableFrom(dataClass)) {
                         result = prototypeEntry.getValue();
                         break;
                     }
                 }
+            }
         }
-        if (result == null)
+
+        if (result == null) {
             result = defaultNodePrototype;
+        }
+
         return result;
     }
 

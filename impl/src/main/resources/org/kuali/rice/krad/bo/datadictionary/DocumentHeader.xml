@@ -48,7 +48,7 @@
       <bean parent="TextControlDefinition" p:size="45"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="45"/>
+      <bean parent="Uif-TextControl" p:size="45"/>
     </property>      
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="documentDescription"/>
@@ -65,7 +65,7 @@
       <bean parent="TextControlDefinition" p:size="12"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="12"/>
+      <bean parent="Uif-TextControl" p:size="12"/>
     </property>      
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="organizationDocumentNumber"/>
@@ -82,7 +82,7 @@
       <bean parent="TextControlDefinition" p:size="16"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="16"/>
+      <bean parent="Uif-TextControl" p:size="16"/>
     </property>     
     <property name="summary" value="Document Number"/>
     <property name="name" value="documentNumber"/>
@@ -116,7 +116,7 @@
       <bean parent="TextareaControlDefinition" p:cols="40" p:rows="3"/>
     </property>
     <property name="controlField">
-      <bean parent="TextAreaControl" p:cols="40" p:rows="3"/>
+      <bean parent="Uif-TextAreaControl" p:cols="40" p:rows="3"/>
     </property>        
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="explanation"/>

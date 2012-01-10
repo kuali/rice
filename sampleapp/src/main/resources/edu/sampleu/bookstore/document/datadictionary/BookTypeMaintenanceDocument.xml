@@ -31,18 +31,18 @@
       </list>
     </property>
   </bean>
-  <bean id="BookType-MaintenanceView" parent="MaintenanceView">
+  <bean id="BookType-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="items">
       <list merge="true">
-        <bean parent="MaintenanceGroupSectionGridLayout">
+        <bean parent="Uif-MaintenanceGridSection">
           <property name="title" value="Add/Edit Book Type"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="typeCode"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="description"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="typeCode"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>

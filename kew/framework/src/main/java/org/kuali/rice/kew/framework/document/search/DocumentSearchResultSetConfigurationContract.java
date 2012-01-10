@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.framework.document.search;
 
-import org.kuali.rice.core.api.uif.AttributeField;
+import org.kuali.rice.core.api.uif.RemotableAttributeFieldContract;
 
 import java.util.List;
 
@@ -69,6 +69,6 @@ public interface DocumentSearchResultSetConfigurationContract {
      * @return a list containing additional attribute fields to define for use when constructing the result set, this
      * method can return a null or empty list if there are no additional attribute fields to define
      */
-    List<? extends AttributeField> getAdditionalAttributeFields();
+    List<? extends RemotableAttributeFieldContract> getAdditionalAttributeFields();
 
 }

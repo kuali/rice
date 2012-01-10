@@ -25,7 +25,7 @@ final class ControlCopy {
         throw new IllegalArgumentException("do not call.");
     }
 
-    public static RemotableAbstractControl.Builder toBuilder(Control c) {
+    public static RemotableAbstractControl.Builder toBuilder(RemotableControlContract c) {
         if (c == null) {
             throw new IllegalArgumentException("c is null");
         }

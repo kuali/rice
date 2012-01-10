@@ -101,6 +101,74 @@ public class DocumentSearchTest extends KEWTestCase {
         assertEquals("for in accounts", savedCriteria.getSaveName());
     }
 
+   @Test public void testDocSearch_maxResults() throws Exception {
+
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setMaxResults(2);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(2, results.getSearchResults().size());
+         }
+
+    @Test public void testDocSearch_maxResultsIsNull() throws Exception {
+
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setMaxResults(null);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+         }
+    @Test public void testDocSearch_maxResultsIsZero() throws Exception {
+
+          String[] docIds = routeTestDocs();
+
+          String principalId = getPrincipalId("bmcgough");
+
+          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+          criteria.setDocumentTypeName("SearchDocType");
+          criteria.setMaxResults(5);
+          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(3, results.getSearchResults().size());
+          criteria.setMaxResults(0);
+          results = docSearchService.lookupDocuments(principalId, criteria.build());
+          assertEquals(0, results.getSearchResults().size());
+         }
+//       @Test public void testDocSearch_startAtIndex() throws Exception {
+//
+//          String[] docIds = routeTestDocs();
+//
+//          String principalId = getPrincipalId("bmcgough");
+//
+//          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+//          criteria.setDocumentTypeName("SearchDocType");
+//          criteria.setMaxResults(5);
+//          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+//          assertEquals(3, results.getSearchResults().size());
+//          criteria.setStartAtIndex(1);
+//          // TODO finish this test
+//          results = docSearchService.lookupDocuments(principalId, criteria.build());
+//          assertEquals(2, results.getSearchResults().size());
+//
+//
+//
+//      }
+
+
+
     /**
      * Tests that performing a search automatically saves the last search criteria
      */

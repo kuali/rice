@@ -20,8 +20,7 @@
     <info>
         <title>Postal Code</title>
     </info>
-    <para>Administration > System > Locations > Postal Code > Postal Code Lookup >
-        PostalCodeMaintenanceDocument</para>
+    <para>Administration > Identity > Locations > Postal Code</para>
     <para>The Postal Code Maintenance document defines the zip code by city and state. When the user
         chooses the <emphasis role="bold">Postal Code</emphasis> option from the <emphasis
             role="bold">Administration</emphasis> menu tab, the system displays the Postal Code
@@ -77,7 +76,8 @@
                     </tr>
                     <tr>
                         <td>Active Indicator</td>
-                        <td>Indicates whether the postal code is active or inactive in the KFS. Remove the check mark to deactivate this postal code.</td>
+                        <td>Indicates whether the postal code is active or inactive. Remove the
+                            check mark to deactivate this postal code.</td>
                     </tr>
                 </tbody>
             </table>

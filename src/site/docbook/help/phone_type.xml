@@ -20,7 +20,7 @@
     <info>
         <title>Phone Type</title>
     </info>
-    <para>Administration > System > Reference > Phone Type > Phone Type Lookup </para>
+    <para>Administration > Identity > Reference > Phone Type</para>
     <para>The Phone Type Lookup displays codes that identify various categories of phone numbers on
         the Person document.</para>
     <note><para> Phone types cannot be edited via the interface. Technical assistance is required to add
@@ -46,12 +46,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td> Phone Type Code </td>
-                        <td> Display-only. The code that identifies the type of phone number. </td>
+                        <td>Phone Type Code </td>
+                        <td>Display-only. The code that identifies the type of phone number. </td>
                     </tr>
                     <tr>
-                        <td> Phone Type Name </td>
-                        <td> Display-only. The descriptive name for this type of phone number. </td>
+                        <td>Phone Type Name </td>
+                        <td>Display-only. The descriptive name for this type of phone number. </td>
                     </tr>
                     <tr>
                         <td>Display Sort Code</td>

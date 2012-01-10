@@ -135,7 +135,7 @@ public class KualiForm extends PojoFormBase {
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
     	if ( ENABLE_FIELD_LEVEL_HELP_IND == null ) {
     		ENABLE_FIELD_LEVEL_HELP_IND = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                    KRADConstants.KRAD_NAMESPACE,
+                    KRADConstants.KNS_NAMESPACE,
                     KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.ENABLE_FIELD_LEVEL_HELP_IND, Boolean.FALSE);
     	}
     	setFieldLevelHelpEnabled( ENABLE_FIELD_LEVEL_HELP_IND);

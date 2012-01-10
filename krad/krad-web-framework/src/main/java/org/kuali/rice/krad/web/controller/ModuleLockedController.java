@@ -50,7 +50,7 @@ public class ModuleLockedController {
         
         if(StringUtils.isBlank(lockoutMessage)) {
             String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
-            lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
+            lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
         }
         modelAndView.addObject(MODULE_LOCKED_MESSAGE, lockoutMessage);
         return modelAndView;

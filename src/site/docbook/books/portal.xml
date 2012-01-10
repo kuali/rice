@@ -124,7 +124,7 @@
     <sect1>
         <title>Source Repositories</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice/tags/${project.version}">rice</link></para></listitem>
+            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}">rice</link></para></listitem>
             <listitem><para><link xlink:href="https://test.kuali.org/svn/rice-cfg-dbs/tags/${project.version}">rice-cfg-dbs</link></para></listitem>
             <listitem><para><link xlink:href="https://test.kuali.org/svn/rice-cfg-dbs/rice-client-db/tags/${project.version}">rice-client-db</link></para></listitem>
             <listitem><para><link xlink:href="https://test.kuali.org/svn/rice_load_tests/branches/rice-release-1-0-0-br">rice-load-tests</link></para></listitem>

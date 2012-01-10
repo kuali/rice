@@ -30,6 +30,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 /**
  * abstract base model object for KRMS Attribute immutables. 
  *
+ * @see BaseAttributeContract
  */
 @XmlTransient
 public abstract class BaseAttribute extends AbstractDataTransferObject implements BaseAttributeContract {
@@ -127,8 +128,8 @@ public abstract class BaseAttribute extends AbstractDataTransferObject implement
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be null or blank
-		 * @throws IllegalArgumentException if the id is null or blank
+		 * @param id the id value to set, may be null if attribute has not yet
+         * been stored in the repository
 		 */
         public void setId(String id) {
 //            if (StringUtils.isBlank(id)) {
@@ -137,17 +138,30 @@ public abstract class BaseAttribute extends AbstractDataTransferObject implement
             this.id = id;
         }
 
+        /**
+         * Sets the attibuteDefinitionId value.
+         * @param attributeDefinitionId; must not be null or blank
+         * @throws IllegalArgumentException if the id is null or blank
+         */
 		public void setAttributeDefinitionId(String attributeDefinitionId) {
             if (StringUtils.isBlank(attributeDefinitionId)) {
                 throw new IllegalArgumentException("the attribute definition id is blank");
             }
 			this.attributeDefinitionId = attributeDefinitionId;
 		}
-		
+
+        /**
+         * Sets the value of the attribute
+         * @param value a String representing the value of the attribute
+         */
 		public void setValue(String value) {
 			this.value = value;
 		}
-		
+
+        /**
+         * Sets the attributeDefinition object related to the attribute.
+         * @param attributeDefinition the attribute definition
+         */
 		public void setAttributeDefinition(KrmsAttributeDefinition.Builder attributeDefinition) {
 			this.attributeDefinition = attributeDefinition;
 		}

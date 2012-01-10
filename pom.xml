@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.0.14</version>
+    <version>1.0.26</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -58,7 +58,7 @@
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
-    <mysql.jdbc.version>5.1.17</mysql.jdbc.version>
+    <mysql.jdbc.version>5.1.18</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
     <maven.skip.packaging>false</maven.skip.packaging>
     <maven.failsafe.forkmode>once</maven.failsafe.forkmode>
@@ -80,57 +80,56 @@
     <bcprov.version>1.46</bcprov.version>
     <cas-client-core.version>3.2.1</cas-client-core.version>
     <cglib.version>2.2.2</cglib.version>
+    <aspectj.version>1.6.8</aspectj.version>
     <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
-    <commons-codec.version>1.5</commons-codec.version>
+    <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <commons-fileupload.version>1.2.2</commons-fileupload.version>
     <commons-httpclient.version>3.1</commons-httpclient.version>
-    <commons-io.version>2.0.1</commons-io.version>
+    <commons-io.version>2.1</commons-io.version>
     <commons-lang.version>2.6</commons-lang.version>
-    <commons-pool.version>1.5.6</commons-pool.version>
+    <commons-pool.version>1.5.7</commons-pool.version>
     <commons-validator.version>1.3.1</commons-validator.version>
     <connector-api.version>1.5</connector-api.version>
-    <cxf.version>2.3.7</cxf.version>
+    <cxf.version>2.3.8</cxf.version>
     <db-ojb.version>1.0.4-patch7</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
-    <ehcache.version>2.4.6</ehcache.version>
+    <ehcache.version>2.4.7</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
-    <groovy.version>1.8.1</groovy.version>
-    <guava.version>r09</guava.version>
-    <hibernate.version>3.6.7.Final</hibernate.version>
+    <groovy.version>1.8.5</groovy.version>
+    <guava.version>11.0</guava.version>
+    <hibernate.version>3.6.9.Final</hibernate.version>
     <mail.version>1.4.4</mail.version>
-    <jackson.version>1.8.5</jackson.version>
+    <jackson.version>1.8.7</jackson.version>
     <javassist.version>3.15.0-GA</javassist.version>
-    <jaxen.version>1.1.1</jaxen.version>
-    <!-- 1.1.1 is not in maven central repo -->
+    <jaxen.version>1.1.3</jaxen.version>
     <jdom.version>1.1</jdom.version>
     <jetty.version>7.5.1.v20110908</jetty.version>
     <joda-time.version>2.0</joda-time.version>
-    <jotm.version>2.1.9</jotm.version>
+    <jotm.version>2.1.10</jotm.version>
     <bitronix.version>2.1.2</bitronix.version>
     <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
     <jstl.version>1.2</jstl.version>
     <jta.version>1.1</jta.version>
-    <junit.version>4.9</junit.version>
+    <junit.version>4.10</junit.version>
     <log4j.version>1.2.16</log4j.version>
     <persistence.version>1.0.1.Final</persistence.version>
-    <!--
-      http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
-      <quartz.version>2.0.2</quartz.version>
-    -->
+    <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
+      Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>1.8.4</quartz.version>
-    <selenium-java.version>2.6.0</selenium-java.version>
+    <selenium-java.version>2.16.1</selenium-java.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
-    <slf4j.version>1.6.2</slf4j.version>
+    <slf4j.version>1.6.4</slf4j.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.1.0.RELEASE</spring.version>
-    <spring.security.version>3.0.7.RELEASE</spring.security.version>
+    <spring.security.version>3.1.0.RELEASE</spring.security.version>
+    <spring.security-cas-client.version>3.0.7.RELEASE</spring.security-cas-client.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.6</subethasmtp.version>
     <tiles.version>2.2.2</tiles.version>
@@ -211,6 +210,14 @@
       </properties>
       <build>
         <plugins>
+
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>graph-maven-plugin</artifactId>
+            <version>1.1.5-SNAPSHOT</version>
+          </plugin>
+
+
           <plugin>
             <groupId>com.mycila.maven-license-plugin</groupId>
             <artifactId>maven-license-plugin</artifactId>
@@ -245,6 +252,7 @@
                 <exclude>**/*.tmp</exclude>
                 <exclude>**/ChangeLog</exclude>
                 <exclude>**/org.apache.cxf.Logger</exclude>
+                <exclude>**/jquery*.js</exclude>
               </excludes>
             </configuration>
           </plugin>
@@ -481,10 +489,10 @@
                       <exclude>javax.xml.parsers</exclude>
                       <exclude>com.sun.xml.parsers</exclude>
                       <exclude>org.apace.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.4
-                                            </exclude>
+                      </exclude>
                       <exclude>
                         org.apache.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.3
-                                            </exclude>
+                      </exclude>
 
                       <!-- saaj apis - in jdk 6 -->
                       <exclude>javax.xml.soap</exclude>
@@ -929,11 +937,11 @@
           </execution>
         </executions>
         <dependencies>
-	    <dependency>
-        	<groupId>org.apache.ant</groupId>
-        	<artifactId>ant-launcher</artifactId>
-        	<version>1.8.1</version>
-            </dependency>
+          <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-launcher</artifactId>
+            <version>1.8.1</version>
+          </dependency>
         </dependencies>
       </plugin>
 
@@ -1019,6 +1027,17 @@
         <!-- using nodep to resolve a problem with the asm dependency -->
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjrt</artifactId>
+        <version>${aspectj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>${aspectj.version}</version>
       </dependency>
 
       <dependency>
@@ -1798,7 +1817,7 @@
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-cas-client</artifactId>
-        <version>${spring.security.version}</version>
+        <version>${spring.security-cas-client.version}</version>
         <exclusions>
           <exclusion>
             <groupId>commons-logging</groupId>

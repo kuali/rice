@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.impl;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupContract;
@@ -343,5 +344,21 @@ public class KimModuleService extends ModuleServiceBase {
 		}
 		return super.getInquiryUrl(inquiryBusinessObjectClass);
 	}
+
+    @Override
+    public List<List<String>> listAlternatePrimaryKeyFieldNames(
+            Class businessObjectInterfaceClass) {
+		if ( Person.class.isAssignableFrom( businessObjectInterfaceClass ) ) {
+            ArrayList<List<String>> retList = new ArrayList<List<String>>();
+            ArrayList<String> keyList = new ArrayList<String>();
+
+            keyList.add("principalName");
+            retList.add(keyList);
+            return retList;
+        }else{
+            return null;
+        }
+
+    }
 
 }

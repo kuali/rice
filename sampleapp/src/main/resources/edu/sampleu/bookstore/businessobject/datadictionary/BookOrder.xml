@@ -60,10 +60,10 @@
 <!--      <bean parent="SelectControlDefinition" p:dataObjectClass="edu.sampleu.bookstore.bo.Book" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="title"/>-->
 <!--    </property>-->
 <!--     <property name="controlField">-->
-<!--      <bean parent="TextControl" p:size="10"/>-->
+<!--      <bean parent="Uif-TextControl" p:size="10"/>-->
 <!--    </property>-->
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="optionsFinder">
                 <bean class="edu.sampleu.bookstore.document.keyvalue.BookKeyValues" />
@@ -79,7 +79,7 @@
       <bean parent="NumericPatternConstraint"/>
     </property>
      <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
     <property name="name" value="quantity"/>
     <property name="label" value="Quantity"/>
@@ -99,7 +99,7 @@
       <bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="summary" value="Unit Price of the Book."/>
     <property name="description" value="Unit Price of the Book."/>
@@ -116,7 +116,7 @@
       <bean parent="FloatingPointPatternConstraint" p:allowNegative="false"/>
     </property>
      <property name="controlField">
-      <bean parent="TextControl"  p:size="10"/>
+      <bean parent="Uif-TextControl"  p:size="10"/>
     </property>
     <property name="summary" value="Discount on the Book."/>
     <property name="description" value="Discount on the Book."/>
@@ -136,7 +136,7 @@
       <bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="summary" value="Total Price of the Book."/>
     <property name="description" value="Total Price of the Book."/>

@@ -111,6 +111,26 @@ public interface ViewAuthorizer {
     public Set<String> getEditModes(View view, ViewModel model, Person user, Set<String> editModes);
 
     /**
+     * Determines if the given user is authorized to open the given view
+     *
+     * @param view - view instance to check authorization for
+     * @param model - object containing the view data
+     * @param user - user to authorize
+     * @return boolean true if the user is authorized to open the view, false otherwise
+     */
+    public boolean canOpenView(View view, ViewModel model, Person user);
+
+    /**
+     * Determines if the given user is authorized to edit the given view
+     *
+     * @param view - view instance to check authorization for
+     * @param model - object containing the view data
+     * @param user - user to authorize
+     * @return boolean true if the user is authorized to edit the view, false otherwise
+     */
+    public boolean canEditView(View view, ViewModel model, Person user);
+
+    /**
      * Checks whether the mask authorization exists for the given property and if so whether the given user has the
      * ability to unmask the value
      *
@@ -150,7 +170,7 @@ public interface ViewAuthorizer {
 
     public boolean canViewWidget(View view, ViewModel model, Widget widget, String widgetId, Person user);
 
-    public boolean canTakeAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
             String actionId, Person user);
 
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
@@ -165,7 +185,7 @@ public interface ViewAuthorizer {
     public boolean canViewLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName, Person user);
 
-    public boolean canTakeLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
+    public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId,
             Person user);
 

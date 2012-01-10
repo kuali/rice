@@ -66,7 +66,14 @@ public class IncompatibleTypeException extends RiceRuntimeException {
 		this.value = value;
 		this.validTypes = validTypes;
 	}
-	
+
+    /**
+     * construct a message using the given values
+     * @param additionalMessage the start of the constructed message
+     * @param value the Object that wasn't validly typed
+     * @param validTypes valid types the Type should have been one of.
+     * @return the additionMessaage, valid types, and the class that did not have a valid type.
+     */
 	private static String constructMessage(String additionalMessage, Object value, Class<?>... validTypes) {
 		StringBuilder message = new StringBuilder();
 		if (additionalMessage != null) {

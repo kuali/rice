@@ -27,7 +27,7 @@ public interface TermResolutionEngine {
 	 * Resolves a given term into a fact
 	 * @param term the {@link Term} to resolve
 	 * @return the fact value for the given {@link Term}
-	 * @throws TermResolutionException if the given {@link Term} can't be resolved
+	 * @throws {@link TermResolutionException} if the given {@link Term} can't be resolved
 	 */
 	<T> T resolveTerm(Term term) throws TermResolutionException;
 	

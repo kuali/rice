@@ -26,23 +26,12 @@
         <property name="id" value="Travel-testView2"/>
         <property name="title" value="Test View 2"/>
         <property name="entryPageId" value="page1"/>
-        <property name="additionalCssFiles" ref="ks-css"/>
-        <property name="viewLabelFieldPropertyName" value="form.field1"/>
-        <property name="errorsField">
-            <bean parent="ErrorsField_View">
-                <property name="additionalKeysToMatch">
-                    <list merge="true">
-                        <value>TEST_*</value>
-                    </list>
-                </property>
-            </bean>
-        </property>
         <property name="navigation">
             <ref bean="testViewMenu"/>
         </property>
         <property name="items">
             <list>
-                <bean parent="Page" p:id="page1" p:title="Test Course">
+                <bean parent="Uif-Page" p:id="page1" p:title="Test Course">
                     <property name="items">
                         <list>
                             <ref bean="testValidationSection1"/>
@@ -51,7 +40,7 @@
                         </list>
                     </property>
                 </bean>
-                <bean parent="Page" p:id="page2" p:title="Test Course">
+                <bean parent="Uif-Page" p:id="page2" p:title="Test Course">
                     <property name="items">
                         <list>
                             <ref bean="test2Section6"/>
@@ -60,14 +49,14 @@
                         </list>
                     </property>
                 </bean>
-                <bean parent="Page" p:id="page3" p:title="Test Course">
+                <bean parent="Uif-Page" p:id="page3" p:title="Test Course">
                     <property name="items">
                         <list>
                             <ref bean="test2Section4"/>
                         </list>
                     </property>
                 </bean>
-                <bean parent="Page" p:id="page4" p:title="Test Course">
+                <bean parent="Uif-Page" p:id="page4" p:title="Test Course">
                     <property name="items">
                         <list>
                             <ref bean="test2Section3"/>
@@ -78,52 +67,46 @@
         </property>
     </bean>
 
-    <bean id="testViewMenu" parent="NavigationGroupMenu">
+    <bean id="testViewMenu" parent="Uif-MenuNavigationGroup">
         <property name="items">
             <list>
-                <bean parent="HeaderTwo" p:headerText="Navigation"/>
-                <bean parent="NavigationActionLinkField" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
-                <bean parent="NavigationActionLinkField" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
-                <bean parent="NavigationActionLinkField" p:navigateToPageId="page3" p:actionLabel="Page 3"/>
-                <bean parent="NavigationActionLinkField" p:navigateToPageId="page4" p:actionLabel="Page 4"/>
+                <bean parent="Uif-HeaderField-Two" p:headerText="Navigation"/>
+                <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page1" p:actionLabel="Page 1"/>
+                <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page2" p:actionLabel="Page 2"/>
+                <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page3" p:actionLabel="Page 3"/>
+                <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page4" p:actionLabel="Page 4"/>
             </list>
-        </property>
-        <property name="componentOptions">
-            <map>
-                <entry key="animate" value="true"/>
-                <entry key="slideout" value="true"/>
-            </map>
         </property>
     </bean>
 
-    <bean id="testHeader" parent="GroupSection">
+    <bean id="testHeader" parent="Uif-Disclosure-BoxSection">
         <property name="title" value="Testing header styles"/>
         <property name="items">
             <list>
-                <bean parent="Header" p:headerText="Header Level One"/>
-                <bean parent="HeaderTwo" p:headerText="Header Level Two"/>
-                <bean parent="HeaderThree" p:headerText="Header Level Three"/>
-                <bean parent="HeaderFour" p:headerText="Header Level Four"/>
-                <bean parent="HeaderFour" p:headerText="Header Level Four (underline)" p:styleClasses="foo"
+                <bean parent="Uif-HeaderField-One" p:headerText="Header Level One"/>
+                <bean parent="Uif-HeaderField-Two" p:headerText="Header Level Two"/>
+                <bean parent="Uif-HeaderField-Three" p:headerText="Header Level Three"/>
+                <bean parent="Uif-HeaderField-Four" p:headerText="Header Level Four"/>
+                <bean parent="Uif-HeaderField-Four" p:headerText="Header Level Four (underline)" p:styleClasses="foo"
                       p:headerStyleClasses="fl-font-arial fl-font-size-110 section-subhead"/>
             </list>
         </property>
     </bean>
 
-    <bean id="testButtons" parent="GroupSection" p:layoutManager.orientation="VERTICAL">
+    <bean id="testButtons" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Testing button styles"/>
         <property name="styleClasses" value="fl-theme-ks"/>
         <property name="items">
             <list>
-                <bean parent="ActionField" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="button-primary ui-corner-all"/>
-                <bean parent="ActionField" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1 ui-corner-all"/>
-                <bean parent="ActionLinkField" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1 ui-corner-all"/>
-                <bean parent="ActionLinkField" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="fg-button  button-secondary2 ui-corner-all"/>
-                <bean parent="ActionLinkField" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="foo"/>
+                <bean parent="Uif-PrimaryActionButton" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="button-primary ui-corner-all"/>
+                <bean parent="Uif-PrimaryActionButton" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1 ui-corner-all"/>
+                <bean parent="Uif-ActionLink" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="fg-button  button-secondary1 ui-corner-all"/>
+                <bean parent="Uif-ActionLink" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="fg-button  button-secondary2 ui-corner-all"/>
+                <bean parent="Uif-ActionLink" p:actionLabel="Save and Continue" p:methodToCall="foo" p:styleClasses="foo"/>
             </list>
         </property>
     </bean>
-    <bean id="tabTest" parent="TabGroup" p:progressiveRenderViaAJAX="true" p:progressiveRender="field1 matches '^[yYnN]$'">
+    <bean id="tabTest" parent="Uif-TabSection" p:progressiveRenderViaAJAX="true" p:progressiveRender="field1 matches '^[yYnN]$'">
         <property name="title" value="Tab Test"/>
         <property name="items">
             <list>
@@ -134,15 +117,15 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection1" parent="Group">
+    <bean id="testValidationSection1" parent="Uif-BoxSection">
         <property name="id" value="testValidationSection1"/>
         <property name="title" value="Test Section 1"/>
         <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
-                <bean parent="ActionLinkField_JumpToBottom"/>
-                <bean id="ActionLinkField_JumpToField3" parent="ActionLinkField"
+                <bean parent="Uif-JumpToBottomLink"/>
+                <bean id="ActionLinkField_JumpToField3" parent="Uif-ActionLink"
                       p:clientSideJs="jumpToElementByName('field3');"
                       p:actionLabel="Jump to Field3" p:id="goto_field3"/>
                 <ref bean="testValidationGroup1"/>
@@ -150,17 +133,17 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <bean id="testValidationSection2" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
         <property name="title" value="Test Section 2"/>
         <property name="instructionalText" value="Horizontal Layout test"/>
         <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
-                <bean parent="InputField_Form" p:label="Field 1" p:propertyName="hField1" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 1" p:propertyName="hField1" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field1"/>
                     </property>
                     <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
                     <property name="fieldLookup.fieldConversions">
@@ -169,18 +152,18 @@
                         </map>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:label="Field 2" p:propertyName="hField2" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 2" p:propertyName="hField2" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
                     <property name="control">
-                        <bean parent="TextAreaControl" p:textExpand="true" p:rows="5" p:cols="40"
+                        <bean parent="Uif-TextAreaControl" p:textExpand="true" p:rows="5" p:cols="40"
                               p:watermarkText="Field 2"/>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:label="Field 3" p:propertyName="hField3" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 3" p:propertyName="hField3" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:instructionalText="Stuff stuff stuff"
                       p:constraintText="Test out the text popout" p:labelField.renderColon="false" p:required="true">
                     <property name="control">
-                        <bean parent="TextAreaControl" p:textExpand="true" p:rows="5" p:cols="40"
+                        <bean parent="Uif-TextAreaControl" p:textExpand="true" p:rows="5" p:cols="40"
                               p:watermarkText="Field 3"/>
                     </property>
                 </bean>
@@ -188,50 +171,50 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection4" parent="Group" p:layoutManager.orientation="VERTICAL">
+    <bean id="testValidationSection4" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Test Section 3"/>
         <property name="instructionalText" value="Testing icons, highlighting off, allowMessageRepeat off"/>
         <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="errorsField">
-            <bean parent="ErrorsField_Group">
+            <bean parent="Uif-GroupValidationMessages">
                 <property name="displayMessages" value="true"/>
                 <property name="allowMessageRepeat" value="false"/>
             </bean>
         </property>
         <property name="items">
             <list>
-                <bean parent="InputField_Form" p:label="Field 1" p:propertyName="vField4" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 1" p:propertyName="vField4" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field1"/>
                     </property>
                     <property name="errorsField">
-                        <bean parent="ErrorsField">
+                        <bean parent="Uif-FieldValidationMessages">
                             <property name="highlightOnError" value="false"/>
                             <property name="displayFieldErrorIcon" value="true"/>
                         </bean>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:label="Field 2" p:propertyName="vField5" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 2" p:propertyName="vField5" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field2"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field2"/>
                     </property>
                     <property name="errorsField">
-                        <bean parent="ErrorsField">
+                        <bean parent="Uif-FieldValidationMessages">
                             <property name="highlightOnError" value="false"/>
                             <property name="displayFieldErrorIcon" value="true"/>
                         </bean>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:label="Field 3" p:propertyName="vField6" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 3" p:propertyName="vField6" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field3"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field3"/>
                     </property>
                     <property name="errorsField">
-                        <bean parent="ErrorsField">
+                        <bean parent="Uif-FieldValidationMessages">
                             <property name="highlightOnError" value="false"/>
                             <property name="displayFieldErrorIcon" value="true"/>
                         </bean>
@@ -241,40 +224,40 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection3" parent="Group" p:layoutManager.orientation="VERTICAL">
+    <bean id="testValidationSection3" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Test Section 3"/>
         <property name="instructionalText" value="Vertical layout test"/>
         <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
-                <bean parent="InputField_Form" p:label="Field 1" p:propertyName="vField1" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 1" p:propertyName="vField1" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
                       p:constraintText="Only alphanumeric, underscore, period allowed">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field1"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="AlphaNumericPatternConstraint" p:allowUnderscore="true" p:allowPeriod="true"/>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:label="Field 2" p:propertyName="vField2" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 2" p:propertyName="vField2" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field2"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field2"/>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:label="Field 3" p:propertyName="vField3" p:labelPlacement="TOP"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:label="Field 3" p:propertyName="vField3" p:labelPlacement="TOP"
                       p:labelField.styleClasses="labelTop" p:labelField.renderColon="false" p:required="true">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field3"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field3"/>
                     </property>
                 </bean>
             </list>
         </property>
     </bean>
 
-    <bean id="testValidationGroup1" parent="GroupGridLayout">
+    <bean id="testValidationGroup1" parent="Uif-GridSection">
         <property name="id" value="testValidationGroup1"/>
         <property name="title" value="Validation Test Group 1"/>
         <property name="instructionalText" value="Constraint text will tell you what is being tested"/>
@@ -283,39 +266,39 @@
         <property name="items">
             <list>
 
-                <bean parent="InputField_Form" p:propertyName="field1" p:label="Field 1" p:maxLength="30"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field1" p:label="Field 1" p:maxLength="30"
                       p:minLength="4"
                       p:instructionalText="This title is used for identifying the proposal through the apporval process."
                       p:constraintText="Alphanumeric only, Must be 4-30 chars">
                     <property name="control">
-                        <bean parent="TextControl" p:size="30" p:watermarkText="Field1"/>
+                        <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Field1"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="AlphaNumericPatternConstraint"/>
                     </property>
                 </bean>
 
-                <bean parent="InputField_Form" p:propertyName="field2" p:label="Pet Type" p:required="true"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field2" p:label="Pet Type" p:required="true"
                       p:constraintText="Required">
                     <property name="control">
-                        <bean parent="RadioGroupControl">
+                        <bean parent="Uif-VerticalRadioControl">
                             <property name="options">
                                 <list>
-                                    <bean parent="KeyLabelPair" p:key="cat_pet" p:value="Cat"/>
-                                    <bean parent="KeyLabelPair" p:key="dog_pet" p:value="Dog"/>
-                                    <bean parent="KeyLabelPair" p:key="lizard_pet" p:value="Lizard"/>
-                                    <bean parent="KeyLabelPair" p:key="server_error" p:value="Cause Server Errors"/>
+                                    <bean parent="Uif-KeyLabelPair" p:key="cat_pet" p:value="Cat"/>
+                                    <bean parent="Uif-KeyLabelPair" p:key="dog_pet" p:value="Dog"/>
+                                    <bean parent="Uif-KeyLabelPair" p:key="lizard_pet" p:value="Lizard"/>
+                                    <bean parent="Uif-KeyLabelPair" p:key="server_error" p:value="Cause Server Errors"/>
                                 </list>
                             </property>
                         </bean>
                     </property>
 
                 </bean>
-                <bean parent="InputField_Form" id="id3" p:propertyName="field3"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" id="id3" p:propertyName="field3"
                       p:progressiveRender="field2 eq 'cat_pet'" p:label="Whisker Length (in)" p:maxLength="3"
                       p:constraintText="Required when cat is selected (also adds exclusive min 1 and max 50, Digits only">
                     <property name="control">
-                        <bean parent="TextControl" p:size="3" p:watermarkText="#"/>
+                        <bean parent="Uif-TextControl" p:size="3" p:watermarkText="#"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="NumericPatternConstraint"/>
@@ -340,11 +323,11 @@
                         </bean>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" id="id4" p:propertyName="field4" p:progressiveRenderViaAJAX="true"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" id="id4" p:propertyName="field4" p:progressiveRenderViaAJAX="true"
                       p:progressiveRender="field2 eq 'dog_pet'" p:label="Breed" p:maxLength="10"
                       p:constraintText="Required when dog is selected, only letters">
                     <property name="control">
-                        <bean parent="TextControl" p:size="8" p:watermarkText="Beagle"/>
+                        <bean parent="Uif-TextControl" p:size="8" p:watermarkText="Beagle"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="AlphaPatternConstraint"/>
@@ -366,10 +349,10 @@
                         </bean>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="travelAccount4.name" p:label="Weight"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="travelAccount4.name" p:label="Weight"
                       p:maxLength="10" p:inclusiveMax="500" p:constraintText="Only numbers, max value 500">
                     <property name="control">
-                        <bean parent="TextControl" p:size="4" p:watermarkText="25"/>
+                        <bean parent="Uif-TextControl" p:size="4" p:watermarkText="25"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="FloatingPointPatternConstraint"/>
@@ -380,10 +363,10 @@
                         </list>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="travelAccount4.subAccountName" p:label="Units"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="travelAccount4.subAccountName" p:label="Units"
                       p:constraintText="Required when weight is filled out AND Units requires weight is filled out">
                     <property name="control">
-                        <bean parent="TextControl" p:size="4" p:watermarkText="lbs"/>
+                        <bean parent="Uif-TextControl" p:size="4" p:watermarkText="lbs"/>
                     </property>
                     <property name="dependencyConstraints">
                         <list>
@@ -391,30 +374,30 @@
                         </list>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field15" p:label="Address 1" p:maxLength="40">
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field15" p:label="Address 1" p:maxLength="40">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field16" p:label="City" p:maxLength="20">
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field16" p:label="City" p:maxLength="20">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field17" p:label="State" p:minLength="2"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field17" p:label="State" p:minLength="2"
                       p:maxLength="2" p:constraintText="Must be 2 letters">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="AlphaPatternConstraint"/>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field18" p:label="Zip" p:minLength="5"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field18" p:label="Zip" p:minLength="5"
                       p:maxLength="5"
                       p:constraintText="Must be valid zip only, This field requires that Address 1, City, and State MUST OCCUR before it can be filled out">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="ZipcodePatternConstraint"/>
@@ -435,10 +418,10 @@
                         </list>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field19" p:label="Hunting Dog?" p:maxLength="1"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field19" p:label="Hunting Dog?" p:maxLength="1"
                       p:constraintText="Custom Valid characters test: Accepts only y or n. &lt;br&gt; Nested case constraint test: if pet is dog AND breed is beagle this field is Required">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                     <property name="validCharactersConstraint">
                         <bean parent="ValidCharactersConstraint" p:labelKey="yOrN" p:value="^[ynYN]$"/>
@@ -471,10 +454,10 @@
                         </bean>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field34" p:label="Whisker Color"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field34" p:label="Whisker Color"
                       p:constraintText="Nested prereq in case test: When pet is cat, this field requires that whisker length be filled out &lt;br&gt; Multiple when constraints in case test: in addition when pet is cat, this field is required">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
@@ -498,10 +481,10 @@
                         </bean>
                     </property>
                 </bean>
-                <bean parent="InputField_Form" p:propertyName="field35" p:label="Vet City"
+                <bean parent="Uif-InputField" p:bindingInfo.bindToForm="true" p:propertyName="field35" p:label="Vet City"
                       p:constraintText="Multiple values on when: case applies when dog or cat is selected &lt;br&gt;Nested mustOccurs in caseConstraint test: When the case applies, this field requires that city and state OR zip be filled out first before it can be filled out">
                     <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="Uif-TextControl"/>
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
@@ -549,7 +532,7 @@
                         </bean>
                     </property>
                 </bean>
-                <bean parent="ActionLinkField_JumpToTop"/>
+                <bean parent="Uif-JumpToTopLink"/>
             </list>
         </property>
     </bean>
@@ -559,7 +542,7 @@
         <property name="styleClasses" value="group_header"/>
     </bean>
 
-    <bean id="test2Section6" parent="Group">
+    <bean id="test2Section6" parent="Uif-BoxSection">
         <property name="title" value="Test Collections"/>
         <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>

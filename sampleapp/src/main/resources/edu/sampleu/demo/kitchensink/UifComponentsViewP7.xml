@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="collection1" parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="4">
+  <bean id="collection1" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
      <property name="title" value="Collection Group 1 - CollectionGroupTableLayout"/>
      <property name="instructionalText"
                value="This is a table based layout of a collection - CollectionGroupTableLayout"/>
@@ -31,15 +31,15 @@
      <property name="layoutManager.richTable.render" value="false"/>
      <property name="items">
        <list>
-         <bean parent="InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-         <bean parent="InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
-         <bean parent="InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-         <bean parent="InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
        </list>
      </property>
    </bean>
 
-   <bean id="collection2" parent="CollectionGroupSectionTableLayout"	p:layoutManager.numberOfColumns="4">
+   <bean id="collection2" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
      <property name="title"
        value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
      <property name="instructionalText"
@@ -54,24 +54,24 @@
      <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
      <property name="items">
        <list>
-         <bean parent="InputField" p:label="Field 1" p:propertyName="field1"
+         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 2" p:propertyName="field2"
+         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 3" p:propertyName="field3"
+         <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 4" p:propertyName="field4"
+         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
            p:required="true" />
        </list>
      </property>
      <property name="filters">
        <list>
-         <bean parent="ELCollectionFilter" p:expression="#line.field1 ne '1'"/>
+         <bean parent="Uif-ConditionalCollectionFilter" p:expression="#line.field1 ne '1'"/>
        </list>
      </property>
    </bean>
 
-   <bean id="collection3" parent="CollectionGroupSection">
+   <bean id="collection3" parent="Uif-Disclosure-StackedCollectionSection">
      <property name="title" value="Collection Group 3 - Stacked" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
@@ -82,19 +82,19 @@
      <property name="layoutManager.summaryFields" value="field1" />
      <property name="items">
        <list>
-         <bean parent="InputField" p:label="Field 1" p:propertyName="field1"
+         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 2" p:propertyName="field2"
+         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 3" p:propertyName="field3"
+         <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 4" p:propertyName="field4"
+         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
            p:required="true" />
        </list>
      </property>
    </bean>
 
-   <bean id="collection4" parent="CollectionGroupSection">
+   <bean id="collection4" parent="Uif-Disclosure-StackedCollectionSection">
      <property name="title"
        value="Collection Group 4 - Stacked Collection with a Table subcollection" />
      <property name="instructionalText"
@@ -105,13 +105,13 @@
      <property name="layoutManager.summaryTitle" value="Line Summary '@{#line.field1}' With Expression" />
      <property name="items">
        <list>
-         <bean parent="InputField" p:propertyName="field1" p:label="Field 1"
+         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field2" p:label="Field 2"
+         <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field3" p:label="Field 3"
+         <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field4" p:label="Field 4"
+         <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
            p:required="true" />
        </list>
      </property>
@@ -122,7 +122,7 @@
      </property>
    </bean>
 
-   <bean id="subCollection1" parent="CollectionGroupTableLayout"
+   <bean id="subCollection1" parent="Uif-TableSubCollection-WithinSection"
      p:layoutManager.numberOfColumns="4">
      <property name="title" value="SubCollection" />
      <property name="instructionalText"
@@ -134,19 +134,19 @@
      <property name="layoutManager.richTable.render" value="true" />
      <property name="items">
        <list>
-         <bean parent="InputField" p:propertyName="field1" p:label="SubField 1"
+         <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field2" p:label="SubField 2"
+         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field3" p:label="SubField 3"
+         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field4" p:label="SubField 4"
+         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
            p:required="true" />
        </list>
      </property>
    </bean>
 
-   <bean id="collection5" parent="CollectionGroupSection">
+   <bean id="collection5" parent="Uif-Disclosure-StackedCollectionSection">
      <property name="title"
        value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
      <property name="instructionalText"
@@ -158,13 +158,13 @@
      <property name="layoutManager.summaryFields" value="field1" />
      <property name="items">
        <list>
-         <bean parent="InputField" p:propertyName="field1" p:label="Field 1"
+         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field2" p:label="Field 2"
+         <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field3" p:label="Field 3"
+         <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field4" p:label="Field 4"
+         <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
            p:required="true" />
        </list>
      </property>
@@ -175,7 +175,7 @@
      </property>
    </bean>
 
-   <bean id="subCollection2" parent="CollectionGroup">
+   <bean id="subCollection2" parent="Uif-StackedSubCollection-WithinSection">
      <property name="title" value="SubCollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
@@ -187,20 +187,20 @@
      <property name="layoutManager.summaryFields" value="field1" />
      <property name="items">
        <list>
-         <bean parent="InputField" p:propertyName="field1" p:label="SubField 1"
+         <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field2" p:label="SubField 2"
+         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field3" p:label="SubField 3"
+         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
            p:required="true" />
-         <bean parent="InputField" p:propertyName="field4" p:label="SubField 4"
+         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
            p:required="true" />
        </list>
      </property>
    </bean>
 
 
-   <bean id="collection6" parent="CollectionGroupSectionTableLayout"
+   <bean id="collection6" parent="Uif-Disclosure-TableCollectionSection"
      p:layoutManager.numberOfColumns="4">
      <property name="title"
        value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
@@ -216,13 +216,13 @@
      <property name="layoutManager.richTable.render" value="true" />
      <property name="items">
        <list>
-         <bean parent="InputField" p:label="Field 1" p:propertyName="field1"
+         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 2" p:propertyName="field2"
+         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 3" p:propertyName="field3"
+         <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
            p:required="true" />
-         <bean parent="InputField" p:label="Field 4" p:propertyName="field4"
+         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
            p:required="true" />
        </list>
      </property>

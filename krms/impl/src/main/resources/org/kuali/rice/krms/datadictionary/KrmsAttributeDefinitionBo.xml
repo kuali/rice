@@ -48,7 +48,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Attribute Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Attribute Id"/>
@@ -59,7 +59,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Attribute Name"/>
@@ -70,7 +70,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Attribute Namespace"/>
@@ -81,7 +81,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Label"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="label"/>
     <property name="label" value="Attribute Label"/>
@@ -92,7 +92,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Component"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="componentName"/>
     <property name="label" value="Attribute Component Name"/>
@@ -103,55 +103,55 @@
     <property name="name" value="active"/>
   </bean>
 
-  <bean id="KrmsAttributeDefinitionBo-LookupView" parent="LookupView">
+  <bean id="KrmsAttributeDefinitionBo-LookupView" parent="Uif-LookupView">
     <property name="title" value="Attribute Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="label" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="componentName" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="label" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="componentName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="namespace" />
-        <bean parent="InputField" p:propertyName="label" />
-        <bean parent="InputField" p:propertyName="componentName" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="namespace" />
+        <bean parent="Uif-InputField" p:propertyName="label" />
+        <bean parent="Uif-InputField" p:propertyName="componentName" />
       </list>
     </property>
   </bean>
   
-  <bean id="KrmsAttributeDefinitionBo-InquiryView" parent="InquiryView">
+  <bean id="KrmsAttributeDefinitionBo-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Attribute Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-            <bean parent="Page" p:id="page1">
+            <bean parent="Uif-Page" p:id="page1">
                 <property name="items">
                     <list>
-					  <bean parent="GroupSectionGridLayout">
+					  <bean parent="Uif-Disclosure-GridSection">
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
-					          <bean parent="InputField" p:propertyName="id"/>
-					          <bean parent="InputField" p:propertyName="name"/>
-					          <bean parent="InputField" p:propertyName="namespace"/>
+					          <bean parent="Uif-InputField" p:propertyName="id"/>
+					          <bean parent="Uif-InputField" p:propertyName="name"/>
+					          <bean parent="Uif-InputField" p:propertyName="namespace"/>
 					        </list>
 					      </property>
 					      <property name="title" value="KRMS Attributes"/>
 					  </bean>
-                      <bean parent="GroupSectionGridLayout">
+                      <bean parent="Uif-Disclosure-GridSection">
                           <property name="layoutManager.numberOfColumns" value="2"/>
                           <property name="items">
                             <list>
-                              <bean parent="InputField" p:propertyName="label"/>
+                              <bean parent="Uif-InputField" p:propertyName="label"/>
                             </list>
                           </property>
                           <property name="title" value="Attribute Label"/>

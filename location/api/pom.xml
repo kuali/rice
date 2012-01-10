@@ -49,20 +49,6 @@
                 <artifactId>cxf-java2ws-plugin</artifactId>
                 <executions>
                   <execution>
-                        <id>locationCacheService-wsdl</id>
-						              <phase>${rice.java2ws.phase}</phase>
-                        <configuration>
-                            <className>org.kuali.rice.core.api.cache.CacheService</className>
-                          <outputFile>${project.build.outputDirectory}/wsdl/CacheService.wsdl</outputFile>
-                          <targetNamespace>http://rice.kuali.org/location</targetNamespace>
-                          <serviceName>LocationCacheService</serviceName>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-
-                  <execution>
                         <id>countryService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
                         <configuration>

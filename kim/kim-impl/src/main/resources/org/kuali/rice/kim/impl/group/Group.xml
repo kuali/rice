@@ -78,7 +78,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -89,7 +89,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -112,7 +112,7 @@
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="50"/>
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -125,7 +125,7 @@
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="50"/>
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -261,42 +261,42 @@
 
   <!-- KRAD Conversion -->
 
-  <bean id="Group-InquiryView" parent="InquiryView">
+  <bean id="Group-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Group Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
     <property name="Items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="layoutManager.numberOfColumns" value="4"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="id"/>
-              <bean parent="InputField" p:propertyName="kimTypeInfo.name"/>
-              <bean parent="InputField" p:propertyName="namespaceCode"/>
-              <bean parent="InputField" p:propertyName="name">
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="kimTypeInfo.name"/>
+              <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+              <bean parent="Uif-InputField" p:propertyName="name">
                 <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
                 <property name="fieldInquiry.inquiryParameters" value="id:id"/>
               </bean>
-              <bean parent="InputField" p:propertyName="active"/>
-              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
             </list>
           </property>
           <property name="title" value="Group Information"/>
         </bean>
 
-        <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="6">
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="6">
           <property name="title" value="Assignees"/>
           <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
           <property name="propertyName" value="memberPersons"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="principalName"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="firstName"/>
-              <bean parent="InputField" p:propertyName="middleName"/>
-              <bean parent="InputField" p:propertyName="lastName"/>
-              <bean parent="InputField" p:propertyName="principalId"/>
+              <bean parent="Uif-InputField" p:propertyName="principalName"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="firstName"/>
+              <bean parent="Uif-InputField" p:propertyName="middleName"/>
+              <bean parent="Uif-InputField" p:propertyName="lastName"/>
+              <bean parent="Uif-InputField" p:propertyName="principalId"/>
             </list>
           </property>
         </bean>
@@ -304,29 +304,29 @@
     </property>
   </bean>
 
-  <bean id="Group-LookupView" parent="LookupView">
+  <bean id="Group-LookupView" parent="Uif-LookupView">
     <property name="title" value="Group Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.group.GroupLookupableImpl"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="description"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="kimTypeId"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="description"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="kimTypeId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="kimTypeInfo.name"/>
-        <bean parent="InputField" p:propertyName="namespaceCode"/>
-        <bean parent="InputField" p:propertyName="name">
+        <bean parent="Uif-InputField" p:propertyName="kimTypeInfo.name"/>
+        <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-InputField" p:propertyName="name">
           <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
           <property name="fieldInquiry.inquiryParameters" value="id:id"/>
         </bean>
-        <bean parent="InputField" p:propertyName="description"/>
+        <bean parent="Uif-InputField" p:propertyName="description"/>
       </list>
     </property>
   </bean>

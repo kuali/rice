@@ -35,4 +35,16 @@ a.logicNode { border: 1px solid #ccd; background-color:#dde; /* -moz-border-radi
 
 .jstree li { margin-top 3pt; }
 
+.krms-rulesButtonBar{
+    text-align: left;
+    margin-top: 3px;
+}
+
+.krms-rulesButtonBar .boxLayoutHorizontalItem{
+    margin: 0px;
+    padding: 0px;
+    float: none;
+    display: inline;
+}
+
 .tree-bar-button { padding-right: 1em; padding-left: 1em; }

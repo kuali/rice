@@ -26,6 +26,17 @@ import java.util.Map;
 
 /**
  * An interface which defines the contract for context definition objects.
+ * <p>A context is a set of related krms entities. A context definition
+ * defines information about a context which can be loaded into the rules
+ * engine for evaluation.
+ *
+ * A context definition includes a list of agendas which are valid within the
+ * context.  Typically, during rule engine execution, one or more of these
+ * agendas is selected for execution based on a given set of selection criteria. All KRMS components
+ * (agendas, rules, actions, terms, etc.) must be of the same context to
+ * work together. It is up to the client implementor to choose how broadly or
+ * finely grained the scope of the context is to be.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
@@ -66,20 +77,23 @@ public interface ContextDefinitionContract extends Versioned, Identifiable, Inac
      */
     String getDescription();
 
-	// TODO: this java doc is confusing
 	/**
-	 * Returns the list of agendas contained within the context definition.
-	 * This method should never return null but can return null.
+	 * Returns the list of agendas {@link AgendaDefinitionContract} contained in the context definition.
+	 * This method should never return null. An empty list is returned
+     * if no agendas are associated with this context.
 	 * 
-	 * @return the set of agendas on the context definition
+	 * @return the list of agendas contained in this context definition
 	 */
 	List<? extends AgendaDefinitionContract> getAgendas();
 
 	/**
-	 * This method returns a list of attributes associated with the 
-	 * a context.
+	 * Returns a map of name/value pairs representing the
+     * attributes associated with this context.
+     * <p>This method should never
+     * return null. An empty map is returned if no attributes are associated
+     * with the context.</p>
 	 * 
-	 * @return a list of AgendaAttribute objects.
+	 * @return a list of Map of name/value String pairs.
 	 */
 	public Map<String, String> getAttributes();
 	

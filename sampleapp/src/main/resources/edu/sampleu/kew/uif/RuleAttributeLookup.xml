@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="RuleAttribute-LookupView" parent="LookupView">
+  <bean id="RuleAttribute-LookupView" parent="Uif-LookupView">
     <property name="title" value="Rule Attribute Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleAttribute" />
     <property name="defaultSortAttributeNames">
@@ -31,13 +31,13 @@
     </property>  
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="className" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="applicationId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="type" p:optionsFinderClass="org.kuali.rice.kew.rule.bo.RuleAttributeTypeValuesFinder">
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="className" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="applicationId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="type" p:optionsFinderClass="org.kuali.rice.kew.rule.bo.RuleAttributeTypeValuesFinder">
         	 <property name="control">
-              <bean parent="SelectControl"/>
+              <bean parent="Uif-DropdownControl"/>
             </property>
         </bean>
         
@@ -45,11 +45,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="className" />
-        <bean parent="InputField" p:propertyName="type" />
-        <bean parent="InputField" p:propertyName="applicationId" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="className" />
+        <bean parent="Uif-InputField" p:propertyName="type" />
+        <bean parent="Uif-InputField" p:propertyName="applicationId" />
       </list>
     </property>
   </bean>

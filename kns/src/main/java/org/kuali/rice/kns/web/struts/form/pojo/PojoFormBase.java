@@ -444,7 +444,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	    // if it's still empty, add the default
     	    if ( maxUploadFileSizes.isEmpty() ) {
     	        addMaxUploadSize(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                        KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM));
+                        KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM));
     	    }
     	}	
     }

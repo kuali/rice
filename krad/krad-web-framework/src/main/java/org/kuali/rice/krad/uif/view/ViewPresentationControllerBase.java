@@ -19,9 +19,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.widget.Widget;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
@@ -50,6 +48,13 @@ public class ViewPresentationControllerBase implements ViewPresentationControlle
      */
     public Set<String> getEditModes(View view, UifFormBase model) {
         return new HashSet<String>();
+    }
+
+    /**
+     * @see ViewPresentationController#canEditView(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel)
+     */
+    public boolean canEditView(View view, ViewModel model) {
+        return true;
     }
 
     /**
@@ -109,11 +114,11 @@ public class ViewPresentationControllerBase implements ViewPresentationControlle
     }
 
     /**
-     * @see ViewPresentationController#canTakeAction(org.kuali.rice.krad.uif.view.View,
+     * @see ViewPresentationController#canPerformAction(org.kuali.rice.krad.uif.view.View,
      * org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.krad.uif.field.ActionField, java.lang.String,
      * java.lang.String)
      */
-    public boolean canTakeAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
             String actionId) {
         return true;
     }
@@ -159,12 +164,12 @@ public class ViewPresentationControllerBase implements ViewPresentationControlle
     }
 
     /**
-     * @see ViewPresentationController#canTakeLineAction(org.kuali.rice.krad.uif.view.View,
+     * @see ViewPresentationController#canPerformLineAction(org.kuali.rice.krad.uif.view.View,
      * org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.krad.uif.container.CollectionGroup,
      * java.lang.String, java.lang.Object, org.kuali.rice.krad.uif.field.ActionField, java.lang.String,
      * java.lang.String)
      */
-    public boolean canTakeLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
+    public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId) {
         return true;
     }

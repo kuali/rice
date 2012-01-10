@@ -28,6 +28,11 @@ public interface AgendaTreeEntry {
 //	Rule getRule();
 //	AgendaTree getIfTrue();
 //	AgendaTree getIfFalse();
+
+    /**
+     * Execute with the given @{link ExecutionEnvironment}
+     * @param environment
+     */
 	void execute(ExecutionEnvironment environment);
 	
 }

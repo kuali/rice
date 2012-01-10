@@ -226,7 +226,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					if (!businessObjectAuthorizer
 							.isAuthorizedByTemplate(
 									primaryDataObject,
-									KRADConstants.KRAD_NAMESPACE,
+									KRADConstants.KNS_NAMESPACE,
 									KimConstants.PermissionTemplateNames.VIEW_MAINTENANCE_INQUIRY_FIELD,
 									user.getPrincipalId(),
 									collectionItemPermissionDetails,
@@ -276,7 +276,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					if (!businessObjectAuthorizer
 								.isAuthorizedByTemplate(
 										primaryDataObject,
-										KRADConstants.KRAD_NAMESPACE,
+										KRADConstants.KNS_NAMESPACE,
 										KimConstants.PermissionTemplateNames.MODIFY_FIELD,
 										user.getPrincipalId(),
 										collectionItemPermissionDetails,
@@ -329,7 +329,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 				if (!businessObjectAuthorizer
 						.isAuthorizedByTemplate(
 								primaryDataObject,
-								KRADConstants.KRAD_NAMESPACE,
+								KRADConstants.KNS_NAMESPACE,
 								KimConstants.PermissionTemplateNames.PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION,
 								user.getPrincipalId(),
 								collectionItemPermissionDetails,
@@ -367,7 +367,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			additionalPermissionDetails
 					.put(KimConstants.AttributeConstants.SECTION_ID, sectionId);
 			if (!authorizer.isAuthorizedByTemplate(businessObject,
-					KRADConstants.KRAD_NAMESPACE,
+					KRADConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.VIEW_SECTION, user
 							.getPrincipalId(), additionalPermissionDetails,
 					null)) {
@@ -400,7 +400,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			additionalPermissionDetails
 					.put(KimConstants.AttributeConstants.SECTION_ID, sectionId);
 			if (!authorizer.isAuthorizedByTemplate(document,
-					KRADConstants.KRAD_NAMESPACE,
+					KRADConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.MODIFY_SECTION, user
 							.getPrincipalId(), additionalPermissionDetails,
 					null)) {
@@ -527,7 +527,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			try { // try/catch and fallthrough is a fix for KULRICE-3365
 				result = getDocumentHelperService().getDocumentAuthorizer( document )
 				.isAuthorizedByTemplate( document, 
-						KRADConstants.KRAD_NAMESPACE,
+						KRADConstants.KNS_NAMESPACE,
 						KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, 
 						user.getPrincipalId(), getFieldPermissionDetails(dataObjectClass, fieldName), null  );
 			} catch (IllegalArgumentException e) { 
@@ -538,7 +538,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		if (result == null) { 
 			result = getPermissionService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
-					KRADConstants.KRAD_NAMESPACE,
+					KRADConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
 					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass, fieldName)),
 					Collections.<String, String>emptyMap());
@@ -559,14 +559,14 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		if ( document == null ) {
 			return getPermissionService().isAuthorizedByTemplateName(
 					user.getPrincipalId(),
-					KRADConstants.KRAD_NAMESPACE,
+					KRADConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
 					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass,fieldName)),
 					Collections.<String, String>emptyMap());
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )
 					.isAuthorizedByTemplate( document, 
-											 KRADConstants.KRAD_NAMESPACE,
+											 KRADConstants.KNS_NAMESPACE,
 											 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, 
 											 user.getPrincipalId(), getFieldPermissionDetails(dataObjectClass, fieldName), Collections.<String, String>emptyMap()  );
 		}

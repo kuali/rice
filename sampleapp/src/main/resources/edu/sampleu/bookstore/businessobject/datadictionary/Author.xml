@@ -58,10 +58,10 @@
 <!--      <bean parent="SelectControlDefinition" p:dataObjectClass="edu.sampleu.bookstore.bo.Author" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="authorId" p:labelAttribute="authorName"/>-->
 <!--    </property>-->
 <!--     <property name="controlField">-->
-<!--      <bean parent="TextControl" p:size="10"/>-->
+<!--      <bean parent="Uif-TextControl" p:size="10"/>-->
 <!--    </property>-->
  	<property name="controlField">
-      <bean parent="HiddenControl"/>
+      <bean parent="Uif-HiddenControl"/>
     </property>
     <property name="summary" value="ID identifying the Auhtor."/>
     <property name="description" value="ID identifying the Author."/>
@@ -77,7 +77,7 @@
       <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="50"/>
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
     <property name="required" value="true"/>
     <property name="summary" value="Name identifying the Author."/>
@@ -94,7 +94,7 @@
       <bean parent="EmailAddressPatternConstraint"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="50"/>
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
     <property name="required" value="true"/>
     <property name="summary" value="Email identifying the Author."/>
@@ -110,7 +110,7 @@
       <bean parent="PhoneNumberPatternConstraint"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="50"/>
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
     <property name="required" value="true"/>
     <property name="summary" value="Name identifying the Author."/>
@@ -126,7 +126,7 @@
       <bean parent="AnyCharacterPatternConstraint"/>
     </property>
     <property name="controlField">
-      <bean parent="CheckboxControl"/>
+      <bean parent="Uif-CheckboxControl"/>
     </property>
     <property name="summary" value="Active Indicator"/>
     <property name="label" value="Active Indicator"/>
@@ -140,44 +140,44 @@
   <bean id="Author-extension-accountNumber-parentBean" abstract="true" parent="Account-accountNumber">
     <property name="name" value="extension.accountNumber"/>
   </bean>
-  <bean id="Author-InquiryView" parent="InquiryView">
+  <bean id="Author-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Author Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="Items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="title" value="Author Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="authorName"/>
-              <bean parent="InputField" p:propertyName="email"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="authorName"/>
+              <bean parent="Uif-InputField" p:propertyName="email"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="title" value="Account Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="extension.accountNumber"/>
-              <bean parent="InputField" p:propertyName="extension.bankName"/>
+              <bean parent="Uif-InputField" p:propertyName="extension.accountNumber"/>
+              <bean parent="Uif-InputField" p:propertyName="extension.bankName"/>
             </list>
           </property>
         </bean>
-        <bean parent="CollectionGroupSection">
+        <bean parent="Uif-Disclosure-StackedCollectionSection">
           <property name="title" value="Addresses"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Address"/>
           <property name="propertyName" value="addresses"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="addressType.type"/>
-              <bean parent="InputField" p:propertyName="street1"/>
-              <bean parent="InputField" p:propertyName="street2"/>
-              <bean parent="InputField" p:propertyName="city"/>
-              <bean parent="InputField" p:propertyName="province"/>
-              <bean parent="InputField" p:propertyName="country"/>
+              <bean parent="Uif-InputField" p:propertyName="addressType.type"/>
+              <bean parent="Uif-InputField" p:propertyName="street1"/>
+              <bean parent="Uif-InputField" p:propertyName="street2"/>
+              <bean parent="Uif-InputField" p:propertyName="city"/>
+              <bean parent="Uif-InputField" p:propertyName="province"/>
+              <bean parent="Uif-InputField" p:propertyName="country"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -187,18 +187,18 @@
           </property>
           <property name="layoutManager.summaryTitle" value ="Address"/>
         </bean>
-        <bean parent="CollectionGroupSection">
+        <bean parent="Uif-Disclosure-StackedCollectionSection">
           <property name="title" value="Books"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
           <property name="propertyName" value="books"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="title"/>
-              <bean parent="InputField" p:propertyName="isbn"/>
-              <bean parent="InputField" p:propertyName="price"/>
-              <bean parent="InputField" p:propertyName="rating"/>
-              <bean parent="InputField" p:propertyName="publisher"/>
-              <bean parent="InputField" p:propertyName="publicationDate"/>
+              <bean parent="Uif-InputField" p:propertyName="title"/>
+              <bean parent="Uif-InputField" p:propertyName="isbn"/>
+              <bean parent="Uif-InputField" p:propertyName="price"/>
+              <bean parent="Uif-InputField" p:propertyName="rating"/>
+              <bean parent="Uif-InputField" p:propertyName="publisher"/>
+              <bean parent="Uif-InputField" p:propertyName="publicationDate"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -211,23 +211,23 @@
       </list>
     </property>
   </bean>
-  <bean id="Author-LookupView" parent="LookupView">
+  <bean id="Author-LookupView" parent="Uif-LookupView">
     <property name="title" value="Author Lookup"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="authorName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="email"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="authorName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="email"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="authorId"/>
-        <bean parent="InputField" p:propertyName="authorName"/>
-        <bean parent="InputField" p:propertyName="email"/>
-        <bean parent="InputField" p:propertyName="phoneNbr"/>
-        <bean parent="InputField" p:propertyName="active"/>
+        <bean parent="Uif-InputField" p:propertyName="authorId"/>
+        <bean parent="Uif-InputField" p:propertyName="authorName"/>
+        <bean parent="Uif-InputField" p:propertyName="email"/>
+        <bean parent="Uif-InputField" p:propertyName="phoneNbr"/>
+        <bean parent="Uif-InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>

@@ -21,40 +21,46 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.List;
 
+/**
+ * Defines the contract for a KRMS type definition.
+ * <p>A KrmsTypeDefinition is a metadata wrapper around a KRMS type service. This contains a
+ * collection of related attributes. This also provides the name of the service used to resolve these attributes.
+ * </p>
+ */
 public interface KrmsTypeDefinitionContract extends Identifiable, Inactivatable, Versioned {
 
 	/**
-	 * This is the name for the KRMSType 
+	 * Returns the name of the KrmsTypeDefinition.  All KrmsTypeDefinitions have a name, so this
+     * value can not be null or blank. The combination of name and namespace must
+     * be unique within the entire KRMS system.
 	 *
-	 * <p>
-	 * It is a name of a KRMS type.
-	 * </p>
-	 * @return name for KRMS type.
+	 * @return the name of this KrmsTypeDefinition
 	 */
 	public String getName();
 
 	/**
-	 * This is the namespace code. 
+	 * Returns the namespace to which the KrmsTypeDefinition belongs. All type definitions
+     * exist within a namespace. This value can not be null or blank. The combination
+     * of name and namespace must be unique within the entire KRMS system.
 	 *
-	 * <p>
-	 * It provides scope of the KRMS type.
-	 * </p>
-	 * @return the namespace code of the KRMS type.
+	 * @return the namespace of this KrmsTypeDefinition
 	 */
 	public String getNamespace();
 
 	/**
-	 * This is the name of the KRMS KrmsType service
+	 * Returns the name of the service used to resolve attribute values. The service name
+     * may be null or blank.
 	 * 
-	 * @return the service name of the KRMS type
+	 * @return the service name of this KrmsTypeDefinition
 	 */
 	public String getServiceName();
 
 	/**
-	 * This method returns a list of attributes associated with the 
-	 * KrmsType
+	 * Returns a list of attributes associated with the KRMS type definition.
+     * This can be empty, but will never be null. If no attribute definitions are associated with the KRMS type
+     * then this will return an empty collection.
 	 * 
-	 * @return a list of KrmsTypeAttribute objects.
+	 * @return the list of KrmsTypeAttributeContract attribute definition contracts
 	 */
 	public List<? extends KrmsTypeAttributeContract> getAttributes();
 }

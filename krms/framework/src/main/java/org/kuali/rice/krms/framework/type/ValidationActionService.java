@@ -36,11 +36,24 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ValidationActionService {
 
+    /**
+     * Return the {@link ActionDefinition} given the validationId
+     * @param validationId
+     * @return {@link ActionDefinition}
+     * @throws {@link RiceIllegalArgumentException}
+     */
     @WebMethod(operationName = "getValidation")
     @WebResult(name = "validation")
     ActionDefinition getValidation(@WebParam(name = "validationId") String validationId)
             throws RiceIllegalArgumentException;
 
+    /**
+     * Return the {@link ActionDefinition} given the namespaceCode and name
+     * @param namespaceCode
+     * @param name
+     * @return {@link ActionDefinition}
+     * @throws {@link RiceIllegalArgumentException}
+     */
     @WebMethod(operationName = "getValidationByName")
     @WebResult(name = "validation")
     ActionDefinition getValidationByName(
@@ -54,10 +67,10 @@ public interface ValidationActionService {
      *
      * @return {@link ActionDefinition}
      *
-     * @throws RiceIllegalArgumentException if the given Validation definition is null
-     * @throws RiceIllegalArgumentException if the given Validation definition has a non-null id.  When creating a new
+     * @throws {@link RiceIllegalArgumentException} if the given Validation definition is null
+     * @throws {@link RiceIllegalArgumentException} if the given Validation definition has a non-null id.  When creating a new
      * Validation definition, the ID will be generated.
-     * @throws RiceIllegalStateException if a Validation with the given namespace code and name already exists
+     * @throws {@link RiceIllegalStateException} if a Validation with the given namespace code and name already exists
      */
     @WebMethod(operationName = "createValidationAction")
     @WebResult(name = "validation")
@@ -70,8 +83,8 @@ public interface ValidationActionService {
      *
      * @return {@link ActionDefinition}
      *
-     * @throws RiceIllegalArgumentException if the given Validation definition is null
-     * @throws RiceIllegalStateException if the Validation does not exist in the system under the given validationId
+     * @throws {@link RiceIllegalArgumentException} if the given Validation definition is null
+     * @throws {@link RiceIllegalStateException} if the Validation does not exist in the system under the given validationId
      */
     @WebMethod(operationName = "updateValidationAction")
     @WebResult(name = "validation")

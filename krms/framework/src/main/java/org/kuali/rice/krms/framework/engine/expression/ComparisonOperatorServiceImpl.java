@@ -22,11 +22,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * {@link ComparisonOperator} Implementation.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComparisonOperatorServiceImpl implements ComparisonOperatorService {
 
     private List<EngineComparatorExtension> operators = new LinkedList<EngineComparatorExtension>();
+
+    private List<StringCoercionExtension> stringCoercionExtensions = new LinkedList<StringCoercionExtension>();
+
+    @Override
+    public List<StringCoercionExtension> getStringCoercionExtensions() {
+        return stringCoercionExtensions;
+    }
+
+    @Override
+    public void setStringCoercionExtensions(List<StringCoercionExtension> stringCoercionExtensions) {
+        this.stringCoercionExtensions = stringCoercionExtensions;
+    }
 
     @Override
     public List<EngineComparatorExtension> getOperators() {
@@ -56,4 +69,26 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
         return findComparatorExtension(lhs, rhs) != null;
     }
 
+    @Override
+    public StringCoercionExtension findStringCoercionExtension(String type, String value) {
+        StringCoercionExtension extension;
+        Iterator<StringCoercionExtension> opIter = stringCoercionExtensions.iterator();
+        while (opIter.hasNext()) {
+            extension = opIter.next();
+            if (extension.canCoerce(type, value)) {
+                return extension;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean canCoerce(String type, String value) {
+        return findStringCoercionExtension(type, value) != null;
+    }
+
+    @Override
+    public Object coerce(String type, String value) {
+        return findStringCoercionExtension(type, value).coerce(type, value);
+    }
 }

@@ -20,6 +20,9 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 /**
  * A Rule evaluates a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}, returning true if its conditions pass, false if they do not.
  *
+ * @see org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract
+ * @see org.kuali.rice.krms.api.repository.rule.RuleDefinition
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Rule {

@@ -17,6 +17,8 @@ package org.kuali.rice.devtools.pdle;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface PostDataLoadEncryptionService {
@@ -40,4 +42,18 @@ public interface PostDataLoadEncryptionService {
     void restoreTableFromBackup(Class<? extends PersistableBusinessObject> businessObjectClass);
 
     void dropBackupTable(Class<? extends PersistableBusinessObject> businessObjectClass);
+    
+    boolean doesBackupTableExist(String tableName);
+    
+    void truncateTable(String tableName);
+    
+    void createBackupTable(String tableName);
+
+    List<Map<String, String>> retrieveUnencryptedColumnValuesFromBackupTable(String tableName, final List<String> columnNames, int numberOfRowsToCommitAfter);
+    
+    boolean performEncryption(String tableName, List<Map<String, String>> columnsToEncrypt) throws Exception ;
+    
+    void restoreTableFromBackup(String tableName);
+
+    void dropBackupTable(String tableName);
 }

@@ -51,7 +51,7 @@
               <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" />
               <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" />
               <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
-                <c:set var="fieldName" value="${attrDefn.attributeName}" />
+                <c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
                 <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                 <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" />
               </c:forEach>
@@ -167,7 +167,7 @@
         <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.activeFromDate';submitForm();"/>
         <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.activeToDate';submitForm();"/>
         <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
-          <c:set var="fieldName" value="${attrDefn.attributeName}" />
+          <c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
           <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
           <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" headerLink="javascript:document.forms[0].sortMethodToCallPlaceholder.name='methodToCall.sort.${fieldName}';submitForm();"/>
         </c:forEach>

@@ -25,7 +25,7 @@
             <table cellpadding="0" cellspacing="0" summary="">
                 <tr>
                     <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
-                        <c:set var="fieldName" value="${attrDefn.attributeName}" />
+                        <c:set var="fieldName" value="${attrDefn.kimAttribute.attributeName}" />
                         <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                         <kul:htmlAttributeHeaderCell attributeEntry="${attrEntry}" useShortLabel="false" horizontal="false" />
                     </c:forEach>

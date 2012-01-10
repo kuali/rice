@@ -53,7 +53,7 @@
       <bean parent="TextControlDefinition" p:size="5"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="5"/>
+      <bean parent="Uif-TextControl" p:size="5"/>
     </property>
   </bean>
 
@@ -71,7 +71,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="summary" value="Nm"/>
     <property name="description" value="Nm"/>
@@ -91,7 +91,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="summary" value="Srvc Nm"/>
     <property name="description" value="Srvc Nm"/>

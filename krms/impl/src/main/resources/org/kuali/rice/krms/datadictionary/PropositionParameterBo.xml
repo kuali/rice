@@ -47,7 +47,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Parameter Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Proposition Parameter Id"/>
@@ -58,7 +58,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Prop Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="name" value="propId"/>
     <property name="label" value="Proposition Id"/>
@@ -69,7 +69,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Value"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="value"/>
     <property name="label" value="Value"/>
@@ -80,7 +80,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Type Code"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="parameterType"/>
     <property name="label" value="Parameter Type Code"/>
@@ -91,7 +91,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Sequence"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="5"/>
+      <bean parent="Uif-TextControl" p:size="5"/>
     </property>
     <property name="name" value="sequenceNumber"/>
     <property name="label" value="Sequence Number"/>
@@ -99,7 +99,7 @@
     
 <!--   
     
-  <bean id="PropositionParameterBo-LookupView" parent="LookupView">
+  <bean id="PropositionParameterBo-LookupView" parent="Uif-LookupView">
     <property name="title" value="Proposition Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
     <property name="criteriaFields">
@@ -112,33 +112,33 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="description" />
-        <bean parent="InputField" p:propertyName="ruleId" />
-        <bean parent="InputField" p:propertyName="typeId" />
-        <bean parent="InputField" p:propertyName="propositionTypeCode" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="description" />
+        <bean parent="Uif-InputField" p:propertyName="ruleId" />
+        <bean parent="Uif-InputField" p:propertyName="typeId" />
+        <bean parent="Uif-InputField" p:propertyName="propositionTypeCode" />
       </list>
     </property>
   </bean>
 
-  <bean id="PropositionParameterBo-InquiryView" parent="InquiryView">
+  <bean id="PropositionParameterBo-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Rule Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-            <bean parent="Page" p:id="page1">
+            <bean parent="Uif-Page" p:id="page1">
                 <property name="items">
                     <list>
-					  <bean parent="GroupSectionGridLayout">
+					  <bean parent="Uif-Disclosure-GridSection">
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
-					          <bean parent="InputField" p:propertyName="id"/>
-					          <bean parent="InputField" p:propertyName="description"/>
-					          <bean parent="InputField" p:propertyName="ruleId"/>
-					          <bean parent="InputField" p:propertyName="typeId"/>
-					          <bean parent="InputField" p:propertyName="propositionTypeCode"/>
+					          <bean parent="Uif-InputField" p:propertyName="id"/>
+					          <bean parent="Uif-InputField" p:propertyName="description"/>
+					          <bean parent="Uif-InputField" p:propertyName="ruleId"/>
+					          <bean parent="Uif-InputField" p:propertyName="typeId"/>
+					          <bean parent="Uif-InputField" p:propertyName="propositionTypeCode"/>
 					        </list>
 					      </property>
 					      <property name="title" value="Proposition Attributes"/>

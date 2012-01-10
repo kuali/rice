@@ -55,7 +55,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="summary" value="Travel Fiscal Officer Id"/>
     <property name="name" value="id"/>
@@ -78,7 +78,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
     <property name="summary" value="Fiscal Officer User Name"/>
     <property name="name" value="userName"/>

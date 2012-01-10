@@ -32,7 +32,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
-import org.kuali.rice.core.api.uif.AttributeField;
+import org.kuali.rice.core.api.uif.RemotableAttributeFieldContract;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.w3c.dom.Element;
 
@@ -163,7 +163,7 @@ public final class DocumentSearchResultSetConfiguration extends AbstractDataTran
                         new ArrayList<StandardResultField>(contract.getStandardResultFieldsToRemove()));
             }
             if (CollectionUtils.isNotEmpty(contract.getAdditionalAttributeFields())) {
-                for (AttributeField attributeField : contract.getAdditionalAttributeFields()) {
+                for (RemotableAttributeFieldContract attributeField : contract.getAdditionalAttributeFields()) {
                     builder.getAdditionalAttributeFields().add(RemotableAttributeField.Builder.create(attributeField));
                 }
             }

@@ -20,8 +20,7 @@
     <info>
         <title>State</title>
     </info>
-    <para>Administration > System > Locations > State > State Code Lookup >
-        StateMaintenanceDocument</para>
+    <para>Administration > Identity > Locations > State</para>
     <para>The State Maintenance document defines the U.S. Postal Service codes used to identify
         states. When the user chooses the <emphasis role="bold">State</emphasis> option from the
             <emphasis role="bold">Administration</emphasis> menu tab, the system displays the State
@@ -70,8 +69,8 @@
                     </tr>
                     <tr>
                         <td>Active Indicator</td>
-                        <td>Indicates whether the state code is active or inactive in the KFS.
-                            Remove the check mark to deactivate the state code.</td>
+                        <td>Indicates whether the state code is active or inactive. Remove the check
+                            mark to deactivate the state code.</td>
                     </tr>
                 </tbody>
             </table>

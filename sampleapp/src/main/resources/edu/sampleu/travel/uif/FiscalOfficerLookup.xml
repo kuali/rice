@@ -21,19 +21,19 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="FiscalOfficer-LookupView" parent="LookupView">
+  <bean id="FiscalOfficer-LookupView" parent="Uif-LookupView">
     <property name="title" value="Fiscal Officer Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.FiscalOfficer" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="userName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="userName" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="userName" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean>

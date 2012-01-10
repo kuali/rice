@@ -21,19 +21,19 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="TravelAccountType-LookupView" parent="LookupView">
+  <bean id="TravelAccountType-LookupView" parent="Uif-LookupView">
     <property name="title" value="Travel Account Type Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccountType" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="accountTypeCode" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="accountTypeCode" />
-        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
       </list>
     </property>
   </bean>

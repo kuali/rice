@@ -20,31 +20,38 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
 
 /**
  * Base interface intended for extension by other AttributeContract interfaces 
- * 
+ * <p>This contains the common fields shared by all KRMS attributes.</p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface BaseAttributeContract extends Identifiable {
 
-	/**
-	 * This is the id of the definition of the attribute. 
-	 *
-	 * <p>
-	 * It identifies the attribute definition
-	 * </p>
-	 * @return the attribute definition id.
-	 */
+    /**
+     * Returns the id of the attribute definition.
+     *
+     * <p>
+     * The attribute definition contains metadata about the attribute. This
+     * is a required field and may not be null or blank. Many
+     * attribute instances may share the same attribute definition.
+     * </p>
+     * @return the attribute definition id
+     */
 	public String getAttributeDefinitionId();
 
 	/**
-	 * This is the value of the attribute
+	 * Returns the value of the attribute
 	 * 
 	 * @return the value of the attribute
 	 */
 	public String getValue();
 
 	/**
-	 * This is the definition of the attribute
+	 * Returns a {@link KrmsAttributeDefinitionContract.}
+     * <p>This is the object referred to by the attributeDefinitionId.
+     * The full object is also kept here for performance purposes. This is because the name of the attribute
+     * is referenced often for resolving name / value attribute pairs.</p>
+     *
+     * @return the attribute definition
 	 */
 	public KrmsAttributeDefinitionContract getAttributeDefinition();
 

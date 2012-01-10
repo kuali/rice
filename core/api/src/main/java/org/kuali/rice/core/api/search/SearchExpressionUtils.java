@@ -18,26 +18,19 @@ package org.kuali.rice.core.api.search;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
-import org.apache.commons.collections.PredicateUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.AndPredicate;
-import org.kuali.rice.core.api.criteria.OrPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
 
-import javax.management.StringValueExp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.regex.Pattern;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 
 /**
@@ -69,7 +62,7 @@ public class SearchExpressionUtils {
     private final Collection<SearchOperator> POSTFIX_UNARY_OPERATORS =
             Collections.unmodifiableCollection(Arrays.asList(SearchOperator.LIKE_ONE, SearchOperator.LIKE_MANY, SearchOperator.LIKE_MANY_P));
 
-    
+
     private SearchExpressionUtils() {
         throw new UnsupportedOperationException("do not call");
     }

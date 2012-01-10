@@ -98,9 +98,9 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserName(userSession.getPrincipalName());
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
-        incidentReportForm.setViewId("Incident-Report");
+        incidentReportForm.setViewId("Uif-IncidentReportView");
         // Set the view object
-        incidentReportForm.setView(getViewService().getViewById("Incident-Report"));
+        incidentReportForm.setView(getViewService().getViewById("Uif-IncidentReportView"));
 
         // Add a new History entry to avoid errors in the postHandle
         History history = new History();

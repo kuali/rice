@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -164,7 +164,7 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
     }
 
     @Override
-    public List<? extends AttributeError> validateAttributeDefinition(
+    public List<? extends RemotableAttributeErrorContract> validateAttributeDefinition(
             WorkflowAttributeDefinition attributeDefinition) {
         return null;
     }

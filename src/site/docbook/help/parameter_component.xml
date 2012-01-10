@@ -18,23 +18,21 @@
 -->
 <chapter xml:id="parameter_component" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <info>
-        <title>Parameter Component</title>
+        <title>Component</title>
     </info>
-    <para>Administration > Configuration > Functional > Parameter Component > Parameter Component
-        Lookup > Parameter Component</para>
-    <para>The Parameter Component document defines valid components that can be associated with a
-        parameter. Parameter components indicate a general or specific piece of KFS functionality to
-        which a parameter applies. Some Parameter Components are generic (batch, lookup, all) while
-        others are very specific and refer to particular documents or even specific tabs or fields
-        on documents.</para>
-    <para>Only members of the KR-SYS Technical Administrator or KFS-SYS Manager role can create or
-        edit Parameter Component documents.</para>
+    <para>Administration > Configuration > Component</para>
+    <para>The  Component document defines valid components that can be associated with a parameter.
+        Components indicate a general or specific piece of  functionality to which a parameter
+        applies. Some Components are generic (batch, lookup, all) while others are very specific and
+        refer to particular documents or even specific tabs or fields on documents.</para>
+    <para>Only members of the KR-SYS Technical Administrator or an equivalent application role can
+        create or edit Component documents.</para>
     <sect1>
         <title>Document Layout</title>
-        <para><figure><title>Parameter Component document</title>
+        <para><figure><title>Component document</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/parameter_component_document.jpg"/>
+                    <imagedata fileref="../images/help/parameter_component_document.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
@@ -53,18 +51,18 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Namespace Code</td>
+                        <td>Namespace Name</td>
                         <td>Required. Select the appropriate Namespace code for the parameter from
-                            the <emphasis role="bold">Namespace Code</emphasis> list or search for
+                            the <emphasis role="bold">Namespace Name</emphasis> list or search for
                             it from the lookup.</td>
                     </tr>
                     <tr>
-                        <td>Parameter Component</td>
+                        <td>Component</td>
                         <td>Required. Enter the parameter component code or search for it from the
-                                <emphasis role="bold">Parameter Component</emphasis> lookup.</td>
+                                <emphasis role="bold">Component</emphasis> lookup.</td>
                     </tr>
                     <tr>
-                        <td>Parameter Component Name</td>
+                        <td>Component Name</td>
                         <td>Required. Enter the descriptive name of the parameter component being
                             defined.</td>
                     </tr>

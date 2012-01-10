@@ -28,6 +28,9 @@
 
   <properties>
   	<maven.skip.packaging>false</maven.skip.packaging>
+    <maven.failsafe.forkmode>always</maven.failsafe.forkmode>
+    <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
+    <maven.failsafe.forkedProcessTimeoutInSeconds>300</maven.failsafe.forkedProcessTimeoutInSeconds>
   </properties>
 
     <dependencyManagement>

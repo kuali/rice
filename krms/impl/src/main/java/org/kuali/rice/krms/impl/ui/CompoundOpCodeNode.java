@@ -15,17 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
-import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
-import org.kuali.rice.krms.impl.repository.TermBo;
 
 /**
  * abstract data class for the rule tree {@link Node}s
@@ -36,6 +26,10 @@ import org.kuali.rice.krms.impl.repository.TermBo;
 public class CompoundOpCodeNode extends RuleTreeNode {
 
     private static final long serialVersionUID = -6069336457169968200L;
+
+    // needed for inquiry view
+    public CompoundOpCodeNode() {
+    }
 
     public CompoundOpCodeNode(PropositionBo proposition){
         super(proposition);

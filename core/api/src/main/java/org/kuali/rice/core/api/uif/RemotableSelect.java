@@ -45,7 +45,7 @@ import java.util.Map;
         RemotableSelect.Elements.SIZE,
         RemotableSelect.Elements.MULTIPLE,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class RemotableSelect extends RemotableAbstractControl implements Select {
+public final class RemotableSelect extends RemotableAbstractControl implements RemotableSelectContract {
 
     @XmlElement(name = Elements.KEY_LABELS, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -109,7 +109,7 @@ public final class RemotableSelect extends RemotableAbstractControl implements S
         return multiple;
     }
 
-    public static final class Builder extends RemotableAbstractControl.Builder implements Select {
+    public static final class Builder extends RemotableAbstractControl.Builder implements RemotableSelectContract {
         private Integer size;
         private Map<String, String> keyLabels = Collections.emptyMap();
         private List<RemotableSelectGroup.Builder> groups = Collections.emptyList();

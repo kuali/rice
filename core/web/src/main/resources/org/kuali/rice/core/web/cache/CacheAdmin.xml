@@ -25,11 +25,11 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-  <bean id="CacheAdmin-view1" parent="FormView">
+  <bean id="CacheAdmin-view1" parent="Uif-FormView">
     <property name="title" value="Cache Management"/>
     <property name="items">
       <list>
-        <bean parent="Page">
+        <bean parent="Uif-Page">
           <property name="items">
             <list>
               <ref bean="mainGroup"/>
@@ -42,24 +42,24 @@
     <property name="footer" ref="Footer_FlushClose"/>
   </bean>
 
-  <bean id="Footer_FlushClose" parent="Footer">
+  <bean id="Footer_FlushClose" parent="Uif-FooterBase">
       <property name="items">
         <list>
-          <bean parent="ActionField_Secondary" p:methodToCall="flush" p:actionLabel="Flush"/>
-          <bean parent="ActionField_Secondary" p:methodToCall="close" p:actionLabel="Close"/>
+          <bean parent="Uif-SecondaryActionButton" p:methodToCall="flush" p:actionLabel="Flush"/>
+          <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
         </list>
       </property>
   </bean>
 
 
-  <bean id="mainGroup" parent="Group" p:header.render="false">
+  <bean id="mainGroup" parent="Uif-BoxSection" p:header.render="false">
     <property name="items">
       <list>
-        <bean parent="TreeGroup" p:disclosure.render="false" p:header.render="false">
+        <bean parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false">
           <property name="propertyName" value="cacheTree"/>
 
           <property name="tree">
-            <bean parent="Tree">
+            <bean parent="Uif-Tree">
               <property name="componentOptionsJSString">
                 <value>
                   {"themes": {"theme": "default", "dots": true, "icons": false},

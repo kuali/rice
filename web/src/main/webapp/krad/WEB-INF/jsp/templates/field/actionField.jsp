@@ -44,7 +44,7 @@
 
 <c:choose>
 
-  <c:when test="${(field.actionImage != null) && field.actionImage.render && (empty field.actionImageLocation)}">
+  <c:when test="${(field.actionImage != null) && field.actionImage.render && (empty field.actionImageLocation || field.actionImageLocation eq 'IMAGE_ONLY')}">
     <krad:attributeBuilder component="${field.actionImage}"/>
 
     <span id="${field.id}_span">

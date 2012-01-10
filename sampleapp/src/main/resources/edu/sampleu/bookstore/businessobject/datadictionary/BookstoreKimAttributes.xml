@@ -44,7 +44,7 @@
       <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.BookType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="typeCode" p:labelAttribute="name"/>
     </property>
      <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -83,22 +84,10 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 			        	attributeDefinitions.add(attributeDefinition);
 			        	attributeDefinitionMap.put(itemDefinitionName, attributeDefinition);
                         LOG.info("itemDefName: " + itemDefinitionName);
-                        PropertyDescriptor propertyDescriptor = null;
-                        try {
-                            propertyDescriptor = PropertyUtils.getPropertyDescriptor(object, itemDefinitionName);
-                        } catch (IllegalAccessException e) {
-                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
-                        } catch (InvocationTargetException e) {
-                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
-                        } catch (NoSuchMethodException e) {
-                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
-                        }
 
-			    		Method readMethod = propertyDescriptor.getReadMethod();
-			    		
 						try {
-							Object attributeValue = readMethod.invoke(object);
-							
+                            Object  attributeValue = PropertyUtils.getNestedProperty(object, itemDefinitionName);
+
 							if (attributeValue != null && StringUtils.isNotBlank(attributeValue.toString())) {
 				    			Class<?> propertyType = ObjectUtils.getPropertyType(object, itemDefinitionName, persistenceStructureService);
 				    			attributeTypeMap.put(itemDefinitionName, propertyType);
@@ -118,7 +107,9 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 							LOG.warn("Failed to invoke read method on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
 						} catch (InvocationTargetException e) {
 							LOG.warn("Failed to invoke read method on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);						
-			        	}
+			        	} catch (NoSuchMethodException e) {
+                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
+                        }
 			    		
 			        }
 				}

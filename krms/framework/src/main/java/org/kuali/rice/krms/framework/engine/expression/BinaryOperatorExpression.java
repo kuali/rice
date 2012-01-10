@@ -18,8 +18,8 @@ package org.kuali.rice.krms.framework.engine.expression;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
- * TODO... 
- * 
+ * Binary Operator implementation of Expression<Boolean>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -28,13 +28,20 @@ public final class BinaryOperatorExpression implements Expression<Boolean> {
 	private final ComparisonOperator operator;
 	private final Expression<? extends Object> lhs;
 	private final Expression<? extends Object> rhs;
-	
+
+    /**
+     * Create a BinaryOperatorExpression with the given values
+     * @param operator {@link ComparisonOperator}
+     * @param lhs left hand side Expression
+     * @param rhs right hand side Expression
+     */
 	public BinaryOperatorExpression(ComparisonOperator operator, Expression<? extends Object> lhs, Expression<? extends Object> rhs) {
 		this.operator = operator;
 		this.lhs = lhs;
 		this.rhs = rhs;
 	}
-	
+
+    @Override
 	public Boolean invoke(ExecutionEnvironment environment) {
 		Object lhsValue = lhs.invoke(environment);
 		Object rhsValue = rhs.invoke(environment);

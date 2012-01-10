@@ -21,7 +21,7 @@ import org.kuali.rice.krms.framework.type.ValidationActionType;
 import org.kuali.rice.krms.framework.type.ValidationActionTypeService;
 
 /**
- * An action that when executed appends it's type and message to the results
+ * An {@link Action} that when executed appends its type and message to the results
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

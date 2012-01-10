@@ -41,7 +41,7 @@ public interface EngineComparatorExtension<A> extends Comparator<A> {
      * @param s
      * @return
      */
-    A coerce(String s);
+//    A coerce(String s);
 
     /**
      *

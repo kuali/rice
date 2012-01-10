@@ -99,6 +99,7 @@
         <war.overlay.exclude.2>**/ojdbc*.jar</war.overlay.exclude.2>
       </properties>
     </profile>
+
     <profile>
       <id>stests</id>
       <properties>

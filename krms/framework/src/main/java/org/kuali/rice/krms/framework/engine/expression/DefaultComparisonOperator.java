@@ -18,15 +18,20 @@ package org.kuali.rice.krms.framework.engine.expression;
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
+ * The default {@link ComparisonOperator}.  If no other {@link EngineComparatorExtension} have been configured to handle
+ * a type, the DefaultComparisonOperator will be used.  At the moment the DefaultComparisonOperator is also the default
+ * {@link StringCoercionExtension} for coercing types.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DefaultComparisonOperator implements EngineComparatorExtension {
+public class DefaultComparisonOperator implements EngineComparatorExtension, StringCoercionExtension {
 
     @Override
     public int compare(Object lhs, Object rhs) {
@@ -49,20 +54,27 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
             return result;
         }
         else {
-            throw new IncompatibleTypeException("Could not compare values, they are not comparable for operator " + this, lhs, rhs.getClass());
+            throw new IncompatibleTypeException("DefaultComparisonOperator could not compare values", lhs, rhs.getClass());
         }
     }
 
     @Override
-    public Object coerce(String s) {
-        return null;
-    }
-
-    @Override
     public boolean canCompare(Object lhs, Object rhs) {
-        return false;
+        try {
+            compare(lhs, rhs);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    /**
+     * 
+     * @param lhs
+     * @param rhs
+     * @return Object
+     * @throws IncompatibleTypeException
+     */
     private Object coerceRhs(Object lhs, Object rhs) {
         if (lhs != null && rhs != null) {
             if  (!lhs.getClass().equals(rhs.getClass()) && rhs instanceof String) {
@@ -95,7 +107,7 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
      * @param lhs
      * @param rhs
      * @param clazzes
-     * @return The object of one of the given types, whose value rhs
+     * @return The object of one of the given types, whose value is rhs
      */
     private Object coerceRhsHelper(Object lhs, String rhs, Class<?> ... clazzes) {
         for (Class clazz : clazzes) {
@@ -118,5 +130,23 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
             }
         }
         return rhs;
+    }
+
+    @Override
+    public Object coerce(String type, String value) {
+        try {
+            Class clazz = Class.forName(type);
+            // Constructor that takes string  a bit more generic than the coerceRhs
+            Constructor constructor = clazz.getConstructor(new Class[]{String.class});
+            Object propObject = constructor.newInstance(type);
+            return propObject;
+        } catch (Exception e) {
+            return null; // TODO EGHM dev log?
+        }
+    }
+
+    @Override
+    public boolean canCoerce(String type, String value) {
+        return coerce(type, value) != null;
     }
 }

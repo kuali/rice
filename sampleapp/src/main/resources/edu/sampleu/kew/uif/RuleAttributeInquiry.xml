@@ -16,23 +16,23 @@
     limitations under the License.
 
 -->
-<bean id="RuleAttribute-InquiryView" parent="InquiryView">
+<bean id="RuleAttribute-InquiryView" parent="Uif-InquiryView">
    <property name="title" value="Rule Attribute"/>
    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleAttribute"/>
    <property name="Items">
        <list>
-         <bean parent="GroupSectionGridLayout">
+         <bean parent="Uif-Disclosure-GridSection">
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="InputField" p:propertyName="id"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="label"/>
-              <bean parent="InputField" p:propertyName="description"/>
-              <bean parent="InputField" p:propertyName="className"/>
-              <bean parent="InputField" p:propertyName="applicationId"/>
-              <bean parent="InputField" p:propertyName="type"/>
-              <bean parent="InputField" p:propertyName="xmlConfigData" p:escapeHtmlInPropertyValue="true"/>
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="label"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="className"/>
+              <bean parent="Uif-InputField" p:propertyName="applicationId"/>
+              <bean parent="Uif-InputField" p:propertyName="type"/>
+              <bean parent="Uif-InputField" p:propertyName="xmlConfigData" p:escapeHtmlInPropertyValue="true"/>
              </list>
            </property>
          </bean>

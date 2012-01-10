@@ -36,15 +36,22 @@ import java.util.Collection;
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 /**
- * A class that represents a target of a cache operation.  If the cache key
- * is not specified then the entire cache is the target.
+ * A class that represents a target of a cache operation.  If the cache key is not specified then the entire cache is
+ * the target.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 2.0
  */
 public final class CacheTarget extends AbstractDataTransferObject {
 
+    private static final long serialVersionUID = -7143135771254777648L;
+    
     @XmlElement(name = Elements.CACHE, required = true)
     private final String cache;
+
     @XmlElement(name = Elements.KEY, required = false)
     private final String key;
+    
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -52,6 +59,7 @@ public final class CacheTarget extends AbstractDataTransferObject {
     /**
      * This constructor should never be called except during JAXB unmarshalling.
      */
+    @SuppressWarnings("unused")
     private CacheTarget() {
         this.cache = null;
         this.key = null;
@@ -61,55 +69,63 @@ public final class CacheTarget extends AbstractDataTransferObject {
         if (StringUtils.isBlank(cache)) {
             throw new IllegalArgumentException("cache is blank or null");
         }
-
         this.cache = cache;
         this.key = key;
     }
 
     /**
-     * Creates an instance targeting a entire cache.
-     * @param cache the name of the cache.  cannot be a null of blank string.
-     * @return an instance
-     * @throws IllegalArgumentException if the cache is null or blank
+     * Creates an instance targeting an entire cache.
+     *
+     * @param cache the name of the cache.  cannot be a null or blank string
+     * 
+     * @return an instance of the cache target specified
+     *
+     * @throws IllegalArgumentException if cache is null or blank
      */
     public static CacheTarget entireCache(String cache) {
         return new CacheTarget(cache, null);
     }
 
     /**
-     * Creates an instance targeting a single item in a cache.
-     * @param cache The name of the cache.  cannot be a null of blank string.
+     * Creates an instance targeting a single item in a cache based on the given key.
+     *
+     * @param cache The name of the cache.  cannot be a null or blank string.
      * @param key The key of the item in the cache.  cannot be a null of blank string.
-     * @return an instance
+     *
+     * @return an instance of the cache target specified
+     * 
      * @throws IllegalArgumentException if the cache or key is null or blank
      */
     public static CacheTarget singleEntry(String cache, String key) {
         if (StringUtils.isBlank(key)) {
             throw new IllegalArgumentException("a blank or null key does not target a single entry");
         }
-
         return new CacheTarget(cache, key);
     }
 
     /**
-     * Checks if an instance contains a key.
-     * @return true if a key exists
+     * Checks if this instance contains a key.
+     *
+     * @return true if a key exists, false otherwise
      */
     public boolean containsKey() {
         return key != null;
     }
 
     /**
-     * The name of the cache to target.  will not return a null of blank string.
-     * @return the name.
+     * The name of the cache to target.  This value should never be null or blank.
+     *
+     * @return the name of the cache
      */
     public String getCache() {
         return cache;
     }
 
     /**
-     * The key of an item in the cache.  optional. can return null or blank string.
-     * @return the key
+     * The key of the item in the cache to target.  The key is optional on the cache target, if this target has no key
+     * then this method will return null.
+     *
+     * @return the key of this cache target, or null if a specific key is not being targeted
      */
     public String getKey() {
         return key;
@@ -131,4 +147,5 @@ public final class CacheTarget extends AbstractDataTransferObject {
         final static String CACHE = "cache";
         final static String KEY = "key";
     }
+    
 }

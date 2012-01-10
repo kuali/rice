@@ -18,8 +18,7 @@ package org.kuali.rice.kew.api;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTime;
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -235,7 +234,7 @@ public interface WorkflowDocument extends DocumentContract {
      * @param attributeDefinition the workflow attribute definition to validate
      * @return list of attribute validation errors
      */
-    List<? extends AttributeError> validateAttributeDefinition(WorkflowAttributeDefinition attributeDefinition);
+    List<? extends RemotableAttributeErrorContract> validateAttributeDefinition(WorkflowAttributeDefinition attributeDefinition);
 
     /**
      * Return the list of root action requests on the document.

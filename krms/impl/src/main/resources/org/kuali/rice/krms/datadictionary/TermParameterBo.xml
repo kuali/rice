@@ -43,7 +43,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Term Parameter Id"/>
@@ -59,7 +59,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="255"/>
+      <bean parent="Uif-TextControl" p:size="255"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Term Parameter Name"/>
@@ -70,7 +70,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Value"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="255"/>
+      <bean parent="Uif-TextControl" p:size="255"/>
     </property>
     <property name="name" value="value"/>
     <property name="label" value="Term Parameter Value"/>

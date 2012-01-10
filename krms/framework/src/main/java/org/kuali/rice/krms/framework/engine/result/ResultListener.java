@@ -19,6 +19,15 @@ import java.util.EventListener;
 
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
+/**
+ * Interface for receiving {@link ResultEvent}s.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface ResultListener extends EventListener {
+    /**
+     * Handle the given {@link ResultEvent}
+     * @param resultEvent
+     */
 	public void handleEvent(ResultEvent resultEvent);
 }

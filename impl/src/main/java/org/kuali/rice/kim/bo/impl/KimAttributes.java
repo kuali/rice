@@ -56,7 +56,14 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected String sectionId;
 	protected String kimTypeId;
 	protected String qualifierResolverProvidedIdentifier;
-	
+    protected String viewId;
+    protected String actionEvent;
+    protected String collectionPropertyName;
+    protected String fieldId;
+    protected String groupId;
+    protected String widgetId;
+    protected String actionId;
+
 	protected CampusBo campus;
 	protected NamespaceBo namespace;
 	protected ComponentBo component;
@@ -482,5 +489,60 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	public void setAttachmentTypeCode(String attachmentTypeCode) {
 		this.attachmentTypeCode = attachmentTypeCode;
 	}
-	
+
+    public String getActionEvent() {
+        return actionEvent;
+    }
+
+    public void setActionEvent(String actionEvent) {
+        this.actionEvent = actionEvent;
+    }
+
+    public String getCollectionPropertyName() {
+        return collectionPropertyName;
+    }
+
+    public void setCollectionPropertyName(String collectionPropertyName) {
+        this.collectionPropertyName = collectionPropertyName;
+    }
+
+    public String getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getViewId() {
+        return viewId;
+    }
+
+    public void setViewId(String viewId) {
+        this.viewId = viewId;
+    }
+
+    public String getWidgetId() {
+        return widgetId;
+    }
+
+    public void setWidgetId(String widgetId) {
+        this.widgetId = widgetId;
+    }
+
+    public String getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(String actionId) {
+        this.actionId = actionId;
+    }
 }

@@ -174,7 +174,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 				super.start();
 			}
 		});
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.BUS_ADMIN_SERVICE));
 		return lifecycles;
 	}
 	

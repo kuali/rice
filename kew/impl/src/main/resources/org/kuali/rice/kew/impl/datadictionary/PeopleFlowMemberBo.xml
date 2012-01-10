@@ -98,7 +98,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="maxLength" value="40"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="summary" value="Member id for the map stop"/>
     <property name="description" value="Member id for the map stop"/>
@@ -113,7 +113,7 @@
     <property name="maxLength" value="1"/>
     <property name="optionsFinderClass" value="org.kuali.rice.kim.bo.options.MemberTypeValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="summary" value="Type of the member the stop will go to"/>
     <property name="description" value="Type of the member the stop will go to"/>
@@ -129,7 +129,7 @@
       <bean parent="IntegerPatternConstraint" p:allowNegative="false"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="4"/>
+      <bean parent="Uif-TextControl" p:size="4"/>
     </property>
     <property name="summary" value="Stop number that the member should receive the request"/>
     <property name="description" value="Stop number that the member should receive the request"/>
@@ -143,7 +143,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="optionsFinderClass" value="org.kuali.rice.kew.impl.peopleflow.ActionPolicyValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="summary"
               value="For role members determines whether all members must take action or just the first"/>

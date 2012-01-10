@@ -99,10 +99,7 @@
 	<bean id="rice.ksb.javaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServiceImpl" lazy-init="true" />
 
 	<bean id="rice.ksb.digitalSignatureService" class="org.kuali.rice.ksb.security.service.impl.DigitalSignatureServiceImpl" lazy-init="true" />
-	
-  	<bean id="rice.ksb.busAdminService" class="org.kuali.rice.ksb.messaging.service.impl.BusAdminServiceImpl"
-  		p:threadPool-ref="rice.ksb.threadPool" />
-  		  
+
     <bean id="ksbService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
     <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"/>
     <property name="jaxWsService" value="true"/>
@@ -113,14 +110,5 @@
     <property name="servicePath" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH_SOAP }"/>
     <property name="cacheManager" value="ksbLocalCacheManager"/>
   </bean>
-
-
-  <bean id="rice.ksb.busAdminServiceDefinition" parent="ksbService"
-  		p:service-ref="rice.ksb.busAdminService"
-    	p:localServiceName="busAdminService" />
-    	
-    <bean id="rice.ksb.busAdminServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter"
-    	p:serviceDefinition-ref="rice.ksb.busAdminServiceDefinition"
-    	p:serviceBus-ref="rice.ksb.serviceBus" />
 
 </beans>

@@ -23,6 +23,9 @@ import java.util.Map;
 /**
  * Action Definition Contract
  *
+ * @see ActionDefinition
+ * @see org.kuali.rice.krms.framework.engine.Action
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionDefinitionContract extends Identifiable, Versioned {
@@ -49,7 +52,8 @@ public interface ActionDefinitionContract extends Identifiable, Versioned {
 
     /**
      * This is the description for what the parameter is used for.  This can be null or a blank string.
-     * @return description
+     *
+     * @return the description of the Action
      */
 	public String getDescription();
 
@@ -68,9 +72,9 @@ public interface ActionDefinitionContract extends Identifiable, Versioned {
 	public String getRuleId();
 	
 	/**
-	 * This method returns the id of the rule associated with the action
+	 * This method returns the sequence number of the  action
 	 * 
-	 * @return id for the Rule associated with the action.
+	 * @return sequence number of the action.
 	 */
 	public Integer getSequenceNumber();
 	

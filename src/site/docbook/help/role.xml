@@ -20,12 +20,12 @@
     <info>
         <title>Role</title>
     </info>
-    <para>Administration > System > Identity > Role > Role Lookup > Role</para>
+    <para>Administration > Identity > Identity > Role</para>
     <para>The Role document allows you to create a new KIM role and edit an existing role. Each role
         aggregates a specific set of permissions and responsibilities and allows you to assign
-        members to the role. KFS contains many existing roles that your institution may want to use
-        as is, but you may also change existing roles and add new ones by using the Role
-        document.</para>
+        members to the role. Rice and Rice Applications contain many existing roles that your
+        institution may want to use as is, but you may also change existing roles and add new ones
+        by using the Role document.</para>
     <para>The purpose of each role is defined by its associated permissions and responsibilities.
         Roles are classified by types that generally indicate the type of permissions and
         responsibilities with which they can be associated. </para>
@@ -33,6 +33,23 @@
         not provide an interface for creating role types.</para></note>
     <sect1>
         <title>Document Layout</title>
+        <sect2><title>Creating New Roles</title>
+            <para>When you click the <emphasis role="bold">Create New</emphasis> button, the
+                system displays the KIM Type Lookup. You must search for and select an existing
+                Type in order for the system to generate a new Role document.</para>
+            <note><para>Note that while the KIM Type Lookup is used when creating new groups and
+                roles, not all KIM types are valid for both. When using this Lookup, you may
+                receive different results depending on the KIM types that are valid for the
+                entity you are working with.</para></note>
+            <para><figure><title>KIM Type Lookup</title><mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/kim_type_lookup.png"/>
+                </imageobject>
+            </mediaobject>
+            </figure></para>
+        </sect2>
+        <sect2>
+         <title>Role Document</title>   
         <para>The Role document includes <emphasis role="bold">Document Overview</emphasis>,
                 <emphasis role="bold">Overview,</emphasis>
             <emphasis role="bold">Permissions</emphasis>, <emphasis role="bold"
@@ -41,11 +58,11 @@
         <para><figure><title>Role document</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/role_document.jpg"/>
+                    <imagedata fileref="../images/help/role_document.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <sect2>
+        <sect3>
             <title>Overview Tab</title>
             <para>This tab identifies the role with a unique system-assigned ID number, a namespace
                 and a name. Each role also has a type which tends to match the types of permissions
@@ -53,7 +70,7 @@
             <para><figure><title>Role Overview tab</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/help/role_overview.jpg"/>
+                        <imagedata fileref="../images/help/role_overview.png"/>
                     </imageobject>
                 </mediaobject></figure></para>
             <para>
@@ -84,7 +101,7 @@
                                     document.</para></td>
                         </tr>
                         <tr>
-                            <td>Role Namespace</td>
+                            <td>Namespace</td>
                             <td>Required. An indicator that associates the role with a particular
                                 application and module.</td>
                         </tr>
@@ -100,27 +117,16 @@
                                 responsibilities. Uncheck the box to indicate that this role is
                                 inactive</td>
                         </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>Optional. A longer text box for describing the needs or uses of the 
+                                role.</td>
+                        </tr>
                     </tbody>
                 </table>
             </para>
-            <sect3>
-                <title>Creating New Roles</title>
-                <para>When you click the <emphasis role="bold">Create New</emphasis> button, the
-                    system displays the KIM Type Lookup. You must search for and select an existing
-                    Type in order for the system to generate a new Role document.</para>
-                <note><para>Note that while the KIM Type Lookup is used when creating new groups and
-                    roles, not all KIM types are valid for both. When using this Lookup, you may
-                    receive different results depending on the KIM types that are valid for the
-                    entity you are working with.</para></note>
-                <para><figure><title>KIM Type Lookup</title><mediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/help/kim_type_lookup.jpg"/>
-                        </imageobject>
-                </mediaobject>
-                </figure></para>
-            </sect3>
-        </sect2>
-        <sect2>
+        </sect3>
+        <sect3>
             <title>Permissions Tab</title>
             <para>This tab identifies the permissions associated with this role. Permissions
                 authorize specific actions in the system with which they are associated. A role can
@@ -128,7 +134,7 @@
             <para><figure><title>Permissions tab</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/help/role_permissions_tab.jpg"/>
+                        <imagedata fileref="../images/help/role_permissions_tab.png"/>
                     </imageobject>
                 </mediaobject>
             </figure></para>
@@ -162,15 +168,9 @@
                 information about the permission. </para>
             <note><para>Permissions cannot be edited via the Role document. Use the Permission document to
                 perform this function. </para></note>
-            <para><figure><title>Permission values displayed</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/help/role_permission_values.jpg"/>
-                    </imageobject>
-                </mediaobject></figure></para>
             <para>
                 <table frame="void">
-                    <caption>Permissions tab definition, continued</caption>
+                    <caption>Permissions tab definition, results set</caption>
                     <col width="50%"/>
                     <col width="50%"/>
                     <thead>
@@ -216,8 +216,8 @@
                     </tbody>
                 </table>
             </para>
-        </sect2>
-        <sect2>
+        </sect3>
+        <sect3>
             <title>Responsibilities Tab</title>
             <para>This tab identifies the responsibilities associated with this role.
                 Responsibilities define the workflow actions that will be requested of the role. A
@@ -333,7 +333,7 @@
                     </tbody>
                 </table>
             </para>
-            <sect3>
+            <sect4>
                 <title>Assigning Action Detail Values</title>
                 <para>When adding a responsibility with an <emphasis role="bold">Action Detail
                         Values at Role Member Level</emphasis> value of 'False,' you must complete
@@ -417,16 +417,16 @@
                         </tbody>
                     </table>
                 </para>
-            </sect3>
-        </sect2>
-        <sect2>
+            </sect4>
+        </sect3>
+        <sect3>
             <title>Assignees Tab</title>
             <para>This tab contains all members who belong to this role. You may also use the tab to
                 add new members and edit the values associated with existing members.</para>
             <para><figure><title>Assignees tab</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/help/role_assignees.jpg"/>
+                        <imagedata fileref="../images/help/role_assignees.png"/>
                     </imageobject>
                 </mediaobject></figure></para>
             <para>
@@ -468,6 +468,11 @@
                                 this role.</td>
                         </tr>
                         <tr>
+                            <td>Full Name</td>
+                            <td>Display-only. Identifies the default, full name of the member being assigned to
+                                this role.</td>
+                        </tr>
+                        <tr>
                             <td>Active From Date</td>
                             <td>Optional. Allows you to qualify this member's association with this
                                 role by date. Entering a from date will define the earliest date on
@@ -492,16 +497,16 @@
             <note><para>Additional fields may be required, such as Chart Code or Organization Code,
                 depending on the role type selected.</para></note>
             <caution><para>Note that when assigning roles to other roles (nesting roles), qualifying values are not
-                    required. Some roles in the KFS base data contain special logic to derive the
-                    required qualifiers from the nested role itself without qualifiers being
-                    specified. You may always specify qualifying values for a nested role and should
-                    do so unless you know the role being assigned contains logic to derive the
-                    qualifiers from the nested role. Roles without the proper qualifiers can cause
-                    problems throughout your KFS instance. Please consult with a KFS technical
-                    resource if you are unsure of whether or not to provide qualifying values when
-                    assigning a role to another role.</para></caution>
-        </sect2>
-        <sect2>
+                        required. Some roles in applications may contain special logic to derive the
+                        required qualifiers from the nested role itself without qualifiers being
+                        specified. You may always specify qualifying values for a nested role and
+                        should do so unless you know the role being assigned contains logic to
+                        derive the qualifiers from the nested role. Roles without the proper
+                        qualifiers can cause problems throughout your applications. Please consult
+                        with an application technical resource if you are unsure of whether or not
+                        to provide qualifying values when assigning a role to another role.</para></caution>
+        </sect3>
+        <sect3>
             <title>Delegations Tab</title>
             <para>This tab identifies identifies delegates associated with the role. Delegates are
                 users that a member of this role has authorized to have the same permissions and
@@ -513,7 +518,7 @@
             <para><figure><title>Delegations tab</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/help/role_delegations.jpg"/>
+                        <imagedata fileref="../images/help/role_delegations.png"/>
                     </imageobject>
                 </mediaobject>
             </figure></para>
@@ -593,6 +598,7 @@
             </para>
             <note><para>Additional fields may be required, such as <emphasis role="bold">Chart
                 Code</emphasis>, depending on the role type selected.</para></note>
-        </sect2>
+        </sect3>
+        </sect2>     
     </sect1>
 </chapter>

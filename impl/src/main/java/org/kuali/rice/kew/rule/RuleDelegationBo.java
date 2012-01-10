@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.kew.api.rule.RuleDelegationContract;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,14 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.kew.api.rule.RuleDelegationContract;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import javax.persistence.Transient;
 
 
 /**
@@ -69,6 +70,15 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
 //	@JoinColumn(name="RULE_RSP_ID")
 //	private RuleResponsibility ruleResponsibility;
 
+    @Transient
+    private String groupReviewerName;
+    @Transient
+    private String groupReviewerNamespace;
+    @Transient
+    private String personReviewer;
+    @Transient
+    private String personReviewerType;
+
     public RuleDelegationBo() {
     }
 
@@ -91,6 +101,7 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
     public void setDelegateRuleId(String delegateRuleId) {
         this.delegateRuleId = delegateRuleId;
     }
+
     @Override
     public RuleBaseValues getDelegationRule() {
         return delegationRule;
@@ -98,6 +109,10 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
 
     public RuleBaseValues getDelegationRuleBaseValues() {
         return delegationRule;
+    }
+
+    public void setDelegationRuleBaseValues(RuleBaseValues delegationRuleBaseValues) {
+        this.delegationRule = delegationRuleBaseValues;
     }
 
     public void setDelegationRule(RuleBaseValues delegationRule) {
@@ -157,16 +172,50 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
         this.responsibilityId = ruleResponsibilityId;
     }
 
-	/**
-	 * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property
-	 * becomes null as a result of the refresh() method on the PersistableBusinessObjectBase superclass, an attempt is made to retrieve
-	 * it by calling refreshReferenceObject() for the property. If that also fails, then the RuleBaseValues instance that was in-place
-	 * prior to the refresh() superclass call will be used as the delegationRuleBaseValues property's value. This override is necessary
-	 * in order to prevent certain exceptions during the cancellation of a rule delegation maintenance document.
-	 * 
-	 * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refresh()
-	 * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
-	 */
+    public String getGroupReviewerName() {
+        return this.groupReviewerName;
+    }
+
+    public String getGroupReviewerNamespace() {
+        return this.groupReviewerNamespace;
+    }
+
+    public String getPersonReviewer() {
+        return this.personReviewer;
+    }
+
+    public void setGroupReviewerName(String groupReviewerName) {
+        this.groupReviewerName = groupReviewerName;
+    }
+
+    public void setGroupReviewerNamespace(String groupReviewerNamespace) {
+        this.groupReviewerNamespace = groupReviewerNamespace;
+    }
+
+    public void setPersonReviewer(String personReviewer) {
+        this.personReviewer = personReviewer;
+    }
+
+    public String getPersonReviewerType() {
+        return this.personReviewerType;
+    }
+
+    public void setPersonReviewerType(String personReviewerType) {
+        this.personReviewerType = personReviewerType;
+    }
+
+
+
+        /**
+       * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property
+       * becomes null as a result of the refresh() method on the PersistableBusinessObjectBase superclass, an attempt is made to retrieve
+       * it by calling refreshReferenceObject() for the property. If that also fails, then the RuleBaseValues instance that was in-place
+       * prior to the refresh() superclass call will be used as the delegationRuleBaseValues property's value. This override is necessary
+       * in order to prevent certain exceptions during the cancellation of a rule delegation maintenance document.
+       *
+       * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refresh()
+       * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
+       */
 	@Override
 	public void refresh() {
 		RuleBaseValues oldRuleBaseValues = this.getDelegationRule();

@@ -77,7 +77,6 @@ public final class KSBConstants {
     
     public static final class ServiceNames {
     	public static final String BAM_SERVICE = "rice.ksb.bamService";
-    	public static final String BUS_ADMIN_SERVICE = "rice.ksb.busAdminService";
     	public static final String BUS_IN_INTERCEPTORS = "ksbInInterceptors";
         public static final String BUS_OUT_INTERCEPTORS = "ksbOutInterceptors";
     	public static final String CXF_BUS = "cxf";

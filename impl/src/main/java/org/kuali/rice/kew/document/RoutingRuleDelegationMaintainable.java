@@ -69,6 +69,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	private void initializeBusinessObjects(MaintenanceDocument document) {
 		RuleDelegationBo oldRuleDelegation = getOldRuleDelegation(document);
 		RuleDelegationBo newRuleDelegation = getNewRuleDelegation(document);
+        
 		if (oldRuleDelegation.getDelegationRule() == null) {
 			oldRuleDelegation.setDelegationRule(new RuleBaseValues());
 		}
@@ -152,11 +153,11 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	}
 	
 	protected RuleDelegationBo getNewRuleDelegation(MaintenanceDocument document) {
-		return (RuleDelegationBo)document.getNewMaintainableObject().getBusinessObject();
+		return (RuleDelegationBo)document.getNewMaintainableObject().getDataObject();
 	}
 	
 	protected RuleDelegationBo getOldRuleDelegation(MaintenanceDocument document) {
-		return (RuleDelegationBo)document.getOldMaintainableObject().getBusinessObject();
+		return (RuleDelegationBo)document.getOldMaintainableObject().getDataObject();
 	}
 
 	protected RuleDelegationBo getThisRuleDelegation() {

@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.core.api.uif.Control;
+import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -1601,7 +1601,7 @@ public final class FieldUtils {
     }
 
     private static void applyControlAttributes(RemotableAttributeField remotableField, Field field) {
-        Control control = remotableField.getControl();
+        RemotableControlContract control = remotableField.getControl();
         String fieldType = null;
 
         if (control == null) {

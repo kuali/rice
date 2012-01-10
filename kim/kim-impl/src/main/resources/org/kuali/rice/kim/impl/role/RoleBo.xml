@@ -72,7 +72,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -84,7 +84,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -95,7 +95,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -106,7 +106,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
@@ -122,7 +122,7 @@
       <bean parent="TextareaControlDefinition" p:cols="40" p:rows="3"/>
     </property>
     <property name="controlField">
-      <bean parent="TextAreaControl" p:cols="40" p:rows="3"/>
+      <bean parent="Uif-TextAreaControl" p:cols="40" p:rows="3"/>
     </property>
     <property name="name" value="description"/>
     <property name="label" value="Description"/>
@@ -144,7 +144,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -161,7 +161,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
@@ -179,7 +179,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
@@ -197,7 +197,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
@@ -215,7 +215,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
@@ -233,7 +233,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
@@ -305,38 +305,38 @@
 
   <!-- KRAD Conversion -->
 
-  <bean id="Role-InquiryView" parent="InquiryView">
+  <bean id="Role-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Role Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
     <property name="Items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="id"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="kimTypeId"/>
-              <bean parent="InputField" p:propertyName="namespaceCode"/>
-              <bean parent="InputField" p:propertyName="description"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="kimTypeId"/>
+              <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="title" value="Role Information"/>
         </bean>
 
-        <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
           <property name="title" value="Members"/>
           <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.RoleMemberBo"/>
           <property name="propertyName" value="members"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="id"/>
-              <bean parent="InputField" p:propertyName="typeCode"/>
-              <bean parent="InputField" p:propertyName="memberId"/>
-              <bean parent="InputField" p:propertyName="activeFromDate"/>
-              <bean parent="InputField" p:propertyName="activeToDate"/>
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="typeCode"/>
+              <bean parent="Uif-InputField" p:propertyName="memberId"/>
+              <bean parent="Uif-InputField" p:propertyName="activeFromDate"/>
+              <bean parent="Uif-InputField" p:propertyName="activeToDate"/>
             </list>
           </property>
         </bean>
@@ -344,39 +344,39 @@
     </property>
   </bean>
 
-  <bean id="Role-LookupView" parent="LookupView">
+  <bean id="Role-LookupView" parent="Uif-LookupView">
     <property name="title" value="Role Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.role.RoleLookupableImpl" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="kimTypeId"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="principalName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="groupNamespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="groupName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="permNamespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="permName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="permTmplNamespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="permTmplName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="respNamespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="respName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="respTmplNamespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="respTmplName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="kimTypeId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="principalName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="groupNamespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="groupName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="permNamespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="permName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="permTmplNamespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="permTmplName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="respNamespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="respName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="respTmplNamespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="respTmplName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="kimRoleType.name"/>
-        <bean parent="InputField" p:propertyName="namespaceCode"/>
-        <bean parent="InputField" p:propertyName="name">
+        <bean parent="Uif-InputField" p:propertyName="kimRoleType.name"/>
+        <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-InputField" p:propertyName="name">
            <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
            <property name="fieldInquiry.inquiryParameters" value="id:id"/>
         </bean>
-        <bean parent="InputField" p:propertyName="description"/>
+        <bean parent="Uif-InputField" p:propertyName="description"/>
       </list>
     </property>
   </bean>

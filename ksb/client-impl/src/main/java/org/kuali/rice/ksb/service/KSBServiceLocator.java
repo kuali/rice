@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.ksb.service;
 
-import java.util.List;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusImpl;
 import org.apache.cxf.endpoint.ServerRegistry;
@@ -28,10 +23,8 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ksb.api.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.exceptionhandling.ExceptionRoutingService;
-import org.kuali.rice.ksb.messaging.service.BusAdminService;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExportManager;
 import org.kuali.rice.ksb.messaging.threadpool.KSBScheduledPool;
@@ -42,6 +35,10 @@ import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.List;
 
 
 public class KSBServiceLocator {
@@ -143,10 +140,6 @@ public class KSBServiceLocator {
 
     public static Scheduler getScheduler() {
         return (Scheduler) getService(KSBConstants.ServiceNames.SCHEDULER);
-    }
-
-    public static BusAdminService getService() {
-        return (BusAdminService) getService(KSBConstants.ServiceNames.BUS_ADMIN_SERVICE);
     }
 
 }

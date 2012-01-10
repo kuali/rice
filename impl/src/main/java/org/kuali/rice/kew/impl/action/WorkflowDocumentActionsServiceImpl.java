@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -976,9 +976,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         //validate inputs from client application if the attribute is capable
         if (attribute instanceof WorkflowAttributeXmlValidator) {
-            List<? extends AttributeError> validationErrors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();
+            List<? extends RemotableAttributeErrorContract> validationErrors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();
             if (validationErrors != null) {
-                for (AttributeError validationError : validationErrors) {
+                for (RemotableAttributeErrorContract validationError : validationErrors) {
                     errors.add(RemotableAttributeError.Builder.create(validationError).build());
                 }
             }

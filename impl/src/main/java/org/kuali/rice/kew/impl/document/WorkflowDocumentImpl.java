@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -239,7 +239,7 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
-    public List<? extends AttributeError> validateAttributeDefinition(
+    public List<? extends RemotableAttributeErrorContract> validateAttributeDefinition(
             WorkflowAttributeDefinition attributeDefinition) {
         return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
     }

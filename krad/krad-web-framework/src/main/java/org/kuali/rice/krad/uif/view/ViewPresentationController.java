@@ -39,6 +39,15 @@ public interface ViewPresentationController {
 
     public Set<String> getEditModes(View view, UifFormBase model);
 
+    /**
+     * Determines if the the given view and data is allowed to be edited
+     *
+     * @param view - view instance to check whether editing is allowed
+     * @param model - object containing the view data
+     * @return boolean true if editing on the view is allowed, false otherwise
+     */
+    public boolean canEditView(View view, ViewModel model);
+
     public boolean canEditField(View view, ViewModel model, Field field, String propertyName);
 
     public boolean canViewField(View view, ViewModel model, Field field, String propertyName);
@@ -53,7 +62,7 @@ public interface ViewPresentationController {
 
     public boolean canViewWidget(View view, ViewModel model, Widget widget, String widgetId);
 
-    public boolean canTakeAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
             String actionId);
 
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
@@ -68,7 +77,7 @@ public interface ViewPresentationController {
     public boolean canViewLineField(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Field field, String propertyName);
 
-    public boolean canTakeLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
+    public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId);
 
 }

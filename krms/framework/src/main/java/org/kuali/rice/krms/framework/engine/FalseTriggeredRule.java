@@ -17,9 +17,15 @@ package org.kuali.rice.krms.framework.engine;
 
 import java.util.List;
 
-
+/**
+ * A {@link BasicRule} that executes its {@link Action} when evaluation is false.
+ */
 public class FalseTriggeredRule extends BasicRule {
 
+    /**
+     * @param proposition
+     * @param actions
+     */
 	public FalseTriggeredRule(Proposition proposition, List<Action> actions) {
 		super(proposition, actions);
 	}

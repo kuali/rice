@@ -21,9 +21,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="lookups1" parent="Group" p:layoutManager.orientation="VERTICAL">
+  <bean id="lookups1" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
       <property name="disclosure.render" value="false" />
-      <property name="styleClasses" value="group_header" />
+      
       <property name="items">
         <list>
           <bean parent="GenericTextField" p:label="Inquiry" p:readOnly="true"
@@ -52,7 +52,7 @@
             p:propertyName="field72" p:defaultValue="a3">
             <property name="informationalDisplayPropertyNames" value="field73,field74" />
             <property name="fieldAttributeQuery">
-              <bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+              <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                 p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
             </property>
           </bean>
@@ -70,7 +70,7 @@
             p:instructionalText="click the button to perform a lookup on TravelAccounts"
             p:propertyName="field90">
             <property name="fieldLookup">
-              <bean parent="QuickFinderByScript"/>
+              <bean parent="Uif-QuickFinderByScript"/>
             </property>
             <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
             <property name="fieldLookup.fieldConversions">

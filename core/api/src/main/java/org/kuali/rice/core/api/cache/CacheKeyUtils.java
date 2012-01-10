@@ -26,45 +26,40 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * This is a utility class that generates cache keys for compound objects.
+ * A utility class that can be used to generate cache keys for more complex method signatures.  Currently, the utilities
+ * on this class focus on generating cache keys for collections of objects.  Since the caching infrastructure only
+ * supports a single @{code String} value as a key for cache entries, this utility helps to provide a standard way to
+ * generate such compound caching keys.
+ *
+ * <p>It is possible to use this utility class when specifying keys for cached objects using Spring's caching
+ * abstraction (which is what the Rice caching infrastructure is built on).  This is possible using the Spring
+ * Expression Language (SPEL).  An example might look something like the following:</p>
+ *
+ * <pre>
+ * {@code @Cacheable(value = "StuffCache", key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
+ * List<Stuff> getStuff(List<String> stuffIds); }
+ * </pre>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 2.0
  */
 public final class CacheKeyUtils {
 
     private CacheKeyUtils() {
-        throw new UnsupportedOperationException("do not call.");
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * Create a String key value out of a Map.  The Map should really just contain
-     * simple types.
-     * @param map the map.  if null will return ""
-     * @param <K> the map key type
-     * @return the map as a string value
-     */
-    public static <K extends Comparable<K>> String key(Map<K, ?> map) {
-        if (map == null) {
-            return "";
-        }
-
-        final SortedMap<K, ?> sorted = new TreeMap<K, Object>(map);
-        final StringBuilder b = new StringBuilder("[");
-        for (Map.Entry<K, ?> entry : sorted.entrySet()) {
-            if (entry != null && entry.getKey() != null && entry.getValue() != null) {
-                b.append(entry.getKey());
-                b.append(":");
-                b.append(entry.getValue());
-                b.append(",");
-            }
-        }
-        b.append("]");
-        return b.toString();
-    }
-
-    /**
-     * Create a String key value out of a Collection.  The Collection should really just contain
-     * simple types.
-     * @param col the collection.  if null will return ""
+     * Create a String key value out of a Collection.  It accomplishes this by first sorting the given collection
+     * (entries in the collection must implement Comparable) and then construct a key based on the {@code .toString()}
+     * values of each item in the sorted collection.
+     *
+     * <p>The sorting of the given list happens on a copy of the list, so this method does not side-affect the given
+     * list.</p>
+     *
+     * @param col the collection.  if null will return "", if empty, will return "[]"
      * @param <K> the col type
+     * 
      * @return the collection as a string value
      */
     public static <K extends Comparable<K>> String key(Collection<K> col) {

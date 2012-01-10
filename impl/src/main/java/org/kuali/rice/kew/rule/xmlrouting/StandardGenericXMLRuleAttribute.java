@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.rule.xmlrouting;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -628,7 +628,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     }
 
     // TODO: possibly simplify even further by unifying AttributeError and WorkflowServiceError
-    public List<? extends AttributeError> validateClientRoutingData() {
+    public List<? extends RemotableAttributeErrorContract> validateClientRoutingData() {
         LOG.debug("validating client routing data");
         try {
             return validate(getConfigXML(), new String[] { "ALL", "RULE" }, getParamMap(), new ErrorGenerator<RemotableAttributeError>() {

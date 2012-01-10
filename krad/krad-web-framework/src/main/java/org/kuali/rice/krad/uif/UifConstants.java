@@ -116,6 +116,7 @@ public class UifConstants {
     public static final String NO_BIND_ADJUST_PREFIX = "#form.";
     public static final String DEFAULT_PATH_BIND_ADJUST_PREFIX = "#dp.";
     public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
+    public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
 
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";

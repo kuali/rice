@@ -28,7 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.uif.AttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.w3c.dom.Element;
 

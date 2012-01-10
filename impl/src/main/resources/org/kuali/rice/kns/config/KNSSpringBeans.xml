@@ -83,7 +83,7 @@
 
 	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype"/>
 
-    <bean id="kualiMaintainable" class="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" scope="prototype">
+  <bean id="kualiMaintainable" class="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" scope="prototype">
         <property name="persistenceStructureService">
             <ref bean="persistenceStructureService" />
         </property>
@@ -434,5 +434,13 @@
       <ref bean="xmlObjectSerializerService"/>
     </property>
   </bean>
+
+  <bean id="buttonPermissionTypeService" class="org.kuali.rice.kns.service.impl.ButtonPermissionTypeServiceImpl"/>
+
+  <bean id="componentFieldPermissionTypeService"
+        class="org.kuali.rice.kns.service.impl.ComponentFieldPermissionTypeServiceImpl"/>
+
+  <bean id="componentSectionPermissionTypeService"
+        class="org.kuali.rice.kns.service.impl.ComponentSectionPermissionTypeServiceImpl"/>
 
   </beans>

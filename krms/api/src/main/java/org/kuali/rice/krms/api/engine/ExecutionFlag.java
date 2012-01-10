@@ -56,7 +56,11 @@ public enum ExecutionFlag {
 	EVALUATE_ALL_PROPOSITIONS(false);
 	
 	private final boolean defaultValue;
-	
+
+    /**
+     * Create an ExecutionFlag with the given value
+     * @param defaultValue
+     */
 	private ExecutionFlag(boolean defaultValue) {
 		this.defaultValue = defaultValue;
 	}

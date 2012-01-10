@@ -21,9 +21,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="regex1" parent="Group" p:layoutManager.orientation="VERTICAL">
+  <bean id="regex1" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
 		<property name="disclosure.render" value="false" />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="FixedPointPatternConstraint"

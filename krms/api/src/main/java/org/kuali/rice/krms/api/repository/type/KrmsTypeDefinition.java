@@ -33,9 +33,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Concrete model object implementation of KRMS KrmsType.
- * immutable.
- * Instances of KrmsType can be (un)marshalled to and from XML.
+ * An immutable, concrete model object implementation of a {@link KrmsTypeDefinitionContract}.
+ * <p>To construct an instance of a KrmsTypeDefinition, use the {@link KrmsTypeDefinition.Builder} class.
+ * Instances of KrmsType can be (un)marshalled to and from XML.<p/>
  *
  * @see KrmsTypeDefinitionContract
  */
@@ -138,7 +138,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
     }
 
 	/**
-     * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeDefinitionContract}.
+     * This builder is used to construct instances of KrmsTypeDefinition.  It enforces the constraints of the {@link KrmsTypeDefinitionContract}.
      */
     public static class Builder implements KrmsTypeDefinitionContract, ModelBuilder, Serializable {
 		private static final long serialVersionUID = -3469525730879441547L;
@@ -161,23 +161,35 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
             setAttributes(new ArrayList<KrmsTypeAttribute.Builder>());
         }
 
+        /**
+         * fluent interface that sets the serviceName field of the Builder.
+         *
+         * @param serviceName the service used to resolve attribute values
+         * @return a Builder object with the serviceName field set
+         */
         public Builder serviceName(String serviceName){
         	this.serviceName = serviceName;
         	return this;
         }
 
+        /**
+         * fluent interface that sets the attributes of KrmsTypeDefinition builder.
+         *
+         * @param attributes List of KrmsTypeAttribute builder objects. {@link KrmsTypeAttribute.Builder}
+         * @return a Builder object with the attributes collection set.
+         */
         public Builder attributes(List<KrmsTypeAttribute.Builder> attributes){
         	setAttributes(attributes);
         	return this;
         }
 
         /**
-         * Creates a builder from the given parameters.
+         * Creates a KrmsTypeDefinition builder from the given parameters.
          *
-         * @param name the KRMS type name
-         * @param namespace the KRMS type namespace
+         * @param name of the KrmsTypeDefinition
+         * @param namespace to which the KrmsTypeDefinition belongs
          * @return an instance of the builder with the fields already populated
-         * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
+         * @throws IllegalArgumentException if the either the name or namespace is null or blank
          */
         public static Builder create(String name, String namespace) {
             return new Builder(name, namespace);
@@ -188,6 +200,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
          *
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
+         * @throws IllegalArgumentException if the contract is null
          */
         public static Builder create(KrmsTypeDefinitionContract contract) {
         	if (contract == null) {
@@ -214,12 +227,18 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 *
-		 * @param id the id value to set
+		 * @param id the id value to set; can be null; a null id is an indicator
+         * the this has not yet been persisted to the database.
 		 */
         public void setId(String id) {
             this.id = id;
         }
 
+        /**
+         * Sets the name of the KrmsTypeDefinition
+         * @param name string value to assign to the name; cannot be null or blank
+         * @throws IllegalArgumentException if the name is null or blank
+         */
 		public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
@@ -227,6 +246,11 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 			this.name = name;
 		}
 
+        /**
+         * Sets the namespace of the KrmsTypeDefinition
+         * @param namespace string value to assign to the namespace; cannot be null or blank
+         * @throws IllegalArgumentException if the name is null or blank
+         */
 		public void setNamespace(String namespace) {
             if (StringUtils.isBlank(namespace)) {
                 throw new IllegalArgumentException("namespace is blank");
@@ -234,18 +258,38 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 			this.namespace = namespace;
 		}
 
+        /**
+         * Sets the name of the KRMS type service
+         * @param serviceName can be null.
+         */
 		public void setServiceName(String serviceName) {
 			this.serviceName = serviceName;
 		}
 
+        /**
+         * sets the List of attributes related to this KrmsTypeDefinition.
+         *
+         * @param attributes list of {@link KrmsTypeAttribute.Builder} representing the
+         * attributes assigned to this KrmsTypeDefinition; List may be empty, but not null
+         */
 		public void setAttributes(List<KrmsTypeAttribute.Builder> attributes){
 			this.attributes = attributes;
 		}
 
+        /**
+         * sets the active indicator value
+         * @param active boolean value to set
+         */
 		public void setActive(boolean active) {
 			this.active = active;
 		}
 
+        /**
+         * Sets the version number for this object.  In general, this value should only
+         * be null if the object has not yet been stored to a persistent data store.
+         * This version number is generally used for the purposes of optimistic locking.
+         * @param versionNumber the version number, or null if one has not been assigned yet.
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }
@@ -286,9 +330,9 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         }
 
 		/**
-		 * Builds an instance of a KrmsType based on the current state of the builder.
+		 * Builds an instance of a KrmsTypeDefinition based on the current state of the builder.
 		 *
-		 * @return the fully-constructed KrmsType
+		 * @return the fully-constructed KrmsTypeDefinition
 		 */
         @Override
         public KrmsTypeDefinition build() {

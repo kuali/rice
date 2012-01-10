@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
@@ -27,9 +28,10 @@ import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceStructureService;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -39,9 +41,7 @@ import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
@@ -702,38 +702,26 @@ public class DataDictionary  {
             }
         }
 
-        String prefix = StringUtils.capitalize(propertyName);
-        String getName = "get" + prefix;
-        String isName = "is" + prefix;
+        // Use PropertyUtils.getPropertyDescriptors instead of manually constructing PropertyDescriptor because of
+        // issues with introspection and generic/co-variant return types
+        // See https://issues.apache.org/jira/browse/BEANUTILS-340 for more details
 
-        try {
-
-            p = new PropertyDescriptor(propertyName, propertyClass, getName, null);
-
-        }
-        catch (IntrospectionException e) {
-            try {
-
-                p = new PropertyDescriptor(propertyName, propertyClass, isName, null);
-
-            }
-            catch (IntrospectionException f) {
-                // ignore it
+        PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(propertyClass);
+        if (ArrayUtils.isNotEmpty(descriptors)) {
+            for (PropertyDescriptor descriptor : descriptors) {
+                if (descriptor.getName().equals(propertyName)) {
+                    p = descriptor;
+                }
             }
         }
 
         // cache the property descriptor if we found it.
-        if (null != p) {
-
-            if (null == m) {
-
+        if (p != null) {
+            if (m == null) {
                 m = new TreeMap<String, PropertyDescriptor>();
                 cache.put(propertyClassName, m);
-
             }
-
             m.put(propertyName, p);
-
         }
 
         return p;

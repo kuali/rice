@@ -83,9 +83,9 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         for (String editMode : editModes) {
             Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
             additionalPermissionDetails.put(KimConstants.AttributeConstants.EDIT_MODE, editMode);
-            if (permissionExistsByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+            if (permissionExistsByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                     KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, additionalPermissionDetails)
-                    && !isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+                    && !isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                     KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId(),
                     additionalPermissionDetails, null)) {
                 unauthorizedEditModes.add(editMode);
@@ -94,6 +94,47 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         editModes.removeAll(unauthorizedEditModes);
 
         return editModes;
+    }
+
+    /**
+     * Checks for an open view permission for the view id, and if found verifies the user has that permission
+     *
+     * @see ViewAuthorizer#canOpenView(View, ViewModel, org.kuali.rice.kim.api.identity.Person)
+     */
+    public boolean canOpenView(View view, ViewModel model, Person user) {
+        Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
+
+        if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                KimConstants.PermissionTemplateNames.OPEN_VIEW, additionalPermissionDetails)) {
+            return isAuthorizedByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.OPEN_VIEW, user.getPrincipalId(), additionalPermissionDetails,
+                    null);
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks for an edit view permission for the view id, and if found verifies the user has that permission
+     *
+     * @see ViewAuthorizer#canEditView(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
+     *      org.kuali.rice.kim.api.identity.Person)
+     */
+    public boolean canEditView(View view, ViewModel model, Person user) {
+        Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
+
+        if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                KimConstants.PermissionTemplateNames.EDIT_VIEW, additionalPermissionDetails)) {
+            return isAuthorizedByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.EDIT_VIEW, user.getPrincipalId(), additionalPermissionDetails,
+                    null);
+        }
+
+        return true;
     }
 
     /**
@@ -128,7 +169,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             roleQualifications.putAll(field.getComponentSecurity().getAdditionalRoleQualifiers());
         }
 
-        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, user.getPrincipalId(), permissionDetails,
                 roleQualifications);
     }
@@ -166,7 +207,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             roleQualifications.putAll(field.getComponentSecurity().getAdditionalRoleQualifiers());
         }
 
-        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, user.getPrincipalId(), permissionDetails,
                 roleQualifications);
     }
@@ -256,10 +297,10 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     }
 
     /**
-     * @see ViewAuthorizer#canTakeAction(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
+     * @see ViewAuthorizer#canPerformAction(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
      * org.kuali.rice.krad.uif.field.ActionField, java.lang.String, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
-    public boolean canTakeAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
             String actionId, Person user) {
         // check action authz flag is set
         if (!actionField.getComponentSecurity().isPerformActionAuthz()) {
@@ -329,7 +370,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
                 KimConstants.PermissionTemplateNames.VIEW_LINE_FIELD, user, additionalPermissionDetails, null, false);
     }
 
-    public boolean canTakeLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
+    public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId,
             Person user) {
         // check perform line action authz flag is set
@@ -341,55 +382,13 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, collectionGroup.getId());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.COLLECTION_PROPERTY_NAME,
                 collectionGroup.getPropertyName());
+        if (StringUtils.isNotBlank(actionEvent)) {
+            additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_EVENT, actionEvent);
+        }
 
         return isAuthorizedByTemplate(view, actionField, model,
-                KimConstants.PermissionTemplateNames.VIEW_LINE_FIELD, user, additionalPermissionDetails, null, false);
-    }
-
-    /**
-     * Checks for an edit view permission for the view id, and if found verifies the user has that permission
-     *
-     * @param view - view instance to check permission for
-     * @param model - object containing the view data
-     * @param user - user to authorize
-     * @return boolean true if the user has the edit view permission or a permission does not exist, false otherwise
-     */
-    public boolean canEditView(View view, ViewModel model, Person user) {
-        Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
-
-        if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
-                KimConstants.PermissionTemplateNames.EDIT_VIEW, additionalPermissionDetails)) {
-            return isAuthorizedByTemplate(model, KRADConstants.KRAD_NAMESPACE,
-                    KimConstants.PermissionTemplateNames.EDIT_VIEW, user.getPrincipalId(), additionalPermissionDetails,
-                    null);
-        }
-
-        return true;
-    }
-
-    /**
-     * Checks for an open view permission for the view id, and if found verifies the user has that permission
-     *
-     * @param view - view instance to check permission for
-     * @param model - object containing the view data
-     * @param user - user to authorize
-     * @return boolean true if the user has the open view permission or a permission does not exist, false otherwise
-     */
-    public boolean canOpen(View view, ViewModel model, Person user) {
-        Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
-
-        if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
-                KimConstants.PermissionTemplateNames.OPEN_VIEW, additionalPermissionDetails)) {
-            return isAuthorizedByTemplate(model, KRADConstants.KRAD_NAMESPACE,
-                    KimConstants.PermissionTemplateNames.OPEN_VIEW, user.getPrincipalId(), additionalPermissionDetails,
-                    null);
-        }
-
-        return true;
+                KimConstants.PermissionTemplateNames.PERFORM_LINE_ACTION, user, additionalPermissionDetails, null,
+                false);
     }
 
     /**
@@ -454,7 +453,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
         permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
-        permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, group.getId());
+        permissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, group.getId());
 
         if (group instanceof CollectionGroup) {
             permissionDetails.put(KimConstants.AttributeConstants.COLLECTION_PROPERTY_NAME,

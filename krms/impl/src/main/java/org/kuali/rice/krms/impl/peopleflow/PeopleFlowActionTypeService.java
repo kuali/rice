@@ -298,7 +298,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
      * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
      * @param attributes the attributes to validate. Cannot be null.
      * @return
-     * @throws RiceIllegalArgumentException
+     * @throws RiceIllegalArgumentException if required attribute ATTRIBUTE_FIELD_NAME is not in the given attributes
      */
     @Override
     public List<RemotableAttributeError> validateAttributes(

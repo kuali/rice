@@ -126,9 +126,12 @@ function replacePage(contentDiv){
 	var page = jq("#viewpage_div", contentDiv);
     page.hide();
 	jq("#viewpage_div").replaceWith(page);
+
 	setPageBreadcrumb();
+
 	pageValidatorReady = false;
 	runHiddenScripts("viewpage_div");
+
     jq("#viewpage_div").show();
 }
 
@@ -154,44 +157,48 @@ function handleActionLink(methodToCall, navigateToPageId) {
  * and removed from the component.  This allows for label and component content seperation on fields
  *
  * @param id - id for the component to retrieve
- * @param actualId - base id (without suffixes) for the component that should be refreshed
+ * @param baseId - base id (without suffixes) for the component that should be refreshed
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-function retrieveComponent(id, actualId, methodToCall){
+function retrieveComponent(id, baseId, methodToCall){
 	var elementToBlock = jq("#" + id + "_refreshWrapper");
-/*	if(elementToBlock.find("#" + actualId + "_attribute_span").length){
-		elementToBlock = jq("#" + actualId +"_attribute_span");
-	}*/
-	
+
 	var updateRefreshableComponentCallback = function(htmlContent){
 		var component = jq("#" + id + "_refreshWrapper", htmlContent);
+
+        var displayWithId = id;
+        if (id.indexOf('_attribute') > 0) {
+            displayWithId = id.replace('_attribute', '');
+        }
+
 		// special label handling, if any
-		var theLabel = jq("#" + actualId + "_label_span", htmlContent);
-		if(jq(".displayWith-" + actualId).length && theLabel.length){
-			theLabel.addClass("displayWith-" + actualId);
-			jq("span.displayWith-" + actualId).replaceWith(theLabel);
-			component.remove("#" + actualId + "_label_span");
+		var theLabel = jq("#" + displayWithId + "_label_span", htmlContent);
+		if(jq(".displayWith-" + displayWithId).length && theLabel.length){
+			theLabel.addClass("displayWith-" + displayWithId);
+			jq("span.displayWith-" + displayWithId).replaceWith(theLabel);
+			component.remove("#" + displayWithId + "_label_span");
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
-
                 var origColor = jq(component).css("background-color");
                 jq(component).css("background-color", "");
                 jq(component).addClass("uif-progressiveDisclosure-highlight");
+
 				// replace component
 				if(jq("#" + id + "_refreshWrapper").length){
 					jq("#" + id + "_refreshWrapper").replaceWith(component);
 				}
+
 				runHiddenScripts(id + "_refreshWrapper");
                 if(origColor == ""){
                     origColor = "transparent";
                 }
-                jq("#" + id + "_refreshWrapper").animate({backgroundColor: origColor}, 5000);
 
+                jq("#" + id + "_refreshWrapper").animate({backgroundColor: origColor}, 5000);
 			}
 		});
 
-		jq(".displayWith-" + actualId).show();
+		jq(".displayWith-" + displayWithId).show();
 	};
 
     if (!methodToCall) {
@@ -341,6 +348,11 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 		jq("[name='"+ controlName +"']").change(function() {
 			var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
 			if(refreshDisclosure.length){
+                var displayWithId = disclosureId;
+                if (disclosureId.indexOf('_attribute') > 0) {
+                    displayWithId = disclosureId.replace('_attribute', '');
+                }
+
 				if(condition()){
 					if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
 						retrieveComponent(disclosureId, baseId, methodToCall);
@@ -357,15 +369,15 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
-						jq(".displayWith-" + baseId).show();
+						jq(".displayWith-" + displayWithId).show();
 
 					}
 				}
 				else{
 					refreshDisclosure.hide();
-					//ignore validation on hidden inputs
+					// ignore validation on hidden inputs
 					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
-					jq(".displayWith-" + baseId).hide();
+					jq(".displayWith-" + displayWithId).hide();
 				}
 			}
 		});

@@ -20,6 +20,9 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 /**
  * An Action executes on a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}
  *
+ * @see org.kuali.rice.krms.api.repository.action.ActionDefinitionContract
+ * @see org.kuali.rice.krms.api.repository.action.ActionDefinition
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Action {

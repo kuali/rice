@@ -135,7 +135,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.krad.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.api.identity.Person)
      */
     public boolean isPessimisticLockAdminUser(Person user) {
-    	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING,
+    	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING,
                 Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap() );
     }
 

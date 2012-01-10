@@ -72,7 +72,7 @@
       <bean parent="TextControlDefinition" p:size="2"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="2"/>
+      <bean parent="Uif-TextControl" p:size="2"/>
     </property>      
     <property name="summary" value="Campus Code"/>
     <property name="name" value="code"/>
@@ -89,7 +89,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>      
     <property name="summary" value="Campus Name"/>
     <property name="name" value="name"/>
@@ -205,20 +205,20 @@
   
   <!-- KRAD Inquiry Definition --> 
 
-  <bean id="Campus-InquiryView" parent="InquiryView">
+  <bean id="Campus-InquiryView" parent="Uif-InquiryView">
      <property name="title" value="Campus Inquiry"/>
      <property name="dataObjectClassName" value="org.kuali.rice.location.impl.campus.CampusBo"/>
      <property name="Items">
          <list>
-           <bean parent="GroupSectionGridLayout">
+           <bean parent="Uif-Disclosure-GridSection">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="InputField" p:propertyName="code"/>
-                <bean parent="InputField" p:propertyName="name"/>
-                <bean parent="InputField" p:propertyName="shortName"/>
-                <bean parent="InputField" p:propertyName="campusTypeCode"/>
-                <bean parent="InputField" p:propertyName="active"/>
+                <bean parent="Uif-InputField" p:propertyName="code"/>
+                <bean parent="Uif-InputField" p:propertyName="name"/>
+                <bean parent="Uif-InputField" p:propertyName="shortName"/>
+                <bean parent="Uif-InputField" p:propertyName="campusTypeCode"/>
+                <bean parent="Uif-InputField" p:propertyName="active"/>
                </list>
              </property>
              <property name="title" value="Campus Information"/>
@@ -229,25 +229,25 @@
 
   <!-- KRAD Lookup Definition -->
 
-  <bean id="Campus-LookupView" parent="LookupView">
+  <bean id="Campus-LookupView" parent="Uif-LookupView">
     <property name="title" value="Campus Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.location.impl.campus.CampusBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="code" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="shortName" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="campusTypeCode" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="shortName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="campusTypeCode" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="code"/>
-        <bean parent="InputField" p:propertyName="name"/>
-        <bean parent="InputField" p:propertyName="shortName"/>
-        <bean parent="InputField" p:propertyName="campusTypeCode"/>
-        <bean parent="InputField" p:propertyName="active"/>
+        <bean parent="Uif-InputField" p:propertyName="code"/>
+        <bean parent="Uif-InputField" p:propertyName="name"/>
+        <bean parent="Uif-InputField" p:propertyName="shortName"/>
+        <bean parent="Uif-InputField" p:propertyName="campusTypeCode"/>
+        <bean parent="Uif-InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>

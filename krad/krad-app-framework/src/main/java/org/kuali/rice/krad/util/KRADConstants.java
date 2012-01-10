@@ -56,7 +56,8 @@ public final class KRADConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
     
-    public static final String KRAD_NAMESPACE = "KR-NS";
+    public static final String KNS_NAMESPACE = "KR-NS";
+    public static final String KRAD_NAMESPACE = "KR-KRAD";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
     public static final String KUALI_RICE_SERVICE_BUS_NAMESPACE = "KR-BUS";
@@ -80,7 +81,7 @@ public final class KRADConstants {
     public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
     public static final String KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS = "canAddAdHocRequests";
     public static final String KUALI_ACTION_CAN_SEND_NOTE_FYI = "canSendNoteFyi";
-    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview";
+    public static final String KUALI_ACTION_CAN_EDIT_DOCUMENT_OVERVIEW = "canEditDocumentOverview";
     public static final String KUALI_ACTION_CAN_EXPORT = "canExport";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     

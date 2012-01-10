@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
@@ -44,12 +44,12 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 	
 	@Test public void testClientApplicationValidationImplementsWorkflowAttributeXmlValidator() throws Exception {
 		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create("TestRuleAttributeThree").build();
-        List<? extends AttributeError> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attDef);
+        List<? extends RemotableAttributeErrorContract> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attDef);
 		assertTrue("Validation errors should not be empty", !validationErrors.isEmpty());
 		assertEquals("Should be 2 validation errors", 2, validationErrors.size());
 		boolean foundKey1 = false;
 		boolean foundKey2 = false;
-		for (AttributeError error : validationErrors) {
+		for (RemotableAttributeErrorContract error : validationErrors) {
 			if (error.getAttributeName().equals("key1")) {
 				assertEquals("key1 key should have message of value1", "value1", error.getMessage());
 				foundKey1 = true;
@@ -65,7 +65,7 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 	
 	@Test public void testClientApplicationValidationNoImplementsWorkflowAttributeXmlValidator() throws Exception {
 		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create("TestRuleAttributeDuex").build();
-		List<? extends AttributeError> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attDef);
+		List<? extends RemotableAttributeErrorContract> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attDef);
 		assertTrue("Validation errors should be empty because WorkflowAttributeXmlValidator interface is not implemented", validationErrors.isEmpty());
 	}
 	

@@ -53,15 +53,40 @@ public interface ExecutionEnvironment {
 	 * @return true if an existing fact was updated, false if this was a new fact
 	 */
 	public boolean publishFact(Term factName, Object factValue);
-	
+
+    /**
+     * Add a {@link TermResolver}
+     * @param termResolver
+     */
 	public void addTermResolver(TermResolver<?> termResolver);
 
+    /**
+     * Resolve
+     * @param term {@link Term}
+     * @param caller
+     * @param <T>
+     * @return
+     * @throws {@link TermResolutionException}
+     */
 	public <T> T resolveTerm(Term term, Object caller) throws TermResolutionException;
-	
+
+    /**
+     * Return a set of Term for the given value
+     * @param caller
+     * @return Set<Term>
+     */
 	public Set<Term> getTermsForCaller(Object caller);
-	
+
+    /**
+     * Return the {@link ExecutionOptions}
+     * @return {@link ExecutionOptions}
+     */
 	public ExecutionOptions getExecutionOptions();
-	
+
+    /**
+     * Return the {@link EngineResults}
+     * @return {@link EngineResults}
+     */
 	public EngineResults getEngineResults();
 	
 }

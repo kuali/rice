@@ -115,13 +115,20 @@
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifIncidentReportDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">
@@ -807,64 +814,76 @@
   </bean>
 
   <bean id="documentTypePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl"/>
-
-  <bean id="campusRoleService" class="org.kuali.rice.krad.service.impl.CampusRoleTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.DocumentTypePermissionTypeServiceImpl"/>
 
   <bean id="documentTypeAndAttachmentTypePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndAttachmentTypePermissionTypeService"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndAttachmentTypePermissionTypeService"/>
 
   <bean id="documentTypeAndRelationshipToNoteAuthorPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService"/>
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
 
-  <bean id="namespacePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespacePermissionTypeServiceImpl"/>
+  <bean id="namespacePermissionTypeService" class="org.kuali.rice.krad.kim.NamespacePermissionTypeServiceImpl"/>
 
   <bean id="namespaceOrComponentPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="componentName"/>
     <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
-  <bean id="parameterPermissionTypeService" class="org.kuali.rice.krad.service.impl.ParameterPermissionTypeServiceImpl">
+  <bean id="parameterPermissionTypeService" class="org.kuali.rice.krad.kim.ParameterPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="componentName"/>
     <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
   <bean id="batchFeedOrJobPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="beanName"/>
     <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
-  <bean id="buttonPermissionTypeService" class="org.kuali.rice.krad.service.impl.ButtonPermissionTypeServiceImpl"/>
-
   <bean id="actionRequestTypePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.ActionRequestTypePermissionTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.ActionRequestTypePermissionTypeServiceImpl"/>
 
   <bean id="namespaceOrActionPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     <property name="exactMatchStringAttributeName" value="actionClass"/>
     <property name="namespaceRequiredOnStoredMap" value="false"/>
   </bean>
 
   <bean id="documentTypeAndEditModePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndEditModePermissionTypeServiceImpl"/>
-
-  <bean id="componentFieldPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.ComponentFieldPermissionTypeServiceImpl"/>
-
-  <bean id="componentSectionPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.ComponentSectionPermissionTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndEditModePermissionTypeServiceImpl"/>
 
   <bean id="documentTypeAndNodeAndFieldsPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl"/>
 
   <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
+
+  <bean id="viewPermissionTypeService" class="org.kuali.rice.krad.kim.ViewPermissionTypeServiceImpl"/>
+
+  <bean id="viewEditModePermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewEditModePermissionTypeServiceImpl"/>
+
+  <bean id="viewFieldPermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewFieldPermissionTypeServiceImpl"/>
+
+  <bean id="viewGroupPermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewGroupPermissionTypeServiceImpl"/>
+
+  <bean id="viewWidgetPermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewWidgetPermissionTypeServiceImpl"/>
+
+  <bean id="viewActionPermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewActionPermissionTypeServiceImpl"/>
+
+  <bean id="viewLineFieldPermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewLineFieldPermissionTypeServiceImpl"/>
+
+  <bean id="viewLineActionPermissionTypeService"
+        class="org.kuali.rice.krad.kim.ViewLineActionPermissionTypeServiceImpl"/>
 
   <bean id="dataObjectAuthorizationService"
         class="org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl"/>
@@ -878,8 +897,6 @@
       <ref bean="persistenceStructureService"/>
     </property>
   </bean>
-
-  <bean id="campusGroupTypeService" class="org.kuali.rice.krad.service.impl.CampusGroupTypeServiceImpl"/>
 
   <bean id="inactivateableFromToService" class="org.kuali.rice.krad.service.impl.InactivateableFromToServiceImpl">
     <property name="dateTimeService">
@@ -1050,5 +1067,5 @@
     <!--<property name="componentService" ref="rice.krad.import.componentService"/>-->
     <property name="applicationId" value="${application.id}"/>
   </bean>
-  
+
 </beans>

@@ -1,0 +1,312 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="database_setup" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+    <title>Installing and Configuring the Database Management System</title>
+    <para>Kuali Rice was developed using two relational database management systems: <emphasis
+            role="bold">MySQL</emphasis> and <emphasis role="bold">Oracle</emphasis>. </para>
+    <para>Rice runs, and has been tested with the following versions:<itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">Oracle</emphasis>
+                    <itemizedlist>
+                        <listitem>
+                            <para>Oracle Database 10g</para>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle Database 11g</para>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle Express Edition (XE)</para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>Use the Oracle JDBC Driver to connect to these databases.</para>
+                <para>Ensure that the Oracle database you intend to use encodes character data in a
+                    UTF variant by default. For Oracle XE, this entails downloading the "Universal"
+                    flavor of the binary, which uses AL32UTF8.</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">MySQL</emphasis><itemizedlist>
+                        <listitem>
+                            <para>MySQL 5.1.+</para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>Use the MySQL Connector/J (5.1.+) to connect to MySQL databases.</para>
+            </listitem>
+        </itemizedlist></para>
+    <para>You should be able to adapt Rice to other standard relational databases (e.g., Sybase,
+        Microsoft SQL Server, DB2, etc.). However, this Installation Guide does not provide
+        information for running Rice with these products.</para>
+    <section xml:id ="database_software_locations">
+        <title>Locations for Database Software</title>
+        <para>Below are locations from which Oracle and MySQL could be downloaded at the time of
+            release of Rice ${project.version}.</para>
+        <table frame="none">
+            <title>Locations for Database Software</title>
+            <tgroup cols="2">
+                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c2" colnum="2" colwidth="4.11*"/>
+                <thead>
+                    <row>
+                        <entry>Software</entry>
+                        <entry>Download Location</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Oracle Standard and Enterprise Editions </entry>
+                        <entry><link
+                                xlink:href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
+                                >http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html</link></entry>
+                    </row>
+                    <row>
+                        <entry>Oracle Express Edition</entry>
+                        <entry><link
+                                xlink:href="http://www.oracle.com/technetwork/database/express-edition/downloads/index.html"
+                                >http://www.oracle.com/technetwork/database/express-edition/downloads/index.html</link></entry>
+                    </row>
+                    <row>
+                        <entry>Oracle JDBC DB Driver</entry>
+                        <entry><link
+                                xlink:href="http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html"
+                                >http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html</link></entry>
+                    </row>
+                    <row>
+                        <entry>MySQL </entry>
+                        <entry><link xlink:href="http://www.mysql.com/downloads/"
+                                >http://www.mysql.com/downloads/</link></entry>
+                    </row>
+                    <row>
+                        <entry>MySQL Connector/J JDBC Driver</entry>
+                        <entry><link xlink:href="http://www.mysql.com/products/connector/j/"
+                                >http://www.mysql.com/products/connector/j/</link></entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+    </section>
+    <section>
+        <title>MySQL Database Preparation</title>
+        <para>Kuali Rice supports both MySQL and Oracle databases. However, MySQL is easier to
+            install than Oracle and uses less machine resources so many developers prefer to use
+            that when getting started with Rice.</para>
+        <section>
+            <title>Installation</title>
+            <para>The installation steps for MySQL are going to be different for each platform.
+                Please download the latest version MySQL Server from the location listed in the
+                <link linkend="database_software_locations">Locations for Database Software</link> section of this document and follow the installation
+                instructions for your platform.</para>
+            <note>
+                <para>You may be required to create an account on the MySQL site in order to
+                    download the software.</para>
+                <para>Please be sure to follow the instructions for installing MySQL on your
+                    platform very carefully. If downloading for Mac OS X, <emphasis role="bold"
+                        >be careful</emphasis> to download the appropriate version for your
+                    platform (32-bit vs. 64-bit and 10.6 vs 10.7)</para>
+            </note>
+        </section>
+        <section>
+            <title>Configuration</title>
+            <para>There are a few MySQL database configuration options that are required in
+                order for Kuali Rice to work properly. These will need to be set in either your
+                    <emphasis role="bold">my.cnf</emphasis> or <emphasis role="bold"
+                    >my.ini</emphasis> file. The location and names of these files will differ
+                depending on which platform you are working on. For details on where these files
+                can be found, see the following document:</para>
+            <para><link xlink:href="http://dev.mysql.com/doc/refman/5.1/en/option-files.html"
+                    >http://dev.mysql.com/doc/refman/5.1/en/option-files.html</link></para>
+            <para>Once you have located this file, please add the following options, paying
+                special attention to the line that needs to be commented out:</para>
+            <programlisting>[mysqld]
+max_allowed_packet=20M
+transaction-isolation=READ-COMMITTED
+lower_case_table_names=1
+max_connections=1000
+innodb_locks_unsafe_for_binlog=1
+...
+# Be sure to comment this out if it's in the file!!!
+#log-bin=mysql-bin</programlisting>
+            <para>Note that the <emphasis role="bold">[mysqld]</emphasis> section may already be
+                in your my.cnf file. If so, you can just add the options listed above underneath
+                that section</para>
+            <caution>
+                <para>It is very important that you comment out <emphasis role="bold"
+                        >log-bin</emphasis>. Otherwise you will end up with some very bad
+                    problems later!</para>
+            </caution>
+        </section>
+        <section>
+            <title>Verification</title>
+            <para>Before verifying your mysql installation you will need to ensure that MySQL is
+                running. Some of the platform-specific packages will set this up automatically
+                (or allow you to install yourself in the case of Mac OS X). If MySQL is not
+                starting automatically you can start it using a command like the following
+                example from Mac OS X:</para>
+            <programlisting>sudo /usr/local/mysql/bin/mysqld_safe</programlisting>
+            <para>This will start the MySQL server.</para>
+            <para>To verify that you can actually connect to the server, execute the following
+                at the command line:</para>
+            <programlisting>mysql -uroot</programlisting>
+            <para>This should bring yu to a command line client interface for the MySQL server.
+                Type "show databases;" and press return. You should see output similar to the
+                following.</para>
+            <programlisting>Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1
+Server version: 5.1.50-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| test               |
++--------------------+
+3 rows in set (0.13 sec)
+
+mysql> </programlisting>
+        </section>
+        <section>
+            <title>Install the JDBC Driver</title>
+            <para>Kuali Rice uses the MySQL Connector/J product as the native JDBC driver. Please
+                download this driver from the location specified in the <link
+                    linkend="database_software_locations">Locations for Database Software</link>
+                section of this Guide.</para>
+            <para>Once you have downloaded the JDBC driver that corresponds to your version of
+                MySQL, copy it to <emphasis role="bold">/java/drivers</emphasis>. <emphasis
+                    role="bold">/java/drivers</emphasis> is a hard coded directory that the Rice
+                scripts use as a default directory in which to search for drivers when the
+                installation scripts are running.</para>
+        </section>
+    </section>    
+    <section>
+        <title>Oracle Database Preparation</title>
+        <section>
+            <title>Installation</title>
+            <para>The installation steps for Oracle are going to be different for each platform and
+                version of Oracle. Please download from the location listed in the <link
+                    linkend="database_software_locations">Locations for Database Software</link>
+                section of this document and follow the installation instructions for your
+                platform.</para>
+                <para>To run the database completely on your local machine, we recommend installing
+                Oracle Express (XE). Please refer to the <link linkend="database_software_locations"
+                    >Locations for Database Software</link> section of this Installation Guide to
+                find the download location for this software.</para>
+        </section>
+        <section>
+            <title>Configuration</title>
+            <para>By default, OracleXE registers a web user interface on port 8080. This is the
+                same port that the standalone version of Rice is preconfigured to use. To avoid
+                a port conflict, you must change the port that the OracleXE web user interface
+                uses with the Oracle XE admin webapp:
+                <figure>
+                    <title>Oracle XE admin webapp</title>
+                    <mediaobject>    
+                        <imageobject>
+                            <imagedata fileref="../images/oracle_xe_admin_webapp.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </para>
+            <para>If you prefer, you can use the Oracle SQL tool described here to change the
+                OracleXE web user interface port: <link
+                    xlink:href="http://daust.blogspot.com/2006/01/xe-changing-default-http-port.html"
+                    >http://daust.blogspot.com/2006/01/xe-changing-default-http-port.html</link></para>
+                <para>Please edit your hosts file with an entry to refer to your Oracle database.
+                    When this Installation Guide refers to the Oracle database host server, it will
+                    be referred to in the examples as koracle.</para>
+                <para>Now edit the hosts file and add this:</para>
+                <programlisting>&lt;ip address of mysql server&gt; koracle</programlisting>
+        </section>
+        <section>
+            <title>Verification</title>
+            <para>To connect to the supporting Oracle database (i.e., run scripts, view database
+                tables, etc.), we recommend installing the Squirrel SQL client.  Please see the
+                <link linkend="squirrel_SQL">section on Squirrel SQL</link> for more information.</para>
+        </section>
+        <section>
+            <title>Install the JDBC Driver</title>
+            <para>Kuali Rice uses the standard Oracle JDBC driver as the native JDBC driver. Please
+                download this driver from the location specified in the <link
+                    linkend="database_software_locations">Locations for Database Software</link>
+                section of this Guide.</para>
+            <para>Once you have downloaded the JDBC driver that corresponds to your version of
+                Oracle, copy it to <emphasis role="bold">/java/drivers</emphasis>. <emphasis
+                    role="bold">/java/drivers</emphasis> is a hard coded directory that the Rice
+                scripts use as a default directory in which to search for drivers when the
+                installation scripts are running.</para>
+        </section>
+    </section>
+    <section>
+        <title>Suggested SQL Client Software</title>
+        <para>To examine and test your database setup, SQL client software is useful. Any SQL client
+            software that will connect to a MySQL or Oracle database will work. Two tools used by
+            the development team are the <emphasis role="bold">mysql</emphasis> command-line client
+            and SQuirrel SQL.</para>
+        <section>
+            <title>mysql client software</title>
+        <para>The <emphasis role="bold">mysql</emphasis> command-line client only works with MySQL
+                and is usually installed with the MySQL Server software. An example of connection to
+                MySQL as root and then switching to a database named <emphasis role="bold"
+                    >test</emphasis> can be found below:</para>
+        <programlisting>Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.1.50-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Database changed</programlisting>
+        </section>
+        <section xml:id="squirrel_SQL">
+            <title>SQuirrel SQL</title>
+           <para>Tools like SQuirrel SQL use JDBC to access the database and will work with both
+                MySQL and Oracle databases. You can download and install it from the following
+                URL:</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para><link xlink:href="http://squirrel-sql.sourceforge.net/"
+                                >http://squirrel-sql.sourceforge.net/</link></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <section>
+                <title>With MySQL</title>
+               <para>Connecting to a MySQL database with the name <emphasis role="bold">test</emphasis>
+                   would have a JDBC url like the following: <emphasis role="bold"
+                       >jdbc:mysql://localhost:3306/test</emphasis>.</para>
+            </section>
+            <section>
+                <title>With Oracle</title>
+               <para>The Rice SQL files use slash ‘/‘ as the statement delimiter. You may have to
+                   configure your SQL client appropriately so it can run the Rice SQL. In SQuirreL, you
+                   do this in Session->Session Properties->SQL->Statement Separator.</para>
+            </section>
+        </section>
+    </section>
+</chapter>

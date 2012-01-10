@@ -140,7 +140,7 @@
         p:permissionTemplateName="Open Document"/>
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
+        class="org.kuali.rice.krad.kim.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
 
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase"/>
 
@@ -148,22 +148,22 @@
         class="org.kuali.rice.kns.kim.responsibility.KimResponsibilityTypeServiceBase"/>
 
   <bean id="permissionPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
         p:exactMatchStringAttributeName="permissionName"
         p:namespaceRequiredOnStoredMap="true"/>
 
   <bean id="responsibilityPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
         p:exactMatchStringAttributeName="responsibilityName"
         p:namespaceRequiredOnStoredMap="true"/>
 
   <bean id="rolePermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
         p:exactMatchStringAttributeName="roleName"
         p:namespaceRequiredOnStoredMap="true"/>
 
   <bean id="groupPermissionTypeService"
-        class="org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
+        class="org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl"
         p:exactMatchStringAttributeName="groupName"
         p:namespaceRequiredOnStoredMap="true"/>
 

@@ -25,18 +25,47 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Operators enumeration for comparing objects.  EQUALS NOT_EQUALS GREATER_THAN GREATER_THAN_EQUAL LESS_THAN LESS_THAN_EQUAL
+ * Operators enumeration for comparing objects.  EQUALS NOT_EQUALS GREATER_THAN GREATER_THAN_EQUAL LESS_THAN LESS_THAN_EQUAL.
+ * Uses registered {@link EngineComparatorExtension} for the given objects or the {@link DefaultComparisonOperator}.
  */
 public enum ComparisonOperator implements Coded {
 
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} EQUALS
+     */
 	EQUALS("="),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} NOT_EQUALS
+     */
 	NOT_EQUALS("!="),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} GREATER_THAN
+     */
 	GREATER_THAN(">"),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} GREATER_THAN_EQUAL
+     */
 	GREATER_THAN_EQUAL(">="),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} LESS_THAN
+     */
 	LESS_THAN("<"),
+
+    /**
+     * use this flag with the static factory to get a {@link ComparisonOperator} LESS_THAN_EQUAL
+     */
 	LESS_THAN_EQUAL("<=");
 	
 	private final String code;
+
+    /**
+     * Create a ComparisonOperator from the given code
+     * @param code
+     */
 	private ComparisonOperator(String code) {
 		this.code = code;
 	}
@@ -50,7 +79,7 @@ public enum ComparisonOperator implements Coded {
 	}
 
     /**
-     *
+     * Create a ComparisonOperator from the given code
      * @param code
      * @return a ComparisonOperator created with the given code.
      * @throws IllegalArgumentException if the given code does not exist
@@ -68,9 +97,9 @@ public enum ComparisonOperator implements Coded {
 	}
 
     /**
-     *
-     * @param lhs
-     * @param rhs
+     * Compare the given objects
+     * @param lhs left hand side object
+     * @param rhs right hand side object
      * @return boolean value of comparison results based on the type of operator.
      */
 	public boolean compare(Object lhs, Object rhs) {
@@ -91,9 +120,16 @@ public enum ComparisonOperator implements Coded {
         } else if (this == LESS_THAN_EQUAL) {
             return result <= 0;
         }
-        throw new IllegalStateException("Invalid unequal operator detected: " + this);
+        throw new IllegalStateException("Invalid comparison operator detected: " + this);
 	}
 
+    /**
+     * Return registered {@link EngineComparatorExtension} for the given objects or the {@link DefaultComparisonOperator}.
+     * @param lhs left hand side object
+     * @param rhs right hand side object
+     * @return EngineComparatorExtension
+     */
+    // TODO EGHM move to utility class, or service if new possible breakage is okay. AgendaEditorController has similar code with different extension
     private EngineComparatorExtension determineComparatorOperator(Object lhs, Object rhs) {
         EngineComparatorExtension extension = null;
         try {
@@ -104,9 +140,11 @@ public enum ComparisonOperator implements Coded {
                 extension = service.findComparatorExtension(lhs, rhs); // maybe better to get result from service?
             }
         } catch (Exception e) {
-            e.printStackTrace();   // TODO EGHM
+            e.printStackTrace();   // TODO EGHM log
         }
         if (extension == null) {
+            // It's tempting to have findStringCoercionExtension return this default, but if the Service lookup fails we
+            // will be broken in a new way.  Would that be okay? - EGHM
             extension = new DefaultComparisonOperator();
         }
         return extension;
@@ -137,6 +175,7 @@ public enum ComparisonOperator implements Coded {
 
     static final class Adapter extends EnumStringAdapter<ComparisonOperator> {
 
+        @Override
         protected Class<ComparisonOperator> getEnumClass() {
             return ComparisonOperator.class;
         }

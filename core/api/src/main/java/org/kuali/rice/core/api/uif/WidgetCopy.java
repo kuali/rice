@@ -22,7 +22,7 @@ final class WidgetCopy {
         throw new IllegalArgumentException("do not call.");
     }
 
-    public static RemotableAbstractWidget.Builder toBuilder(Widget w) {
+    public static RemotableAbstractWidget.Builder toBuilder(RemotableWidgetContract w) {
         if (w == null) {
             throw new IllegalArgumentException("w is null");
         }

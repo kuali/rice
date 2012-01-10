@@ -18,8 +18,7 @@ package org.kuali.rice.krms.framework.engine.expression;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
- * TODO...
- * 
+ * The {@link Expression} used in Construction will be returned when invoked with any given {@link ExecutionEnvironment}
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
@@ -27,6 +26,10 @@ public final class ConstantExpression<T> implements Expression<T> {
 
 	private final T value;
 
+    /**
+     * Create a ConstantExpression with the given value
+     * @param value
+     */
 	public ConstantExpression(T value) {
 		this.value = value;
 	}

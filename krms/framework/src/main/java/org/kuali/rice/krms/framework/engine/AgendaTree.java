@@ -17,8 +17,15 @@ package org.kuali.rice.krms.framework.engine;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface AgendaTree {
-	
+
+    /**
+     * Execute with the given @{link ExecutionEnvironment}
+     * @param environment
+     */
 	public void execute(ExecutionEnvironment environment);
 	
 }

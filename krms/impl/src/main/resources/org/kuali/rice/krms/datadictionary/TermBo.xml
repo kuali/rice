@@ -45,7 +45,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="ID"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="ID"/>
@@ -56,7 +56,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Description"/>
     <property name="controlField">
-      <bean parent="TextAreaControl" p:cols="40" p:rows="1" p:textExpand="true" />
+      <bean parent="Uif-TextAreaControl" p:cols="40" p:rows="1" p:textExpand="true" />
     </property>
     <property name="name" value="description"/>
     <property name="label" value="Description"/>
@@ -97,7 +97,7 @@
     </property>
   </bean>
 
-  <bean id="Term-MaintenanceView" parent="MaintenanceView">
+  <bean id="Term-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="title" value="Term"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.TermMaintainable"/>
@@ -108,31 +108,31 @@
     </property>
   </bean>
 
-  <bean id="Term-MainSection" parent="MaintenanceGroupSection">
+  <bean id="Term-MainSection" parent="Uif-MaintenanceSection">
     <property name="title" value="Term" />
     <property name="items">
       <list>
-        <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2">
+        <bean parent="Uif-GridGroup" p:layoutManager.numberOfColumns="2">
           <property name="items">
             <list>
 
-              <bean parent="InputField" p:propertyName="description" p:label="Description" p:required="true">
+              <bean parent="Uif-InputField" p:propertyName="description" p:label="Description" p:required="true">
                 <!-- property name="control">
-                  <bean parent="TextAreaControl"/>
+                  <bean parent="Uif-TextAreaControl"/>
                 </property -->
 
               </bean>
 
-              <bean parent="InputField" p:propertyName="specification.namespace" p:label="Namespace" p:required="true">
+              <bean parent="Uif-InputField" p:propertyName="specification.namespace" p:label="Namespace" p:required="true">
                 <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
                 <property name="control">
-                  <bean parent="SelectControl"/>
+                  <bean parent="Uif-DropdownControl"/>
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="specificationId" p:label="Specification ID" p:required="true">
+              <bean parent="Uif-InputField" p:propertyName="specificationId" p:label="Specification ID" p:required="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30"/>
+                  <bean parent="Uif-TextControl" p:size="30"/>
                 </property>
 
                 <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
@@ -154,34 +154,34 @@
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="specification.name" p:label="Name" p:readOnly="true">
+              <bean parent="Uif-InputField" p:propertyName="specification.name" p:label="Name" p:readOnly="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30"/>
+                  <bean parent="Uif-TextControl" p:size="30"/>
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true">
+              <bean parent="Uif-InputField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30"/>
+                  <bean parent="Uif-TextControl" p:size="30"/>
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true">
+              <bean parent="Uif-InputField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true">
                 <property name="control">
-                  <bean parent="TextAreaControl" p:cols="80" p:rows="3"/>
+                  <bean parent="Uif-TextAreaControl" p:cols="80" p:rows="3"/>
                 </property>
               </bean>
 
               <bean parent="TermSpec-Categories" p:readOnly="true" p:propertyName="specification.categories" />
 
-              <bean parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" p:colSpan="2"
+              <bean parent="Uif-Disclosure-GridSection" p:layoutManager.numberOfColumns="2" p:colSpan="2"
                     p:refreshWhenChanged="document.newMaintainableObject.dataObject.specificationId"
                     p:renderHeader="@{document.newMaintainableObject.dataObject.specificationId != null and document.newMaintainableObject.dataObject.specificationId.trim() != ''}"
                     p:title="Term Parameters" >
 
                 <property name="items">
                   <list>
-                    <bean parent="RemoteFieldsHolder" p:propertyName="parametersMap"
+                    <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="parametersMap"
                           p:fetchingMethodToCall="retrieveCustomAttributes"/>
                   </list>
                 </property>
@@ -193,14 +193,14 @@
 
         <!-- custom attributes on term -->
         <!--
-        <bean parent="GroupGridLayout" p:layoutManager.numberOfColumns="2"
+        <bean parent="Uif-GridSection" p:layoutManager.numberOfColumns="2"
               p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId"
               p:title="Type Attributes"
               p:renderHeader="@{document.newMaintainableObject.dataObject.agenda.typeId != null and document.newMaintainableObject.dataObject.agenda.typeId != ''}">
 
           <property name="items">
             <list>
-              <bean parent="RemoteFieldsHolder" p:propertyName="customAttributesMap"
+              <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="customAttributesMap"
                     p:fetchingMethodToCall="retrieveCustomAttributes"/>
             </list>
           </property>
@@ -215,13 +215,13 @@
 
 
   <bean id="TermBo-InquiryView" parent="TermBo-InquiryView-parentBean"/>
-  <bean id="TermBo-InquiryView-parentBean" abstract="true" parent="InquiryView">
+  <bean id="TermBo-InquiryView-parentBean" abstract="true" parent="Uif-InquiryView">
     <property name="title" value="Term Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
       <list>
-        <bean parent="GroupSection">
+        <bean parent="Uif-Disclosure-BoxSection">
           <property name="header.headerText" value="Term" />
           <property name="items">
           <list>
@@ -236,39 +236,39 @@
   </bean>
 
   <bean id="TermBo-InquiryView-term" parent="TermBo-InquiryView-term-parentBean"/>
-  <bean id="TermBo-InquiryView-term-parentBean" abstract="true" parent="GroupGridBodyOnly">
+  <bean id="TermBo-InquiryView-term-parentBean" abstract="true" parent="Uif-GridGroup">
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="id"/>
+        <bean parent="Uif-InputField" p:propertyName="id"/>
       </list>
     </property>
   </bean>
 
   <bean id="TermBo-InquiryView-parameters" parent="TermBo-InquiryView-parameters-parentBean"/>
-  <bean id="TermBo-InquiryView-parameters-parentBean" abstract="true" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
+  <bean id="TermBo-InquiryView-parameters-parentBean" abstract="true" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">
      <property name="title" value="Term Parameters"/>
      <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.TermParameterBo"/>
      <property name="propertyName" value="parameters"/>
      <property name="layoutManager.renderSequenceField" value="false"/>
      <property name="items">
        <list>
-         <bean parent="InputField" p:propertyName="id"/>
-         <bean parent="InputField" p:propertyName="name"/>
-         <bean parent="InputField" p:propertyName="value"/>
+         <bean parent="Uif-InputField" p:propertyName="id"/>
+         <bean parent="Uif-InputField" p:propertyName="name"/>
+         <bean parent="Uif-InputField" p:propertyName="value"/>
         </list>
      </property>
   </bean>
 
   <bean id="TermBo-InquiryView-termSpecification" parent="TermBo-InquiryView-termSpecification-parentBean"/>
-  <bean id="TermBo-InquiryView-termSpecification-parentBean" abstract="true" parent="GroupSectionGridLayout">
+  <bean id="TermBo-InquiryView-termSpecification-parentBean" abstract="true" parent="Uif-Disclosure-GridSection">
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="specification.id"/>
-        <bean parent="InputField" p:propertyName="specification.name"/>
-        <bean parent="InputField" p:propertyName="specification.namespace"/>
-        <bean parent="InputField" p:propertyName="specification.type"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.id"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.name"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.namespace"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.type"/>
       </list>
     </property>
     <property name="title" value="Term Specification"/>
@@ -278,24 +278,24 @@
 
 
   <bean id="TermBo-LookupView" parent="TermBo-LookupView-parentBean" />
-  <bean id="TermBo-LookupView-parentBean" abstract="true" parent="LookupView">
+  <bean id="TermBo-LookupView-parentBean" abstract="true" parent="Uif-LookupView">
     <property name="title" value="Term Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="specification.namespace"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="specification.name"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="specification.type"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.namespace"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.type"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id"/>
-        <bean parent="InputField" p:propertyName="specification.id"/>
-        <bean parent="InputField" p:propertyName="specification.namespace"/>
-        <bean parent="InputField" p:propertyName="specification.name"/>
-        <bean parent="InputField" p:propertyName="specification.type"/>
+        <bean parent="Uif-InputField" p:propertyName="id"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.id"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.namespace"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.name"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.type"/>
       </list>
     </property>
   </bean>

@@ -76,6 +76,7 @@ public class View extends ContainerBase {
 
     private String viewNamespaceCode;
     private String viewName;
+    private ViewTheme theme;
 
     private int idSequence;
 
@@ -1383,5 +1384,21 @@ public class View extends ContainerBase {
      */
     public void setPreLoadScript(String preLoadScript) {
         this.preLoadScript = preLoadScript;
+    }
+
+    /**
+     * The theme which contains stylesheets for this view
+     * @return
+     */
+    public ViewTheme getTheme() {
+        return theme;
+    }
+
+    /**
+     * Setter for The theme which contains stylesheets for this view
+     * @return
+     */
+    public void setTheme(ViewTheme theme) {
+        this.theme = theme;
     }
 }

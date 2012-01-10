@@ -16,35 +16,48 @@
 package org.kuali.rice.krms.api.repository.type;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
-
-public interface KrmsTypeAttributeContract extends Identifiable, Inactivatable {
+/**
+ * This is the contract for a KrmsTypeAttribute.
+ * <p>A KrmsTypeAttribute associates a {@link KrmsTypeDefinition} with an individual attribute
+ * {@link KrmsAttributeDefinition} associated with a the KrmsTypeDefinition.</p>
+ * @see KrmsTypeAttributeContract
+ */
+public interface KrmsTypeAttributeContract extends Identifiable, Inactivatable, Versioned {
 
 	/**
-	 * This is the KrmsType to which the attribute applies 
+	 * Returns the id of the KrmsTypeDefinition to which the attribute applies
 	 *
 	 * <p>
-	 * It is a id of a KRMS type related to the attribute.
+	 * A KRMS type definition has zero or more attributes associated with it.
+     * The id field indicates which type definition this attribute is associated
+     * with. It is the id of a KrmsTypeDefinition related to the attribute. This required
+     * field may not be null or blank.
 	 * </p>
-	 * @return id for KRMS type related to the attribute.
+	 * @return id for KrmsTypeDefinition related to the attribute.
 	 */
 	public String getTypeId();
 
 	/**
-	 * This is the id of the definition of the attribute. 
+	 * Returns the id of the KrmsAttributeDefinition of the attribute.
 	 *
 	 * <p>
-	 * It identifies the attribute definition
+	 * The attribute definition contains metadata about the attribute. This
+     * is a required field and may not be null or blank. Many
+     * attributes may share the same attribute definition.
 	 * </p>
-	 * @return the attribute definition id.
+	 * @return the attribute definition id
 	 */
 	public String getAttributeDefinitionId();
 
 	/**
-	 * This is the sequence number of the attribute
+	 * Returns the sequence number of the attribute within the KrmsTypeDefinition collection.
+     * <p>The list of attributes is an ordered list. This value represents the position in the list
+     * and cannot be null.</p>
 	 * 
-	 * @return the service name of the KrmsTypeAttribute
+	 * @return the sequence number of the attribute
 	 */
 	public Integer getSequenceNumber();
 

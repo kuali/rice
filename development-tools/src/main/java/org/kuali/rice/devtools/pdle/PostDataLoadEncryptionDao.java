@@ -15,11 +15,18 @@
  */
 package org.kuali.rice.devtools.pdle;
 
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * This interface defines the DB access methods required by the PostDataLoadEncryptionService
  */
 public interface PostDataLoadEncryptionDao {
+    
+    final int UNENCRYPTED_VALUE_INDEX = 0;
+    final int ENCRYPTED_VALUE_INDEX = 1;
+    
     void createBackupTable(String tableName);
 
     void truncateTable(String tableName);
@@ -27,4 +34,19 @@ public interface PostDataLoadEncryptionDao {
     void restoreTableFromBackup(String tableName);
 
     void dropBackupTable(String tableName);
+          
+    boolean doesBackupTableExist(String tableName);
+
+    void addEncryptionIndicatorToBackupTable(String tableName);
+
+    void dropEncryptionIndicatorFromBackupTable(String tableName);
+
+    void updateColumnValuesInBackupTable(String tableName, Map<String, List<String>> columnNameOldNewValuesMap);
+
+    List<Map<String, String>> retrieveUnencryptedColumnValuesFromBackupTable(String tableName, final List<String> columnNames, int numberOfRowsToCommitAfter);
+
+    String getUpdateBackupTableColumnsSql(String tableName, Map<String, List<String>> columnNameOldNewValuesMap);
+
+    boolean performEncryption(final String tableName, final List<Map<String, List<String>>> rowsToEncryptColumnNameOldNewValuesMap) throws Exception;
+        
 }

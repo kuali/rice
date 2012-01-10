@@ -73,7 +73,7 @@
       <bean parent="TextControlDefinition" p:size="36"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="12"/>
+      <bean parent="Uif-TextControl" p:size="12"/>
     </property>      
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="notePostedTimestamp"/>
@@ -93,7 +93,7 @@
       <bean parent="TextControlDefinition" p:size="3"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="3"/>
+      <bean parent="Uif-TextControl" p:size="3"/>
     </property>     
     <property name="summary" value="notePurgeCode"/>
     <property name="name" value="notePurgeCode"/>
@@ -114,7 +114,7 @@
       <bean parent="TextareaControlDefinition" p:cols="50" p:rows="3"/>
     </property>
     <property name="controlField">
-      <bean parent="TextAreaControl" p:cols="50" p:rows="3"/>
+      <bean parent="Uif-TextAreaControl" p:cols="50" p:rows="3"/>
     </property>     
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="noteText"/>
@@ -132,7 +132,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>     
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="noteTopicText"/>
@@ -152,7 +152,7 @@
       <bean parent="TextControlDefinition" p:size="6"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="6"/>
+      <bean parent="Uif-TextControl" p:size="6"/>
     </property>    
     <property name="summary" value="noteTypeCode"/>
     <property name="name" value="noteTypeCode"/>
@@ -186,7 +186,7 @@
       <bean parent="TextControlDefinition" p:size="36"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="36"/>
+      <bean parent="Uif-TextControl" p:size="36"/>
     </property>     
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="attachment"/>

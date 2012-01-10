@@ -71,7 +71,7 @@ public interface TermResolver <T> {
 	 * @param resolvedPrereqs the resolved prereqs
 	 * @param parameters any parameters on the {@link Term} to be resolved (which must match those declared via {@link #getParameterNames()} 
 	 * @return the resolved fact value for the specified {@link Term}
-	 * @throws TermResolutionException if something bad happens during the term resolution process
+	 * @throws {@link TermResolutionException} if something bad happens during the term resolution process
 	 */
 	T resolve(Map<String, Object> resolvedPrereqs, Map<String, String> parameters) throws TermResolutionException;
 }

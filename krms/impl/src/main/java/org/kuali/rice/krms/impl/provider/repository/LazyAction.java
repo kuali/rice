@@ -22,7 +22,7 @@ import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
- * An Action that doesn't load its members until execution.
+ * An {@link Action} that doesn't load its members until execution.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

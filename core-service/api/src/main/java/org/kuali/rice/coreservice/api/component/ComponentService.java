@@ -84,7 +84,7 @@ public interface ComponentService {
      * components from multiple sources.</p>
      *
      * <p>The {@code componentSetId} on each of the components supplied in the list must either be null or equal to the
-     * component set id that is passed to this method, otherwise an {@code IllegalArgumentException} will be thrown.</p>
+     * component set id that is passed to this method, otherwise a {@code RiceIllegalArgumentException} will be thrown.</p>
      *
      * @param componentSetId an id that uniquely identifies this set of components being checked.  The service will use
      * this to track the components being published

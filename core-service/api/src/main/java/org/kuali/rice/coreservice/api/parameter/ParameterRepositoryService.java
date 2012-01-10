@@ -48,7 +48,8 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="createParameter")
     @WebResult(name = "parameter")
-    @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
+    //why do we need to clear the parameter cache when creating a new parameter?
+    //@CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
     Parameter createParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 

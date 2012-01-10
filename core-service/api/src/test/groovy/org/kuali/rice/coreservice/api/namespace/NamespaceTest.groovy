@@ -56,17 +56,17 @@ class NamespaceTest {
         org.kuali.rice.coreservice.api.namespace.Namespace.Builder.create("  ", APP_ID);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     void test_Builder_fail_second_null() {
         org.kuali.rice.coreservice.api.namespace.Namespace.Builder.create(CODE, null);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     void test_Builder_fail_second_empty() {
         org.kuali.rice.coreservice.api.namespace.Namespace.Builder.create(CODE, "");
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     void test_Builder_fail_second_whitespace() {
         org.kuali.rice.coreservice.api.namespace.Namespace.Builder.create(CODE, "");
     }

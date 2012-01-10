@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 public interface NamespaceContract extends Versioned, GloballyUnique, Inactivatable, Coded {
 
     /**
-     * This the id of the application which owns this Namespace.  This cannot be null or a blank string.
+     * This the id of the application which owns this Namespace.  This can be null or a blank string.
      *
      * <p>
      * It is a way of assigning the Namespace to a specific rice application or rice ecosystem.

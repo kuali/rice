@@ -17,10 +17,9 @@ package org.kuali.rice.coreservice.web.namespace;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KeyValuesService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,33 +32,28 @@ public class NamespaceValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
 
         // get a list of all Namespaces
-        KeyValuesService boService = KRADServiceLocator.getKeyValuesService();
-        List<NamespaceBo> bos = (List<NamespaceBo>) boService.findAll(NamespaceBo.class);
+        List<Namespace> namespaces = CoreServiceApiServiceLocator.getNamespaceService().findAllNamespaces();
         // copy the list of codes before sorting, since we can't modify the results from this method
-        if ( bos == null ) {
-        	bos = new ArrayList<NamespaceBo>(0);
-        } else {
-        	bos = new ArrayList<NamespaceBo>( bos );
-        }
+        namespaces = namespaces == null ? new ArrayList<Namespace>(0) : new ArrayList<Namespace>( namespaces );
 
         // sort using comparator.
-        Collections.sort(bos, NamespaceComparator.INSTANCE); 
+        Collections.sort(namespaces, NamespaceComparator.INSTANCE);
 
         // create a new list (code, descriptive-name)
-        List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );
+        List<KeyValue> labels = new ArrayList<KeyValue>( namespaces.size() );
         labels.add(new ConcreteKeyValue("", ""));
-        for ( NamespaceBo bo : bos ) {
-            labels.add( new ConcreteKeyValue(bo.getCode(), bo.getName() ) );
+        for ( Namespace namespace : namespaces ) {
+            labels.add( new ConcreteKeyValue(namespace.getCode(), namespace.getName() ) );
         }
         return labels;
     }
 
-    private static class NamespaceComparator implements Comparator<NamespaceBo> {
-        public static final Comparator<NamespaceBo> INSTANCE = new NamespaceComparator();
+    private static class NamespaceComparator implements Comparator<Namespace> {
+        public static final Comparator<Namespace> INSTANCE = new NamespaceComparator();
 
         @Override
-        public int compare(NamespaceBo o1, NamespaceBo o2) {
-            return o1.getCode().compareTo( o2.getCode() );
+        public int compare(Namespace o1, Namespace o2) {
+            return o1.getName().compareTo( o2.getName() );
         }
     }
 }

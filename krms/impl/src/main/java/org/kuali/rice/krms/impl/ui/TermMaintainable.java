@@ -26,6 +26,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermResolverBo;
@@ -128,11 +129,14 @@ public class TermMaintainable extends MaintainableImpl {
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
 
-        TermBo termBo = (TermBo)document.getNewMaintainableObject().getDataObject();
+        TermBo termBo = (TermBo) super.retrieveObjectForEditOrCopy(document, dataObjectKeys);
         termBo.exportToParametersMap();
 
-        return super.retrieveObjectForEditOrCopy(document,
-                dataObjectKeys);    //To change body of overridden methods use File | Settings | File Templates.
+        if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
+            document.getDocumentHeader().setDocumentDescription("New Term Document");
+        }
+
+        return termBo;
     }
 
     /**

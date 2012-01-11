@@ -205,7 +205,7 @@ class XMLSearchableAttributeContent {
         final Visibility visibility;
         final SearchDefinition searchDefinition;
         final String fieldEvaluationExpr;
-        final boolean showResultColumn;
+        final Boolean showResultColumn;
         final Lookup lookup;
 
         FieldDef(Node n) throws XPathExpressionException {
@@ -214,8 +214,7 @@ class XMLSearchableAttributeContent {
             this.title= getStringAttr(n, "title");
             this.defaultValue = getNodeText(xpath, n, "value");
             this.fieldEvaluationExpr = getNodeText(xpath, n, "fieldEvaluation/xpathexpression");
-            Boolean b = getBoolean(xpath, n, "resultColumn/@show");
-            this.showResultColumn = b == null ? true : b;
+            this.showResultColumn = getBoolean(xpath, n, "resultColumn/@show");
             // TODO: it might be better to invert responsibility here
             // so we can assign null values for missing entries (at least those we don't expect defaults for)
             this.display = new Display(xpath, n);
@@ -223,6 +222,15 @@ class XMLSearchableAttributeContent {
             this.visibility = new Visibility(xpath, n);
             this.searchDefinition = new SearchDefinition(xpath, n);
             this.lookup = new Lookup(xpath, n, name);
+        }
+
+        /**
+         * Returns whether this field should be displayed in search results.  If 'resultColumn/@show' is explicitly defined
+         * this value will be used, otherwise it will defer to the field criteria visibility, defaulting to 'true' if unset
+         * @return
+         */
+        boolean isDisplayedInSearchResults() {
+            return showResultColumn != null ? showResultColumn : (visibility.visible != null ? visibility.visible : true);
         }
 
         /**

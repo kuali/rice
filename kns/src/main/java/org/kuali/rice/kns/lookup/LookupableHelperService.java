@@ -17,7 +17,9 @@ package org.kuali.rice.kns.lookup;
 
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
@@ -69,7 +71,7 @@ public interface LookupableHelperService extends Serializable{
     /**
      * @return List of Column objects used to render the result table
      */
-    public List getColumns();
+    public List<? extends Column> getColumns();
 
     /**
      * Validates the values filled in as search criteria, also checks for required field values.
@@ -85,7 +87,7 @@ public interface LookupableHelperService extends Serializable{
      * @return List of business objects found by the search
      * @throws Exception
      */
-    public List getSearchResults(Map<String, String> fieldValues);
+    public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues);
 
     /**
      * Similar to getSearchResults, but the number of returned rows is not bounded
@@ -93,7 +95,7 @@ public interface LookupableHelperService extends Serializable{
      * @param fieldValues
      * @return
      */
-    public List getSearchResultsUnbounded(Map<String, String> fieldValues);
+    public List<? extends BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
 
     /**
      * Determines if there should be more search fields rendered based on already entered search criteria.
@@ -248,7 +250,7 @@ public interface LookupableHelperService extends Serializable{
      * @param bounded
      * @return the list of result BOs, possibly bounded
      */
-    public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded);
+    public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, Collection<ResultRow> resultTable, boolean bounded);
 
     /**
      * This method returns a list of the default columns used to sort the result set.  For multiple value lookups,

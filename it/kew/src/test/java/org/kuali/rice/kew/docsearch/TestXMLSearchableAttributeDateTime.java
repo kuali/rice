@@ -67,6 +67,11 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
         RemotableAttributeLookupSettings.Builder settings = RemotableAttributeLookupSettings.Builder.create();
         settings.setRanged(true);
         settings.setUpperBoundInclusive(false);
+
+        // test result table column visibility
+        // see: DocumentSearchResultAttributeVisibilityTest
+        settings.setInResults(false);
+
         builder.setAttributeLookupSettings(settings);
 		fields.add(builder.build());
         return fields;

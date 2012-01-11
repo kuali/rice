@@ -113,6 +113,7 @@
 					<visibility>
 						<column visible="false"/>
 					</visibility>
+          <resultColumn show="false"/>
 					<validation required="true">
 						<regex>^[a-zA-Z ]+$</regex>
 						<message>Invalid first name</message>

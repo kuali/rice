@@ -113,7 +113,7 @@ public interface Lookupable extends Serializable {
      * @param bounded
      * @return results of lookup
      */
-    public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded);
+    public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded);
 
     /**
      * Performs a search and returns result list.
@@ -122,7 +122,7 @@ public interface Lookupable extends Serializable {
      * @return List of business objects found by the search
      * @throws Exception
      */
-    public List<BusinessObject> getSearchResults(Map<String, String> fieldValues);
+    public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues);
 
     /**
      * Similar to getSearchResults, but the number of returned rows is not bounded
@@ -130,7 +130,7 @@ public interface Lookupable extends Serializable {
      * @param fieldValues
      * @return
      */
-    public List<BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
+    public List<? extends BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues);
 
     /**
      * @return String providing source for optional extra button

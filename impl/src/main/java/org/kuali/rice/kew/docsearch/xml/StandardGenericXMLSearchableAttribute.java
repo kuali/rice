@@ -298,7 +298,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         }
 
         // resultcolumn
-        attributeLookupSettings.setInResults(field.showResultColumn);
+        attributeLookupSettings.setInResults(field.isDisplayedInSearchResults());
 
         // SearchDefinition
         // data type operations
@@ -412,7 +412,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             }
         }
         if ("column".equals(type) || "fieldAndColumn".equals(type)) {
-            attributeLookupSettings.setInResults(visible);
+            attributeLookupSettings.setInCriteria(visible);
         }
     }
 

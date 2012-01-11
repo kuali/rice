@@ -77,7 +77,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
         final org.kuali.rice.kns.lookup.Lookupable lookupable = getLookupableForBusinessObject(boClass);
         for (String lookupId : lookupIds) {
         	final Map<String, String> lookupKeys = convertLookupIdToPKFieldMap(lookupId, boClass);
-        	List<BusinessObject> bos = lookupable.getSearchResults(lookupKeys);
+        	List<? extends BusinessObject> bos = lookupable.getSearchResults(lookupKeys);
         	
         	// we should only get one business object...but let's put them all in...
         	for (BusinessObject bo : bos) {

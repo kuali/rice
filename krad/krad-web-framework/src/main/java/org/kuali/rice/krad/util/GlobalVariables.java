@@ -149,8 +149,22 @@ public final class GlobalVariables {
      * @param callable the code to run under a new set of GlobalVariables
      */
     public static <T> T doInNewGlobalVariables(Callable<T> callable) throws Exception {
+        return doInNewGlobalVariables(null, callable);
+    }
+
+    /**
+     * Convenience method that creates a new GlobalVariables stack frame, initialized with the provided
+     * UserSession (which may be the previous UserSession).
+     * @param userSession the UserSession to initialize the new frame with (may be null)
+     * @param callable the code to run under a new set of GlobalVariables
+     * @throws Exception
+     */
+    public static <T> T doInNewGlobalVariables(UserSession userSession, Callable<T> callable) throws Exception {
         try {
-            pushGlobalVariables();
+            GlobalVariables vars = pushGlobalVariables();
+            if (userSession != null) {
+                vars.userSession = userSession;
+            }
             return callable.call();
         } finally {
             popGlobalVariables();

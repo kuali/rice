@@ -258,6 +258,13 @@
       								</documentation>
       							</annotation>
       						</element>
+                  <element name="resultColumn" type="ra:resultColumn" minOccurs="0">
+                    <annotation>
+                      <documentation>
+                        Indicates whether this field should show up in search results.
+                      </documentation>
+                    </annotation>
+                  </element>
 
       						<element name="searchDefinition" type="ra:searchDefinition" minOccurs="0">
       						  <annotation>
@@ -505,6 +512,10 @@
       <enumeration value="DATETIME"/>
     </restriction>
   </simpleType>
+
+  <complexType name="resultColumn">
+    <attribute name="show"/>
+  </complexType>
 
   <complexType name="visibility">
     <choice>

@@ -105,7 +105,7 @@ public class KualiLookupableImpl implements Lookupable {
      *
      * @return List found business objects
      */
-    public List<BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues) {
+    public List<? extends BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues) {
         return getLookupableHelperService().getSearchResultsUnbounded(fieldValues);
     }
 
@@ -116,7 +116,7 @@ public class KualiLookupableImpl implements Lookupable {
      *
      * @return List found business objects
      */
-    public List<BusinessObject> getSearchResults(Map<String, String> fieldValues) {
+    public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues) {
         return getLookupableHelperService().getSearchResults(fieldValues);
     }
 
@@ -302,7 +302,7 @@ public class KualiLookupableImpl implements Lookupable {
      * Performs a lookup that can only return one row.
      * @see Lookupable#performLookup(org.kuali.rice.krad.web.struts.form.LookupForm, java.util.List, boolean)
      */
-    public Collection performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
+    public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, List<ResultRow> resultTable, boolean bounded) {
         return getLookupableHelperService().performLookup(lookupForm, resultTable, bounded);
     }
 

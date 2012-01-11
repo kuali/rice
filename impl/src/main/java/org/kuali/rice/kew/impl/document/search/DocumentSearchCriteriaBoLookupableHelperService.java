@@ -20,6 +20,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
@@ -236,8 +237,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     @Override
-    public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
-        Collection lookupResult = super.performLookup(lookupForm, resultTable, bounded);
+    public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, Collection<ResultRow> resultTable, boolean bounded) {
+        Collection<? extends BusinessObject> lookupResult = super.performLookup(lookupForm, resultTable, bounded);
         postProcessResults(resultTable, this.searchResults);
         return lookupResult;
     }
@@ -824,7 +825,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             for (RemotableAttributeField searchAttributeField : searchAttributeFields) {
                 // TODO - KULRICE-5738 - add check here to make sure the searchable attribute should be displayed in result set
                 // right now this is default always including all searchable attributes!
-                additionalFieldNamesToInclude.add(searchAttributeField.getName());
+                if (searchAttributeField.getAttributeLookupSettings() == null ||
+                    searchAttributeField.getAttributeLookupSettings().isInResults()) {
+                    additionalFieldNamesToInclude.add(searchAttributeField.getName());
+                }
             }
         }
         if (resultSetConfiguration.getCustomFieldNamesToAdd() != null) {

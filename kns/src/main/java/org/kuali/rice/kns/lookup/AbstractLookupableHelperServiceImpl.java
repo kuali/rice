@@ -1085,12 +1085,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @param bounded
      * @return
      */
-    public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
+    public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, Collection<ResultRow> resultTable, boolean bounded) {
         Map lookupFormFields = lookupForm.getFieldsForLookup();
 
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
-        Collection displayList;
+        Collection<? extends BusinessObject> displayList;
 
         LookupUtils.preProcessRangeFields(lookupFormFields);
 

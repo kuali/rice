@@ -20,16 +20,15 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.SessionTicket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Holds info about the User Session
@@ -40,7 +39,7 @@ public class UserSession implements Serializable {
 
     private Person person;
     private Person backdoorUser;
-    private int nextObjectKey;
+    private AtomicInteger nextObjectKey;
     private Map<String,Object> objectMap;
     private String kualiSessionId;
 
@@ -68,8 +67,8 @@ public class UserSession implements Serializable {
         if (this.person == null) {
         	throw new IllegalArgumentException("Failed to locate a principal with principal name '" + principalName + "'");
         }
-        this.nextObjectKey = 0;
-        this.objectMap = new HashMap<String,Object>();
+        this.nextObjectKey = new AtomicInteger(0);
+        this.objectMap = new ConcurrentHashMap<String,Object>();
     }
 
     
@@ -154,7 +153,7 @@ public class UserSession implements Serializable {
      * @param object
      */
     public String addObjectWithGeneratedKey(Serializable object, String keyPrefix) {
-        String objectKey = keyPrefix + nextObjectKey++;
+        String objectKey = keyPrefix + nextObjectKey.incrementAndGet();
         objectMap.put(objectKey, object);
         return objectKey;
     }
@@ -167,7 +166,7 @@ public class UserSession implements Serializable {
      * @param object
      */
     public String addObjectWithGeneratedKey(Object object) {
-        String objectKey = nextObjectKey++ + "";
+        String objectKey = nextObjectKey.incrementAndGet() + "";
         objectMap.put(objectKey, object);
         return objectKey;
     }
@@ -180,9 +179,7 @@ public class UserSession implements Serializable {
      * 
      */
     public void addObject(String key, Object object) {
-
         objectMap.put(key, object);
-
     }
 
     /**
@@ -192,6 +189,9 @@ public class UserSession implements Serializable {
      * @param objectKey
      */
     public Object retrieveObject(String objectKey) {
+        if (objectKey == null) {
+            return null;
+        }
         return this.objectMap.get(objectKey);
     }
 
@@ -202,7 +202,9 @@ public class UserSession implements Serializable {
      * @param objectKey
      */
     public void removeObject(String objectKey) {
-        this.objectMap.remove(objectKey);
+        if (objectKey != null) {
+            this.objectMap.remove(objectKey);
+        }
     }
 
     /**

@@ -77,6 +77,15 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		return convertServiceInfoBoList(serviceInfoBos);
 	}
 
+    @Override
+    public List<ServiceInfo> getAllServicesForApplication(String applicationId) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(applicationId)) {
+            throw new RiceIllegalArgumentException("applicationId cannot be blank");
+        }
+        List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllServiceInfosForApplication(applicationId);
+        return convertServiceInfoBoList(serviceInfoBos);
+    }
+
 	@Override
 	public ServiceDescriptor getServiceDescriptor(String serviceDescriptorId)
 			throws RiceIllegalArgumentException {

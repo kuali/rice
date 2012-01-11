@@ -77,6 +77,11 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 		return getDelegate().getAllServicesForInstance(instanceId);
 	}
 
+    @Override
+    public List<ServiceInfo> getAllServicesForApplication(String applicationId) {
+        return getDelegate().getAllServicesForApplication(applicationId);
+    }
+
 	@Override
 	public ServiceDescriptor getServiceDescriptor(String serviceDescriptorId)
 			throws RiceIllegalArgumentException {

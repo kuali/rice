@@ -59,4 +59,16 @@ class ServiceRegistryImplTest {
         List<ServiceInfo> serviceInfos = serviceRegistry.getAllServicesForInstance("instanceName")
         Assert.assertEquals(serviceInfos, listToReturn)
     }
+
+    @Test
+    public void testGetAllServiceInfosForApplication() {
+        mockServiceRegistryDao.demand.getAllServiceInfosForApplication(1..1) {
+            String id -> return bosToReturn;
+        }
+
+        injectServiceRegistryDao();
+
+        List<ServiceInfo> serviceInfos = serviceRegistry.getAllServicesForApplication("applicationId")
+        Assert.assertEquals(serviceInfos, listToReturn)
+    }
 }

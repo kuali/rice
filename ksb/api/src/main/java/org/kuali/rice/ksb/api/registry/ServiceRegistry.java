@@ -145,6 +145,25 @@ public interface ServiceRegistry {
 	@XmlElementWrapper(name = "serviceInfos", required = false)
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getAllServicesForInstance(@WebParam(name = "instanceId") String instanceId) throws RiceIllegalArgumentException;
+
+    /**
+     * Returns an unmodifiable list of {@link ServiceInfo} for all services that
+     * have an application id which matches the given application id, regardless of
+     * their status.  If there are no services published for the given application,
+     * this method should return an empty list.
+     *
+     * @param applicationId the application id of the services to locate
+     *
+     * @return an unmodifiable listof {@code ServiceInfo} for all services in the
+     * registry for the given application id
+     *
+     * @throws RiceIllegalArgumentException if applicationId is a null or blank value
+     */
+    @WebMethod(operationName = "getAllServicesForApplication")
+    @WebResult(name = "serviceInfos")
+    @XmlElementWrapper(name = "serviceInfos", required = false)
+    @XmlElement(name = "serviceInfo", required = false)
+    List<ServiceInfo> getAllServicesForApplication(@WebParam(name = "applicationId") String applicationId) throws RiceIllegalArgumentException;
 	
 	/**
 	 * Returns the {@link ServiceDescriptor} which has the given id.  If there

@@ -1119,4 +1119,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', end
 	border: 1px solid #CCC;
 	}
     
-	
+div.uif-headerField.uif-sectionHeaderField	a:hover {
+	text-decoration:none;
+}

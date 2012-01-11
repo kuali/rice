@@ -268,7 +268,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 
 	}
 	
-	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=";
+	private static final String ROLE_ID_URL_KEY = "&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=";
 
 	@Override
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
@@ -294,7 +294,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
 		if (StringUtils.isNotBlank(href) && href.contains(ROLE_ID_URL_KEY)) {
-			int idx1 = href.indexOf("&"+ KimConstants.PrimaryKeyConstants.SUB_ROLE_ID+"=");
+			int idx1 = href.indexOf("&"+ KimConstants.PrimaryKeyConstants.ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {
 		    	idx2 = href.length();

@@ -218,7 +218,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public Role getRole(String roleId) throws RiceIllegalStateException  {
-        incomingParamCheck(roleId, "rpleId");
+        incomingParamCheck(roleId, "roleId");
 
         RoleBo roleBo = getRoleBo(roleId);
         if (roleBo == null) {

@@ -47,6 +47,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
@@ -494,12 +495,21 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
             // This will search for people with the ability for the valid operands.
             List<Person> personList = KimApiServiceLocator.getPersonService().findPeople(m, false);
-            if(CollectionUtils.isEmpty(personList)) {
-                // they entered something that returned nothing... so we should return nothing
-                return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
-            }
-
             List<String> principalList = new ArrayList<String>();
+
+            if(CollectionUtils.isEmpty(personList)) {
+            	// findPeople allows for wildcards, but the person must be active.  If no one was found, 
+            	// check for an exact inactive user.
+                PrincipalContract tempPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(viewer.trim());
+        		if (tempPrincipal != null) {
+                    principalList.add(tempPrincipal.getPrincipalId());
+            	} else {
+                    // they entered something that returned nothing... so we should return nothing
+                	
+                    return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
+            	}
+            }
+            
             for (Person person : personList){
                 principalList.add(person.getPrincipalId());
             }
@@ -560,14 +570,20 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         // This will search for people with the ability for the valid operands.
         List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
-
-        if(pList == null || pList.isEmpty() ){
-            // they entered something that returned nothing... so we should return nothing
-             return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
-        }
-
         List<String> principalList = new ArrayList<String>();
-
+       
+        if(pList == null || pList.isEmpty() ){
+       		// findPeople allows for wildcards, but the person must be active.  If no one was found, 
+       		// check for an exact inactive user.
+       		PrincipalContract tempPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(initiatorPrincipalName.trim());
+       		if (tempPrincipal != null) {
+       			principalList.add(tempPrincipal.getPrincipalId());
+       		} else {
+                // they entered something that returned nothing... so we should return nothing
+                return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
+        	}
+        }
+        
         for(Person p: pList){
             principalList.add(p.getPrincipalId());
         }
@@ -586,12 +602,20 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
             // This will search for people with the ability for the valid operands.
             List<Person> pList = KimApiServiceLocator.getPersonService().findPeople(m, false);
+            List<String> principalList = new ArrayList<String>();
 
             if(pList == null || pList.isEmpty() ){
-                 return "";
+           		// findPeople allows for wildcards, but the person must be active.  If no one was found, 
+           		// check for an exact inactive user.
+                PrincipalContract tempPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(approver.trim());
+                
+                if (tempPrincipal != null) {
+           			principalList.add(tempPrincipal.getPrincipalId());
+                } else {
+                    // they entered something that returned nothing... so we should return nothing
+                    return new StringBuilder(whereClausePredicatePrefix + " 1 = 0 ").toString();
+                }
             }
-
-            List<String> principalList = new ArrayList<String>();
 
             for(Person p: pList){
                 principalList.add(p.getPrincipalId());

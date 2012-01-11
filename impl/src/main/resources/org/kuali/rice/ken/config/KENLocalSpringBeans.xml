@@ -328,6 +328,8 @@
 
     <!-- END KCB -->
 
+  <!-- Eager-init notification lifecycle -->
+  <bean id="lifecycle" class="org.kuali.rice.ken.core.NotificationLifeCycle" lazy-init="false" depends-on="ojbConfigurer"/>
 
   <bean id="rice.ksb.scheduler"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

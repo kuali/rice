@@ -107,7 +107,7 @@
   <bean id="PeopleFlowMember-memberTypeCode" parent="PeopleFlowMember-memberTypeCode-parentBean"/>
   <bean id="PeopleFlowMember-memberTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="memberTypeCode"/>
-    <property name="label" value="Member Type Code"/>
+    <property name="label" value="Member Type"/>
     <property name="shortLabel" value="Mbr Typ"/>
     <property name="forceUppercase" value="false"/>
     <property name="maxLength" value="1"/>

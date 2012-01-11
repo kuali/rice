@@ -112,8 +112,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="description" p:required="true" p:rowSpan="2"
-              p:labelField.rowSpan="2"/>
+        <bean parent="Uif-InputField" p:propertyName="description" p:rowSpan="2" p:labelField.rowSpan="2"/>
         <bean parent="Uif-InputField" p:propertyName="name" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="typeId" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="active" p:defaultValue="true"/>
@@ -157,7 +156,7 @@
         <bean parent="Uif-InputField" p:propertyName="priority" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean parent="PeopleFlow-Member" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode"
+        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChanged="#lp.memberTypeCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -186,7 +185,7 @@
         <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean id="PeopleFlow-MemberDelegate" parent="PeopleFlow-Member" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="delegationTypeCode" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode"
+        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChanged="#lp.memberTypeCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>

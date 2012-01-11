@@ -74,20 +74,6 @@
 
   <%-- begin table row --%>
   <c:if test="${(colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)}">
-    <c:choose>
-      <c:when test="${itemVarStatus.first}">
-        <tr class="${firstLineStyle}">
-      </c:when>
-      <c:otherwise>
-        <tr>
-      </c:otherwise>
-    </c:choose>
-
-    <%-- force alternating cells to be header --%>
-    <c:if test="${renderAlternatingHeaderColumns}">
-      <c:set var="renderHeaderColumn" value="true"/>
-    </c:if>
-
     <%-- determine if even or add style should be applied --%>
     <c:if test="${applyAlternatingRowStyles}">
       <c:choose>
@@ -98,6 +84,20 @@
           <c:set var="evenOddClass" value="even"/>
         </c:otherwise>
       </c:choose>
+    </c:if>
+
+    <c:choose>
+      <c:when test="${itemVarStatus.first}">
+        <tr class="${firstLineStyle}">
+      </c:when>
+      <c:otherwise>
+        <tr class="${evenOddClass}">
+      </c:otherwise>
+    </c:choose>
+
+    <%-- force alternating cells to be header --%>
+    <c:if test="${renderAlternatingHeaderColumns}">
+      <c:set var="renderHeaderColumn" value="true"/>
     </c:if>
   </c:if>
 
@@ -137,7 +137,7 @@
     </c:when>
     <c:otherwise>
       <td role="presentation" ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-        ${style} class="${item.styleClassesAsString} col${actualColCount}" ${evenOddClass}>
+        ${style} class="${item.styleClassesAsString} col${actualColCount}" >
         <krad:template component="${item}"/>
       </td>
     </c:otherwise>

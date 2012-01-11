@@ -43,6 +43,17 @@
     <property name="footer">
       <bean parent="Uif-InquiryFooter"/>
     </property>
+    <property name="propertyReplacers">
+      <list>
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="page.items" p:condition="dataObject eq null">
+          <property name="replacement">
+            <list>
+              <bean parent="Uif-MessageField" p:messageText="No records found for the given parameters."/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="Uif-InquiryPage" parent="Uif-InquiryPage-parentBean"/>
@@ -74,42 +85,4 @@
       </list>
     </property>
   </bean>
-
-  <!--below to be removed-->
-<!--  <bean id="InquiryNoResultView" parent="InquiryNoResultView-parentBean"/>
-  <bean id="InquiryNoResultView-parentBean" abstract="true" parent="Uif-FormView">
-    <property name="title" value="No records found"/>
-    <property name="readOnly" value="true"/>
-    <property name="singlePageView" value="true"/>
-    <property name="page">
-      <bean parent="Uif-Page"/>
-    </property>
-    <property name="items">
-      <list>
-        <ref bean="InquiryNoResultView-Message-Group"/>
-      </list>
-    </property>
-    <property name="footer">
-      <bean parent="Uif-InquiryFooter"/>
-    </property>
-  </bean>
-
-  <bean id="InquiryNoResultView-Message-Group" parent="Uif-BoxSection"
-        p:layoutManager.orientation="VERTICAL">
-    <property name="items">
-      <list>
-        <bean parent="Uif-MessageField" p:messageText="No records found for the given parameters."/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="FooterInquiryNoResult" parent="Uif-FooterBase">
-    <property name="items">
-      <list>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close"
-              p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
-      </list>
-    </property>
-  </bean>-->
-
 </beans>

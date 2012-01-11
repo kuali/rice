@@ -118,11 +118,6 @@ public class InquiryController extends UifControllerBase {
         Object dataObject = inquiryForm.getInquirable().retrieveDataObject(KRADUtils.translateRequestParameterMap(
                 request.getParameterMap()));
 
-        if (dataObject == null && GlobalVariables.getMessageMap().hasNoMessages()) {
-            LOG.error("The record you have inquired on does not exist.");
-            inquiryForm.setView(getViewService().getViewById("InquiryNoResultView"));
-            //            throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
         inquiryForm.setDataObject(dataObject);
 
         return super.start(form, result, request, response);

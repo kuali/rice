@@ -445,7 +445,7 @@ public class History implements Serializable {
         }
 
         Object viewLabelPropertyValue = null;
-        if (StringUtils.isNotBlank(viewLabelPropertyPath)) {
+        if (StringUtils.isNotBlank(viewLabelPropertyPath) && ObjectPropertyUtils. isReadableProperty(form, viewLabelPropertyPath)) {
             viewLabelPropertyValue = ObjectPropertyUtils.getPropertyValue(form, viewLabelPropertyPath);
         }
 

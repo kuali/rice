@@ -20,14 +20,28 @@ import java.util.List;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
+/**
+ * An implementation of {@link AgendaTree} that executes a {@link ExecutionEnvironment} over its list of {@link AgendaTreeEntry}s.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class BasicAgendaTree implements AgendaTree {
 	
 	private final List<AgendaTreeEntry> entries;
-	
+
+    /**
+     * Create a BasicAgendaTree with the given {@link AgendaTreeEntry}s
+     * @param entries - {@link AgendaTreeEntry}s to create a BasicAgendaTree with
+     */
 	public BasicAgendaTree(AgendaTreeEntry... entries) {
 		this.entries = Arrays.asList(entries);
 	}
-	
+
+    /**
+     * Create a BasicAgendaTree with the given {@link AgendaTreeEntry}s
+     * @param entries - {@link AgendaTreeEntry}s to create a BasicAgendaTree with
+     * @throws IllegalArgumentException if the entries list is null
+     */
 	public BasicAgendaTree(List<AgendaTreeEntry> entries) {
 		if (entries == null) {
 			throw new IllegalArgumentException("entries list was null");
@@ -35,6 +49,7 @@ public final class BasicAgendaTree implements AgendaTree {
 		this.entries = entries;		
 	}
 	
+    @Override
 	public void execute(ExecutionEnvironment environment) {
 		for (AgendaTreeEntry entry : entries) {
 			entry.execute(environment);

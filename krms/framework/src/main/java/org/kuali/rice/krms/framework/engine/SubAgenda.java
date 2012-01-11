@@ -19,7 +19,7 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
  * A {@link Rule} which executes it's {@link AgendaTree} given a @{link ExecutionEnvironment}.
-
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SubAgenda implements Rule {
@@ -27,8 +27,8 @@ public class SubAgenda implements Rule {
 	private AgendaTree agendaTree;
 
     /**
-     *
-     * @param agendaTree
+     * Create a SubAgenda with the given {@link AgendaTree}
+     * @param agendaTree {@link AgendaTree} to create the SubAgenda with.
      */
 	public SubAgenda(AgendaTree agendaTree) {
 		this.agendaTree = agendaTree;

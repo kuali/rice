@@ -20,11 +20,22 @@ import java.util.Map;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
+/**
+ * An implementation of {@link Agenda} that executes over an {@link AgendaTree}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+
 public class BasicAgenda implements Agenda {
 
 	private Map<String, String> qualifiers;
 	private AgendaTree agendaTree;
-	
+
+    /**
+     * Create a BasicAgenda with the given quaifiers and {@link AgendaTree}
+     * @param qualifiers to determine if a given {@link ExecutionEnvironment} applies.
+     * @param agendaTree {@link AgendaTree} to be executed
+     */
 	public BasicAgenda(Map<String, String> qualifiers, AgendaTree agendaTree) {
 		this.qualifiers = qualifiers;
 		this.agendaTree = agendaTree;

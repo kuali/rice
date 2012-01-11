@@ -17,16 +17,34 @@ package org.kuali.rice.krms.framework.engine;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
+/**
+ * A {@link AgendaTreeEntry} which executes its ifTrue {@link AgendaTree} if the given {@link Rule} result is true or
+ * its ifFalse {@link AgendaTree} if the result is false.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class BasicAgendaTreeEntry implements AgendaTreeEntry {
 	
 	private final Rule rule;
 	private final AgendaTree ifTrue;
 	private final AgendaTree ifFalse;
-	
+
+    /**
+     * Create a BasicAgendaTreeEntry with the given {@link Rule}.
+     * @param rule {@link Rule} to create the BasicAgendaTreeEntry with.
+     * @throws IllegalArgumentException if the rule is null.
+     */
 	public BasicAgendaTreeEntry(Rule rule) {
 		this(rule, null, null);
 	}
-	
+
+    /**
+     * Create a BasicAgendaTreeEntry with the given {@link Rule} and ifTrue, ifFalse {@link AgendaTree}s.
+     * @param rule {@link Rule} to create the BasicAgendaTreeEntry with.
+     * @param ifTrue executed if the given rule's result is true.
+     * @param ifTrue executed if the given rule's result is false.
+     * @throws IllegalArgumentException if the rule is null.
+     */
 	public BasicAgendaTreeEntry(Rule rule, AgendaTree ifTrue, AgendaTree ifFalse) {
 		if (rule == null) {
 			throw new IllegalArgumentException("rule was null");

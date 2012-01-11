@@ -34,7 +34,7 @@ function setupValidator(){
 		var validateDirty = jq("[name='validateDirty']").val();
 		if (validateDirty == "true")
 		{
-			var dirty = jq(".kr-field-attribute").find("input.dirty");
+			var dirty = jq(".uif-field").find("input.dirty");
 			//methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
 			var methodToCall = jq("[name='methodToCall']").val();
 			if (dirty.length > 0 && methodToCall == null)
@@ -214,11 +214,11 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn 
 			aData.push( input.val() );	
 		}else{
             // match DataField or InputField CSS classes - respectively
-			var input1 = jq(this).find('.kr-data-fld, .kr-field-attribute');
+			var input1 = jq(this).find('.uif-field');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.find("span:first").text()));
 			}else{
-				aData.push( "");
+				aData.push("");
 			}
 		}
 		
@@ -235,7 +235,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColum
 		if(selected.length != 0){
 			aData.push( selected.text() );	
 		}else{
-			var input1 = jq(this).find('.kr-field-attribute');
+			var input1 = jq(this).find('.uif-inputField');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{
@@ -263,7 +263,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iCol
 			}
 			aData.push( str );
 		}else{
-			var input1 = jq(this).find('.kr-field-attribute');
+			var input1 = jq(this).find('.uif-inputField');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{
@@ -292,7 +292,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function  ( oSettings, iColumn
 			}
 			aData.push( value );
 		}else{
-			var input1 = jq(this).find('.kr-field-attribute');
+			var input1 = jq(this).find('.uif-inputField');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.text()));
 			}else{

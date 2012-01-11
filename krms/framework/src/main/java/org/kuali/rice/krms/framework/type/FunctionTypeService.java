@@ -19,13 +19,18 @@ import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.framework.engine.Function;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
- * 
+ * {@link FunctionTypeService} provides access and validation for custom {@link Function}s.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface FunctionTypeService {
 
+    /**
+     * Create a {@Function} from the given {@link FunctionDefinition}.
+     * @param functionDefinition {@link FunctionDefinition} to create the {@link Function} from.
+     * @return {@Function} created with the given {@link FunctionDefinition}
+     */
 	Function loadFunction(FunctionDefinition functionDefinition);
 	
 }

@@ -669,10 +669,18 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
+     * This method retrieves the unresolved document handler URL from this object
+     */
+    public String getDocHandlerUrl() {
+        return getUnresolvedDocHandlerUrl();
+    }
+    
+    /**
      * This method gets the document handler url from this object or from a parent document type and resolves any
      * potential variables that may be in use
      */
-    public String getDocHandlerUrl() {
+    @Override
+    public String getResolvedDocumentHandlerUrl() {
         return resolveDocHandlerUrl(getUnresolvedInheritedDocHandlerUrl(false));
     }
 

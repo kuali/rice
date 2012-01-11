@@ -49,7 +49,9 @@ public interface DocumentTypeContract extends Identifiable, Versioned {
     String getBlanketApproveGroupId();
 
     String getSuperUserGroupId();
-
+    
     Map<DocumentTypePolicy, String> getPolicies();
+        
+    String getResolvedDocumentHandlerUrl();
 
 }

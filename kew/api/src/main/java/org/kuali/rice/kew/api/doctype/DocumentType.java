@@ -46,6 +46,7 @@ import java.util.Map;
         DocumentType.Elements.PARENT_ID,
         DocumentType.Elements.ACTIVE,
         DocumentType.Elements.DOC_HANDLER_URL,
+        DocumentType.Elements.RESOLVED_DOC_HANDLER_URL,
         DocumentType.Elements.HELP_DEFINITION_URL,
         DocumentType.Elements.DOC_SEARCH_HELP_URL,
         DocumentType.Elements.POST_PROCESSOR_NAME,
@@ -85,12 +86,15 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     @XmlElement(name = Elements.DOC_HANDLER_URL, required = false)
     private final String docHandlerUrl;
 
+    @XmlElement(name = Elements.RESOLVED_DOC_HANDLER_URL, required = false)
+    private final String resolvedDocumentHandlerUrl;
+    
     @XmlElement(name = Elements.HELP_DEFINITION_URL, required = false)
     private final String helpDefinitionUrl;
 
     @XmlElement(name = Elements.DOC_SEARCH_HELP_URL, required = false)
     private final String docSearchHelpUrl;
-
+    
     @XmlElement(name = Elements.POST_PROCESSOR_NAME, required = false)
     private final String postProcessorName;
 
@@ -129,6 +133,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.parentId = null;
         this.active = false;
         this.docHandlerUrl = null;
+        this.resolvedDocumentHandlerUrl = null;
         this.helpDefinitionUrl = null;
         this.docSearchHelpUrl = null;
         this.postProcessorName = null;
@@ -149,6 +154,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.parentId = builder.getParentId();
         this.active = builder.isActive();
         this.docHandlerUrl = builder.getDocHandlerUrl();
+        this.resolvedDocumentHandlerUrl = builder.getResolvedDocumentHandlerUrl();
         this.helpDefinitionUrl = builder.getHelpDefinitionUrl();
         this.docSearchHelpUrl = builder.getDocSearchHelpUrl();
         this.postProcessorName = builder.getPostProcessorName();
@@ -248,6 +254,11 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     public Long getVersionNumber() {
         return this.versionNumber;
     }
+    
+    @Override
+    public String getResolvedDocumentHandlerUrl() {
+        return this.resolvedDocumentHandlerUrl;
+    }
 
     /**
      * A builder which can be used to construct {@link DocumentType} instances. Enforces the
@@ -265,6 +276,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         private String parentId;
         private boolean active;
         private String docHandlerUrl;
+        private String resolvedDocumentHandlerUrl;
         private String helpDefinitionUrl;
         private String docSearchHelpUrl;
         private String postProcessorName;
@@ -352,6 +364,11 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         @Override
         public String getDocHandlerUrl() {
             return this.docHandlerUrl;
+        }
+        
+        @Override
+        public String getResolvedDocumentHandlerUrl() {
+            return this.resolvedDocumentHandlerUrl;
         }
         
         @Override
@@ -469,7 +486,6 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         public void setVersionNumber(Long versionNumber) {
             this.versionNumber = versionNumber;
         }
-
     }
 
     /**
@@ -493,6 +509,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         final static String PARENT_ID = "parentId";
         final static String ACTIVE = "active";
         final static String DOC_HANDLER_URL = "docHandlerUrl";
+        final static String RESOLVED_DOC_HANDLER_URL = "resolvedDocumentHandlerUrl";
         final static String HELP_DEFINITION_URL = "helpDefinitionUrl";
         final static String DOC_SEARCH_HELP_URL = "docSearchHelpUrl";
         final static String POST_PROCESSOR_NAME = "postProcessorName";
@@ -506,5 +523,4 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     public static class Cache {
         public static final String NAME = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0 + "/" + DocumentType.Constants.TYPE_NAME;
     }
-
 }

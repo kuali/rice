@@ -293,6 +293,45 @@
           <property name="propertyName" value="tree1"/>
         </bean>
 
+        <bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
+          <property name="title" value="Tree with Data Group"/>
+          <property name="propertyName" value="tree2"/>
+
+          <property name="defaultNodePrototype">
+            <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
+              <property name="labelPrototype">
+                <bean parent="Uif-MessageField"/>
+              </property>
+              <property name="dataGroupPrototype">
+                <bean parent="Uif-BoxGroup"  p:style="margin-left: 2em;">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-HorizontalFieldGroup">
+                        <property name="items">
+                          <list>
+                            <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                                  p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 1"
+                                  p:labelField.styleClasses="labelTop"/>
+                            <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                                  p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 2"
+                                  p:labelField.styleClasses="labelTop"/>
+                            <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                                  p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 3"
+                                  p:labelField.styleClasses="labelTop"/>
+                            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
+                                  p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 4"
+                                  p:labelField.styleClasses="labelTop"/>
+                          </list>
+                        </property>
+                      </bean>
+                    </list>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
         <bean parent="Uif-ReorderSection">
           <property name="title" value="Reordering Group"/>
           <property name="instructionalText"

@@ -182,6 +182,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
+    private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
 
     private boolean bField1;
     private boolean bField2;
@@ -232,32 +233,62 @@ public class UifComponentsTestForm extends UifFormBase {
         list6.add(new UITestObject("a", "b", "c", "d"));
         list6.add(new UITestObject("a", "s", "d", "f"));
 
-        Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
-        item1.addChild(new Node<String, String>("SubItem A", "SubItem A"));
-        item1.addChild(new Node<String, String>("SubItem B", "SubItem B"));
+        { // scope for name hiding purposes
+            Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
+            item1.addChild(new Node<String, String>("SubItem A", "SubItem A"));
+            item1.addChild(new Node<String, String>("SubItem B", "SubItem B"));
 
-        Node<String, String> item2 = new Node<String, String>("Item 2", "Item 2");
-        item2.addChild(new Node<String, String>("SubItem A", "SubItem A"));
-        Node<String, String> sub2B = new Node<String, String>("SubItem B", "SubItem B");
-        sub2B.addChild(new Node<String, String>("Item B-1", "Item B-1"));
-        sub2B.addChild(new Node<String, String>("Item B-2", "Item B-2"));
-        sub2B.addChild(new Node<String, String>("Item B-3", "Item B-3"));
-        item2.addChild(sub2B);
-        item2.addChild(new Node<String, String>("SubItem C", "SubItem C"));
+            Node<String, String> item2 = new Node<String, String>("Item 2", "Item 2");
+            item2.addChild(new Node<String, String>("SubItem A", "SubItem A"));
+            Node<String, String> sub2B = new Node<String, String>("SubItem B", "SubItem B");
+            sub2B.addChild(new Node<String, String>("Item B-1", "Item B-1"));
+            sub2B.addChild(new Node<String, String>("Item B-2", "Item B-2"));
+            sub2B.addChild(new Node<String, String>("Item B-3", "Item B-3"));
+            item2.addChild(sub2B);
+            item2.addChild(new Node<String, String>("SubItem C", "SubItem C"));
 
-        Node<String, String> item3 = new Node<String, String>("Item 3", "Item 3");
-        item3.addChild(new Node<String, String>("SubItem A", "SubItem A"));
-        item3.addChild(new Node<String, String>("SubItem B", "SubItem B"));
-        item3.addChild(new Node<String, String>("SubItem C", "SubItem C"));
-        item3.addChild(new Node<String, String>("SubItem D", "SubItem D"));
+            Node<String, String> item3 = new Node<String, String>("Item 3", "Item 3");
+            item3.addChild(new Node<String, String>("SubItem A", "SubItem A"));
+            item3.addChild(new Node<String, String>("SubItem B", "SubItem B"));
+            item3.addChild(new Node<String, String>("SubItem C", "SubItem C"));
+            item3.addChild(new Node<String, String>("SubItem D", "SubItem D"));
 
-        Node<String, String> root = new Node<String, String>("Root", "Root");
-        root.addChild(item1);
-        root.addChild(item2);
-        root.addChild(item3);
+            Node<String, String> root = new Node<String, String>("Root", "Root");
+            root.addChild(item1);
+            root.addChild(item2);
+            root.addChild(item3);
 
-        tree1.setRootElement(root);
+            tree1.setRootElement(root);
+        }
+        
+        { // scope for name hiding purposes
+            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C", "1-D"), "Item 1");
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"), "SubItem A"));
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"), "SubItem B"));
 
+            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C", "2-D"), "Item 2");
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"), "SubItem A"));
+            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c", "SB-d"), "SubItem B");
+            sub2B.addChild(new Node<UITestObject, String>(new UITestObject("AA", "BB", "CC", "DD"), "Item B-1"));
+            sub2B.addChild(new Node<UITestObject, String>(new UITestObject("Aa", "Bb", "Cc", "Dd"), "Item B-2"));
+            sub2B.addChild(new Node<UITestObject, String>(new UITestObject("aA", "bB", "cC", "dD"), "Item B-3"));
+            item2.addChild(sub2B);
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"), "SubItem C"));
+
+            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C", "3-D"), "Item 3");
+            item3.addChild(new Node<UITestObject, String>(new UITestObject("A", "B", "C", "D"), "SubItem A"));
+            item3.addChild(new Node<UITestObject, String>(new UITestObject("1", "2", "3", "4"), "SubItem B"));
+            item3.addChild(new Node<UITestObject, String>(new UITestObject("w", "x", "y", "z"), "SubItem C"));
+            item3.addChild(new Node<UITestObject, String>(new UITestObject("!", "@", "#", "$"), "SubItem D"));
+
+            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz", "roo"), "Root");
+            root.addChild(item1);
+            root.addChild(item2);
+            root.addChild(item3);
+
+            tree2.setRootElement(root);
+        }
+        
         remoteFieldValuesMap = new HashMap<String, Object>();
         remoteFieldValuesMap.put("remoteField1", "Apple");
         remoteFieldValuesMap.put("remoteField2", "Banana");
@@ -1638,6 +1669,14 @@ public class UifComponentsTestForm extends UifFormBase {
      */
     public void setTree1(Tree<String, String> tree1) {
         this.tree1 = tree1;
+    }
+
+    public Tree<UITestObject, String> getTree2() {
+        return tree2;
+    }
+
+    public void setTree2(Tree<UITestObject, String> tree2) {
+        this.tree2 = tree2;
     }
 
     public String getField82() {

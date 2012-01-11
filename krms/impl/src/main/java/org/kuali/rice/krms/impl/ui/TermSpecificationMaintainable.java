@@ -22,6 +22,7 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
@@ -63,6 +64,10 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         if (!CollectionUtils.isEmpty(validContextMappings)) for (ContextValidTermBo validContextMapping : validContextMappings) {
             ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, validContextMapping.getContextId());
             termSpecificationBo.getContexts().add(context);
+        }
+
+        if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
+            document.getDocumentHeader().setDocumentDescription("New Term Specification Document");
         }
 
         return termSpecificationBo;

@@ -98,7 +98,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         testDoc("NoDocHandler", null);
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeXmlParserTestDoc1");
         assertTrue("Doc type unresolved doc handler should be empty.", StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl()));
-        assertTrue("Doc type doc handler should be empty.", StringUtils.isBlank(documentType.getDocHandlerUrl()));
+        assertTrue("Doc type doc handler should be empty.", StringUtils.isBlank(documentType.getUnresolvedDocHandlerUrl()));
     }
 
     @Test public void testLoadDocWithBadExceptionWG() throws Exception {

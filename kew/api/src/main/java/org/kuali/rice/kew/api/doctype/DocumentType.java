@@ -45,7 +45,7 @@ import java.util.Map;
         DocumentType.Elements.DESCRIPTION,
         DocumentType.Elements.PARENT_ID,
         DocumentType.Elements.ACTIVE,
-        DocumentType.Elements.DOC_HANDLER_URL,
+        DocumentType.Elements.UNRESOLVED_DOC_HANDLER_URL,
         DocumentType.Elements.RESOLVED_DOC_HANDLER_URL,
         DocumentType.Elements.HELP_DEFINITION_URL,
         DocumentType.Elements.DOC_SEARCH_HELP_URL,
@@ -83,8 +83,8 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
-    @XmlElement(name = Elements.DOC_HANDLER_URL, required = false)
-    private final String docHandlerUrl;
+    @XmlElement(name = Elements.UNRESOLVED_DOC_HANDLER_URL, required = false)
+    private final String unresolvedDocHandlerUrl;
 
     @XmlElement(name = Elements.RESOLVED_DOC_HANDLER_URL, required = false)
     private final String resolvedDocumentHandlerUrl;
@@ -132,7 +132,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.description = null;
         this.parentId = null;
         this.active = false;
-        this.docHandlerUrl = null;
+        this.unresolvedDocHandlerUrl = null;
         this.resolvedDocumentHandlerUrl = null;
         this.helpDefinitionUrl = null;
         this.docSearchHelpUrl = null;
@@ -153,7 +153,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.description = builder.getDescription();
         this.parentId = builder.getParentId();
         this.active = builder.isActive();
-        this.docHandlerUrl = builder.getDocHandlerUrl();
+        this.unresolvedDocHandlerUrl = builder.getUnresolvedDocHandlerUrl();
         this.resolvedDocumentHandlerUrl = builder.getResolvedDocumentHandlerUrl();
         this.helpDefinitionUrl = builder.getHelpDefinitionUrl();
         this.docSearchHelpUrl = builder.getDocSearchHelpUrl();
@@ -206,8 +206,8 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     }
 
     @Override
-    public String getDocHandlerUrl() {
-        return this.docHandlerUrl;
+    public String getUnresolvedDocHandlerUrl() {
+        return this.unresolvedDocHandlerUrl;
     }
 
     @Override
@@ -275,7 +275,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         private String description;
         private String parentId;
         private boolean active;
-        private String docHandlerUrl;
+        private String unresolvedDocHandlerUrl;
         private String resolvedDocumentHandlerUrl;
         private String helpDefinitionUrl;
         private String docSearchHelpUrl;
@@ -309,7 +309,8 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             builder.setDescription(contract.getDescription());
             builder.setParentId(contract.getParentId());
             builder.setActive(contract.isActive());
-            builder.setDocHandlerUrl(contract.getDocHandlerUrl());
+            builder.setUnresolvedDocHandlerUrl(contract.getUnresolvedDocHandlerUrl());
+            builder.setResolvedDocHandlerUrl(contract.getResolvedDocumentHandlerUrl());
             builder.setHelpDefinitionUrl(contract.getHelpDefinitionUrl());
             builder.setDocSearchHelpUrl(contract.getDocSearchHelpUrl());
             builder.setPostProcessorName(contract.getPostProcessorName());
@@ -362,8 +363,8 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         }
 
         @Override
-        public String getDocHandlerUrl() {
-            return this.docHandlerUrl;
+        public String getUnresolvedDocHandlerUrl() {
+            return this.unresolvedDocHandlerUrl;
         }
         
         @Override
@@ -447,8 +448,12 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             this.active = active;
         }
 
-        public void setDocHandlerUrl(String docHandlerUrl) {
-            this.docHandlerUrl = docHandlerUrl;
+        public void setUnresolvedDocHandlerUrl(String unresolvedDocHandlerUrl) {
+            this.unresolvedDocHandlerUrl = unresolvedDocHandlerUrl;
+        }
+
+        public void setResolvedDocHandlerUrl(String resolvedDocumentHandlerUrl) {
+            this.resolvedDocumentHandlerUrl = resolvedDocumentHandlerUrl;
         }
 
         public void setHelpDefinitionUrl(String helpDefinitionUrl) {
@@ -508,7 +513,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         final static String DESCRIPTION = "description";
         final static String PARENT_ID = "parentId";
         final static String ACTIVE = "active";
-        final static String DOC_HANDLER_URL = "docHandlerUrl";
+        final static String UNRESOLVED_DOC_HANDLER_URL = "unresolvedDocHandlerUrl";
         final static String RESOLVED_DOC_HANDLER_URL = "resolvedDocumentHandlerUrl";
         final static String HELP_DEFINITION_URL = "helpDefinitionUrl";
         final static String DOC_SEARCH_HELP_URL = "docSearchHelpUrl";

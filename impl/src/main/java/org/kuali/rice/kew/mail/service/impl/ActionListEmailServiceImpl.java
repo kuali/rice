@@ -489,7 +489,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             );
 
     public String buildImmediateReminderBody(Person person, org.kuali.rice.kew.api.action.ActionItem actionItem, DocumentType documentType) {
-        String docHandlerUrl = documentType.getDocHandlerUrl();
+        String docHandlerUrl = documentType.getResolvedDocumentHandlerUrl();
         if (StringUtils.isNotBlank(docHandlerUrl)) {
             if (!docHandlerUrl.contains("?")) {
                 docHandlerUrl += "?";

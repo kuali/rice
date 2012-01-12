@@ -41,8 +41,8 @@ class DocumentTypeBoTest {
             def String description = "documenttypetest description"
             def String parentId = "fakeparentid"
             def boolean active = true
-            def String docHandlerUrl = "http://fakedochandlerurl"
-            def String resolvedDocumentHandlerUrl = "http://fakeresolveddocumenthandlerurl"
+            def String unresolvedDocHandlerUrl = "http://fakedochandlerurl"
+            def String resolvedDocumentHandlerUrl = "http://fakedochandlerurl"
             def String helpDefinitionUrl = "http://fakehelpdefinitionurl"
             def String docSearchHelpUrl = "http://fakedocsearchhelpurl"
             def String postProcessorName = "postprocessor name"

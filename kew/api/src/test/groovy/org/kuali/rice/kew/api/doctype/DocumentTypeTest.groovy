@@ -36,7 +36,8 @@ class DocumentTypeTest {
             <description>documenttypetest description</description>
             <parentId>fakeparentid</parentId>
             <active>true</active>
-            <docHandlerUrl>http://fakedochandlerurl</docHandlerUrl>
+            <unresolvedDocHandlerUrl>http://fakedochandlerurl</unresolvedDocHandlerUrl>
+            <resolvedDocumentHandlerUrl>http://fakeresolvedDocumentHandlerUrl</resolvedDocumentHandlerUrl>
             <helpDefinitionUrl>http://fakehelpdefinitionurl</helpDefinitionUrl>
             <docSearchHelpUrl>http://fakedocsearchhelpurl</docSearchHelpUrl>
             <postProcessorName>postprocessor name</postProcessorName>
@@ -85,7 +86,7 @@ class DocumentTypeTest {
             def String description = "documenttypetest description"
             def String parentId = "fakeparentid"
             def boolean active = true
-            def String docHandlerUrl = "http://fakedochandlerurl"
+            def String unresolvedDocHandlerUrl = "http://fakedochandlerurl"
             def String resolvedDocumentHandlerUrl = "http://fakeresolvedDocumentHandlerUrl"
             def String helpDefinitionUrl = "http://fakehelpdefinitionurl"
             def String docSearchHelpUrl = "http://fakedocsearchhelpurl"

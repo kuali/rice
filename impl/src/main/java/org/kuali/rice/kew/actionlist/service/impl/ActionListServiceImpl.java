@@ -146,7 +146,7 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setPrincipalId(actionRequest.getPrincipalId());
         actionItem.setDocumentId(actionRequest.getDocumentId());
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
-        actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
+        actionItem.setDocHandlerURL(docType.getResolvedDocumentHandlerUrl());
         actionItem.setDocLabel(docType.getLabel());
         actionItem.setDocTitle(routeHeader.getDocTitle());
         actionItem.setGroupId(actionRequest.getGroupId());
@@ -258,11 +258,11 @@ public class ActionListServiceImpl implements ActionListService {
         }
 
         // first check to see if the document type has an empty document handler url
-        if (StringUtils.isNotBlank(docType.getDocHandlerUrl())) {
+        if (StringUtils.isNotBlank(docType.getResolvedDocumentHandlerUrl())) {
             if (actionItem.getDocHandlerURL() == null || actionItem.getDocHandlerURL().trim().equals("")) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url empty.", "actionitem.dochdrurl.empty",
                         actionItem.getId().toString()));
-            } else if (docType != null && !docType.getDocHandlerUrl().equals(actionItem.getDocHandlerURL())) {
+            } else if (docType != null && !docType.getResolvedDocumentHandlerUrl().equals(actionItem.getDocHandlerURL())) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url no match.", "actionitem.dochdrurl.nomatch",
                         actionItem.getId().toString()));
             }

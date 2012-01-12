@@ -721,7 +721,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					DocumentType docType = getDocumentTypeService().findByName(request.getParameter("docTypeFullName"));
 					actionItem.setDocName(docType.getName());
 					actionItem.setDocLabel(docType.getLabel());
-					actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
+					actionItem.setDocHandlerURL(docType.getResolvedDocumentHandlerUrl());
 				}
 			}
 		}

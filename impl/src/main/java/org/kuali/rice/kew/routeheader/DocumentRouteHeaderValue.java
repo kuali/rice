@@ -1122,7 +1122,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 
     @Override
     public String getDocumentHandlerUrl() {
-        return getDocumentType().getDocHandlerUrl();
+        return getDocumentType().getResolvedDocumentHandlerUrl();
     }
 
     @Override

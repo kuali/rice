@@ -193,7 +193,7 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue(XmlJotter.jotNode(exporter.export(dataSet.createExportDataSet())).matches(regex));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
-        assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());
+        assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getResolvedDocumentHandlerUrl());
         assertEquals("Wrong unresolved doc handler url", "${test.base.url}/_blank", parsedDocument.getUnresolvedDocHandlerUrl());
         assertEquals("Wrong help def url", "/_help", parsedDocument.getHelpDefinitionUrl());
         assertEquals("Wrong unresolved help def url", "/_help", parsedDocument.getUnresolvedHelpDefinitionUrl());

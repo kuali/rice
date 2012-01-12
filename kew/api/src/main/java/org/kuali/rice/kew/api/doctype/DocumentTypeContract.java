@@ -34,8 +34,6 @@ public interface DocumentTypeContract extends Identifiable, Versioned {
 
     boolean isActive();
 
-    String getDocHandlerUrl();
-
     String getHelpDefinitionUrl();
 
     String getDocSearchHelpUrl();
@@ -53,5 +51,7 @@ public interface DocumentTypeContract extends Identifiable, Versioned {
     Map<DocumentTypePolicy, String> getPolicies();
         
     String getResolvedDocumentHandlerUrl();
+
+    String getUnresolvedDocHandlerUrl();
 
 }

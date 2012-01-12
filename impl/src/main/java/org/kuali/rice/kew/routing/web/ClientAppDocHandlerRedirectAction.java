@@ -56,7 +56,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             if (!KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(GlobalVariables.getUserSession().getPrincipalId(), routeHeader, new SecuritySession(GlobalVariables.getUserSession().getPrincipalId()))) {
             	return mapping.findForward("NotAuthorized");
             }
-            docHandler = routeHeader.getDocumentType().getDocHandlerUrl();
+            docHandler = routeHeader.getDocumentType().getResolvedDocumentHandlerUrl();
             if (StringUtils.isBlank(docHandler)) {
                 throw new WorkflowRuntimeException("Document Type '" + routeHeader.getDocumentType().getName() + "' does not have a document handler url set (attempted to open document handler url for document id " + routeHeader.getDocumentId() + ")");
             }
@@ -69,7 +69,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
         } else if (request.getParameter(KewApiConstants.DOCTYPE_PARAMETER) != null) {
             DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = documentTypeService.findByName(docHandlerForm.getDocTypeName());
-            docHandler = documentType.getDocHandlerUrl();
+            docHandler = documentType.getResolvedDocumentHandlerUrl();
             if (StringUtils.isBlank(docHandler)) {
                 throw new WorkflowRuntimeException("Cannot find document handler url for document type '" + documentType.getName() + "'");
             }

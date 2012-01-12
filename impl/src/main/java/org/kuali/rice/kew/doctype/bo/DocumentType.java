@@ -56,8 +56,6 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.GlobalVariablesContextInvocationHandler;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Basic;
@@ -75,7 +73,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -671,9 +668,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     /**
      * This method retrieves the unresolved document handler URL from this object
      */
-    public String getDocHandlerUrl() {
+    /*public String getDocHandlerUrl() {
         return getUnresolvedDocHandlerUrl();
-    }
+    }*/
     
     /**
      * This method gets the document handler url from this object or from a parent document type and resolves any
@@ -737,6 +734,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     /**
      * @return the unresolvedDocHandlerUrl
      */
+    @Override
     public String getUnresolvedDocHandlerUrl() {
         return this.unresolvedDocHandlerUrl;
     }
@@ -1642,7 +1640,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             return null;
         }
         org.kuali.rice.kew.api.doctype.DocumentType.Builder builder = org.kuali.rice.kew.api.doctype.DocumentType.Builder.create(documentTypeBo);
-        builder.setDocHandlerUrl(documentTypeBo.getUnresolvedDocHandlerUrl());
         builder.setApplicationId(documentTypeBo.getActualApplicationId());
         return builder.build();
     }
@@ -1661,7 +1658,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         ebo.setDescription(dt.getDescription());
         ebo.setVersionNumber(dt.getVersionNumber());
         ebo.setVersion(dt.getDocumentTypeVersion());
-        ebo.setUnresolvedDocHandlerUrl(dt.getDocHandlerUrl());
+        ebo.setUnresolvedDocHandlerUrl(dt.getUnresolvedDocHandlerUrl());
         ebo.setUnresolvedDocSearchHelpUrl(dt.getDocSearchHelpUrl());
         ebo.setUnresolvedHelpDefinitionUrl(dt.getHelpDefinitionUrl());
         ebo.setLabel(dt.getLabel());

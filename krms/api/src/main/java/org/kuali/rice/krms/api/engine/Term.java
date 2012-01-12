@@ -29,8 +29,8 @@ import org.springframework.util.CollectionUtils;
  * Identifies a (hopefully) resolvable {@link Term}.  For resolution in the {@link TermResolutionEngine}, The
  * appropriate {@link TermResolver} will be selected by matching the name and parameters of the {@link Term} with
  * the output and parameter names of the {@link TermResolver}. 
- * @author gilesp
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class Term implements Comparable<Term> {
 
@@ -48,7 +48,7 @@ public final class Term implements Comparable<Term> {
 	 * This constructs a Term, which is a named piece of data that is usually obtainable
 	 * through the {@link TermResolutionEngine}
 	 *
-     * @param name
+     * @param name the term name
      * @param parameters an optional map of properties that may be used to allow a single TermResolver to resolve multiple Terms
      */
 	public Term(String name, Map<String, String> parameters) {
@@ -60,7 +60,11 @@ public final class Term implements Comparable<Term> {
 			this.parameters = Collections.unmodifiableMap(new TreeMap<String, String>(parameters));
 		}
 	}
-	
+
+    /**
+     * Return the name of the term
+     * @return name of the term
+     */
 	public String getName() { return this.name; }
 	public Map<String, String> getProperties() { return parameters; }
 
@@ -99,6 +103,7 @@ public final class Term implements Comparable<Term> {
 	}
 	
 	/**
+     * Return an unmodifiable Map of parameters specified on this Term.
 	 * @return an unmodifiable Map of parameters specified on this Term.  Guaranteed non-null.
 	 */
 	public Map<String, String> getParameters() {
@@ -117,7 +122,7 @@ public final class Term implements Comparable<Term> {
 		}
 		return getClass().getSimpleName()+"(["+ name + "]" +  sb.toString() + ")";
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private static class TreeMapComparator<T extends Comparable, V extends Comparable> implements Comparator<Map<T,V>>, Serializable {
 		

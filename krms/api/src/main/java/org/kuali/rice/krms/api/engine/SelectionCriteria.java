@@ -21,12 +21,20 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+/**
+ * SelectionCritera are used to to select an {@link Agenda} to execute.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class SelectionCriteria {
 
 	private final Long effectiveExecutionTime;
 	private final Map<String, String> contextQualifiers;
 	private final Map<String, String> agendaQualifiers;
 
+    /**
+     * Private constructor {@see SelectionCriteria createCriteria}
+     * @param effectiveDate DateTime to use for constructing the SelectionCriteria
+     */
 	private SelectionCriteria(DateTime effectiveDate) {
 		if (effectiveDate != null) {
 			this.effectiveExecutionTime = effectiveDate.getMillis();

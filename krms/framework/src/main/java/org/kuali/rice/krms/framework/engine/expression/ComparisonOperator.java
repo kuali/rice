@@ -27,6 +27,8 @@ import java.util.Collections;
 /**
  * Operators enumeration for comparing objects.  EQUALS NOT_EQUALS GREATER_THAN GREATER_THAN_EQUAL LESS_THAN LESS_THAN_EQUAL.
  * Uses registered {@link EngineComparatorExtension} for the given objects or the {@link DefaultComparisonOperator}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum ComparisonOperator implements Coded {
 

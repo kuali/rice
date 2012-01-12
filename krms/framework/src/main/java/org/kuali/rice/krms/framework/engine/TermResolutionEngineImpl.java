@@ -37,6 +37,10 @@ import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.engine.TermResolver;
 
+/**
+ * An implementation of {@link TermResolutionEngine}
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class TermResolutionEngineImpl implements TermResolutionEngine {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermResolutionEngineImpl.class);
 	
@@ -123,9 +127,9 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 	 * This method checks that the required parameters (as returned by the {@link TermResolver} via 
 	 * {@link TermResolver#getParameterNames()}) are met in the {@link Map} of provided parameters.
 	 * 
-	 * @param resolver
+	 * @param resolver {@link TermResolver}
 	 * @param providedParameters
-	 * @throws TermResolutionException
+	 * @throws TermResolutionException if provided parameters do not match requirements
 	 */
 	private void validateTermParameters(TermResolver<?> resolver,
 			Map<String, String> providedParameters)
@@ -152,6 +156,11 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		}
 	}
 
+    /**
+     *
+     * @param termName
+     * @return List<{@link TermResolverKey}>
+     */
 	protected List<TermResolverKey> buildTermResolutionPlan(String termName) {
 		// our result
 		List<TermResolverKey> resolutionPlan = null;
@@ -318,6 +327,12 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		return plannedToDestination;
 	}
 
+    /**
+     *
+     * @param visited
+     * @param visitedByKey
+     * @param plan
+     */
 	private void assembleLinearResolutionPlan(Visited visited, Map<TermResolverKey, Visited> visitedByKey, List<TermResolverKey> plan) {
 		// DFS
 		for (TermResolverKey prereqResolverKey : visited.getPrereqResolvers()) {
@@ -358,7 +373,6 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		return destination;
 	}
 
-
 	private static class ToVisit implements Comparable<ToVisit> {
 
 		private final int precost;
@@ -385,6 +399,10 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			}
 		}
 
+        /**
+         * Get the precost plus the addcost
+         * @return in precost plus addcost
+         */
 		public int getCost() {
 			return precost + addcost;
 		}
@@ -422,10 +440,18 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			return resolverKey.compareTo(o.resolverKey);
 		}
 
+        /**
+         * Return the {@link TermResolverKey}
+         * @return {@link TermResolverKey}
+         */
 		public TermResolverKey getTermResolverKey() {
 			return resolverKey;
 		}
 
+        /**
+         * Return the Parent {@link TermResolverKey}
+         * @return the Parent {@link TermResolverKey}
+         */
 		public TermResolverKey getParentKey() {
 			return parentKey;
 		}

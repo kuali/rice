@@ -30,6 +30,8 @@ import java.util.Map;
  * programming language and a parameter value (e.g. 5).</p>
  *
  * <p>{@link Facts} is immutable, and has a private constructor.  Use the inner {@link Builder} class to construct.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class Facts implements ModelObjectComplete, Serializable {
 

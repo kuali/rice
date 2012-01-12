@@ -17,15 +17,36 @@ package org.kuali.rice.krms.api;
 
 import org.kuali.rice.core.api.CoreConstants;
 
+/**
+ * KRMS Constants
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class KrmsConstants {
 
     public static final String KRMS_NAMESPACE = "KR-RULE";
+
+    /**
+     * MAINTAIN_KRMS_AGENDA
+     */
     public static final String MAINTAIN_KRMS_AGENDA = "Maintain KRMS Agenda";
 
+    /**
+     * SERVICE_PATH_SOAP
+     */
     public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
+    /**
+     * Namespaces
+     */
 	public final static class Namespaces {
+        /**
+         * Namespaces MODULE_NAME
+         */
 		public static final String MODULE_NAME = "krms";
+
+        /**
+         * Namespaces KRMS_NAMESPACE_PREFIX
+         */
         public static final String KRMS_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
 
         /**

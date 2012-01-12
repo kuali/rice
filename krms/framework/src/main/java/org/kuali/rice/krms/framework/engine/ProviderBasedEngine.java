@@ -28,6 +28,10 @@ import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
+/**
+ * An implementation of {@link Engine}
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ProviderBasedEngine implements Engine {
 
 	private static final Term effectiveExecutionTimeTerm = new Term("effectiveExecutionTime", null);
@@ -68,19 +72,38 @@ public class ProviderBasedEngine implements Engine {
 		}
 		return environment.getEngineResults();
 	}
-	
+
+    /**
+     * Return a {@link BasicExecutionEnvironment} using the given parameters
+     * @param selectionCriteria {@link SelectionCriteria}
+     * @param facts
+     * @param executionOptions {@link ExecutionOptions}
+     * @return {@link ExecutionEnvironment} created with the given parameters
+     */
 	protected ExecutionEnvironment establishExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		return new BasicExecutionEnvironment(selectionCriteria, facts, executionOptions, new TermResolutionEngineImpl());
 	}
-	
+
+    /**
+     * Load a Context from the contextProvider using the given parameters
+     * @see ContextProvider loadContext
+     * @param selectionCriteria
+     * @param facts
+     * @param executionOptions
+     * @return {@link Context}
+     * @throws IllegalStateException if the contextProvider is null;
+     */
 	protected Context selectContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		if (contextProvider == null) {
 			throw new IllegalStateException("No ContextProvider was configured.");
 		}
 		return contextProvider.loadContext(selectionCriteria, facts, executionOptions);
 	}
-	
-	
+
+    /**
+     * Set the {@link ContextProvider}
+     * @param contextProvider to loadContext from.
+     */
 	public void setContextProvider(ContextProvider contextProvider) {
 		this.contextProvider = contextProvider;
 	}

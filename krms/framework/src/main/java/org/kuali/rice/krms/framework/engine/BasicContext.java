@@ -22,11 +22,20 @@ import java.util.List;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.TermResolver;
 
+/**
+ * An implementation of {@link Context}
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class BasicContext implements Context {
 	
 	private final List<Agenda> agendas;
 	private final List<TermResolver<?>> termResolvers;
-	
+
+    /**
+     * Create a BasicContext with the given parameters
+     * @param agendas List<{@link}Agenda}>
+     * @param termResolvers List<{@link TermResolver}<?>>
+     */
 	public BasicContext(List<Agenda> agendas, List<TermResolver<?>> termResolvers) {
 		this.agendas = agendas;
 		this.termResolvers = termResolvers;
@@ -42,7 +51,12 @@ public final class BasicContext implements Context {
 			matchingAgenda.execute(environment);
 		}
 	}
-	
+
+    /**
+     * Return {@link Agenda}s that appliesTo the given {@link ExecutionEnvironment}
+     * @param environment {@link ExecutionEnvironment} to apply to
+     * @return List<{@link Agenda}> that match
+     */
 	private List<Agenda> findMatchingAgendas(ExecutionEnvironment environment) {
 		List<Agenda> matchingAgendas = new ArrayList<Agenda>();
 		for (Agenda agenda : agendas) {
@@ -52,7 +66,8 @@ public final class BasicContext implements Context {
 		}
 		return matchingAgendas;
 	}
-	
+
+    @Override
 	public List<TermResolver<?>> getTermResolvers() {
 		return Collections.unmodifiableList(termResolvers);
 	}

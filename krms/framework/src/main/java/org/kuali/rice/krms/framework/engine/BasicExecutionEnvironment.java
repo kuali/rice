@@ -33,7 +33,10 @@ import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
-
+/**
+ * An implementation of {@link ExecutionEnvironment} given {@link SelectionCriteria}, facts, {@link ExecutionOptions} and {@link TermResolutionEngine}.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 
 	private final SelectionCriteria selectionCriteria;
@@ -42,7 +45,14 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 	private final EngineResults engineResults;
 	private final TermResolutionEngine termResolutionEngine;
 	private Map<Object, Set<Term>> termPropositionMap;
-		
+
+    /**
+     * Constructor for a BasicExecutionEnvironment with the given {@link SelectionCriteria}, facts, {@link ExecutionOptions} and {@link TermResolutionEngine}
+     * @param selectionCriteria
+     * @param facts
+     * @param executionOptions
+     * @param termResolutionEngine
+     */
 	public BasicExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions, TermResolutionEngine termResolutionEngine) {
 		if (selectionCriteria == null) {
 			throw new IllegalArgumentException("Selection criteria must not be null.");
@@ -107,6 +117,7 @@ public final class BasicExecutionEnvironment implements ExecutionEnvironment {
 		return value;
 	}
 
+    @Override
 	public Set<Term> getTermsForCaller(Object caller) {
 		return termPropositionMap.get(caller);
 	}

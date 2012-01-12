@@ -140,8 +140,6 @@ h7 {
 	list-style: none;
 	width: auto;
 }
-
-
 .uif-headerField h2.uif-header {
 	font-family:Arial, Helvetica, sans-serif;
 	border-bottom: 1px solid #000;
@@ -182,14 +180,16 @@ h3.kr-header-page-action {
 #viewheader_div {
 	background:url(../../images/kns/masthead1.png);
 	margin: 0px 0px 12px;
+	height:60px;
 }
 div.doc_view_header .left {
 	float:left;
 }
-div.group_docheader {
-	float:right
+#viewheader_div div.group_docheader { float:right}
+
+#viewheader_div div.group_docheader table { height:60px
 }
-div.group_docheader td {
+#viewheader_div div.group_docheader td {
 	background-color:#FFFFFF
 }
 .doc_view_header .left h1.kr-page-title-header {
@@ -201,11 +201,12 @@ div.group_docheader td {
 	padding-left: 15px;
 }
 .uif-viewHeaderField h1.uif-header {
-	padding: 12px 0 12px 15px;
 	font-family: "Arial Narrow";
 	font-weight: bold;
 	font-size: 1.6em;
-	background:url(../../images/kns/masthead1.png);
+	float:left;
+	padding-top: 15px;
+	padding-left: 15px;
 }
 .uif-primaryActionButton.boxLayoutHorizontalItem {
 	padding-bottom: 0.5em;
@@ -230,21 +231,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	padding-top: 0em;
 }
 
-
-
-
-
-
-
 .uif-primaryActionButton[disabled="true"], .uif-secondaryActionButton[disabled="true"] {
 	-moz-opacity: 0.44;
 opacity: 0.44;
 -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=44)";
 }
-
-
-
-
 
 .uif-primaryActionButton {
 	padding-bottom: .2em;
@@ -1122,3 +1113,5 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', end
 div.uif-headerField.uif-sectionHeaderField	a:hover {
 	text-decoration:none;
 }
+
+

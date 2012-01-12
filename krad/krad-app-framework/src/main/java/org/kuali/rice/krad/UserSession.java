@@ -25,6 +25,7 @@ import org.kuali.rice.krad.util.SessionTicket;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,7 +69,7 @@ public class UserSession implements Serializable {
         	throw new IllegalArgumentException("Failed to locate a principal with principal name '" + principalName + "'");
         }
         this.nextObjectKey = new AtomicInteger(0);
-        this.objectMap = new ConcurrentHashMap<String,Object>();
+        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
     }
 
     
@@ -189,9 +190,6 @@ public class UserSession implements Serializable {
      * @param objectKey
      */
     public Object retrieveObject(String objectKey) {
-        if (objectKey == null) {
-            return null;
-        }
         return this.objectMap.get(objectKey);
     }
 
@@ -202,9 +200,7 @@ public class UserSession implements Serializable {
      * @param objectKey
      */
     public void removeObject(String objectKey) {
-        if (objectKey != null) {
-            this.objectMap.remove(objectKey);
-        }
+        this.objectMap.remove(objectKey);
     }
 
     /**
@@ -212,15 +208,17 @@ public class UserSession implements Serializable {
      * prefix
      */
     public void removeObjectsByPrefix(String objectKeyPrefix) {
-        List<String> removeKeys = new ArrayList<String>();
-        for (String key : objectMap.keySet()) {
-            if (key.startsWith(objectKeyPrefix)) {
-                removeKeys.add(key);
+        synchronized (objectMap) {
+            List<String> removeKeys = new ArrayList<String>();
+            for (String key : objectMap.keySet()) {
+                if (key.startsWith(objectKeyPrefix)) {
+                    removeKeys.add(key);
+                }
             }
-        }
 
-        for (String key : removeKeys) {
-            this.objectMap.remove(key);
+            for (String key : removeKeys) {
+                this.objectMap.remove(key);
+            }
         }
     }
 
@@ -250,11 +248,13 @@ public class UserSession implements Serializable {
 	public List<SessionTicket> getAllSessionTickets() {
 		List<SessionTicket> sessionTickets = new ArrayList<SessionTicket>();
 
-		for (Object object : objectMap.values()) {
-			if (object instanceof SessionTicket) {
-				sessionTickets.add((SessionTicket) object);
-			}
-		}
+        synchronized (objectMap) {
+		    for (Object object : objectMap.values()) {
+			    if (object instanceof SessionTicket) {
+				    sessionTickets.add((SessionTicket) object);
+			    }
+		    }
+        }
 
 		return sessionTickets;
 	}

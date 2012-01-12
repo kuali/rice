@@ -86,7 +86,7 @@ public interface CountryService {
 
     /**
      * Returns the system default country.  This is simply meant to be informational for applications which need the
-     * ability to produce a default country (such as for defaulting of certain fields during data entry).  This method
+     * ability to utilize a default country (such as for defaulting of certain fields during data entry).  This method
      * may return null in situations where no default country is configured.
      *
      * @return the default country, or null if no default country is defined

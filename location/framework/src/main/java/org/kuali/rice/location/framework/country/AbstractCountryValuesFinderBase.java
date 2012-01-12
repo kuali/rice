@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.location.api.country.Country;
+import org.kuali.rice.location.api.services.LocationApiServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,44 +28,62 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This is a description of what this class does - wliang don't forget to fill this in.
+ * An abstract KeyValuesBase for defining a values finder which produces a list of Countries.  Sub-classes should
+ * extend this class and override {@link #retrieveCountriesForValuesFinder()} in order to produce a list of
+ * countries to include.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
 
-    /**
-     * Returns a list of countries that will be added to the result of {@link #getKeyValues()}.  Note that the result may
-     * be filtered by active status
-     *
-     * @return
-     */
-    protected abstract List<Country> retrieveCountriesForValuesFinder();
-
     @Override
     public List<KeyValue> getKeyValues() {
-        List<Country> boList = new ArrayList<Country>(retrieveCountriesForValuesFinder());
-        List<KeyValue> labels = new ArrayList<KeyValue>(boList.size() + 1);
+        Country defaultCountry = getDefaultCountry();
+        List<Country> countries = new ArrayList<Country>(retrieveCountriesForValuesFinder());
 
-        labels.add(new ConcreteKeyValue("", ""));
+        List<KeyValue> values = new ArrayList<KeyValue>(countries.size() + 1);
+        values.add(new ConcreteKeyValue("", ""));
+        if (defaultCountry != null) {
+            values.add(new ConcreteKeyValue(defaultCountry.getCode(), defaultCountry.getName()));
+        }
 
-        Collections.sort(boList, new Comparator<Country>() {
+        Collections.sort(countries, new Comparator<Country>() {
             @Override
-            public int compare(Country o1, Country o2) {
+            public int compare(Country country1, Country country2) {
                 // some institutions may prefix the country name with an asterisk if the country no longer exists
                 // the country names will be compared without the asterisk
-                String sortValue1 = StringUtils.trim(StringUtils.removeStart(o1.getName(), "*"));
-                String sortValue2 = StringUtils.trim(StringUtils.removeStart(o2.getName(), "*"));
+                String sortValue1 = StringUtils.trim(StringUtils.removeStart(country1.getName(), "*"));
+                String sortValue2 = StringUtils.trim(StringUtils.removeStart(country2.getName(), "*"));
                 return sortValue1.compareToIgnoreCase(sortValue2);
             }
 
         });
 
-        for (Country country : boList) {
+        // the default country may show up twice, but that's fine
+        for (Country country : countries) {
             if (country.isActive()) {
-                labels.add(new ConcreteKeyValue(country.getCode(), country.getName()));
+                values.add(new ConcreteKeyValue(country.getCode(), country.getName()));
             }
         }
-        return labels;
+        return values;
     }
+
+    /**
+     * Returns a list of countries that will be added to the result of {@link #getKeyValues()}.  Note that the result
+     * may be filtered by active status
+     *
+     * @return a List of countries to include in the values returned by this finder
+     */
+    protected abstract List<Country> retrieveCountriesForValuesFinder();
+
+    /**
+     * Returns the default country to use for this values finder.  If no default country is returned, none will be
+     * used.  The default implementation of this method will defer to {@link org.kuali.rice.location.api.country.CountryService#getDefaultCountry()}.
+     *
+     * @return the default country to use for this values finder, or null if no default country should be used
+     */
+    protected Country getDefaultCountry() {
+        return LocationApiServiceLocator.getCountryService().getDefaultCountry();
+    }
+
 }

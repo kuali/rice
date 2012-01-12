@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -164,9 +165,15 @@ public class TreeGroup extends Group implements DataBinding{
         messageField.setMessageText(nodeData.getNodeLabel());
         node.setNodeLabel(messageField);
 
-        Group nodeGroup =
-                ComponentUtils.copyComponent(prototype.getDataGroupPrototype(), bindingPrefix + ".data", parentNode);
+        Group nodeGroup = ComponentUtils.copyComponent(prototype.getDataGroupPrototype(), bindingPrefix + ".data",
+                parentNode);
         ComponentUtils.pushObjectToContext(nodeGroup, UifConstants.ContextVariableNames.NODE, nodeData);
+
+        String nodePath = bindingPrefix + ".data";
+        if (StringUtils.isNotBlank(getBindingInfo().getBindingObjectPath())) {
+            nodePath = getBindingInfo().getBindingObjectPath() + "." + nodePath;
+        }
+        ComponentUtils.pushObjectToContext(nodeGroup, UifConstants.ContextVariableNames.NODE_PATH, nodePath);
         node.setData(nodeGroup);
 
         List<Node<Group, MessageField>> nodeChildren = new ArrayList<Node<Group, MessageField>>();

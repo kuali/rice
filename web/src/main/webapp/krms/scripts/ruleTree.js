@@ -120,10 +120,6 @@ function initRuleTree(componentId){
         /* make the tree load with all nodes expanded */
         jq('#' + componentId).jstree('open_all');
 
-        jq('select.categorySelect').change( function() {
-            ajaxCallPropositionTree('ajaxRefresh', 'RuleEditorView-Tree')
-        });
-
         jq(this).find(".actionReveal").hide();
 
         // selecting the description on an edit node should set it to be selected

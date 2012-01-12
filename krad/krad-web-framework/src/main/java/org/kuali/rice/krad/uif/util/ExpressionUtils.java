@@ -140,13 +140,24 @@ public class ExpressionUtils {
         }
 
         // replace line path binding prefix with the actual line path
-        if (object instanceof Component) {
+        if (adjustedExpression.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
             String linePath = getLinePathPrefixValue((Component) object);
 
-            if (StringUtils.isNotEmpty(linePath)) {
-                adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
-                        linePath + ".");
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                    linePath + ".");
+        }
+
+        // replace node path binding prefix with the actual node path
+        if (adjustedExpression.contains(UifConstants.NODE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
+            String nodePath = "";
+
+            Map<String, Object> context = ((Component) object).getContext();
+            if (context.containsKey(UifConstants.ContextVariableNames.NODE_PATH)) {
+                nodePath = (String) context.get(UifConstants.ContextVariableNames.NODE_PATH);
             }
+
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.NODE_PATH_BIND_ADJUST_PREFIX,
+                    nodePath + ".");
         }
 
         return adjustedExpression;
@@ -193,7 +204,7 @@ public class ExpressionUtils {
      *
      * @param object - the object containing the expression
      * @param propertyName - the property the expression is on
-     * @param expression - the epxression
+     * @param expression - the expression to move
      * @return
      */
     protected static boolean moveNestedPropertyExpression(Object object, String propertyName, String expression) {

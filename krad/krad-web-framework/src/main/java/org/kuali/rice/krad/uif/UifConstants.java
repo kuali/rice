@@ -117,6 +117,7 @@ public class UifConstants {
     public static final String DEFAULT_PATH_BIND_ADJUST_PREFIX = "#dp.";
     public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
     public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
+    public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
 
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";
@@ -130,6 +131,7 @@ public class UifConstants {
         public static final String READONLY_LINE = "readOnlyLine";
         public static final String MANAGER = "manager";
         public static final String NODE = "node";
+        public static final String NODE_PATH = "nodePath";
         public static final String PARENT = "parent";
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";

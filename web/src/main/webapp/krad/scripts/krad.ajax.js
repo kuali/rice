@@ -345,7 +345,7 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCa
  */
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall){
 	if (!baseId.match("\_c0$")) {
-		jq("[name='"+ controlName +"']").change(function() {
+		jq("[name='"+ controlName +"']").live('change', function() {
 			var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
 			if(refreshDisclosure.length){
                 var displayWithId = disclosureId;

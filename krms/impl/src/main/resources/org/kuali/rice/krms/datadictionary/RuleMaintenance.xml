@@ -605,7 +605,7 @@
                     </property>
                   </bean>
                   <bean parent="Uif-InputField" p:propertyName="proposition.parameters[0].value"
-                          p:showLabel="true" p:label="Term" p:maxLength="255">
+                          p:showLabel="true" p:label="Term" p:maxLength="255" p:refreshWhenChanged="#np.proposition.categoryId">
                     <property name="control">
                       <bean parent="Uif-DropdownControl"/>
                     </property>

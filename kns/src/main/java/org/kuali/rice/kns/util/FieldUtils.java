@@ -1485,16 +1485,24 @@ public final class FieldUtils {
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             // Create a pair of range input fields for a ranged attribute
             // the lower bound is prefixed to distinguish it from the upper bound, which retains the original field name
-            Field lowerField = new Field(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + remotableAttributeField.getName(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+            String label = StringUtils.defaultString(lookupSettings.getLowerLabel(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+            Field lowerField = new Field(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + remotableAttributeField.getName(), label);
             lowerField.setMemberOfRange(true);
             lowerField.setAllowInlineRange(false);
             lowerField.setRangeFieldInclusive(lookupSettings.isLowerBoundInclusive());
+            if (lookupSettings.isLowerDatePicker() != null) {
+                lowerField.setDatePicker(lookupSettings.isLowerDatePicker());
+            }
             fields.add(lowerField);
 
-            Field upperField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
+            label = StringUtils.defaultString(lookupSettings.getUpperLabel(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
+            Field upperField = new Field(remotableAttributeField.getName(), label);
             upperField.setMemberOfRange(true);
             upperField.setAllowInlineRange(false);
             upperField.setRangeFieldInclusive(lookupSettings.isUpperBoundInclusive());
+            if (lookupSettings.isUpperDatePicker() != null) {
+                upperField.setDatePicker(lookupSettings.isUpperDatePicker());
+            }
             fields.add(upperField);
         } else {
             //this ain't right....
@@ -1675,8 +1683,11 @@ public final class FieldUtils {
                 field.setBaseLookupUrl(((RemotableQuickFinder)widget).getBaseLookupUrl());
                 field.setLookupParameters(((RemotableQuickFinder)widget).getLookupParameters());
                 field.setFieldConversions(((RemotableQuickFinder)widget).getFieldConversions());
-            } else if (widget instanceof RemotableDatepicker) {
-                field.setDatePicker(true);
+            // datepickerness is dealt with in constructFieldsForAttributeDefinition ranged field construction
+            // since multiple widgets are set on RemotableAttributeField (why?) and it's not possible to determine
+            // lower vs. upper bound settings
+            //} else if (widget instanceof RemotableDatepicker) {
+            //    field.setDatePicker(true);
             } else if (widget instanceof RemotableTextExpand) {
                 field.setExpandedTextArea(true);
             }

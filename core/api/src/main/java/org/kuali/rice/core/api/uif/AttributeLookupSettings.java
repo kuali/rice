@@ -80,4 +80,23 @@ public interface AttributeLookupSettings {
      */
     Boolean isCaseSensitive();
 
+    /**
+     * @return an explicit label for the lower bound field
+     */
+    String getLowerLabel();
+
+    /**
+     * @return an explicit label for the upper bound field
+     */
+    String getUpperLabel();
+
+    /**
+     * @return whether to display a datepicker for the lower bound
+     */
+    Boolean isLowerDatePicker();
+
+    /**
+     * @return whether to display a datepicker for the upper bound
+     */
+    Boolean isUpperDatePicker();
 }

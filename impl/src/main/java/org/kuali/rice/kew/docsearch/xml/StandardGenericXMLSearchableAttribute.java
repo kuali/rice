@@ -274,7 +274,9 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
      */
     private RemotableAttributeField convertFieldDef(XMLSearchableAttributeContent.FieldDef field, Collection<SearchableAttributeValue> searchableAttributeValues) {
         RemotableAttributeField.Builder fieldBuilder = RemotableAttributeField.Builder.create(field.name);
+
         fieldBuilder.setLongLabel(field.title);
+
         RemotableAttributeLookupSettings.Builder attributeLookupSettings = RemotableAttributeLookupSettings.Builder.create();
         fieldBuilder.setAttributeLookupSettings(attributeLookupSettings);
 
@@ -314,6 +316,10 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             // we've established the search is ranged, so we can inspect the bounds
             attributeLookupSettings.setLowerBoundInclusive(field.searchDefinition.lowerBound.inclusive);
             attributeLookupSettings.setUpperBoundInclusive(field.searchDefinition.upperBound.inclusive);
+            attributeLookupSettings.setLowerLabel(field.searchDefinition.lowerBound.label);
+            attributeLookupSettings.setUpperLabel(field.searchDefinition.upperBound.label);
+            attributeLookupSettings.setLowerDatePicker(field.searchDefinition.lowerBound.datePicker);
+            attributeLookupSettings.setUpperDatePicker(field.searchDefinition.upperBound.datePicker);
         }
 
         Boolean caseSensitive = field.searchDefinition.getRangeBoundOptions().caseSensitive;

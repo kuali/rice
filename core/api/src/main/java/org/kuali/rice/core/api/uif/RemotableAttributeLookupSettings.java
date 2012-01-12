@@ -39,6 +39,10 @@ import org.w3c.dom.Element;
         RemotableAttributeLookupSettings.Elements.LOWER_BOUND_INCLUSIVE,
         RemotableAttributeLookupSettings.Elements.UPPER_BOUND_INCLUSIVE,
         RemotableAttributeLookupSettings.Elements.CASE_SENSITIVE,
+        RemotableAttributeLookupSettings.Elements.LOWER_LABEL,
+        RemotableAttributeLookupSettings.Elements.UPPER_LABEL,
+        RemotableAttributeLookupSettings.Elements.LOWER_DATEPICKER,
+        RemotableAttributeLookupSettings.Elements.UPPER_DATEPICKER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class RemotableAttributeLookupSettings extends AbstractDataTransferObject implements AttributeLookupSettings {
@@ -60,6 +64,18 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
 
     @XmlElement(name = Elements.CASE_SENSITIVE, required = false)
     private final Boolean caseSensitive;
+
+    @XmlElement(name = Elements.UPPER_LABEL, required = false)
+    private final String upperLabel;
+
+    @XmlElement(name = Elements.LOWER_LABEL, required = false)
+    private final String lowerLabel;
+
+    @XmlElement(name = Elements.UPPER_DATEPICKER, required = false)
+    private final Boolean upperDatePicker;
+
+    @XmlElement(name = Elements.LOWER_DATEPICKER, required = false)
+    private final Boolean lowerDatePicker;
     
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -75,6 +91,10 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         this.lowerBoundInclusive = false;
         this.upperBoundInclusive = false;
         this.caseSensitive = null;
+        this.lowerLabel = null;
+        this.upperLabel = null;
+        this.lowerDatePicker = null;
+        this.upperDatePicker = null;
     }
 
     private RemotableAttributeLookupSettings(Builder builder) {
@@ -84,6 +104,10 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         this.lowerBoundInclusive = builder.isLowerBoundInclusive();
         this.upperBoundInclusive = builder.isUpperBoundInclusive();
         this.caseSensitive = builder.isCaseSensitive();
+        this.lowerLabel = builder.getLowerLabel();
+        this.upperLabel = builder.getUpperLabel();
+        this.lowerDatePicker = builder.isLowerDatePicker();
+        this.upperDatePicker= builder.isUpperDatePicker();
     }
 
     @Override
@@ -116,6 +140,26 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         return caseSensitive;
     }
 
+    @Override
+    public String getLowerLabel() {
+        return lowerLabel;
+    }
+
+    @Override
+    public String getUpperLabel() {
+        return upperLabel;
+    }
+
+    @Override
+    public Boolean isLowerDatePicker() {
+        return lowerDatePicker;
+    }
+
+    @Override
+    public Boolean isUpperDatePicker() {
+        return upperDatePicker;
+    }
+
     /**
      * A builder which can be used to construct {@link RemotableAttributeLookupSettings} instances.  Enforces the constraints of the {@link AttributeLookupSettings}.
      */
@@ -127,11 +171,19 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         private boolean lowerBoundInclusive;
         private boolean upperBoundInclusive;
         private Boolean caseSensitive;
+        private String lowerLabel;
+        private String upperLabel;
+        private Boolean lowerDatePicker;
+        private Boolean upperDatePicker;
 
         private Builder() {
             setInCriteria(true);
             setInResults(true);
             setRanged(false);
+            setLowerLabel(null);
+            setUpperLabel(null);
+            setLowerDatePicker(null);
+            setUpperDatePicker(null);
         }
 
         public static Builder create() {
@@ -186,6 +238,26 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
             return caseSensitive;
         }
 
+        @Override
+        public String getLowerLabel() {
+            return lowerLabel;
+        }
+
+        @Override
+        public String getUpperLabel() {
+            return upperLabel;
+        }
+
+        @Override
+        public Boolean isLowerDatePicker() {
+            return lowerDatePicker;
+        }
+
+        @Override
+        public Boolean  isUpperDatePicker() {
+            return upperDatePicker;
+        }
+
         public void setInCriteria(boolean inCriteria) {
             this.inCriteria = inCriteria;
         }
@@ -209,7 +281,22 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         public void setCaseSensitive(Boolean caseSensitive) {
             this.caseSensitive = caseSensitive;
         }
+        
+        public void setLowerLabel(String s) {
+            this.lowerLabel = s;
+        }
 
+        public void setUpperLabel(String s) {
+            this.upperLabel = s;
+        }
+        
+        public void setLowerDatePicker(Boolean b) {
+            this.lowerDatePicker = b;
+        }
+
+        public void setUpperDatePicker(Boolean b) {
+            this.upperDatePicker = b;
+        }
     }
 
     /**
@@ -230,6 +317,9 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         final static String LOWER_BOUND_INCLUSIVE = "lowerBoundInclusive";
         final static String UPPER_BOUND_INCLUSIVE = "upperBoundInclusive";
         final static String CASE_SENSITIVE = "caseSensitive";
+        final static String LOWER_LABEL = "lowerLabel";
+        final static String UPPER_LABEL = "upperLabel";
+        final static String LOWER_DATEPICKER = "lowerDatePicker";
+        final static String UPPER_DATEPICKER = "upperDatePicker";
     }
-
 }

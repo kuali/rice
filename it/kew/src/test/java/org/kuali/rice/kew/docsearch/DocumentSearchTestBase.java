@@ -17,8 +17,11 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
@@ -75,6 +78,16 @@ public class DocumentSearchTestBase extends KEWTestCase {
             value.append(" ").append(upperBound);
         }
         return value.toString();
+    }
+
+
+    /**
+     * Creates an ExtensionDefinition for the specified attribute with XML config pulled from the db
+     */
+    protected static ExtensionDefinition createExtensionDefinition(String attrName) {
+        ExtensionDefinition.Builder edb = ExtensionDefinition.Builder.create(attrName, KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName());
+        edb.getConfiguration().put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, KEWServiceLocator.getRuleAttributeService().findByName(attrName).getXmlConfigData());
+        return edb.build();
     }
 
 //    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {

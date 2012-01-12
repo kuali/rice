@@ -1034,13 +1034,4 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
             }
         }
     }
-
-    /**
-     * Creates an ExtensionDefinition for the specified attribute with XML config pulled from the db
-     */
-    protected static ExtensionDefinition createExtensionDefinition(String attrName) {
-        ExtensionDefinition.Builder edb = ExtensionDefinition.Builder.create(attrName, KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName());
-        edb.getConfiguration().put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, KEWServiceLocator.getRuleAttributeService().findByName(attrName).getXmlConfigData());
-        return edb.build();
-    }
 }

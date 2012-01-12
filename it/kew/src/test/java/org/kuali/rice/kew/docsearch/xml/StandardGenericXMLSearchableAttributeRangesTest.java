@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -31,6 +32,10 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
+import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
+import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
@@ -42,6 +47,10 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -72,42 +81,63 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
+     * @see StandardGenericXMLSearchableAttributeTest#testGetSearchFields
+     * @see StandardGenericXMLSearchableAttributeTest#tetBlankValidValuesOnKeyValues
      */
-    /*
-    @Ignore("See KULRICE-2988")
     @Test public void testGetSearchingRowsUsingRangeSearches() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
+        ExtensionDefinition ed = createExtensionDefinition("XMLSearchableAttributeStringRange");
+
         String documentTypeName = "SearchDocType";
-        DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
-        List<Row> searchRows = searchAttribute.getSearchingRows(context);
+        List<RemotableAttributeField> remotableAttributeFields = searchAttribute.getSearchFields(ed, documentTypeName);
+        List<Row> rows = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
+
         if ((new SearchableAttributeStringValue()).allowsRangeSearches()) {
-        	fail("Cannot perform range search on string field at database level");
+            assertEquals("Invalid number of search rows", 2, rows.size());
+            for (int i = 1; i <= rows.size(); i++) {
+                Row row = rows.get(i - 1);
+                assertEquals("Invalid number of fields for search row " + i, 1, row.getFields().size());
+                Field field = (Field)(row.getField(0));
+                assertTrue("Field should be the member of a range",field.isMemberOfRange());
+                if (i == 1) { // lower is inclusive
+                    assertTrue("Field should be inclusive", field.isInclusive());
+                } else {
+                    assertFalse("Field should not be inclusive", field.isInclusive());
+                }
+                assertFalse("Field should not be using datepicker", field.isDatePicker());
+            }
         } else {
-            assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = searchRows.get(0);
+            assertEquals("Invalid number of search rows", 1, remotableAttributeFields.size());
+            Row row = rows.get(0);
             assertEquals("Invalid number of fields for search row", 1, row.getFields().size());
             assertFalse("Field is the member of a range when ranges are not allowed",((Field)row.getField(0)).isMemberOfRange());
         }
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
+        ed = createExtensionDefinition("XMLSearchableAttributeStdLongRange");
         // search def :  rangeSearch=true
         // range def  :
         // upper def  :
         // lower def  :
-        searchRows = searchAttribute.getSearchingRows(context);
+        remotableAttributeFields = searchAttribute.getSearchFields(ed, documentTypeName);
+        rows = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
         if ((new SearchableAttributeLongValue()).allowsRangeSearches()) {
-            assertEquals("Invalid number of search rows", 2, searchRows.size());
-            for (int i = 1; i <= searchRows.size(); i++) {
-                Row row = searchRows.get(i - 1);
+            assertEquals("Invalid number of search rows", 2, rows.size());
+            for (int i = 1; i <= rows.size(); i++) {
+                Row row = rows.get(i - 1);
 	            assertEquals("Invalid number of fields for search row " + i, 1, row.getFields().size());
 	            Field field = (Field)(row.getField(0));
 	            assertTrue("Field should be the member of a range",field.isMemberOfRange());
-	            assertTrue("Field should not be inclusive",field.isInclusive());
+                if (i == 1) { // lower is inclusive
+                    assertTrue("Field should be inclusive", field.isInclusive());
+                } else {
+                    assertFalse("Field should not be inclusive", field.isInclusive());
+                }
 	            assertFalse("Field should not be using datepicker", field.isDatePicker());
 			}
         } else {
-            assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = searchRows.get(0);
+            assertEquals("Invalid number of search rows", 1, rows.size());
+            Row row = rows.get(0);
             assertEquals("Invalid number of fields for search row", 1, row.getFields().size());
             Field field = (Field)(row.getField(0));
             assertFalse("Field is the member of a range when ranges are not allowed",field.isMemberOfRange());
@@ -116,33 +146,33 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         }
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloatRange");
+        ed = createExtensionDefinition("XMLSearchableAttributeStdFloatRange");
         // search def :
         // range def  :  inclusive=false
         // upper def  :  label=ending
         // lower def  :  label=starting
-        searchRows = searchAttribute.getSearchingRows(context);
+        remotableAttributeFields = searchAttribute.getSearchFields(ed, documentTypeName);
+        rows = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
         if ((new SearchableAttributeFloatValue()).allowsRangeSearches()) {
-            assertEquals("Invalid number of search rows", 2, searchRows.size());
-            for (int i = 1; i <= searchRows.size(); i++) {
-                Row row = searchRows.get(i - 1);
+            assertEquals("Invalid number of search rows", 2, rows.size());
+            for (int i = 1; i <= rows.size(); i++) {
+                Row row = rows.get(i - 1);
 	            assertEquals("Invalid number of fields for search row " + i, 1, row.getFields().size());
 	            Field field = (Field)(row.getField(0));
 	            assertTrue("Upper and Lower Fields should be members of a range",field.isMemberOfRange());
 	            assertFalse("Upper and Lower Fields should not be inclusive",field.isInclusive());
 	            String labelValue = null;
-	            if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+	            if (field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
 	            	labelValue = "starting";
-	            } else if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) {
-	            	labelValue = "ending";
 	            } else {
-	            	fail("Field should have prefix consistent with upper or lower bound of a range");
+	            	labelValue = "ending";
 	            }
 	            assertEquals("Field label is incorrect.", labelValue, field.getFieldLabel());
 	            assertFalse("Field should not be using datepicker", field.isDatePicker());
 			}
         } else {
-            assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = searchRows.get(0);
+            assertEquals("Invalid number of search rows", 1, rows.size());
+            Row row = rows.get(0);
             assertEquals("Invalid number of fields for search row", 1, row.getFields().size());
             Field field = (Field)(row.getField(0));
             assertFalse("Field is the member of a range when ranges are not allowed",field.isMemberOfRange());
@@ -150,42 +180,46 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         }
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdDateTimeRange");
+        ed = createExtensionDefinition("XMLSearchableAttributeStdDateTimeRange");
         // search def :  datePicker=false
         // range def  :  inclusive=false
         // upper def  :  inclusvie=true - datePicker=true
         // lower def  :
-        searchRows = searchAttribute.getSearchingRows(context);
+        remotableAttributeFields = searchAttribute.getSearchFields(ed, documentTypeName);
+        assertFalse(remotableAttributeFields.get(0).getAttributeLookupSettings().isLowerDatePicker());
+        assertTrue(remotableAttributeFields.get(0).getAttributeLookupSettings().isUpperDatePicker());
+        rows = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
         if ((new SearchableAttributeDateTimeValue()).allowsRangeSearches()) {
-            assertEquals("Invalid number of search rows", 2, searchRows.size());
-            for (int i = 0; i < searchRows.size(); i++) {
-                Row row = searchRows.get(i);
+            assertEquals("Invalid number of search rows", 2, rows.size());
+            for (int i = 0; i < rows.size(); i++) {
+                Row row = rows.get(i);
 	            assertTrue("Invalid number of fields for search row", row.getFields().size() > 0);
 	            Field field = (Field)(row.getField(0));
 	            assertTrue("Field should be the member of a range search", field.isMemberOfRange());
-	            if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+	            if (field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
 	            	// this is the lower bound row
-	            	assertFalse("Upper Field should not be using datepicker field", field.isDatePicker());
-	            	assertFalse("Upper Field should not be inclusive", field.isInclusive());
-	            } else if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) {
+	            	assertFalse("Lower Field should not be using datepicker field", field.isDatePicker());
+	            	assertFalse("Lower Field should not be inclusive", field.isInclusive());
+	            } else {
 	            	// this is the upper bound row
 	            	assertTrue("Upper Field should be using datepicker field", field.isDatePicker());
 	            	assertTrue("Upper Field should not be inclusive", field.isInclusive());
-	            	assertEquals("Row should have two fields (including the datepicker field)", 2, row.getFields().size());
-	            	assertEquals("Second field in row  should be of type datepicker", Field.DATEPICKER, row.getField(1).getFieldType());
-	            } else {
-	            	fail("Field should have prefix consistent with upper or lower bound of a range");
+                    assertEquals("Row should have 1 field (with datepicker)", 1, row.getFields().size());
+                    assertEquals("Field in row should be of type text", Field.TEXT, row.getField(0).getFieldType());
+                    // DatePicker used to go in it's own field, now it is part of the main field
+	            	//assertEquals("Row should have two fields (including the datepicker field)", 2, row.getFields().size());
+	            	//assertEquals("Second field in row  should be of type datepicker", Field.DATEPICKER, row.getField(1).getFieldType());
 	            }
 			}
         } else {
-            assertEquals("Invalid number of search rows", 1, searchRows.size());
-            Row row = searchRows.get(0);
+            assertEquals("Invalid number of search rows", 1, rows.size());
+            Row row = rows.get(0);
             // check to make sure our datepicker field didn't make it to the search rows
             assertEquals("Invalid number of fields", 1, row.getFields().size());
             assertFalse("Field is the member of a range when ranges are not allowed",((Field)(row.getField(0))).isMemberOfRange());
         }
     }
 
-    */
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.validateUserSearchInputs(Map)'
      * This tests search value validation as well as bounds inclusivity; if lower/upper bound is specified, inclusivity of range vs. attribute definition is tested.
@@ -261,15 +295,6 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
             assertEquals("Validation should not have returned an error.", 0, errors.size());
             return null;
         }
-    }
-    
-    /**
-     * Creates an ExtensionDefinition for the specified attribute with XML config pulled from the db
-     */
-    protected static ExtensionDefinition createExtensionDefinition(String attrName) {
-        ExtensionDefinition.Builder edb = ExtensionDefinition.Builder.create(attrName, KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName());
-        edb.getConfiguration().put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, KEWServiceLocator.getRuleAttributeService().findByName(attrName).getXmlConfigData());
-        return edb.build();
     }
 
     /**

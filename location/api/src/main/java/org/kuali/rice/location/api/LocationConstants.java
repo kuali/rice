@@ -34,6 +34,7 @@ public final class LocationConstants {
 		}
     }
 
+    public final static String LOCATION_DISTRIBUTED_CACHE = "locationDistributedCacheManager";
     public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
     public static final class Namespaces {

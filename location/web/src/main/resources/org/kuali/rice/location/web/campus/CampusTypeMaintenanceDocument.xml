@@ -22,7 +22,7 @@
 
   <bean id="CampusTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.location.impl.campus.CampusTypeBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.location.web.campus.CampusTypeMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="CampusTypeMaintenanceDocument-EditCampusType"/>

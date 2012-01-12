@@ -22,7 +22,7 @@
 
   <bean id="StateMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.location.impl.state.StateBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.location.web.state.StateMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="StateMaintenanceDocument-EditStates"/>

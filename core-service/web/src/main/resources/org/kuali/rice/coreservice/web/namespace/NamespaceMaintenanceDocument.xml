@@ -20,7 +20,7 @@
 
   <bean id="NamespaceMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="NamespaceMaintenanceDocument-EditNamespace"/>

@@ -64,6 +64,8 @@ public final class CoreConstants {
 		    throw new UnsupportedOperationException("do not call");
 	    }
     }
+    
+    public static final String CORE_SERVICE_DISTRIBUTED_CACHE = "coreServiceDistributedCacheManager";
 
     public static final class CommonElements {
         public static final String FUTURE_ELEMENTS = "_futureElements";

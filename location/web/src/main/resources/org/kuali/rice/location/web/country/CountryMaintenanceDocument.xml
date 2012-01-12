@@ -22,7 +22,7 @@
 
   <bean id="CountryMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.location.impl.country.CountryBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.location.web.country.CountryMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="CountryMaintenanceDocument-EditCountry"/>

@@ -22,7 +22,7 @@
 
   <bean id="CountyMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.location.impl.county.CountyBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.location.web.county.CountyMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="CountyMaintenanceDocument-EditCounties"/>

@@ -113,7 +113,7 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="description" p:rowSpan="2" p:labelField.rowSpan="2"/>
-        <bean parent="Uif-InputField" p:propertyName="name" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="name" p:required="true" p:fieldDirectInquiry.render="false"/>
         <bean parent="Uif-InputField" p:propertyName="typeId" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="active" p:defaultValue="true"/>
       </list>

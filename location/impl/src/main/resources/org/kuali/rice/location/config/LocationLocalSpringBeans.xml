@@ -60,6 +60,11 @@
     <property name="serviceName" value="persistenceServiceOjb" />
   </bean>
 
+  <bean id="rice.location.import.parameterService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="parameterService" />
+  </bean>
+
   <bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
   <property name="namespaceCode" value="KR-NS"/>
     <property name="dataSourceName" value="locationDataSource"/>
@@ -128,6 +133,7 @@
 
   <bean id="countryService" class="org.kuali.rice.location.impl.country.CountryServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="parameterService" ref="rice.location.import.parameterService"/>
   </bean>
 
   <bean id="campusService" class="org.kuali.rice.location.impl.campus.CampusServiceImpl">

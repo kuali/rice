@@ -2930,18 +2930,6 @@
             <index-column name="CNTXT_ID"/>
         </index>
     </table>
-    <table name="KRMS_CNTXT_VLD_EVENT_T">
-        <column name="CNTXT_VLD_EVENT_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="EVENT_NM" required="true" size="255" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <foreign-key foreignTable="KRMS_CNTXT_T" name="KRMS_CNTXT_VLD_EVENT_FK1">
-            <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
-        </foreign-key>
-        <index name="KRMS_CNTXT_VLD_EVENT_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
-    </table>
     <table name="KRMS_CNTXT_VLD_FUNC_T">
         <column name="CNTXT_VLD_FUNC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
@@ -3772,12 +3760,11 @@
     <sequence name="KRMS_CMPND_PROP_PROPS_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_TERM_SPEC_PREREQ_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_ACTN_TYP_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_AGENDA_TYP_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_EVENT_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_FUNC_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_RULE_TYP_S" nextval="10000"/>
+    <sequence name="KRMS_CNTXT_VLD_TERM_SPEC_S" nextval="10000"/>
     <sequence name="KRMS_CTGRY_S" nextval="1"/>
     <sequence name="KRMS_FUNC_PARM_S" nextval="10000"/>
     <sequence name="KRMS_FUNC_S" nextval="10000"/>

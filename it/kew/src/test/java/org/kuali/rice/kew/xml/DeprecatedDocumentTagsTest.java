@@ -18,11 +18,28 @@ package org.kuali.rice.kew.xml;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.rule.RuleResponsibility;
+import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +49,7 @@ import static org.junit.Assert.*;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DeprecatedDocumentTagsTest extends KEWTestCase{
+public class DeprecatedDocumentTagsTest extends DocumentSearchTestBase {
     private static final Logger LOG = Logger.getLogger(DeprecatedDocumentTagsTest.class);
     
     private static final String TEST_GROUP_NAME = "TestWorkgroup";
@@ -72,22 +89,20 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
      * 
      * @throws Exception
      */
-    /*
     @Test
     public void testDocTypeSecurityAndResponsibilityAndVisibilityWorkgroupNames() throws Exception {
     	// Ensure that the document type called "DocumentType02" has the correct group defined for its responsibility on "TestRule1".
     	RuleBaseValues testRule = KEWServiceLocator.getRuleService().getRuleByName("TestRule1");
     	assertNotNull("TestRule1 should not be null", testRule);
-    	assertEquals("There should be exactly one responsibility on TestRule1", 1, testRule.getResponsibilities().size());
-    	RuleResponsibility testResp = testRule.getResponsibility(0);
+    	assertEquals("There should be exactly one responsibility on TestRule1", 1, testRule.getRuleResponsibilities().size());
+    	RuleResponsibilityBo testResp = testRule.getRuleResponsibilities().get(0);
     	assertNotNull("The responsibility on TestRule1 should not be null", testResp);
     	assertEquals("The responsibility on TestRule1 has the wrong type", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID, testResp.getRuleResponsibilityType());
     	Group testGroup = KimApiServiceLocator.getGroupService().getGroup(testResp.getRuleResponsibilityName());
     	assertGroupIsCorrect("<responsibility><workgroup>", "TestWorkgroup", "KR-WKFLW", testGroup);
     	// Ensure that the "DocumentType02" document type has a properly-working "isMemberOfWorkgroup" element on its attribute.
-    	DocumentSearchContext docSearchContext = DocSearchUtils.getDocumentSearchContext("", "DocumentType02", "");
-    	RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName("SearchableAttributeVisible");
-    	String[] testPrincipalNames = {"rkirkend", "quickstart"};
+
+        String[] testPrincipalNames = {"rkirkend", "quickstart"};
         boolean[] visibleStates = {true, false};
         // Make sure that the rule attribute is visible for "rkirkend" but not for "quickstart".
         for (int i = 0; i < testPrincipalNames.length; i++) {
@@ -98,8 +113,9 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
             GlobalVariables.setUserSession(new UserSession(testPrincipalNames[i]));
             // Get the visibility of the rule attribute, which should be dependent on how the UserSession compares with the "isMemberOfWorkgroup" element.
             StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
-            searchableAttribute.setRuleAttribute(ruleAttribute);
-            List<Row> rowList = searchableAttribute.getSearchingRows(docSearchContext);
+            ExtensionDefinition ed = createExtensionDefinition("SearchableAttributeVisible");
+            List<RemotableAttributeField> remotableAttributeFields = searchableAttribute.getSearchFields(ed, "DocumentType02");
+            List<Row> rowList = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
             assertEquals("The searching rows list should have exactly one element", 1, rowList.size());
             assertEquals("The searching row should have exactly one field", 1, rowList.get(0).getFields().size());
             assertEquals("The rule attribute field does not have the expected visibility", visibleStates[i], rowList.get(0).getField(0).isColumnVisible());
@@ -110,8 +126,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
     	assertEquals("docTypeSecurity should have exactly one group in its security section", 1, testGroups.size());
     	assertGroupIsCorrect("<security><workgroup>", "NonSIT", "KR-WKFLW", testGroups.get(0));
     }
-    */
-    
+
     /**
      * Tests if the deprecated "defaultExceptionWorkgroupName", "exceptionWorkgroupName", and "exceptionWorkgroup" elements are still being
      * parsed and utilized properly.

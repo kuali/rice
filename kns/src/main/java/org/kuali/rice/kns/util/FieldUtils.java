@@ -1666,7 +1666,7 @@ public final class FieldUtils {
     private static void applyLookupAttributes(RemotableAttributeField remotableField, Field field) {
         AttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
         if (lookupSettings != null) {
-            field.setColumnVisible(lookupSettings.isInResults());
+            field.setColumnVisible(lookupSettings.isInCriteria());
             if (!lookupSettings.isInCriteria()) {
                 field.setFieldType(Field.HIDDEN);
             }

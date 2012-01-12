@@ -1115,3 +1115,20 @@ div.uif-headerField.uif-sectionHeaderField	a:hover {
 }
 
 
+span.uif-breadcrumbs {
+	display:block;
+	color:#ffffff;
+	background-color: #666;
+	padding-left: 12px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+span.uif-breadcrumbs a { color:#ffffff;}
+
+
+span.uif-breadcrumbs ol {
+	padding-right: 12px;
+	margin: 0px;
+}
+
+span.uif-breadcrumbs span.kr-current { font-weight:bold}

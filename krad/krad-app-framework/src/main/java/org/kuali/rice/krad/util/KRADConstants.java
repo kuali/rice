@@ -196,6 +196,13 @@ public final class KRADConstants {
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
     public static final String DICTIONARY_BO_NAME = "dictionaryBusinessObjectName";
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
+    
+    /**
+     * Constant defined to match with method call in module-locked.jsp which is
+     * set to a message that is displayed when the module is locked.
+     */
+    public static final String MODULE_LOCKED_MESSAGE_REQUEST_PARAMETER = "moduleLockedMessage";
+    
     public static final String CUSTOM_ACTION = "customAction";
     public static final String DOC_FORM_KEY = "docFormKey";
     public static final String FORM_KEY = "formKey";

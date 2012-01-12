@@ -204,7 +204,7 @@ public abstract class KSBAction extends DispatchAction {
                     String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
                     lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
                 }
-                request.setAttribute(KualiAction.MODULE_LOCKED_MESSAGE, lockoutMessage);
+                request.setAttribute(KRADConstants.MODULE_LOCKED_MESSAGE_REQUEST_PARAMETER, lockoutMessage);
                 return true;
             }
 	    }

@@ -953,12 +953,6 @@ public abstract class KualiAction extends DispatchAction {
      * <p>Value is forwardNext
     */
     public static final String FORWARD_NEXT="forwardNext";
-    
-    /**
-     * Constant defined to match with method call in module-locked.jsp which is
-     * set to a message that is displayed when the module is locked.
-     */
-    public static final String MODULE_LOCKED_MESSAGE = "moduleLockedMessage";
 
     /**
      * This method is invoked when Java Script is turned off from the web browser. It
@@ -1167,7 +1161,7 @@ public abstract class KualiAction extends DispatchAction {
 					String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
 					lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
 				}
-				request.setAttribute(MODULE_LOCKED_MESSAGE, lockoutMessage);
+				request.setAttribute(KRADConstants.MODULE_LOCKED_MESSAGE_REQUEST_PARAMETER, lockoutMessage);
 				return true;
 			}
 		}

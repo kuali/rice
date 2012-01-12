@@ -31,6 +31,16 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
 
     private List<StringCoercionExtension> stringCoercionExtensions = new LinkedList<StringCoercionExtension>();
 
+    private ComparisonOperatorServiceImpl() {}
+
+    /**
+     * Factory method for getting a {@link ComparisonOperatorService}
+     * @return a {@link ComparisonOperatorService}
+     */
+    public static ComparisonOperatorService getInstance() {
+        return new ComparisonOperatorServiceImpl();
+    }
+
     @Override
     public List<StringCoercionExtension> getStringCoercionExtensions() {
         return stringCoercionExtensions;

@@ -33,7 +33,7 @@ public class KrmsApiServiceLocator {
 	public static final String ENGINE = "rice.krms.engine";
 	public static final QName RULE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "ruleRepositoryService");
     public static final QName KRMS_TYPE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "krmsTypeRepositoryService");
-    public static final QName COMPARISON_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "comparisonOperatorRegistration");
+    public static final QName COMPARISON_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "comparisonOperatorService");
 
     /**
      * Get the named service

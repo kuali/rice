@@ -58,11 +58,11 @@
       <constructor-arg><value>testAction</value></constructor-arg>
   </bean>
 
-  <bean id="comparisonOperatorRegistration" class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl">
+  <bean id="customComparisonOperator" class="org.rice.krms.test.CustomComparisonOperator"/>
+
+  <bean id="comparisonOperatorService" class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl">
       <property name="operators">
-          <list>
-              <bean class="org.rice.krms.test.CustomComparisonOperator"/>
-          </list>
+        <list><ref bean="customComparisonOperator"/></list>
       </property>
   </bean>
 

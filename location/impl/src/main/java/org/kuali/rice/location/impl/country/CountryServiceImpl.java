@@ -19,7 +19,11 @@ package org.kuali.rice.location.impl.country;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.country.CountryService;
@@ -34,6 +38,7 @@ import java.util.Map;
 public final class CountryServiceImpl implements CountryService {
 
     private BusinessObjectService businessObjectService;
+    private ParameterService parameterService;
 
     @Override
     public Country getCountry(final String code) {
@@ -84,6 +89,24 @@ public final class CountryServiceImpl implements CountryService {
 
         Collection<CountryBo> countryBos = businessObjectService.findMatching(CountryBo.class, Collections.unmodifiableMap(map));
         return convertListOfBosToImmutables(countryBos);
+    }
+
+    @Override
+    public Country getDefaultCountry() {
+        String defaultCountryCode = parameterService.getParameterValueAsString(KRADConstants.KNS_NAMESPACE,
+                KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
+        if (StringUtils.isBlank(defaultCountryCode)) {
+            return null;
+        }
+        return getCountry(defaultCountryCode);
+    }
+
+    public ParameterService getParameterService() {
+        return parameterService;
+    }
+
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
     }
 
     /**

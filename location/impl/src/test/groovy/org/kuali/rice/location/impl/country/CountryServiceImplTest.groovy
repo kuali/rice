@@ -24,6 +24,10 @@ import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krad.util.KRADPropertyConstants
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.api.country.CountryService
+import org.kuali.rice.coreservice.framework.parameter.ParameterService
+import org.kuali.rice.coreservice.api.parameter.Parameter
+import org.kuali.rice.coreservice.api.parameter.ParameterType
+import org.kuali.rice.krad.util.KRADConstants
 
 class CountryServiceImplTest {
 
@@ -34,6 +38,8 @@ class CountryServiceImplTest {
 
     MockFor businessObjectServiceMockFor
     BusinessObjectService bos
+    MockFor parameterServiceMockFor
+    ParameterService parameterService
     CountryServiceImpl countryServiceImpl
     CountryService countryService
 
@@ -53,9 +59,9 @@ class CountryServiceImplTest {
     }
 
     @Before
-    void setupBoServiceMockContext() {
+    void setupMockContext() {
         businessObjectServiceMockFor = new MockFor(BusinessObjectService.class)
-
+        parameterServiceMockFor = new MockFor(ParameterService.class)
     }
 
     @Before
@@ -67,6 +73,11 @@ class CountryServiceImplTest {
     void injectBusinessObjectServiceIntoCountryService() {
         bos =  businessObjectServiceMockFor.proxyDelegateInstance()
         countryServiceImpl.setBusinessObjectService(bos)
+    }
+
+    void injectParameterService() {
+        parameterService = parameterServiceMockFor.proxyDelegateInstance()
+        countryServiceImpl.setParameterService(parameterService)
     }
 
     @Test
@@ -197,4 +208,76 @@ class CountryServiceImplTest {
         }
         businessObjectServiceMockFor.verify(bos)
     }
+
+    @Test
+    public void testGetDefaultCountry() {
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map map -> return sampleCountries.get(map.get(KRADPropertyConstants.POSTAL_COUNTRY_CODE))
+        }
+        injectBusinessObjectServiceIntoCountryService()
+        parameterServiceMockFor.demand.getParameterValueAsString(1) {
+            String namespaceCode, String componentCode, String parameterName -> "US"
+        }
+        injectParameterService()
+
+        Country country = countryService.getDefaultCountry()
+        assert country != null
+        assert country.code == "US"
+
+        businessObjectServiceMockFor.verify(bos)
+        parameterServiceMockFor.verify(parameterService)
+    }
+
+    /**
+     * If the default country code configured in the parameter service doesn't map to a valid country, then the method
+     * should just return null
+     */
+    @Test
+    public void testGetDefaultCountry_invalidDefaultCountryCode() {
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map map -> return sampleCountries.get(map.get(KRADPropertyConstants.POSTAL_COUNTRY_CODE))
+        }
+        injectBusinessObjectServiceIntoCountryService()
+        parameterServiceMockFor.demand.getParameterValueAsString(1) {
+            String namespaceCode, String componentCode, String parameterName -> "BLAH!!!"
+        }
+        injectParameterService()
+
+        Country country = countryService.getDefaultCountry()
+        assert country == null
+
+        businessObjectServiceMockFor.verify(bos)
+        parameterServiceMockFor.verify(parameterService)
+    }
+
+    @Test
+    public void testGetDefaultCountry_nullDefaultCountryCode() {
+        injectBusinessObjectServiceIntoCountryService()
+        parameterServiceMockFor.demand.getParameterValueAsString(1) {
+            String namespaceCode, String componentCode, String parameterName -> null
+        }
+        injectParameterService()
+
+        Country country = countryService.getDefaultCountry()
+        assert country == null
+
+        businessObjectServiceMockFor.verify(bos)
+        parameterServiceMockFor.verify(parameterService)
+    }
+
+    @Test
+    public void testGetDefaultCountry_emptyDefaultCountryCode() {
+        injectBusinessObjectServiceIntoCountryService()
+        parameterServiceMockFor.demand.getParameterValueAsString(1) {
+            String namespaceCode, String componentCode, String parameterName -> ""
+        }
+        injectParameterService()
+
+        Country country = countryService.getDefaultCountry()
+        assert country == null
+
+        businessObjectServiceMockFor.verify(bos)
+        parameterServiceMockFor.verify(parameterService)
+    }
+
 }

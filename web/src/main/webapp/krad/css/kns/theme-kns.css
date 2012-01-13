@@ -169,8 +169,8 @@ h3.kr-header-page-action {
 }
 .uif-headerField h4.uif-header {
 	font-family:Arial, Helvetica, sans-serif;
-	border-bottom: 1px dotted #000;
-	padding-bottom: 0.3em;
+	/* [disabled]border-bottom: 1px dotted #000; */
+	/* [disabled]padding-bottom: 0.3em; */
 	font-weight: bold;
 }
 .uif-headerField h5.uif-header {
@@ -205,7 +205,7 @@ div.doc_view_header .left {
 	font-weight: bold;
 	font-size: 1.6em;
 	float:left;
-	padding-top: 15px;
+	/* [disabled]padding-top: 15px; */
 	padding-left: 15px;
 }
 .uif-primaryActionButton.boxLayoutHorizontalItem {

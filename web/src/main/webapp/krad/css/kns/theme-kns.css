@@ -435,7 +435,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', end
 
 
 .ui-widget-header .ui-icon {
-	background: url(../../images/jquery/ui-icons_454545_256x240.png);
+	background: url(../../plugins/jqueryUI/images/ui-icons_454545_256x240.png);
 }
 
 
@@ -647,12 +647,12 @@ th.sorting_asc, th.sorting_desc {
 	float:none;
 }
 .sorting_asc {
-	background-image: url(../../images/sort_asc.png), url(../../images/pattern_dotted.png);
+	background-image: url(../../plugins/rice/datatables/images/sort_asc.png), url(../../images/pattern_dotted.png);
 	background-position: center right;
 	background-repeat: no-repeat;
 }
 .sorting_desc {
-	background-image: url(../../images/sort_desc.png), url(../../images/pattern_dotted.png);
+	background-image: url(../../plugins/rice/datatables/images/sort_desc.png), url(../../images/pattern_dotted.png);
 	background-position: center right;
 	background-repeat: no-repeat;
 }
@@ -996,19 +996,19 @@ div.uif-collectionAddItem, span.uif-collectionAddItem {
 
 
 .paginate_disabled_previous {
-	background: url(../../images/back_disabled.jpg);
+	background: url(../../plugins/rice/datatables/images/back_disabled.jpg);
 }
 
 .paginate_enabled_previous {
-    background-image: url(../../images/back_enabled.jpg);
+    background-image: url(../../plugins/rice/datatables/images/back_enabled.jpg);
 }
 
 .paginate_disabled_next {
-    background-image: url(../../images/forward_disabled.jpg);
+    background-image: url(../../plugins/rice/datatables/images/forward_disabled.jpg);
 }
 
 .paginate_enabled_next {
-    background-image: url(../../images/forward_enabled.jpg);
+    background-image: url(../../plugins/rice/datatables/images/forward_enabled.jpg);
 }
 
 

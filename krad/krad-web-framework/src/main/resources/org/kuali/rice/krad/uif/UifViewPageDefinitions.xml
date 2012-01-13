@@ -31,15 +31,15 @@
         <value>/krad/css/global/fss-layout.css</value>
         <value>/krad/css/global/fss-text.css</value>
         <value>/krad/css/global/base.css</value>
-        <value>/krad/css/global/jquery/jquery-ui-1.8.11.css</value>
-        <value>/krad/css/global/jquery/jquery.jgrowl.css</value>
-        <value>/krad/css/global/jquery/demo_table.css</value>
-        <value>/krad/css/global/jquery/TableTools.css</value>
-        <value>/krad/css/global/jquery/jquery.fancybox-1.3.4.css</value>
-        <value>/krad/css/global/popoutTextarea.css</value>
-        <value>/krad/css/global/jquery/jquery.autocomplete.css</value>
-        <value>/krad/css/global/tabs.css</value>
-        <value>/krad/css/global/jquery/smartspinner.css</value>
+        <value>/krad/plugins/jqueryUI/jquery-ui-1.8.11.css</value>
+        <value>/krad/plugins/jgrowl/jquery.jgrowl.css</value>
+        <value>/krad/plugins/rice/datatables/demo_table.css</value>
+        <value>/krad/plugins/rice/datatables/TableTools.css</value>
+        <value>/krad/plugins/fancybox/jquery.fancybox-1.3.4.css</value>
+        <value>/krad/plugins/rice/textpopout/popoutTextarea.css</value>
+        <value>/krad/plugins/jqueryUI/jquery.autocomplete.css</value>
+        <value>/krad/plugins/rice/menu/tabs.css</value>
+        <value>/krad/plugins/rice/spinner/smartspinner.css</value>
       </list>
     </property>
   </bean>

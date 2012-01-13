@@ -159,7 +159,7 @@ td.kr-clientError {
 }
 .kr-errorMessages {
     padding-left: 25px;
-	background: url("../../images/exclamation-red.png") no-repeat scroll 3px 4px transparent;
+	background: url("../../plugins/jgrowl/images/exclamation-red.png") no-repeat scroll 3px 4px transparent;
 }
 .kr-clientError img {
 	margin-left:10px;   /* adds spacing between tab label and the icon */
@@ -201,7 +201,7 @@ li label.kr-error {
 
 .kr-warningMessages {		/* was .warningMessages */ /* renamed in xml and/or jsp */
 	padding-left: 25px;
-	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll 3px 4px transparent;
+	background: url("../../plugins/jgrowl/images/exclamation-diamond-frame.png") no-repeat scroll 3px 4px transparent;
 }
 .kr-warningMessages span {
     display:inline-block;
@@ -212,7 +212,7 @@ li label.kr-error {
 }
 .kr-infoMessages {			/* was .infoMessages*/ /* renamed in xml and/or jsp */
 	padding-left: 25px;
-    background: url("../../images/information-frame.png") no-repeat scroll 3px 4px transparent;
+    background: url("../../plugins/jgrowl/images/information-frame.png") no-repeat scroll 3px 4px transparent;
 	}
 .uif-groupValidationMessages .kr-errorMessages, .uif-groupValidationMessages .kr-warningMessages, .uif-groupValidationMessages .kr-infoMessages{
     margin: 3px 0;

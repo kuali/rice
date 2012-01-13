@@ -147,7 +147,7 @@ div.jGrowl div.jGrowl-closer {
 }
 
 .infoGrowl{
-	background: url("../../../images/information-frame.png") no-repeat scroll 5px 5px transparent;
+	background: url("images/information-frame.png") no-repeat scroll 5px 5px transparent;
 	padding-left: 25px;
 }
 
@@ -156,7 +156,7 @@ div.jGrowl div.jGrowl-closer {
 }
 
 .warningGrowl{
-	background: url("../../../images/exclamation-diamond-frame.png") no-repeat scroll 5px 5px transparent;
+	background: url("images/exclamation-diamond-frame.png") no-repeat scroll 5px 5px transparent;
 	padding-left: 25px;
 }
 
@@ -165,7 +165,7 @@ div.jGrowl div.jGrowl-closer {
 }
 
 .errorGrowl{
-	background: url("../../../images/exclamation-red.png") no-repeat scroll 5px 5px transparent;
+	background: url("images/exclamation-red.png") no-repeat scroll 5px 5px transparent;
 	padding-left: 25px;
 }
 

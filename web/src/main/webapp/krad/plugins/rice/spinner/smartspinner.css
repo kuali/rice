@@ -15,21 +15,21 @@
  */
 ﻿.smartspinner
 {
-	background: url(../../../images/jquery/normal.jpg) no-repeat right;
+	background: url(images/normal.jpg) no-repeat right;
 	text-align:center;
 }
 .smartspinner.up
 {
-	background: url(../../../images/jquery/up.jpg) no-repeat right !important;
+	background: url(images/up.jpg) no-repeat right !important;
 	cursor:pointer;
 }
 .smartspinner.down
 {
-	background: url(../../../images/jquery/down.jpg) no-repeat right !important;
+	background: url(images/down.jpg) no-repeat right !important;
 	cursor:pointer;
 }
 
-input.smartspinner {
-    background: url("../../../images/jquery/normal.jpg") no-repeat scroll right center !important;
+input:focus.smartspinner {
+    background: url("images/normal.jpg") no-repeat scroll right center !important;
     text-align: center;
 }

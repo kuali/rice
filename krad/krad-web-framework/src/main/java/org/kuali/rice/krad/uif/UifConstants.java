@@ -24,7 +24,7 @@ public class UifConstants {
     public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
     public static final String DEFAULT_VIEW_NAME = "default";
-    public static final String SPRING_VIEW_ID = "ApplicationView";
+    public static final String SPRING_VIEW_ID = "ScreenMediaView";
     public static final String SPRING_REDIRECT_ID = "redirectURL";
 
     public static enum Position {

@@ -110,7 +110,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                        completeRecipientList.add(groupMembers[j]);
                    }
                } else {  // just a user, so add to the list
-                   Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(recipient.getRecipientId());
+                   Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(recipient.getRecipientId());
             	   completeRecipientList.add(principal.getPrincipalId());
                }
            }

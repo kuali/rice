@@ -57,8 +57,8 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * @return NotificationMessageDelivery
      */
     public NotificationMessageDelivery getNotificationMessageDelivery(Long id) {
-	HashMap<String, Long> primaryKeys = new HashMap<String, Long>();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, id);
+        HashMap<String, Long> primaryKeys = new HashMap<String, Long>();
+        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, id);
 	
         return (NotificationMessageDelivery) businessObjectDao.findByPrimaryKey(NotificationMessageDelivery.class, primaryKeys);
     }

@@ -29,65 +29,69 @@
         title="E-Doc" scrolling="auto" frameborder="0" width="100%"></iframe>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     var if_height = ${frameHeight};
     var if_width;
-    var channelUrlEscaped = "${channelUrl}".replace(/'/g,"\\'");
-    var thisIframe = jQuery("iframe[src='"+ channelUrlEscaped + "']");
+    var channelUrlEscaped = "${channelUrl}".replace(/'/g, "\\'");
+    var thisIframe = jQuery("iframe[src='" + channelUrlEscaped + "']");
+    var browserIsIE8 = jQuery.browser.msie && jQuery.browser.version == 8.0;
 
     //find iframe source host
     var iframeSrc = "${channelUrl}";
     var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
     var receivingMessages = false;
     var intervalId;
-    if(iframeSrc.indexOf("http") == 0 || iframeSrc.indexOf("ftp") == 0){
-    	iframeSrc = iframeSrc.match(regex)[1].toString();
+
+    if (iframeSrc.indexOf("http") == 0 || iframeSrc.indexOf("ftp") == 0) {
+      iframeSrc = iframeSrc.match(regex)[1].toString();
     }
-    else{
-    	//if it doesnt begin with http it must be local domain
-    	iframeSrc = window.location.host;
+    else {
+      //if it doesnt begin with http it must be local domain
+      iframeSrc = window.location.host;
     }
 
-    if((iframeSrc !== window.location.host && (!navigator.cookieEnabled || jQuery.browser.msie))){
-          jQuery(thisIframe).replaceWith(
-                  "<iframe src='${channelUrl}' name='iframeportlet' id='iframeportlet'" +
-                  "title='E-Doc' height='${frameHeight}' width='100%' frameborder='0'></iframe>"
-          );
+    //Unsupported browser combinations that the iframe resize wont work properly on
+    if (((iframeSrc !== window.location.host && (!navigator.cookieEnabled || jQuery.browser.msie)))
+            || (browserIsIE8)) {
+      jQuery(thisIframe).replaceWith(
+              "<iframe src='${channelUrl}' name='iframeportlet' id='iframeportlet'" +
+                      "title='E-Doc' height='${frameHeight}' width='100%' frameborder='0'></iframe>"
+      );
     }
 
-    if(!jQuery.browser.msie){
-         jQuery(thisIframe).height(if_height);
+    if (!jQuery.browser.msie) {
+      jQuery(thisIframe).height(if_height);
     }
 
     if (iframeSrc !== window.location.host) {
-    	setupCrossDomainResize()
+      setupCrossDomainResize()
     }
 
-    jQuery(thisIframe).load(function() {
-      if (iframeSrc === window.location.host){
+    jQuery(thisIframe).load(function () {
+      if (iframeSrc === window.location.host) {
         setSameDomainIframeHeight();
         intervalId = setInterval(setSameDomainIframeHeight, 500);
       }
     });
 
-    function setupCrossDomainResize(){
+    function setupCrossDomainResize() {
       sameDomain = false;
       if (navigator.cookieEnabled && !jQuery.browser.msie) {
-          //add parent url to hash of iframe to pass it in, it will be stored in the cookie of that
-          //frame for its future page navigations so it can communicate back with postMessage
-          var parentUrl = document.location.href;
-          var newUrl = "${channelUrl}" + '#' + encodeURIComponent(parentUrl);
-          jQuery(thisIframe).attr("src", newUrl);
-          //Also put it in the cookie in this context incase the page being viewed in the iframe switches
-          //to the same host
-          jQuery.cookie('parentUrl', parentUrl, {path: '/'});
-        }
-      else{
-        jQuery(thisIframe).height(if_height);
+        //add parent url to hash of iframe to pass it in, it will be stored in the cookie of that
+        //frame for its future page navigations so it can communicate back with postMessage
+        var parentUrl = document.location.href;
+        var newUrl = "${channelUrl}" + '#' + encodeURIComponent(parentUrl);
+        jQuery(thisIframe).attr("src", newUrl);
+        //Also put it in the cookie in this context incase the page being viewed in the iframe switches
+        //to the same host
+        jQuery.cookie('parentUrl', parentUrl, {path:'/'});
+      }
+      else if (!browserIsIE8) {
+          thisIframe.height(if_height);
       }
 
       //All kinds of special cases because of how IE handles iframe sizes differently
-      if(!jQuery.browser.msie){
+      if (!jQuery.browser.msie) {
         jQuery(thisIframe).attr("scrolling", "auto");
         jQuery(thisIframe).css("overflow", "auto");
         jQuery("#iframe_portlet_container_div").css("overflow", "auto");
@@ -98,32 +102,36 @@
     function setSameDomainIframeHeight() {
       //check every iteration to see if the iframe is no longer in the same domain
       var url = jQuery(thisIframe).attr('src');
-      if((url.indexOf("http") != 0 && url.indexOf("ftp") != 0) || url.match(regex)[1].toString() === window.location.host){
-    	  sameDomain = true;
-	      if (thisIframe[0] && thisIframe[0].contentWindow.document.body) {
-	          if_height = thisIframe[0].contentWindow.document.body.scrollHeight;
+      if ((url.indexOf("http") != 0 && url.indexOf("ftp") != 0) || url.match(regex)[1].toString() === window.location.host) {
+        sameDomain = true;
+        if (thisIframe[0] && thisIframe[0].contentWindow.document.body) {
+          if_height = thisIframe[0].contentWindow.document.body.scrollHeight;
 
-	          thisIframe.height(if_height);
-	        }
-	    }
-      else{
+          if (!browserIsIE8) {
+            thisIframe.height(if_height);
+          }
+        }
+      }
+      else {
         clearInterval(intervalId);
         setupCrossDomainResize();
       }
     }
 
-    jQuery.receiveMessage(function(e) {
-      if(!sameDomain){
-	      // Get the height from the passsed data.
-	      var h = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
+    jQuery.receiveMessage(function (e) {
+      if (!sameDomain) {
+        // Get the height from the passsed data.
+        var h = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
 
-	      if (!isNaN(h) && h > 0 && h + 35 !== if_height) {
-	        // Height has changed, update the iframe.
-	        if_height = h + 35;
-	        thisIframe.height(if_height);
-	      }
+        if (!isNaN(h) && h > 0 && h + 35 !== if_height) {
+          // Height has changed, update the iframe.
+          if_height = h + 35;
+          if (!browserIsIE8) {
+            thisIframe.height(if_height);
+          }
+        }
       }
     });
   })
-          ;
+  ;
 </script>

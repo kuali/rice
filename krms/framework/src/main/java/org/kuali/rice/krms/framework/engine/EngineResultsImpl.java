@@ -23,7 +23,11 @@ import java.util.Map;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
-
+/**
+ * An implementation of {@link EngineResults} using List<{@link ResultEvent}> for results and Map<String, Object> for
+ * attributes
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class EngineResultsImpl implements EngineResults {
 	
 	private List<ResultEvent> results = new ArrayList<ResultEvent>();

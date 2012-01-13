@@ -26,6 +26,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
+/**
+ * An implementation of {@link ResultEvent}
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class BasicResult extends EventObject implements ResultEvent {
 	private static final long serialVersionUID = -4124200802034785921L;
 
@@ -38,10 +42,29 @@ public class BasicResult extends EventObject implements ResultEvent {
 	protected String description;
 	protected Map<String, ?> resultDetails;
 
+    // TODO Consider static factory methods in stead of constructors - Item 1 Effective Java 2nd Edition
+    // TODO Consider a builder when faced with many constructor parameters - Item 2 Effective Java 2nd Edition
+    /**
+     * Constructor 
+     * @param resultDetails of the ResultEvent
+     * @param eventType String of the ResultEvent
+     * @param source Object of the ResultEvent
+     * @param environment {@link ExecutionEnvironment}
+     * @param result boolean of the ResultEvent
+     */
     public BasicResult(Map<String, ?> resultDetails, String eventType, Object source, ExecutionEnvironment environment, boolean result) {
         this(resultDetails, null, eventType, source, environment, result);
     }
-	
+
+    /**
+     * Constructor
+     * @param resultDetails of the ResultEvent
+     * @param description String of the ResultEvent
+     * @param eventType String of the ResultEvent
+     * @param source Object of the ResultEvent
+     * @param environment {@link ExecutionEnvironment}
+     * @param result boolean of the ResultEvent
+     */
     public BasicResult(Map<String, ?> resultDetails, String description, String eventType, Object source, ExecutionEnvironment environment, boolean result) {
         this(eventType, source, environment);
         this.resultDetails = resultDetails;
@@ -49,17 +72,38 @@ public class BasicResult extends EventObject implements ResultEvent {
         this.description = (description == null) ? StringUtils.EMPTY : description;
     }
 
+    /**
+     * Constructor
+     * @param description String of the ResultEvent
+     * @param eventType String of the ResultEvent
+     * @param source Object of the ResultEvent
+     * @param environment {@link ExecutionEnvironment}
+     * @param result boolean of the ResultEvent
+     */
     public BasicResult(String description, String eventType, Object source, ExecutionEnvironment environment, boolean result) {
 		this(eventType, source, environment);
 		this.result = new Boolean(result);
 		this.description = description;
 	}
 
+    /**
+     * Constructor
+     * @param eventType String of the ResultEvent
+     * @param source Object of the ResultEvent
+     * @param environment {@link ExecutionEnvironment}
+     * @param result boolean of the ResultEvent
+     */
 	public BasicResult(String eventType, Object source, ExecutionEnvironment environment, boolean result) {
 		this(eventType, source, environment);
 		this.result = new Boolean(result);
 	}
 
+    /**
+     * Constructor
+     * @param eventType String of the ResultEvent
+     * @param source Object of the ResultEvent
+     * @param environment {@link ExecutionEnvironment}
+     */
 	public BasicResult(String eventType, Object source, ExecutionEnvironment environment) {
 		super(source);
 		this.type = eventType;
@@ -101,6 +145,7 @@ public class BasicResult extends EventObject implements ResultEvent {
 	    }
 	}
 
+    @Override
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
         sb.append(fmt.print(this.getTimestamp()));

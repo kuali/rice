@@ -30,6 +30,13 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Collection;
 
+/**
+ * An immutable representation of a category definition.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
+
 @XmlRootElement(name = CategoryDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = CategoryDefinition.Constants.TYPE_NAME, propOrder = {

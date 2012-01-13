@@ -26,8 +26,8 @@ import org.kuali.rice.krms.api.engine.ResultEvent;
  */
 public interface ResultListener extends EventListener {
     /**
-     * Handle the given {@link ResultEvent}
-     * @param resultEvent
+     * Handle the given {@link ResultEvent}.
+     * @param resultEvent {@link ResultEvent} to handle.
      */
 	public void handleEvent(ResultEvent resultEvent);
 }

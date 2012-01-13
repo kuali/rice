@@ -53,10 +53,16 @@ public enum LogicalOperator implements Coded {
 	public String getCode(){
 		return code;
 	}
-	
+
+    /**
+     * Collection<String> OP_CODES
+     */
 	public static final Collection<String> OP_CODES =
 		Collections.unmodifiableCollection(Arrays.asList(AND.code, OR.code));
-		
+
+    /**
+     * Collection<String> OP_CODE_NAMES
+     */
     public static final Collection<String> OP_CODE_NAMES =
         Collections.unmodifiableCollection(Arrays.asList(AND.name(), OR.name()));
 

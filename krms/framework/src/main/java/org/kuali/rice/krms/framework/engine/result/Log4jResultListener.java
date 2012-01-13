@@ -17,9 +17,17 @@ package org.kuali.rice.krms.framework.engine.result;
 
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
+/**
+ * A Log4j implementation of {@link ResultListener} which logs the output of the {@link ResultEvent} toString at the INFO
+ * level to the Log4jResultListener.class org.apache.log4j.Logger
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class Log4jResultListener  implements ResultListener {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Log4jResultListener.class);
 
+    /**
+     * Constructor
+     */
 	public Log4jResultListener(){}
 	
 	@Override

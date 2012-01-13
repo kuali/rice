@@ -19,19 +19,55 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+/**
+ * Interface for defining ResultEvents.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface ResultEvent {
+    /**
+     * Returns the {@link ExecutionEnvironment} of the ResultEvent.
+     * @return {@link ExecutionEnvironment} of the ResultEvent.
+     */
 	public ExecutionEnvironment getEnvironment();
 
+    /**
+     * Returns the type of the ResultEvent.
+     * @return String of the type of ResultEvent.
+     */
 	public String getType();
+
+    /**
+     * Returns the source of the ResultEvent.
+     * @return source as an Object of the ResultEvent.
+     */
 	public Object getSource();
+
+    /**
+     * Returns the org.joda.time.DateTime timestamp of the ResultEvent.
+     * @return org.joda.time.DateTime timestamp of the ResultEvent.
+     */
 	public DateTime getTimestamp();
+
+    /**
+     * Returns the Boolean result of the ResultEvent.
+     * @return Boolean result of the ResultEvent.
+     */
 	public Boolean getResult();
+
+    /**
+     * Returns the description of the ResultEvent as a String
+     * @return description of the ResultEvent as a String
+     */
 	public String getDescription();
+
+    /**
+     * Returns the result details of the ResultEvent as a Map<?,?>
+     * @return result details of the ResultEvent as a Map<?,?>
+     */
 	public Map<?,?> getResultDetails();
-	
+
 	public static final String RuleEvaluated = "Rule Evaluated";
 	public static final String PropositionEvaluated = "Proposition Evaluated";
 	public static final String ActionExecuted = "Action Executed";
 	public static final String TimingEvent = "Timing Event";
-
 }

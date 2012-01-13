@@ -17,10 +17,19 @@ package org.kuali.rice.krms.framework.engine.result;
 
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
+/**
+ * An implementation of {@link ResultListener} which adds the {@link ResultEvent} to the {@link EngineResults} of that
+ * event's environment
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class EngineResultListener implements ResultListener {
 
+    /**
+     * Constructor
+     */
 	public EngineResultListener(){}
 
+    @Override
 	public void handleEvent (ResultEvent event){
 			event.getEnvironment().getEngineResults().addResult(event);
 	}

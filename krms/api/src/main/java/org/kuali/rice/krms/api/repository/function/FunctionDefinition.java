@@ -116,7 +116,13 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
     	this.parameters = null;
         this.categories = null;
     }
-    
+
+    /**
+     * Constructs a FunctionDefinition from the given builder.  This constructor is private and should only
+     * ever be invoked from the builder.
+     *
+     * @param builder the Builder from which to construct the FunctionDefinition
+     */
     private FunctionDefinition(Builder builder) {
     	this.id = builder.getId();
     	this.namespace = builder.getNamespace();
@@ -207,7 +213,14 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
     	private Long versionNumber;
     	private List<FunctionParameterDefinition.Builder> parameters;
         private List<CategoryDefinition.Builder> categories;
-    	
+
+        /**
+         * Private constructor, use create method
+         * @param namespace to use when building
+         * @param name to use when building
+         * @param returnType to use when building
+         * @param typeId to use when building
+         */
         private Builder(String namespace, String name, String returnType, String typeId) {
         	setNamespace(namespace);
         	setName(name);

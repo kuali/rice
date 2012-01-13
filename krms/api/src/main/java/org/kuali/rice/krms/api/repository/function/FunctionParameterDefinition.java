@@ -92,7 +92,13 @@ public class FunctionParameterDefinition extends AbstractDataTransferObject impl
     	this.sequenceNumber = null;
     	this.versionNumber = null;
     }
-    
+
+    /**
+     * Constructs a FunctionParameterDefinition from the given builder.  This constructor is private and should only
+     * ever be invoked from the builder.
+     *
+     * @param builder the Builder from which to construct the FunctionParameterDefinition
+     */
     private FunctionParameterDefinition(Builder builder) {
     	this.id = builder.getId();
     	this.name = builder.getName();
@@ -156,7 +162,13 @@ public class FunctionParameterDefinition extends AbstractDataTransferObject impl
     	private String parameterType;
     	private Integer sequenceNumber;
     	private Long versionNumber;
-    	
+
+        /**
+         * Private constructor use the create method.
+         * @param name to use when building
+         * @param type to use when building
+         * @param sequenceNumber to use when building
+         */
         private Builder(String name, String type, Integer sequenceNumber) {
         	setName(name);
         	setParameterType(type);

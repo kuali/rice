@@ -25,6 +25,12 @@ import org.joda.time.format.DateTimeFormatter;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 
+/**
+ * An implementation of {@link ResultEvent} with start DateTime, end DateTime, and elapsed time in Milliseconds.
+ * The Date is formatted using org.joda.time.format.DateTimeFormat pattern of "yyyy-MM-dd HH.mm.ss.SSS"
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class TimingResult extends EventObject implements ResultEvent {
     
 	private static final long serialVersionUID = 5335636381355236617L;
@@ -38,6 +44,15 @@ public class TimingResult extends EventObject implements ResultEvent {
 	private String description;
 	private Map<String, ?> resultDetails;
 
+    /**
+     * Constructor
+     * @param description of the TimingResult
+     * @param type of the TimingResult
+     * @param source of the TimingResult
+     * @param environment {@link ExecutionEnvironment} of the TimingResult
+     * @param start org.joda.time.DateTime of the TimingResult
+     * @param end org.joda.time.DateTime of the TimingResult
+     */
 	public TimingResult(String description, String type, Object source, ExecutionEnvironment environment, DateTime start, DateTime end){
 		super(source);
 		this.type = type;
@@ -46,7 +61,15 @@ public class TimingResult extends EventObject implements ResultEvent {
 		this.end = end;
 		this.description = description;
 	}
-	
+
+    /**
+     * Constructor
+     * @param type of the TimingResult
+     * @param source of the TimingResult
+     * @param environment {@link ExecutionEnvironment} of the TimingResult
+     * @param start org.joda.time.DateTime of the TimingResult
+     * @param end org.joda.time.DateTime of the TimingResult
+     */
 	public TimingResult(String type, Object source, ExecutionEnvironment environment, DateTime start, DateTime end){
 		super(source);
 		this.type = type;
@@ -54,15 +77,21 @@ public class TimingResult extends EventObject implements ResultEvent {
 		this.start = start;
 		this.end = end;
 	}
-	
+
+    /**
+     * Returns the Elapsed Time in Milliseconds
+     * @return Long end milliseconds minus start milliseconds
+     */
 	public Long getElapsedTimeInMilliseconds(){
 		return Long.valueOf(end.getMillis() - start.getMillis());
 	}
-	
+
+    @Override
 	public ExecutionEnvironment getEnvironment(){
 		return environment;
 	};
-	
+
+    @Override
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
 		sb.append(fmt.print(end));

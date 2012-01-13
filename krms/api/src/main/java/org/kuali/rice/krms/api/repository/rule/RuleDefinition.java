@@ -229,9 +229,15 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         private Map<String, String> attributes;
         private Long versionNumber;
 
-		/**
-		 * Private constructor for creating a builder with all of it's required attributes.
-		 */
+        /**
+         * Private constructor for creating a builder with all of it's required attributes.
+         * 
+         * @param ruleId the id value to set, must not be null or blank
+         * @param name the name value to set, must not be null or blank
+         * @param namespace the namespace value to set, must not be null or blank
+         * @param typeId the typeId value to set
+         * @param propId the propId value to set, must not be null or blank
+         */
         private Builder(String ruleId, String name, String namespace, String typeId, String propId) {
             setId(ruleId);
             setName(name);
@@ -245,12 +251,12 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         /**
          * Create a builder with the given parameters.
          *
-         * @param ruleId
-         * @param name
-         * @param namespace
-         * @param typeId
-         * @param propId
-         * @return Builder
+         * @param ruleId the id value to set, must not be null or blank
+         * @param name the name value to set, must not be null or blank
+         * @param namespace the namespace value to set, must not be null or blank
+         * @param typeId the typeId value to set
+         * @param propId the propId value to set, must not be null or blank
+         * @return Builder with the given values set
          */
         public static Builder create(String ruleId, String name, String namespace, String typeId, String propId){
         	return new Builder(ruleId, name, namespace, typeId, propId);
@@ -306,7 +312,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the name on this builder to the given value
-         * @param name
+         * @param name the name value to set, must not be null or blank
          * @throws IllegalArgumentException if the name is null or blank
          */
         public void setName(String name) {
@@ -326,7 +332,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the namespace on this builder to the given value
-         * @param namespace
+         * @param namespace the namespace value to set, must not be null or blank
          * @throws IllegalArgumentException if the namespace is null or blank
          */
         public void setNamespace(String namespace) {
@@ -338,7 +344,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the typeId on this builder to the given value
-         * @param typeId
+         * @param typeId the typeId value to set
          */
 		public void setTypeId(String typeId) {
 			this.typeId = typeId;
@@ -346,7 +352,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the active on this builder to the given value
-         * @param active
+         * @param active the active value to set
          */
         public void setActive(boolean active) {
             this.active = active;
@@ -354,7 +360,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the propId on this builder to the given value
-         * @param propId
+         * @param propId the propId value to set, must not be null or blank
          * @throws IllegalArgumentException if the propId is null or blank
          */
 		public void setPropId(String propId) {
@@ -366,7 +372,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the proposition on this builder to the given value
-         * @param prop
+         * @param prop the proposition value to set, must not be null
          */
 		public void setProposition(PropositionDefinition.Builder prop) {
 			this.proposition = prop;
@@ -375,7 +381,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the actions on this builder to the given value
-         * @param actions
+         * @param actions the actions value to set, can be null
          */
 		public void setActions(List<ActionDefinition.Builder> actions) {
 			if (actions == null){
@@ -387,7 +393,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the attributes on this builder to the given value
-         * @param attributes
+         * @param attributes the attributes values to set, can be null
          */
 		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
@@ -398,7 +404,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 
         /**
          * Sets the value of the versionNumber on this builder to the given value
-         * @param versionNumber
+         * @param versionNumber the versionNumber value to set
          */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;

@@ -26,7 +26,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 
 /**
- * Rule Definition Contract
+ * Defines the contract for a {@link RuleDefinition}
  *
  * @see RuleDefinition
  * @see org.kuali.rice.krms.framework.engine.Rule
@@ -82,7 +82,7 @@ public interface RuleDefinitionContract extends Identifiable, Inactivatable, Ver
 	 * <p>
 	 * Each Rule has exactly one Proposition associated with it.
 	 * <p>
-	 * @return an immutable represtentation of the Proposition associated with the Rule
+	 * @return an immutable representation of the Proposition associated with the Rule
 	 */
 	public PropositionDefinitionContract getProposition();
 	

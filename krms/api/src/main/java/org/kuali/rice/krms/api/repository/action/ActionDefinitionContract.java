@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 import java.util.Map;
 
 /**
- * Action Definition Contract
+ * Defines the contract for an {@link ActionDefinition}
  *
  * @see ActionDefinition
  * @see org.kuali.rice.krms.framework.engine.Action

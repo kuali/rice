@@ -20,6 +20,13 @@ import java.util.List;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
+/**
+ * Defines the contract for a {@link PropositionDefinition}
+ *
+ * @see PropositionDefinition
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface PropositionDefinitionContract extends Identifiable, Versioned {
 	/**
 	 * This is the description text for the KRMS proposition

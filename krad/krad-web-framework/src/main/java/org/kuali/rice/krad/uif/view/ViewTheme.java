@@ -19,12 +19,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Theme for the current view, currently just a list of stylesheets, but has the potential
+ * Theme for the current view, currently just a list of stylesheets and js files, but has the potential
  * for expansion in the future
  */
 public class ViewTheme implements Serializable{
     private static final long serialVersionUID = 7063256242857896580L;
     private List<String> stylesheets;
+    private List<String> jsFiles;
 
     public List<String> getStylesheets() {
         return stylesheets;
@@ -32,5 +33,13 @@ public class ViewTheme implements Serializable{
 
     public void setStylesheets(List<String> stylesheets) {
         this.stylesheets = stylesheets;
+    }
+
+    public List<String> getJsFiles() {
+        return jsFiles;
+    }
+
+    public void setJsFiles(List<String> jsFiles) {
+        this.jsFiles = jsFiles;
     }
 }

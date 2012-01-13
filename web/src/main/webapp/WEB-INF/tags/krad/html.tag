@@ -39,12 +39,6 @@
       :: ${view.title}
     </title>
 
-    <c:forEach items="${fn:split(ConfigProperties.css.files, ',')}"	var="cssFile">
-      <c:if test="${fn:length(fn:trim(cssFile)) > 0}">
-        <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css" />
-      </c:if>
-    </c:forEach>
-
     <c:forEach items="${view.theme.stylesheets}" var="cssFile" >
       <c:if test="${fn:startsWith(cssFile, '/')}">
         <c:set var="cssFile" value="${pageContext.request.contextPath}/${fn:substringAfter(cssFile,'/')}"/>
@@ -59,7 +53,7 @@
       <link href="${cssFile}" rel="stylesheet" type="text/css" />
     </c:forEach>
 
-    <c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}"	var="javascriptFile">
+    <c:forEach items="${view.theme.jsFiles}"	var="javascriptFile">
       <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
         <script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/${javascriptFile}"></script>
       </c:if>

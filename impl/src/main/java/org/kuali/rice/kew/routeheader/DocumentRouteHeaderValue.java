@@ -354,12 +354,12 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public List<ActionTakenValue> getActionsTaken() {
-        return (List<ActionTakenValue>) KEWServiceLocator.getActionTakenService().findByDocumentId(documentId);
+       return (List<ActionTakenValue>) KEWServiceLocator.getActionTakenService().findByDocumentIdIgnoreCurrentInd(documentId);
     }
 
     public List<ActionRequestValue> getActionRequests() {
         if (this.simulatedActionRequests == null || this.simulatedActionRequests.isEmpty()) {
-            return KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(documentId);
+            return KEWServiceLocator.getActionRequestService().findByDocumentIdIgnoreCurrentInd(documentId);
         } else {
             return this.simulatedActionRequests;
         }

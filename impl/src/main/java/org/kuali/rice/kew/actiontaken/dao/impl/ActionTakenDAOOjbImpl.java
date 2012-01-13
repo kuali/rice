@@ -91,7 +91,10 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         LOG.debug("finding ActionsTaken ignoring currentInd by documentId:" + documentId);
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
+        QueryByCriteria qByCrit = new QueryByCriteria(ActionTakenValue.class, crit);
+
+       qByCrit.addOrderByAscending("actionDate");
+        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(qByCrit);
     }
 
     public void saveActionTaken(ActionTakenValue actionTaken) {

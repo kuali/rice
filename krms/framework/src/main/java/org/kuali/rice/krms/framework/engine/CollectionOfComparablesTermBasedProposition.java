@@ -57,7 +57,7 @@ public class CollectionOfComparablesTermBasedProposition<T> extends ComparableTe
 
 		// TODO: log this appropriately
 		if (LOG.isEnabled(environment)) {
-			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, collatedResult));
+			LOG.logResult(new BasicResult(ResultEvent.PROPOSITION_EVALUATED, this, environment, collatedResult));
 		}
 
 		return new PropositionResult(collatedResult);

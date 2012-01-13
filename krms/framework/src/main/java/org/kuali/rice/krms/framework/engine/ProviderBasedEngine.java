@@ -68,7 +68,7 @@ public class ProviderBasedEngine implements Engine {
 		context.execute(environment);
 		end = new DateTime();
 		if (KLog.isEnabled(environment)){
-			KLog.logResult(new TimingResult(ResultEvent.TimingEvent, this, environment, start, end));
+			KLog.logResult(new TimingResult(ResultEvent.TIMING_EVENT, this, environment, start, end));
 		}
 		return environment.getEngineResults();
 	}

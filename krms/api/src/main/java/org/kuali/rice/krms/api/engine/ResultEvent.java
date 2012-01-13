@@ -25,6 +25,26 @@ import org.joda.time.DateTime;
  */
 public interface ResultEvent {
     /**
+     * RULE_EVALUATED
+     */
+    public static final String RULE_EVALUATED = "Rule Evaluated";
+
+    /**
+     * PROPOSITION_EVALUATED
+     */
+    public static final String PROPOSITION_EVALUATED = "Proposition Evaluated";
+
+    /**
+     * ACTION_EXECUTED
+     */
+    public static final String ACTION_EXECUTED = "Action Executed";
+
+    /**
+     * TIMING_EVENT
+     */
+    public static final String TIMING_EVENT = "Timing Event";
+
+    /**
      * Returns the {@link ExecutionEnvironment} of the ResultEvent.
      * @return {@link ExecutionEnvironment} of the ResultEvent.
      */
@@ -65,9 +85,4 @@ public interface ResultEvent {
      * @return result details of the ResultEvent as a Map<?,?>
      */
 	public Map<?,?> getResultDetails();
-
-	public static final String RuleEvaluated = "Rule Evaluated";
-	public static final String PropositionEvaluated = "Proposition Evaluated";
-	public static final String ActionExecuted = "Action Executed";
-	public static final String TimingEvent = "Timing Event";
 }

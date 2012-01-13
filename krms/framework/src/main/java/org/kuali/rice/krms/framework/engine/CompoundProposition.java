@@ -18,7 +18,6 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
@@ -63,7 +62,7 @@ public final class CompoundProposition implements Proposition {
 		
 		// handle compound proposition result logging
 		if (LOG.isEnabled(environment)) { 
-            LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, result.getResult()));
+            LOG.logResult(new BasicResult(ResultEvent.PROPOSITION_EVALUATED, this, environment, result.getResult()));
         }
 		
 		return result;
@@ -129,7 +128,7 @@ public final class CompoundProposition implements Proposition {
     public void logPropositionResult(Proposition proposition, PropositionResult propositionResult, ExecutionEnvironment environment) {
     	    	
     	if(!proposition.isCompound()) {
-            LOG.logResult(new BasicResult(propositionResult.getExecutionDetails(), ResultEvent.PropositionEvaluated, proposition, environment, propositionResult.getResult()));		
+            LOG.logResult(new BasicResult(propositionResult.getExecutionDetails(), ResultEvent.PROPOSITION_EVALUATED, proposition, environment, propositionResult.getResult()));
     	}
     	
     }

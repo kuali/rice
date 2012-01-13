@@ -70,7 +70,7 @@ public class BasicRule implements Rule {
 			}
 		}
 		if (LOG.isEnabled(environment)){
-			LOG.logResult(new BasicResult(ResultEvent.RuleEvaluated, this, environment, result));
+			LOG.logResult(new BasicResult(ResultEvent.RULE_EVALUATED, this, environment, result));
 		}
 		return result;
 	}

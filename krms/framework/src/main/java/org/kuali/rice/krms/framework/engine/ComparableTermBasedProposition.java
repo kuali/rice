@@ -63,7 +63,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 		boolean result = compare(termValue);
 
 		if (LOG.isEnabled(environment)){
-			LOG.logResult(new BasicResult(ResultEvent.PropositionEvaluated, this, environment, result));
+			LOG.logResult(new BasicResult(ResultEvent.PROPOSITION_EVALUATED, this, environment, result));
 		}
 		return new PropositionResult(result);
 	}

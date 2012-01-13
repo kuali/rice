@@ -289,7 +289,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         perfLog.log("finished rule execution", true);
         List<ResultEvent> rEvents1 = eResults1.getAllResults();
 
-        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RuleEvaluated.toString());
+        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
         assertEquals(1, ruleEvaluationResults1.size());
         assertTrue("rule should have evaluated to true", ruleEvaluationResults1.get(0).getResult());
@@ -390,7 +390,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         List<ResultEvent> rEvents2 = eResults2.getAllResults();
 
-	    List<ResultEvent> ruleEvaluationResults2 = eResults2.getResultsOfType(ResultEvent.RuleEvaluated.toString());
+	    List<ResultEvent> ruleEvaluationResults2 = eResults2.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
 	    assertEquals(1, ruleEvaluationResults2.size());
 	    assertTrue("rule should have evaluated to true", ruleEvaluationResults2.get(0).getResult());

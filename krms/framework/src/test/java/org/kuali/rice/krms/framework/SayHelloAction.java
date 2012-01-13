@@ -34,7 +34,7 @@ public class SayHelloAction implements Action {
 	@Override
 	public void execute(ExecutionEnvironment environment) {
 		LOG.info("Hello!  Im executing an action.");
-		KLog.logResult(new BasicResult(ResultEvent.ActionExecuted, this, environment));
+		KLog.logResult(new BasicResult(ResultEvent.ACTION_EXECUTED, this, environment));
 	}
 	
 	@Override

@@ -149,12 +149,19 @@
                 });
                 el.keypress(function(e) {
                     if (el.val() == settings.mask) el.val(value);
-                    var sText = getSelectedText();
-                    if (sText != '') {
-                        sText = el.val().replace(sText, '');
-                        el.val(sText);
-                    }
+
+                    /*
+                     * Begin Kuali Customization
+                     * KULRICE-6382
+                     * The previous logic did not work well with tabbing through the form
+                     */
                     if (e.which >= 48 && e.which <= 57) {
+                        var sText = getSelectedText();
+                        if (sText != '') {
+                            sText = el.val().replace(sText, '');
+                            el.val(sText);
+                        }
+
                         var temp = parseFloat(el.val() + (e.which - 48));
                         if (temp >= settings.min && temp <= settings.max) {
                             value = temp;
@@ -164,11 +171,21 @@
                             e.preventDefault();
                         }
                     }
+                    else if (e.which != 0 && e.which != 13 && e.which != 8) {
+                        return false;
+                    }
                 });
                 el.blur(function() {
+                    /*
+                     * Begin Kuali Customization
+                     * KULRICE-6382
+                     * The previous logic did not work well with tabbing through the form
+                     */
                     if (settings.mask == '') {
                         if (el.val() == '')
                             el.val(settings.min);
+                        else
+                            value = parseFloat(el.val());
                     }
                     else {
                         el.val(settings.mask);

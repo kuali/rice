@@ -20,16 +20,16 @@
 }
 .smartspinner.up
 {
-	background: url(../../../images/jquery/up.jpg) no-repeat right;
+	background: url(../../../images/jquery/up.jpg) no-repeat right !important;
 	cursor:pointer;
 }
 .smartspinner.down
 {
-	background: url(../../../images/jquery/down.jpg) no-repeat right;
+	background: url(../../../images/jquery/down.jpg) no-repeat right !important;
 	cursor:pointer;
 }
 
-input:focus.smartspinner {
-    background: url("../../../images/jquery/normal.jpg") no-repeat scroll right center;
+input.smartspinner {
+    background: url("../../../images/jquery/normal.jpg") no-repeat scroll right center !important;
     text-align: center;
 }

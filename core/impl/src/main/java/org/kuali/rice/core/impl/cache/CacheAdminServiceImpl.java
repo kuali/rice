@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.core.impl.cache;
 
-import org.kuali.rice.core.api.cache.CacheService;
+import org.kuali.rice.core.api.cache.CacheAdminService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.springframework.beans.factory.InitializingBean;
@@ -24,7 +24,7 @@ import org.springframework.cache.CacheManager;
 
 import java.util.Collection;
 
-public class CacheServiceImpl implements CacheService, InitializingBean {
+public class CacheAdminServiceImpl implements CacheAdminService, InitializingBean {
 
     private CacheManager cacheManager;
 

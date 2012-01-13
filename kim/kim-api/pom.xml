@@ -55,13 +55,13 @@
                 <executions>
 
                   <execution>
-                        <id>kimCacheService-wsdl</id>
+                        <id>kimCacheAdminService-wsdl</id>
 						              <phase>${rice.java2ws.phase}</phase>
                         <configuration>
-                            <className>org.kuali.rice.core.api.cache.CacheService</className>
-                          <outputFile>${project.build.outputDirectory}/wsdl/CacheService.wsdl</outputFile>
+                            <className>org.kuali.rice.core.api.cache.CacheAdminService</className>
+                          <outputFile>${project.build.outputDirectory}/wsdl/CacheAdminService.wsdl</outputFile>
                           <targetNamespace>http://rice.kuali.org/core</targetNamespace>
-                          <serviceName>KimCacheService</serviceName>
+                          <serviceName>KimCacheAdminService</serviceName>
                         </configuration>
                         <goals>
                             <goal>java2ws</goal>

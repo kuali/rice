@@ -20,7 +20,7 @@ import com.google.common.collect.Collections2;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.cache.CacheService;
+import org.kuali.rice.core.api.cache.CacheAdminService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
@@ -84,14 +84,14 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         return cache;
     }
 
-    private Collection<CacheService> getCacheServices() {
+    private Collection<CacheAdminService> getCacheServices() {
         try {
-            List<CacheService> services = new ArrayList<CacheService>();
+            List<CacheAdminService> services = new ArrayList<CacheAdminService>();
             final Collection<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(QName.valueOf(serviceName));
             for (Endpoint endpoint : endpoints) {
-                services.add((CacheService)endpoint.getService());
+                services.add((CacheAdminService)endpoint.getService());
             }
-            return services != null ? services : Collections.<CacheService>emptyList();
+            return services != null ? services : Collections.<CacheAdminService>emptyList();
         } catch (RuntimeException e) {
             LOG.warn("Failed to find any remote services with name: " + serviceName);
         }
@@ -104,9 +104,9 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
             //unless it is necessary to do so.  Also, handling most common fail points to avoid
             //exceptions.
             if (!cacheTargets.isEmpty()) {
-                final Collection<CacheService> services = getCacheServices();
+                final Collection<CacheAdminService> services = getCacheServices();
                 if (services != null) {
-                    for (CacheService service : services) {
+                    for (CacheAdminService service : services) {
                         if (service != null) {
                             //wrap the each call in a try block so if one message send fails
                             //we still attempt the others

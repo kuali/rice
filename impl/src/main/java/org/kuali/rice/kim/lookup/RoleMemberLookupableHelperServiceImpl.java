@@ -51,6 +51,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 	protected static final String WILDCARD = "*";
     protected static final String TEMPLATE_NAMESPACE_CODE = "template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
     protected static final String TEMPLATE_NAME = "template.name";
+    protected static final String TEMPLATE_ID = "template.id";
     protected static final String NAMESPACE_CODE = KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
     protected static final String NAME = "name";
     protected static final String GROUP_NAME = KimConstants.UniqueKeyConstants.GROUP_NAME;
@@ -81,6 +82,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     protected Map<String, String> buildSearchCriteria(Map<String, String> fieldValues){
         String templateNamespaceCode = fieldValues.get(TEMPLATE_NAMESPACE_CODE);
         String templateName = fieldValues.get(TEMPLATE_NAME);
+        String templateId = fieldValues.get(TEMPLATE_ID);
         String namespaceCode = fieldValues.get(NAMESPACE_CODE);
         String name = fieldValues.get(NAME);
         String attributeDetailValue = fieldValues.get(ATTRIBUTE_VALUE);
@@ -94,6 +96,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     	}
         if(StringUtils.isNotEmpty(templateName)) {
         	searchCriteria.put(TEMPLATE_NAME, WILDCARD+templateName+WILDCARD);
+        }
+        if(StringUtils.isNotEmpty(templateId)) {
+            searchCriteria.put(TEMPLATE_ID, templateId);
         }
         if(StringUtils.isNotEmpty(namespaceCode)) {
         	searchCriteria.put(NAMESPACE_CODE, WILDCARD+namespaceCode+WILDCARD);

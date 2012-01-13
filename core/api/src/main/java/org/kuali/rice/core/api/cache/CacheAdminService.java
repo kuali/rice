@@ -38,7 +38,7 @@ import java.util.Collection;
  * @since 2.0
  */
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface CacheService {
+public interface CacheAdminService {
 
     /**
      * Flushes an object or group of objects from the cache based on a cache target.

@@ -37,7 +37,7 @@
   </bean>
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-  <bean id="locationCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
+  <bean id="locationCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
 
   <bean id="rice.location.import.serviceBus"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

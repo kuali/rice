@@ -40,7 +40,7 @@
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
   <bean id="kewCacheService"
-        class="org.kuali.rice.core.impl.cache.CacheServiceImpl"
+        class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
         p:cacheManager-ref="kewLocalCacheManager"/>
 
   <bean id="rice.kew.import.serviceBus"

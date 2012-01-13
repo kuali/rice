@@ -36,7 +36,7 @@
         <ref bean="UberPermissionImpl-assignedToPrincipalNameForLookup"/>
         <ref bean="UberPermissionImpl-assignedToGroupNamespaceForLookup"/>
         <ref bean="UberPermissionImpl-assignedToGroupNameForLookup"/>
-        <ref bean="UberPermissionImpl-templateId"/>
+        <ref bean="UberPermissionImpl-template.id"/>
         <ref bean="UberPermissionImpl-roleId"/>
         <ref bean="UberPermissionImpl-principalId"/>
         <ref bean="UberPermissionImpl-groupId"/>
@@ -118,10 +118,10 @@
   </bean>
     
    
-  <bean id="UberPermissionImpl-templateId" parent="UberPermissionImpl-templateId-parentBean"/>
-  <bean id="UberPermissionImpl-templateId-parentBean" parent="PermissionTemplateBo-templateId-parentBean"
+  <bean id="UberPermissionImpl-template.id" parent="UberPermissionImpl-template.id-parentBean"/>
+  <bean id="UberPermissionImpl-template.id-parentBean" parent="PermissionTemplateBo-templateId-parentBean"
         p:required="true"
-        p:name="templateId">
+        p:name="template.id">
     <property name="control">
       <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.lookup.valuefinder.PermissionTemplateValuesFinder" p:includeKeyInLabel="true"/>
     </property>

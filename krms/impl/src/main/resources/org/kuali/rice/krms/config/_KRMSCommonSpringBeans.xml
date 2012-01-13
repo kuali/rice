@@ -60,7 +60,7 @@
     </bean>-->
 
     <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-    <!--<bean id="krmsCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="krmsLocalCacheManager" />-->
+    <!--<bean id="krmsCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="krmsLocalCacheManager" />-->
 
   <!--<bean id="krsmCacheService.exporter" parent="krmsServiceExporter">
     <property name="serviceDefinition">

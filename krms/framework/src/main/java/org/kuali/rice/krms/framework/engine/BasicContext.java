@@ -33,8 +33,8 @@ public final class BasicContext implements Context {
 
     /**
      * Create a BasicContext with the given parameters
-     * @param agendas List<{@link}Agenda}>
-     * @param termResolvers List<{@link TermResolver}<?>>
+     * @param agendas List<{@link}Agenda}> to set the agendas to
+     * @param termResolvers List<{@link TermResolver}<?>> to set the termResolvers to
      */
 	public BasicContext(List<Agenda> agendas, List<TermResolver<?>> termResolvers) {
 		this.agendas = agendas;

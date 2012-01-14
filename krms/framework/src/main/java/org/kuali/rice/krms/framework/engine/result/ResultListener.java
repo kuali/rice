@@ -21,7 +21,7 @@ import org.kuali.rice.krms.api.engine.ResultEvent;
 
 /**
  * Interface for receiving {@link ResultEvent}s.
- *
+ * @see ResultEvent
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ResultListener extends EventListener {

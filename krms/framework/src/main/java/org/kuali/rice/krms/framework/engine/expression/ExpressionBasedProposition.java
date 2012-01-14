@@ -33,7 +33,7 @@ public class ExpressionBasedProposition implements Proposition {
 
     /**
      * Create an ExpressionBasedProposition with the given value
-     * @param expression
+     * @param expression {@link Expression} to set the expression to
      */
 	public ExpressionBasedProposition(Expression<Boolean> expression) {
 		this.expression = expression;

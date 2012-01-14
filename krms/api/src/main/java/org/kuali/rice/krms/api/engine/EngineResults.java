@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * Results of an @{link Engine}'s execution
  *
+ * @see ResultEvent
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface EngineResults {
@@ -28,41 +29,41 @@ public interface EngineResults {
 
     /**
      * Return the ResultEvent for the given index
-     * @param index
-     * @return {@link ResultEvent}
+     * @param index of the ResultEvent to return
+     * @return {@link ResultEvent} whose index was given
      */
 	public ResultEvent getResultEvent(int index);
 
     /**
      * Return the list of ResultEvents
-     * @return List<ResultEvent>
+     * @return List<ResultEvent> all the results
      */
 	public List<ResultEvent> getAllResults();
 
     /**
      * Return the ResultEvents of the given type
-     * @param type
-     * @return List<ResultEvent>
+     * @param type of result events to return
+     * @return List<ResultEvent> of the given type
      */
 	public List<ResultEvent> getResultsOfType(String type);
 
     /**
      * Return the attribute of the given key
-     * @param key
-     * @return Object
+     * @param key to return the attribute of
+     * @return Object that is the attribute for the given key
      */
 	public Object getAttribute(String key);
 
     /**
      * Set the attribute of the given values
-     * @param key
-     * @param attribute
+     * @param key to set the given attribute of
+     * @param attribute to set as the given key's attribute
      */
 	public void setAttribute(String key, Object attribute);
 
     /**
-     * Add the given result
-     * @param result
+     * Add the given {@link ResultEvent}
+     * @param result to add
      */
 	public void addResult(ResultEvent result);
 }

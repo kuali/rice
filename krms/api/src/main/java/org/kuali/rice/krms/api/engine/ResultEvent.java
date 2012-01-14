@@ -20,7 +20,9 @@ import java.util.Map;
 import org.joda.time.DateTime;
 
 /**
- * Interface for defining ResultEvents.
+ * Interface for defining ResultEvents
+ * @see EngineResults
+ * @see ResultListener
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ResultEvent {

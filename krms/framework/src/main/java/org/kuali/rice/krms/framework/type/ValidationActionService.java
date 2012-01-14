@@ -28,7 +28,7 @@ import javax.jws.soap.SOAPBinding;
 
 /**
  *
- * Service for Validation Actions
+ * Service for {@link ValidationActions}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -38,8 +38,8 @@ public interface ValidationActionService {
 
     /**
      * Return the {@link ActionDefinition} given the validationId
-     * @param validationId
-     * @return {@link ActionDefinition}
+     * @param validationId of the {@link ActionDefinition} to return
+     * @return {@link ActionDefinition} whose value is of the given validationId
      * @throws {@link RiceIllegalArgumentException}
      */
     @WebMethod(operationName = "getValidation")
@@ -49,9 +49,9 @@ public interface ValidationActionService {
 
     /**
      * Return the {@link ActionDefinition} given the namespaceCode and name
-     * @param namespaceCode
-     * @param name
-     * @return {@link ActionDefinition}
+     * @param namespaceCode of the {@link ActionDefinition} to return
+     * @param name of the {@link ActionDefinition} to return
+     * @return {@link ActionDefinition} whose namespaceCode and name are of those given
      * @throws {@link RiceIllegalArgumentException}
      */
     @WebMethod(operationName = "getValidationByName")
@@ -62,10 +62,10 @@ public interface ValidationActionService {
         throws RiceIllegalArgumentException;
 
     /**
+     * Create a Validation Action
      *
-     * @param validation
-     *
-     * @return {@link ActionDefinition}
+     * @param validation {@link ActionDefinition} to create 
+     * @return {@link ActionDefinition} created
      *
      * @throws {@link RiceIllegalArgumentException} if the given Validation definition is null
      * @throws {@link RiceIllegalArgumentException} if the given Validation definition has a non-null id.  When creating a new
@@ -78,10 +78,11 @@ public interface ValidationActionService {
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
+     * Update a Validation Action
      *
-     * @param validation
+     * @param validation {@link ActionDefinition} to create
      *
-     * @return {@link ActionDefinition}
+     * @return {@link ActionDefinition} updated
      *
      * @throws {@link RiceIllegalArgumentException} if the given Validation definition is null
      * @throws {@link RiceIllegalStateException} if the Validation does not exist in the system under the given validationId

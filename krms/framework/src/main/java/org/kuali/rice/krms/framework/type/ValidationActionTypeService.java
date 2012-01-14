@@ -19,15 +19,28 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 
 /**
- * ValidationAction constants and mocking of the {@link ValidationActionService}.
- * 
+ * Interface defining the loading of a {@link ValidationAction} from a {@link ActionDefinition}
+ *
+ * @see ValidationAction
+ * @see ActionDefinition
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface ValidationActionTypeService extends RemotableAttributeOwner, ActionTypeService {
 
+    /**
+     * VALIDATIONS_ACTION_ATTRIBUTE
+     */
     static public final String VALIDATIONS_ACTION_ATTRIBUTE = "validations";
+
+    /**
+     * VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE Database krms_attr_defn_t NM value
+     */
     static public final String VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE = "actionTypeCode"; // Database krms_attr_defn_t NM value
+
+    /**
+     * VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE Database krms_attr_defn_t NM value
+     */
     static public final String VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE = "actionMessage"; // Database krms_attr_defn_t NM value
 
     @Override

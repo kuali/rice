@@ -19,16 +19,19 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 
 /**
+ * Interface defining the loading of an {@link Action} from a {@link ActionDefinition}
  *
+ * @see Action
+ * @see ActionDefinition
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface ActionTypeService extends RemotableAttributeOwner {
 
     /**
-     * Load the Action given the actionDefinition
-     * @param actionDefinition
-     * @return {@link Action}
+     * Load the {@link Action} given the {@link ActionDefinition}
+     * @param actionDefinition {@link ActionDefinition} to create the {@link Action} from
+     * @return {@link Action} created from the given {@link ActionDefinition}
      */
 	public Action loadAction(ActionDefinition actionDefinition);
 

@@ -29,7 +29,7 @@
 	cursor:pointer;
 }
 
-input:focus.smartspinner {
+input.smartspinner {
     background: url("images/normal.jpg") no-repeat scroll right center !important;
     text-align: center;
 }

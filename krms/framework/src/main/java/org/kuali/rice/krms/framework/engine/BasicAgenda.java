@@ -32,7 +32,7 @@ public class BasicAgenda implements Agenda {
 	private AgendaTree agendaTree;
 
     /**
-     * Create a BasicAgenda with the given quaifiers and {@link AgendaTree}
+     * Create a BasicAgenda with the given qualifiers and {@link AgendaTree}
      * @param qualifiers to determine if a given {@link ExecutionEnvironment} applies.
      * @param agendaTree {@link AgendaTree} to be executed
      */

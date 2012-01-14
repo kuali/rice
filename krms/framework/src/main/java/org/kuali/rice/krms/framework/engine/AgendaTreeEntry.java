@@ -18,8 +18,7 @@ package org.kuali.rice.krms.framework.engine;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
- * TODO... 
- * 
+ * Interface for defining the execute method with a {@link ExecutionEnvironment} for an AgendaTreeEnty.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -30,8 +29,8 @@ public interface AgendaTreeEntry {
 //	AgendaTree getIfFalse();
 
     /**
-     * Execute with the given @{link ExecutionEnvironment}
-     * @param environment
+     * Execute with the given {@link ExecutionEnvironment}
+     * @param environment {@link ExecutionEnvironment} to execute with
      */
 	void execute(ExecutionEnvironment environment);
 	

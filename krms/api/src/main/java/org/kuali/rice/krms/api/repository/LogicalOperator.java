@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Representations of the Logical Operator's AND OR
+ * Enum for the representation of the Logical Operators AND OR
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -18,20 +18,21 @@ package org.kuali.rice.krms.framework.engine;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
+ * Interface for defining the execution and appliesTo of @{link ExecutionEnvironment}s for an Agenda.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Agenda {
 
     /**
      * Execute with the given {@link ExecutionEnvironment}
-     * @param environment
+     * @param environment {@link ExecutionEnvironment} to execute with
      */
 	public void execute(ExecutionEnvironment environment);
 
     /**
      * Return if the Agenda applies to the given environment
-     * @param environment
-     * @return does this Agenda apply to the given {@link ExecutionEnvironment}
+     * @param environment {@link ExecutionEnvironment} to check if the Agenda applies to.
+     * @return true, if this Agenda applies to the given {@link ExecutionEnvironment}
      */
 	public boolean appliesTo(ExecutionEnvironment environment);
 	

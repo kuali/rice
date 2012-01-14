@@ -295,7 +295,7 @@ public class FunctionParameterDefinition extends AbstractDataTransferObject impl
          * If provided, the function id must be non-blank.
          * Must allow id to be null, to prevent chicken/egg problems.
          * 
-         * @param type the type to set on this builder, must be either null or non-blank
+         * @param functionId the functionId to set on this builder, must be either null or non-blank
          */
 		public void setFunctionId(String functionId) {
 			if (functionId != null && StringUtils.isBlank(functionId)) {

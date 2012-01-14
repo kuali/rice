@@ -86,14 +86,17 @@ public class CategoryDefinition extends AbstractDataTransferObject implements Ca
         this.versionNumber = builder.getVersionNumber();
     }
 
+    @Override
 	public String getId() {
 		return this.id;
 	}
 
+    @Override
 	public String getName() {
 		return this.name;
 	}
 
+    @Override
 	public String getNamespace() {
 		return this.namespace;
 	}
@@ -117,6 +120,10 @@ public class CategoryDefinition extends AbstractDataTransferObject implements Ca
 
         /**
          * Private constructor for creating a builder with all of it's required attributes.
+         *
+         * @param id the CategoryDefinition id
+         * @param name the CategoryDefinition name
+         * @param namespace the CategoryDefinition namespace
          */
         private Builder(String id, String name, String namespace) {
             setId(id);

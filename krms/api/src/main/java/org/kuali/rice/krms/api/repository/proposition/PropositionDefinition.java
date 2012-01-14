@@ -167,6 +167,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
     /**
      * @return the ruleId
      */
+    @Override
     public String getRuleId() {
         return this.ruleId;
     }
@@ -220,8 +221,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
-		 * @param typeId TODO
-		 */
+         * @param propId the propId value to set
+         * @param propTypeCode the propTypeCode value to set
+         * @param ruleId the ruleId value to set
+         * @param typeId the typeId value to set
+         * @param parameters the parameters value to set
+         */
         private Builder(String propId, String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters) {
         	setId(propId);
 			setPropositionTypeCode(propTypeCode);
@@ -232,8 +237,8 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
         /**
          * Set the value of the opCode to the given value.
-         * @param opCode
-         * @return Builder
+         * @param opCode the opCode value to set
+         * @return Builder an instance of the builder populated with given parameters
          */
         public Builder compoundOpCode(String opCode){
         	setCompoundOpCode(opCode);
@@ -242,7 +247,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
         /**
          * Set the value of the components to the given value.
-         * @param components
+         * @param components the components value to set
          * @return Builder
          */
         public Builder compoundComponents (List<PropositionDefinition.Builder> components){
@@ -252,12 +257,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 
         /**
          * Create a Builder with the given values
-         * @param propId
-         * @param propTypeCode
-         * @param ruleId
-         * @param typeId
-         * @param parameters
-         * @return Builder
+         * @param propId the propId value to set
+         * @param propTypeCode the propTypeCode value to set
+         * @param ruleId the ruleId value to set
+         * @param typeId the typeId value to set
+         * @param parameters the parameters value to set
+         * @return Builder an instance of the builder populated with given parameters
          */
         public static Builder create(String propId, String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters){
         	return new Builder(propId, propTypeCode, ruleId, typeId, parameters);

@@ -141,8 +141,15 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         private PropositionDefinition.Builder proposition;
 
 		/**
-		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
+        /**
+         * Private constructor for creating a builder with all of it's required attributes.
+         * @param id the id value to set, must not be null or blank
+         * @param propId the propId value to set, must not be null or blank
+         * @param value the value value to set, must not be null or blank
+         * @param parameterType the value parameterType to set, must not be null or blank
+         * @param sequenceNumber the value sequenceNumber to set, must not be null or blank
+         */
         private Builder(String id, String propId, String value, String parameterType, Integer sequenceNumber) {
             setId(id);
             setPropId(propId);
@@ -153,12 +160,12 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
 
         /**
          * Create a builder using the given values
-         * @param id
-         * @param propId
-         * @param value
-         * @param parameterType
-         * @param sequenceNumber
-         * @return Builder
+         * @param id the id value to set, must not be null or blank
+         * @param propId the propId value to set, must not be null or blank
+         * @param value the value value to set, must not be null or blank
+         * @param parameterType the value parameterType to set, must not be null or blank
+         * @param sequenceNumber the value sequenceNumber to set, must not be null or blank
+         * @return Builder with the given values set
          */
         public static Builder create(String id, String propId, String value, String parameterType, Integer sequenceNumber) {
         	return new Builder(id, propId, value, parameterType, sequenceNumber);

@@ -58,6 +58,7 @@
     <property name="name" value="code"/>
     <property name="label" value="Campus Type Code"/>
     <property name="description" value="campusTypeCode description..."/>
+    <property name="required" value="true"/>
   </bean>
   <bean id="CampusType-name" parent="CampusType-name-parentBean"/>
 
@@ -75,6 +76,7 @@
     <property name="name" value="name"/>
     <property name="label" value="Campus Type Name"/>
     <property name="description" value="campusTypeName description..."/>
+    <property name="required" value="true"/>
   </bean>
   <!-- 
   <bean id="CampusType-dataObjectMaintenanceCodeActiveIndicator" parent="CampusType-dataObjectMaintenanceCodeActiveIndicator-parentBean"/>

@@ -409,6 +409,25 @@
 				</requests>
 			</routeNodes>
 		</documentType>
+     <documentType>
+      <name>CountryMaintenanceDocument</name>
+      <parent>RiceDocument</parent>
+      <label>CountryMaintenanceDocument</label>
+      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcountry.htm</helpDefinitionURL>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+    </documentType>
+    <documentType>
+      <name>CampusTypeMaintenanceDocument</name>
+      <parent>RiceDocument</parent>
+      <label>CampusTypeMaintenanceDocument</label>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcampustype.htm</helpDefinitionURL>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+    </documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

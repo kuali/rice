@@ -26,6 +26,8 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.document.TransactionalDocument;
 import org.kuali.rice.krad.exception.InfrastructureException;
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
@@ -156,11 +158,17 @@ public class KualiRuleServiceImpl implements KualiRuleService {
             TransactionalDocument transactionalDocument = (TransactionalDocument) document;
 
             businessRulesClass = getDocumentDictionaryService().getBusinessRulesClass(transactionalDocument);
+            if (businessRulesClass == null) {
+                return new TransactionalDocumentRuleBase(); // default to a generic rule that will enforce Required fields
+            }
         }
         else if (document instanceof MaintenanceDocument) {
             MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
             businessRulesClass = getDocumentDictionaryService().getBusinessRulesClass(maintenanceDocument);
+            if (businessRulesClass == null) {
+                return new MaintenanceDocumentRuleBase(); // default to a generic rule that will enforce Required fields
+            }
         }
         else {
             LOG.error("unable to get businessRulesClass for unknown document type '" + document.getClass().getName() + "'");

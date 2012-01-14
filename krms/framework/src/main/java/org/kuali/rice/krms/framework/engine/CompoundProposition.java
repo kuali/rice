@@ -40,8 +40,8 @@ public final class CompoundProposition implements Proposition {
 
     /**
      * Create a CompoundProposition with the given values
-     * @param logicalOperator
-     * @param propositions
+     * @param logicalOperator {@link LogicalOperator} to set logicalOperator to
+     * @param propositions to set the propositions to
      */
 	public CompoundProposition(LogicalOperator logicalOperator, List<Proposition> propositions) {
 				
@@ -70,9 +70,9 @@ public final class CompoundProposition implements Proposition {
 
     /**
      * This method handles the evaluation logic
-     * 
-     * @param environment
-     * @return PropositionResult
+     *
+     * @param environment {@link ExecutionEnvironment} to use for evaluation
+     * @return PropositionResult {@link PropositionResult} the results of the evaluation
      * @throws IllegalStateException if the logicalOperator is invalid.
      */
 	
@@ -123,6 +123,9 @@ public final class CompoundProposition implements Proposition {
     /*
      * only log if the proposition is not compound
      * and have the compound proposition log its own result
+     * @param proposition {@link Proposition} to log.  Compound Propositions will not log.
+     * @param propositionResult {@link PropositionResult} to log the result and execution details of
+     * @param environment {@link ExecutionEnvironment} to log
      */
     
     public void logPropositionResult(Proposition proposition, PropositionResult propositionResult, ExecutionEnvironment environment) {

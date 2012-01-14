@@ -34,11 +34,11 @@ public class BasicRule implements Rule {
 	private List<Action> actions;
 
     /**
-     *
-     * @param name Rule name
-     * @param proposition cannot be null
-     * @param actions Rule Actions
-     * @throws IllegalArgumentException if the Proposition is null
+     * Constructor
+     * @param name Rule name to set the name to
+     * @param proposition {@link Proposition} to set the proposition to, cannot be null
+     * @param actions Rule Actions to set the actions to
+     * @throws IllegalArgumentException if the {@link Proposition} is null
      */
     public BasicRule(String name, Proposition proposition, List<Action> actions) {
 		if (proposition == null) {
@@ -50,10 +50,10 @@ public class BasicRule implements Rule {
 	}
 
     /**
-     *
-     * @param proposition cannot be null
-     * @param actions Rule Actions
-     * @throws IllegalArgumentException if the Proposition is null
+     * Constructor
+     * @param proposition {@link Proposition} to set the proposition to, cannot be null
+     * @param actions Rule Actions to set the actions to
+     * @throws IllegalArgumentException if the {@link Proposition} is null
      */
 	public BasicRule(Proposition proposition, List<Action> actions) {
 		this(null, proposition, actions);
@@ -76,16 +76,17 @@ public class BasicRule implements Rule {
 	}
 
     /**
-     * overridden
+     * Based on the ruleExecutionResult should the {@link Action} be executed?  Default behavior is to return the given ruleExecutionResult.
+     * Over-writable by subclasses.
      * @param ruleExecutionResult the result of the engines evaluation method.
-     * @return should the action execute
+     * @return boolean should the action execute
      */
 	protected boolean shouldExecuteAction(boolean ruleExecutionResult) {
 		return ruleExecutionResult;
 	}
 
     /**
-     *
+     * Return the Rule name
      * @return name Rule name
      */
 	public String getName() {

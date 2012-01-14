@@ -40,9 +40,9 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 
     /**
      * Create a ComparableTermBasedProposition with the given values
-     * @param operator {@link ComparisonOperator}
-     * @param term {@link Term}
-     * @param expectedValue
+     * @param operator {@link ComparisonOperator} to set the operator to
+     * @param term {@link Term} to set the term to
+     * @param expectedValue to set the expectedValue to
      */
 	public ComparableTermBasedProposition(ComparisonOperator operator, Term term, T expectedValue) {
 		this.operator = operator;
@@ -91,6 +91,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	}
 
 	/**
+     * Returns the expectedValue
 	 * @return the expectedValue
 	 */
 	protected T getExpectedValue() {

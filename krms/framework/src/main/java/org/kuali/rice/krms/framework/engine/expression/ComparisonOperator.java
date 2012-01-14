@@ -76,13 +76,14 @@ public enum ComparisonOperator implements Coded {
      *
      * @return code representing the type of operator
      */
+    @Override
 	public String getCode() {
 		return code;
 	}
 
     /**
      * Create a ComparisonOperator from the given code
-     * @param code
+     * @param code for type of ComparisonOperator to create
      * @return a ComparisonOperator created with the given code.
      * @throws IllegalArgumentException if the given code does not exist
      */

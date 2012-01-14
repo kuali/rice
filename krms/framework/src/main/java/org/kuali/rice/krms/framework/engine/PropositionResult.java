@@ -30,7 +30,7 @@ public class PropositionResult {
 
     /**
      * Create a PropositionResult with the given result
-     * @param result
+     * @param result to set the result to
      */
 	public PropositionResult(boolean result) {
 	    this(result, null);
@@ -38,8 +38,8 @@ public class PropositionResult {
 
     /**
      * Create a PropositionResult with the given values
-     * @param result
-     * @param executionDetails
+     * @param result to set the result to
+     * @param executionDetails to set executionDetails to
      */
 	public PropositionResult(boolean result, Map<String,?> executionDetails) {
 		this.result = result;
@@ -52,7 +52,7 @@ public class PropositionResult {
 	}
 
     /**
-     *
+     * Returns the result.
      * @return the result
      */
 	public boolean getResult() {
@@ -60,7 +60,7 @@ public class PropositionResult {
 	}
 
     /**
-     *
+     * Returns the executionDetails
      * @return the executionDetails
      */
 	public Map<String,?> getExecutionDetails() {

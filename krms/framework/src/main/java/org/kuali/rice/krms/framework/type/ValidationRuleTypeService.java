@@ -28,12 +28,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Validation Rule Service
+ * {@link ValidationRule} Service
  * 
+ * @see ValidationRule
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ValidationRuleTypeService extends RuleTypeService {
-    static public final String VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE = "ruleTypeCode";
+    /**
+     * VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE - Database krms_attr_defn_t NM value
+     */
+    static public final String VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE = "ruleTypeCode"; // Database krms_attr_defn_t NM value
 
     @Override
     public Rule loadRule(RuleDefinition validationRuleDefinition);

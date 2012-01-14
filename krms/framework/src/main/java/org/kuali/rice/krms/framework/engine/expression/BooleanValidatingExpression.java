@@ -30,7 +30,7 @@ public final class BooleanValidatingExpression implements Expression<Boolean> {
 
     /**
      * Constructor
-     * @param expression {@link Expression}
+     * @param expression {@link Expression} to set the expression to
      */
 	public BooleanValidatingExpression(Expression<? extends Object> expression) {
 		this.expression = expression;

@@ -19,16 +19,19 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.framework.engine.Rule;
 
 /**
- * 
+ * Interface for definign the loading of a {@link Rule} given a {@link RuleDefinition}
+ *
+ * @see Rule
+ * @see RuleDefinition
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface RuleTypeService extends RemotableAttributeOwner {
 
     /**
-     * Load the Rule given the ruleDefinition
-     * @param ruleDefinition
-     * @return {@link Rule}
+     * Load the {@link Rule} given the {@link RuleDefinition}
+     * @param ruleDefinition {@link RuleDefinition} to create a {@link Rule} from
+     * @return {@link Rule} created from the given {@link RuleDefinition}
      */
 	public Rule loadRule(RuleDefinition ruleDefinition);
 

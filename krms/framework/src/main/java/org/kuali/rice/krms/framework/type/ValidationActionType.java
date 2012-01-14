@@ -22,6 +22,8 @@ import java.util.Set;
 
 /**
  * enum used to specify the action type to be specified in the vended {@link ValidationAction}s. WARNING ERROR
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum ValidationActionType implements Coded {
 

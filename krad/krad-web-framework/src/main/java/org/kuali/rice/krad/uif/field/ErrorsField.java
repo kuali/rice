@@ -266,9 +266,6 @@ public class ErrorsField extends FieldBase {
 						if (field != null && field.getLabel() != null) {
 							label = field.getLabel();
 						}
-						else{
-						    label = key;
-						}
 					}
 
 					// adding them to combo string instead of the list

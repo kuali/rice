@@ -35,11 +35,13 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 
 /**
- * Concrete model object implementation of KRMS Repository Agenda 
+ * Concrete model object implementation of KRMS Repository AgendaTreeDefinition
  * immutable. 
  * Instances of Agenda can be (un)marshalled to and from XML.
  *
  * @see AgendaDefinitionContract
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = AgendaTreeDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -73,16 +75,30 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
     	this.agendaId = null;
     	this.entries = null;
     }
-    
+
+    /**
+     * Constructs a AgendaTreeDefinition from the given builder.
+     * This constructor is private and should only ever be invoked from the builder.
+     *
+     * @param builder the Builder from which to construct the AgendaTreeDefinition
+     */
     private AgendaTreeDefinition(Builder builder) {
     	this.agendaId = builder.getAgendaId();
         this.entries = builder.getEntries();
     }
-    
+
+    /**
+     * Returns the agendaId
+     * @return agendaId of the AgendaTreeDefinition
+     */
     public String getAgendaId() {
     	return agendaId;
     }
-    
+
+    /**
+     * Returns the {@link AgendaTreeEntryDefinitionContract}s
+     * @return List<{@link AgendaTreeEntryDefinitionContract}>s
+     */
 	public List<AgendaTreeEntryDefinitionContract> getEntries() {
 		if (entries == null){
 			return Collections.emptyList();
@@ -90,6 +106,10 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
 		return Collections.unmodifiableList(entries);
 	}
 
+
+    /**
+     * This builder is used to construct instances of AgendaTreeDefinition.
+     */
     public static class Builder implements ModelBuilder, Serializable {
 		        
 		private static final long serialVersionUID = 7981215392039022620L;
@@ -103,36 +123,63 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
         private Builder() {
         	this.entries = new ArrayList<AgendaTreeEntryDefinitionContract>();
         }
-        
+
+        /**
+         * Create a new Builder
+         * @return a new Builder
+         */
         public static Builder create(){
         	return new Builder();
         }
-        
+
+        /**
+         * Sets the agendaId to the given parameter
+         * @param agendaId to set the apendaId value to, must not be null or blank
+         * @thows IllegalArgumentException if the agendaId is null or blank
+         */
         public void setAgendaId(String agendaId) {
 			if (StringUtils.isBlank(agendaId)) {
 				throw new IllegalArgumentException("agendaItemId was null or blank");
 			}
         	this.agendaId = agendaId;
         }
-        
+
+        /**
+         * Adds the given {@link AgendaTreeRuleEntry} to the entries.
+         * @param ruleEntry {@link AgendaTreeRuleEntry} to be added to the entries, must not be null
+         * @thows IllegalArgumentException if the ruleEntry is null
+         */
         public void addRuleEntry(AgendaTreeRuleEntry ruleEntry) {
         	if (ruleEntry == null) {
         		throw new IllegalArgumentException("ruleEntry was null");
         	}
         	entries.add(ruleEntry);
         }
-        
+
+        /**
+         * Adds the given {@link AgendaTreeSubAgendaEntry} to the entries.
+         * @param subAgendaEntry {@link AgendaTreeSubAgendaEntry} to add to the entries, must not be null
+         * @thows IllegalArgumentException if the subAgendaEntry is null
+         */
         public void addSubAgendaEntry(AgendaTreeSubAgendaEntry subAgendaEntry) {
         	if (subAgendaEntry == null) {
         		throw new IllegalArgumentException("subAgendaEntry was null");
         	}
         	entries.add(subAgendaEntry);
         }
-        
+
+        /**
+         * Returns the agendaId
+         * @return agendaId
+         */
         public String getAgendaId() {
         	return this.agendaId;
         }
-        
+
+        /**
+         * Returns the list of {@link AgendaTreeEntryDefinitionContract}s entries
+         * @return List<{@link AgendaTreeEntryDefinitionContract}> of entries
+         */
         public List<AgendaTreeEntryDefinitionContract> getEntries() {
         	return this.entries;
         }

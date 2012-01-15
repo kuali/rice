@@ -140,8 +140,6 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         private Long versionNumber;
         private PropositionDefinition.Builder proposition;
 
-		/**
-		 */
         /**
          * Private constructor for creating a builder with all of it's required attributes.
          * @param id the id value to set, must not be null or blank

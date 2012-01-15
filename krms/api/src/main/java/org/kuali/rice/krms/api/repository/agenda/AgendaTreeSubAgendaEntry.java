@@ -30,7 +30,9 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * Concrete model object implementation of KRMS Repository AgendaTreeSubAgendaEntry
+ * immutable.
+ * Instances of Agenda can be (un)marshalled to and from XML.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -55,15 +57,22 @@ public final class AgendaTreeSubAgendaEntry extends AbstractDataTransferObject i
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
-	
-	/**
-	 * Used only by JAXB.
-	 */
+
+    /**
+     * This constructor should never be called.
+     * It is only present for use during JAXB unmarshalling.
+     */
 	private AgendaTreeSubAgendaEntry() {
 		this.agendaItemId = null;
 		this.subAgendaId = null;
 	}
-	
+
+    /**
+     * Constructs a AgendaTreeSubAgendaEntry from the given builder.
+     * This constructor is private and should only ever be invoked from the builder.
+     *
+     * @param builder the Builder from which to construct the AgendaTreeSubAgendaEntry
+     */
 	private AgendaTreeSubAgendaEntry(Builder builder) {
 		this.agendaItemId = builder.getAgendaItemId();
 		this.subAgendaId = builder.getSubAgendaId();
@@ -73,11 +82,18 @@ public final class AgendaTreeSubAgendaEntry extends AbstractDataTransferObject i
 	public String getAgendaItemId() {
 		return agendaItemId;
 	}
-	
+
+    /**
+     * Returns the subAgendId
+     * @return subAgendaId
+     */
 	public String getSubAgendaId() {
 		return this.subAgendaId;
 	}
 
+    /**
+     * This builder is used to construct instances of AgendaTreeSubAgendaEntry.
+     */
 	public static class Builder implements ModelBuilder, Serializable {
         
 		private static final long serialVersionUID = 3548736700798501429L;
@@ -87,24 +103,46 @@ public final class AgendaTreeSubAgendaEntry extends AbstractDataTransferObject i
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
-		 */
+         * @param agendaItemId to set the agendaItemId value to, must not be null
+         * @param subAgendaId to set the subAgendaId value to, must not be null
+         */
         private Builder(String agendaItemId, String subAgendaId) {
         	setAgendaItemId(agendaItemId);
         	setSubAgendaId(subAgendaId);
         }
-        
+
+        /**
+         * Create a builder using the given values
+         *
+         * @param agendaItemId to set the agendaItemId value to, must not be null
+         * @param subAgendaId to set the subAgendaId value to, must not be null
+         * @return Builder with the given values set
+         */
         public static Builder create(String agendaItemId, String subAgendaId){
         	return new Builder(agendaItemId, subAgendaId);
         }
-        
+
+        /**
+         * Returns the agendaItemId
+         * @return the agendaItemId of the builder
+         */
         public String getAgendaItemId() {
 			return this.agendaItemId;
 		}
 
+        /**
+         * Returns the subAgendaId
+         * @return the subAgendaId of the builder
+         */
 		public String getSubAgendaId() {
 			return this.subAgendaId;
 		}
-		
+
+        /**
+         * Sets the agendaItemId of the builder, cannot be null
+         * @param agendaItemId to set the value of the agendaItemId to, must not be null
+         * @throws IllegalArgumentException if the agendaItemId is null
+         */
 		public void setAgendaItemId(String agendaItemId) {
 			if (agendaItemId == null) {
 				throw new IllegalArgumentException("agendaItemId was null");
@@ -112,6 +150,11 @@ public final class AgendaTreeSubAgendaEntry extends AbstractDataTransferObject i
 			this.agendaItemId = agendaItemId;
 		}
 
+        /**
+         * Sets the subAgendaId of the builder, cannot be null
+         * @param subAgendaId to set the subAgendaId value to, must not be null
+         * @throws IllegalArgumentException if the subAgendaId is null
+         */
 		public void setSubAgendaId(String subAgendaId) {
 			if (subAgendaId == null) {
 				throw new IllegalArgumentException("subAgendaId was null");

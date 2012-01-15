@@ -25,6 +25,10 @@ import org.kuali.rice.core.api.mo.ModelObjectComplete;
  */
 public interface AgendaTreeEntryDefinitionContract extends ModelObjectComplete {
 
+    /**
+     * Returns the agendaItemId
+     * @return the agendaItemId
+     */
 	String getAgendaItemId();
 
 }

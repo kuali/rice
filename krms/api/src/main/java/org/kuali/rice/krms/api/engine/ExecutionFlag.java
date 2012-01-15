@@ -59,7 +59,7 @@ public enum ExecutionFlag {
 
     /**
      * Create an ExecutionFlag with the given value
-     * @param defaultValue
+     * @param defaultValue to set the defaultValue to
      */
 	private ExecutionFlag(boolean defaultValue) {
 		this.defaultValue = defaultValue;

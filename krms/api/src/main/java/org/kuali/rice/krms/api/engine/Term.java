@@ -40,6 +40,10 @@ public final class Term implements Comparable<Term> {
 	
 	private static final TreeMapComparator<String,String> treeMapComparator = new TreeMapComparator<String, String>();
 
+    /**
+     * Constructor
+     * @param name of the term
+     */
 	public Term(String name) {
 		this(name, null);
 	}	
@@ -134,6 +138,7 @@ public final class Term implements Comparable<Term> {
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		@SuppressWarnings("unchecked")
+        @Override
 		public int compare(Map<T,V> o1, Map<T,V> o2) {
 			if (CollectionUtils.isEmpty(o1)) {
 				if (CollectionUtils.isEmpty(o2)) return 0;

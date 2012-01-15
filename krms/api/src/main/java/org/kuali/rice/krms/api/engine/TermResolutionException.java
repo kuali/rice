@@ -42,8 +42,8 @@ public class TermResolutionException extends RiceRuntimeException {
 
     /**
      * build the resolution info string from the given values
-     * @param tr {@link TermResolver}
-     * @param parameters
+     * @param tr {@link TermResolver} whose values to append to the result String if not null
+     * @param parameters Map<String, String> whose keys and values will be appended to the result String
      * @return String representing the given values
      */
 	private static String buildResolutionInfoString(TermResolver<?> tr, Map<String, String> parameters) {
@@ -84,8 +84,8 @@ public class TermResolutionException extends RiceRuntimeException {
     /**
      * Create a TermResolutionException with the given values
      * @param message the exception message
-     * @param tr {@link TermResolver}
-     * @param parameters
+     * @param tr {@link TermResolver} to use to set values to if not null
+     * @param parameters to set the parameters value to if not null
      * @param cause the root Throwable cause.
      */
 	public TermResolutionException(String message, TermResolver<?> tr, Map<String, String> parameters, Throwable cause) {
@@ -111,8 +111,8 @@ public class TermResolutionException extends RiceRuntimeException {
     /**
      * Create a TermResolutionException with the given values
      * @param message the exception message
-     * @param tr {@link TermResolver}
-     * @param parameters
+     * @param tr {@link TermResolver} to use to set values to if not null
+     * @param parameters to set the parameters value to if not null
      */
 	public TermResolutionException(String message, TermResolver<?> tr, Map<String, String> parameters) {
 		super(message + " " + buildResolutionInfoString(tr, parameters));

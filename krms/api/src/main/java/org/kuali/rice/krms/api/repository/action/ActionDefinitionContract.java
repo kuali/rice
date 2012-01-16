@@ -31,7 +31,7 @@ import java.util.Map;
 public interface ActionDefinitionContract extends Identifiable, Versioned {
 
 	/**
-	 * This is the name of the Action 
+	 * Returns the name of the Action
 	 *
 	 * <p>
 	 * name - the name of the Action
@@ -41,7 +41,7 @@ public interface ActionDefinitionContract extends Identifiable, Versioned {
 	public String getName();
 
 	/**
-	 * This is the namespace of the Action 
+	 * Returns the namespace of the Action
 	 *
 	 * <p>
 	 * The namespace of the Action
@@ -51,35 +51,35 @@ public interface ActionDefinitionContract extends Identifiable, Versioned {
 	public String getNamespace();
 
     /**
-     * This is the description for what the parameter is used for.  This can be null or a blank string.
+     * Returns the description for what the parameter is used for.  This can be null or a blank string.
      *
      * @return the description of the Action
      */
 	public String getDescription();
 
 	/**
-	 * This is the KrmsType of the Action
+	 * Returns the KrmsType of the Action
 	 *
 	 * @return id for KRMS type related of the Action
 	 */
 	public String getTypeId();
 	
 	/**
-	 * This method returns the id of the rule associated with the action
+	 * Returns the id of the rule associated with the action
 	 * 
 	 * @return id for the Rule associated with the action.
 	 */
 	public String getRuleId();
 	
 	/**
-	 * This method returns the sequence number of the  action
+	 * Returns the sequence number of the  action
 	 * 
 	 * @return sequence number of the action.
 	 */
 	public Integer getSequenceNumber();
 	
 	/**
-	 * This method returns a set of attributes associated with the 
+	 * Returns a set of attributes associated with the
 	 * Action.  The attributes are represented as name/value pairs.
 	 * 
 	 * @return a set of ActionAttribute objects.

@@ -69,7 +69,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	}
 
 	/**
-	 * This method does the actual comparison of the term value w/ the expected value
+	 * Compares the term value w/ the expected value
 	 *
 	 * @param termValue Comparable which makes up the {@link ComparisonOperator}.compare() left hand side object
 	 * @return the boolean result of the comparison
@@ -78,9 +78,15 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 		boolean result = Boolean.valueOf(operator.compare(termValue, getExpectedValue()));
 		return result;
 	}
-	
 
-	@Override
+    /**
+     * Returns an empty list.  Collections.emptyList()
+     *
+     * {@inheritDoc}
+     *
+     * @return an empty list.  Collections.emptyList()
+     */
+  	@Override
 	public List<Proposition> getChildren() {
 	    return Collections.emptyList();
 	}

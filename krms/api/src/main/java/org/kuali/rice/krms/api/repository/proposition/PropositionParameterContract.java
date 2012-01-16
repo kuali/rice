@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  */
 public interface PropositionParameterContract extends Identifiable, Versioned {
 	/**
-	 * This is the Id for the parent proposition.
+	 * Returns the Id for the parent proposition.
 	 *
 	 * <p>
 	 * It is the Id of the parent proposition.
@@ -36,7 +36,7 @@ public interface PropositionParameterContract extends Identifiable, Versioned {
 
 	
 	/**
-	 * This is the value of the proposition parameter
+	 * Returns the value of the proposition parameter
 	 *
 	 * <p>
 	 * It is the value of the parameter
@@ -46,7 +46,7 @@ public interface PropositionParameterContract extends Identifiable, Versioned {
 	public String getValue();
 
 	/**
-	 * This is the type of the parameter.
+	 * Returns the type of the parameter.
 	 * Proposition parameters are one of the following types:
 	 *    Constant Values:  numbers, strings, dates, etc.
 	 *    Terms: data available in the execution environment or provided by a term resolver
@@ -61,7 +61,7 @@ public interface PropositionParameterContract extends Identifiable, Versioned {
 	public String getParameterType();
 
 	/**
-	 * This is the sequence number of the proposition parameter.
+	 * Returns the sequence number of the proposition parameter.
 	 * Proposition parameters are listed in Reverse Polish Notation.
 	 * The sequence number (starting with 1) identifies the position of the 
 	 * parameter in the list.

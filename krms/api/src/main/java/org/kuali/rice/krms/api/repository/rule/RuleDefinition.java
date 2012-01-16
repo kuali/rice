@@ -200,8 +200,14 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 	public List<ActionDefinition> getActions(){
 		return this.actions;
 	}
-		
-	@Override
+
+    /**
+     * Returns the internal representation of the set of attributes associated with the
+     * Action.  The attributes are represented as name/value pairs.
+     *
+     * @return internal representation of the set of ActionAttribute objects.
+     */
+    @Override
 	public Map<String, String> getAttributes() {
 		return this.attributes;
 	}

@@ -28,7 +28,7 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 public interface Proposition {
 
     /**
-     * This method evaluates this proposition -- and in the case of {@link Proposition}s containing children,
+     * Evaluates this proposition -- and in the case of {@link Proposition}s containing children,
      * those children as well -- and returns the boolean result; 
      * 
      * @param environment the {@link ExecutionEnvironment} that this {@link Proposition} is running in
@@ -37,7 +37,7 @@ public interface Proposition {
 	public PropositionResult evaluate(ExecutionEnvironment environment);
 	
 	/**
-	 * This method returns the {@link List} of child {@link Proposition}s that belong to this object.
+	 * Returns the {@link List} of child {@link Proposition}s that belong to this object.
 	 * If there are no children (e.g. for simple {@link Proposition} types), this must
 	 * return an empty {@link List}.
 	 * 

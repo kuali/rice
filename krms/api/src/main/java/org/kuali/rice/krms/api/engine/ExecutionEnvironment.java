@@ -64,8 +64,7 @@ public interface ExecutionEnvironment {
      * Resolve
      * @param term {@link Term}
      * @param caller
-     * @param <T>
-     * @return
+     * @return <T> T
      * @throws {@link TermResolutionException}
      */
 	public <T> T resolveTerm(Term term, Object caller) throws TermResolutionException;

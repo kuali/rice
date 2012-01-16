@@ -154,14 +154,14 @@ public enum ComparisonOperator implements Coded {
     }
 
     /**
-     * Operator codes
+     * Operator codes, unmodifiable Collection
      */
     public static final Collection<String> OPERATOR_CODES =
         Collections.unmodifiableCollection(Arrays.asList(EQUALS.getCode(), NOT_EQUALS.getCode(), GREATER_THAN.getCode(),
                 GREATER_THAN_EQUAL.getCode(), LESS_THAN.getCode(), LESS_THAN_EQUAL.getCode()));
 
     /**
-     * Operator names
+     * Operator names, unmodifiable Collection
      */
     public static final Collection<String> OPERATOR_NAMES =
         Collections.unmodifiableCollection(Arrays.asList(EQUALS.name(), NOT_EQUALS.name(), GREATER_THAN.name(),

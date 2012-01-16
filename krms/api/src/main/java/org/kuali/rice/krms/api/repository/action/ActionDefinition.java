@@ -161,6 +161,12 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
 		return this.sequenceNumber;
 	}
 
+    /**
+     * Returns the internal representation of the set of attributes associated with the
+     * Action.  The attributes are represented as name/value pairs.
+     *
+     * @return internal representation of the set of ActionAttribute objects.
+     */
 	@Override
 	public Map<String, String> getAttributes() {
 		return this.attributes; 

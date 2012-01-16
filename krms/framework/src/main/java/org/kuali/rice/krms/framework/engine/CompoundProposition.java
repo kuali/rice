@@ -69,7 +69,7 @@ public final class CompoundProposition implements Proposition {
 	}
 
     /**
-     * This method handles the evaluation logic
+     * Evaluates then {@link ExecutionEnvironment}
      *
      * @param environment {@link ExecutionEnvironment} to use for evaluation
      * @return PropositionResult {@link PropositionResult} the results of the evaluation
@@ -121,7 +121,7 @@ public final class CompoundProposition implements Proposition {
     
     
     /*
-     * only log if the proposition is not compound
+     * Logs only if the proposition is not compound
      * and have the compound proposition log its own result
      * @param proposition {@link Proposition} to log.  Compound Propositions will not log.
      * @param propositionResult {@link PropositionResult} to log the result and execution details of
@@ -135,8 +135,11 @@ public final class CompoundProposition implements Proposition {
     	}
     	
     }
-	
 
+    /**
+     * Returns an unmodifiableList of {@link Proposition}s.
+     * @return an unmodifiableList of {@link Proposition}s
+     */
     @Override
     public List<Proposition> getChildren() {
         return Collections.unmodifiableList(propositions);

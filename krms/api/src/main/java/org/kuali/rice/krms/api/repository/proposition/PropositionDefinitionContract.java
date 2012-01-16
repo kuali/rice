@@ -29,20 +29,20 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  */
 public interface PropositionDefinitionContract extends Identifiable, Versioned {
 	/**
-	 * This is the description text for the KRMS proposition
+	 * Returns the description text for the KRMS proposition
 	 * @return description for KRMS type.
 	 */
 	public String getDescription();
 
 	/**
-	 * This is the id of Proposition KrmsType of the proposition.
+	 * Returns the id of Proposition KrmsType of the proposition.
 	 * It provides some context to what type of object of the KRMS type.
 	 * @return the id of the KRMS type.
 	 */
 	public String getTypeId();
 	
 	/**
-	 * This returns the ID of the rule this proposition belongs to.  May be null if this proposition has 
+	 * TReturns the ID of the rule this proposition belongs to.  May be null if this proposition has
 	 * not yet been persisted.
 	 * 
 	 * @return the ID of the Rule this proposition belongs to.
@@ -69,7 +69,7 @@ public interface PropositionDefinitionContract extends Identifiable, Versioned {
 	public String getPropositionTypeCode();
 	
 	/**
-	 * This is the parameter list of the proposition.
+	 * Returns the parameter list of the proposition.
 	 * Parameters are listed in Reverse Polish Notation.
 	 * Parameters may be constants, terms, or functions.
 	 * <p>
@@ -81,7 +81,7 @@ public interface PropositionDefinitionContract extends Identifiable, Versioned {
 	public List<? extends PropositionParameterContract> getParameters();
 	
 	/**
-	 * This method returns the op code to be used when evaluating compound
+	 * Returns the op code to be used when evaluating compound
 	 * propositions. 
 	 * 
 	 * @return the compound op code. 
@@ -91,7 +91,7 @@ public interface PropositionDefinitionContract extends Identifiable, Versioned {
 
 	/**
 	 * 
-	 * This method returns the propositions which are contained in a
+	 * Returns the propositions which are contained in a
 	 * compound proposition.
 	 * 
 	 * @return an ordered list of the Propositions which make up the compound

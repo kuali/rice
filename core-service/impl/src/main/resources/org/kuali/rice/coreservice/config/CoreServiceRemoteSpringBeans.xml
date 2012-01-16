@@ -24,28 +24,32 @@
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceCommonSpringBeans.xml"/>
 
   <bean id="rice.coreService.remote.import" abstract="true" lazy-init="true"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.coreService.serviceNamespace" p:mustExist="false"/>
 
   <bean id="parameterRepositoryService" parent="rice.coreService.remote.import"
-            p:serviceName="parameterRepositoryService"/>
+            p:serviceName="parameterRepositoryService"
+            p:objectType="org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService"/>
 
   <bean id="namespaceService" parent="rice.coreService.remote.import"
-            p:serviceName="namespaceService"/>
+            p:serviceName="namespaceService"
+            p:objectType="org.kuali.rice.coreservice.api.namespace.NamespaceService"/>
 
   <bean id="componentService" parent="rice.coreService.remote.import"
-            p:serviceName="componentService"/>
+            p:serviceName="componentService"
+            p:objectType="org.kuali.rice.coreservice.api.component.ComponentService"/>
 
   <bean id="styleRepositoryService" parent="rice.coreService.remote.import"
-            p:serviceName="styleRepositoryService"/>
+            p:serviceName="styleRepositoryService"
+            p:objectType="org.kuali.rice.coreservice.api.style.StyleRepositoryService"/>
 
-  <bean id="parameterService" class="org.kuali.rice.coreservice.impl.parameter.ParameterServiceImpl" lazy-init="true">
+  <bean id="parameterService" class="org.kuali.rice.coreservice.impl.parameter.ParameterServiceImpl">
     <property name="parameterRepositoryService" ref="parameterRepositoryService"/>
     <property name="kualiModuleService" ref="rice.coreService.import.kualiModuleService"/>
     <property name="applicationId" value="${application.id}"/>
   </bean>
 
-  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl" lazy-init="true">
+  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl">
     <property name="styleRepositoryService" ref="styleRepositoryService" />
   </bean>
 </beans>

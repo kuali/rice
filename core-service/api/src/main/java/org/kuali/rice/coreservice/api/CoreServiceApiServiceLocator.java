@@ -27,20 +27,12 @@ import javax.xml.namespace.QName;
 
 public class CoreServiceApiServiceLocator {
 
-	public static final QName NAMESPACE_SERVICE = buildName("namespaceService");
-    public static final QName PARAMETER_REPOSITORY_SERVICE = buildName("parameterRepositoryService");
-    public static final QName COMPONENT_SERVICE = buildName("componentService");
-    public static final QName STYLE_REPOSITORY_SERVICE = buildName("styleRepositoryService");
+	public static final String NAMESPACE_SERVICE = "namespaceService";
+    public static final String PARAMETER_REPOSITORY_SERVICE = "parameterRepositoryService";
+    public static final String COMPONENT_SERVICE = "componentService";
+    public static final String STYLE_REPOSITORY_SERVICE = "styleRepositoryService";
 
     public static final String STYLE_SERVICE = "styleService";
-
-    private static QName buildName(String serviceName) {
-        return new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, serviceName);
-    }
-
-    static <T> T getService(QName serviceName) {
-        return GlobalResourceLoader.<T>getService(serviceName);
-    }
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);

@@ -152,8 +152,13 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 	public String getFirstItemId(){
 		return this.firstItemId;
 	}
-	
-	@Override
+
+    /**
+     * Returns the internal list of custom/remote attributes associated with the
+     * agenda.
+     *
+     * @return the internal list of custom/remote attribute of the agenda.
+     */
 	public Map<String, String> getAttributes() {
 		return this.attributes; 
 	}

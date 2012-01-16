@@ -135,7 +135,11 @@ public class BasicResult extends EventObject implements ResultEvent {
 	public String getDescription() {
 	    return description;
 	}
-	
+
+    /**
+     * Returns the result details of the ResultEvent as an unmodifiable Map<?,?>
+     * @return result details of the ResultEvent as an unmodifiable Map<?,?>
+     */
 	@Override
 	public Map<String, ?> getResultDetails() {
 	    if (resultDetails == null) {

@@ -38,11 +38,20 @@ public class EngineResultsImpl implements EngineResults {
 		results.add(result);
 	}
 
+    /**
+     * Return a shallow copy of the list of ResultEvents.
+     * @return a shallow copy of all the ResultEvents
+     */
 	@Override
 	public List<ResultEvent> getAllResults() {		
 		return new ArrayList<ResultEvent>(results); // shallow copy should be defensive enough
 	}
 
+    /**
+     * Returns null, unimplemented.
+     * @param index of the ResultEvent to return
+     * @return null
+     */
 	@Override
 	public ResultEvent getResultEvent(int index) {
 		// TODO Auto-generated method stub

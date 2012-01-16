@@ -117,7 +117,11 @@ public class TimingResult extends EventObject implements ResultEvent {
 	public String getType() {
 		return type;
 	}
-	
+
+    /**
+     * Returns the result details of the ResultEvent as an unmodifiable Map<?,?>
+     * @return result details of the ResultEvent as an unmodifiable Map<?,?>
+     */
 	@Override
 	public Map<String, ?> getResultDetails() {
 	    if (resultDetails == null) {

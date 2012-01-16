@@ -41,7 +41,7 @@ public class TermResolutionException extends RiceRuntimeException {
 	public final Map<String, String> parameters;
 
     /**
-     * build the resolution info string from the given values
+     * Builds the resolution info string from the given values.
      * @param tr {@link TermResolver} whose values to append to the result String if not null
      * @param parameters Map<String, String> whose keys and values will be appended to the result String
      * @return String representing the given values

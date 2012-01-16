@@ -42,54 +42,7 @@ public final class PredicateUtils {
 
                 // TODO: how to handle different types of data when everything comes in as string....
                 for (String value : values) {
-                    if (value.contains(SearchOperator.NULL.op())) {
-                        if (isNot(value)) {
-                            tempPredicates.add(isNotNull(entry.getKey()));
-                        } else {
-                            tempPredicates.add(isNull(entry.getKey()));
-                        }
-                    } else if (value.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
-                        String[] betweenVals = StringUtils.split(value, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op());
-                        if (betweenVals.length == 2) {
-                            tempPredicates.add(and(greaterThanOrEqual(entry.getKey(), betweenVals[0]),
-                                                   lessThan(entry.getKey(), betweenVals[1])));
-                        }
-                    } else if (value.contains(SearchOperator.BETWEEN.op())) {
-                        String[] betweenVals = StringUtils.split(value, SearchOperator.BETWEEN.op());
-                        if (betweenVals.length == 2) {
-                            tempPredicates.add(and(greaterThanOrEqual(entry.getKey(), betweenVals[0]),
-                                                   lessThanOrEqual(entry.getKey(), betweenVals[1])));
-                        }
-                    } else if (value.contains(SearchOperator.GREATER_THAN_EQUAL.op())) {
-                        tempPredicates.add(greaterThanOrEqual(entry.getKey(), StringUtils.replace(value, SearchOperator.GREATER_THAN_EQUAL.op(), "")));
-                    } else if (value.contains(SearchOperator.LESS_THAN_EQUAL.op())) {
-                        tempPredicates.add(lessThanOrEqual(entry.getKey(), StringUtils.replace(value, SearchOperator.LESS_THAN_EQUAL.op(), "")));
-                    } else if (value.contains(SearchOperator.GREATER_THAN.op())) {
-                        tempPredicates.add(greaterThan(entry.getKey(), StringUtils.replace(value, SearchOperator.GREATER_THAN.op(), "")));
-                    } else if (value.contains(SearchOperator.LESS_THAN.op())) {
-                        tempPredicates.add(lessThan(entry.getKey(), StringUtils.replace(value, SearchOperator.LESS_THAN.op(), "")));
-
-                    } else if (value.contains(SearchOperator.NOT.op())) {
-                        String[] notValues = StringUtils.split(value, SearchOperator.NOT.op());
-                        List<Predicate> notPreds = new ArrayList<Predicate>(notValues.length);
-                        for (String notValue : notValues) {
-                            notPreds.add(notEqual(entry.getKey(), StringUtils.replace(notValue, SearchOperator.NOT.op(), "")));
-                        }
-                        tempPredicates.add(and(notPreds.toArray(new Predicate[notPreds.size()])));
-                    } else if (value.contains(SearchOperator.LIKE_MANY.op())
-                                || (value.contains(SearchOperator.LIKE_ONE.op()))) {
-                        if (isNot(value)) {
-                            tempPredicates.add(notLike(entry.getKey(), value ));
-                        } else {
-                            tempPredicates.add(like(entry.getKey(), value ));
-                        }
-                    } else {
-                        if (isNot(value)) {
-                            tempPredicates.add(notEqual(entry.getKey(), value));
-                        } else {
-                            tempPredicates.add(equal(entry.getKey(), value));
-                        }
-                    }
+                    tempPredicates.add(parsePredicate(entry.getKey(), value));
                 }
                 if (entry.getValue().contains(SearchOperator.AND.op())) {
                     p.add(and(tempPredicates.toArray(new Predicate[tempPredicates.size()])));
@@ -102,6 +55,54 @@ public final class PredicateUtils {
         }
         //wrap everything in an 'and'
         return and(p.toArray(new Predicate[p.size()]));
+    }
+
+    /**
+     * sort of parses a predicate out of a value
+     * @param key the map entry key
+     * @param value the expression value
+     * @return a parsed predicate or null if unable to parse expression
+     */
+    private static Predicate parsePredicate(String key, String value) {
+        if (value.contains(SearchOperator.NULL.op())) {
+            if (isNot(value)) {
+                return isNotNull(key);
+            } else {
+                return isNull(key);
+            }
+        } else if (value.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
+            String[] betweenVals = StringUtils.split(value, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op());
+            if (betweenVals.length == 2) {
+                return and(greaterThanOrEqual(key, betweenVals[0]), lessThan(key, betweenVals[1]));
+            } // else ?
+            return null;
+        } else if (value.contains(SearchOperator.BETWEEN.op())) {
+            String[] betweenVals = StringUtils.split(value, SearchOperator.BETWEEN.op());
+            if (betweenVals.length == 2) {
+                return and(greaterThanOrEqual(key, betweenVals[0]), lessThanOrEqual(key, betweenVals[1]));
+            } // else ?
+            return null;
+        } else if (value.contains(SearchOperator.GREATER_THAN_EQUAL.op())) {
+            return greaterThanOrEqual(key, StringUtils.replace(value, SearchOperator.GREATER_THAN_EQUAL.op(), ""));
+        } else if (value.contains(SearchOperator.LESS_THAN_EQUAL.op())) {
+            return lessThanOrEqual(key, StringUtils.replace(value, SearchOperator.LESS_THAN_EQUAL.op(), ""));
+        } else if (value.contains(SearchOperator.GREATER_THAN.op())) {
+            return greaterThan(key, StringUtils.replace(value, SearchOperator.GREATER_THAN.op(), ""));
+        } else if (value.contains(SearchOperator.LESS_THAN.op())) {
+            return lessThan(key, StringUtils.replace(value, SearchOperator.LESS_THAN.op(), ""));
+        } else if (value.contains(SearchOperator.LIKE_MANY.op()) || (value.contains(SearchOperator.LIKE_ONE.op()))) {
+            if (isNot(value)) {
+                return notLike(key, stripNot(value));
+            } else {
+                return like(key, value);
+            }
+        } else {
+            if (isNot(value)) {
+                return notEqual(key, stripNot(value));
+            } else {
+                return equal(key, value);
+            }
+        }
     }
 
     private static void getValueRecursive(String valueEntered, List<String> lRet) {
@@ -140,6 +141,14 @@ public final class PredicateUtils {
             return false;
         }
         return value.contains(SearchOperator.NOT.op());
+    }
+
+    // oh so hacky
+    private static String stripNot(String value) {
+        if (value.trim().startsWith(SearchOperator.NOT.op())) {
+            value = value.trim().replaceFirst(SearchOperator.NOT.op(), "");
+        }
+        return value;
     }
 }
 

@@ -169,6 +169,20 @@ public class PersonServiceImplTest extends KIMTestCase {
 		assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );
 	}
 
+    @Test
+    public void testFindPeopleByWildcard() {
+        HashMap<String,String> criteria = new HashMap<String,String>();
+        criteria.put( "principalName", "!quick*" );
+        List<Person> people = personService.findPeople( criteria );
+        assertNotNull( "result must not be null", people );
+        assertEquals( "wrong number of people returned", 50, people.size() );
+        for (Person p: people) {
+            if (p.getPrincipalName().startsWith("quick")) {
+                fail("Invalid wildcard search results");
+            }
+        }
+    }
+
 	@Test
 	public void testResolvePrincipalNamesToPrincipalIds() throws Exception {
 		

@@ -101,118 +101,113 @@ public class DocumentSearchTest extends KEWTestCase {
         assertEquals("for in accounts", savedCriteria.getSaveName());
     }
 
-   @Test public void testDocSearch_maxResults() throws Exception {
+    @Test public void testDocSearch_maxResults() throws Exception {
+        String[] docIds = routeTestDocs();
 
-          String[] docIds = routeTestDocs();
+        String principalId = getPrincipalId("bmcgough");
 
-          String principalId = getPrincipalId("bmcgough");
-
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setMaxResults(2);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(2, results.getSearchResults().size());
-         }
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setMaxResults(2);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(2, results.getSearchResults().size());
+    }
 
     @Test public void testDocSearch_maxResultsIsNull() throws Exception {
+        String[] docIds = routeTestDocs();
 
-          String[] docIds = routeTestDocs();
+        String principalId = getPrincipalId("bmcgough");
 
-          String principalId = getPrincipalId("bmcgough");
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setMaxResults(null);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+    }
 
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setMaxResults(null);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-         }
     @Test public void testDocSearch_maxResultsIsZero() throws Exception {
+        String[] docIds = routeTestDocs();
 
-          String[] docIds = routeTestDocs();
+        String principalId = getPrincipalId("bmcgough");
 
-          String principalId = getPrincipalId("bmcgough");
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setMaxResults(0);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(0, results.getSearchResults().size());
+    }
 
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setMaxResults(0);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(0, results.getSearchResults().size());
-         }
+    @Test public void testDocSearch_startAtIndex() throws Exception {
+        String[] docIds = routeTestDocs();
 
-       @Test public void testDocSearch_startAtIndex() throws Exception {
+        String principalId = getPrincipalId("bmcgough");
 
-          String[] docIds = routeTestDocs();
-
-          String principalId = getPrincipalId("bmcgough");
-
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setStartAtIndex(1);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(2, results.getSearchResults().size());
-      }
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setStartAtIndex(1);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(2, results.getSearchResults().size());
+    }
 
     @Test public void testDocSearch_startAtIndexMoreThanResuls() throws Exception {
+        String[] docIds = routeTestDocs();
 
-          String[] docIds = routeTestDocs();
+        String principalId = getPrincipalId("bmcgough");
 
-          String principalId = getPrincipalId("bmcgough");
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setStartAtIndex(5);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(0, results.getSearchResults().size());
 
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setStartAtIndex(5);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(0, results.getSearchResults().size());
+    }
 
-      }
+    @Test public void testDocSearch_startAtIndexNegative() throws Exception {
+        String[] docIds = routeTestDocs();
 
-     @Test public void testDocSearch_startAtIndexNegative() throws Exception {
+        String principalId = getPrincipalId("bmcgough");
 
-          String[] docIds = routeTestDocs();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setStartAtIndex(-1);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(0, results.getSearchResults().size());
 
-          String principalId = getPrincipalId("bmcgough");
+    }
 
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setStartAtIndex(-1);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(0, results.getSearchResults().size());
-
-      }
     @Test public void testDocSearch_startAtIndexZero() throws Exception {
+        String[] docIds = routeTestDocs();
 
-          String[] docIds = routeTestDocs();
+        String principalId = getPrincipalId("bmcgough");
 
-          String principalId = getPrincipalId("bmcgough");
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+        criteria.setMaxResults(5);
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        criteria.setStartAtIndex(0);
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
 
-          DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
-          criteria.setDocumentTypeName("SearchDocType");
-          criteria.setMaxResults(5);
-          DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-          criteria.setStartAtIndex(0);
-          results = docSearchService.lookupDocuments(principalId, criteria.build());
-          assertEquals(3, results.getSearchResults().size());
-
-      }
+    }
 
     /**
      * Tests that performing a search automatically saves the last search criteria
@@ -525,47 +520,47 @@ public class DocumentSearchTest extends KEWTestCase {
          * BEGIN - commenting out until we can resolve issues with person service not returning proper persons based on wildcards and various things
          */
         // Test the wildcards on the initiator attribute.
-//        String[] searchStrings = {"!quickstart", "!rkirkend!bmcgough", "!quickstart&&!rkirkend", "!admin", "user1", "quickstart|bmcgough",
-//        		"admin|rkirkend", ">bmcgough", ">=rkirkend", "<bmcgough", "<=quickstart", ">bmcgough&&<=rkirkend", "<rkirkend&&!bmcgough",
-//        		"?mc?oug?", "*t", "*i?k*", "*", "!quick*", "!b???????!?kirk???", "!*g*&&!*k*", ">bmc?ough", "<=quick*", "quickstart..rkirkend"};
-//        int[] expectedResults = {2, 1, 1, 3, 0, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 2, 3, 2, 1, 0, 2, 1, 2/*1*/};
-//        for (int i = 0; i < searchStrings.length; i++) {
-//        	criteria = DocumentSearchCriteria.Builder.create();
-//        	criteria.setInitiatorPrincipalName(searchStrings[i]);
-//        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-//        	assertEquals("Initiator search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
-//        }
+        String[] searchStrings = {"!quickstart", "!quickstart&&!rkirkend", "!admin", "user1", "quickstart|bmcgough",
+        		"admin|rkirkend", ">bmcgough", ">=rkirkend", "<bmcgough", "<=quickstart", ">bmcgough&&<=rkirkend", "<rkirkend&&!bmcgough",
+        		"?mc?oug?", "*t", "*i?k*", "*", "!quick*", "!*g*&&!*k*", "quickstart..rkirkend"};
+        int[] expectedResults = {2, 1, 3, 0, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 2, 3, 2, 0, 2/*1*/};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = DocumentSearchCriteria.Builder.create();
+        	criteria.setInitiatorPrincipalName(searchStrings[i]);
+        	results = docSearchService.lookupDocuments(principalId, criteria.build());
+        	assertEquals("Initiator search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
+        }
 
         // Test the wildcards on the approver attribute.
-//        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
-//        expectedResults = new int[] {1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1};
-//        for (int i = 0; i < searchStrings.length; i++) {
-//        	criteria = DocumentSearchCriteria.Builder.create();
-//        	criteria.setApproverPrincipalName(searchStrings[i]);
-//        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-//        	assertEquals("Approver search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
-//        }
+        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
+        expectedResults = new int[] {1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = DocumentSearchCriteria.Builder.create();
+        	criteria.setApproverPrincipalName(searchStrings[i]);
+        	results = docSearchService.lookupDocuments(principalId, criteria.build());
+        	assertEquals("Approver search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
+        }
 
         // Test the wildcards on the viewer attribute.
-//        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
-//        expectedResults = new int[] {3, 0, 0, 3, 0, 3, 3, 3, 0, 0, 3};
-//        for (int i = 0; i < searchStrings.length; i++) {
-//        	criteria = DocumentSearchCriteria.Builder.create();
-//        	criteria.setViewerPrincipalName(searchStrings[i]);
-//        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-//        	if(expectedResults[i] !=  results.getSearchResults().size()){
-//        		assertEquals("Viewer search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
-//        	}
-//        }
+        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
+        expectedResults = new int[] {3, 0, 0, 3, 0, 3, 3, 3, 0, 0, 3};
+        for (int i = 0; i < searchStrings.length; i++) {
+        	criteria = DocumentSearchCriteria.Builder.create();
+        	criteria.setViewerPrincipalName(searchStrings[i]);
+        	results = docSearchService.lookupDocuments(principalId, criteria.build());
+        	if(expectedResults[i] !=  results.getSearchResults().size()){
+        		assertEquals("Viewer search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
+        	}
+        }
 
         /**
          * END
          */
 
         // Test the wildcards on the document/notification ID attribute. The string wildcards should work, since the doc ID is not a string.
-        String[] searchStrings = new String[] {"!"+docIds[0], docIds[1]+"|"+docIds[2], "<="+docIds[1], ">="+docIds[2], "<"+docIds[0]+"&&>"+docIds[2],
+        searchStrings = new String[] {"!"+docIds[0], docIds[1]+"|"+docIds[2], "<="+docIds[1], ">="+docIds[2], "<"+docIds[0]+"&&>"+docIds[2],
                 ">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?"+docIds[1].substring(1)+"*", "?9*7"};
-        int[] expectedResults = new int[] {2, 2, 2, 1, 0, 1, 1, 3, 0, 1, 0};
+        expectedResults = new int[] {2, 2, 2, 1, 0, 1, 1, 3, 0, 1, 0};
         for (int i = 0; i < searchStrings.length; i++) {
             criteria = DocumentSearchCriteria.Builder.create();
             criteria.setDocumentId(searchStrings[i]);

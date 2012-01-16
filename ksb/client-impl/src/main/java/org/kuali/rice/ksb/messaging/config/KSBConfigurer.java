@@ -212,7 +212,17 @@ public class KSBConfigurer extends ModuleConfigurer {
 		requeueMessages();
 	}
 
-	@Override
+    @Override
+    protected void doAdditionalModuleStartLogic() throws Exception {
+        // this allows us to become aware of remote services, in case the application needs to use any of them during startup
+        LOG.info("Synchronizing remote services with service bus after KSB startup...");
+        long startTime = System.currentTimeMillis();
+        KsbApiServiceLocator.getServiceBus().synchronizeRemoteServices();
+        long endTime = System.currentTimeMillis();
+        LOG.info("...total time to synchronize remote services with service bus after KSB startup: " + (endTime - startTime));
+    }
+
+    @Override
 	protected void doAdditionalModuleStopLogic() throws Exception {
 		for (int index = internalLifecycles.size() - 1; index >= 0; index--) {
 			try {
@@ -229,7 +239,7 @@ public class KSBConfigurer extends ModuleConfigurer {
      */
     private void requeueMessages() {
         LOG.info("Refreshing Service Registry to export services to the bus.");
-        KsbApiServiceLocator.getServiceBus().synchronize();
+        KsbApiServiceLocator.getServiceBus().synchronizeLocalServices();
         
 		//automatically requeue documents sitting with status of 'R'
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);

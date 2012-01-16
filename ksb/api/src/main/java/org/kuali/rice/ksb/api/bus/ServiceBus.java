@@ -292,12 +292,29 @@ public interface ServiceBus {
     List<Boolean> removeServices(List<QName> serviceNames, boolean synchronize);
 
     /**
-     * Synchronizes the current client's service bus with the central service registry. This is done
-     * automatically on a periodic basic, but can be invoked manually through this method. This
-     * method should both register any outstanding service publications to the registry, as well as
-     * detect any changes in remote services that have been published/removed by other applications
-     * in the registry and update local service bus state accordingly.
+     * Synchronizes the current client's service bus with the central service registry. This may be
+     * done automatically on a periodic basic depending on the implementation of this service, but
+     * can be invoked manually through this method. This method should both register any outstanding
+     * service publications to the registry, as well as detect any changes in remote services that
+     * have been published/removed by other applications in the registry and update local service
+     * bus state accordingly.
+     *
+     * <p>Invoking this method is equivalent to invoking {@link #synchronizeLocalServices()} and
+     * {@link #synchronizeRemoteServices()} in either order.  However, the semantics vary slightly
+     * as this method should attempt to invoke them as an atomic operation.</p>
      */
     void synchronize();
+
+    /**
+     * Fetches information about the current state of the remote services available in the registry
+     * and the synchronizes the current client's service bus state.
+     */
+    void synchronizeRemoteServices();
+
+    /**
+     * Synchronizes information about the services this client is publishing with the central
+     * service registry.
+     */
+    void synchronizeLocalServices();
 
 }

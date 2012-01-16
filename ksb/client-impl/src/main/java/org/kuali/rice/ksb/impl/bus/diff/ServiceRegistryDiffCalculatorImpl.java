@@ -48,22 +48,12 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 	@Override
 	public CompleteServiceDiff diffServices(String instanceId, List<LocalService> localServices, List<RemoteService> clientRegistryCache) {
         List<ServiceInfo> allRegistryServices = serviceRegistry.getAllOnlineServices();
-        List<ServiceInfo> allRegistryServicesForInstance = getAllServicesForInstance(instanceId, allRegistryServices);
+        List<ServiceInfo> allRegistryServicesForInstance = serviceRegistry.getAllServicesForInstance(instanceId);
 		LocalServicesDiff localServicesDiff = calculateLocalServicesDiff(allRegistryServicesForInstance, instanceId, localServices);
 		RemoteServicesDiff remoteServicesDiff = calculateRemoteServicesDiff(allRegistryServices, clientRegistryCache);
 		return new CompleteServiceDiff(localServicesDiff, remoteServicesDiff);
 	}
 
-    protected List<ServiceInfo> getAllServicesForInstance(String instanceId, List<ServiceInfo> allRegistryServices) {
-        List<ServiceInfo> allRegistryServicesForInstance = new ArrayList<ServiceInfo>();
-        for (ServiceInfo serviceInfo : allRegistryServices) {
-            if (serviceInfo.getInstanceId().equals(instanceId)) {
-                allRegistryServicesForInstance.add(serviceInfo);
-            }
-        }
-        return allRegistryServicesForInstance;
-    }
-	
 	protected LocalServicesDiff calculateLocalServicesDiff(List<ServiceInfo> allRegistryServicesForInstance, String instanceId, List<LocalService> localServices) {
 		
 		List<ServiceInfo> servicesToRemoveFromRegistry = new ArrayList<ServiceInfo>();
@@ -114,17 +104,7 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 		}
 		return localServiceIndex;
 	}
-	
-	protected List<ServiceInfo> filterServicesForInstance(String instanceId, List<ServiceInfo> allServices) {
-		List<ServiceInfo> filteredServices = new ArrayList<ServiceInfo>();
-		for (ServiceInfo serviceInfo : allServices) {
-			if (instanceId.equals(serviceInfo.getInstanceId())) {
-				filteredServices.add(serviceInfo);
-			}
-		}
-		return filteredServices;
-	}
-	
+		
 	protected RemoteServicesDiff calculateRemoteServicesDiff(List<ServiceInfo> allRegistryServices, List<RemoteService> clientRegistryCache) {
 		
 		List<ServiceInfo> servicesToAddToClientRegistryCache = new ArrayList<ServiceInfo>(allRegistryServices);

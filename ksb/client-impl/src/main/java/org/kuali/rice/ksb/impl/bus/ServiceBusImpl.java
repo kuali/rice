@@ -395,9 +395,8 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		return servicesRemoved;
 	}
 
-	@Override
-	public void synchronize() {
-		if (!isDevMode() && isStarted()) {
+    protected void synchronizeAndProcess(SyncProcessor processor) {
+        if (!isDevMode()) {
 			synchronized (synchronizeLock) {
 				List<LocalService> localServicesList;
 				List<RemoteService> clientRegistryCacheList;
@@ -410,15 +409,65 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 					}
 				}
 				CompleteServiceDiff serviceDiff = diffCalculator.diffServices(getInstanceId(), localServicesList, clientRegistryCacheList);
-			
-				RemoteServicesDiff remoteServicesDiff = serviceDiff.getRemoteServicesDiff();
+                logCompleteServiceDiff(serviceDiff);
+                processor.sync(serviceDiff);
+            }
+        }
+    }
+
+	@Override
+	public void synchronize() {
+        synchronizeAndProcess(new SyncProcessor() {
+            @Override
+            public void sync(CompleteServiceDiff diff) {
+                RemoteServicesDiff remoteServicesDiff = diff.getRemoteServicesDiff();
 				processRemoteServiceDiff(remoteServicesDiff);
-			
-				LocalServicesDiff localServicesDiff = serviceDiff.getLocalServicesDiff();
+				LocalServicesDiff localServicesDiff = diff.getLocalServicesDiff();
 				processLocalServiceDiff(localServicesDiff);
-			}
-		}
+            }
+        });
 	}
+
+    @Override
+	public void synchronizeRemoteServices() {
+        synchronizeAndProcess(new SyncProcessor() {
+            @Override
+            public void sync(CompleteServiceDiff diff) {
+                RemoteServicesDiff remoteServicesDiff = diff.getRemoteServicesDiff();
+				processRemoteServiceDiff(remoteServicesDiff);
+            }
+        });
+	}
+
+    @Override
+    public void synchronizeLocalServices() {
+        synchronizeAndProcess(new SyncProcessor() {
+            @Override
+            public void sync(CompleteServiceDiff diff) {
+                LocalServicesDiff localServicesDiff = diff.getLocalServicesDiff();
+                processLocalServiceDiff(localServicesDiff);
+            }
+        });
+    }
+
+    protected void logCompleteServiceDiff(CompleteServiceDiff serviceDiff) {
+        RemoteServicesDiff remoteServicesDiff = serviceDiff.getRemoteServicesDiff();
+        int newServices = remoteServicesDiff.getNewServices().size();
+        int removedServices = remoteServicesDiff.getRemovedServices().size();
+
+        LocalServicesDiff localServicesDiff = serviceDiff.getLocalServicesDiff();
+        int servicesToPublish = localServicesDiff.getLocalServicesToPublish().size();
+        int servicesToUpdate = localServicesDiff.getLocalServicesToUpdate().size();
+        int servicesToRemove = localServicesDiff.getServicesToRemoveFromRegistry().size();
+
+        if (newServices + removedServices + servicesToPublish + servicesToUpdate + servicesToRemove > 0) {
+            LOG.info("Found service changes during synchronization: remoteNewServices=" + newServices +
+                    ", remoteRemovedServices=" + removedServices +
+                    ", localServicesToPublish=" + servicesToPublish +
+                    ", localServicesToUpdate=" + servicesToUpdate +
+                    ", localServicesToRemove=" + servicesToRemove);
+        }
+    }
 		
 	protected void processRemoteServiceDiff(RemoteServicesDiff remoteServicesDiff) {
 		// note that since there is a gap between when the original services are acquired, the diff, and this subsequent critical section
@@ -507,5 +556,9 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 	public void setScheduledPool(KSBScheduledPool scheduledPool) {
 		this.scheduledPool = scheduledPool;
 	}
+
+    private static interface SyncProcessor {
+        void sync(CompleteServiceDiff diff);
+    }
 	
 }

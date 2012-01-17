@@ -49,6 +49,11 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
     def boolean editMode = false
     def String categoryId;
 
+    // members used for creating new parameterized terms
+    // These are not mapped to the database
+    String newTermDescription = "new term " + UUID.randomUUID().toString();
+    Map<String, String> termParameters = new HashMap<String, String>();
+
     private SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
 
     private void setupParameterDisplayString(){
@@ -71,9 +76,18 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
             String termName = "";
             String termId = prop.getValue();
             if (termId != null && termId.length()>0){
-                //TODO: use termBoService
-                TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
-                termName = term.getSpecification().getName();
+                if (termId.startsWith("parameterized:")) {
+                    if (!StringUtils.isBlank(newTermDescription)) {
+                        termName = newTermDescription;
+                    } else {
+                        TermSpecificationBo termSpec = getBoService().findBySinglePrimaryKey(TermSpecificationBo.class, termId.substring(1+termId.indexOf(':')));
+                        termName = termSpec.getName() + "(...)";
+                    }
+                } else {
+                    //TODO: use termBoService
+                    TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
+                    termName = term.getSpecification().getName();
+                }
             }
             return termName;
         } else {
@@ -123,6 +137,16 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         } else {
             this.typeId = typeId;
         }
+    }
+
+
+
+    Map<String, String> getTermParameters() {
+        return termParameters
+    }
+
+    void setTermParameters(Map<String, String> termParameters) {
+        this.termParameters = termParameters
     }
 
     public BusinessObjectService getBoService() {

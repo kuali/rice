@@ -138,7 +138,7 @@ public class DefaultComparisonOperator implements EngineComparatorExtension, Str
             Class clazz = Class.forName(type);
             // Constructor that takes string  a bit more generic than the coerceRhs
             Constructor constructor = clazz.getConstructor(new Class[]{String.class});
-            Object propObject = constructor.newInstance(type);
+            Object propObject = constructor.newInstance(value);
             return propObject;
         } catch (Exception e) {
             return null; // TODO EGHM dev log?

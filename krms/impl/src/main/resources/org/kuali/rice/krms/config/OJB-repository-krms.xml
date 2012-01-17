@@ -285,6 +285,13 @@
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+        <collection-descriptor name="contexts" element-class-ref="org.kuali.rice.krms.impl.repository.ContextBo"
+              collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+              indirection-table="KRMS_CNTXT_VLD_TERM_SPEC_T"
+              auto-retrieve="true" auto-update="link" auto-delete="none" proxy="true">
+            <fk-pointing-to-this-class    column="TERM_SPEC_ID" />
+            <fk-pointing-to-element-class column="CNTXT_ID" />
+        </collection-descriptor>
         <collection-descriptor name="categories" element-class-ref="org.kuali.rice.krms.impl.repository.CategoryBo"
               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
               indirection-table="KRMS_TERM_SPEC_CTGRY_T"

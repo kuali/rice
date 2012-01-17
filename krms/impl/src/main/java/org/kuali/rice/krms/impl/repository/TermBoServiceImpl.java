@@ -141,7 +141,37 @@ public class TermBoServiceImpl implements TermBoService {
 		
 		return result;
 	}
-	
+
+    @Override
+    public List<TermResolverDefinition> getTermResolversByOutputId(String id, String namespace) {
+        List<TermResolverDefinition> results = null;
+
+		if (StringUtils.isBlank(id)) {
+			throw new IllegalArgumentException("id must not be blank or null");
+		}
+        if (StringUtils.isBlank(namespace)) {
+			throw new IllegalArgumentException("namespace must not be blank or null");
+		}
+        Map<String, String> criteria = new HashMap<String, String>(2);
+
+        criteria.put("outputId", id);
+        criteria.put("namespace", namespace);
+
+		Collection<TermResolverBo> termResolverBos = businessObjectService.findMatching(TermResolverBo.class, criteria);
+
+		if (!CollectionUtils.isEmpty(termResolverBos)) {
+			results = new ArrayList<TermResolverDefinition>(termResolverBos.size());
+
+            for (TermResolverBo termResolverBo : termResolverBos) {
+                results.add(TermResolverBo.to(termResolverBo));
+            }
+		} else {
+            results = Collections.emptyList();
+        }
+
+		return results;
+    }
+
     @Override
     public List<TermResolverDefinition> getTermResolversByNamespace(String namespace) {
         List<TermResolverDefinition> results = null;

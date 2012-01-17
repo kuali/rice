@@ -33,11 +33,22 @@ public interface TermBoService {
 	
 	TermSpecificationDefinition getTermSpecificationById(String id);
 	TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec);
-	
-	TermDefinition getTermById(String id);
+
+    TermDefinition getTermById(String id);
 	TermDefinition createTermDefinition(TermDefinition termDef);
 	
 	TermResolverDefinition getTermResolverById(String id);
-	List<TermResolverDefinition> getTermResolversByNamespace(String namespace);
+
+    /**
+     * Get the {@link TermResolverDefinition}s for any term resolvers in the specified namespace that have the given
+     * term specification as their output.
+     *
+     * @param id the id for the term specification
+     * @param namespace the namespace to search
+     * @return the List of term resolvers found.  If none are found, an empty list will be returned.
+     */
+    List<TermResolverDefinition> getTermResolversByOutputId(String id, String namespace);
+
+    List<TermResolverDefinition> getTermResolversByNamespace(String namespace);
 	TermResolverDefinition createTermResolver(TermResolverDefinition termResolver);
 }

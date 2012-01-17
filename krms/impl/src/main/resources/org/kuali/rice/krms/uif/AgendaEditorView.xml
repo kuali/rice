@@ -156,7 +156,7 @@
   </bean>
 
   <bean id="AgendaEditorView-AgendaSection" parent="Uif-Disclosure-BoxSection">
-    <property name="title" value="Agenda Editor" />
+    <property name="title" value="Agenda" />
     <property name="items">
       <list>
         <bean parent="Uif-GridGroup" p:layoutManager.numberOfColumns="2">
@@ -265,7 +265,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="customAttributesMap"
-                    p:fetchingMethodToCall="retrieveCustomAttributes"/>
+                    p:fetchingMethodToCall="retrieveAgendaCustomAttributes"/>
             </list>
           </property>
         </bean>
@@ -589,12 +589,7 @@
     </property>
     <property name="nodePrototypeMap">
       <map key-type="java.lang.Class">
-        <entry>
-          <key>
-            <bean class="java.lang.Class" factory-method="forName">
-              <constructor-arg value="org.kuali.rice.krms.impl.ui.AgendaTreeRuleNode"/>
-            </bean>
-          </key> 
+        <entry key="#{ T(org.kuali.rice.krms.impl.ui.AgendaTreeRuleNode) }">
           <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
               <bean parent="Uif-MessageField"/>
@@ -611,12 +606,7 @@
             </property>
           </bean>
         </entry>
-        <entry>
-          <key>
-            <bean class="java.lang.Class" factory-method="forName">
-              <constructor-arg value="org.kuali.rice.krms.impl.ui.AgendaTreeLogicNode"/>
-            </bean>
-          </key> 
+        <entry key="#{ T(org.kuali.rice.krms.impl.ui.AgendaTreeLogicNode) }">
           <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
               <bean parent="Uif-MessageField"/>

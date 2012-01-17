@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hsqldb.lib.StringUtil;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -30,6 +30,9 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.framework.engine.expression.DefaultComparisonOperator;
 import org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension;
@@ -45,9 +48,9 @@ import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
-import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
 import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,8 +59,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -230,16 +234,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = agendaEditor.getAgenda();
         AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
-        if (!validateProposition(newAgendaItem.getRule().getProposition())) {
-            String propConstant = newAgendaItem.getRule().getProposition().getParameters().get(1).getValue();
-            String propType = newAgendaItem.getRule().getProposition().getParameters().get(0).getValue();
-            if (StringUtils.isBlank(propType)) {
-                propType = "blank";
-            }
-            if (StringUtils.isBlank(propConstant)) {
-                propConstant = "blank";
-            }
-            GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type: " + propType + " using the value: " + propConstant + ".");
+        if (!validateProposition(newAgendaItem.getRule().getProposition(), newAgendaItem.getRule().getNamespace())) {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
             // NOTICE short circuit method on invalid proposition
             return super.navigate(form, result, request, response);
@@ -293,38 +288,175 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
-     *
-     * @param proposition
-     * @return if the proposition constant was successfully used to create the proposition type
+     * Validate the given proposition and its children.  Note that this method is side-effecting,
+     * when errors are detected with the proposition, errors are added to the error map.
+     * @param proposition the proposition to validate
+     * @param namespace the namespace of the parent rule
+     * @return true if the proposition and its children (if any) are considered valid
      */
     // TODO also wire up to proposition for faster feedback to the user
-    private boolean validateProposition(PropositionBo proposition) {
-        if (proposition == null || proposition.getParameters() == null) { // Null props are allowed.
-            return true;
+    private boolean validateProposition(PropositionBo proposition, String namespace) {
+        boolean result = true;
+
+        if (proposition != null) { // Null props are allowed.
+
+            if (StringUtils.isBlank(proposition.getCompoundOpCode())) {
+                // then this is a simple proposition, validate accordingly
+
+                result &= validateSimpleProposition(proposition, namespace);
+
+            } else {
+                // this is a compound proposition (or it should be)
+                List<PropositionBo> compoundComponents = proposition.getCompoundComponents();
+
+                if (!CollectionUtils.isEmpty(proposition.getParameters())) {
+                    GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                            "error.rule.proposition.compound.invalidParameter", proposition.getDescription());
+                    result &= false;
+                }
+
+                // recurse
+                if (!CollectionUtils.isEmpty(compoundComponents)) for (PropositionBo childProp : compoundComponents) {
+                    result &= validateProposition(childProp, namespace);
+                }
+            }
         }
 
+        return result;
+    }
+
+    /**
+     * Validate the given simple proposition.  Note that this method is side-effecting,
+     * when errors are detected with the proposition, errors are added to the error map.
+     * @param proposition the proposition to validate
+     * @param namespace the namespace of the parent rule
+     * @return true if the proposition is considered valid
+     */
+    private boolean validateSimpleProposition(PropositionBo proposition, String namespace) {
+        boolean result = true; 
+        
         String propConstant = null;
         if (proposition.getParameters().get(1) != null) {
             propConstant = proposition.getParameters().get(1).getValue();
         }
-        String propTypeKey = null;
+        String operator = null;
+        if (proposition.getParameters().get(2) != null) {
+            operator = proposition.getParameters().get(2).getValue();
+        }
+
+        String termId = null;
         if (proposition.getParameters().get(0) != null) {
-           propTypeKey = proposition.getParameters().get(0).getValue();
+            termId = proposition.getParameters().get(0).getValue();
+        }
+        // Simple proposition requires all of propConstant, termId and operator to be specified
+        if (StringUtils.isBlank(termId)) {
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                    "error.rule.proposition.simple.blankField", proposition.getDescription(), "Term");
+            result &= false;
+        } else {
+            result = validateTerm(proposition, namespace);
+        }
+        if (StringUtils.isBlank(operator)) {
+            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                    "error.rule.proposition.simple.blankField", proposition.getDescription(), "Operator");
+            result &= false;
+        }
+        if (StringUtils.isBlank(propConstant)) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                    "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
+            result &= false;
+        } else if (!StringUtils.isBlank(termId)) {
+            // validate that the constant value is comparable against the term
+            String termType = lookupTermType(termId);
+            
+            StringCoercionExtension coercionExtension = determineStringCoercionExtension(termType, propConstant);
+            if (coercionExtension.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
+                // checked a null value?
+                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
+                result &= false;
+            }
         }
 
-        // Both constant and type must be blank/null, or neither
-        if (StringUtils.isBlank(propConstant) && !StringUtils.isBlank(propTypeKey)
-                || !StringUtils.isBlank(propConstant) && StringUtils.isBlank(propTypeKey)) {
-            return false;
+        if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {
+            GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                    "error.rule.proposition.simple.hasChildren", proposition.getDescription());
+            result &= false; // simple prop should not have compound components
         }
+        return result;
+    }
 
-        String propType = lookupPropType(propTypeKey);
+    /**
+     * Validate the term in the given simple proposition.  Note that this method is side-effecting,
+     * when errors are detected with the proposition, errors are added to the error map.
+     * @param proposition the proposition with the term to validate
+     * @param namespace the namespace of the parent rule
+     * @return true if the proposition's term is considered valid
+     */
+    private boolean validateTerm(PropositionBo proposition, String namespace) {
+        boolean result = true;
 
-        StringCoercionExtension coercionExtension = determineStringCoercionExtension(propType, propConstant);
-        if (coercionExtension.coerce(propType, propConstant) != null) {
-            return true;
+        String termId = proposition.getParameters().get(0).getValue();
+        if (termId.startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+            // validate parameterized term
+
+            // is the term name non-blank
+            if (StringUtils.isBlank(proposition.getNewTermDescription())) {
+                GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.simple.emptyTermName", proposition.getDescription());
+                result &= false;
+            } else { // check if the term name is unique
+
+                Map<String, String> criteria = new HashMap<String, String>();
+
+                criteria.put("description", proposition.getNewTermDescription());
+                criteria.put("specification.namespace", namespace);
+
+                Collection<TermBo> matchingTerms =
+                        KRADServiceLocator.getBusinessObjectService().findMatching(TermBo.class, criteria);
+
+                if (!CollectionUtils.isEmpty(matchingTerms)) {
+                    // this is a Warning -- maybe it should be an error?
+                    GlobalVariables.getMessageMap().putWarningWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                            "warning.rule.proposition.simple.duplicateTermName", proposition.getDescription());
+                }
+            }
+
+            String termSpecificationId = termId.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
+
+            TermResolverDefinition termResolverDefinition =
+                    AgendaEditorMaintainable.getSimplestTermResolver(termSpecificationId, namespace);
+
+            if (termResolverDefinition == null) {
+                GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.simple.invalidTerm", proposition.getDescription());
+                result &= false;
+            } else {
+                List<String> parameterNames = new ArrayList<String>(termResolverDefinition.getParameterNames());
+                Collections.sort(parameterNames);
+                for (String parameterName : parameterNames) {
+                    if (!proposition.getTermParameters().containsKey(parameterName) || 
+                            StringUtils.isBlank(proposition.getTermParameters().get(parameterName))) {
+                        GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                                "error.rule.proposition.simple.missingTermParameter", proposition.getDescription());
+                        result &= false;
+                        break;
+                    }
+                }
+            }
+
+        } else {
+            //validate normal term
+            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTermById(termId);
+            if (termDefinition == null) {
+                GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.simple.invalidTerm", proposition.getDescription());
+            } else if (!namespace.equals(termDefinition.getSpecification().getNamespace())) {
+                GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                        "error.rule.proposition.simple.invalidTerm", proposition.getDescription());
+            }
         }
-        return false;
+        return result;
     }
 
     /**
@@ -332,9 +464,22 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param key krms_term_t key
      * @return String the krms_term_spec_t TYP for the given krms_term_t key given
      */
-    private String lookupPropType(String key) {
-        TermBo term = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(TermBo.class, key);
-        return term.getSpecification().getType();
+    private String lookupTermType(String key) {
+        TermSpecificationDefinition termSpec = null;
+        if (key.startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+            String termSpecificationId = key.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
+            termSpec = KrmsRepositoryServiceLocator.getTermBoService().getTermSpecificationById(termSpecificationId);
+        } else {
+            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTermById(key);
+            if (term != null) {
+                termSpec = term.getSpecification();
+            }
+        }
+        if (termSpec != null) {
+            return termSpec.getType();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -417,16 +562,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
         AgendaItemBo agendaItemLine = agendaEditor.getAgendaItemLine();
 
-        if (!validateProposition(agendaItemLine.getRule().getProposition())) {
-            String propConstant = agendaItemLine.getRule().getProposition().getParameters().get(1).getValue();
-            String propType = agendaItemLine.getRule().getProposition().getParameters().get(0).getValue();
-            if (StringUtils.isBlank(propType)) {
-                propType = "blank";
-            }
-            if (StringUtils.isBlank(propConstant)) {
-                propConstant = "blank";
-            }
-            GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type: " + propType + " using the value: " + propConstant + ".");
+        if (!validateProposition(agendaItemLine.getRule().getProposition(), agendaItemLine.getRule().getNamespace())) {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
             // NOTICE short circuit method on invalid proposition
             return super.navigate(form, result, request, response);

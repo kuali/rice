@@ -17,6 +17,11 @@ package org.kuali.rice.krms.impl.util;
 
 public class KrmsImplConstants {
 
+    /**
+     * Prefix used to identify parameterized term specification ids in lists that otherwise contain
+     * regular old term ids.
+     */
+    public static final String PARAMETERIZED_TERM_PREFIX = "parameterized:";
 
     public final static class WebPaths {
         public static final String AGENDA_INQUIRY_PATH = "krmsAgendaInquiry";
@@ -63,5 +68,5 @@ public class KrmsImplConstants {
         }
 
     }
-
+    
 }

@@ -64,6 +64,7 @@ public final class KRMSPropertyConstants {
 		public static final String RULE_ID ="ruleId";
         public static final String NAME = "dataObject.agendaItemLine.rule.name";
         public static final String TYPE = "dataObject.agendaItemLine.rule.typeId";
+        public static final String PROPOSITION_TREE_GROUP_ID = "RuleEditorView-Tree";
 	}
 
 	public static final class KrmsAttributeDefinition {

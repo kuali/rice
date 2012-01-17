@@ -265,6 +265,7 @@
           <property name="items">
           <list>
             <ref bean="TermSpecificationBo-InquiryView-termSpecification"/>
+            <ref bean="TermSpecificationBo-InquiryView-contexts"/>
             <ref bean="TermSpecificationBo-InquiryView-categories"/>
           </list>
           </property>
@@ -286,6 +287,23 @@
       </list>
     </property>
   </bean>
+
+  <bean id="TermSpecificationBo-InquiryView-contexts" parent="TermSpecificationBo-InquiryView-contexts-parent" />
+  <bean id="TermSpecificationBo-InquiryView-contexts-parent" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:colSpan="2">
+    <property name="title" value="Contexts" />
+    <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo" />
+    <property name="propertyName" value="contexts" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="namespace" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="description" />
+      </list>
+    </property>
+  </bean>
+
 
   <bean id="TermSpecificationBo-InquiryView-categories" parent="TermSpecificationBo-InquiryView-categories-parentBean"/>
   <bean id="TermSpecificationBo-InquiryView-categories-parentBean" abstract="true" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">

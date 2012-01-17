@@ -120,6 +120,19 @@ function initRuleTree(componentId){
         /* make the tree load with all nodes expanded */
         jq('#' + componentId).jstree('open_all');
 
+        // refresh the proposition tree on category selection
+        jq('select.categorySelect').change( function() {
+            ajaxCallPropositionTree('ajaxRefresh', 'RuleEditorView-Tree')
+        });
+
+        // refresh the proposition tree on parameterized term selection
+        jq('select.termSelect').change( function() {
+            if (this.value.match(/parameterized:.*/)) {
+                retrieveComponent('RuleEditorView-TreeGroup', 'RuleEditorView-TreeGroup', 'ajaxRefresh');
+            }
+        });
+
+        // hide quick action icons (edit and add parent) on proposition tree nodes
         jq(this).find(".actionReveal").hide();
 
         // selecting the description on an edit node should set it to be selected

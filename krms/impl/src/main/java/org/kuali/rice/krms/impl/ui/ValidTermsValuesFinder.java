@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.ui;
 
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -27,6 +28,9 @@ import org.kuali.rice.krms.impl.repository.CategoryBo;
 import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.TermBo;
+import org.kuali.rice.krms.impl.repository.TermResolverBo;
+import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,12 +40,18 @@ import java.util.Map;
 import java.util.List;
 
 /**
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * ValuesFinder used to populate the list of available Terms when creating/editing a proposition in a
+ * KRMS Rule.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
 
+    /**
+     * get the value list for the Term dropdown in the KRMS rule editing UI
+     * @param model
+     * @return
+     */
     @Override
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
@@ -83,21 +93,59 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
 
                 if (!StringUtils.isBlank(selectedCategoryId)) {
                     // only add if the term has the selected category
-                    if (term.getSpecification().getCategories() != null) {
-                        for (CategoryBo category : term.getSpecification().getCategories()) {
-                            if (selectedCategoryId.equals(category.getId())) {
-                                keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
-                                break;
-                            }
-                        }
+                    if (isTermSpecificationInCategory(term.getSpecification(), selectedCategoryId)) {
+                        keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
                     }
                 } else {
                     keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
                 }
             }
+
+            //
+            // Add Parameterized Term Specs
+            //
+
+            // get term resolvers for the given term specs
+            Collection<TermResolverBo> termResolvers =
+                    KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
+                            TermResolverBo.class, Collections.singletonMap("outputId", termSpecIds), "name", true
+                    );
+
+            // TODO: what if there is more than one resolver for a given term specification?
+
+            if (termResolvers != null) for (TermResolverBo termResolver : termResolvers) {
+                if (!CollectionUtils.isEmpty(termResolver.getParameterSpecifications())) {
+                    TermSpecificationBo output = termResolver.getOutput();
+
+                    // filter by category
+                    if (StringUtils.isBlank(selectedCategoryId) ||
+                            isTermSpecificationInCategory(output, selectedCategoryId)) {
+
+                        // we use a special prefix to differentiate these, as they are term spec ids instead of term ids.
+                        keyValues.add(new ConcreteKeyValue(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX
+                                + output.getId(), output.getName()
+                                // build a string that indicates the number of parameters
+                                + "(" + StringUtils.repeat("_", ",", termResolver.getParameterSpecifications().size()) +")"));
+                    }
+                }
+            }
         }
 
         return keyValues;
+    }
+
+    /**
+     * @return true if the term specification is in the given category
+     */
+    private boolean isTermSpecificationInCategory(TermSpecificationBo termSpec, String categoryId) {
+        if (termSpec.getCategories() != null) {
+            for (CategoryBo category : termSpec.getCategories()) {
+                if (categoryId.equals(category.getId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

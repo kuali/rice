@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
+import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
@@ -29,6 +34,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
@@ -36,14 +42,22 @@ import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.framework.type.RuleTypeService;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
+import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.PropositionBo;
+import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
+import org.kuali.rice.krms.impl.repository.RuleBo;
+import org.kuali.rice.krms.impl.repository.TermBo;
+import org.kuali.rice.krms.impl.repository.TermParameterBo;
 import org.kuali.rice.krms.impl.type.ActionTypeServiceBase;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 import org.kuali.rice.krms.impl.type.RuleTypeServiceBase;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,11 +88,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return KrmsRepositoryServiceLocator.getContextBoService();
     }
 
-    public List<RemotableAttributeField> retrieveCustomAttributes(View view, Object model, Container container) {
+    public List<RemotableAttributeField> retrieveAgendaCustomAttributes(View view, Object model, Container container) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 
-        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
-        AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
+        AgendaEditor agendaEditor = getAgendaEditor(model);
 
         // if we have an agenda w/ a typeId set on it
         if (agendaEditor.getAgenda() != null && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
@@ -90,6 +103,106 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         }
 
         return results;
+    }
+
+    /**
+     * Retrieve a list of {@link RemotableAttributeField}s for the parameters (if any) required by the resolver for
+     * the selected term in the proposition that is under edit.
+     */
+    public List<RemotableAttributeField> retrieveTermParameters(View view, Object model, Container container) {
+
+        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
+
+        AgendaEditor agendaEditor = getAgendaEditor(model);
+
+        // Figure out which rule is being edited
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+        // Figure out which proposition is being edited
+        Tree<RuleTreeNode, String> propositionTree = rule.getPropositionTree();
+        Node<RuleTreeNode, String> editedPropositionNode = findEditedProposition(propositionTree.getRootElement());
+
+        if (editedPropositionNode != null) {
+            PropositionBo propositionBo = editedPropositionNode.getData().getProposition();
+            if (StringUtils.isEmpty(propositionBo.getCompoundOpCode()) && CollectionUtils.size(propositionBo.getParameters()) > 0) {
+                // Get the term ID; if it is a new parameterized term, it will have a special prefix
+                PropositionParameterBo param = propositionBo.getParameters().get(0);
+                if (param.getValue().startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+                    String termSpecId = param.getValue().substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
+                    TermResolverDefinition simplestResolver = getSimplestTermResolver(termSpecId, rule.getNamespace());
+
+                    // Get the parameters and build RemotableAttributeFields
+                    if (simplestResolver != null) {
+                        List<String> parameterNames = new ArrayList<String>(simplestResolver.getParameterNames());
+                        Collections.sort(parameterNames); // make param order deterministic
+
+                        for (String parameterName : parameterNames) {
+                            // TODO: also allow for DD parameters if there are matching type attributes
+                            RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
+                            controlBuilder.setSize(64);
+
+                            RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(parameterName);
+
+                            builder.setRequired(true);
+                            builder.setDataType(DataType.STRING);
+                            builder.setControl(controlBuilder);
+                            builder.setLongLabel(parameterName);
+                            builder.setShortLabel(parameterName);
+                            builder.setMinLength(Integer.valueOf(1));
+                            builder.setMaxLength(Integer.valueOf(64));
+
+                            results.add(builder.build());
+                        }
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * finds the term resolver with the fewest parameters that resolves the given term specification
+     * @param termSpecId the id of the term specification
+     * @param namespace the  namespace of the term specification
+     * @return the simples {@link TermResolverDefinition} found, or null if none was found
+     */
+    // package access so that AgendaEditorController can use it too
+    static TermResolverDefinition getSimplestTermResolver(String termSpecId,
+            String namespace) {// Get the term resolver for the term spec
+
+        List<TermResolverDefinition> resolvers =
+                KrmsRepositoryServiceLocator.getTermBoService().getTermResolversByOutputId(
+                        termSpecId, namespace);
+
+        TermResolverDefinition simplestResolver = null;
+
+        for (TermResolverDefinition resolver : resolvers) {
+            if (simplestResolver == null ||
+                    simplestResolver.getParameterNames().size() < resolver.getParameterNames().size()) {
+                simplestResolver = resolver;
+            }
+        }
+
+        return simplestResolver;
+    }
+
+    /**
+     * Find and return the node containing the proposition that is in currently in edit mode
+     * @param node the node to start searching from (typically the root)
+     * @return the node that is currently being edited, if any.  Otherwise, null.
+     */
+    private Node<RuleTreeNode, String> findEditedProposition(Node<RuleTreeNode, String> node) {
+        Node<RuleTreeNode, String> result = null;
+        if (node.getData() != null && node.getData().getProposition() != null &&
+                node.getData().getProposition().getEditMode()) {
+                result = node;
+        } else {
+            for (Node<RuleTreeNode, String> child : node.getChildren()) {
+                result = findEditedProposition(child);
+                if (result != null) break;
+            }
+        }
+        return result;
     }
 
     private AgendaTypeService getAgendaTypeService(String krmsTypeId) {
@@ -122,23 +235,32 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model, Container container) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 
-        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
-        AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
+        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceForm) model);
 
         // if we have an rule action w/ a typeId set on it
         if (!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
-            ActionTypeService actionTypeService = getActionTypeService(agendaEditor.getAgendaItemLineRuleAction().getTypeId());
+            ActionTypeService actionTypeService = getActionTypeService(
+                    agendaEditor.getAgendaItemLineRuleAction().getTypeId());
             results.addAll(actionTypeService.getAttributeFields(agendaEditor.getAgendaItemLineRuleAction().getTypeId()));
         }
 
         return results;
     }
 
+    /**
+     * Get the AgendaEditor out of the MaintenanceForm's newMaintainableObject
+     * @param model the MaintenanceForm
+     * @return the AgendaEditor
+     */
+    private AgendaEditor getAgendaEditor(Object model) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
+        return (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
+    }
+
     public List<RemotableAttributeField> retrieveRuleCustomAttributes(View view, Object model, Container container) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 
-        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
-        AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
+        AgendaEditor agendaEditor = getAgendaEditor(model);
 
         // if we have an rule w/ a typeId set on it
         if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
@@ -251,28 +373,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
 		super.processAfterNew(document, requestParameters);
         document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
-
-//		if (KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) {
-//			String[] agendaIds = requestParameters.get("agendaId");
-//			if (agendaIds == null || agendaIds.length != 1) { 
-//				//throw new RiceRuntimeException("one and only one agendaId request parameter may be passed");
-//			} else {
-//				// TODO: change this, it makes more sense for MAINTENANCE_EDIT_ACTION
-//				String agendaId = agendaIds[0];
-//
-//				AgendaBo agenda = getBoService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
-//				String contextId = agenda.getContextId();
-//
-//				ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, contextId);
-//
-//				AgendaEditor editor = (AgendaEditor) document.getDocumentBusinessObject();
-//
-//				editor.setContext(context);
-//				editor.setAgenda(agenda);
-//			}
-//		}
-		
-		
 	}
 
     @Override
@@ -291,6 +391,15 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     @Override
     public void saveDataObject() {
         AgendaBo agendaBo = ((AgendaEditor) getDataObject()).getAgenda();
+        
+        // handle saving new parameterized terms
+        for (AgendaItemBo agendaItem : agendaBo.getItems()) {
+            PropositionBo propositionBo = agendaItem.getRule().getProposition();
+            if (propositionBo != null) {
+                saveNewParameterizedTerms(propositionBo);
+            }
+        }
+        
         if (agendaBo instanceof PersistableBusinessObject) {
             Map<String,String> primaryKeys = new HashMap<String, String>();
             primaryKeys.put("id", agendaBo.getId());
@@ -301,6 +410,46 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         } else {
             throw new RuntimeException(
                     "Cannot save object of type: " + agendaBo + " with business object service");
+        }
+   }
+
+    /**
+     * walk the proposition tree and save any new parameterized terms that are contained therein
+     * @param propositionBo the root proposition from which to search
+     */
+    private void saveNewParameterizedTerms(PropositionBo propositionBo) {
+        if (StringUtils.isBlank(propositionBo.getCompoundOpCode())) {
+            // it is a simple proposition
+            String termId = propositionBo.getParameters().get(0).getValue();
+            if (termId.startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+                String termSpecId = termId.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
+                // create new term
+                TermBo newTerm = new TermBo();
+                newTerm.setDescription(propositionBo.getNewTermDescription());
+                newTerm.setSpecificationId(termSpecId);
+                newTerm.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_TERM_S").toString());
+
+                List<TermParameterBo> params = new ArrayList<TermParameterBo>();
+                for (Map.Entry<String, String> entry : propositionBo.getTermParameters().entrySet()) {
+                    TermParameterBo param = new TermParameterBo();
+                    param.setTermId(newTerm.getId());
+                    param.setName(entry.getKey());
+                    param.setValue(entry.getValue());
+                    param.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_TERM_PARM_S").toString());
+
+                    params.add(param);
+                }
+
+                newTerm.setParameters(params);
+
+                KRADServiceLocator.getBusinessObjectService().linkAndSave(newTerm);
+                propositionBo.getParameters().get(0).setValue(newTerm.getId());
+            }
+        } else {
+            // recurse
+            for (PropositionBo childProp : propositionBo.getCompoundComponents()) {
+                saveNewParameterizedTerms(childProp);
+            }
         }
     }
 
@@ -359,8 +508,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
     @Override
     protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        MaintenanceForm form = (MaintenanceForm) model;
-        AgendaEditor agendaEditor = (AgendaEditor) form.getDocument().getNewMaintainableObject().getDataObject();
+        AgendaEditor agendaEditor = getAgendaEditor(model);
         if (addLine instanceof ActionBo) {
             ((ActionBo) addLine).setNamespace(agendaEditor.getAgendaItemLine().getRule().getNamespace());
         }

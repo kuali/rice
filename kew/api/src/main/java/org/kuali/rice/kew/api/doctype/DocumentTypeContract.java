@@ -18,6 +18,7 @@ package org.kuali.rice.kew.api.doctype;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
+import java.util.List;
 import java.util.Map;
 
 public interface DocumentTypeContract extends Identifiable, Versioned {
@@ -49,6 +50,8 @@ public interface DocumentTypeContract extends Identifiable, Versioned {
     String getSuperUserGroupId();
     
     Map<DocumentTypePolicy, String> getPolicies();
+
+    List<? extends DocumentTypeAttributeContract> getDocumentTypeAttributes();
         
     String getResolvedDocumentHandlerUrl();
 

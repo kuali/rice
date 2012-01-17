@@ -16,6 +16,9 @@
 package org.kuali.rice.kew.doctype;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +33,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
@@ -44,9 +49,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  *
  */
 @Entity
-//@Sequence(name="KREW_DOC_TYP_ATTR_S", property="documentTypeAttributeId")
+//@Sequence(name="KREW_DOC_TYP_ATTR_S", property="id")
 @Table(name="KREW_DOC_TYP_ATTR_T")
-public class DocumentTypeAttribute implements Comparable, Serializable {
+public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, Comparable, Serializable {
 
 	private static final long serialVersionUID = -4429421648373903566L;
 
@@ -57,7 +62,7 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 			@Parameter(name="value_column",value="id")
 	})
 	@Column(name="DOC_TYP_ATTRIB_ID")
-	private String documentTypeAttributeId; 
+	private String id;
     @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)
 	private String ruleAttributeId;
     @ManyToOne(fetch=FetchType.EAGER)
@@ -79,17 +84,17 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	}
 
 	/**
-	 * @param documentTypeAttributeId The documentTypeAttributeId to set.
+	 * @param id The id to set.
 	 */
-	public void setDocumentTypeAttributeId(String documentTypeAttributeId) {
-		this.documentTypeAttributeId = documentTypeAttributeId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
-	 * @return Returns the documentTypeAttributeId.
+	 * @return Returns the id.
 	 */
-	public String getDocumentTypeAttributeId() {
-		return documentTypeAttributeId;
+	public String getId() {
+		return id;
 	}
 
 	/**
@@ -147,8 +152,8 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Object o) {
-        if (o instanceof DocumentTypeAttribute) {
-            return this.getRuleAttribute().getName().compareTo(((DocumentTypeAttribute) o).getRuleAttribute().getName());
+        if (o instanceof DocumentTypeAttributeBo) {
+            return this.getRuleAttribute().getName().compareTo(((DocumentTypeAttributeBo) o).getRuleAttribute().getName());
         }
         return 0;
      }
@@ -177,5 +182,27 @@ public class DocumentTypeAttribute implements Comparable, Serializable {
 		this.lockVerNbr = lockVerNbr;
 	}
 
+    public static DocumentTypeAttribute to(DocumentTypeAttributeBo documentTypeAttributeBo) {
+        if (documentTypeAttributeBo == null) {
+            return null;
+        }
+        DocumentTypeAttribute.Builder builder = DocumentTypeAttribute.Builder.create(documentTypeAttributeBo);
+        return builder.build();
+    }
+
+    public static DocumentTypeAttributeBo from(DocumentTypeAttribute dta) {
+        // DocumentType BO and DTO are not symmetric
+        // set what fields we can
+        DocumentTypeAttributeBo bo = new DocumentTypeAttributeBo();
+        bo.setDocumentTypeId(dta.getDocumentTypeId());
+        if (dta.getRuleAttribute() != null) {
+            bo.setRuleAttributeId(dta.getRuleAttribute().getId());
+            bo.setRuleAttribute(RuleAttribute.from(dta.getRuleAttribute()));
+        }
+        bo.setId(dta.getId());
+        bo.setOrderIndex(dta.getOrderIndex());
+
+        return bo;
+    }
 }
 

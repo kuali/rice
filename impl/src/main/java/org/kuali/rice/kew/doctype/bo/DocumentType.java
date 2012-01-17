@@ -33,12 +33,14 @@ import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
@@ -194,7 +196,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     @OrderBy("orderIndex ASC")
-    private List<DocumentTypeAttribute> documentTypeAttributes;
+    private List<DocumentTypeAttributeBo> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
     @Fetch(value = FetchMode.SELECT)
@@ -219,7 +221,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public DocumentType() {
         routeLevels = new ArrayList();
-        documentTypeAttributes = new ArrayList<DocumentTypeAttribute>();
+        documentTypeAttributes = new ArrayList<DocumentTypeAttributeBo>();
         documentTypePolicies = new ArrayList<DocumentTypePolicy>();
         version = new Integer(0);
         label = null;
@@ -426,14 +428,14 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return getParentDocType() != null && getParentDocType().isPolicyDefined(policyToCheck);
     }
 
-    public List<DocumentTypeAttribute> getDocumentTypeAttributes(String... attributeTypes) {
-        List<DocumentTypeAttribute> filteredAttributes = new ArrayList<DocumentTypeAttribute>();
+    public List<DocumentTypeAttributeBo> getDocumentTypeAttributes(String... attributeTypes) {
+        List<DocumentTypeAttributeBo> filteredAttributes = new ArrayList<DocumentTypeAttributeBo>();
         if (CollectionUtils.isNotEmpty(documentTypeAttributes)) {
             if (attributeTypes == null) {
                 filteredAttributes.addAll(documentTypeAttributes);
             } else {
                 List<String> attributeTypeList = Arrays.asList(attributeTypes);
-                for (DocumentTypeAttribute documentTypeAttribute : documentTypeAttributes) {
+                for (DocumentTypeAttributeBo documentTypeAttribute : documentTypeAttributes) {
                     RuleAttribute ruleAttribute = documentTypeAttribute.getRuleAttribute();
                     if (attributeTypeList.contains(ruleAttribute.getType())) {
                         filteredAttributes.add(documentTypeAttribute);
@@ -451,12 +453,12 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return !getSearchableAttributes().isEmpty();
     }
 
-    public List<DocumentTypeAttribute> getSearchableAttributes() {
+    public List<DocumentTypeAttributeBo> getSearchableAttributes() {
         return getDocumentTypeAttributes(KewApiConstants.SEARCHABLE_ATTRIBUTE_TYPE, KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE);
     }
 
-    public DocumentTypeAttribute getCustomizerAttribute() {
-        List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KewApiConstants.DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE);
+    public DocumentTypeAttributeBo getCustomizerAttribute() {
+        List<DocumentTypeAttributeBo> documentTypeAttributes = getDocumentTypeAttributes(KewApiConstants.DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE);
         if (documentTypeAttributes.size() > 1) {
             throw new IllegalStateException("Encountered more than one DocumentSearchCustomizer attribute on this document type: " + getName());
         }
@@ -467,9 +469,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public List<ExtensionHolder<SearchableAttribute>> loadSearchableAttributes() {
-        List<DocumentTypeAttribute> searchableAttributes = getSearchableAttributes();
+        List<DocumentTypeAttributeBo> searchableAttributes = getSearchableAttributes();
         List<ExtensionHolder<SearchableAttribute>> loadedAttributes = new ArrayList<ExtensionHolder<SearchableAttribute>>();
-        for (DocumentTypeAttribute documentTypeAttribute : searchableAttributes) {
+        for (DocumentTypeAttributeBo documentTypeAttribute : searchableAttributes) {
             RuleAttribute ruleAttribute = documentTypeAttribute.getRuleAttribute();
             try {
                 Object attributeService = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute, getApplicationId());
@@ -513,16 +515,16 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         }
     }
 
-    public DocumentTypeAttribute getDocumentTypeAttribute(int index) {
+    public DocumentTypeAttributeBo getDocumentTypeAttribute(int index) {
         while (getDocumentTypeAttributes().size() <= index) {
-            DocumentTypeAttribute attribute = new DocumentTypeAttribute();
+            DocumentTypeAttributeBo attribute = new DocumentTypeAttributeBo();
             //attribute.setDocumentTypeId(this.documentTypeId);
             getDocumentTypeAttributes().add(attribute);
         }
-        return (DocumentTypeAttribute) getDocumentTypeAttributes().get(index);
+        return (DocumentTypeAttributeBo) getDocumentTypeAttributes().get(index);
     }
 
-    public void setDocumentTypeAttribute(int index, DocumentTypeAttribute documentTypeAttribute) {
+    public void setDocumentTypeAttribute(int index, DocumentTypeAttributeBo documentTypeAttribute) {
         documentTypeAttributes.set(index, documentTypeAttribute);
     }
 
@@ -1190,7 +1192,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public ObjectDefinition getAttributeObjectDefinition(String typeCode) {
         for (Iterator iter = getDocumentTypeAttributes().iterator(); iter.hasNext();) {
-            RuleAttribute attribute = ((DocumentTypeAttribute) iter.next()).getRuleAttribute();
+            RuleAttribute attribute = ((DocumentTypeAttributeBo) iter.next()).getRuleAttribute();
             if (attribute.getType().equals(typeCode)) {
                 return getAttributeObjectDefinition(attribute);
             }
@@ -1274,14 +1276,14 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     /**
      * @param documentTypeAttributes The documentTypeAttributes to set.
      */
-    public void setDocumentTypeAttributes(List<DocumentTypeAttribute> documentTypeAttributes) {
+    public void setDocumentTypeAttributes(List<DocumentTypeAttributeBo> documentTypeAttributes) {
         this.documentTypeAttributes = documentTypeAttributes;
     }
 
     /**
      * @return Returns the documentTypeAttributes.
      */
-    public List<DocumentTypeAttribute> getDocumentTypeAttributes() {
+    public List<DocumentTypeAttributeBo> getDocumentTypeAttributes() {
         return documentTypeAttributes;
     }
 
@@ -1674,6 +1676,13 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                 // so I am assuming here that "true"/"false" are the acceptable values
                 policies.add(new DocumentTypePolicy(entry.getKey().getCode(), "true".equals(entry.getValue())));
             }
+        }
+        if (CollectionUtils.isNotEmpty(dt.getDocumentTypeAttributes())) {
+            List<DocumentTypeAttributeBo> attributes = new ArrayList<DocumentTypeAttributeBo>();
+            for (DocumentTypeAttributeContract attr : dt.getDocumentTypeAttributes()) {
+                attributes.add(DocumentTypeAttributeBo.from(DocumentTypeAttribute.Builder.create(attr).build()));
+            }
+            
         }
         ebo.setDocumentTypePolicies(policies);
         return ebo;

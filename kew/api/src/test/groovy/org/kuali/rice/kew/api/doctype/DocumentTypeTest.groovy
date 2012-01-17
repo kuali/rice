@@ -100,6 +100,7 @@ class DocumentTypeTest {
                policies.put(DocumentTypePolicy.DEFAULT_APPROVE, "Y")
                policies
             }
+            def List<DocumentTypeAttribute> documentTypeAttributes = Collections.EMPTY_LIST
         }).build()
     }
 }

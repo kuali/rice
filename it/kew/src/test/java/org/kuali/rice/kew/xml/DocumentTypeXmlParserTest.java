@@ -22,7 +22,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -258,14 +258,14 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
         assertEquals("Should only be one doc type parsed", 1, documentTypes.size());
         DocumentType docType = (DocumentType) documentTypes.get(0);
         for (int i = 0; i < docType.getDocumentTypeAttributes().size(); i++) {
-            DocumentTypeAttribute attribute = docType.getDocumentTypeAttributes().get(i);
+            DocumentTypeAttributeBo attribute = docType.getDocumentTypeAttributes().get(i);
             assertEquals("Invalid Index Number", i+1, attribute.getOrderIndex());
         }
         
         DocumentType docTypeFresh = KEWServiceLocator.getDocumentTypeService().findByName("DocumentTypeXmlParserTestDoc_ValidActivationTypes");
         assertEquals("Should be 3 doc type attributes", 3, docTypeFresh.getDocumentTypeAttributes().size());
         int index = 0;
-        DocumentTypeAttribute attribute = docTypeFresh.getDocumentTypeAttributes().get(index);
+        DocumentTypeAttributeBo attribute = docTypeFresh.getDocumentTypeAttributes().get(index);
         assertEquals("Invalid Index Number", index+1, attribute.getOrderIndex());
         assertEquals("Invalid attribute name for order value " + index+1, "TestRuleAttribute2", attribute.getRuleAttribute().getName());
         

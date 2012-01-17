@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -236,7 +236,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     }
 
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
-    	Criteria crit = new Criteria(DocumentTypeAttribute.class.getName());
+    	Criteria crit = new Criteria(DocumentTypeAttributeBo.class.getName());
     	if (ruleAttribute.getId() != null) {
     		crit.eq("ruleAttributeId", ruleAttribute.getId());
     	}

@@ -21,6 +21,7 @@ import org.junit.Assert
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract
 import org.kuali.rice.kew.api.doctype.DocumentTypePolicy
 import org.kuali.rice.kew.api.doctype.DocumentType
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute
 
 class DocumentTypeBoTest {
 
@@ -55,6 +56,7 @@ class DocumentTypeBoTest {
                policies.put(DocumentTypePolicy.DEFAULT_APPROVE, "true")
                policies
             }
+            def List<DocumentTypeAttribute> documentTypeAttributes = Collections.EMPTY_LIST
         }).build()
     }
 }

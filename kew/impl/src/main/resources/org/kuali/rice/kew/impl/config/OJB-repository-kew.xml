@@ -402,7 +402,7 @@
       proxy="false">
       <inverse-foreignkey field-ref="documentTypeId"  />
     </collection-descriptor>
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.doctype.DocumentTypeAttribute" name="documentTypeAttributes"
+    <collection-descriptor element-class-ref="org.kuali.rice.kew.doctype.DocumentTypeAttributeBo" name="documentTypeAttributes"
 	    auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
 	  <orderby name="orderIndex" sort="ASC"/>
       <inverse-foreignkey field-ref="documentTypeId" />
@@ -464,10 +464,10 @@
 
 
 
-  <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypeAttribute" table="KREW_DOC_TYP_ATTR_T">
-    <field-descriptor column="DOC_TYP_ATTRIB_ID" name="documentTypeAttributeId" jdbc-type="VARCHAR"
+  <class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypeAttributeBo" table="KREW_DOC_TYP_ATTR_T">
+    <field-descriptor column="DOC_TYP_ATTRIB_ID" name="id" jdbc-type="VARCHAR"
       primarykey="true" autoincrement="true" sequence-name="KREW_DOC_TYP_ATTR_S"/>
-    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR" access="anonymous"/>
+    <field-descriptor column="DOC_TYP_ID" name="documentTypeId" jdbc-type="VARCHAR"/>
     <field-descriptor column="RULE_ATTR_ID" name="ruleAttributeId" jdbc-type="VARCHAR"/>
     <field-descriptor column="ORD_INDX" name="orderIndex" jdbc-type="INTEGER"/>
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.bo.RuleAttribute" name="ruleAttribute" auto-delete="false" auto-retrieve="true" auto-update="false">

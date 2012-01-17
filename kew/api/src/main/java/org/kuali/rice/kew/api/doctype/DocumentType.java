@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.api.doctype;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -26,13 +27,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @XmlRootElement(name = DocumentType.Constants.ROOT_ELEMENT_NAME)
@@ -55,6 +59,7 @@ import java.util.Map;
         DocumentType.Elements.BLANKET_APPROVE_GROUP_ID,
         DocumentType.Elements.SUPER_USER_GROUP_ID,
         DocumentType.Elements.POLICIES,
+        DocumentType.Elements.DOCUMENT_TYPE_ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
@@ -117,6 +122,10 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     @XmlJavaTypeAdapter(DocumentTypePolicyMapAdapter.class)
     private final Map<DocumentTypePolicy, String> policies;
 
+    @XmlElementWrapper(name = Elements.DOCUMENT_TYPE_ATTRIBUTES, required = false)
+    @XmlElement(name = Elements.DOCUMENT_TYPE_ATTRIBUTE, required = false)
+    private final List<DocumentTypeAttribute> documentTypeAttributes;
+    
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -143,6 +152,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         this.superUserGroupId = null;
         this.policies = null;
         this.versionNumber = null;
+        this.documentTypeAttributes = null;
     }
 
     private DocumentType(Builder builder) {
@@ -168,6 +178,14 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             this.policies = Collections.unmodifiableMap(new HashMap<DocumentTypePolicy, String>(builder.getPolicies()));
         }
         this.versionNumber = builder.getVersionNumber();
+        
+        List<DocumentTypeAttribute> tempAttributes = new ArrayList<DocumentTypeAttribute>();
+        if (CollectionUtils.isNotEmpty(builder.getDocumentTypeAttributes())) {
+            for (DocumentTypeAttribute.Builder externalId : builder.getDocumentTypeAttributes()) {
+                tempAttributes.add(externalId.build());
+            }
+        }
+        this.documentTypeAttributes = Collections.unmodifiableList(tempAttributes);
     }
 
     @Override
@@ -249,6 +267,11 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
     public Map<DocumentTypePolicy, String> getPolicies() {
         return this.policies;
     }
+    
+    @Override
+    public List<DocumentTypeAttribute> getDocumentTypeAttributes() {
+        return this.documentTypeAttributes;
+    }
 
     @Override
     public Long getVersionNumber() {
@@ -285,6 +308,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         private String blanketApproveGroupId;
         private String superUserGroupId;
         private Map<DocumentTypePolicy, String> policies;
+        private List<DocumentTypeAttribute.Builder> documentTypeAttributes;
         private Long versionNumber;
 
         private Builder(String name) {
@@ -292,6 +316,7 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             setActive(true);
             setCurrent(true);
             this.policies = new HashMap<DocumentTypePolicy, String>();
+            this.documentTypeAttributes = Collections.emptyList();
         }
 
         public static Builder create(String name) {
@@ -319,6 +344,13 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
             builder.setBlanketApproveGroupId(contract.getBlanketApproveGroupId());
             builder.setSuperUserGroupId(contract.getSuperUserGroupId());
             builder.setPolicies(new HashMap<DocumentTypePolicy, String>(contract.getPolicies()));
+            if (contract.getDocumentTypeAttributes() != null) {
+                List<DocumentTypeAttribute.Builder> tempAttrs = new ArrayList<DocumentTypeAttribute.Builder>();
+                for (DocumentTypeAttributeContract attrContract : contract.getDocumentTypeAttributes()) {
+                    tempAttrs.add(DocumentTypeAttribute.Builder.create(attrContract));
+                }
+                builder.setDocumentTypeAttributes(tempAttrs);
+            }
             builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
@@ -411,6 +443,11 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         public Map<DocumentTypePolicy, String> getPolicies() {
             return this.policies;
         }
+        
+        @Override
+        public List<DocumentTypeAttribute.Builder> getDocumentTypeAttributes() {
+            return this.documentTypeAttributes;
+        }
 
         @Override
         public Long getVersionNumber() {
@@ -487,6 +524,10 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         public void setPolicies(Map<DocumentTypePolicy, String> policies) {
             this.policies = policies;
         }
+        
+        public void setDocumentTypeAttributes(List<DocumentTypeAttribute.Builder> documentTypeAttributes) {
+            this.documentTypeAttributes = documentTypeAttributes;
+        }
 
         public void setVersionNumber(Long versionNumber) {
             this.versionNumber = versionNumber;
@@ -523,6 +564,8 @@ public final class DocumentType extends AbstractDataTransferObject implements Do
         final static String BLANKET_APPROVE_GROUP_ID = "blanketApproveGroupId";
         final static String SUPER_USER_GROUP_ID = "superUserGroupId";
         final static String POLICIES = "policies";
+        final static String DOCUMENT_TYPE_ATTRIBUTES = "documentTypeAttributes";
+        final static String DOCUMENT_TYPE_ATTRIBUTE = "documentTypeAttribute";
     }
 
     public static class Cache {

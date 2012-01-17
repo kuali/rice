@@ -30,7 +30,7 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -240,7 +240,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("ruleAttributeId", ruleAttribute.getId());
-    	return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentTypeAttribute.class, crit));
+    	return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentTypeAttributeBo.class, crit));
     }
 
     public String findDocumentTypeIdByDocumentId(String documentId) {

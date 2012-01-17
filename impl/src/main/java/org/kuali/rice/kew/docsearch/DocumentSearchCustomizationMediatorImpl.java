@@ -24,7 +24,7 @@ import org.kuali.rice.kew.framework.document.search.AttributeFields;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomization;
@@ -45,7 +45,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
     @Override
     public DocumentSearchCriteriaConfiguration getDocumentSearchCriteriaConfiguration(DocumentType documentType) {
 
-        List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
+        List<DocumentTypeAttributeBo> searchableAttributes = documentType.getSearchableAttributes();
 
         // This first map is used to partition our attributes by application id.  It maps an application id to the
         // list of searchable attribute names that are associated with that application id.  Note that 'null' is a
@@ -60,7 +60,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
         LinkedHashMap<String, AttributeFields> orderedSearchFieldMap = new LinkedHashMap<String, AttributeFields>();
         LinkedHashMap<String, AttributeFields> orderedResultSetFieldMap = new LinkedHashMap<String, AttributeFields>();
 
-        for (DocumentTypeAttribute searchableAttribute : searchableAttributes) {
+        for (DocumentTypeAttributeBo searchableAttribute : searchableAttributes) {
             RuleAttribute ruleAttribute = searchableAttribute.getRuleAttribute();
             String attributeName = ruleAttribute.getName();
             String applicationId = ruleAttribute.getApplicationId();
@@ -90,10 +90,10 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
     public List<RemotableAttributeError> validateLookupFieldParameters(DocumentType documentType,
             DocumentSearchCriteria documentSearchCriteria) {
 
-        List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
+        List<DocumentTypeAttributeBo> searchableAttributes = documentType.getSearchableAttributes();
         LinkedHashMap<String, List<String>> applicationIdToAttributeNameMap = new LinkedHashMap<String, List<String>>();
 
-        for (DocumentTypeAttribute searchableAttribute : searchableAttributes) {
+        for (DocumentTypeAttributeBo searchableAttribute : searchableAttributes) {
             RuleAttribute ruleAttribute = searchableAttribute.getRuleAttribute();
             String attributeName = ruleAttribute.getName();
             String applicationId = ruleAttribute.getApplicationId();
@@ -119,7 +119,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
 
     @Override
     public DocumentSearchCriteria customizeCriteria(DocumentType documentType, DocumentSearchCriteria documentSearchCriteria) {
-        DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
+        DocumentTypeAttributeBo customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
@@ -135,7 +135,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
 
     @Override
     public DocumentSearchCriteria customizeClearCriteria(DocumentType documentType, DocumentSearchCriteria documentSearchCriteria) {
-        DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
+        DocumentTypeAttributeBo customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
@@ -152,7 +152,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
     @Override
     public DocumentSearchResultValues customizeResults(DocumentType documentType,
             DocumentSearchCriteria documentSearchCriteria, DocumentSearchResults results) {
-        DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
+        DocumentTypeAttributeBo customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
@@ -169,7 +169,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
     @Override
     public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(DocumentType documentType,
             DocumentSearchCriteria documentSearchCriteria) {
-        DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
+        DocumentTypeAttributeBo customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(

@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
@@ -168,7 +168,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         if (!attributes.isEmpty()) {
             Element attributesElement = renderer.renderElement(parent, ATTRIBUTES);
             for (Iterator iterator = attributes.iterator(); iterator.hasNext();) {
-                DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
+                DocumentTypeAttributeBo attribute = (DocumentTypeAttributeBo) iterator.next();
                 Element attributeElement = renderer.renderElement(attributesElement, ATTRIBUTE);
                 renderer.renderTextElement(attributeElement, NAME, attribute.getRuleAttribute().getName());
             }

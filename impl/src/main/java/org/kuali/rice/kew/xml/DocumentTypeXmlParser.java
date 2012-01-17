@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.exception.InvalidParentDocTypeException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -1430,7 +1430,7 @@ public class DocumentTypeXmlParser {
         List attributes = new ArrayList();
 
         for (int i = 0; i < documentTypeAttributes.getLength(); i++) {
-            DocumentTypeAttribute attribute = new DocumentTypeAttribute();
+            DocumentTypeAttributeBo attribute = new DocumentTypeAttributeBo();
             attribute.setDocumentType(documentType);
             String ruleAttributeName;
             try {

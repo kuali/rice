@@ -122,7 +122,7 @@
      </property>
    </bean>
 
-   <bean id="subCollection1" parent="Uif-TableSubCollection-WithinSection"
+   <bean id="subCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
      p:layoutManager.numberOfColumns="4">
      <property name="title" value="SubCollection" />
      <property name="instructionalText"

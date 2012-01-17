@@ -308,7 +308,7 @@
 
   <bean id="Uif-ReorderGroup" parent="Uif-ReorderGroup-parentBean"/>
   <bean id="Uif-ReorderGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
-        scope="prototype" parent="Uif-GroupBase">
+        scope="prototype" parent="Uif-BoxGroup">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
     <property name="styleClasses">
       <list merge="true">

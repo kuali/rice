@@ -75,7 +75,7 @@
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:styleClasses="" p:applyDefaultCellWidths="false"/>
+      <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:applyDefaultCellWidths="false"/>
     </property>
     <property name="fieldBindingObjectPath" value="document"/>
     <property name="errorsField.render" value="false"/>
@@ -256,7 +256,13 @@
 
   <bean id="Uif-DocumentViewHeaderField" abstract="true" parent="Uif-ViewHeaderField">
     <property name="group">
-      <bean parent="Uif-DocumentInfoGroup" p:styleClasses="group_docheader"/>
+      <bean parent="Uif-DocumentInfoGroup">
+        <property name="styleClasses">
+          <list merge="true">
+            <value>group_docheader</value>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

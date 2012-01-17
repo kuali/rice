@@ -76,7 +76,7 @@ tr.overridden td a {
                 	attributeEntry="${documentTypeAttributes.unresolvedDocHandlerUrl}" />
                 <td>
 	                <kul:htmlControlAttribute attributeEntry="${documentTypeAttributes.unresolvedDocHandlerUrl}"
-	                	property="documentType.docHandlerUrl"
+	                	property="documentType.unresolvedDocHandlerUrl"
 	                	readOnly="true" />                
                 </td>
 			  </tr>

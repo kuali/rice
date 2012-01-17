@@ -40,10 +40,15 @@ import org.w3c.dom.Element;
  */
 @XmlRootElement(name = Namespace.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = Namespace.Constants.TYPE_NAME,
-        propOrder = {Namespace.Elements.CODE, Namespace.Elements.APPLICATION_ID, Namespace.Elements.NAME,
-                Namespace.Elements.ACTIVE, CoreConstants.CommonElements.VERSION_NUMBER,
-                CoreConstants.CommonElements.OBJECT_ID, CoreConstants.CommonElements.FUTURE_ELEMENTS})
+@XmlType(name = Namespace.Constants.TYPE_NAME, propOrder = {
+        Namespace.Elements.CODE
+        Namespace.Elements.APPLICATION_ID,
+        Namespace.Elements.NAME,
+        Namespace.Elements.ACTIVE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public final class Namespace extends AbstractDataTransferObject implements NamespaceContract {
 
     private static final long serialVersionUID = -5206398776503106883L;

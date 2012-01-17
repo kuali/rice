@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = Namespace.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Namespace.Constants.TYPE_NAME, propOrder = {
-        Namespace.Elements.CODE
+        Namespace.Elements.CODE,
         Namespace.Elements.APPLICATION_ID,
         Namespace.Elements.NAME,
         Namespace.Elements.ACTIVE,

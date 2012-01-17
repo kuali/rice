@@ -24,6 +24,8 @@ import org.kuali.rice.kim.api.KimApiConstants;
  */
 public final class KewImplConstants {
 
+    public static final String KEW_DISTRIBUTED_CACHE_MANAGER = "kewDistributedCacheManager";
+
     public static final class PropertyConstants {
 
         public static final String NAMESPACE_CODE = "namespaceCode";

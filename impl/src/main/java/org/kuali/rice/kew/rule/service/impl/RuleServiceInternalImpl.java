@@ -21,8 +21,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -31,6 +33,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.rule.Rule;
+import org.kuali.rice.kew.api.rule.RuleDelegation;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.validation.RuleValidationContext;
@@ -39,6 +42,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.impl.KewImplConstants;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -68,6 +72,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.cache.Cache;
 
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -310,6 +315,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     }
 
     public void makeCurrent(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted) {
+        clearCache(RuleDelegation.Cache.NAME);
     	makeCurrent(ruleDelegation, ruleDelegation.getDelegationRule(), isRetroactiveUpdatePermitted);
     }
 
@@ -372,6 +378,16 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
         performanceLogger.log("Time to make current");
+    }
+    
+    private void clearCache(String cacheName) {
+        DistributedCacheManagerDecorator distributedCacheManagerDecorator =
+                GlobalResourceLoader.getService(KewImplConstants.KEW_DISTRIBUTED_CACHE_MANAGER);
+
+        Cache cache = distributedCacheManagerDecorator.getCache(cacheName);
+        if (cache != null) {
+            cache.clear();
+        }
     }
 
     public RuleBaseValues getParentRule(String ruleBaseValuesId) {

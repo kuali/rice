@@ -24,19 +24,27 @@
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSCommonSpringBeans.xml" />
 
   <bean id="rice.krms.remote.import" abstract="true" lazy-init="true"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.krms.serviceNamespace"/>
 
-  <bean id="ruleRepositoryService" parent="rice.krms.remote.import"
-        p:serviceName="ruleRepositoryService"/>
+  <bean id="ruleRepositoryService"
+        parent="rice.krms.remote.import"
+        p:serviceName="ruleRepositoryService"
+        p:objectType="org.kuali.rice.krms.api.repository.RuleRepositoryService"/>
 
-  <bean id="krmsTypeRepositoryService" parent="rice.krms.remote.import"
-        p:serviceName="krmsTypeRepositoryService"/>
+  <bean id="krmsTypeRepositoryService"
+        parent="rice.krms.remote.import"
+        p:serviceName="krmsTypeRepositoryService"
+        p:objectType="org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService"/>
 
-  <bean id="notificationPeopleFlowActionTypeService" parent="rice.krms.remote.import"
-        p:serviceName="notificationPeopleFlowActionTypeService"/>
+  <bean id="notificationPeopleFlowActionTypeService"
+        parent="rice.krms.remote.import"
+        p:serviceName="notificationPeopleFlowActionTypeService"
+        p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
 
-  <bean id="approvalPeopleFlowActionTypeService" parent="rice.krms.remote.import"
-        p:serviceName="approvalPeopleFlowActionTypeService"/>
+  <bean id="approvalPeopleFlowActionTypeService"
+        parent="rice.krms.remote.import"
+        p:serviceName="approvalPeopleFlowActionTypeService"
+        p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
 
 </beans>

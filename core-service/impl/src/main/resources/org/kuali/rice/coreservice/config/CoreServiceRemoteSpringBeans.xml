@@ -25,7 +25,7 @@
 
   <bean id="rice.coreService.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
-        p:serviceNamespace-ref="rice.coreService.serviceNamespace" p:mustExist="false"/>
+        p:serviceNamespace-ref="rice.coreService.serviceNamespace"/>
 
   <bean id="parameterRepositoryService" parent="rice.coreService.remote.import"
             p:serviceName="parameterRepositoryService"

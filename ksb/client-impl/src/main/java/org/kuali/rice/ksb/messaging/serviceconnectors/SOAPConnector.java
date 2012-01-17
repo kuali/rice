@@ -20,6 +20,7 @@ import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration;
 import org.kuali.rice.ksb.impl.cxf.interceptors.ImmutableCollectionsInInterceptor;
@@ -37,7 +38,9 @@ import java.net.URL;
  * @since 0.9
  */
 public class SOAPConnector extends AbstractServiceConnector {
-	
+
+    private static final Logger LOG = Logger.getLogger(SOAPConnector.class);
+
 	public SOAPConnector(final SoapServiceConfiguration serviceConfiguration, final URL alternateEndpointUrl) {
 		super(serviceConfiguration, alternateEndpointUrl);
 	}
@@ -73,13 +76,17 @@ public class SOAPConnector extends AbstractServiceConnector {
 		clientFactory.setAddress(getActualEndpointUrl().toExternalForm());
 		
 		//Set logging, transformation, and security interceptors
-		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+        if (LOG.isDebugEnabled()) {
+		    clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+        }
 		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(getServiceConfiguration().getBusSecurity()));
 		if (getCredentialsSource() != null) {
 			clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getServiceConfiguration()));
 		}
-		
-		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
+
+        if (LOG.isDebugEnabled()) {
+		    clientFactory.getInInterceptors().add(new LoggingInInterceptor());
+        }
 		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(getServiceConfiguration().getBusSecurity()));
         clientFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
 

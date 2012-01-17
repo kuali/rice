@@ -24,25 +24,37 @@
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimCommonSpringBeans.xml"/>
 
   <bean id="rice.kim.remote.import" abstract="true" lazy-init="true"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.kim.serviceNamespace"/>
 
-  <bean id="kimGroupService" parent="rice.kim.remote.import"
-            p:serviceName="groupService"/>
+  <bean id="kimGroupService"
+        parent="rice.kim.remote.import"
+        p:serviceName="groupService"
+        p:objectType="org.kuali.rice.kim.api.group.GroupService"/>
 
-  <bean id="kimIdentityService" parent="rice.kim.remote.import"
-            p:serviceName="identityService"/>
+  <bean id="kimIdentityService"
+        parent="rice.kim.remote.import"
+        p:serviceName="identityService"
+        p:objectType="org.kuali.rice.kim.api.identity.IdentityService"/>
 
-  <bean id="kimPermissionService" parent="rice.kim.remote.import"
-            p:serviceName="permissionService"/>
+  <bean id="kimPermissionService"
+        parent="rice.kim.remote.import"
+        p:serviceName="permissionService"
+        p:objectType="org.kuali.rice.kim.api.permission.PermissionService"/>
 
-  <bean id="kimResponsibilityService" parent="rice.kim.remote.import"
-            p:serviceName="responsibilityService"/>
+  <bean id="kimResponsibilityService"
+        parent="rice.kim.remote.import"
+        p:serviceName="responsibilityService"
+        p:objectType="org.kuali.rice.kim.api.responsibility.ResponsibilityService"/>
 
-  <bean id="kimRoleService" parent="rice.kim.remote.import"
-            p:serviceName="roleService"/>
+  <bean id="kimRoleService"
+        parent="rice.kim.remote.import"
+        p:serviceName="roleService"
+        p:objectType="org.kuali.rice.kim.api.role.RoleService"/>
 
-  <bean id="kimTypeInfoService" parent="rice.kim.remote.import"
-            p:serviceName="kimTypeInfoService"/>
+  <bean id="kimTypeInfoService"
+        parent="rice.kim.remote.import"
+        p:serviceName="kimTypeInfoService"
+        p:objectType="org.kuali.rice.kim.api.type.KimTypeInfoService"/>
 
 </beans>

@@ -23,30 +23,37 @@
 
   <bean id="rice.kew.peopleFlowService"
         parent="rice.kew.remote.import"
-        p:serviceName="peopleFlowService"/>
+        p:serviceName="peopleFlowService"
+        p:objectType="org.kuali.rice.kew.api.peopleflow.PeopleFlowService"/>
 
   <bean id="rice.kew.kewTypeRepositoryService"
         parent="rice.kew.remote.import"
-        p:serviceName="kewTypeRepositoryService"/>
+        p:serviceName="kewTypeRepositoryService"
+        p:objectType="org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService"/>
 
   <bean id="rice.kew.extensionRepositoryService"
         parent="rice.kew.remote.import"
-        p:serviceName="extensionRepositoryService"/>
+        p:serviceName="extensionRepositoryService"
+        p:objectType="org.kuali.rice.kew.api.extension.ExtensionRepositoryService"/>
 
   <bean id="rice.kew.documentTypeService"
         parent="rice.kew.remote.import"
-        p:serviceName="documentTypeService"/>
+        p:serviceName="documentTypeService"
+        p:objectType="org.kuali.rice.kew.api.doctype.DocumentTypeService"/>
 
   <bean id="rice.kew.preferencesService"
         parent="rice.kew.remote.import"
-        p:serviceName="preferencesService"/>
+        p:serviceName="preferencesService"
+        p:objectType="org.kuali.rice.kew.api.preferences.PreferencesService"/>
 
   <bean id="rice.kew.noteService"
         parent="rice.kew.remote.import"
-        p:serviceName="noteService"/>
+        p:serviceName="noteService"
+        p:objectType="org.kuali.rice.kew.api.note.NoteService"/>
 
   <bean id="rice.kew.ruleService"
         parent="rice.kew.remote.import"
-        p:serviceName="ruleService"/>
+        p:serviceName="ruleService"
+        p:objectType="org.kuali.rice.kew.api.rule.RuleService"/>
 
 </beans>

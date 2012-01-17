@@ -24,10 +24,11 @@
   <import resource="classpath:org/kuali/rice/ken/config/_KenCommonSpringBeans.xml" />
 
   <bean id="rice.ken.remote.import" abstract="true" lazy-init="true"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.ken.serviceNamespace"/>
 
   <bean id="sendNotificationService" parent="rice.ken.remote.import"
-        p:serviceName="sendNotificationService"/>
+        p:serviceName="sendNotificationService"
+        p:objectType="org.kuali.rice.ken.api.service.SendNotificationService"/>
 
 </beans>

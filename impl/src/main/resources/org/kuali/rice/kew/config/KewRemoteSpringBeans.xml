@@ -24,13 +24,19 @@
   <import resource="classpath:org/kuali/rice/kew/config/_KewCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml"/>
 
-  <bean id="rice.kew.workflowDocumentActionsService" parent="rice.kew.remote.import"
-            p:serviceName="workflowDocumentActionsService"/>
+  <bean id="rice.kew.workflowDocumentActionsService"
+        parent="rice.kew.remote.import"
+        p:serviceName="workflowDocumentActionsService"
+        p:objectType="org.kuali.rice.kew.api.action.WorkflowDocumentActionsService"/>
 
-  <bean id="rice.kew.workflowDocumentService" parent="rice.kew.remote.import"
-              p:serviceName="workflowDocumentService"/>
+  <bean id="rice.kew.workflowDocumentService"
+        parent="rice.kew.remote.import"
+        p:serviceName="workflowDocumentService"
+        p:objectType="org.kuali.rice.kew.api.document.WorkflowDocumentService"/>
 
-  <bean id="rice.kew.actionListService" parent="rice.kew.remote.import"
-              p:serviceName="actionListService"/>
+  <bean id="rice.kew.actionListService"
+        parent="rice.kew.remote.import"
+        p:serviceName="actionListService"
+        p:objectType="org.kuali.rice.kew.api.actionlist.ActionListService"/>
 
 </beans>

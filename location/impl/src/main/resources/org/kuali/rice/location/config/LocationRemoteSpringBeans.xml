@@ -24,22 +24,32 @@
   <import resource="classpath:org/kuali/rice/location/config/_LocationCommonSpringBeans.xml" />
 
   <bean id="rice.location.remote.import" abstract="true" lazy-init="true"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.location.serviceNamespace"/>
 
-  <bean id="countryService" parent="rice.location.remote.import"
-        p:serviceName="countryService"/>
+  <bean id="countryService"
+        parent="rice.location.remote.import"
+        p:serviceName="countryService"
+        p:objectType="org.kuali.rice.location.api.country.CountryService"/>
 
-  <bean id="campusService" parent="rice.location.remote.import"
-        p:serviceName="campusService"/>
+  <bean id="campusService"
+        parent="rice.location.remote.import"
+        p:serviceName="campusService"
+        p:objectType="org.kuali.rice.location.api.campus.CampusService"/>
 
-  <bean id="stateService" parent="rice.location.remote.import"
-        p:serviceName="stateService"/>
+  <bean id="stateService"
+        parent="rice.location.remote.import"
+        p:serviceName="stateService"
+        p:objectType="org.kuali.rice.location.api.state.StateService"/>
 
-  <bean id="countyService" parent="rice.location.remote.import"
-        p:serviceName="countyService"/>
+  <bean id="countyService"
+        parent="rice.location.remote.import"
+        p:serviceName="countyService"
+        p:objectType="org.kuali.rice.location.api.county.CountyService"/>
   
-  <bean id="postalCodeService" parent="rice.location.remote.import"
-        p:serviceName="postalCodeService"/>
+  <bean id="postalCodeService"
+        parent="rice.location.remote.import"
+        p:serviceName="postalCodeService"
+        p:objectType="org.kuali.rice.location.api.postalcode.PostalCodeService"/>
 
 </beans>

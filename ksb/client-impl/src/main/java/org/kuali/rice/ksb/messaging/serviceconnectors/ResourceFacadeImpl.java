@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import java.net.URL;
-import java.util.Map;
-import java.lang.SuppressWarnings;
-
 import org.apache.commons.collections.MapUtils;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -34,6 +30,9 @@ import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+
+import java.net.URL;
+import java.util.Map;
 
 /**
  * implementation of {@link ResourceFacade}

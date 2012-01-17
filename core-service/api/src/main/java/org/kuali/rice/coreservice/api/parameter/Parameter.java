@@ -70,7 +70,7 @@ public final class Parameter extends AbstractDataTransferObject implements Param
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;
 
-    @XmlElement(name = Elements.VALUE, nillable = true, required = false)
+    @XmlElement(name = Elements.VALUE, required = false)
     private final String value;
 
     @XmlElement(name = Elements.DESCRIPTION, required = false)

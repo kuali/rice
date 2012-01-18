@@ -134,7 +134,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      *
      * @see LookupableHelperService#checkForAdditionalFields(java.util.Map)
      */
-    public boolean checkForAdditionalFields(Map fieldValues) {
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
         return false;
     }
 
@@ -829,7 +829,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return href;
     }
 
-    protected Properties getParameters(BusinessObject bo, Map fieldConversions, String lookupImpl, List returnKeys) {
+    protected Properties getParameters(BusinessObject bo, Map<String, String> fieldConversions, String lookupImpl, List returnKeys) {
         Properties parameters = new Properties();
         parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
         if (getDocFormKey() != null) {
@@ -884,10 +884,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * @return a List of the names of fields which are marked in data dictionary as return fields.
      */
-    public List getReturnKeys() {
-        List returnKeys;
+    public List<String> getReturnKeys() {
+        List<String> returnKeys;
         if (fieldConversions != null && !fieldConversions.isEmpty()) {
-            returnKeys = new ArrayList(fieldConversions.keySet());
+            returnKeys = new ArrayList<String>(fieldConversions.keySet());
         } else {
             returnKeys = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         }
@@ -943,7 +943,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      *
      * @return property names that will be used to sort on by default
      */
-    public List getDefaultSortColumns() {
+    public List<String> getDefaultSortColumns() {
         return getBusinessObjectDictionaryService().getLookupDefaultSortFieldNames(getBusinessObjectClass());
     }
 
@@ -952,7 +952,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      *
      * @see org.kuali.core.lookup.LookupableHelperService#validateSearchParameters(java.util.Map)
      */
-    public void validateSearchParameters(Map fieldValues) {
+    public void validateSearchParameters(Map<String, String> fieldValues) {
         List<String> lookupFieldAttributeList = null;
         if (getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
             lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(getBusinessObjectClass());

@@ -25,6 +25,7 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -82,7 +83,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#checkForAdditionalFields(java.util.Map)
 	 */
-	public boolean checkForAdditionalFields(Map fieldValues) {
+	public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
 		return false;
 	}
 
@@ -126,7 +127,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getColumns()
 	 */
-	public List getColumns() {
+	public List<Column> getColumns() {
 		return null;
 	}
 
@@ -234,7 +235,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getReturnKeys()
 	 */
-	public List getReturnKeys() {
+	public List<String> getReturnKeys() {
 		return null;
 	}
 
@@ -418,7 +419,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#validateSearchParameters(java.util.Map)
 	 */
-	public void validateSearchParameters(Map fieldValues) {}
+	public void validateSearchParameters(Map<String, String> fieldValues) {}
 
 	/**
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#applyConditionalLogicForFieldDisplay()

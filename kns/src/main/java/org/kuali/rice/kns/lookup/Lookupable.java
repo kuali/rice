@@ -17,6 +17,7 @@ package org.kuali.rice.kns.lookup;
 
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
@@ -47,14 +48,14 @@ public interface Lookupable extends Serializable {
      *
      * @param boClass
      */
-    public void setBusinessObjectClass(Class businessObjectClass);
+    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass);
 
     /**
      *
      * @return Returns the dataObjectClass this lookupable is representing
      *
      */
-    public Class getBusinessObjectClass();
+    public Class<? extends BusinessObject> getBusinessObjectClass();
 
     /**
      * Initializes the lookup with the given Map of parameters.
@@ -81,7 +82,7 @@ public interface Lookupable extends Serializable {
     /**
      * @return List of Row objects used to render the search area
      */
-    public List<? extends Row> getRows();
+    public List<Row> getRows();
 
     /**
      * @return String displayed as title for the lookup
@@ -96,14 +97,14 @@ public interface Lookupable extends Serializable {
     /**
      * @return List of Column objects used to render the result table
      */
-    public List getColumns();
+    public List<Column> getColumns();
 
     /**
      * Validates the values filled in as search criteria, also checks for required field values.
      *
      * @param fieldValues - Map of property/value pairs
      */
-    public void validateSearchParameters(Map fieldValues);
+    public void validateSearchParameters(Map<String, String> fieldValues);
 
     /**
      *
@@ -148,7 +149,7 @@ public interface Lookupable extends Serializable {
      * @param fieldValues - Map of property/value pairs
      * @return boolean
      */
-    public boolean checkForAdditionalFields(Map fieldValues);
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues);
 
     /**
      * Builds the return value url.
@@ -158,7 +159,7 @@ public interface Lookupable extends Serializable {
      * @param lookupImpl - Current lookup impl name
      * @return String url called when selecting a row from the result set
      */
-    public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, BusinessObjectRestrictions businessObjectRestrictions);
+    public HtmlData getReturnUrl(BusinessObject businessObject, Map<String, String> fieldConversions, String lookupImpl, BusinessObjectRestrictions businessObjectRestrictions);
 
     /**
      * Builds the Url for a maintenance new document for the lookup business object class
@@ -172,7 +173,7 @@ public interface Lookupable extends Serializable {
      *
      * @param fieldConversions
      */
-    public void setFieldConversions(Map fieldConversions);
+    public void setFieldConversions(Map<String, String> fieldConversions);
 
     /**
      * Sets the requested read only fields list in the lookupable
@@ -213,7 +214,7 @@ public interface Lookupable extends Serializable {
      *
      * @return
      */
-    public List getDefaultSortColumns();
+    public List<String> getDefaultSortColumns();
 
     /**
      *

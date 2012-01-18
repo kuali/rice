@@ -167,7 +167,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     }
 
     @Override
-    public boolean checkForAdditionalFields(Map fieldValues) {
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
         List<Row> attributeRows = setupAttributeRows(fieldValues);
         if (attributeRows.isEmpty()) {
             setAttrRows(attributeRows);

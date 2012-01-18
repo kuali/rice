@@ -152,7 +152,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     }
 
     @Override
-    public void validateSearchParameters(Map fieldValues) {
+    public void validateSearchParameters(Map<String, String> fieldValues) {
         super.validateSearchParameters(fieldValues);
         if (StringUtils.isNotEmpty((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME))) {
             Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME));

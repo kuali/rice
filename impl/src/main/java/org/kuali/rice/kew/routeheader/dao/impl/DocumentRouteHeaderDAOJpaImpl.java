@@ -100,13 +100,13 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     }
 
     public void clearRouteHeaderSearchValues(String documentId) {
-    	List<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(documentId);
+    	Collection<SearchableAttributeValue> searchableAttributeValues = findSearchableAttributeValues(documentId);
     	for (SearchableAttributeValue searchableAttributeValue:searchableAttributeValues){
     		entityManager.remove(searchableAttributeValue);
     	}
     }
    
-    private List<SearchableAttributeValue> findSearchableAttributeValues(String documentId){
+    public Collection<SearchableAttributeValue> findSearchableAttributeValues(String documentId){
     	List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
     	
     	for (int i=1;i<=4; i++){

@@ -21,6 +21,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -46,7 +47,7 @@ public class LookupForm extends KualiForm {
     private Map fieldsForLookup;
     private String lookupableImplServiceName;
     private String conversionFields;
-    private Map fieldConversions;
+    private Map<String, String> fieldConversions;
     private String businessObjectClassName;
     private Lookupable lookupable;
     private boolean hideReturnLink = false;
@@ -237,8 +238,10 @@ public class LookupForm extends KualiForm {
                 localLookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
             }
 
+
+
             // init lookupable with bo class
-            localLookupable.setBusinessObjectClass(Class.forName(getBusinessObjectClassName()));
+            localLookupable.setBusinessObjectClass((Class<? extends BusinessObject>) Class.forName(getBusinessObjectClassName()));
             Map<String, String> fieldValues = new HashMap<String, String>();
             Map<String, String> formFields = getFields();
             Class boClass = Class.forName(getBusinessObjectClassName());
@@ -395,14 +398,14 @@ public class LookupForm extends KualiForm {
     /**
      * @return Returns the fieldConversions.
      */
-    public Map getFieldConversions() {
+    public Map<String, String> getFieldConversions() {
         return fieldConversions;
     }
 
     /**
      * @param fieldConversions The fieldConversions to set.
      */
-    public void setFieldConversions(Map fieldConversions) {
+    public void setFieldConversions(Map<String, String> fieldConversions) {
         this.fieldConversions = fieldConversions;
     }
 

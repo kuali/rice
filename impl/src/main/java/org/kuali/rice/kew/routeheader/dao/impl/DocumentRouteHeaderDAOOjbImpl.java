@@ -50,6 +50,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentRouteHeaderDAO {
@@ -101,6 +102,14 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 this.getPersistenceBrokerTemplate().delete(srchAttrVal);
             }
         }
+    }
+
+    public Collection<SearchableAttributeValue> findSearchableAttributeValues(String documentId) {
+        Criteria crit = new Criteria();
+        crit.addEqualTo("documentId", documentId);
+        QueryByCriteria query = new QueryByCriteria(SearchableAttributeValue.class, crit);
+        query.addOrderByAscending("searchableAttributeValueId");
+        return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
 
     public void lockRouteHeader(final String documentId, final boolean wait) {

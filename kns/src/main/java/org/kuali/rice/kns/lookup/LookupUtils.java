@@ -219,8 +219,8 @@ public class LookupUtils {
      * @param conversionFields
      * @return the Map representation of the fieldConversions String provided.
      */
-    public static Map translateFieldConversions(String fieldConversionsString) {
-        Map fieldConversionsMap = new HashMap();
+    public static Map<String, String> translateFieldConversions(String fieldConversionsString) {
+        Map<String, String> fieldConversionsMap = new HashMap();
         if (StringUtils.isNotEmpty(fieldConversionsString)) {
             if (fieldConversionsString.indexOf(",") > 0) {
                 StringTokenizer token = new StringTokenizer(fieldConversionsString, ",");

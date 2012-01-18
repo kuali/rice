@@ -17,6 +17,7 @@ package org.kuali.rice.kns.lookup;
 
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
@@ -71,21 +72,21 @@ public class KualiLookupableImpl implements Lookupable {
      *
      * @param parameters
      */
-    public void setParameters(Map parameters) {
+    public void setParameters(Map<String, String[]> parameters) {
         getLookupableHelperService().setParameters(parameters);
     }
 
     /**
      * @return Returns the parameters passed to this lookup
      */
-    public Map getParameters() {
+    public Map<String, String[]> getParameters() {
         return getLookupableHelperService().getParameters();
     }
 
     /**
      * Constructs the list of columns for the search results. All properties for the column objects come from the DataDictionary.
      */
-    public List getColumns() {
+    public List<Column> getColumns() {
         return getLookupableHelperService().getColumns();
     }
 
@@ -94,7 +95,7 @@ public class KualiLookupableImpl implements Lookupable {
      *
      * @see Lookupable#validateSearchParameters(java.util.Map)
      */
-    public void validateSearchParameters(Map fieldValues) {
+    public void validateSearchParameters(Map<String, String> fieldValues) {
         getLookupableHelperService().validateSearchParameters(fieldValues);
     }
 
@@ -163,7 +164,7 @@ public class KualiLookupableImpl implements Lookupable {
     /**
      * @see Lookupable#getRows()
      */
-    public List<? extends Row> getRows() {
+    public List<Row> getRows() {
         return getLookupableHelperService().getRows();
     }
 
@@ -191,7 +192,7 @@ public class KualiLookupableImpl implements Lookupable {
     /**
      * @return a List of the names of fields which are marked in data dictionary as return fields.
      */
-    public List getReturnKeys() {
+    public List<String> getReturnKeys() {
         return getLookupableHelperService().getReturnKeys();
     }
 
@@ -213,14 +214,14 @@ public class KualiLookupableImpl implements Lookupable {
     /**
      * @return property names that will be used to sort on by default
      */
-    public List getDefaultSortColumns() {
+    public List<String> getDefaultSortColumns() {
         return getLookupableHelperService().getDefaultSortColumns();
     }
 
     /**
      * @see Lookupable#checkForAdditionalFields(java.util.Map)
      */
-    public boolean checkForAdditionalFields(Map fieldValues) {
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
         return getLookupableHelperService().checkForAdditionalFields(fieldValues);
     }
 

@@ -35,8 +35,10 @@ import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
@@ -48,9 +50,12 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.test.BaselineTestCase;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -121,11 +126,12 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalId(userNetworkId), workflowDocument.getDocumentId());
         DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
 
-        /*
-        assertEquals("Wrong number of searchable attributes", 4, doc.getSearchableAttributeValues().size());
+        // HACK: we are cheating, but this functionality was removed from the service apis, so we hit the DAO directly
+        DocumentRouteHeaderDAO dao = KEWServiceLocator.getBean("enDocumentRouteHeaderDAO");
+        Collection<SearchableAttributeValue> allValues = dao.findSearchableAttributeValues(workflowDocument.getDocumentId());
+        assertEquals("Wrong number of searchable attributes", 4, allValues.size());
 
-        for (Iterator<SearchableAttributeValue> iter = doc.getSearchableAttributeValues().iterator(); iter.hasNext();) {
-            SearchableAttributeValue attributeValue = iter.next();
+        for (SearchableAttributeValue attributeValue: allValues) {
             if (attributeValue instanceof SearchableAttributeStringValue) {
                 SearchableAttributeStringValue realValue = (SearchableAttributeStringValue) attributeValue;
 
@@ -168,8 +174,6 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
                 fail("Searchable Attribute Value base class should be one of the four checked always");
             }
         }
-        */
-
     }
 
     protected RouteHeaderService getRouteHeaderService(){

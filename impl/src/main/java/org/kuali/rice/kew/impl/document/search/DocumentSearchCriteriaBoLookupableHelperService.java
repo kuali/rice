@@ -337,7 +337,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
 
         // checkForAdditionalFields generates the form (setRows)
-        if (checkForAdditionalFields(fieldValues)) {
+        if (checkForAdditionalFieldsMultiValued(fieldValues)) {
             for (Field field: getFormFields()) {
                 overrideFieldValue(field, this.getParameters(), savedValues);
                 fieldValues.put(field.getPropertyName(), new String[] { field.getPropertyValue() });
@@ -698,15 +698,20 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * generates additional form rows.
      */
     @Override
-    public boolean checkForAdditionalFields(Map fieldValues) {
-        // The given map is a Map<String, String>
-        Object val = fieldValues.get("documentTypeName");
-        String documentTypeName;
-        if (val instanceof String[]) {
-            documentTypeName = ((String[]) val)[0];
-        } else {
-            documentTypeName = (String) val;
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
+        return checkForAdditionalFieldsForDocumentType(fieldValues.get("documentTypeName"));
+    }
+
+    private boolean checkForAdditionalFieldsMultiValued(Map<String, String[]> fieldValues) {
+        String[] valArray = fieldValues.get("documentTypeName");
+        String val = null; 
+        if (valArray != null && valArray.length > 0) {
+            val = valArray[0];
         }
+        return checkForAdditionalFieldsForDocumentType(val);
+    }
+    
+    private boolean checkForAdditionalFieldsForDocumentType(String documentTypeName) {
         if (StringUtils.isNotBlank(documentTypeName)) {
             setRows(documentTypeName);
         }

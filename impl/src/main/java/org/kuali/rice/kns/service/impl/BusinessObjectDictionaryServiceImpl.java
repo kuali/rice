@@ -265,8 +265,8 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
      */
-    public List getLookupDefaultSortFieldNames(Class businessObjectClass) {
-        List defaultSort = null;
+    public List<String> getLookupDefaultSortFieldNames(Class businessObjectClass) {
+        List<String> defaultSort = null;
 
         LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
         if (lookupDefinition != null) {
@@ -276,7 +276,7 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
             }
         }
         if (defaultSort == null) {
-            defaultSort = new ArrayList();
+            defaultSort = new ArrayList<String>();
         }
 
         return defaultSort;

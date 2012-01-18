@@ -263,8 +263,8 @@ public class KualiLookupAction extends KualiAction {
             return this.customLookupableMethodCall(mapping, lookupForm, request, response);
         }
 
-        Map fieldValues = new HashMap();
-        Map values = lookupForm.getFields();
+        Map<String, String> fieldValues = new HashMap();
+        Map<String, String> values = lookupForm.getFields();
 
         for (Row row: kualiLookupable.getRows()) {
             for (Field field: row.getFields()) {

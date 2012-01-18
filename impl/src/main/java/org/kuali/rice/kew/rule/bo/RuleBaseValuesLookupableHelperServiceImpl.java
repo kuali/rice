@@ -114,7 +114,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     }
 
     @Override
-    public boolean checkForAdditionalFields(Map fieldValues) {
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
         String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
 
         if (StringUtils.isNotBlank(ruleTemplateNameParam)) {
@@ -342,7 +342,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     }
 
     @Override
-    public void validateSearchParameters(Map fieldValues) {
+    public void validateSearchParameters(Map<String, String> fieldValues) {
         super.validateSearchParameters(fieldValues);
 
         // make sure that if we have either groupName or Namespace, that both are filled in

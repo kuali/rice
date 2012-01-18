@@ -71,14 +71,14 @@ public interface LookupableHelperService extends Serializable{
     /**
      * @return List of Column objects used to render the result table
      */
-    public List<? extends Column> getColumns();
+    public List<Column> getColumns();
 
     /**
      * Validates the values filled in as search criteria, also checks for required field values.
      *
      * @param fieldValues - Map of property/value pairs
      */
-    public void validateSearchParameters(Map fieldValues);
+    public void validateSearchParameters(Map<String, String> fieldValues);
 
     /**
      * Performs a search and returns result list.
@@ -103,7 +103,7 @@ public interface LookupableHelperService extends Serializable{
      * @param fieldValues - Map of property/value pairs
      * @return boolean
      */
-    public boolean checkForAdditionalFields(Map fieldValues);
+    public boolean checkForAdditionalFields(Map<String, String> fieldValues);
 
     /**
      * Builds the return value url.
@@ -179,7 +179,7 @@ public interface LookupableHelperService extends Serializable{
      *
      * @return a List of the names of fields which are marked in data dictionary as return fields.
      */
-    public List getReturnKeys();
+    public List<String> getReturnKeys();
 
     public String getDocFormKey();
 
@@ -258,7 +258,7 @@ public interface LookupableHelperService extends Serializable{
      *
      * @return
      */
-    public List getDefaultSortColumns();
+    public List<String> getDefaultSortColumns();
 
     /**
      * This method returns whether the previously executed getSearchResults used the primary key values to search, ignoring all non key values

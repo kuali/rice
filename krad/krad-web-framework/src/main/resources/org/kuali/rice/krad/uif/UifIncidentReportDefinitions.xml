@@ -22,6 +22,9 @@
 
   <bean id="Uif-IncidentReportView" parent="Uif-IncidentReportView-parentBean"/>
   <bean id="Uif-IncidentReportView-parentBean" abstract="true" parent="Uif-FormView">
+    <property name="theme">
+      <bean parent="Uif-ClassicKnsTheme"/>
+    </property>
     <property name="styleClasses">
       <list merge="true">
         <value>uif-incidentReportView</value>

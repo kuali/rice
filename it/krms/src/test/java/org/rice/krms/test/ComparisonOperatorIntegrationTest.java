@@ -43,6 +43,5 @@ public class ComparisonOperatorIntegrationTest extends AbstractBoTest {
         ComparisonOperator equalsOp = ComparisonOperator.fromCode(ComparisonOperator.EQUALS.toString());
         assertTrue(equalsOp.compare(one, one));
         assertFalse(equalsOp.compare(one, two));
-        assertFalse(equalsOp.compare("one", one));
     }
 }

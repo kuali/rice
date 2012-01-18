@@ -239,12 +239,14 @@ class XMLSearchableAttributeContent {
         static class Display {
             final String type;
             final String meta;
+            final String formatter;
             final Collection<KeyValue> options;
             final Collection<String> selectedOptions;
 
             Display(XPath xpath, Node n) throws XPathExpressionException {
                 type = getNodeText(xpath, n, "display/type");
                 meta = getNodeText(xpath, n, "display/meta");
+                formatter = getNodeText(xpath, n, "display/formatter");
                 Collection<KeyValue> options = new ArrayList<KeyValue>();
                 Collection<String> selectedOptions = new ArrayList<String>();
                 

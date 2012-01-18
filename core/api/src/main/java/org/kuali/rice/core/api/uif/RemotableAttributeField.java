@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.web.format.Formatter;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -60,6 +61,7 @@ import java.util.List;
         RemotableAttributeField.Elements.ATTRIBUTE_LOOKUP_SETTINGS,
 		RemotableAttributeField.Elements.CONTROL,
 		RemotableAttributeField.Elements.WIDGETS,
+        RemotableAttributeField.Elements.FORMATTER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableAttributeField extends AbstractDataTransferObject implements RemotableAttributeFieldContract {
 
@@ -116,6 +118,9 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     @XmlElement(name = Elements.ATTRIBUTE_LOOKUP_SETTINGS, required = false)
     private final RemotableAttributeLookupSettings attributeLookupSettings;
 
+    @XmlElement(name = Elements.FORMATTER, required = false)
+    private final Formatter formatter;
+
     @XmlElements(value = {
         @XmlElement(name = RemotableCheckbox.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckbox.class, required = false),
         @XmlElement(name = RemotableCheckboxGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckboxGroup.class, required = false),
@@ -166,6 +171,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.attributeLookupSettings = null;
         this.control = RemotableTextInput.Builder.create().build();
         this.widgets = null;
+        this.formatter = null;
     }
 
     private RemotableAttributeField(Builder b) {
@@ -212,6 +218,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             }
         }
         this.widgets = Collections.unmodifiableList(temp);
+        this.formatter = b.formatter;
     }
 
     @Override
@@ -288,6 +295,12 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
+    public Formatter getFormatter() {
+
+        return formatter;
+    }
+
+    @Override
     public boolean isRequired() {
         return required;
     }
@@ -360,6 +373,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
         private boolean required;
 
+        private Formatter formatter;
+
         private Collection<String> defaultValues = new ArrayList<String>();
         private RemotableAttributeLookupSettings.Builder attributeLookupSettings;
         private RemotableAbstractControl.Builder control =  RemotableTextInput.Builder.create();
@@ -394,6 +409,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             b.setRegexConstraint(field.getRegexConstraint());
             b.setRegexContraintMsg(field.getRegexContraintMsg());
             b.setRequired(field.isRequired());
+            b.setFormatter(field.getFormatter());
             b.setDefaultValues(field.getDefaultValues());
             if (field.getAttributeLookupSettings() != null) {
                 b.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create(
@@ -553,6 +569,15 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         @Override
+       public Formatter getFormatter() {
+           return formatter;
+       }
+
+       public void setFormatter(Formatter formatter) {
+           this.formatter = formatter;
+       }
+
+        @Override
         public boolean isRequired() {
             return required;
         }
@@ -636,5 +661,6 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         static final String ATTRIBUTE_LOOKUP_SETTINGS = "attributeLookupSettings";
         static final String CONTROL = "control";
         static final String WIDGETS = "widgets";
+        static final String FORMATTER = "formatter";
     }
 }

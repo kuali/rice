@@ -144,12 +144,11 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		extension.setDocumentTypeId(routeHeader.getDocumentTypeId());
 		extension.setDocRouteStatus(routeHeader.getDocRouteStatus());
 		extension.setDocRouteLevel(routeHeader.getDocRouteLevel());
-		extension.setStatusModDate(routeHeader.getStatusModDate());
+		extension.setDateModified(routeHeader.getDateModified());
 		extension.setCreateDate(routeHeader.getCreateDate());
 		extension.setApprovedDate(routeHeader.getApprovedDate());
 		extension.setFinalizedDate(routeHeader.getFinalizedDate());
 		extension.setRouteStatusDate(routeHeader.getRouteStatusDate());
-		extension.setRouteLevelDate(routeHeader.getRouteLevelDate());
 		extension.setDocTitle(routeHeader.getDocTitle());
 		extension.setAppDocId(routeHeader.getAppDocId());
 		extension.setDocVersion(routeHeader.getDocVersion());

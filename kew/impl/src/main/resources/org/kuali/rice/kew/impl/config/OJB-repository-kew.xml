@@ -43,12 +43,11 @@
     <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
     <field-descriptor name="appDocStatus" column="APP_DOC_STAT" jdbc-type="VARCHAR" />
-    <field-descriptor name="statusModDate" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="dateModified" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="createDate" column="CRTE_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="approvedDate" column="APRV_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="finalizedDate" column="FNL_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="routeStatusDate"  column="RTE_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="routeLevelDate" column="RTE_LVL_MDFN_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="appDocStatusDate" column="APP_DOC_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="docTitle" column="TTL" jdbc-type="VARCHAR" />
     <field-descriptor name="appDocId" column="APP_DOC_ID" jdbc-type="VARCHAR" />
@@ -143,12 +142,11 @@
     <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
     <field-descriptor name="appDocStatus" column="APP_DOC_STAT" jdbc-type="VARCHAR" />
-    <field-descriptor name="statusModDate" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="dateModified" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="createDate" column="CRTE_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="approvedDate" column="APRV_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="finalizedDate" column="FNL_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="routeStatusDate"  column="RTE_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="routeLevelDate" column="RTE_LVL_MDFN_DT"  jdbc-type="TIMESTAMP" />
     <field-descriptor name="appDocStatusDate" column="APP_DOC_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="docTitle" column="TTL" jdbc-type="VARCHAR" />
     <field-descriptor name="appDocId" column="APP_DOC_ID" jdbc-type="VARCHAR" />

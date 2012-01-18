@@ -254,7 +254,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		if (routeHeader.getDocContent() == null) {
 			routeHeader.setDocContent(KewApiConstants.DEFAULT_DOCUMENT_CONTENT);
 		}
-		routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
+		routeHeader.setDateModified(new Timestamp(new Date().getTime()));
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD);
 		KEWServiceLocator.getWorkflowEngineFactory().newEngine(config).initializeDocument(routeHeader);

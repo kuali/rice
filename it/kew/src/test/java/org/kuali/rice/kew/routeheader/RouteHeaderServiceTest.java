@@ -68,7 +68,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         document.setDocContent(buffer.toString());
         document.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_INITIATED_CD);
         document.setDocRouteLevel(0);
-        document.setStatusModDate(new Timestamp(System.currentTimeMillis()));
+        document.setDateModified(new Timestamp(System.currentTimeMillis()));
         document.setCreateDate(new Timestamp(System.currentTimeMillis()));
         document.setInitiatorWorkflowId("1");
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");

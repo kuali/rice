@@ -48,12 +48,11 @@ public class DocumentOperationForm extends KualiForm {
 
     private String routeHeaderOp;
 
-    private String statusModDate;
+    private String dateModified;
     private String createDate;
     private String approvedDate;
     private String finalizedDate;
     private String routeStatusDate;
-    private String routeLevelDate;
     private String lookupableImplServiceName;
     private String lookupType;
     private Map docStatuses = KewApiConstants.DOCUMENT_STATUSES;
@@ -248,23 +247,17 @@ public class DocumentOperationForm extends KualiForm {
     public void setFinalizedDate(String finalizedDate) {
         this.finalizedDate = finalizedDate;
     }
-    public String getRouteLevelDate() {
-        return routeLevelDate;
-    }
-    public void setRouteLevelDate(String routeLevelDate) {
-        this.routeLevelDate = routeLevelDate;
-    }
     public String getRouteStatusDate() {
         return routeStatusDate;
     }
     public void setRouteStatusDate(String routeStatusDate) {
         this.routeStatusDate = routeStatusDate;
     }
-    public String getStatusModDate() {
-        return statusModDate;
+    public String getDateModified() {
+        return dateModified;
     }
-    public void setStatusModDate(String statusModDate) {
-        this.statusModDate = statusModDate;
+    public void setDateModified(String dateModified) {
+        this.dateModified = dateModified;
     }
 
 

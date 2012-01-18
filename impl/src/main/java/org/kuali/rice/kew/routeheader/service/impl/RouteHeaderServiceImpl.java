@@ -126,7 +126,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
             errors.add(new WorkflowServiceErrorImpl("RouteHeader route level invalid.", "routeheader.routelevel.invalid"));
         }
 
-        if(routeHeader.getStatusModDate() == null){
+        if(routeHeader.getDateLastModified() == null){
             errors.add(new WorkflowServiceErrorImpl("RouteHeader status modification date empty.", "routeheader.statusmoddate.empty"));
         }
 

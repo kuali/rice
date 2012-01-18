@@ -429,7 +429,7 @@ public class ActionListTest extends KEWTestCase {
         routeHeader.setDocumentTypeId("1");
         routeHeader.setDocVersion(KewApiConstants.DocumentContentVersions.CURRENT);
         routeHeader.setRouteStatusDate(new Timestamp(new Date().getTime()));
-        routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
+        routeHeader.setDateModified(new Timestamp(new Date().getTime()));
         routeHeader.setInitiatorWorkflowId("someone");
         return routeHeader;
     }

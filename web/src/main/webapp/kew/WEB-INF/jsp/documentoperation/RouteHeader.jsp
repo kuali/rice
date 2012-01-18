@@ -82,15 +82,15 @@
 	  	    </td>
 	  	  </tr>	 
 	  	  <tr>
-	  	    <td width="33%" align="right" class="thnormal">* Doc Status Modification Date:</td>
+	  	    <td width="33%" align="right" class="thnormal">* Modification Date:</td>
 	  	    <td width="66%" class="datacell">
-	  	    	<html-el:text property="statusModDate" styleId="statusModDate"/>&nbsp;
-	  	    	<img src="images/cal.gif" id="statusModDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	    	<html-el:text property="dateModified" styleId="dateModified"/>&nbsp;
+	  	    	<img src="images/cal.gif" id="dateModified_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
 	  	    	<script type="text/javascript">
                       Calendar.setup({
-                      inputField     :    "statusModDate",     // id of the input field
+                      inputField     :    "dateModified",     // id of the input field
                       ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
-                      button         :    "statusModDate_trigger", // the button or image that triggers this
+                      button         :    "dateModified_trigger", // the button or image that triggers this
                       showsTime      :    true,            // will display a time selector
                       daFormat       :    "%A, %B %d, %Y",// format of the displayed date
                       singleClick    :    true,
@@ -157,25 +157,6 @@
                     });
             	</script> &nbsp;  
 	  	    </td>
-	  	  </tr>
-	  	  <tr>
-	  	    <td width="33%" align="right" class="thnormal">Route Level Modification Date:</td>
-	  	   	<td width="66%" class="datacell">
-	  	    	<html-el:text property="routeLevelDate" styleId="routeLevelDate"/>&nbsp;
-	  	    	<img src="images/cal.gif" id="statusModDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
-	  	    	<script type="text/javascript">
-                      Calendar.setup({
-                      inputField     :    "routeLevelDate",     // id of the input field
-                      ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
-                      button         :    "routeLevelDate_trigger", // the button or image that triggers this
-                      showsTime      :    true,            // will display a time selector
-                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
-                      singleClick    :    true,
-                      timeFormat     :    "12",
-                      step           :    1
-                    });
-            	</script> &nbsp;
-	  	     </td> 	    	  
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Doc Type ID:</td>

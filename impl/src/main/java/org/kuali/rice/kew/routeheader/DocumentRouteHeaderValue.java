@@ -139,7 +139,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     @Column(name="RTE_LVL")
     private java.lang.Integer docRouteLevel;
     @Column(name="STAT_MDFN_DT")
-    private java.sql.Timestamp statusModDate;
+    private java.sql.Timestamp dateModified;
     @Column(name="CRTE_DT")
     private java.sql.Timestamp createDate;
     @Column(name="APRV_DT")
@@ -160,8 +160,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     private java.lang.String routedByUserWorkflowId;
     @Column(name="RTE_STAT_MDFN_DT")
     private java.sql.Timestamp routeStatusDate;
-    @Column(name="RTE_LVL_MDFN_DT")
-    private java.sql.Timestamp routeLevelDate;
     @Column(name="APP_DOC_STAT")
     private java.lang.String appDocStatus;
     @Column(name="APP_DOC_STAT_MDFN_DT")
@@ -490,14 +488,6 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         this.documentId = documentId;
     }
 
-    public java.sql.Timestamp getRouteLevelDate() {
-        return routeLevelDate;
-    }
-
-    public void setRouteLevelDate(java.sql.Timestamp routeLevelDate) {
-        this.routeLevelDate = routeLevelDate;
-    }
-
     public java.sql.Timestamp getRouteStatusDate() {
         return routeStatusDate;
     }
@@ -506,12 +496,12 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         this.routeStatusDate = routeStatusDate;
     }
 
-    public java.sql.Timestamp getStatusModDate() {
-        return statusModDate;
+    public java.sql.Timestamp getDateModified() {
+        return dateModified;
     }
 
-    public void setStatusModDate(java.sql.Timestamp statusModDate) {
-        this.statusModDate = statusModDate;
+    public void setDateModified(java.sql.Timestamp dateModified) {
+        this.dateModified = dateModified;
     }
 
     /**
@@ -701,7 +691,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             throw new InvalidActionTakenException("Document status " + CodeTranslator.getRouteStatusLabel(getDocRouteStatus()) + " cannot transition to status " + CodeTranslator
                     .getRouteStatusLabel(newStatus));
         }
-        setStatusModDate(new Timestamp(System.currentTimeMillis()));
+        setDateModified(new Timestamp(System.currentTimeMillis()));
         if (finalState) {
             LOG.debug("setting final timeStamp");
             setFinalizedDate(new Timestamp(System.currentTimeMillis()));
@@ -796,7 +786,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         }
         setDocTitle(routeHeaderVO.getTitle());
         setAppDocId(routeHeaderVO.getApplicationDocumentId());
-        setStatusModDate(new Timestamp(System.currentTimeMillis()));
+        setDateModified(new Timestamp(System.currentTimeMillis()));
         updateAppDocStatus(routeHeaderVO.getApplicationDocumentStatus());
 
         /* set the variables from the routeHeaderVO */
@@ -814,7 +804,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             }
             setDocTitle(updateDocTitle);
             setAppDocId(documentUpdate.getApplicationDocumentId());
-            setStatusModDate(new Timestamp(System.currentTimeMillis()));
+            setDateModified(new Timestamp(System.currentTimeMillis()));
             updateAppDocStatus(documentUpdate.getApplicationDocumentStatus());
 
             Map<String, String> variables = documentUpdate.getVariables();
@@ -1073,10 +1063,10 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 
     @Override
     public DateTime getDateLastModified() {
-        if (getStatusModDate() == null) {
+        if (getDateModified() == null) {
             return null;
         }
-        return new DateTime(getStatusModDate().getTime());
+        return new DateTime(getDateModified().getTime());
     }
 
     @Override
@@ -1194,7 +1184,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         documentBo.setRoutedByUserWorkflowId(document.getRoutedByPrincipalId());
         documentBo.setDocumentId(document.getDocumentId());
         if (document.getDateLastModified() != null) {
-            documentBo.setStatusModDate(new Timestamp(document.getDateLastModified().getMillis()));
+            documentBo.setDateModified(new Timestamp(document.getDateLastModified().getMillis()));
         }
         documentBo.setAppDocStatus(document.getApplicationDocumentStatus());
         if (document.getApplicationDocumentStatusDate() != null) {
@@ -1205,8 +1195,8 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         // Convert the variables
         Map<String, String> variables = document.getVariables();
         if( variables != null && !variables.isEmpty()){
-            for(String kvp : variables.keySet()){
-                documentBo.setVariable(kvp, variables.get(kvp));
+            for(Map.Entry<String, String> kvp : variables.entrySet()){
+                documentBo.setVariable(kvp.getKey(), kvp.getValue());
             }
         }
 

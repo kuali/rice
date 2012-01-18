@@ -543,11 +543,12 @@ public class DocumentOperationAction extends KewKualiAction {
 			}
 		}
 
-		if (docForm.getStatusModDate() == null || docForm.getStatusModDate().trim().equals("")) {
+		if (docForm.getDateModified() == null || docForm.getDateModified().trim().equals("")) {
 			throw new WorkflowServiceErrorException("Document doc status mod date empty", new WorkflowServiceErrorImpl("Document doc status mod date empty", "docoperation.routeheader.statusmoddate.empty"));
 		} else {
 			try {
-				docForm.getRouteHeader().setStatusModDate(new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(docForm.getStatusModDate()).getTime()));
+				docForm.getRouteHeader().setDateModified(new Timestamp(
+                        RiceConstants.getDefaultDateAndTimeFormat().parse(docForm.getDateModified()).getTime()));
 			} catch (ParseException pe) {
 				throw new WorkflowServiceErrorException("Document doc status date parsing error", new WorkflowServiceErrorImpl("Document doc status mod date parsing error", "docoperation.routeheader.statusmoddate.invalid"));
 			}
@@ -578,24 +579,20 @@ public class DocumentOperationAction extends KewKualiAction {
 			}
 
 		}
-
-		if (docForm.getRouteLevelDate() != null && !docForm.getRouteLevelDate().trim().equals("")) {
-			try {
-				docForm.getRouteHeader().setRouteLevelDate(new Timestamp(RiceConstants.getDefaultDateAndTimeFormat().parse(docForm.getRouteLevelDate()).getTime()));
-			} catch (ParseException pe) {
-				throw new WorkflowServiceErrorException("Document route level date parsing error", new WorkflowServiceErrorImpl("Document route level date parsing error", "docoperation.routeheader.routeleveldate.invalid"));
-			}
-		}
 	}
 
 	private void setRouteHeaderTimestampsToString(DocumentOperationForm docForm) {
 		try {
-			docForm.setCreateDate(RiceConstants.getDefaultDateAndTimeFormat().format(docForm.getRouteHeader().getCreateDate()));
-			docForm.setStatusModDate(RiceConstants.getDefaultDateAndTimeFormat().format(docForm.getRouteHeader().getStatusModDate()));
-			docForm.setApprovedDate(RiceConstants.getDefaultDateAndTimeFormat().format(docForm.getRouteHeader().getApprovedDate()));
-			docForm.setFinalizedDate(RiceConstants.getDefaultDateAndTimeFormat().format(docForm.getRouteHeader().getFinalizedDate()));
-			docForm.setRouteStatusDate(RiceConstants.getDefaultDateAndTimeFormat().format(docForm.getRouteHeader().getRouteStatusDate()));
-			docForm.setRouteLevelDate(RiceConstants.getDefaultDateAndTimeFormat().format(docForm.getRouteHeader().getRouteLevelDate()));
+			docForm.setCreateDate(RiceConstants.getDefaultDateAndTimeFormat().format(
+                    docForm.getRouteHeader().getCreateDate()));
+			docForm.setDateModified(RiceConstants.getDefaultDateAndTimeFormat().format(
+                    docForm.getRouteHeader().getDateLastModified()));
+			docForm.setApprovedDate(RiceConstants.getDefaultDateAndTimeFormat().format(
+                    docForm.getRouteHeader().getApprovedDate()));
+			docForm.setFinalizedDate(RiceConstants.getDefaultDateAndTimeFormat().format(
+                    docForm.getRouteHeader().getFinalizedDate()));
+			docForm.setRouteStatusDate(RiceConstants.getDefaultDateAndTimeFormat().format(
+                    docForm.getRouteHeader().getRouteStatusDate()));
 
 		} catch (Exception e) {
 			LOG.info("One or more of the dates in routeHeader may be null");

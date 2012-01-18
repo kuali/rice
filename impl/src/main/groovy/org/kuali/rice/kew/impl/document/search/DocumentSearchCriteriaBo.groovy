@@ -19,6 +19,7 @@ import org.kuali.rice.krad.bo.BusinessObject
 import org.kuali.rice.kew.doctype.bo.DocumentType
 import org.kuali.rice.kew.service.KEWServiceLocator
 
+import org.kuali.rice.kim.api.identity.name.EntityName
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kew.api.document.search.DocumentSearchResult
@@ -73,6 +74,15 @@ class DocumentSearchCriteriaBo implements BusinessObject {
         }
         return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalName)
     }
+	
+	String getInitiatorDisplayName() {
+		if(!initiatorPrincipalName) {
+			return null
+		}
+		String initiatorPrincipalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(initiatorPrincipalName)?.getPrincipalId()
+		EntityName entityName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId)?.getDefaultName()
+		return entityName.getCompositeName()
+	}
 
     Person getApproverPerson() {
         if (approverPrincipalName == null) {

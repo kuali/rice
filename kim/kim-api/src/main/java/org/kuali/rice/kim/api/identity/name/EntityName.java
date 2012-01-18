@@ -328,6 +328,7 @@ public final class EntityName extends AbstractDataTransferObject
         private String lastName;
         private String namePrefix;
         private String nameTitle;
+        private String compositeName;
         private String noteMessage;
         private DateTime nameChangedDate;
         private boolean suppressName;
@@ -366,6 +367,7 @@ public final class EntityName extends AbstractDataTransferObject
             builder.setDefaultValue(contract.isDefaultValue());
             builder.setActive(contract.isActive());
             builder.setId(contract.getId());
+            builder.setCompositeName(contract.getCompositeName());
             return builder;
         }
 
@@ -471,7 +473,10 @@ public final class EntityName extends AbstractDataTransferObject
 
         @Override
         public String getCompositeNameUnmasked() {
-            return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
+        	if(this.compositeName == null) {
+        		setCompositeName(getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName()));
+        	}
+            return this.compositeName;
         }
 
         @Override
@@ -547,6 +552,10 @@ public final class EntityName extends AbstractDataTransferObject
             this.nameTitle = nameTitle;
         }
 
+        public void setCompositeName(String compositeName) {
+        	this.compositeName = compositeName;
+        }
+        
         public void setNoteMessage(String noteMessage) {
             this.noteMessage = noteMessage;
         }

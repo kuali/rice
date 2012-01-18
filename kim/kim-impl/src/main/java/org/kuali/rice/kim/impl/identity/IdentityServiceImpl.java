@@ -66,6 +66,7 @@ import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
@@ -1121,6 +1122,36 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ID, id);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
         return businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
+    }
+    
+    @Override
+    public EntityNamePrincipalName getDefaultNamesForPrincipalId(String principalId) {
+    	EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
+    	Map<String,String> criteria = new HashMap<String,String>();
+    	criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
+    	PrincipalBo principal = (PrincipalBo) businessObjectService.findByPrimaryKey(PrincipalBo.class, criteria);
+
+    	if (null != principal) {
+    		nameBuilder.setPrincipalName(principal.getPrincipalName());
+
+    		criteria.clear();
+    		criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
+    		criteria.put("DFLT_IND", "Y");
+    		criteria.put("ACTV_IND", "Y");
+    		EntityNameBo name = (EntityNameBo) businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
+
+    		if (name == null) {
+    			// to make this simple for now, assume if there is no default name that this is a system entity we are dealing with here
+    			EntityName.Builder defaultNameBuilder = EntityName.Builder.create();
+    			defaultNameBuilder.setLastName(principal.getPrincipalName().toUpperCase());
+    			nameBuilder.setDefaultName(defaultNameBuilder);
+    		} else {
+    			nameBuilder.setDefaultName( EntityName.Builder.create(name) );
+    		}
+    		EntityNamePrincipalName entityNamePrincipalName = nameBuilder.build(); 
+    		return entityNamePrincipalName;
+    	}
+    	return null;
     }
 
     @Override

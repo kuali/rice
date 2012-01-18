@@ -39,7 +39,7 @@ public enum StandardResultField {
     @XmlEnumValue("status") STATUS("status", "statusLabel"),
     @XmlEnumValue("documentType") DOCUMENT_TYPE("documentType", "documentTypeLabel"),
     @XmlEnumValue("title") TITLE("title"),
-    @XmlEnumValue("initiator") INITIATOR("initiator", "initiatorPerson.name"),
+    @XmlEnumValue("initiator") INITIATOR("initiator", "initiatorDisplayName"),
     @XmlEnumValue("dateCreated") DATE_CREATED("dateCreated"),
     @XmlEnumValue("routeLog") ROUTE_LOG("routeLog");
 

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
@@ -40,6 +41,7 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -84,6 +86,25 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     @Override
 	public CodedAttribute getCitizenshipStatus(String code) {
 		return CodedAttribute.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
+	}
+    
+    @Override
+	public EntityNamePrincipalName getDefaultNamesForPrincipalId(String principalId) {
+    	EntityNamePrincipalName name = getInnerIdentityService().getDefaultNamesForPrincipalId(principalId);
+    	if(name == null || ObjectUtils.isNull(name.getDefaultName()) || StringUtils.isBlank(name.getPrincipalName()) || StringUtils.isBlank(name.getDefaultName().getCompositeName())) {
+    		EntityDefault defaultEntity = this.getEntityDefaultByPrincipalId(principalId);
+			EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
+			for(Principal principal : defaultEntity.getPrincipals()) {
+				nameBuilder.setPrincipalName(principal.getPrincipalName());
+			}
+			nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
+			if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
+				String formattedName = defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName());
+				nameBuilder.getDefaultName().setCompositeName(formattedName);
+			}
+			return nameBuilder.build();
+    	}
+		return name;
 	}
 
     @Override

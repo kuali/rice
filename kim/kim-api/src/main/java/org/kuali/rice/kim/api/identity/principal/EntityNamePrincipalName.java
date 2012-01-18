@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -138,4 +139,7 @@ public class EntityNamePrincipalName extends AbstractDataTransferObject {
         final static String PRINCIPAL_NAME = "principalName";
     }
 
+    public static class Cache {
+    	public final static String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + EntityNamePrincipalName.Constants.TYPE_NAME;
+    }
 }

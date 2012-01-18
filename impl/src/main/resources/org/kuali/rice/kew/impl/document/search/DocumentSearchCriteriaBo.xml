@@ -324,7 +324,7 @@
   <bean id="DocumentSearchCriteria-initiatorPerson-name" parent="DocumentSearchCriteria-initiatorPerson-name-parentBean"/>
 
   <bean id="DocumentSearchCriteria-initiatorPerson-name-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="name" value="initiatorPerson.name"/>
+    <property name="name" value="initiatorDisplayName"/>
     <property name="label" value="Initiator"/>
     <property name="shortLabel" value="Initiator"/>
     <property name="control">
@@ -400,7 +400,7 @@
         <bean parent="FieldDefinition" p:attributeName="documentTypeLabel"/>
         <bean parent="FieldDefinition" p:attributeName="title"/>
         <bean parent="FieldDefinition" p:attributeName="statusLabel"/>
-        <bean parent="FieldDefinition" p:attributeName="initiatorPerson.name" />
+        <bean parent="FieldDefinition" p:attributeName="initiatorDisplayName" />
         <bean parent="FieldDefinition" p:attributeName="dateCreated"/>
         <bean parent="FieldDefinition" p:attributeName="routeLog"/>
       </list>

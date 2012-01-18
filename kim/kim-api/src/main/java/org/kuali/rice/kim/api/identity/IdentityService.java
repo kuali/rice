@@ -194,7 +194,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateEntity")
     @WebResult(name = "entity")
-    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, EntityNamePrincipalName.Cache.NAME}, allEntries = true)
     Entity updateEntity(@WebParam(name = "entity") Entity entity)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -363,7 +363,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updatePrincipal")
     @WebResult(name = "principal")
-    @CacheEvict(value = {Principal.Cache.NAME, Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
+    @CacheEvict(value = {Principal.Cache.NAME, Entity.Cache.NAME, EntityDefault.Cache.NAME, EntityNamePrincipalName.Cache.NAME}, allEntries = true)
     Principal updatePrincipal(@WebParam(name = "principal") Principal principal)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -662,6 +662,18 @@ public interface IdentityService {
     @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAffiliation inactivateAffiliation(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
+    
+    /**
+     * This returns the display name information for the given principal
+     * without loading the full person object.
+     * 
+     * @param principalId The principal ID to find the name information for
+     * @return The default name information for the principal
+     */
+    @WebMethod(operationName="getDefaultNamesForPrincipalId")
+    @WebResult(name="entityNamePrincipalName")
+    @Cacheable(value = EntityNamePrincipalName.Cache.NAME, key = "'principalId=' + #p0")
+    public EntityNamePrincipalName getDefaultNamesForPrincipalId(@WebParam(name = "principalId") String principalId);
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.name.EntityName} exactly like the name passed in.
@@ -675,7 +687,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="addNameToEntity")
     @WebResult(name = "name")
-    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, EntityNamePrincipalName.Cache.NAME}, allEntries = true)
     EntityName addNameToEntity(@WebParam(name = "name") EntityName name)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -690,7 +702,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName="updateName")
     @WebResult(name = "name")
-    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, EntityNamePrincipalName.Cache.NAME}, allEntries = true)
     EntityName updateName(@WebParam(name = "name") EntityName name)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 

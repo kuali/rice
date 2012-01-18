@@ -302,9 +302,8 @@ function createWatermark(id, watermark) {
  */
 function handleIncidentReport(content) {
     var viewId = jq("#viewId", content);
-    if (viewId.length && viewId.val() === "Incident-Report") {
-        jq('#view_div').replaceWith(jq('#view_div', content));
-
+    if (viewId.length && viewId.val() === "Uif-IncidentReportView") {
+        jq('#view_div').replaceWith(content);
         runHiddenScripts("view_div");
         return true;
     }

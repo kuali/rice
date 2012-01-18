@@ -90,7 +90,7 @@
 		p:serviceDefinition-ref="rice.ksb.serviceRegistry.serviceDefinition"
 		p:exportIf="rice.ksb.serviceRegistry.expose" />
 	
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
 			<list>
 				<idref bean="matchAllTxInterceptor" />

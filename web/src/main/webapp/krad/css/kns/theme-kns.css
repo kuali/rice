@@ -162,9 +162,9 @@ h3.kr-header-page-action {
 	color: #FFF;
 	background: #666;
 	font-family: Verdana, Geneva, sans-serif;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	/* [disabled]border-radius: 5px; */
+	/* [disabled]-moz-border-radius: 5px; */
+	/* [disabled]-webkit-border-radius: 5px; */
 	padding: 5px;
 }
 .uif-headerField h4.uif-header {
@@ -1133,3 +1133,27 @@ span.uif-breadcrumbs ol {
 }
 
 span.uif-breadcrumbs span.kr-current { font-weight:bold}
+
+
+
+h3.uif-header {	
+	font-weight: bold;
+	margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+
+
+
+
+div.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div.uif-headerField {
+	padding:5px;
+	background-color: #CCC;
+}
+
+
+div.uif-headerField.uif-subSectionHeaderField h4.uif-header {padding:5px;}
+
+
+
+ div.uif-group.uif-collectionGroup.uif-stackedCollectionGroup.uif-stackedCollectionSection.uif-disclosure {}

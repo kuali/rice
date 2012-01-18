@@ -79,7 +79,7 @@
 		<property name="dao" ref="rice.ksb.bamDao" />
 	</bean>
 
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
 			<list>
 				<idref bean="matchAllTxInterceptor" />

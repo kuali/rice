@@ -1153,7 +1153,7 @@ public abstract class KualiAction extends DispatchAction {
 			if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification)) {
 				ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
 				String messageParamNamespaceCode = moduleService.getModuleConfiguration().getNamespaceCode();
-				String messageParamComponentCode = KRADConstants.DetailTypes.OLTP_LOCKOUT_DETAIL_TYPE;
+				String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;
 				String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
 				String lockoutMessage = parameterSerivce.getParameterValueAsString(messageParamNamespaceCode, messageParamComponentCode, messageParamName);
 				

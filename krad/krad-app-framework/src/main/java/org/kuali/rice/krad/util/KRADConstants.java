@@ -109,7 +109,6 @@ public final class KRADConstants {
         public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
         public static final String WORKGROUP_DETAIL_TYPE = "Notification";
-        public static final String OLTP_LOCKOUT_DETAIL_TYPE = "OLTPLockout";
         
     	private DetailTypes() {
     		throw new UnsupportedOperationException("do not call");

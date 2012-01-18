@@ -44,7 +44,7 @@ public class ModuleLockedController {
     public ModelAndView moduleLocked(@RequestParam(value = MODULE_PARAMETER, required = true) String moduleNamespaceCode) {
         ModelAndView modelAndView = new ModelAndView("moduleLocked");
         ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
-        String messageParamComponentCode = KRADConstants.DetailTypes.OLTP_LOCKOUT_DETAIL_TYPE;
+        String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;
         String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
         String lockoutMessage = parameterSerivce.getParameterValueAsString(moduleNamespaceCode, messageParamComponentCode, messageParamName);
         

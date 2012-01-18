@@ -591,7 +591,7 @@ public class ModuleServiceBase implements ModuleService {
         ModuleConfiguration configuration = this.getModuleConfiguration();
         if (configuration != null) {
             String namespaceCode = configuration.getNamespaceCode();
-            String componentCode = KRADConstants.DetailTypes.OLTP_LOCKOUT_DETAIL_TYPE;
+            String componentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;
             String parameterName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_ACTIVE_IND;
             ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
             String shouldLockout = parameterService.getParameterValueAsString(namespaceCode, componentCode,

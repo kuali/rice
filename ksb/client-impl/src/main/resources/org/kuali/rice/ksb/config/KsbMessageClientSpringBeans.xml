@@ -113,7 +113,7 @@
         <property name="startupDelay" value="10" />
 	</bean>
 
-  	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
+  	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
 			<list>
 				<idref bean="matchAllTxInterceptor" />

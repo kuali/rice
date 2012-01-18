@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
  * This class tests the authz aspects of KEN
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@BaselineMode(Mode.CLEAR_DB)
 public class NotificationAuthorizationServiceImplTest extends KENTestCase {
 
     public NotificationAuthorizationServiceImplTest() {

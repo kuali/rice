@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
  * Tests NotificationMessageContentService
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@BaselineMode(Mode.CLEAR_DB)
 public class NotificationMessageContentServiceImplTest extends KENTestCase {
     private static final String SAMPLE_EVENT_MESSAGE = "sample_message_event_type.xml";
     private static final String SAMPLE_SIMPLE_MESSAGE = "sample_message_simple_type.xml";

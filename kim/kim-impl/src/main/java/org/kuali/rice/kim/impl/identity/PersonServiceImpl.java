@@ -210,6 +210,18 @@ public class PersonServiceImpl implements PersonService {
 			return people.get(0);
 
 		}
+		
+	    // If no person was found above, check for inactive records
+        EntityDefault entity = getIdentityService().getEntityDefaultByEmployeeId(employeeId);
+        if (entity != null) {
+            if ( !entity.getPrincipals().isEmpty() ) {
+                Principal principal = getIdentityService().getPrincipal(entity.getPrincipals().get(0).getPrincipalId());
+                if (principal != null) {
+                    return convertEntityToPerson( entity, principal );
+                }  
+            }
+        }
+
 		return null;
 	}
 	
@@ -371,12 +383,16 @@ public class PersonServiceImpl implements PersonService {
 
         if ( criteria != null ) {
 			for ( String key : criteria.keySet() ) {
-						
-				//check active radio button
-				if(key.equals(KIMPropertyConstants.Person.ACTIVE)) {
-					newCriteria.put(KIMPropertyConstants.Person.ACTIVE, criteria.get(KIMPropertyConstants.Person.ACTIVE));
-				}
-			
+			    //check active radio button
+	            if(key.equals(KIMPropertyConstants.Person.ACTIVE)) {
+	                newCriteria.put(KIMPropertyConstants.Person.ACTIVE, criteria.get(KIMPropertyConstants.Person.ACTIVE));
+	            } else {
+	                // The following if statement enables the "both" button to work correctly.
+	                if (!(criteria.containsKey(KIMPropertyConstants.Person.ACTIVE))) {
+	                    newCriteria.remove( KIMPropertyConstants.Person.ACTIVE );
+	                }
+	            }
+	            
 				// if no value was passed, skip the entry in the Map
 				if ( StringUtils.isEmpty( criteria.get(key) ) ) {
 					continue;
@@ -440,7 +456,8 @@ public class PersonServiceImpl implements PersonService {
 				if ( key.equals( "campusCode" ) ) {
 					affiliationDefaultOnlyCriteria = true;
 				}
-			}		
+			} 
+			
 			if ( nameCriteria ) {
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "active", "Y" );
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "defaultValue", "Y" );
@@ -467,8 +484,8 @@ public class PersonServiceImpl implements PersonService {
 			}
 			if ( affiliationDefaultOnlyCriteria ) {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "defaultValue", "Y" );
-			}
-		}
+			} 
+        }   
 		
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Converted: " + newCriteria );

@@ -135,7 +135,18 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     	Collection<EntityDefaultInfoCacheBo> entities = businessObjectService.findMatching(EntityDefaultInfoCacheBo.class, criteria);
     	return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
     }
-
+    
+    @Override
+    public EntityDefault getEntityDefaultFromArchiveByEmployeeId(String employeeId) {
+        if (StringUtils.isBlank(employeeId)) {
+            throw new IllegalArgumentException("employeeId is blank");
+        }
+        Map<String,String> criteria = new HashMap<String, String>(1);
+        criteria.put("employeeId", employeeId);
+        Collection<EntityDefaultInfoCacheBo> entities = businessObjectService.findMatching(EntityDefaultInfoCacheBo.class, criteria);
+        return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
+    }
+    
     @Override
 	public void saveEntityDefaultToArchive(EntityDefault entity) {
     	if (entity == null) {

@@ -197,6 +197,21 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
     	return entity;
 	}
 
+    /**
+     * This method first tries the inner IdentityService impl, and resorts to
+     * the IdentityArchiveService if need be.
+     */
+    @Override
+    public EntityDefault getEntityDefaultByEmployeeId(String employeeId) {
+        EntityDefault entity = getInnerIdentityService().getEntityDefaultByEmployeeId(employeeId);
+        if ( entity == null ) {
+            entity = getIdentityArchiveService().getEntityDefaultFromArchiveByEmployeeId( employeeId );
+        } else {
+            getIdentityArchiveService().saveEntityDefaultToArchive(entity);
+        }
+        return entity;
+    }
+
     @Override
     public EntityDefaultQueryResults findEntityDefaults( QueryByCriteria queryByCriteria) {
         return getInnerIdentityService().findEntityDefaults(queryByCriteria);
@@ -221,7 +236,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	public Entity getEntityByPrincipalName(String principalName) {
 		return getInnerIdentityService().getEntityByPrincipalName(principalName);
 	}
-
+    
+    @Override
+	public Entity getEntityByEmployeeId(String employeeId) {
+		return getInnerIdentityService().getEntityByEmployeeId(employeeId);
+	}
 
     @Override
     public Entity createEntity(Entity entity) {

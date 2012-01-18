@@ -153,6 +153,22 @@ public interface IdentityService {
     @Cacheable(value= Entity.Cache.NAME, key="'principalName=' + #p0")
 	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
 
+    /**
+     * Gets a {@link org.kuali.rice.kim.api.identity.entity.Entity} from a employeeId.
+     *
+     * <p>
+     *   This method will return null if the Entity does not exist.
+     * </p>
+     *
+     * @param employeeId the unique id to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.Entity} or null
+     * @throws IllegalArgumentException if the employeeId is blank
+     */
+    @WebMethod(operationName = "getEntityByEmployeeId")
+    @WebResult(name = "entity")
+    @Cacheable(value= Entity.Cache.NAME, key="'employeeId=' + #p0")
+    Entity getEntityByEmployeeId(@WebParam(name = "employeeId") String employeeId)  throws RiceIllegalArgumentException;
+
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.entity.Entity} exactly like the entity passed in.
@@ -252,6 +268,23 @@ public interface IdentityService {
     @Cacheable(value= EntityDefault.Cache.NAME, key="'principalName=' + #p0")
 	EntityDefault getEntityDefaultByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
     
+    /**
+     * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} from an employeeId.
+     * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
+     * default values of its subclasses
+     *
+     * <p>
+     *   This method will return null if the Entity does not exist.
+     * </p>
+     *
+     * @param employeeId the unique id to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
+     * @throws IllegalArgumentException if the employeeId is blank
+     */
+    @WebMethod(operationName = "getEntityDefaultByEmployeeId")
+    @WebResult(name = "entityDefault")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'employeeId=' + #p0")
+    EntityDefault getEntityDefaultByEmployeeId(@WebParam(name = "employeeId") String employeeId)  throws RiceIllegalArgumentException;
     
 
     /**

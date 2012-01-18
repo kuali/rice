@@ -73,6 +73,21 @@ public interface IdentityArchiveService {
      */
 	EntityDefault getEntityDefaultFromArchiveByPrincipalName(String principalName) throws IllegalArgumentException;
 	
+    /**
+     * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} with an employeeId from the archive.
+     * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
+     * default values of its subclasses
+     *
+     * <p>
+     *   This method will return null if the Entity does not exist.
+     * </p>
+     *
+     * @param employeeId the unique employeeId to retrieve the entity by. cannot be null.
+     * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
+     * @throws IllegalArgumentException if the employeeId is blank
+     */
+    EntityDefault getEntityDefaultFromArchiveByEmployeeId(String employeeId) throws IllegalArgumentException;
+    
 	/**
      * Saves a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} to the archive.
      * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains

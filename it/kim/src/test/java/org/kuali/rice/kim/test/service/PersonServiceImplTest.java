@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -132,21 +133,69 @@ public class PersonServiceImplTest extends KIMTestCase {
 	}
 
 	@Test
+	public void testGetPersonInactive() {
+		Person p = personService.getPerson( "inactiveuserid" );
+		assertNotNull( "person object must not be null", p );
+        assertEquals("principal ID does not match", "inactiveusernm", p.getPrincipalName());
+
+	}
+	
+	@Test
 	public void testGetPersonByPrincipalName() {
 		Person p = personService.getPersonByPrincipalName( "kuluser" );
 		assertNotNull( "person object must not be null", p );
 		assertEquals( "person name does not match", "KULUSER", p.getFirstName() );
 		assertEquals( "principal id does not match", "KULUSER", p.getPrincipalId() );
 	}
-
-
+	
+	@Test
+	public void testGetPersonByPrincipalNameInactive() {
+		Person p = personService.getPersonByPrincipalName( "inactiveusernm" );
+        assertEquals("principal ID does not match", "inactiveuserid", p.getPrincipalId());
+    }
+	
+    @Test
+    public void testGetPersonByEmployeeIdNoInfo() {
+        Person p = personService.getPersonByEmployeeId( "" );
+        assertNull( "person object will be null", p );
+    }
+    
+    @Test
+    public void testGetPersonByEmployeeIdNotFound() {
+        Person p = personService.getPersonByEmployeeId( "NotFound" );
+        assertNull( "person object will be null", p );
+    }
+    
+    @Test
+    public void testGetPersonByEmployeeIdActive() {
+        Person p = personService.getPersonByEmployeeId( "0000001138" );
+        assertNotNull( "person object must not be null", p );
+        assertEquals( "person name does not match", "activeUserFirst", p.getFirstName() );
+        assertEquals( "principal id does not match", "activeuserid", p.getPrincipalId() );
+    }
+    
+    @Test
+    public void testGetPersonByEmployeeIdInactiveUser() {
+        Person p = personService.getPersonByEmployeeId( "0000001139" );
+        assertNotNull( "person object must not be null", p );
+        assertEquals( "person name does not match", "InactiveUserFirst", p.getFirstName() );
+        assertEquals( "principal id does not match", "inactiveuserid", p.getPrincipalId() );
+    }
+    
+    @Test
+    public void testGetPersonByEmployeeIdInactiveEmp() {
+        Person p = personService.getPersonByEmployeeId( "0000001140" );
+        assertNotNull( "person object must not be null", p );
+        assertEquals( "person name does not match", "InactiveEmplFirst", p.getFirstName() );
+        assertEquals( "principal id does not match", "inactiveempid", p.getPrincipalId() );
+    }
+    
 	@Test
 	public void testConvertPersonPropertiesToEntityProperties() {
 		HashMap<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "firstName", "System User" );
 		Map<String,String> entityCriteria = personService.convertPersonPropertiesToEntityProperties( criteria );
-		assertEquals( "number of criteria is not correct", 6, entityCriteria.size() );
-		assertNotNull( "criteria must filter for active entities", entityCriteria.get( "active" ) );
+		assertEquals( "number of criteria is not correct", 5, entityCriteria.size() );
 		assertNotNull( "criteria must filter for active entity types", entityCriteria.get( "entityTypeContactInfos.active" ) );
 		assertNotNull( "criteria must filter on entity type code", entityCriteria.get( "entityTypeContactInfos.entityTypeCode" ) );
 		assertNotNull( "criteria must filter for first name", entityCriteria.get( "names.firstName" ) );
@@ -157,25 +206,43 @@ public class PersonServiceImplTest extends KIMTestCase {
 	/**
 	 * Test method for {@link org.kuali.rice.kim.impl.identity.PersonServiceImpl#findPeople(Map)}.
 	 */
-	@Test
-	public void testFindPeople() {
-		HashMap<String,String> criteria = new HashMap<String,String>();
-		criteria.put( "firstName", "KULUSER" );
-		List<Person> people = personService.findPeople( criteria );
-		assertNotNull( "result must not be null", people );
-		assertEquals( "wrong number of people returned", 1, people.size() );
-		Person p = people.get( 0 );
-		assertEquals( "name must match criteria", "KULUSER", p.getFirstName() );
-		assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );
-	}
+    @Test
+    public void testFindPeople() {
+        HashMap<String,String> criteria = new HashMap<String,String>();
+        criteria.put( "firstName", "KULUSER" );
+        List<Person> people = personService.findPeople( criteria );
+        assertNotNull( "result must not be null", people );
+        assertEquals( "wrong number of people returned", 1, people.size() );
+        Person p = people.get( 0 );
+        assertEquals( "name must match criteria", "KULUSER", p.getFirstName() );
+        assertEquals( "principal name must be kuluser", "kuluser", p.getPrincipalName() );
+    }
+	
+    @Test
+    public void testFindPeopleInactive() {
+        HashMap<String,String> criteria = new HashMap<String,String>();
+        criteria.put( "active", "N" );
+        List<Person> people = personService.findPeople( criteria );
+        assertNotNull( "result must not be null", people );
+        assertEquals( "wrong number of people returned", 1, people.size() );
+    }
 
+    @Test
+    public void testFindPeopleBothInactiveAndActive() {
+        HashMap<String,String> criteria = new HashMap<String,String>();
+        criteria.put( "firstName", "InactiveUserFirst" );
+        List<Person> people = personService.findPeople( criteria );
+        assertNotNull( "result must not be null", people );
+        assertEquals( "wrong number of people returned", 1, people.size() );
+    }    
+    
     @Test
     public void testFindPeopleByWildcard() {
         HashMap<String,String> criteria = new HashMap<String,String>();
         criteria.put( "principalName", "!quick*" );
         List<Person> people = personService.findPeople( criteria );
         assertNotNull( "result must not be null", people );
-        assertEquals( "wrong number of people returned", 50, people.size() );
+        assertEquals( "wrong number of people returned", 53, people.size() );
         for (Person p: people) {
             if (p.getPrincipalName().startsWith("quick")) {
                 fail("Invalid wildcard search results");

@@ -125,6 +125,17 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityBo.to(entity);
 	}
+    
+    @Override
+	public Entity getEntityByEmployeeId(String employeeId) throws RiceIllegalArgumentException{
+        incomingParamCheck(employeeId, "employeeId");
+
+		EntityBo entity = getEntityBoByEmployeeId(employeeId);
+		if ( entity == null ) {
+			return null;
+		}
+		return EntityBo.to(entity);
+	}
 	
     @Override
 	public EntityDefault getEntityDefault(String entityId) throws RiceIllegalArgumentException {
@@ -159,6 +170,17 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityBo.toDefault(entity);
 	}
 	
+    @Override
+    public EntityDefault getEntityDefaultByEmployeeId(String employeeId) throws RiceIllegalArgumentException {
+        incomingParamCheck(employeeId, "employeeId");
+
+        EntityBo entity = getEntityBoByEmployeeId(employeeId);
+        if ( entity == null ) {
+            return null;
+        }
+        return EntityBo.toDefault(entity);
+    }
+    
     @Override
 	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) throws RiceIllegalArgumentException {
         incomingParamCheck(principalName, "principalName");
@@ -705,6 +727,16 @@ public class IdentityServiceImpl implements IdentityService {
         return getEntityByKeyValue("principals." + KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
 	}
 
+	/**
+     * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByEmployeeId(java.lang.String)
+     */
+    protected EntityBo getEntityBoByEmployeeId(String employeeId) {
+        if ( StringUtils.isBlank( employeeId ) ) {
+            return null;
+        }
+        return getEntityByKeyValue("employmentInformation." + KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId);
+    }
+    
 	/**
 	 * Generic helper method for performing a lookup through the business object service.
 	 */

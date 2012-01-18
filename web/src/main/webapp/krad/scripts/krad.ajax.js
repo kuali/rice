@@ -19,12 +19,25 @@
 
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock){
 	var data;
+    //methodToCall checks
 	if(methodToCall != null){
 		data = {methodToCall: methodToCall, renderFullView: false};
 	}
 	else{
-		data = {renderFullView: false};
+        var methodToCallInput = jq("input[name='methodToCall']");
+        if(methodToCallInput.length > 0){
+            methodToCall = jq("input[name='methodToCall']").val();
+        }
+        //check to see if methodToCall is still null
+        if(methodToCall == null || methodToCall === ""){
+            data = {renderFullView: false};
+        }
+        else{
+            data = {methodToCall: methodToCall, renderFullView: false};
+        }
 	}
+    //remove this since the methodToCall was passed in or extracted from the page, to avoid issues
+    jq("input[name='methodToCall']").remove();
 	
 	if(additionalData != null){
 		jq.extend(data, additionalData);
@@ -92,8 +105,8 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 	}
 	
 	jq.extend(submitOptions, elementBlockingOptions);
-	
-	jq("#kualiForm").ajaxSubmit(submitOptions);
+	var form = jq("#kualiForm");
+	form.ajaxSubmit(submitOptions);
 }
 
 //Called when a form is being persisted to assure all validation passes

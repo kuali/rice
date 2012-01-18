@@ -232,7 +232,7 @@
 			<ref bean="matchAllWithPropReq" />
 		</property>
 	</bean>
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
 			<list>
 				<idref local="matchAllTxInterceptor" />

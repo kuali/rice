@@ -126,7 +126,7 @@ public final class ParameterKey extends AbstractDataTransferObject {
 	}
 
     public String getCacheKey() {
-        return this.applicationId + this.namespaceCode + this.componentCode + this.name;
+        return this.applicationId + ":" + this.namespaceCode + ":" + this.componentCode + ":" + this.name;
     }
     
 	/**

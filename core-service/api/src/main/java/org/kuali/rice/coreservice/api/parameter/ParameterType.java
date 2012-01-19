@@ -53,13 +53,13 @@ public final class ParameterType extends AbstractDataTransferObject implements P
 	
 	private static final long serialVersionUID = -6775774408849087013L;
 
-	@XmlElement(name = Elements.CODE, required=true)
+	@XmlElement(name = Elements.CODE, required = true)
     private final String code;
 
-    @XmlElement(name = Elements.NAME, required=false)
+    @XmlElement(name = Elements.NAME, required = false)
     private final String name;
 
-    @XmlElement(name = Elements.ACTIVE, required=false)
+    @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
 
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)

@@ -103,13 +103,6 @@ public class CoreConfigurer extends ModuleConfigurer {
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations = new ArrayList<String>();
 		springFileLocations.add( "classpath:org/kuali/rice/core/config/CORESpringBeans.xml" );
-		if ( getRunMode().equals( RunMode.LOCAL ) || getRunMode().equals( RunMode.EMBEDDED ) ) {
-			//FIXME: need to move the ParameterRepositoryService & NamespaceServiceImpl and load it here
-		}
-		if ( isExposeServicesOnBus() ) {
-            //in krad for now as a hack
-		    //springFileLocations.add("classpath:org/kuali/rice/core/config/COREServiceBusSpringBeans.xml");
-		}
 		return springFileLocations;
 	}
 	

@@ -25,6 +25,11 @@ import org.kuali.rice.core.api.uif.RemotableDatepicker
 import org.kuali.rice.core.api.uif.RemotableTextInput
 import static org.junit.Assert.assertEquals
 import org.kuali.rice.kns.web.ui.Field
+import org.kuali.rice.kns.web.ui.Column
+import org.kuali.rice.core.api.util.type.KualiDecimal
+import org.kuali.rice.core.web.format.CurrencyFormatter
+import org.kuali.rice.core.web.format.Formatter
+import org.kuali.rice.core.web.format.IntegerFormatter
 
 /**
  * Tests FieldUtils
@@ -34,6 +39,46 @@ class FieldUtilsTest {
     /**
      * Performs an as-of-yet very superficial check of remotableattributefield conversion
      */
+    @Test
+    void testRemotableAttributeFieldFormatter(){
+        def field = RemotableAttributeField.Builder.create("string")
+        field.shortLabel = "s"
+        field.dataType = DataType.STRING
+        field.maxLength = 10
+        field.formatterName = "org.kuali.rice.core.api.util.type.KualiDecimal"
+        Column col = FieldUtils.constructColumnFromAttributeField(field.build())
+        assertEquals(CurrencyFormatter.class,col.getFormatter().getClass())
+    }
+    @Test
+   void testRemotableAttributeFieldFormatterEmpty(){
+       def field = RemotableAttributeField.Builder.create("string")
+       field.shortLabel = "s"
+       field.dataType = DataType.STRING
+       field.maxLength = 10
+       Column col = FieldUtils.constructColumnFromAttributeField(field.build())
+       assertEquals(Formatter.class,col.getFormatter().getClass())
+   }
+
+    @Test
+   void testRemotableAttributeFieldDataTypeFormatter(){
+       def field = RemotableAttributeField.Builder.create("integer")
+       field.shortLabel = "s"
+       field.dataType = DataType.INTEGER
+       field.maxLength = 10
+       Column col = FieldUtils.constructColumnFromAttributeField(field.build())
+       assertEquals(IntegerFormatter.class,col.getFormatter().getClass())
+   }
+
+     @Test
+   void testRemotableAttributeFieldFormatterDoesNotExist(){
+       def field = RemotableAttributeField.Builder.create("integer")
+       field.shortLabel = "s"
+       field.dataType = DataType.INTEGER
+       field.maxLength = 10
+       field.formatterName = "xyz"
+       Column col = FieldUtils.constructColumnFromAttributeField(field.build())
+       assertEquals(IntegerFormatter.class,col.getFormatter().getClass())
+   }
     @Test
     void testConvertRemotableAttributeFields() {
         def fields = [ ] as ArrayList<RemotableAttributeField>

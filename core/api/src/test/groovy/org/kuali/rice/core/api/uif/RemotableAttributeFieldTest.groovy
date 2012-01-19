@@ -42,6 +42,7 @@ class RemotableAttributeFieldTest {
             <minValue>-10</minValue>
             <maxValue>99</maxValue>
             <regexConstraint>\\w</regexConstraint>
+            <formatterName>KualiDecimal</formatterName>
             <regexContraintMsg>a_regexContraintMsg</regexContraintMsg>
             <required>true</required>
             <defaultValues>
@@ -144,6 +145,7 @@ class RemotableAttributeFieldTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(o, XML2, RemotableAttributeField.class);
 	}
 
+
     private RemotableAttributeField.Builder create() {
 		RemotableAttributeField.Builder o = RemotableAttributeField.Builder.create("a_name");
         return o
@@ -164,6 +166,7 @@ class RemotableAttributeFieldTest {
         o.maxValue = 99
         o.regexConstraint = "\\w"
         o.regexContraintMsg = "a_regexContraintMsg"
+        o.formatterName="KualiDecimal"
         o.required = true
         o.defaultValues = ["foo", "bar"]
         RemotableSelect.Builder b = RemotableSelect.Builder.create(["foo" : "foo", "bar" : "bar"]);

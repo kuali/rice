@@ -55,6 +55,7 @@ import java.util.List;
 		RemotableAttributeField.Elements.MAX_VALUE,
 		RemotableAttributeField.Elements.REGEX_CONSTRAINT,
 		RemotableAttributeField.Elements.REGEX_CONSTRAINT_MSG,
+        RemotableAttributeField.Elements.FORMATTER_NAME,
 		RemotableAttributeField.Elements.REQUIRED,
 		RemotableAttributeField.Elements.DEFAULT_VALUES,
         RemotableAttributeField.Elements.ATTRIBUTE_LOOKUP_SETTINGS,
@@ -105,6 +106,9 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
     @XmlElement(name = Elements.REGEX_CONSTRAINT_MSG, required = false)
     private final String regexContraintMsg;
+
+    @XmlElement(name = Elements.FORMATTER_NAME, required = false)
+    private final String formatterName;
 
     @XmlElement(name = Elements.REQUIRED, required = false)
     private final boolean required;
@@ -161,6 +165,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.maxValue = null;
         this.regexConstraint = null;
         this.regexContraintMsg = null;
+        this.formatterName = null;
         this.required = false;
         this.defaultValues = null;
         this.attributeLookupSettings = null;
@@ -187,6 +192,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.maxValue = b.maxValue;
         this.regexConstraint = b.regexConstraint;
         this.regexContraintMsg = b.regexContraintMsg;
+        this.formatterName = b.formatterName;
         this.required = b.required;
         if (b.defaultValues == null) {
             this.defaultValues = Collections.emptyList();
@@ -288,6 +294,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
+    public String getFormatterName() {
+        return formatterName;
+    }
+    @Override
     public boolean isRequired() {
         return required;
     }
@@ -358,6 +368,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         private String regexConstraint;
         private String regexContraintMsg;
 
+        private String formatterName;
         private boolean required;
 
         private Collection<String> defaultValues = new ArrayList<String>();
@@ -393,6 +404,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             b.setMaxValue(field.getMaxValue());
             b.setRegexConstraint(field.getRegexConstraint());
             b.setRegexContraintMsg(field.getRegexContraintMsg());
+            b.setFormatterName(field.getFormatterName());
             b.setRequired(field.isRequired());
             b.setDefaultValues(field.getDefaultValues());
             if (field.getAttributeLookupSettings() != null) {
@@ -553,6 +565,15 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         @Override
+        public String getFormatterName() {
+           return formatterName;
+        }
+
+        public void setFormatterName(String formatterName) {
+           this.formatterName = formatterName;
+        }
+
+        @Override
         public boolean isRequired() {
             return required;
         }
@@ -630,6 +651,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         static final String MAX_VALUE = "maxValue";
         static final String REGEX_CONSTRAINT = "regexConstraint";
         static final String REGEX_CONSTRAINT_MSG = "regexContraintMsg";
+        static final String FORMATTER_NAME = "formatterName";
         static final String REQUIRED = "required";
         static final String DEFAULT_VALUES = "defaultValues";
         static final String DEFAULT_VALUE = "defaultValue";

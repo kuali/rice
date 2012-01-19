@@ -33,6 +33,7 @@ import org.kuali.rice.core.api.uif.RemotableSelect;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
@@ -329,7 +330,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
         /**
 
-         TODO - KULRICE-5737 - Figure out how to handle these formatters
+
 
          String formatterClass = (searchDefAttributes.getNamedItem("formatterClass") == null) ? null : searchDefAttributes.getNamedItem("formatterClass").getNodeValue();
          if (!StringUtils.isEmpty(formatterClass)) {
@@ -349,6 +350,20 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
          }
 
          */
+
+         String formatter = field.display.formatter == null ? null : field.display.formatter;
+         fieldBuilder.setFormatterName(formatter);
+
+        try {
+        // Register this formatter so that you can use it later in FieldUtils when processing
+            if(StringUtils.isNotEmpty(formatter)){
+                Formatter.registerFormatter(Class.forName(formatter), Class.forName(formatter));
+            }
+        } catch (ClassNotFoundException e) {
+         LOG.error("Unable to find formatter class: " + formatter);
+         throw new RuntimeException("Unable to find formatter class: " + formatter);
+         }
+
 
         // Lookup
         // XMLAttributeUtils.establishFieldLookup(fieldBuilder, childNode); // this code can probably die now that parsing has moved out to xmlsearchableattribcontent

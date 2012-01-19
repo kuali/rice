@@ -123,6 +123,14 @@ public interface RemotableAttributeFieldContract {
     String getRegexContraintMsg();
 
     /**
+        * The name of the formatter
+        *
+        * @return the formatter name.
+        */
+       String getFormatterName();
+
+
+    /**
      * Whether the attribute is a required attribute. Defaults to false.
      * @return whether the attribute is required.
      */

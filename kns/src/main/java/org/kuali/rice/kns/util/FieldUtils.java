@@ -1728,7 +1728,19 @@ public final class FieldUtils {
         }
         column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getClass()));
         column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getClass()));
-        column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+
+        if(StringUtils.isNotEmpty(attributeField.getFormatterName())) {
+            try  {
+                  column.setFormatter(Formatter.getFormatter(Class.forName(attributeField.getFormatterName())));
+            } catch (ClassNotFoundException e) {
+                  LOG.error("Unable to find formatter class: " + attributeField.getFormatterName());
+                  // Fall back to datatype based formatter
+                column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+            }
+        }  else {
+         column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+        }
+
         return column;
     }
 

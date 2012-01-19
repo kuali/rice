@@ -51,22 +51,4 @@
     <property name="servicePath" value="#{ T(org.kuali.rice.krms.api.KrmsConstants).SERVICE_PATH_SOAP }"/>
   </bean>
 
-  <!-- CACHE SETUP!  uncomment when cache is configured -->
-  <!--<bean id="krmsLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-      <property name="cacheManager">
-        <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="${krms.ehcache.config.location}"/>
-      </property>
-    </bean>-->
-
-    <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-    <!--<bean id="krmsCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="krmsLocalCacheManager" />-->
-
-  <!--<bean id="krsmCacheService.exporter" parent="krmsServiceExporter">
-    <property name="serviceDefinition">
-      <bean parent="krmsService"
-            p:service-ref="krmsCacheService"
-            p:localServiceName="krmsCacheService"/>
-    </property>
-  </bean>-->
-
 </beans>

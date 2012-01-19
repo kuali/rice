@@ -25,7 +25,7 @@
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_TC0' ;
+select count(*) into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_T DROP CONSTRAINT KREW_DOC_TYP_TC0';
 ELSE
@@ -36,7 +36,7 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_TC0' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_TC0';
 ELSE
@@ -47,7 +47,7 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_TI1' ;
+select count(*) into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_TI1' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_T DROP CONSTRAINT KREW_DOC_TYP_TI1';
 ELSE
@@ -58,7 +58,7 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_TI1' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_TI1' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_TI1';
 ELSE
@@ -208,7 +208,7 @@ CREATE INDEX KREW_DOC_TYP_TI6
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_HDR_TC0' ;
+select count(*) into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_HDR_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_HDR_T DROP CONSTRAINT KREW_DOC_HDR_TC0';
 ELSE
@@ -219,7 +219,7 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_HDR_TC0' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_DOC_HDR_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_HDR_TC0';
 ELSE
@@ -331,7 +331,7 @@ CREATE INDEX KREW_DOC_HDR_TI9
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_PLCY_RELN_TC0' ;
+select count(*) into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_PLCY_RELN_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_PLCY_RELN_T DROP CONSTRAINT KREW_DOC_TYP_PLCY_RELN_TC0';
 ELSE
@@ -342,7 +342,7 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_PLCY_RELN_TC0' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_PLCY_RELN_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_PLCY_RELN_TC0';
 ELSE
@@ -401,7 +401,7 @@ PRIMARY KEY (DOC_TYP_ID,DOC_PLCY_NM)
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_APP_DOC_STAT_TC0' ;
+select count(*) into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_APP_DOC_STAT_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_APP_DOC_STAT_T DROP CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0';
 ELSE
@@ -412,7 +412,7 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_APP_DOC_STAT_TC0' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_APP_DOC_STAT_TC0' ;
 IF c>0 THEN
 EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_APP_DOC_STAT_TC0';
 ELSE

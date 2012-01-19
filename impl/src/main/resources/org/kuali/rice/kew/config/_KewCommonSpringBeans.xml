@@ -47,7 +47,7 @@
 
   <cache:annotation-driven cache-manager="rice.kew.import.globalCacheManager"/>
 
-  <bean id="kewCacheService"
+  <bean id="kewCacheAdminService"
         class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
         p:cacheManager-ref="kewLocalCacheManager"/>
 
@@ -68,11 +68,11 @@
     p:serviceVersion="${rice.version}"
     p:servicePath="#{ T(org.kuali.rice.kew.api.KewApiConstants).SERVICE_PATH_SOAP }"/>
 
-  <bean id="kewCacheService.exporter" parent="kewServiceExporter" p:exportIf="kewCacheService.expose">
+  <bean id="kewCacheAdminService.exporter" parent="kewServiceExporter" p:exportIf="kewCacheAdminService.expose">
     <property name="serviceDefinition">
       <bean parent="kewService"
-            p:service-ref="kewCacheService"
-            p:localServiceName="kewCacheService"
+            p:service-ref="kewCacheAdminService"
+            p:localServiceName="kewCacheAdminService"
             p:queue="false"/>
     </property>
   </bean>

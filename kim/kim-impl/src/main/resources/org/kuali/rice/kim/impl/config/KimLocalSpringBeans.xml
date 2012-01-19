@@ -24,10 +24,10 @@
   <import resource="classpath:org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimServiceBusSpringBeans.xml"/>
 
-  <!-- the distributed cache manager that calls into the kimCacheService on the ksb -->
+  <!-- the distributed cache manager that calls into the kimCacheAdminService on the ksb -->
   <bean id="kimDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
         p:cacheManager-ref="kimLocalCacheManager"
-        p:serviceName="{http://rice.kuali.org/kim/v2_0}kimCacheService"/>
+        p:serviceName="{http://rice.kuali.org/kim/v2_0}kimCacheAdminService"/>
 
   <bean id="rice.kim.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
         p:cacheManager-ref="kimDistributedCacheManager"/>

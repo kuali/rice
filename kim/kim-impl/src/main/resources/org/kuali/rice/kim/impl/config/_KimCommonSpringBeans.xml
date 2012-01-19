@@ -48,7 +48,7 @@
   <cache:annotation-driven cache-manager="rice.kim.import.globalCacheManager"/>
   
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-  <bean id="kimCacheService"
+  <bean id="kimCacheAdminService"
         class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
         p:cacheManager-ref="kimLocalCacheManager"/>
 
@@ -70,11 +70,11 @@
     p:serviceVersion="${rice.version}"
     p:servicePath="#{ T(org.kuali.rice.kim.api.KimConstants).SERVICE_PATH_SOAP }"/>
 
-  <bean id="kimCacheService.exporter" parent="kimServiceExporter" p:exportIf="kimCacheService.expose">
+  <bean id="kimCacheAdminService.exporter" parent="kimServiceExporter" p:exportIf="kimCacheAdminService.expose">
     <property name="serviceDefinition">
       <bean parent="kimService"
-            p:service-ref="kimCacheService"
-            p:localServiceName="kimCacheService"
+            p:service-ref="kimCacheAdminService"
+            p:localServiceName="kimCacheAdminService"
             p:queue="false"/>
     </property>
   </bean>

@@ -24,6 +24,9 @@
   <import resource="classpath:org/kuali/rice/kew/config/_KewCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml"/>
 
+  <bean id="rice.kew.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
+        p:cacheManager-ref="kewLocalCacheManager"/>
+
   <bean id="rice.kew.workflowDocumentActionsService"
         parent="rice.kew.remote.import"
         p:serviceName="workflowDocumentActionsService"

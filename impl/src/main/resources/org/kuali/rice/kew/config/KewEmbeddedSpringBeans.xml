@@ -35,18 +35,12 @@
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="parameterService"/>
 
-  <bean id="rice.kew.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="globalCacheManager"/>
-
-  <cache:annotation-driven cache-manager="rice.kew.import.globalCacheManager"/>
-
   <!-- the distributed cache manager that calls into the kimCacheService on the ksb -->
   <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
         p:cacheManager-ref="kewLocalCacheManager"
         p:serviceName="{http://rice.kuali.org/kew/v2_0}kewCacheService"/>
 
-  <bean id="rice.kim.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
+  <bean id="rice.kew.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
         p:cacheManager-ref="kewDistributedCacheManager"/>
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->

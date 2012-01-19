@@ -36,14 +36,14 @@ public interface ParameterService {
     /**
      * This will create a {@link Parameter} exactly like the parameter passed in.
      *
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#createParameter(org.kuali.rice.core.api.parameter.Parameter)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#createParameter(org.kuali.rice.coreservice.api.parameter.Parameter)} for details
      */
     Parameter createParameter(Parameter parameter);
 
     /**
      * This will update a {@link Parameter}.
      *
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#updateParameter(org.kuali.rice.core.api.parameter.Parameter)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#updateParameter(org.kuali.rice.coreservice.api.parameter.Parameter)} for details
      */
     Parameter updateParameter(Parameter parameter);
 
@@ -126,7 +126,7 @@ public interface ParameterService {
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(Class<?> componentClass, String parameterName);
 
@@ -151,7 +151,7 @@ public interface ParameterService {
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(Class<?> componentClass, String parameterName, String defaultValue);
 
@@ -175,7 +175,7 @@ public interface ParameterService {
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName);
 
@@ -199,7 +199,7 @@ public interface ParameterService {
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String defaultValue);
 
@@ -223,7 +223,7 @@ public interface ParameterService {
      * @return true, false, null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName);
 
@@ -248,7 +248,7 @@ public interface ParameterService {
      * @return true, false, or the defaultValue
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName, Boolean defaultValue);
 
@@ -271,7 +271,7 @@ public interface ParameterService {
      * @return true, false, null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName);
 
@@ -295,7 +295,7 @@ public interface ParameterService {
      * @return true, false, or the defaultValue
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValueAsBoolean(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName, Boolean defaultValue);
 
@@ -319,7 +319,7 @@ public interface ParameterService {
      * @return true or false
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameter(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameter(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Parameter getParameter(Class<?> componentClass, String parameterName);
 
@@ -342,7 +342,7 @@ public interface ParameterService {
      * @return true or false
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameter(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameter(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Parameter getParameter(String namespaceCode, String componentCode, String parameterName);
 
@@ -366,7 +366,7 @@ public interface ParameterService {
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValuesAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Collection<String> getParameterValuesAsString(Class<?> componentClass, String parameterName);
 
@@ -391,7 +391,7 @@ public interface ParameterService {
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getParameterValuesAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey)} for details
      */
     Collection<String> getParameterValuesAsString(String namespaceCode, String componentCode, String parameterName);
 
@@ -416,7 +416,7 @@ public interface ParameterService {
      * @param subParameterName the subParameter name
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getSubParameterValueAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey, String)} for details
      */
     String getSubParameterValueAsString(Class<?> componentClass, String parameterName, String subParameterName);
 
@@ -440,7 +440,7 @@ public interface ParameterService {
      * @return string value or null
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValueAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getSubParameterValueAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey, String)} for details
      */
     String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);
 
@@ -465,7 +465,7 @@ public interface ParameterService {
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getSubParameterValuesAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey, String)} for details
      */
     Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName, String subParameterName);
 
@@ -491,7 +491,7 @@ public interface ParameterService {
      * @return string values or empty Collection
      * @throws IllegalArgumentException if any arguments are null
      * @throws IllegalStateException if the application id is not configured correctly
-     * @see {@link org.kuali.rice.core.api.parameter.ParameterRepositoryService#getSubParameterValuesAsString(org.kuali.rice.core.api.parameter.ParameterKey, String)} for details
+     * @see {@link org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService#getSubParameterValuesAsString(org.kuali.rice.coreservice.api.parameter.ParameterKey, String)} for details
      */
     Collection<String> getSubParameterValuesAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName);
 }

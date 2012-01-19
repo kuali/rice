@@ -39,11 +39,12 @@ import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
                     param =  CoreFrameworkServiceLocator.getParameterService().createParameter(Parameter.Builder.create(object.getApplicationId(),
                               object.getNamespaceCode(),object.getComponentCode(), object.getName(), builder).build());
                 }
-                        Parameter.Builder b = Parameter.Builder.create(param);
-                        b.setValue(object.getValue());
-                        b.setDescription(object.getDescription());
-                        b.setEvaluationOperator(object.getEvaluationOperator());
-                        CoreFrameworkServiceLocator.getParameterService().updateParameter(b.build()) ;
+                Parameter.Builder b = Parameter.Builder.create(param);
+                b.setValue(object.getValue());
+                b.setDescription(object.getDescription());
+                b.setEvaluationOperator(object.getEvaluationOperator());
+                b.setVersionNumber(object.getVersionNumber());
+                CoreFrameworkServiceLocator.getParameterService().updateParameter(b.build()) ;
 
 
 

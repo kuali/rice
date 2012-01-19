@@ -49,8 +49,8 @@
   	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.createDate}" />&nbsp;</td>
   	  </tr>	  		 
   	  <tr>
-  	    <td width="33%" align=right class="thnormal">Document Status Modification Date:</td>
-  	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.statusModDate}" /></td>
+  	    <td width="33%" align=right class="thnormal">Document Modification Date:</td>
+  	    <td width="66%" class="datacell"><c:out value="${DocumentOperationForm.dateModified}" /></td>
   	  </tr>	
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Approved Date:</td>

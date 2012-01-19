@@ -43,7 +43,7 @@ addCalendar("toDate", "Select Date", "toDate", "RuleForm");
 addCalendar("createDate", "Select Date", "createDate", "DocumentOperationForm");
 addCalendar("approvedDate", "Select Date", "approvedDate", "DocumentOperationForm");
 addCalendar("finalizedDate", "Select Date", "finalizedDate", "DocumentOperationForm");
-addCalendar("statusModDate", "Select Date", "statusModDate", "DocumentOperationForm");
+addCalendar("dateModified", "Select Date", "dateModified", "DocumentOperationForm");
 addCalendar("routeStatusDate", "Select Date", "routeStatusDate", "DocumentOperationForm");
 addCalendar("routeLevelDate", "Select Date", "routeLevelDate", "DocumentOperationForm");
 

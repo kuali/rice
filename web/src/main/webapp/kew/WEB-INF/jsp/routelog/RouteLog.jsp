@@ -62,7 +62,7 @@
                 <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message
                     key="routeLog.RouteLog.header.label.lastModified" /></kul:htmlAttributeHeaderCell>
                 <td  class="datacell" width="25%"><fmt:formatDate
-                    value="${routeHeader.statusModDate}"
+                    value="${routeHeader.dateModified}"
                     pattern="${RiceConstants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;</td>
 
             </tr>

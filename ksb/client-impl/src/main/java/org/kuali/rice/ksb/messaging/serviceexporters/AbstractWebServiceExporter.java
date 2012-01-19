@@ -93,11 +93,10 @@ public abstract class AbstractWebServiceExporter implements ServiceExporter {
     	
     	for (Server server:servers){		
     		String endpointAddress = server.getEndpoint().getEndpointInfo().getAddress();
-    
-    		if (endpointAddress.equals(serviceAddress)){
+    		if (endpointAddress.contains(serviceAddress)){
     			LOG.info("Service already published on CXF, not republishing: " + serviceAddress);
     			return true;
-    		}		
+    		}
     	}
     	
     	return false;

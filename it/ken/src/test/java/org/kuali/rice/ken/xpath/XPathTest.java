@@ -56,7 +56,7 @@ import static org.junit.Assert.assertEquals;
  * </ul>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@BaselineMode(Mode.CLEAR_DB)
 public class XPathTest extends KENTestCase {
     private static final String TEST_XML = "sample_message_event_type.xml";
 

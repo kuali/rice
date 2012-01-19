@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  * This class tests the user preferences service impl.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@BaselineMode(Mode.CLEAR_DB)
 public class UserPreferenceServiceImplTest extends KENTestCase {
     public static final String VALID_USER_ID = TestConstants.TEST_USER_ONE;
     public static final String VALID_CHANNEL_ID = TestConstants.VALID_CHANNEL_ONE_ID.toString();

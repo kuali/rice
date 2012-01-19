@@ -168,14 +168,18 @@
         </bean>
       </list>
     </property>
-    <property name="additionalCssFiles" ref="ks-css"/>
+    <property name="theme">
+      <bean parent="Uif-KradTheme"/>
+    </property>
     <property name="viewHelperServiceClassName"
               value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifCompView_KNS" parent="UifCompView">
-    <property name="additionalCssFiles" ref="kns-css"/>
+    <property name="theme">
+      <bean parent="Uif-ClassicKnsTheme"/>
+    </property>
   </bean>
 
   <!--

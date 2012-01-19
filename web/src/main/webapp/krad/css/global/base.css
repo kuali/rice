@@ -500,12 +500,9 @@ button img.rightActionImage, a img.rightActionImage{
 
 .tab-navigation-block li a {
 	float: left;
-	padding: 0.5em 1em;
+	padding: 0.5em;
+    margin-bottom: 0;
 	text-decoration: none;
-}
-
-.tab-navigation-block li.ui-state-active a {
-	color: black !important;
 }
 
 .ui-tabs li {

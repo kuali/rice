@@ -52,7 +52,7 @@
 			if(options.currentPage){
 				var currentTab = $(this).find("a[name='" + options.currentPage + "']");
 				if(currentTab){
-					currentTab.parent().addClass("ui-state-active");
+					currentTab.closest("li").addClass("ui-state-active");
 				}
 			}
 			//Handlers and animation
@@ -61,29 +61,29 @@
 					$(link_elements).each(function(i)
 					{
 						if(i == 0 && options.defaultSelectFirst && !options.currentPage){
-							$(this).parent().addClass("ui-state-active");
+							$(this).closest("li").addClass("ui-state-active");
 						}
 						$(this).focus(
 						function()
 						{
-							$(this).parent().addClass("ui-state-focus");
+							$(this).closest("li").addClass("ui-state-focus");
 						});
 
                         $(this).click(
 						function()
 						{
-							$(link_elements).each(function(){$(this).parent().removeClass("ui-state-active")});
-							$(this).parent().addClass("ui-state-active");
+							$(link_elements).each(function(){$(this).closest("li").removeClass("ui-state-active")});
+							$(this).closest("li").addClass("ui-state-active");
 						});
 				
 						$(this).hover(
 						function()
 						{
-							$(this).parent().addClass("ui-state-hover");
+							$(this).closest("li").addClass("ui-state-hover");
 						},		
 						function()
 						{
-							$(this).parent().removeClass("ui-state-hover");
+							$(this).closest("li").removeClass("ui-state-hover");
 						});
 				
 
@@ -91,7 +91,7 @@
 						$(this).blur(
 						function()
 						{
-							$(this).parent().removeClass("ui-state-focus");
+							$(this).closest("li").removeClass("ui-state-focus");
 						});
 					});
 			});

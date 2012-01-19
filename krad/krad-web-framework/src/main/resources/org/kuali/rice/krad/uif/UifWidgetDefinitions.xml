@@ -24,18 +24,6 @@
                            http://www.springframework.org/schema/util 
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-
-  <!-- CSS Profiles -->
-
-  <util:list id="kns-css">
-    <value>/krad/css/kns/theme-kns.css</value>
-  </util:list>
-
-  <util:list id="ks-css">
-    <value>/krad/css/ks/ks-theme.css</value>
-    <value>/krad/css/ks/fss-theme-ks.css</value>
-  </util:list>
-
   <!-- Widgets -->
 
   <bean id="Uif-Tabs" parent="Uif-Tabs-parentBean"/>

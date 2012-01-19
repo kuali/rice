@@ -308,9 +308,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
 .tab-navigation-block, .tab-navigation-block li {
 	border-bottom: 1px solid #C7C7C7;
 }
-.tab-navigation-block li.ui-state-active {
-	border-bottom: 1px solid #F6F6F6;
-	background: #ff0000;
+.uif-tabNavigationGroup li.ui-state-active {
+    background: none !important;
+	border-bottom: 1px solid white;
+    filter: none !important;
 }
 .ui-tabs .ui-widget-header {
 	background: none;
@@ -320,8 +321,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
 	
 }
 .ui-tabs-nav li.ui-state-active {
-	background-color: #ffffff;
+	background: none !important;
 	border-color: #CCCCCC;
+    filter: none !important;
 }
 .ui-tabs-nav li.ui-state-active a {
 	color: #333333;
@@ -334,9 +336,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
 	font-family: Verdana, Geneva, sans-serif;
 	/* [disabled]font-weight: bold; */
 }
-.ui-tabs-nav li.ui-state-hover {
-	color: #ffffff;
-	background-color:#900;
+.ui-tabs-nav li.ui-state-hover, .uif-tabNavigationGroup li.ui-state-hover,
+.ui-tabs-nav li.ui-state-focus, .uif-tabNavigationGroup li.ui-state-focus{
+    background: none !important;
+    background-color: rgb(102,102,102) !important;
+    filter: none !important;
 }
 div.ui-tabs.ui-widget-content {
 	border: none;
@@ -349,16 +353,17 @@ div.ui-tabs.ui-widget-content {
 d .ui-tabs .ui-tabs-panel {
 	border-bottom:none
 }
-.ui-tabs-nav li.ui-state-hover a {
-	color: #ff0000;
+.ui-tabs-nav li.ui-state-hover a, .uif-tabNavigationGroup li.ui-state-hover a,
+.ui-tabs-nav li.ui-state-focus a, .uif-tabNavigationGroup li.ui-state-focus a{
+	color: white;
 }
-.ui-tabs-nav li.ui-state-hover a:hover {
-	color: #ff0000;
+.ui-tabs-nav li.ui-state-hover a:hover, .uif-tabNavigationGroup li.ui-state-hover a:hover {
+	color: white;
 }
 .ui-tabs-nav li.ui-state-active a.clientError {
 	color:#ff0000;
 }
-.ui-tabs .ui-tabs-nav li {
+.ui-tabs .ui-tabs-nav li, .uif-tabNavigationGroup li {
 	border: 1px solid #CCC;
 	background: #f7f7f7; /* Old browsers */
 	background: -moz-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* FF3.6+ */
@@ -957,7 +962,6 @@ span .fieldLine.boxLayoutVerticalItem.clearfix a {
 }
 .uif-inputField input, .uif-inputField textarea {			/* was .field_attribute input */ /* renamed in xml and/or jsp */
 	margin:  0em 0;
-	padding-top: 0em;
 }
 table td, table th {
 	vertical-align: middle;

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRMS_TERM_RSLVR_PARM_SPEC_T NM="Campus Code"
+        TERM_RSLVR_ID="TERMRSLVR_999"
+        TERM_RSLVR_PARM_SPEC_ID="TRPARM_999" VER_NBR="1"/>
+</dataset>

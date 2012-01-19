@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRMS_TERM_PARM_T NM="Campus Code" TERM_ID="TERM_999"
+        TERM_PARM_ID="TPARM_999" VAL="BL" VER_NBR="1"/>
+</dataset>

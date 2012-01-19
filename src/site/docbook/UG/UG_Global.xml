@@ -1065,7 +1065,7 @@
             </sect3>
         </sect2>
     </sect1>
-    <sect1>
+    <sect1 xml:id="reporting_rice_jira">
         <title>Reporting an Issue with Kuali Rice</title>
         <para>An issue is a problem or error that you see in Kuali Rice. When you report an issue,
             you help us improve Rice and make it work better for everyone. </para>
@@ -1085,7 +1085,7 @@
                     <listitem>
                         <para>Find the Text Search section at the top of the of the Issue Navigator
                             page.</para>
-                         <figure><title>Jira Serach: Query options</title>   
+                         <figure><title>Jira Search: Query options</title>   
                             <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/Jira_search.png"/>

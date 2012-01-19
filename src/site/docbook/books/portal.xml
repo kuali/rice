@@ -20,17 +20,31 @@
     <info>
         <title>Welcome to the Rice ${project.version} Documentation Portal</title>
     </info>
-    <para>Released: ${docbook.build.timestamp}</para>
+    <para><emphasis role="bold">Released: ${docbook.build.timestamp}</emphasis></para>
     <para>Here you will find links to documentation for the Rice ${project.version} release as well as general resources and information about the Kuali Rice project.</para>
     <sect1 xml:id="download" xreflabel="Download">
         <title>Download</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="http://kuali.org/rice/download/beta">Download Kuali Rice ${project.version}</link></para></listitem>
-            <listitem><para>Maven Repository - <link xlink:href="http://nexus.kuali.org/content/groups/public/">http://nexus.kuali.org/content/groups/public/</link></para></listitem>
+            <listitem><para><link xlink:href="http://kuali.org/rice/download">Download Kuali Rice ${project.version}</link></para></listitem>
+            <listitem>
+                <para>Maven Repository - <link
+                        xlink:href="http://nexus.kuali.org/content/groups/public/"
+                        >http://nexus.kuali.org/content/groups/public/</link></para>
+            </listitem>
+            <listitem>
+                <para>From Kuali svn repository - <link
+                        xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}"
+                    >https://test.kuali.org/svn/rice/tags/rice-${project.version}</link></para>
+            </listitem>
         </itemizedlist>        
     </sect1>
     <sect1>
         <title>Release Documentation</title>
+        <para>Some of the documentation listed below has not been updated to reflect changes for
+            ${project.version}. If you find a problem, please <link xlink:href="UG.html#reporting_rice_jira">report
+                in Jira</link> and set the component to Documentation. Indicate the guide and
+            section that has the problem in the Jira. Thanks for your help in improving the
+            documentation!</para>
         <para>
             <orderedlist>
                 <listitem>
@@ -53,24 +67,25 @@
                 <listitem>
                     <para><emphasis role="bold">User Guide</emphasis> (<link xlink:href="UG.html"
                             >HTML</link> / <link xlink:href="../pdf/UG.pdf">PDF</link> ) - How to
-                        use a feature (for users)</para>
+                        use a feature </para>
                 </listitem>
+<!--            TODO: Flesh out this guide    
                 <listitem>
                     <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:href="CDG.html"
                         >HTML</link> / <link xlink:href="../pdf/CDG.pdf">PDF</link> ) -
                         How to build client applications that take advantage of the feature
                         programmatically (for application programmers)</para>
                 </listitem>
+-->                
                 <listitem>
                     <para><emphasis role="bold">Technical Guide</emphasis> (<link
                             xlink:href="TRG.html">HTML</link> / <link xlink:href="../pdf/TRG.pdf"
-                            >PDF</link> ) - How we built the feature in the core system (for
-                        contributors and maintainers) </para>
+                            >PDF</link> ) - Technical Reference for Developers </para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold"><link
                                 xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html"
-                                >Javadocs</link></emphasis></para>
+                                >Javadocs</link></emphasis> - Api Reference for Developers</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold"><link
@@ -122,39 +137,29 @@
         
     </sect1>
     <sect1>
-        <title>Source Repositories</title>
-        <itemizedlist>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}">rice</link></para></listitem>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice-cfg-dbs/tags/${project.version}">rice-cfg-dbs</link></para></listitem>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice-cfg-dbs/rice-client-db/tags/${project.version}">rice-client-db</link></para></listitem>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice_load_tests/branches/rice-release-1-0-0-br">rice-load-tests</link></para></listitem>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/kul-cas/trunk">kul-cas</link></para></listitem>
-        </itemizedlist>
-    </sect1>
-    <sect1>
-        <title>Getting Involved</title>
-        <itemizedlist>
-            <listitem><para><link xlink:href="http://kuali.org/kis/projectTeams/team/111">Joining the Mailing List</link> - Create a KIS account or Login to add or remove yourself from this group</para></listitem>
-            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Collaboration">Collaborate and Contribute!</link></para></listitem>
-        </itemizedlist>
-    </sect1>
-    <sect1>
         <title>Collaboration Tools</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="https://jira.kuali.org/browse/KULRICE">Issue Tracking</link></para></listitem>
+            <listitem>
+                <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Home">Kuali Rice Development
+                        Wiki</link> - information about the Rice project, developer documentation, and more</para>
+            </listitem>
+            <listitem>
+                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE">Issue
+                    Tracking</link></para>
+            </listitem>
             <listitem><para><link xlink:href="https://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
             <listitem><para><link xlink:href="https://test.kuali.org/svn/rice/">Source Code Repository</link></para></listitem>
             <listitem><para><link xlink:href="http://fisheye.kuali.org/browse/rice">FishEye</link></para></listitem>
         </itemizedlist>
     </sect1>
     <sect1>
-        <title>Other Resources</title>
+        <title>Getting Involved</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Presentations">Presentations</link></para></listitem>
-            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Developer+Documentation">Developer Documentation</link></para></listitem>
-            <listitem><para>Rice Website - <link xlink:href="http://kuali.org/rice">http://kuali.org/rice</link></para></listitem>
-            <listitem><para>Kuali Website - <link xlink:href="http://kuali.org">http://kuali.org</link></para></listitem>
-            <listitem><para><link xlink:href="http://kuali.org/kd/">Kuali Days</link></para></listitem>
+            <listitem><para><link xlink:href="http://kuali.org/kis/projectTeams/team/111">Joining the Mailing List</link> - Create a KIS account or Login to add or remove yourself from this group</para></listitem>
+            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Collaboration">Collaborate</link></para></listitem>
+            <listitem><para><link xlink:href="https://wiki.kuali.org/display/CONTRIB/Home">Contribute</link></para></listitem>
+            <listitem><para>Visit Kuali Rice Website - <link xlink:href="http://kuali.org/rice">http://kuali.org/rice</link></para></listitem>
+            <listitem><para><link xlink:href="http://kuali.org/kd/">Attend Kuali Days</link></para></listitem>
         </itemizedlist>
     </sect1>
 

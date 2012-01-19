@@ -16,13 +16,14 @@
     limitations under the License.
 
 -->
-<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
   <info>
     <title> Kuali Rice ${project.version} Client Developer Guide</title>
-    <author>
-      <orgname>Kuali Rice</orgname>
-      <email>rice.collab@kuali.org</email>
-    </author>
+    <legalnotice><para>Some of the documentation in this guide has not been updated to reflect changes for
+      ${project.version}. If you find a problem, please <link xlink:href="UG.html#reporting_rice_jira">report
+        in Jira</link> and set the component to Documentation. Indicate the guide and
+      section that has the problem in the Jira. Thanks for your help in improving the
+      documentation!</para></legalnotice>
   </info>
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/creating_rice_enabled_application.xml"/>

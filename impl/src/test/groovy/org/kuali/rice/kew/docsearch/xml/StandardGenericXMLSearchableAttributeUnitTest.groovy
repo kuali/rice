@@ -27,7 +27,6 @@ import org.kuali.rice.krad.util.KRADConstants
 import org.w3c.dom.Element
 import org.w3c.dom.Text
 import static org.junit.Assert.*
-import org.kuali.rice.kns.web.ui.Column
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute class in isolation
@@ -216,48 +215,6 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         List<Row> rows = FieldUtils.convertRemotableAttributeFields(fields);
         assertEquals(1, rows.size());
     }
-
-private static final String STRING_FIELD_SEARCH_FORMATTER_CONFIG = """
-    <searchingConfig>
-            <fieldDef name="givenname" title="First name">
-                <display>
-                    <type>text</type>
-                    <formatter>org.kuali.rice.core.web.format.NoOpStringFormatter</formatter>
-                </display>
-                <visibility>
-                    <column visible="true"/>
-                </visibility>
-                <validation required="true">
-                    <regex>^[a-zA-Z ]+\$</regex>
-                    <message>Invalid first name</message>
-                </validation>
-                <fieldEvaluation>
-                    <xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
-                </fieldEvaluation>
-            </fieldDef>
-            <xmlSearchContent>
-                <putWhateverWordsIwantInsideThisTag>
-                    <givenname>
-                        <value>%givenname%</value>
-                    </givenname>
-                </putWhateverWordsIwantInsideThisTag>
-            </xmlSearchContent>
-        </searchingConfig>
-    """
-    @Test void testGetSearchFieldsFormatter() {
-        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
-        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, STRING_FIELD_SEARCH_FORMATTER_CONFIG)
-        def fields= new StandardGenericXMLSearchableAttribute().getSearchFields(edb.build(), "not used")
-        println fields
-        // TODO: test something more substantial
-        assertEquals(1, fields.size())
-        Column col = FieldUtils.constructColumnFromAttributeField(fields.get(0));
-        println col.getFormatter();
-        assertNotNull(col.getFormatter());
-        assertEquals("org.kuali.rice.core.web.format.NoOpStringFormatter",col.getFormatter().getClass().getName());
-
-    }
-
 
     private static final String RANGE_FIELD_SEARCH_CONFIG = """
     <searchingConfig>

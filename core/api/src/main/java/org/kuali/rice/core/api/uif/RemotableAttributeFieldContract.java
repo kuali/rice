@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.core.api.uif;
 
-import org.kuali.rice.core.web.format.Formatter;
-
 import java.util.Collection;
 
 /**
@@ -124,12 +122,6 @@ public interface RemotableAttributeFieldContract {
      */
     String getRegexContraintMsg();
 
-      /**
-     * The classname used for formatting.
-     *
-     * @return the formatter class name.
-     */
-    Formatter getFormatter();
     /**
      * Whether the attribute is a required attribute. Defaults to false.
      * @return whether the attribute is required.

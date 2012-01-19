@@ -1705,7 +1705,6 @@ public final class FieldUtils {
         }
         Column column = new Column();
         String columnTitle = "";
-
         if (StringUtils.isBlank(attributeField.getShortLabel())) {
             if (StringUtils.isBlank(attributeField.getLongLabel())) {
                 columnTitle = attributeField.getName();
@@ -1729,13 +1728,7 @@ public final class FieldUtils {
         }
         column.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(dataType.getClass()));
         column.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(dataType.getClass()));
-        if(null != attributeField.getFormatter()){
-            column.setFormatter(attributeField.getFormatter());
-        } else{
-            column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
-        }
-
-
+        column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
         return column;
     }
 

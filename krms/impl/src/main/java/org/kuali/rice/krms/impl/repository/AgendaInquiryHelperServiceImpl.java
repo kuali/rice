@@ -31,6 +31,7 @@ import org.kuali.rice.krms.impl.type.RuleTypeServiceBase;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
         return agendaEditor;
     }
 
-    public List<RemotableAttributeField> retrieveCustomAttributes(View view, Object model, Container container) {
+    public List<RemotableAttributeField> retrieveAgendaCustomAttributes(View view, Object model, Container container) {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 
         InquiryForm inquiryForm = (InquiryForm)model;
@@ -70,6 +71,17 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
 
         return results;
     }
+
+
+    /**
+     * Retrieve a list of {@link RemotableAttributeField}s for the parameters (if any) required by the resolver for
+     * the selected term in the proposition that is under edit.  Since this method is part of the inquiry view,
+     * non of the propositions will ever be under edit when it is called, and an empty list will be returned.
+     */
+    public List<RemotableAttributeField> retrieveTermParameters(View view, Object model, Container container) {
+        return Collections.emptyList();
+    }
+
 
     private AgendaTypeService getAgendaTypeService(String krmsTypeId) {
         //

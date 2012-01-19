@@ -46,7 +46,9 @@
   <cache:annotation-driven cache-manager="rice.coreService.import.globalCacheManager" />
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-  <bean id="coreServiceCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="coreServiceLocalCacheManager" />
+  <bean id="coreServiceCacheAdminService"
+        class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
+        p:cacheManager-ref="coreServiceLocalCacheManager" />
 
   <bean id="rice.coreService.import.serviceBus"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
@@ -74,11 +76,11 @@
     <property name="servicePath" value="#{ T(org.kuali.rice.core.api.CoreConstants).SERVICE_PATH_SOAP }" />
   </bean>
 
-  <bean id="coreServiceCacheService.exporter" parent="coreServiceServiceExporter">
+  <bean id="coreServiceCacheAdminService.exporter" parent="coreServiceServiceExporter">
     <property name="serviceDefinition">
       <bean parent="coreService"
-            p:service-ref="coreServiceCacheService"
-            p:localServiceName="coreServiceCacheService"
+            p:service-ref="coreServiceCacheAdminService"
+            p:localServiceName="coreServiceCacheAdminService"
             p:queue="false"/>
     </property>
   </bean>

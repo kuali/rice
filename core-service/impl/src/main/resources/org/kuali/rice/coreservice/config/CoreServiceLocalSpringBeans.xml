@@ -34,7 +34,7 @@
 
   <bean id="coreServiceDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="coreServiceLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/core/v2_0}coreServiceCacheService" />
+    <property name="serviceName" value="{http://rice.kuali.org/core/v2_0}coreServiceCacheAdminService" />
   </bean>
 
   <bean id="namespaceService" class="org.kuali.rice.coreservice.impl.namespace.NamespaceServiceImpl">

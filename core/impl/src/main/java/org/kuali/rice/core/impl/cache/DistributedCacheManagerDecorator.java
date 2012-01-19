@@ -260,17 +260,25 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         }
 
         /**
-         * It's important that we set this synchronization to the highest precedence level because we want to ensure
-         * that it kicks in before the synchronizations which handle OJB cleanup.  Otherwise, we end up leaving
-         * persistence brokers in an invalid state since the process of sending messages does some OJB-related work.
+         * Set to highest precedence so that flushing of cache messages happens before any activities that might be
+         * happening with the ORM layer.
          */
         @Override
         public int getOrder() {
             return Ordered.HIGHEST_PRECEDENCE;
         }
 
+        /**
+         * Before we commit, let's "flush" the cache messages by sending messages using the KSB messaging to
+         * the appropriate CacheAdminService endpoints.
+         *
+         * <p>It's import that we use {@link #beforeCommit(boolean)} and *not* {@link #beforeCompletion()}.  If the
+         * latter is used, we end up with exceptions about using a persistence broker which is already closed
+         * because this behavior would interfere with the OJB synchronization process which happens during
+         * beforeCompletion.</p>
+         */
         @Override
-        public void beforeCompletion() {
+        public void beforeCommit(boolean readOnly) {
             sendFlushCacheMessages(exhaustQueue(flushQueue));
         }
 

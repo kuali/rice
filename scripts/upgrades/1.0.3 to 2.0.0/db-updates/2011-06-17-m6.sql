@@ -361,8 +361,7 @@ CREATE TABLE KREW_DOC_TYP_PLCY_RELN_T
         , VER_NBR NUMBER(8) default 0
         , OBJ_ID VARCHAR2(36) NOT NULL
         , PLCY_VAL VARCHAR2(64)
-        , PLCY_DESC VARCHAR2(20)
-    
+
     , CONSTRAINT KREW_DOC_TYP_PLCY_RELN_TC0 UNIQUE (OBJ_ID)
 )
 /
@@ -374,7 +373,6 @@ DOC_TYP_ID
         , VER_NBR
         , OBJ_ID
         , PLCY_VAL
-        , PLCY_DESC
 )
 SELECT DOC_TYP_ID
         , DOC_PLCY_NM
@@ -382,7 +380,6 @@ SELECT DOC_TYP_ID
         , VER_NBR
         , OBJ_ID
         , PLCY_VAL
-        , PLCY_DESC
 FROM OLD_KREW_DOC_TYP_PLCY_RELN_T
 /
 

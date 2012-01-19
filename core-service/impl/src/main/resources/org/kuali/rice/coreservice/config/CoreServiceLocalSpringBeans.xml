@@ -65,13 +65,6 @@
     <property name="styleRepositoryService" ref="styleRepositoryService" />
   </bean>
 
-  <!--<bean id="dataDictionaryComponentPublisherService" class="org.kuali.rice.krad.service.impl.DataDictionaryComponentPublisherServiceImpl">
-    <property name="dataDictionaryService" ref="rice.coreService.import.dataDictionaryService"/>
-    <property name="kualiModuleService" ref="rice.coreService.import.kualiModuleService"/>
-    <property name="componentService" ref="componentService"/>
-    <property name="applicationId" value="${application.id}"/>
-  </bean> -->
-
   <bean id="rice.coreService.import.dataDictionaryService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="dataDictionaryService" />

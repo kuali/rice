@@ -16,7 +16,16 @@
 
 alter table KREW_PPL_FLW_T modify(TYP_ID NULL)
 /
-alter table KREW_PPL_FLW_MBR_T drop constraint KREW_PPL_FLW_MBR_TC1
+DECLARE
+c NUMBER;
+BEGIN
+select count(*) into c from all_constraints where CONSTRAINT_NAME = 'KREW_PPL_FLW_MBR_TC1' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'ALTER TABLE KREW_PPL_FLW_MBR_T DROP CONSTRAINT KREW_PPL_FLW_MBR_TC1';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_PPL_FLW_MBR_TC1 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
 alter table KREW_PPL_FLW_MBR_T DROP COLUMN dlgt_frm_id
 /

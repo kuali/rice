@@ -27,6 +27,7 @@ import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.test.BaselineTestCase;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerConfigurationException;
@@ -46,6 +47,7 @@ import static org.junit.Assert.*;
  * Tests StyleServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class StyleServiceImplTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(StyleServiceImplTest.class);
 

@@ -126,13 +126,13 @@ delete from krew_rule_expr_t where RULE_EXPR_ID not in (select RULE_EXPR_ID from
 
 delete from krew_edl_def_t where ACTV_IND=0
 /
-delete from krew_style_t where ACTV_IND=0
+delete from krcr_style_t where ACTV_IND=0
 /
 delete from krew_edl_assctn_t where ACTV_IND=0
 /
 delete from krew_edl_assctn_t where DOC_TYP_NM not in (select doc_typ_nm from krew_doc_typ_t)
 /
-delete from krew_edl_assctn_t where STYLE_NM not in (select NM from krew_style_t)
+delete from krew_edl_assctn_t where STYLE_NM not in (select NM from krcr_style_t)
 /
 delete from krew_edl_assctn_t where EDL_DEF_NM not in (select NM from krew_edl_def_t)
 /

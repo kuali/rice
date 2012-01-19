@@ -109,8 +109,8 @@
     </reference-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.coreservice.impl.style.StyleBo" table="KREW_STYLE_T">
-    <field-descriptor column="STYLE_ID" name="styleId" jdbc-type="BIGINT" primarykey="true" autoincrement="true"
+  <class-descriptor class="org.kuali.rice.coreservice.impl.style.StyleBo" table="KRCR_STYLE_T">
+    <field-descriptor column="STYLE_ID" name="id" jdbc-type="VARCHAR" primarykey="true" autoincrement="true"
                       sequence-name="KREW_EDL_S"/>
     <field-descriptor column="NM" name="name" jdbc-type="VARCHAR"/>
     <field-descriptor column="XML" name="xmlContent" jdbc-type="CLOB"/>

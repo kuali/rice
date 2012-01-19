@@ -35,7 +35,7 @@ class StyleRepositoryServiceImplTest {
     //GroovyTestCase which is junit 3 style
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-    private static final Long STYLE_ID = 1
+    private static final String STYLE_ID = "1"
     private static final String NAME = "MyFirstStyle"
     private static final boolean ACTIVE = true
     private static final String XML_CONTENT = "<my><awesome><xml-stylesheet/></awesome></my>"
@@ -44,7 +44,7 @@ class StyleRepositoryServiceImplTest {
 
     private static createStyle() {
         return Style.Builder.create(new StyleContract() {
-            def Long styleId = StyleRepositoryServiceImplTest.STYLE_ID
+            def String id = StyleRepositoryServiceImplTest.STYLE_ID
             def String name = StyleRepositoryServiceImplTest.NAME
             def boolean active = StyleRepositoryServiceImplTest.ACTIVE
             def String xmlContent = StyleRepositoryServiceImplTest.XML_CONTENT

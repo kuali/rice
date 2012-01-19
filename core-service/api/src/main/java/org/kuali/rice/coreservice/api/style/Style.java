@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = Style.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Style.Constants.TYPE_NAME, propOrder = {
-		Style.Elements.STYLE_ID,
+		Style.Elements.ID,
 		Style.Elements.NAME,
 		Style.Elements.XML_CONTENT,
 		Style.Elements.ACTIVE,
@@ -54,8 +54,8 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
 
 	private static final long serialVersionUID = -26426318682076660L;
 	
-	@XmlElement(name = Elements.STYLE_ID, required = false)
-	private final Long styleId;
+	@XmlElement(name = Elements.ID, required = false)
+	private final String id;
 	
 	@XmlElement(name = Elements.NAME, required = true)
     private final String name;
@@ -80,7 +80,7 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
      * Private constructor used only by JAXB.
      */
     private Style() {
-    	this.styleId = null;
+    	this.id = null;
     	this.name = null;
     	this.xmlContent = null;
     	this.active = false;
@@ -89,7 +89,7 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
     }
     
     private Style(Builder builder) {
-    	this.styleId = builder.getStyleId();
+    	this.id = builder.getId();
     	this.name = builder.getName();
     	this.xmlContent = builder.getXmlContent();
     	this.active = builder.isActive();
@@ -98,8 +98,8 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
     }
 
     @Override
-    public Long getStyleId() {
-		return this.styleId;
+    public String getId() {
+		return this.id;
 	}
 
     @Override
@@ -138,7 +138,7 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
     	
     	private static final long serialVersionUID = -219369603932108436L;
     	
-		private Long styleId;
+		private String id;
         private String name;
         private String xmlContent;
         private boolean active;
@@ -182,7 +182,7 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
         		throw new IllegalArgumentException("contract was null");
         	}
         	Builder builder = create(contract.getName());
-        	builder.setStyleId(contract.getStyleId());
+        	builder.setId(contract.getId());
         	builder.setXmlContent(contract.getXmlContent());
         	builder.setActive(contract.isActive());
         	builder.setVersionNumber(contract.getVersionNumber());
@@ -196,17 +196,17 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
         }
 
         @Override
-		public Long getStyleId() {
-			return this.styleId;
+		public String getId() {
+			return this.id;
 		}
 
         /**
-         * Sets the styleId for the style that will be returned by this builder.
+         * Sets the id for the style that will be returned by this builder.
          * 
-         * @param styleId the styleId to set
+         * @param id the id to set
          */
-		public void setStyleId(Long styleId) {
-			this.styleId = styleId;
+		public void setId(String id) {
+			this.id = id;
 		}
 
 		@Override
@@ -313,7 +313,7 @@ public final class Style extends AbstractDataTransferObject implements StyleCont
      * when this object is marshalled to XML.
      */
     static class Elements {
-        final static String STYLE_ID = "styleId";
+        final static String ID = "id";
         final static String NAME = "name";
         final static String XML_CONTENT = "xmlContent";
         final static String ACTIVE = "active";

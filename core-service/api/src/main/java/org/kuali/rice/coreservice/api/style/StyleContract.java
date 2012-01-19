@@ -16,6 +16,7 @@
 package org.kuali.rice.coreservice.api.style;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
@@ -26,17 +27,8 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface StyleContract extends Versioned, GloballyUnique, Inactivatable {
+public interface StyleContract extends Identifiable, Versioned, GloballyUnique, Inactivatable {
 
-	/**
-	 * Returns the identifier of this style.  Should only return null if this
-	 * style has not been persisted to a data repository yet.  Each
-	 * individual style should have a unique identifier.
-	 * 
-	 * @return the id of this style, or null if it has not yet been set
-	 */
-	Long getStyleId();
-	
 	/**
 	 * Returns the name of this style.  All styles have a name and this value
 	 * can never be null or blank.  The name must be unique within the entire

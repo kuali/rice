@@ -138,7 +138,7 @@ delete from krew_edl_assctn_t
 /
 delete from krew_edl_def_t
 /
-delete from krew_style_t where nm='eDoc.Example1.Style'
+delete from krcr_style_t where nm='eDoc.Example1.Style'
 /
 
 -- User Options

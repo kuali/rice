@@ -57,12 +57,12 @@ public interface StyleRepositoryService {
 
 	/**
 	 * Creates or updates the Style represented by the given record.  If the
-	 * styleId on the style is not null, then it will update the existing
+	 * id on the style is not null, then it will update the existing
 	 * style record which has that id.  Otherwise it will create a new style in
 	 * the repository.
 	 * 
 	 * <p>When updating an existing style, the caller needs to ensure that the
-	 * styleId, versionNumber, and objectId values are set on the given Style
+	 * id, versionNumber, and objectId values are set on the given Style
 	 * object.
 	 * 
 	 * @param style the style data to create or update in the repository

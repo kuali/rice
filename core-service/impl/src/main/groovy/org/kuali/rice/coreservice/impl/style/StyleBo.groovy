@@ -29,7 +29,7 @@ class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
 
 	private static final long serialVersionUID = 2020611019976731725L
 
-	Long styleId
+	String id
 	String name
 	String xmlContent
 	boolean active = true
@@ -58,7 +58,7 @@ class StyleBo extends PersistableBusinessObjectBase implements StyleContract {
     		return null
     	}
     	StyleBo styleBo = new StyleBo()
-    	styleBo.setStyleId(style.getStyleId())
+    	styleBo.setId(style.getId())
     	styleBo.setName(style.getName())
     	styleBo.setXmlContent(style.getXmlContent())
     	styleBo.setActive(style.isActive())

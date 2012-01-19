@@ -31,14 +31,14 @@
     </property>   -->
     <property name="criteriaFields">
       <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="styleId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="styleId" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
         <bean parent="Uif-InputField" p:propertyName="name" />
         <bean parent="Uif-InputField" p:propertyName="active" />
       </list>

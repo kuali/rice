@@ -23,6 +23,9 @@
 
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimCommonSpringBeans.xml"/>
 
+  <bean id="rice.kim.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
+        p:cacheManager-ref="kimLocalCacheManager"/>
+
   <bean id="rice.kim.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.kim.serviceNamespace"/>

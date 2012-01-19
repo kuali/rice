@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.core.impl.cache;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.cache.CacheAdminService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -22,29 +25,49 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+/**
+ * Implementation of the cache administration service which handles requests to flush cache targets from local caches
+ * managed by the injected cache manager.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class CacheAdminServiceImpl implements CacheAdminService, InitializingBean {
+
+    private static final Logger LOG = Logger.getLogger(CacheAdminServiceImpl.class);
 
     private CacheManager cacheManager;
 
     @Override
     public void flush(Collection<CacheTarget> cacheTargets) throws RiceIllegalArgumentException {
-        if (cacheTargets == null) {
-            throw new RiceIllegalArgumentException("cacheTargets is null");
-        }
-        for (CacheTarget cacheTarget : cacheTargets) {
-            if (cacheTarget == null) {
-                throw new RiceIllegalArgumentException("cacheTarget is null");
-            }
-            final Cache c = getCache(cacheTarget.getCache());
-            if (c != null) {
-                if (cacheTarget.containsKey()) {
-                    c.evict(cacheTarget.getKey());
-                } else {
-                    c.clear();
+        if (CollectionUtils.isNotEmpty(cacheTargets)) {
+            logCacheFlush(cacheTargets);
+            for (CacheTarget cacheTarget : cacheTargets) {
+                if (cacheTarget == null) {
+                    throw new RiceIllegalArgumentException("cacheTarget is null");
+                }
+                final Cache c = getCache(cacheTarget.getCache());
+                if (c != null) {
+                    if (cacheTarget.containsKey()) {
+                        c.evict(cacheTarget.getKey());
+                    } else {
+                        c.clear();
+                    }
                 }
             }
+        }
+    }
+
+    protected void logCacheFlush(Collection<CacheTarget> cacheTargets) {
+        if (LOG.isInfoEnabled()) {
+            List<String> cacheTargetLog = new ArrayList<String>(cacheTargets.size());
+            for (CacheTarget cacheTarget : cacheTargets) {
+                cacheTargetLog.add(cacheTarget.toString());
+            }
+            LOG.info("Performing local flush of cache targets [" + StringUtils.join(cacheTargetLog, ", ") + "]");
         }
     }
 

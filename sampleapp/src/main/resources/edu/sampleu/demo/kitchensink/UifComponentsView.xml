@@ -220,7 +220,7 @@
                                            UIF Comp - Anchors Link Group
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-AnchorLinks" parent="Uif-BoxSection">
+  <bean id="UifCompView-AnchorLinks" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-JumpToBottomLink" p:actionLabel="Jump To Bottom Demo"/>
@@ -245,7 +245,7 @@
                                            UIF Comp - Text Fields Section
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextFields" parent="Uif-Disclosure-BoxSection" p:title="Text Controls">
+  <bean id="UifCompView-TextFields" parent="Uif-Disclosure-VerticalBoxSection" p:title="Text Controls">
     <property name="items">
       <list>
         <bean parent="UifCompView-TextFields1"/>
@@ -261,7 +261,7 @@
                                            UIF Comp - Text Controls 1
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextFields1" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-TextFields1" parent="Uif-HorizontalBoxSection">
     <property name="title" value="Field Label Options"/>
     <property name="items">
       <list>
@@ -296,7 +296,7 @@
                                            UIF Comp - Text Controls 2
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextFields2" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-TextFields2" parent="Uif-HorizontalBoxSection">
     <property name="title" value="Field Label Options"/>
     <property name="items">
       <list>
@@ -336,7 +336,7 @@
                                            UIF Comp - Text Controls 3
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextFields3" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-TextFields3" parent="Uif-HorizontalBoxSection">
     <property name="title" value="Text Control Options"/>
     <property name="items">
       <list>
@@ -376,7 +376,7 @@
                                            UIF Comp - TextArea Controls
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextAreas" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-TextAreas" parent="Uif-HorizontalBoxSection">
     <property name="title" value="TextArea Control Options"/>
     <property name="instructionalText"
               value="TextAreas have basically the same options as text controls, so only a couple examples"/>
@@ -406,7 +406,7 @@
                                            UIF Comp - Date Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-DateFields" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-DateFields" parent="Uif-Disclosure-HorizontalBoxSection">
     <property name="title" value="Date Control"/>
     <property name="instructionalText"
               value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info"/>
@@ -447,7 +447,7 @@
                                            UIF Comp - Select Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-SelectFields" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SelectFields" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Selection Controls"/>
     <property name="instructionalText" value="Controls used for selection of 1 or multiple items"/>
     <property name="items">
@@ -464,7 +464,7 @@
                                            UIF Comp - Checkboxes
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-Checkboxes" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-Checkboxes" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
@@ -522,7 +522,7 @@
                                            UIF Comp - Radio Buttons
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-RadioButtons" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-RadioButtons" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field117" p:label="Radio 1" p:width="auto"
@@ -557,7 +557,7 @@
                                            UIF Comp - Other Selects
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-OtherSelects" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifCompView-OtherSelects" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field119" p:label="Select Control" p:width="auto"
@@ -593,7 +593,7 @@
                                            UIF Comp - Other Controls
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-OtherControls" parent="Uif-BoxSection">
+  <bean id="UifCompView-OtherControls" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field30" p:label="File Control">

@@ -55,7 +55,7 @@
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL" />
+      <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
   </bean>
 
@@ -73,15 +73,11 @@
   </bean>
 
   <bean id="ruleInfoSection" parent="ruleInfoSection-parent"/>
-  <bean id="ruleInfoSection-parent" parent="Uif-Disclosure-BoxSection">
+  <bean id="ruleInfoSection-parent" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Rule" />
     <property name="renderHeader" value="true" />
     <property name="disclosure.render" value="true" />
     <property name="disclosure.defaultOpen" value="true" />
-    <!-- property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="VERTICAL"
-        p:styleClasses="datatable display" />
-    </property -->
     <property name="items">
       <list>
         <bean parent="ruleInfoGrid"/>
@@ -104,7 +100,7 @@
               p:progressiveRenderViaAJAX="true"
               p:progressiveRender="@{#dp.addRuleInProgress == true}">
           <property name="group.layoutManager">
-            <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+            <bean parent="Uif-HorizontalBoxLayout"/>
           </property>
           <property name="items">
             <list>
@@ -175,14 +171,14 @@
     </property>
   </bean>
 
-  <bean name="propositionSection-parent" parent="Uif-BoxGroup">
+  <bean name="propositionSection-parent" parent="Uif-VerticalBoxGroup">
     <property name="title" value="Proposition Tree" />
     <property name="disclosure.render" value="true" />
 
     <property name="items">
       <list>
 
-        <bean parent="Uif-BoxGroup" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; margin-top: " >
+        <bean parent="Uif-VerticalBoxGroup" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; margin-top: " >
           <property name="items">
             <list>
               <bean parent="Uif-GridGroup" p:style="margin-bottom: 5pt; margin-top: 0em;" p:progressiveRender="@{#form.viewTypeName.toString() != 'MAINTENANCE'}">
@@ -203,7 +199,7 @@
               <!-- also, the bogus refreshWhenChanged is important because it puts a RuleEditorView-TreeGroup_refreshWrapper around the group that
                    is needed for the javascript hack that is refreshing the tree when a parameterized term specification is selected from the
                    term dropdown -->
-              <bean id="RuleEditorView-TreeGroup" parent="Uif-BoxGroup" p:style="margin-bottom: 5pt; margin-top: 0em;" p:refreshWhenChanged="this.is.a.hack">
+              <bean id="RuleEditorView-TreeGroup" parent="Uif-VerticalBoxGroup" p:style="margin-bottom: 5pt; margin-top: 0em;" p:refreshWhenChanged="this.is.a.hack">
                 <property name="layoutManager.orientation" value="VERTICAL"/>
                 <property name="items">
                   <list>
@@ -240,8 +236,7 @@
   </bean>
 -->
 
-  <bean id="RuleEditorView-PropositionSummary-parent" parent="Uif-BoxGroup" p:renderHeader="false"
-        p:layoutManager.orientation="HORIZONTAL">
+  <bean id="RuleEditorView-PropositionSummary-parent" parent="Uif-HorizontalBoxGroup" p:renderHeader="false">
     <property name="disclosure.render" value="false" />
     <property name="items">
       <list>
@@ -253,8 +248,7 @@
   </bean>
 
 
-  <bean id="RuleEditorView-TreeExpandCollapse" parent="Uif-VerticalFieldGroup"  p:showLabel="false">
-    <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+  <bean id="RuleEditorView-TreeExpandCollapse" parent="Uif-HorizontalFieldGroup"  p:showLabel="false">
     <property name="items">
       <list>                            
         <bean parent="Uif-ActionLink" p:clientSideJs="jq('.jstree').jstree('open_all');" 
@@ -279,13 +273,13 @@
     </property>
   </bean>
 
-  <bean id="RuleEditorView-RuleTreeViewControls" parent="Uif-BoxSection"
+  <bean id="RuleEditorView-RuleTreeViewControls" parent="Uif-VerticalBoxSection"
       p:styleClasses="krms-rulesButtonBar">
 
     <property name="renderHeader" value="true"/>
     <property name="title" value="Propositions"/>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL" p:style="padding: 5px;"/>
+      <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
     </property>
 
     <property name="items">
@@ -294,13 +288,13 @@
     </property>
   </bean>
 
-  <bean id="RuleEditorView-RuleTreeEditControls" parent="Uif-BoxSection"
+  <bean id="RuleEditorView-RuleTreeEditControls" parent="Uif-VerticalBoxSection"
       p:styleClasses="krms-rulesButtonBar">
 
     <property name="renderHeader" value="true"/>
     <property name="title" value="Propositions"/>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL" p:style="padding: 5px;"/>
+      <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
     </property>
       
     <property name="items">
@@ -495,8 +489,7 @@
       <bean parent="Uif-MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="Uif-BoxGroup" p:style="float: right;" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
-        <property name="layoutManager.orientation" value="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxGroup" p:style="float: right;" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
         <property name="items">
           <list>
             <bean parent="Uif-ActionImage"
@@ -523,8 +516,7 @@
       <bean parent="Uif-MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="Uif-BoxGroup">
-        <property name="layoutManager.orientation" value="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">
           <list>
             <bean parent="Uif-InputField" p:propertyName="proposition.id"
@@ -551,7 +543,7 @@
       <bean parent="Uif-MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="Uif-BoxGroup" p:styleClasses="editModeNode">
+      <bean parent="Uif-VerticalBoxGroup" p:styleClasses="editModeNode">
         <property name="layoutManager.orientation" value="VERTICAL"/>
         <property name="items">
           <list>
@@ -573,14 +565,12 @@
             </bean>
 
             <!-- outer div containing the elements of the comparison: term, operator & constant-->
-            <bean parent="Uif-BoxGroup">
-              <property name="layoutManager.orientation" value="HORIZONTAL"/>
+            <bean parent="Uif-HorizontalBoxGroup">
               <property name="items">
                 <list>
 
                   <!-- outer div containing the components of the term: category+term, description+parameter -->
-                  <bean parent="Uif-BoxGroup">
-                    <property name="layoutManager.orientation" value="VERTICAL"/>
+                  <bean parent="Uif-VerticalBoxGroup">
                     <property name="items">
                       <list>
 
@@ -614,7 +604,7 @@
                         </bean>
 
                         <!-- extra components (progressively rendered) for parameterized terms -->
-                        <bean parent="Uif-BoxGroup" p:title="Term Parameters" p:layoutManager.orientation="VERTICAL"
+                        <bean parent="Uif-VerticalBoxGroup" p:title="Term Parameters"
                               p:progressiveRender="@{#np.proposition.parameters[0].value matches 'parameterized:.*'}"
                               p:style="border: 1px solid #ccc; padding: .5em; margin: .5em; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
                           <!--
@@ -631,8 +621,7 @@
                                 </property>
                               </bean>
 
-                              <bean parent="Uif-BoxGroup">
-                                <property name="layoutManager.orientation" value="VERTICAL"/>
+                              <bean parent="Uif-VerticalBoxGroup">
                                 <property name="items">
                                   <list>
                                     <bean parent="Uif-MessageField" p:messageText="Parameters:" />
@@ -682,9 +671,9 @@
     </property>
   </bean>
 
-  <bean id="selectedNodeQuickActions" parent="Uif-VerticalFieldGroup" p:styleClasses="actionReveal"
+  <bean id="selectedNodeQuickActions" parent="Uif-HorizontalFieldGroup" p:styleClasses="actionReveal"
         p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}"
-        p:group.layoutManager.orientation="HORIZONTAL">
+        >
     <property name="items">
       <list>
         <bean parent="Uif-ActionImage"
@@ -712,8 +701,7 @@
       <bean parent="Uif-MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="Uif-BoxGroup" p:style="padding-bottom: 10pt;">
-        <property name="layoutManager.orientation" value="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxGroup" p:style="padding-bottom: 10pt;">
         <property name="items">
           <list>
             <bean parent="Uif-InputField" p:propertyName="proposition.compoundOpCode"
@@ -736,8 +724,7 @@
       <bean parent="Uif-MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="Uif-BoxGroup">
-        <property name="layoutManager.orientation" value="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">
           <list>
             <bean parent="Uif-InputField" p:propertyName="proposition.id"
@@ -769,7 +756,7 @@
   </bean>
 
   <bean name="ruleAttributesSection" parent="ruleAttributesSection-parent" />
-  <bean name="ruleAttributesSection-parent" parent="Uif-BoxSection">
+  <bean name="ruleAttributesSection-parent" parent="Uif-VerticalBoxSection">
 
     <!-- TODO: temporarily disabling attribute group rendering: -->
     <property name="render"><value>false</value></property>
@@ -814,7 +801,7 @@
   </bean>
  
   <bean name="ruleActionsSection" parent="ruleActionsSection-parent"/>
-    <bean name="ruleActionsSection-parent" parent="Uif-Disclosure-BoxSection" p:style="width: 500;border: 1">
+    <bean name="ruleActionsSection-parent" parent="Uif-Disclosure-VerticalBoxSection" p:style="width: 500;border: 1">
       <property name="title" value="Action"/>
       <property name="renderHeader" value="true" />
       <property name="disclosure.render" value="true" />

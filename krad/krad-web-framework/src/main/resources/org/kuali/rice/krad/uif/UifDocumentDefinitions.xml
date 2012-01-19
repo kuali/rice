@@ -176,7 +176,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-DocumentAdHocRecipientsSection" parent="Uif-Disclosure-BoxSection">
+  <bean id="Uif-DocumentAdHocRecipientsSection" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Ad Hoc Recipients"/>
     <property name="items">
       <list>
@@ -240,7 +240,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-DocumentRouteLogSection" parent="Uif-Disclosure-BoxSection">
+  <bean id="Uif-DocumentRouteLogSection" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Route Log"/>
     <property name="items">
       <list>

@@ -140,7 +140,7 @@
     <property name="readOnly" value="true"/>
     <property name="renderSelectField" value="@{#view.multipleValuesSelect}"/>
     <property name="header.group">
-      <bean parent="Uif-BoxGroup"/>
+      <bean parent="Uif-VerticalBoxGroup"/>
     </property>
     <property name="footer">
       <bean parent="Uif-LookupResultsFooter"

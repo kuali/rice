@@ -155,7 +155,7 @@
    </property>
   </bean>
 
-  <bean id="AgendaEditorView-AgendaSection" parent="Uif-Disclosure-BoxSection">
+  <bean id="AgendaEditorView-AgendaSection" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Agenda" />
     <property name="items">
       <list>
@@ -271,7 +271,7 @@
         </bean>
 
 
-        <bean parent="Uif-BoxGroup" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white;">
+        <bean parent="Uif-VerticalBoxGroup" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white;">
 <!--  Can't get progressive disclosure to work from the contextId for some reason
                 p:progressiveRenderViaAJAX="true" p:progressiveRender="document.newMaintainableObject.dataObject.agenda.contextId != null">
 -->
@@ -301,9 +301,8 @@
     </property>
   </bean>
 
-  <bean id="AgendaEditorView-TreeExpandCollapse" parent="Uif-VerticalFieldGroup" p:showLabel="false">
+  <bean id="AgendaEditorView-TreeExpandCollapse" parent="Uif-HorizontalFieldGroup" p:showLabel="false">
     <property name="render" value="@{!#empty(#dp.agenda.firstItemId)}" />
-    <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">
       <list>                            
         <bean parent="Uif-ActionLink" p:clientSideJs="jq('.jstree').jstree('open_all');" 
@@ -329,7 +328,7 @@
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
       <property name="renderHeader" value="false"/>
       <property name="layoutManager">
-        <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+        <bean parent="Uif-HorizontalBoxLayout"/>
       </property>
       <property name="styleClasses" value="kr-footer"/>
   </bean>
@@ -351,12 +350,12 @@
   </bean>
 
   <!-- TODO: figure out how to style this without using kr-footer -->
-  <bean id="AgendaEditorView-TreeViewControls" parent="Uif-BoxSection"
+  <bean id="AgendaEditorView-TreeViewControls" parent="Uif-VerticalBoxSection"
         p:styleClasses="krms-rulesButtonBar">
     <property name="renderHeader" value="true"/>
     <property name="title" value="Rules"/>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
 
     <property name="items">
@@ -386,12 +385,12 @@
   </bean>
 
   <!-- TODO: figure out how to style this without using kr-footer -->
-  <bean id="AgendaEditorView-TreeEditControls" parent="Uif-BoxSection"
+  <bean id="AgendaEditorView-TreeEditControls" parent="Uif-VerticalBoxSection"
         p:styleClasses="krms-rulesButtonBar">
     <property name="renderHeader" value="true"/>
     <property name="title" value="Rules"/>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxLayout" />
     </property>
 
     <property name="items">
@@ -596,7 +595,7 @@
             </property>
             <property name="dataGroupPrototype">
               <!-- float:right is a hack to get the group for this hidden control out of the way -->
-              <bean parent="Uif-BoxGroup" p:hidden="true" p:style="float: right;">
+              <bean parent="Uif-VerticalBoxGroup" p:hidden="true" p:style="float: right;">
                 <property name="items">
                   <list>
                     <bean parent="Uif-DataField" p:propertyName="agendaItem.id" p:styleClasses="agendaItemId" p:hiddenPropertyNames="agendaItem.id" />
@@ -612,7 +611,7 @@
               <bean parent="Uif-MessageField"/>
             </property>
             <property name="dataGroupPrototype">
-              <bean parent="Uif-BoxGroup" />
+              <bean parent="Uif-VerticalBoxGroup" />
             </property>
           </bean>
         </entry>

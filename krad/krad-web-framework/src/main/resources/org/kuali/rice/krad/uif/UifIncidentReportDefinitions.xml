@@ -98,7 +98,7 @@
               value="This information will be forwarded to our support team. Please describe what action you were taking when the problem occurred"/>
   </bean>
 
-  <bean id="Uif-IncidentStackTraceGroup" parent="Uif-Disclosure-BoxSection"
+  <bean id="Uif-IncidentStackTraceGroup" parent="Uif-Disclosure-VerticalBoxSection"
         p:layoutManager.styleClasses="layout_center" p:render="@{devMode}" p:disclosure.render="false">
     <property name="styleClasses">
       <list merge="true">

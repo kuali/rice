@@ -33,7 +33,6 @@
       </list>
     </property>
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/box.jsp"/>
-    <property name="orientation" value="HORIZONTAL"/>
   </bean>
 
   <bean id="Uif-HorizontalBoxLayout" parent="Uif-HorizontalBoxLayout-parentBean"/>
@@ -199,7 +198,7 @@
   </bean>
 
   <bean id="Uif-CollectionVerticalBoxItem" parent="Uif-CollectionVerticalBoxItem-parentBean"/>
-  <bean id="Uif-CollectionVerticalBoxItem-parentBean" abstract="true" parent="Uif-BoxGroup"
+  <bean id="Uif-CollectionVerticalBoxItem-parentBean" abstract="true" parent="Uif-VerticalBoxGroup"
           p:layoutManager.orientation="VERTICAL">
     <property name="styleClasses">
       <list merge="true">
@@ -213,8 +212,7 @@
   </bean>
 
   <bean id="Uif-CollectionHorizontalBoxItem" parent="Uif-CollectionHorizontalBoxItem-parentBean"/>
-  <bean id="Uif-CollectionHorizontalBoxItem-parentBean" abstract="true" parent="Uif-BoxGroup"
-          p:layoutManager.orientation="HORIZONTAL">
+  <bean id="Uif-CollectionHorizontalBoxItem-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-collectionItem</value>

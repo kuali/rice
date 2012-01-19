@@ -127,7 +127,7 @@
                                            UIF Layout View Box Layout Vertical
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxSection1" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="VERTICAL">
+  <bean id="UifLayoutView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="title" value="Box Layout Vertical"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
@@ -145,7 +145,7 @@
                                            UIF Layout View Box Layout Horizontal
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxSection2" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifLayoutView-BoxSection2" parent="Uif-Disclosure-HorizontalBoxSection">
     <property name="title" value="Box Layout Horizontal"/>
     <property name="instructionalText"
               value="Items are rendered horizontally to fill the available room, then wrap down. Adjust the window size to see the wrapping"/>
@@ -162,7 +162,7 @@
                                            UIF Layout View Box Layout 1
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxHorizontal1" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifLayoutView-BoxHorizontal1" parent="Uif-HorizontalBoxSection">
     <property name="title" value="Box Layout 3 Across"/>
     <property name="items">
       <list>
@@ -178,7 +178,7 @@
                                            UIF Layout View Box Layout 2
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxHorizontal2" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifLayoutView-BoxHorizontal2" parent="Uif-HorizontalBoxSection">
     <property name="title" value="Box Layout 8 Across"/>
     <property name="items">
       <list>
@@ -199,12 +199,12 @@
                                            UIF Layout View Box Layout Fluid Container Sizes
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxLayoutFluidContainers" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifLayoutView-BoxLayoutFluidContainers" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Box Layout Fluid Containers"/>
     <property name="instructionalText" value="Applying Fluid styles to size the container"/>
     <property name="items">
       <list>
-        <bean parent="Uif-BoxSection" p:title="FSS Layout 100%" p:layoutManager.orientation="HORIZONTAL"
+        <bean parent="Uif-HorizontalBoxSection" p:title="FSS Layout 100%"
               p:layoutManager.styleClasses="fl-container-flex" p:layoutManager.style="border:1px dashed;">
           <property name="items">
             <list>
@@ -215,7 +215,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxSection" p:title="FSS Layout 75%" p:layoutManager.orientation="HORIZONTAL"
+        <bean parent="Uif-HorizontalBoxSection" p:title="FSS Layout 75%"
               p:layoutManager.styleClasses="fl-container-flex75" p:layoutManager.style="border:1px dashed;">
           <property name="items">
             <list>
@@ -226,7 +226,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxSection" p:title="FSS Layout 600px" p:layoutManager.orientation="HORIZONTAL"
+        <bean parent="Uif-HorizontalBoxSection" p:title="FSS Layout 600px"
               p:layoutManager.styleClasses="fl-container-600" p:layoutManager.style="border:1px dashed;">
           <property name="items">
             <list>
@@ -245,13 +245,13 @@
                        UIF Layout View Box Layout Horizontal with Nested Vertical Groups
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxHorizontalNestedVertical" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifLayoutView-BoxHorizontalNestedVertical" parent="Uif-Disclosure-HorizontalBoxSection">
     <property name="title" value="Box Layout Horizontal with Nested Vertical Groups"/>
     <property name="instructionalText"
               value="Box layouts are nested with different orientations to form complex layouts. Here groups with vertical orientation are nested within horizontal group."/>
     <property name="items">
       <list>
-        <bean parent="Uif-BoxGroup">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
               <bean parent="TestInputField" p:propertyName="field1"/>
@@ -260,7 +260,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxGroup">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
               <bean parent="TestInputField" p:propertyName="field3"/>
@@ -270,7 +270,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxGroup">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
               <bean parent="TestInputField" p:propertyName="field6"/>
@@ -286,13 +286,13 @@
                        UIF Layout View Box Layout Vertical with Nested Horizontal Groups
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxVerticalNestedHorizontal" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifLayoutView-BoxVerticalNestedHorizontal" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Box Layout Vertical with Nested Horizontal Groups"/>
     <property name="instructionalText"
               value="In this case we have nested groups with horizontal orientation inside a vertically orientated group."/>
     <property name="items">
       <list>
-        <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
               <bean parent="TestInputField" p:propertyName="field7"/>
@@ -301,7 +301,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
               <bean parent="TestInputField" p:propertyName="field9"/>
@@ -311,7 +311,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
               <bean parent="TestInputField" p:propertyName="field12"/>
@@ -327,13 +327,13 @@
                        UIF Layout View Box Layout Nested with Various Controls
   ********************************************************************************************************************
   -->
-  <bean id="UifLayoutView-BoxNestedControls" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="UifLayoutView-BoxNestedControls" parent="Uif-Disclosure-HorizontalBoxSection">
     <property name="title" value="Box Layout Nested with Various Controls"/>
     <property name="instructionalText"
               value="Here box layouts are nested more than one level and we are using various controls and label placement."/>
     <property name="items">
       <list>
-        <bean parent="Uif-BoxGroup">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
               <bean parent="Uif-InputField-LabelTop" p:propertyName="field13" p:label="Field Label">
@@ -342,7 +342,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL"
+              <bean parent="Uif-HorizontalBoxGroup"
                     p:layoutManager.itemStyleClasses="boxLayoutHorizontalItem-tight">
                 <property name="items">
                   <list>
@@ -365,7 +365,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL">
+              <bean parent="Uif-HorizontalBoxGroup">
                 <property name="items">
                   <list>
                     <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Select All"
@@ -379,10 +379,10 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxGroup">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL"
+              <bean parent="Uif-HorizontalBoxGroup"
                     p:layoutManager.itemStyleClasses="boxLayoutHorizontalItem-tight">
                 <property name="items">
                   <list>
@@ -396,7 +396,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL"
+              <bean parent="Uif-HorizontalBoxGroup"
                     p:layoutManager.itemStyleClasses="boxLayoutHorizontalItem-tight">
                 <property name="items">
                   <list>
@@ -413,7 +413,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-BoxGroup" p:layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
               <bean parent="Uif-InputField-LabelTop" p:propertyName="field16" p:label="Field Label">
@@ -425,7 +425,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-BoxGroup">
+              <bean parent="Uif-VerticalBoxGroup">
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField-LabelTop" p:propertyName="field17" p:label="Field Label">
@@ -445,7 +445,7 @@
     </property>
   </bean>
 
-  <!--<bean id="horizontalWithVerticalGroups-2" parent="Uif-BoxSection"-->
+  <!--<bean id="horizontalWithVerticalGroups-2" parent="Uif-VerticalBoxSection"-->
   <!--p:layoutManager.orientation="HORIZONTAL">-->
   <!--<property name="title" value="Section Title"/>-->
   <!--<property name="instructionalText" value="Horizontal layout with 3 vertical groupings"/>-->
@@ -459,7 +459,7 @@
   <!--</property>-->
   <!--</bean>-->
 
-  <!--<bean id="verticalWithHorizontalGroups-1" parent="Uif-BoxSection"-->
+  <!--<bean id="verticalWithHorizontalGroups-1" parent="Uif-VerticalBoxSection"-->
   <!--p:layoutManager.orientation="HORIZONTAL">-->
   <!--<property name="title" value="Section Title"/>-->
   <!--<property name="instructionalText" value="Vertical layout with 2 horizontal groupings"/>-->

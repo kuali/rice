@@ -59,7 +59,7 @@
     </property>
   </bean>
 
-  <bean id="testSection1" parent="Uif-Disclosure-BoxSection">
+  <bean id="testSection1" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Bank Setup"/>
     <property name="items">
       <list>
@@ -75,7 +75,7 @@
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
   </bean>
 
@@ -131,7 +131,7 @@
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
   </bean>
 
@@ -192,7 +192,7 @@
     <property name="instructionalText" value="Group with grid layout, @{2+2} columns, 50% centered"/>
   </bean>
 
-  <bean id="testSection6" parent="Uif-Disclosure-BoxSection">
+  <bean id="testSection6" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Test Collections"/>
     <property name="items">
       <list>
@@ -330,7 +330,7 @@
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
   </bean>
 
@@ -412,7 +412,7 @@
     </property>
   </bean>
 
-  <bean id="testSection5" parent="Uif-Disclosure-BoxSection">
+  <bean id="testSection5" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Banking Info"/>
     <property name="items">
       <list>
@@ -421,7 +421,7 @@
     </property>
   </bean>
 
-  <bean id="testSection2" parent="Uif-Disclosure-BoxSection" p:layoutManager.styleClasses="layout_center"
+  <bean id="testSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.styleClasses="layout_center"
         p:layoutManager.padding="5px">
     <property name="title" value="Test Section 2"/>
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
@@ -448,7 +448,7 @@
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-BoxLayoutBase" p:orientation="HORIZONTAL"/>
+      <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
   </bean>
 
@@ -515,9 +515,8 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%"
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%"
               p:render="@{field28 eq 'joe'}">
-          <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field28" p:label="Field 11" p:showLabel="false"
@@ -537,8 +536,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
-          <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field29" p:label="Field 8" p:labelPlacement="RIGHT">

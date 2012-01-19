@@ -128,8 +128,7 @@
   <bean id="CourseOffering-MainSection" parent="GenericGroup" p:fieldBindByNamePrefix="courseSection">
     <property name="items">
       <list>
-        <bean parent="Uif-BoxGroup" p:styleClasses="group-border" p:style="margin-bottom: 0px;"
-              p:layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalBoxGroup" p:styleClasses="group-border" p:style="margin-bottom: 0px;">
           <property name="items">
             <list>
               <bean parent="GenericTextField" p:propertyName="section" p:label="Section" p:readOnly="true"
@@ -172,7 +171,7 @@
               ********************************************************************************************************************
               -->
               <ref bean="CourseOffering-Schedule"/>
-              <bean parent="Uif-BoxGroup" p:styleClasses="group-border">
+              <bean parent="Uif-VerticalBoxGroup" p:styleClasses="group-border">
                 <property name="items">
                   <list>
                     <bean parent="Uif-MessageField" p:messageText="System Calculated Information"
@@ -314,7 +313,7 @@
                                            Course Schedule Bean
   ********************************************************************************************************************
   -->
-  <bean id="CourseOffering-Schedule" parent="Uif-BoxGroup">
+  <bean id="CourseOffering-Schedule" parent="Uif-VerticalBoxGroup">
     <property name="items">
       <list>
         <bean parent="Uif-HorizontalFieldGroup">

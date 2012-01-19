@@ -434,12 +434,13 @@ perform page navigation-->
       </list>
     </property>
     <property name="group">
-      <bean parent="Uif-BoxGroup" p:fieldContainer="true"/>
+      <bean parent="Uif-VerticalBoxGroup" p:fieldContainer="true"/>
     </property>
   </bean>
 
   <bean id="Uif-VerticalFieldGroup" parent="Uif-VerticalFieldGroup-parentBean"/>
-  <bean id="Uif-VerticalFieldGroup-parentBean" parent="Uif-FieldGroupBase" p:group.layoutManager.orientation="VERTICAL">
+  <bean id="Uif-VerticalFieldGroup-parentBean" parent="Uif-FieldGroupBase"
+        p:group.layoutManager.orientation="VERTICAL">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-verticalFieldGroup</value>
@@ -448,7 +449,8 @@ perform page navigation-->
   </bean>
 
   <bean id="Uif-HorizontalFieldGroup" parent="Uif-HorizontalFieldGroup-parentBean"/>
-  <bean id="Uif-HorizontalFieldGroup-parentBean" parent="Uif-FieldGroupBase" p:group.layoutManager.orientation="HORIZONTAL">
+  <bean id="Uif-HorizontalFieldGroup-parentBean" parent="Uif-FieldGroupBase"
+        p:group.layoutManager.orientation="HORIZONTAL">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-horizontalFieldGroup</value>

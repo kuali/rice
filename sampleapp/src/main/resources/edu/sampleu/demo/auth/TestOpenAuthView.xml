@@ -39,7 +39,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-Disclosure-BoxSection">
+        <bean parent="Uif-Disclosure-VerticalBoxSection">
           <property name="title" value="Group"/>
           <property name="items">
             <list>

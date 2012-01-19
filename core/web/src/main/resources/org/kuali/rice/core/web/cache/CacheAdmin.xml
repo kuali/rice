@@ -52,7 +52,7 @@
   </bean>
 
 
-  <bean id="mainGroup" parent="Uif-BoxSection" p:header.render="false">
+  <bean id="mainGroup" parent="Uif-VerticalBoxSection" p:header.render="false">
     <property name="items">
       <list>
         <bean parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false">

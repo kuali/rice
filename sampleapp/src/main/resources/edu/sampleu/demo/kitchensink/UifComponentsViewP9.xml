@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="UifCompView-SecureGroupView" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SecureGroupView" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Secure Group View"/>
     <property name="instructionalText" value="Viewing of group is secured by a KIM permission."/>
     <property name="items">
@@ -42,7 +42,7 @@
     <property name="componentSecurity.viewAuthz" value="true"/>
   </bean>
 
-  <bean id="UifCompView-SecureGroupEdit" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SecureGroupEdit" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Secure Group Edit"/>
     <property name="instructionalText" value="Editing of group is secured by a KIM permission."/>
     <property name="items">
@@ -63,7 +63,7 @@
     <property name="componentSecurity.editAuthz" value="true"/>
   </bean>
 
-  <bean id="UifCompView-SecureFields" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SecureFields" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Secure Fields"/>
     <property name="instructionalText" value="Viewing of field 2 and edit of field 3 is secured by a KIM permission."/>
     <property name="items">
@@ -91,7 +91,7 @@
     </property>
   </bean>
 
-  <bean id="UifCompView-SecureFieldGroups" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SecureFieldGroups" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Secure Field Groups"/>
     <property name="instructionalText"
               value="Viewing of the second field group and editing of the third field group is secured by a KIM permission"/>
@@ -156,7 +156,7 @@
     </property>
   </bean>
 
-  <bean id="UifCompView-SecureActions" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SecureActions" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Secure Actions"/>
     <property name="instructionalText" value="Ability to perform the Save action is secured by a KIM permission."/>
     <property name="items">
@@ -169,7 +169,7 @@
     </property>
   </bean>
 
-  <bean id="UifCompView-SecureWidgets" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-SecureWidgets" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Secure Widgets"/>
     <property name="instructionalText" value="Ability to use quickfinder is secured by a KIM permission."/>
     <property name="items">

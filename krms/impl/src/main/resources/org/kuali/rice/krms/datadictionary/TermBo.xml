@@ -221,7 +221,7 @@
     <property name="singlePageView" value="true"/>
     <property name="items">
       <list>
-        <bean parent="Uif-Disclosure-BoxSection">
+        <bean parent="Uif-Disclosure-VerticalBoxSection">
           <property name="header.headerText" value="Term" />
           <property name="items">
           <list>

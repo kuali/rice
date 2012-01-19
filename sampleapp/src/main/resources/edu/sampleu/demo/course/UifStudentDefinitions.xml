@@ -75,10 +75,9 @@
     </property>
   </bean>
 
-  <bean id="GenericGroup" parent="Uif-BoxSection" p:disclosure.render="false" p:header.styleClasses="group_header"/>
+  <bean id="GenericGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false" p:header.styleClasses="group_header"/>
 
-  <bean id="genericTextGroup" parent="Uif-BoxSection"
-        p:layoutManager.orientation="HORIZONTAL">
+  <bean id="genericTextGroup" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false"/>
     <property name="items">
       <list>
@@ -155,7 +154,7 @@
     </property>
   </bean>
 
-  <bean id="GenericCriteriaGroup" parent="Uif-BoxSection">
+  <bean id="GenericCriteriaGroup" parent="Uif-VerticalBoxSection">
     <property name="renderHeader" value="false"/>
   </bean>
 

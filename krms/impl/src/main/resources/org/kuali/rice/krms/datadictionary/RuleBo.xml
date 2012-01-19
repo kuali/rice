@@ -146,7 +146,7 @@
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
-		  <bean parent="Uif-Disclosure-BoxSection">
+		  <bean parent="Uif-Disclosure-VerticalBoxSection">
 			<property name="title" value="Rule" />
 			<property name="items">
 			  <list>
@@ -177,7 +177,7 @@
 			  </list>
 			</property>
 		  </bean>
-		  <bean parent="Uif-Disclosure-BoxSection">
+		  <bean parent="Uif-Disclosure-VerticalBoxSection">
 			<property name="title" value="Rule Propositions" />
 			<property name="items">
 			  <list>

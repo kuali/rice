@@ -35,13 +35,12 @@
     </property>
     <property name="headerStyleClasses" value="uif-header"/>
     <property name="group">
-      <bean parent="Uif-BoxGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
         <property name="styleClasses">
           <list merge="true">
             <value>uif-headerFieldGroup</value>
           </list>
         </property>
-        <property name="layoutManager.orientation" value="HORIZONTAL"/>
       </bean>
     </property>
   </bean>
@@ -136,9 +135,8 @@
   <!-- Base Footer -->
 
   <bean id="Uif-FooterBase" parent="Uif-FooterBase-parentBean"/>
-  <bean id="Uif-FooterBase-parentBean" abstract="true" parent="Uif-BoxGroup" scope="prototype">
+  <bean id="Uif-FooterBase-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup" scope="prototype">
     <property name="styleClasses" value="uif-footer"/>
-    <property name="layoutManager.orientation" value="HORIZONTAL"/>
   </bean>
 
   <!-- Common Footers -->

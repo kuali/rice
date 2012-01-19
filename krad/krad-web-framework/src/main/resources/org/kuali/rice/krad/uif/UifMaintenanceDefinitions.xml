@@ -64,7 +64,7 @@
   </bean>
 
   <bean id="Uif-MaintenanceSection" abstract="true" parent="Uif-MaintenanceSection-parentBean"/>
-  <bean id="Uif-MaintenanceSection-parentBean" parent="Uif-Disclosure-BoxSection"/>
+  <bean id="Uif-MaintenanceSection-parentBean" parent="Uif-Disclosure-VerticalBoxSection"/>
 
   <bean id="Uif-MaintenanceStackedCollectionSection" abstract="true" parent="Uif-MaintenanceStackedCollectionSection-parentBean"/>
   <bean id="Uif-MaintenanceStackedCollectionSection-parentBean" parent="Uif-Disclosure-StackedCollectionSection">

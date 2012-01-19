@@ -79,7 +79,7 @@
         </property>
     </bean>
 
-    <bean id="testHeader" parent="Uif-Disclosure-BoxSection">
+    <bean id="testHeader" parent="Uif-Disclosure-VerticalBoxSection">
         <property name="title" value="Testing header styles"/>
         <property name="items">
             <list>
@@ -93,7 +93,7 @@
         </property>
     </bean>
 
-    <bean id="testButtons" parent="Uif-Disclosure-BoxSection" p:layoutManager.orientation="VERTICAL">
+    <bean id="testButtons" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Testing button styles"/>
         <property name="styleClasses" value="fl-theme-ks"/>
         <property name="items">
@@ -117,7 +117,7 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection1" parent="Uif-BoxSection">
+    <bean id="testValidationSection1" parent="Uif-VerticalBoxSection">
         <property name="id" value="testValidationSection1"/>
         <property name="title" value="Test Section 1"/>
         <property name="disclosure.render" value="false"/>
@@ -133,7 +133,7 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection2" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+    <bean id="testValidationSection2" parent="Uif-HorizontalBoxSection">
         <property name="title" value="Test Section 2"/>
         <property name="instructionalText" value="Horizontal Layout test"/>
         <property name="disclosure.render" value="false"/>
@@ -171,7 +171,7 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection4" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
+    <bean id="testValidationSection4" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Test Section 3"/>
         <property name="instructionalText" value="Testing icons, highlighting off, allowMessageRepeat off"/>
         <property name="disclosure.render" value="false"/>
@@ -224,7 +224,7 @@
         </property>
     </bean>
 
-    <bean id="testValidationSection3" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
+    <bean id="testValidationSection3" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Test Section 3"/>
         <property name="instructionalText" value="Vertical layout test"/>
         <property name="disclosure.render" value="false"/>
@@ -542,7 +542,7 @@
         <property name="styleClasses" value="group_header"/>
     </bean>
 
-    <bean id="test2Section6" parent="Uif-BoxSection">
+    <bean id="test2Section6" parent="Uif-VerticalBoxSection">
         <property name="title" value="Test Collections"/>
         <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>

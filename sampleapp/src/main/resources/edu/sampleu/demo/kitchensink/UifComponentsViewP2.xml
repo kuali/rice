@@ -26,7 +26,7 @@
                                            UIF Comp - Field Groups
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-FieldGroups" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-FieldGroups" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Field Groups"/>
     <property name="instructionalText"
               value="Field Groups can have multiple fields but appear to the user as one logical field grouping."/>
@@ -51,7 +51,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 2" p:group.layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 2">
           <property name="group.instructionalText" value="Field group with horizontal layout and no field labels"/>
           <property name="items">
             <list>
@@ -70,7 +70,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 3" p:group.layoutManager.orientation="HORIZONTAL">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 3">
           <property name="group.instructionalText" value="Field group with input and action field"/>
           <property name="items">
             <list>
@@ -93,7 +93,7 @@
                                            UIF Comp - Message Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-MessageFields" parent="Uif-BoxSection">
+  <bean id="UifCompView-MessageFields" parent="Uif-VerticalBoxSection">
     <property name="title" value="Message Fields"/>
     <property name="instructionalText" value="Message fields display read-only text"/>
     <property name="items">
@@ -109,7 +109,7 @@
                                            UIF Comp - Attribute Security
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-AttributeSecurity" parent="Uif-BoxSection">
+  <bean id="UifCompView-AttributeSecurity" parent="Uif-VerticalBoxSection">
     <property name="title" value="Attribute Security"/>
     <property name="instructionalText" value="Input Fields with Security Masking"/>
     <property name="items">
@@ -144,7 +144,7 @@
                                            UIF Comp - Image Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-ImageFields" parent="Uif-BoxSection">
+  <bean id="UifCompView-ImageFields" parent="Uif-VerticalBoxSection">
     <property name="title" value="Image Fields"/>
     <property name="instructionalText" value="Fields that display an image"/>
     <property name="items">
@@ -163,7 +163,7 @@
                                            UIF Comp - Action Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-ActionFields" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-ActionFields" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Action Fields"/>
     <property name="instructionalText"
               value="Action fields perform an action and can be images, links, buttons or combinations of the aforementioned"/>
@@ -241,7 +241,7 @@
                                            UIF Comp - Link Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-LinkFields" parent="Uif-BoxSection">
+  <bean id="UifCompView-LinkFields" parent="Uif-VerticalBoxSection">
     <property name="title" value="Link Fields"/>
     <property name="items">
       <list>
@@ -271,7 +271,7 @@
                                            UIF Comp - Other Fields
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-OtherFields" parent="Uif-Disclosure-BoxSection">
+  <bean id="UifCompView-OtherFields" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Miscellaneous Fields and Groups"/>
     <property name="instructionalText" value="A variety of other fields and groups"/>
     <property name="items">
@@ -303,7 +303,7 @@
                 <bean parent="Uif-MessageField"/>
               </property>
               <property name="dataGroupPrototype">
-                <bean parent="Uif-BoxGroup"  p:style="margin-left: 2em;">
+                <bean parent="Uif-VerticalBoxGroup"  p:style="margin-left: 2em;">
                   <property name="items">
                     <list>
                       <bean parent="Uif-HorizontalFieldGroup">

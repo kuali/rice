@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="remotableFieldsGroup" parent="Uif-BoxSection" p:disclosure.render="false">
+  <bean id="remotableFieldsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
     <property name="title" value="Fields created by Fetching Remotable Fields"/>
     <property name="items">
       <list>
@@ -56,7 +56,7 @@
     </property>
   </bean>
 
-  <bean id="miscGroup" parent="Uif-BoxSection" p:disclosure.render="false">
+  <bean id="miscGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
     <property name="title" value="Various configuration and feature examples"/>
     <property name="items">
       <list>

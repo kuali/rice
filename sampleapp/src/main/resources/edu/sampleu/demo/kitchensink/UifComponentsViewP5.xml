@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="prog1" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL"
+  <bean id="prog1" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
 		p:title="Progressive Disclosure of Fields">
 		<property name="disclosure.render" value="false" />
 		
@@ -68,7 +68,7 @@
 		</property>
 	</bean>
 
-	<bean id="prog2" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL"
+	<bean id="prog2" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
 		p:title="Progressive Disclosure of Groups">
 		<property name="disclosure.render" value="false" />
 		
@@ -90,7 +90,7 @@
 						</bean>
 					</property>
 				</bean>
-				<bean parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL"
+				<bean parent="Uif-HorizontalBoxSection"
 					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
 					p:disclosure.render="false">
 					<property name="items">
@@ -104,7 +104,7 @@
 						</list>
 					</property>
 				</bean>
-				<bean parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL"
+				<bean parent="Uif-HorizontalBoxSection"
 					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
 					p:title="Group 2" p:disclosure.render="false">
 					<property name="items">
@@ -120,7 +120,7 @@
 		</property>
 	</bean>
 
-	<bean id="prog3" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL"
+	<bean id="prog3" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
 		p:title="Conditional Refresh">
 		<property name="disclosure.render" value="false" />
 		

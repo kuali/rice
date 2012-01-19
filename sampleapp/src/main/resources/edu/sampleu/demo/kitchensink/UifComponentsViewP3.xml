@@ -21,8 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  	<bean id="minMaxSection" parent="Uif-BoxSection"
-		p:layoutManager.orientation="HORIZONTAL">
+  	<bean id="minMaxSection" parent="Uif-HorizontalBoxSection">
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="MinMax length and value" />
 		<property name="instructionalText"
@@ -48,8 +47,7 @@
 		</property>
 	</bean>
 
-  	<bean id="requiredSection" parent="Uif-BoxSection"
-		p:layoutManager.orientation="HORIZONTAL">
+  	<bean id="requiredSection" parent="Uif-HorizontalBoxSection">
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="Required constraint" />
 		<property name="instructionalText"
@@ -70,8 +68,7 @@
 		</property>
 	</bean>
 
-	<bean id="preReqSection" parent="Uif-BoxSection"
-		p:layoutManager.orientation="HORIZONTAL">
+	<bean id="preReqSection" parent="Uif-HorizontalBoxSection">
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="PreRequisite constraint" />
 		<property name="instructionalText"
@@ -112,8 +109,7 @@
 	</bean>
 
 
-  <bean id="mustOccursSection" parent="Uif-BoxSection"
-    p:layoutManager.orientation="HORIZONTAL">
+  <bean id="mustOccursSection" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
     <property name="title" value="MustOccursConstraint" />
     <property name="instructionalText"
@@ -130,7 +126,7 @@
     </property>
   </bean>
 
-  <bean id="moGroup1" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="moGroup1" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
     
     <property name="items">
@@ -182,7 +178,7 @@
     </property>
   </bean>
 
-  <bean id="moGroup2" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="moGroup2" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
     
     <property name="items">
@@ -228,7 +224,7 @@
     </property>
   </bean>
 
-  <bean id="moGroup3" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="moGroup3" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
     
     <property name="items">
@@ -281,7 +277,7 @@
     </property>
   </bean>
 
-  <bean id="caseConstraintSection" parent="Uif-BoxSection"
+  <bean id="caseConstraintSection" parent="Uif-VerticalBoxSection"
     p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
     <property name="title" value="CaseConstraint" />
@@ -317,7 +313,7 @@
     </property>
   </bean>
 
-  <bean id="ccSection1" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
+  <bean id="ccSection1" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
     
     <property name="items">
@@ -356,7 +352,7 @@
     </property>
   </bean>
 
-  <bean id="ccSection2" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
+  <bean id="ccSection2" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
     
     <property name="items">
@@ -387,7 +383,7 @@
     </property>
   </bean>
 
-  <bean id="ccSection3" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="ccSection3" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
     
     <property name="items">
@@ -417,7 +413,7 @@
     </property>
   </bean>
 
-  <bean id="ccSection4" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="ccSection4" parent="Uif-HorizontalBoxSection">
     <property name="disclosure.render" value="false" />
     
     <property name="items">

@@ -29,10 +29,10 @@
   <import resource="classpath:org/kuali/rice/location/config/_LocationOjbSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/location/config/_LocationLocalServiceBusSpringBeans.xml" />
 
-  <!-- the distributed cache manager that calls into the locationCacheService on the ksb -->
+  <!-- the distributed cache manager that calls into the locationCacheAdminService on the ksb -->
   <bean id="locationDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="locationLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/location/v2_0}locationCacheService" />
+    <property name="serviceName" value="{http://rice.kuali.org/location/v2_0}locationCacheAdminService" />
   </bean>
 
   <bean id="rice.location.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">

@@ -49,7 +49,7 @@
   <cache:annotation-driven cache-manager="rice.location.import.globalCacheManager" />
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-  <bean id="locationCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
+  <bean id="locationCacheAdminService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
 
   <bean id="rice.location.import.serviceBus"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
@@ -72,11 +72,11 @@
     <property name="servicePath" value="#{ T(org.kuali.rice.location.api.LocationConstants).SERVICE_PATH_SOAP }"/>
   </bean>
 
-  <bean id="locationCacheService.exporter" parent="locationServiceExporter">
+  <bean id="locationCacheAdminService.exporter" parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
-            p:service-ref="locationCacheService"
-            p:localServiceName="locationCacheService"
+            p:service-ref="locationCacheAdminService"
+            p:localServiceName="locationCacheAdminService"
             p:queue="false"/>
     </property>
   </bean>

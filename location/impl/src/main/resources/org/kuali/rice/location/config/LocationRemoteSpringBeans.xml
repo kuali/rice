@@ -23,6 +23,10 @@
 
   <import resource="classpath:org/kuali/rice/location/config/_LocationCommonSpringBeans.xml" />
 
+  <bean id="rice.location.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="locationLocalCacheManager" />
+  </bean>
+
   <bean id="rice.location.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.location.serviceNamespace"/>

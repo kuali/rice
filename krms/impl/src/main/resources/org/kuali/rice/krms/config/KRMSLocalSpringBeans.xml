@@ -32,27 +32,6 @@
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSOjbSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSLocalServiceBusSpringBeans.xml" />
 
-  <!-- caching start -->
-  <!-- uncomment when caching setup
-  <bean id="rice.krms.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="globalCacheManager" />
-  </bean>
-
-  <cache:annotation-driven cache-manager="rice.krms.import.globalCacheManager" />
-  -->
-  <!-- the distributed cache manager that calls into the locationCacheService on the ksb -->
-  <!--<bean id="krmsDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
-    <property name="cacheManager" ref="krmsLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/krms/v2_0}krmsCacheService" />
-  </bean>
-
-  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
-    <property name="cacheManager" ref="krmsDistributedCacheManager" />
-  </bean>-->
-
-  <!-- caching end -->
-
   <!-- TODO: there is one of these in krad-servlet.xml, remove that one or this one -->
   <context:component-scan base-package="org.kuali.rice.krms.impl" />
 

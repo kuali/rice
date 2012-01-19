@@ -29,22 +29,13 @@
   <import resource="classpath:org/kuali/rice/location/config/_LocationOjbSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/location/config/_LocationLocalServiceBusSpringBeans.xml" />
 
-  <!-- caching start -->
-
-  <bean id="rice.location.import.globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="globalCacheManager" />
-  </bean>
-
-  <cache:annotation-driven cache-manager="rice.location.import.globalCacheManager" />
-
   <!-- the distributed cache manager that calls into the locationCacheService on the ksb -->
   <bean id="locationDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="locationLocalCacheManager" />
     <property name="serviceName" value="{http://rice.kuali.org/location/v2_0}locationCacheService" />
   </bean>
 
-  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+  <bean id="rice.location.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
     <property name="cacheManager" ref="locationDistributedCacheManager" />
   </bean>
 

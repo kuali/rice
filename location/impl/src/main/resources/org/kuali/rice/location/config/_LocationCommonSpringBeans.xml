@@ -19,10 +19,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+                           http://www.springframework.org/schema/util/spring-util-3.1.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache.xsd">
 
   <util:constant id="rice.location.serviceNamespace" static-field="org.kuali.rice.location.api.LocationConstants$Namespaces.LOCATION_NAMESPACE_2_0"/>
 
@@ -35,6 +38,15 @@
       <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="${location.ehcache.config.location}"/>
     </property>
   </bean>
+
+  <!-- caching start -->
+
+  <bean id="rice.location.import.globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
+  </bean>
+
+  <cache:annotation-driven cache-manager="rice.location.import.globalCacheManager" />
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
   <bean id="locationCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
@@ -58,14 +70,14 @@
     <property name="busSecurity" value="${location.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
     <property name="servicePath" value="#{ T(org.kuali.rice.location.api.LocationConstants).SERVICE_PATH_SOAP }"/>
-    <property name="cacheManager" value="locationClientCacheManager"/>
   </bean>
 
   <bean id="locationCacheService.exporter" parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="locationCacheService"
-            p:localServiceName="locationCacheService"/>
+            p:localServiceName="locationCacheService"
+            p:queue="false"/>
     </property>
   </bean>
 

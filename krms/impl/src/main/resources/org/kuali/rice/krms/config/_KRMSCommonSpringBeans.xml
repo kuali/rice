@@ -49,7 +49,6 @@
     <property name="busSecurity" value="${krms.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
     <property name="servicePath" value="#{ T(org.kuali.rice.krms.api.KrmsConstants).SERVICE_PATH_SOAP }"/>
-    <property name="cacheManager" value="locationClientCacheManager"/>
   </bean>
 
   <!-- CACHE SETUP!  uncomment when cache is configured -->

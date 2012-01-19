@@ -68,8 +68,7 @@
     p:retryAttempts="0"
     p:busSecurity="${kim.soapExposedService.jaxws.security}"
     p:serviceVersion="${rice.version}"
-    p:servicePath="#{ T(org.kuali.rice.kim.api.KimConstants).SERVICE_PATH_SOAP }"
-    p:cacheManager="kimLocalCacheManager"/>
+    p:servicePath="#{ T(org.kuali.rice.kim.api.KimConstants).SERVICE_PATH_SOAP }"/>
 
   <bean id="kimCacheService.exporter" parent="kimServiceExporter" p:exportIf="kimCacheService.expose">
     <property name="serviceDefinition">

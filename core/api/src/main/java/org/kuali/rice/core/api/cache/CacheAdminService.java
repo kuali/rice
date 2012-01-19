@@ -41,10 +41,11 @@ import java.util.Collection;
 public interface CacheAdminService {
 
     /**
-     * Flushes an object or group of objects from the cache based on a cache target.
+     * Flushes an object or group of objects from the cache based on a cache target.  If the given collection of cache
+     * targets is empty or null, this method will do nothing.
      *
-     * @param cacheTargets a collection of targets to flush. cannot be null or contain null items
-     * @throws RiceIllegalArgumentException if {@code cacheTargets} is null or contains any null items.
+     * @param cacheTargets a collection of targets to flush
+     * @throws RiceIllegalArgumentException if {@code cacheTargets} contains any null items.
      */
     @WebMethod(operationName = "flush")
     void flush(@WebParam(name = "cacheTargets") Collection<CacheTarget> cacheTargets) throws RiceIllegalArgumentException;

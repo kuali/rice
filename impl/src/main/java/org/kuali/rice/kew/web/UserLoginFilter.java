@@ -177,7 +177,7 @@ public class UserLoginFilter implements Filter {
 	}
 	
 	private void addToMDC(HttpServletRequest request) {
-		MDC.put(MDC_USER, KRADUtils.getUserSessionFromRequest(request).getPrincipalId());
+		MDC.put(MDC_USER, KRADUtils.getUserSessionFromRequest(request).getPrincipalName());
 	}
 	
 	private void removeFromMDC() {

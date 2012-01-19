@@ -40,7 +40,7 @@ Copyright 2005-2009 The Kuali Foundation. All rights reserved. Kuali is licensed
 
 <h3><a name="LicensingandAcknowledgments-ThirdPartyContributions"></a>Third Party Contributions</h3>
 
-<p>Portions of Kuali were developed by Indiana University, Cornell University, University of Hawaii, Michigan State University, University of Arizona, San Joaquin Delta Community College, University of California, Rutgers University, University of Southern California, University of Maryland, University of Washington, Iowa State University, University of British Columbia, Innovativ Consulting Partners, Syntel Inc., and The rSmart Group (<a href="http://www.kuali.org" rel="nofollow">http://www.kuali.org</a>).</p>
+ <p>Portions of Kuali Rice were developed by Cornell University, Indiana University, Iowa State University, Michigan State University, Rutgers University, San Joaquin Delta Community College, Strathmore University, University of Arizona, University of British Columbia, University of California - Berkeley, University of California - Davis, University of California - San Diego, University of Hawaii, University of Maryland, University of Southern California, University of Washington, Innovativ Consulting Partners, OpenCollab, Syntel Inc., and The rSmart Group. (<a href="http://www.kuali.org" rel="nofollow">http://www.kuali.org</a>).</p>
 
 <p>This product includes software developed by the Apache Software Foundation (<a href="http://www.apache.org" rel="nofollow">http://www.apache.org</a>). <!-- Rice 1.0.0 --></p>
 

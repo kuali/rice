@@ -32,7 +32,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * POJO implementation of CountryContract that is immutable. Instances of State can be (un)marshalled to and from XML.
+ * POJO implementation of StateContract that is immutable. Instances of State can be (un)marshalled to and from XML.
  *
  * @see StateContract
  * @author Kuali Rice Team (rice.collab@kuali.org)

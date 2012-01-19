@@ -50,7 +50,6 @@ import java.util.Collection;
 		AbstractServiceConfiguration.Elements.MESSAGE_EXCEPTION_HANDLER,
 		AbstractServiceConfiguration.Elements.BUS_SECURITY,
 		AbstractServiceConfiguration.Elements.CREDENTIALS_TYPE,
-        AbstractServiceConfiguration.Elements.CACHE_MANAGER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public abstract class AbstractServiceConfiguration extends AbstractDataTransferObject implements ServiceConfiguration {
@@ -98,9 +97,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 	@XmlElement(name = Elements.CREDENTIALS_TYPE, required = false)
 	private final String credentialsType;
 
-    @XmlElement(name = Elements.CACHE_MANAGER, required = false)
-    private final String cacheManager;
-	
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -122,7 +118,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		this.messageExceptionHandler = null;
 		this.busSecurity = null;
 		this.credentialsType = null;
-        this.cacheManager = null;
 	}
 	
 	protected AbstractServiceConfiguration(Builder<?> builder) {
@@ -140,7 +135,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		this.busSecurity = builder.getBusSecurity();
 		CredentialsType cred = builder.getCredentialsType();
 		this.credentialsType = cred == null ? null : cred.name();
-        this.cacheManager = builder.getCacheManager();
 	}
 	
 	public QName getServiceName() {
@@ -198,10 +192,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		return CredentialsType.valueOf(credentialsType);
 	}
 
-    public String getCacheManager() {
-		return cacheManager;
-	}
-		
 	protected static abstract class Builder<T> implements Serializable {
 		
 		private static final long serialVersionUID = -3002495884401672488L;
@@ -219,8 +209,7 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 		private String messageExceptionHandler;
 		private Boolean busSecurity;
 		private CredentialsType credentialsType;
-        private String cacheManager;
-		
+
 		public abstract T build();
 		
 		protected void copyServiceDefinitionProperties(ServiceDefinition serviceDefinition) {
@@ -237,7 +226,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 			setMessageExceptionHandler(serviceDefinition.getMessageExceptionHandler());
 			setBusSecurity(serviceDefinition.getBusSecurity());
 			setCredentialsType(serviceDefinition.getCredentialsType());
-            setCacheManager(serviceDefinition.getCacheManager());
 		}
 		
 		public QName getServiceName() {
@@ -319,13 +307,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
 			this.credentialsType = credentialsType;
 		}
 
-        public String getCacheManager() {
-		    return cacheManager;
-	    }
-
-        public void setCacheManager(String cacheManager) {
-            this.cacheManager = cacheManager;
-        }
 	}
 	
     /**
@@ -353,7 +334,6 @@ public abstract class AbstractServiceConfiguration extends AbstractDataTransferO
     	protected final static String MESSAGE_EXCEPTION_HANDLER = "messageExceptionHandler";
     	protected final static String BUS_SECURITY = "busSecurity";
     	protected final static String CREDENTIALS_TYPE = "credentialsType";
-        protected final static String CACHE_MANAGER = "cacheManager";
     }
     
     static final class CredentialsTypeAdapter extends EnumStringAdapter<CredentialsType> {

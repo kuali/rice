@@ -24,7 +24,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.security.credentials.CredentialsType;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.api.bus.Endpoint;
@@ -65,8 +64,7 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 
 	// if the service is exported from a plugin, we need to ensure it's invoked within the proper classloading context!
 	private ClassLoader serviceClassLoader;
-    private String cacheManager;
-			
+
 	protected AbstractServiceDefinition() {
 		this.busSecurity = Boolean.TRUE;
 		this.queue = true;
@@ -185,15 +183,6 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		this.serviceClassLoader = serviceClassLoader;
 	}
 
-    @Override
-    public String getCacheManager() {
-        return cacheManager;
-    }
-
-    public void setCacheManager(String cacheManager) {
-        this.cacheManager = cacheManager;
-    }
-	
 	@Override
 	public void validate() {
 		
@@ -274,13 +263,6 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		if (this.millisToLive == null) {
 			setMillisToLive(new Long(-1));
 		}
-
-        if (StringUtils.isBlank(cacheManager)) {
-            LOG.warn("The cache manager was blank for " + (serviceName != null ? serviceName : localServiceName) + ". This service will not have client-side caching.");
-        } else if (GlobalResourceLoader.getService(cacheManager) == null){
-            //FIXME: it seems that the spring bean isn't available here or something....
-            //LOG.warn("The cache manager " + cacheManager + " was not found for " + (serviceName != null ? serviceName : localServiceName) + ". This service will not have client-side caching.");
-        }
 
 	}
 	

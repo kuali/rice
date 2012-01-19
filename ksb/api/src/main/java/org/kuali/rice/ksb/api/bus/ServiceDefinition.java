@@ -184,12 +184,4 @@ public interface ServiceDefinition {
 	 */
 	CredentialsType getCredentialsType();
 
-    /**
-	 * Returns the name of the cache manager to use. If null or blank then caching is effectively
-     * disabled for this service.
-	 *
-	 * @return the cache manager name or null
-	 */
-    String getCacheManager();
-	
 }

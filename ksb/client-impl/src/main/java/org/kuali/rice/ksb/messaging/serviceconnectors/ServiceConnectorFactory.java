@@ -15,18 +15,11 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 import org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
@@ -37,8 +30,12 @@ import org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.interceptor.CacheProxy;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Constructs a ServiceConnector based on the provided
@@ -100,34 +97,9 @@ public class ServiceConnectorFactory {
 			throw new RiceRuntimeException("Don't support service type of "	+ serviceConfiguration);
 		}
 		serviceConnector.setCredentialsSource(credentialsSource);
-        if (StringUtils.isNotBlank(serviceConfiguration.getCacheManager())) {
-            CacheManager c = GlobalResourceLoader.getService(serviceConfiguration.getCacheManager());
-            if (c != null) {
-                return new CacheServiceConnector(serviceConnector, c);
-            }
-        }
 
 		return serviceConnector;
 	}
-
-    private static class CacheServiceConnector implements ServiceConnector {
-        private final ServiceConnector connector;
-        private final Object o;
-        private CacheServiceConnector(ServiceConnector connector, CacheManager cacheManager) {
-            this.connector = connector;
-            this.o = CacheProxy.createCacheProxy(this.connector.getService(), cacheManager);
-        }
-
-        @Override
-        public Object getService() {
-            return o;
-        }
-
-        @Override
-        public void setCredentialsSource(CredentialsSource credentialsSource) {
-            connector.setCredentialsSource(credentialsSource);
-        }
-    }
 	
 	public static String determineAlternateEndpoint(ServiceConfiguration serviceConfiguration) {
 		String alternateEndpointUrl = null;

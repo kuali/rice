@@ -83,33 +83,33 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 
     @Override
     protected Object invokeInternal(Object proxy, Method method, Object[] arguments) throws Throwable {
-	// there are multiple service calls to make in the case of topics.
-	AsynchronousCall methodCall = null;
-	PersistedMessageBO message = null;
-	synchronized (this) {
-	    // consider moving all this topic invocation stuff to the service
-	    // invoker for speed reasons
-	    for (Endpoint endpoint : this.endpoints) {
-		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
-		methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceConfiguration, method.getName(),
-			null, this.context);
-		message = KSBServiceLocator.getMessageQueueService().getMessage(serviceConfiguration, methodCall);
-		message.setValue1(this.value1);
-		message.setValue2(this.value2);
-		Calendar now = Calendar.getInstance();
-		now.add(Calendar.MILLISECOND, (int) delayMilliseconds);
-		message.setQueueDate(new Timestamp(now.getTimeInMillis()));
-		scheduleMessage(message);
-		// only do one iteration if this is a queue. The load balancing
-		// will be handled when the service is
-		// fetched by the MessageServiceInvoker through the GRL (and
-		// then through the RemoteResourceServiceLocatorImpl)
-		if (serviceConfiguration.isQueue()) {
-		    break;
-		}
+	    // there are multiple service calls to make in the case of topics.
+	    AsynchronousCall methodCall = null;
+	    PersistedMessageBO message = null;
+	    synchronized (this) {
+	        // consider moving all this topic invocation stuff to the service
+	        // invoker for speed reasons
+	        for (Endpoint endpoint : this.endpoints) {
+		        ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
+		        methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceConfiguration,
+                        method.getName(), null, this.context);
+		        message = PersistedMessageBO.buildMessage(serviceConfiguration, methodCall);
+		        message.setValue1(this.value1);
+		        message.setValue2(this.value2);
+		        Calendar now = Calendar.getInstance();
+		        now.add(Calendar.MILLISECOND, (int) delayMilliseconds);
+		        message.setQueueDate(new Timestamp(now.getTimeInMillis()));
+		        scheduleMessage(message);
+		        // only do one iteration if this is a queue. The load balancing
+		        // will be handled when the service is
+		        // fetched by the MessageServiceInvoker through the GRL (and
+		        // then through the RemoteResourceServiceLocatorImpl)
+		        if (serviceConfiguration.isQueue()) {
+		            break;
+		        }
+	        }
 	    }
-	}
-	return null;
+	    return null;
     }
 
     protected void scheduleMessage(PersistedMessageBO message) throws SchedulerException {

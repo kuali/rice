@@ -28,12 +28,6 @@
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceBusSpringBeans.xml"/>
 
-  <bean id="rice.coreService.import.globalCacheManager" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="globalCacheManager" />
-  </bean>
-
-  <cache:annotation-driven cache-manager="rice.coreService.import.globalCacheManager" />
-
   <bean id="rice.coreService.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
     <property name="cacheManager" ref="coreServiceDistributedCacheManager" />
   </bean>

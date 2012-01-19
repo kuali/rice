@@ -96,24 +96,4 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
     }
 
-    public PersistedMessageBO getMessage(ServiceConfiguration serviceConfiguration, AsynchronousCall methodCall) {
-        PersistedMessageBO message = new PersistedMessageBO();
-        message.setPayload(new PersistedMessagePayload(methodCall, message));
-        message.setIpNumber(RiceUtilities.getIpNumber());
-        message.setServiceName(serviceConfiguration.getServiceName().toString());
-        message.setQueueDate(new Timestamp(System.currentTimeMillis()));
-        if (serviceConfiguration.getPriority() == null) {
-            message.setQueuePriority(KSBConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
-        } else {
-            message.setQueuePriority(serviceConfiguration.getPriority());
-        }
-        message.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
-        message.setRetryCount(0);
-        if (serviceConfiguration.getMillisToLive() > 0) {
-            message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceConfiguration.getMillisToLive()));
-        }
-        message.setApplicationId(CoreConfigHelper.getApplicationId());
-        message.setMethodName(methodCall.getMethodName());
-        return message;
-    }
 }

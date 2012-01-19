@@ -23,6 +23,10 @@
 
   <import resource="classpath:org/kuali/rice/coreservice/config/_CoreServiceCommonSpringBeans.xml"/>
 
+  <bean id="rice.coreService.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="coreServiceLocalCacheManager" />
+  </bean>
+
   <bean id="rice.coreService.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.coreService.serviceNamespace"/>

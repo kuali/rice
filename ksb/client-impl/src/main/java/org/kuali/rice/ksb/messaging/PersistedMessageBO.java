@@ -29,9 +29,13 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
+import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * A message which has been persisted to the data store.
@@ -90,6 +94,27 @@ public class PersistedMessageBO implements PersistedMessage {
     
     public PersistedMessageBO() {
         // default constructor
+    }
+
+    public static PersistedMessageBO buildMessage(ServiceConfiguration serviceConfiguration, AsynchronousCall methodCall) {
+        PersistedMessageBO message = new PersistedMessageBO();
+        message.setPayload(new PersistedMessagePayload(methodCall, message));
+        message.setIpNumber(RiceUtilities.getIpNumber());
+        message.setServiceName(serviceConfiguration.getServiceName().toString());
+        message.setQueueDate(new Timestamp(System.currentTimeMillis()));
+        if (serviceConfiguration.getPriority() == null) {
+            message.setQueuePriority(KSBConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
+        } else {
+            message.setQueuePriority(serviceConfiguration.getPriority());
+        }
+        message.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
+        message.setRetryCount(0);
+        if (serviceConfiguration.getMillisToLive() > 0) {
+            message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceConfiguration.getMillisToLive()));
+        }
+        message.setApplicationId(CoreConfigHelper.getApplicationId());
+        message.setMethodName(methodCall.getMethodName());
+        return message;
     }
     
     //@PrePersist

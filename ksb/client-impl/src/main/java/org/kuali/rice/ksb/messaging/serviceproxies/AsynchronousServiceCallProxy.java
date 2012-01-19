@@ -95,7 +95,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
 		methodCall = new AsynchronousCall(method.getParameterTypes(), arguments, serviceConfiguration, method.getName(),
 			this.callback, this.context);
-		message = KSBServiceLocator.getMessageQueueService().getMessage(serviceConfiguration, methodCall);
+		message = PersistedMessageBO.buildMessage(serviceConfiguration, methodCall);
 		message.setValue1(this.value1);
 		message.setValue2(this.value2);
 		saveMessage(message);
@@ -116,12 +116,12 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
     }
 
     protected void saveMessage(PersistedMessageBO message) {
-	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-	KSBServiceLocator.getMessageQueueService().save(message);
+	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
+	    KSBServiceLocator.getMessageQueueService().save(message);
     }
 
     protected void executeMessage(PersistedMessageBO message) throws Exception {
-	MessageSender.sendMessage(message);
+	    MessageSender.sendMessage(message);
     }
 
     /**

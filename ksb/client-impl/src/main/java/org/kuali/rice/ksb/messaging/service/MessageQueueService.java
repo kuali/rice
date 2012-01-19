@@ -85,5 +85,4 @@ public interface MessageQueueService {
      */
     public Integer getMaxRetryAttempts();
 
-    public PersistedMessageBO getMessage(ServiceConfiguration serviceConfiguration, AsynchronousCall methodCall);
 }

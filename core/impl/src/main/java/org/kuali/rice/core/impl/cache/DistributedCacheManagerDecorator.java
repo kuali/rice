@@ -23,12 +23,12 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheAdminService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NamedBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.Ordered;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -59,6 +59,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * </p>
  */
 public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, BeanNameAware, NamedBean {
+    
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
 
     private CacheManager cacheManager;
@@ -84,44 +85,27 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         return cache;
     }
 
-    private Collection<CacheAdminService> getCacheServices() {
+    private void sendFlushCacheMessages(Collection<CacheTarget> cacheTargets) {
         try {
-            List<CacheAdminService> services = new ArrayList<CacheAdminService>();
-            final Collection<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(QName.valueOf(serviceName));
-            for (Endpoint endpoint : endpoints) {
-                services.add((CacheAdminService)endpoint.getService());
-            }
-            return services != null ? services : Collections.<CacheAdminService>emptyList();
-        } catch (RuntimeException e) {
-            LOG.warn("Failed to find any remote services with name: " + serviceName);
-        }
-        return Collections.emptyList();
-    }
-
-    private void flushCache(Collection<CacheTarget> cacheTargets) {
-        try {
-            //this code may not look the prettiest but we do not want to call into the KSB
-            //unless it is necessary to do so.  Also, handling most common fail points to avoid
-            //exceptions.
             if (!cacheTargets.isEmpty()) {
-                final Collection<CacheAdminService> services = getCacheServices();
-                if (services != null) {
-                    for (CacheAdminService service : services) {
-                        if (service != null) {
-                            //wrap the each call in a try block so if one message send fails
-                            //we still attempt the others
-                            try {
-                                service.flush(cacheTargets);
-                            } catch (Throwable t) {
-                                LOG.error("failed to flush the queue for specific endpoint for serviceName "
-                                        + serviceName, t);
-                            }
-                        }
-                    }
-                }
+                logFlushCache(cacheTargets);
+                // need to ensure that the list passed is serializable in order for the KSB messaging to work
+                cacheTargets = new ArrayList<CacheTarget>(cacheTargets);
+                CacheAdminService cacheAdminService = KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(QName.valueOf(serviceName));
+                cacheAdminService.flush(cacheTargets);
             }
         } catch (Throwable t) {
             LOG.error("failed to execute distributed flush for serviceName " + serviceName, t);
+        }
+    }
+
+    private void logFlushCache(Collection<CacheTarget> cacheTargets) {
+        if (LOG.isInfoEnabled()) {
+            Set<String> cacheNames = new HashSet<String>();
+            for (CacheTarget cacheTarget : cacheTargets) {
+                cacheNames.add(cacheTarget.getCache());
+            }
+            LOG.info("Performing distributed flush of information in the following caches: " + StringUtils.join(cacheNames, ", "));
         }
     }
 
@@ -220,7 +204,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
                 //adding to internal queue.  the Synchronization is already registered at this point
                 ts.add(target);
             } else {
-                flushCache(Collections.singleton(target));
+                sendFlushCacheMessages(Collections.singleton(target));
             }
         }
 
@@ -258,9 +242,10 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
      * registry and messages should be added to the internal queue.  This way messages can be "bundled" into a single
      * message send.
      *
-     * <p>
-     *     This synchronizer will only send cache messages when the transaction complete successfully.
-     * </p>
+     * <p>It's important that the sending of cache flush messages happens *before* completion of the transaction since
+     * the implementation of this process uses the KSB messaging functionality which actually dispatches messages
+     * *after* the transaction has committed.  This synchronizer will only send cache messages when the transaction
+     * completes successfully.</p>
      */
     private final class CacheMessageSendingTransactionSynchronization extends TransactionSynchronizationAdapter {
 
@@ -274,14 +259,19 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
             }
         }
 
+        /**
+         * It's important that we set this synchronization to the highest precedence level because we want to ensure
+         * that it kicks in before the synchronizations which handle OJB cleanup.  Otherwise, we end up leaving
+         * persistence brokers in an invalid state since the process of sending messages does some OJB-related work.
+         */
         @Override
-        public void afterCompletion(int status) {
-            if (status == STATUS_COMMITTED) {
-                flushCache(exhaustQueue(flushQueue));
-            } else {
-                //clear the queue. destroys all messages
-                flushQueue.clear();
-            }
+        public int getOrder() {
+            return Ordered.HIGHEST_PRECEDENCE;
+        }
+
+        @Override
+        public void beforeCompletion() {
+            sendFlushCacheMessages(exhaustQueue(flushQueue));
         }
 
         /**

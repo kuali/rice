@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
@@ -106,11 +107,11 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 	}
 		
 	protected RemoteServicesDiff calculateRemoteServicesDiff(List<ServiceInfo> allRegistryServices, List<RemoteService> clientRegistryCache) {
-		
-		List<ServiceInfo> servicesToAddToClientRegistryCache = new ArrayList<ServiceInfo>(allRegistryServices);
+
+        Map<String, ServiceInfo> indexedRegistryServices = indexRegistryServices(allRegistryServices);
+		Map<String, ServiceInfo> servicesToAddToClientRegistryCache = new HashMap<String, ServiceInfo>(indexedRegistryServices);
 		List<RemoteService> servicesToRemoveFromClientRegistryCache = new ArrayList<RemoteService>();
-		
-		Map<String, ServiceInfo> indexedRegistryServices = indexRegistryServices(allRegistryServices);
+
 		for (RemoteService remoteService : clientRegistryCache) {
 			ServiceInfo indexedRegistryService = indexedRegistryServices.get(remoteService.getServiceInfo().getServiceId());
 			if (indexedRegistryService == null) {
@@ -118,9 +119,8 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 			} else {
 				if (!remoteService.getServiceInfo().getChecksum().equals(indexedRegistryService.getChecksum())) {
 					servicesToRemoveFromClientRegistryCache.add(remoteService);
-					
 				} else {
-					servicesToAddToClientRegistryCache.remove(remoteService.getServiceInfo());
+					servicesToAddToClientRegistryCache.remove(remoteService.getServiceInfo().getServiceId());
 				}
 			}
 		}
@@ -130,7 +130,8 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 				servicesToAddToClientRegistryCache.size() + " services to add to client registry cache");
 		}
 		
-		return new RemoteServicesDiff(servicesToAddToClientRegistryCache, servicesToRemoveFromClientRegistryCache);
+		return new RemoteServicesDiff(new ArrayList<ServiceInfo>(servicesToAddToClientRegistryCache.values()),
+                servicesToRemoveFromClientRegistryCache);
 	}
 	
 	private Map<String, ServiceInfo> indexRegistryServices(List<ServiceInfo> allRegistryServices) {

@@ -30,10 +30,12 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 	// preloaded Method objects for the methods in java.lang.Object
     private static Method hashCodeMethod;
     private static Method equalsMethod;
+    private static Method toStringMethod;
     static {
 	try {
 	    hashCodeMethod = Object.class.getMethod("hashCode", (Class[])null);
 	    equalsMethod = Object.class.getMethod("equals", new Class[] { Object.class });
+        toStringMethod = Object.class.getMethod("toString", (Class[])null);
 	    } catch (NoSuchMethodException e) {
 	    	// this should never happen
 	    	throw new NoSuchMethodError(e.getMessage());
@@ -47,12 +49,9 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 		    	return proxyHashCode(proxy);
 		    } else if (method.equals(equalsMethod)) {
 		    	return proxyEquals(proxy, arguments[0]);
-		    } /*else if (m.equals(toStringMethod)) {
-			return proxyToString(proxy);
-		    } else {
-			throw new InternalError(
-			    "unexpected Object method dispatched: " + m);
-		    }*/
+		    } else if (method.equals(toStringMethod)) {
+			    return proxyToString(proxy);
+		    }
 		}
 		try {
 			return invokeInternal(proxy, method, arguments);
@@ -70,5 +69,9 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 	protected Boolean proxyEquals(Object proxy, Object other) {
 		return (proxy == other ? Boolean.TRUE : Boolean.FALSE);
 	}
+
+    protected String proxyToString(Object proxy) {
+        return proxy.toString();
+    }
 
 }

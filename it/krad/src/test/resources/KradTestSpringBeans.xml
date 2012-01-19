@@ -102,31 +102,14 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-		<bean id="ksbConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
-		<property name="configLocations">
-			<list>
-				<value>classpath:org/kuali/rice/ksb/config/ksb-config-defaults.xml</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
-		<property name="arguments">
-			<list><ref bean="ksbConfig"/></list>
-		</property>
-	</bean>
-
-  <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
+  <bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
+    <property name="dataSource" ref="riceDataSource${connection.pool.impl}" />
+    <property name="nonTransactionalDataSource" ref="riceNonTransactionalDataSource" />
+    <property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
+    <property name="userTransaction" ref="jtaUserTransaction" />
+  </bean>
 
 	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-		<property name="moduleName" value="KSB" />
-		<property name="validRunModes">
-			<list>
-				<value>LOCAL</value>
-			</list>
-		</property>
 		<property name="services">
 			<list>
 				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceNameSpaceURI="" p:serviceInterface="org.kuali.rice.krad.lookup.Lookupable" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
@@ -139,12 +122,18 @@
 	</bean>	
 	
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>
-	<bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
+
+	<bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer"/>
+
+  <bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
+
   <bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
-	<bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
-	<bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
-	<bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
+
+  <bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
+
+  <bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
+
+  <bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
 		
 	<bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.krad.lookup.LookupResultsDDBoLookupableHelperServiceImpl" />
 

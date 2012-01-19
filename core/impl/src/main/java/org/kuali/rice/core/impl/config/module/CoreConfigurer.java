@@ -16,6 +16,7 @@
 package org.kuali.rice.core.impl.config.module;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
@@ -29,6 +30,7 @@ import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,6 +46,11 @@ public class CoreConfigurer extends ModuleConfigurer {
 	private UserTransaction userTransaction;
 	private TransactionManager transactionManager;
 	private CredentialsSourceFactory credentialsSourceFactory;
+
+    public CoreConfigurer() {
+		super(CoreConstants.Namespaces.MODULE_NAME);
+		setValidRunModes(Arrays.asList(RunMode.LOCAL));
+	}
 
 	@Override
 	public List<Lifecycle> loadLifecycles() throws Exception {

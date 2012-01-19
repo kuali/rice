@@ -25,6 +25,28 @@
   <import resource="classpath:org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml"/>
 
+  <!-- the distributed cache manager that calls into the kewCacheService on the ksb -->
+  <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
+        p:cacheManager-ref="kewLocalCacheManager"
+        p:serviceName="{http://rice.kuali.org/kew/v2_0}kewCacheService"/>
+
+  <bean id="rice.kew.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
+        p:cacheManager-ref="kewDistributedCacheManager"/>
+
+  <!-- Serves as the target service for cache flush notifications sent from embedded KEW applications -->
+  <bean id="kewCacheDistributionQueue"
+        class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
+        p:cacheManager-ref="kewDistributedCacheManager"/>
+
+  <bean id="kewCacheDistributionQueue.exporter" parent="kewServiceExporter" p:exportIf="kewCacheDistributionQueue.expose">
+    <property name="serviceDefinition">
+      <bean parent="kewService"
+            p:service-ref="kewCacheDistributionQueue"
+            p:localServiceName="kewCacheDistributionQueue"
+            p:queue="true"/>
+    </property>
+  </bean>
+
   <bean id="rice.kew.import.styleService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="styleService"/>

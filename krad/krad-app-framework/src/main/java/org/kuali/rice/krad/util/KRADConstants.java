@@ -45,6 +45,10 @@ public final class KRADConstants {
 		throw new UnsupportedOperationException("do not call");
 	}
 
+    public static final String MODULE_NAME = "krad";
+
+    public static final String KR_MODULE_NAME = "kr";
+
     // special user used in the post-processor
     public static final String SYSTEM_USER = "kr";
 
@@ -235,9 +239,7 @@ public final class KRADConstants {
     public static final String COPY_KEYS = "cpKys";
     
     public static final String KRAD_APPLICATION_DATASOURCE = "kradApplication.datasource";
-    public static final String KRAD_SERVER_DATASOURCE = "kradServer.datasource";
     public static final String KRAD_APPLICATION_DATASOURCE_JNDI = "kradApplication.datasource.jndi.location";
-    public static final String KRAD_SERVER_DATASOURCE_JNDI = "kradServer.datasource.jndi.location";
 
 
     // **************** Begin Note & Attachments defines

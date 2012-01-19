@@ -31,17 +31,18 @@
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedServiceBusSpringBeans.xml"/>
 
+  <!-- Forwards cache evictions to the kewCacheDistributionQueue on the standalone server, this allows the standalone
+       server to handle distribution of cache flush messages -->
+  <bean id="kewEmbeddedDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
+        p:cacheManager-ref="kewLocalCacheManager"
+        p:serviceName="{http://rice.kuali.org/kew/v2_0}kewCacheDistributionQueue"/>
+
+  <bean id="rice.kew.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
+        p:cacheManager-ref="kewEmbeddedDistributedCacheManager"/>
+
   <bean id="rice.kew.import.parameterService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="parameterService"/>
-
-  <!-- the distributed cache manager that calls into the kimCacheService on the ksb -->
-  <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
-        p:cacheManager-ref="kewLocalCacheManager"
-        p:serviceName="{http://rice.kuali.org/kew/v2_0}kewCacheService"/>
-
-  <bean id="rice.kew.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
-        p:cacheManager-ref="kewDistributedCacheManager"/>
 
   <!--  RouteHeaderService -->
   <bean id="enDocumentRouteHeaderService"

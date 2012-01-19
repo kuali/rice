@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.config;
 
-import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
@@ -26,6 +26,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,12 +35,19 @@ import java.util.concurrent.TimeUnit;
 public class KRADConfigurer extends ModuleConfigurer {
 
     private DataSource applicationDataSource;
-    private DataSource serverDataSource;
 
     private boolean includeKnsSpringBeans;
 
     private static final String KRAD_SPRING_BEANS_PATH = "classpath:org/kuali/rice/krad/config/KRADSpringBeans.xml";
     private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
+
+    public KRADConfigurer() {
+        // TODO really the constant value should be "krad" but there's some work to do in order to make
+        // that really work, see KULRICE-6532
+        super(KRADConstants.KR_MODULE_NAME);
+        setValidRunModes(Arrays.asList(RunMode.LOCAL));
+        setIncludeKnsSpringBeans(true);
+    }
 
     @Override
     public void addAdditonalToConfig() {
@@ -133,6 +141,8 @@ public class KRADConfigurer extends ModuleConfigurer {
         return true;
     }
 
+
+
     public boolean isLoadDataDictionary() {
         return ConfigContext.getCurrentContextConfig().getBooleanProperty("load.data.dictionary", true);
     }
@@ -147,7 +157,8 @@ public class KRADConfigurer extends ModuleConfigurer {
     }
 
     public boolean isComponentPublishingEnabled() {
-        return ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.COMPONENT_PUBLISHING_ENABLED, false);
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                KRADConstants.Config.COMPONENT_PUBLISHING_ENABLED, false);
     }
 
     public long getComponentPublishingDelay() {
@@ -161,22 +172,9 @@ public class KRADConfigurer extends ModuleConfigurer {
      * Also initializes the DateTimeService
      */
     protected void configureDataSource() {
-        if (getApplicationDataSource() != null && getServerDataSource() == null) {
-            throw new ConfigurationException(
-                    "An application data source was defined but a server data source was not defined.  Both must be specified.");
-        }
-        if (getApplicationDataSource() == null && getServerDataSource() != null) {
-            throw new ConfigurationException(
-                    "A server data source was defined but an application data source was not defined.  Both must be specified.");
-        }
-
         if (getApplicationDataSource() != null) {
             ConfigContext.getCurrentContextConfig()
                     .putObject(KRADConstants.KRAD_APPLICATION_DATASOURCE, getApplicationDataSource());
-        }
-        if (getServerDataSource() != null) {
-            ConfigContext.getCurrentContextConfig()
-                    .putObject(KRADConstants.KRAD_SERVER_DATASOURCE, getServerDataSource());
         }
     }
 
@@ -184,16 +182,8 @@ public class KRADConfigurer extends ModuleConfigurer {
         return this.applicationDataSource;
     }
 
-    public DataSource getServerDataSource() {
-        return this.serverDataSource;
-    }
-
     public void setApplicationDataSource(DataSource applicationDataSource) {
         this.applicationDataSource = applicationDataSource;
-    }
-
-    public void setServerDataSource(DataSource serverDataSource) {
-        this.serverDataSource = serverDataSource;
     }
 
     /**

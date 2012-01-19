@@ -28,17 +28,14 @@
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml"/>
 
-  <!-- the distributed cache manager that calls into the kimCacheService on the ksb -->
-  <bean id="kimDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
+    <!-- Forwards cache evictions to the kewCacheDistributionQueue on the standalone server, this allows the standalone
+       server to handle distribution of cache flush messages -->
+  <bean id="kimEmbeddedDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
         p:cacheManager-ref="kimLocalCacheManager"
-        p:serviceName="{http://rice.kuali.org/kim/v2_0}kimCacheService"/>
+        p:serviceName="{http://rice.kuali.org/kim/v2_0}kimCacheDistributionQueue"/>
 
   <bean id="rice.kim.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
-        p:cacheManager-ref="kimDistributedCacheManager"/>
-
-  <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-  <bean id="kimCacheService" class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
-        p:cacheManager-ref="kimLocalCacheManager"/>
+        p:cacheManager-ref="kimEmbeddedDistributedCacheManager"/>
 
   <bean id="rice.kim.import.businessObjectService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"

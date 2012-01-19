@@ -17,10 +17,34 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
   <import resource="classpath:org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimServiceBusSpringBeans.xml"/>
+
+  <!-- the distributed cache manager that calls into the kimCacheService on the ksb -->
+  <bean id="kimDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
+        p:cacheManager-ref="kimLocalCacheManager"
+        p:serviceName="{http://rice.kuali.org/kim/v2_0}kimCacheService"/>
+
+  <bean id="rice.kim.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"
+        p:cacheManager-ref="kimDistributedCacheManager"/>
+
+  <!-- Serves as the target service for cache flush notifications sent from embedded KIM applications -->
+  <bean id="kimCacheDistributionQueue"
+        class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
+        p:cacheManager-ref="kimDistributedCacheManager"/>
+
+  <bean id="kimCacheDistributionQueue.exporter" parent="kimServiceExporter" p:exportIf="kimCacheDistributionQueue.expose">
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+            p:service-ref="kimCacheDistributionQueue"
+            p:localServiceName="kimCacheDistributionQueue"
+            p:queue="true"/>
+    </property>
+  </bean>
+
 
 </beans>

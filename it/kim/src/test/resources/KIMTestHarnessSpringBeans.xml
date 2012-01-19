@@ -102,10 +102,22 @@
     </bean>
 
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>
+
+  <bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
+    <property name="dataSource" ref="riceDataSource${connection.pool.impl}" />
+    <property name="nonTransactionalDataSource" ref="riceNonTransactionalDataSource" />
+    <property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
+    <property name="userTransaction" ref="jtaUserTransaction" />
+  </bean>
+
+	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"/>
+
+	<bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer"/>
+
 	<bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
+
 	<bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
+
 	<bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
+
 </beans>

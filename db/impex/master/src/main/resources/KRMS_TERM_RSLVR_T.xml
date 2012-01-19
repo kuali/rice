@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE dataset SYSTEM "data.dtd">
-<dataset>
-    <KRMS_TERM_RSLVR_T ACTV="Y" NM="campusSizeResolver"
-        NMSPC_CD="KRMS_TEST" OUTPUT_TERM_SPEC_ID="TERMSPEC_999"
-        TERM_RSLVR_ID="TERMRSLVR_999" TYP_ID="T999" VER_NBR="1"/>
-</dataset>

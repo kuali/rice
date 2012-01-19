@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE dataset SYSTEM "data.dtd">
-<dataset>
-    <KREN_RECIP_LIST_T CHNL_ID="4" RECIP_ID="testuser1"
-        RECIP_LIST_ID="1" RECIP_TYP_CD="USER"/>
-    <KREN_RECIP_LIST_T CHNL_ID="4" RECIP_ID="testuser3"
-        RECIP_LIST_ID="2" RECIP_TYP_CD="USER"/>
-</dataset>

@@ -43,7 +43,6 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.springframework.beans.BeanWrapper;
 
 /**
@@ -380,10 +379,11 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
     /**
      * @see org.kuali.rice.krad.service.DataObjectMetaDataService#areNotesSupported(java.lang.Class)
      */
-    public boolean areNotesSupported(Class dataObjectClass) {
+    @Override
+    public boolean areNotesSupported(Class<?> dataObjectClass) {
         boolean hasNotesSupport = false;
 
-        DataObjectEntry entry = getDataObjectEntry(UifControllerBase.class);
+        DataObjectEntry entry = getDataObjectEntry(dataObjectClass);
         if (entry != null) {
             hasNotesSupport = entry.isBoNotesEnabled();
         }

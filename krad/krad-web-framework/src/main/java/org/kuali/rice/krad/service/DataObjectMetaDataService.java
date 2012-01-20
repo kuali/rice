@@ -105,7 +105,7 @@ public interface DataObjectMetaDataService {
      */
     public DataObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
             String attributeName, String attributePrefix, boolean keysOnly, boolean supportsLookup,
-            boolean supportInquiry);
+            boolean supportsInquiry);
 
     /**
      * Attempts to find relationships for the given data object class
@@ -151,7 +151,7 @@ public interface DataObjectMetaDataService {
      * @param dataObjectClass - class for data object to check
      * @return boolean true if notes are supported for data object, false if notes are not supported
      */
-    public boolean areNotesSupported(Class dataObjectClass);
+    public boolean areNotesSupported(Class<?> dataObjectClass);
 
     /**
      * Builds a string that uniquely identifiers the data object instance

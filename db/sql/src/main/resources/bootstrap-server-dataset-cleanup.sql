@@ -295,6 +295,85 @@ drop table TST_SEARCH_ATTR_INDX_TST_DOC_T
 delete from ACCT_DD_ATTR_DOC
 /
 
+
+-- clean out KRMS sample data
+
+delete from  krms_cntxt_vld_rule_typ_t where cntxt_vld_rule_id like 'T%'
+/
+delete from  krms_cntxt_vld_func_t where cntxt_vld_func_id like 'T%'
+/
+delete from  krms_term_spec_ctgry_t where term_spec_id like 'T%' OR ctgry_id like 'T%'
+/
+delete from  krms_func_ctgry_t where func_id like 'T%' OR ctgry_id like 'T%'
+/
+delete from  krms_ctgry_t where ctgry_id like 'T%'
+/
+delete from  krms_func_parm_t where func_parm_id like 'T%'
+/
+delete from  krms_func_t where func_id like 'T%'
+/
+delete from  krms_term_parm_t where term_parm_id like 'T%'
+/
+delete from  krms_term_rslvr_parm_spec_t where term_rslvr_parm_spec_id like 'T%'
+/
+delete from  krms_term_t where term_id like 'T%'
+/
+delete from  krms_cntxt_vld_term_spec_t
+/
+delete from  krms_term_rslvr_input_spec_t
+/
+delete from  krms_term_rslvr_attr_t where term_rslvr_attr_id like 'T%'
+/
+delete from  krms_term_rslvr_t where term_rslvr_id like 'T%'
+/
+delete from  krms_term_spec_t where term_spec_id like 'T%'
+/
+delete from  krms_prop_parm_t where prop_parm_id like 'T%'
+/
+delete from  krms_cmpnd_prop_props_t
+/
+delete from  krms_agenda_attr_t where agenda_attr_id like 'T%'
+/
+delete from  krms_cntxt_vld_actn_typ_t
+/
+delete from  krms_cntxt_vld_agenda_typ_t
+/
+delete from  krms_cntxt_attr_t where cntxt_attr_id like 'T%'
+/
+delete from  krms_rule_attr_t where rule_attr_id like 'T%'
+/
+update krms_agenda_itm_t set when_true=null
+/
+update krms_agenda_itm_t set when_false=null
+/
+update krms_agenda_itm_t set always=null
+/
+delete from  krms_agenda_itm_t where agenda_itm_id like 'T%'
+/
+delete from  krms_actn_attr_t
+/
+delete from  krms_actn_t where actn_id like 'T%'
+/
+delete from  krms_typ_attr_t where typ_attr_id like 'T%'
+/
+delete from  krms_attr_defn_t where attr_defn_id like 'T%'
+/
+delete from  krms_agenda_t where agenda_id like 'T%'
+/
+update krms_rule_t set prop_id=null
+/
+delete from  krms_prop_t where prop_id like 'T%'
+/
+delete from  krms_rule_t where rule_id like 'T%'
+/
+delete from  krms_typ_t where typ_id like 'T%'
+/
+delete from  krms_cntxt_t
+/
+delete from krcr_nmspc_t where obj_id = '5a83c912-94b9-4b4d-ac3f-88c53380a4a3'
+/
+
+
 -- Re-enable constraints
 DECLARE 
    CURSOR constraint_cursor IS 

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
@@ -52,6 +53,10 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	protected boolean canAssignRole = true;
 	protected boolean canModifyAssignees = true;
 	protected KimType kimType;
+
+    //kim type id
+    protected String id;
+
 	protected KimDocumentRoleMember member;
 	{
 		member = new KimDocumentRoleMember();
@@ -114,6 +119,15 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	public void setMember(KimDocumentRoleMember member) {
 		this.member = member;
 	}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+        setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(this.id));
+    }
 
 	/**
 	 * @return the permission

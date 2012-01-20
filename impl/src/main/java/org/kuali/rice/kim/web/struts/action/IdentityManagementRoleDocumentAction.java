@@ -175,7 +175,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
             roleDocumentForm.getRoleDocument().initializeDocumentForNewRole();
             roleDocumentForm.setRoleId(roleDocumentForm.getRoleDocument().getRoleId());
-            roleDocumentForm.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
+            //roleDocumentForm.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
         } else {
             loadRoleIntoDocument(roleDocumentForm.getRoleId(), roleDocumentForm);
         }

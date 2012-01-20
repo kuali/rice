@@ -177,17 +177,15 @@ public class KSBConfigurer extends ModuleConfigurer {
 		return lifecycles;
 	}
 	
-	
-
-    @Override
-    public void doAdditonalConfigurerValidations() {
-        for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
+    protected void validateServices(List<ServiceDefinition> services) {
+        for (final ServiceDefinition serviceDef : this.services) {
 			serviceDef.validate();
 		}
     }
 
 	@Override
 	public void doAdditionalContextStartedLogic() {
+        validateServices(getServices());
 		ServicePublisher servicePublisher = new ServicePublisher(getServices());
 		Lifecycle serviceBus = new ServiceDelegatingLifecycle(KsbApiServiceLocator.SERVICE_BUS);
 		Lifecycle threadPool = new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.THREAD_POOL_SERVICE);

@@ -3260,6 +3260,7 @@ ELSE
 DBMS_OUTPUT.PUT_LINE('KREW_ACTN_RQST_T12 does not exist, so not running statement to change/drop it.');
 END IF;
 END;
+/
 DECLARE
 c NUMBER;
 BEGIN

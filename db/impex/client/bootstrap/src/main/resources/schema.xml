@@ -169,6 +169,17 @@
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
+    <table name="KRCR_STYLE_T">
+        <column name="STYLE_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" required="true" size="200" type="VARCHAR"/>
+        <column name="XML" required="true" type="CLOB"/>
+        <column name="ACTV_IND" required="true" size="1" type="DECIMAL"/>
+        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <unique name="KRCR_STYLE_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="KREN_CHNL_PRODCR_T">
         <column name="CHNL_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column name="PRODCR_ID" primaryKey="true" size="8" type="DECIMAL"/>
@@ -798,7 +809,6 @@
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column name="PLCY_VAL" size="64" type="VARCHAR"/>
-        <column name="PLCY_DESC" size="20" type="VARCHAR"/>
         <unique name="KREW_DOC_TYP_PLCY_RELN_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1329,17 +1339,6 @@
         </unique>
         <unique name="KREW_RULE_TMPL_TI1">
             <unique-column name="NM"/>
-        </unique>
-    </table>
-    <table name="KREW_STYLE_T">
-        <column name="STYLE_ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="NM" required="true" size="200" type="VARCHAR"/>
-        <column name="XML" required="true" type="CLOB"/>
-        <column name="ACTV_IND" required="true" size="1" type="DECIMAL"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
-        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <unique name="KREW_STYLE_TC0">
-            <unique-column name="OBJ_ID"/>
         </unique>
     </table>
     <table name="KREW_TYP_ATTR_T">
@@ -2062,6 +2061,13 @@
             <unique-column name="NM"/>
             <unique-column name="NMSPC_CD"/>
         </unique>
+        <index name="KRIM_PERM_TI1">
+            <index-column name="PERM_TMPL_ID"/>
+        </index>
+        <index name="KRIM_PERM_TI2">
+            <index-column name="PERM_TMPL_ID"/>
+            <index-column name="ACTV_IND"/>
+        </index>
     </table>
     <table name="KRIM_PERM_TMPL_T">
         <column name="PERM_TMPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -2082,6 +2088,10 @@
             <unique-column name="NM"/>
             <unique-column name="NMSPC_CD"/>
         </unique>
+        <index name="KRIM_PERM_TMPL_TI1">
+            <index-column name="NMSPC_CD"/>
+            <index-column name="NM"/>
+        </index>
     </table>
     <table name="KRIM_PERSON_DOCUMENT_T">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
@@ -2244,7 +2254,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="GRP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="MBR_ID" size="40" type="VARCHAR"/>
-        <column name="MBR_NM" size="40" type="VARCHAR"/>
+        <column name="MBR_NM" size="100" type="VARCHAR"/>
         <column name="MBR_TYP_CD" required="true" size="40" type="VARCHAR"/>
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
@@ -2448,6 +2458,15 @@
         <index name="KRIM_ROLE_MBR_TI1">
             <index-column name="MBR_ID"/>
         </index>
+        <index name="KRIM_ROLE_MBR_TI2">
+            <index-column name="ROLE_ID"/>
+            <index-column name="MBR_ID"/>
+            <index-column name="MBR_TYP_CD"/>
+        </index>
+        <index name="KRIM_ROLE_MBR_TI3">
+            <index-column name="MBR_ID"/>
+            <index-column name="MBR_TYP_CD"/>
+        </index>
     </table>
     <table name="KRIM_ROLE_PERM_T">
         <column name="ROLE_PERM_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -2464,6 +2483,10 @@
         </unique>
         <index name="KRIM_ROLE_PERM_TI1">
             <index-column name="PERM_ID"/>
+        </index>
+        <index name="KRIM_ROLE_PERM_TI2">
+            <index-column name="PERM_ID"/>
+            <index-column name="ACTV_IND"/>
         </index>
     </table>
     <table name="KRIM_ROLE_RSP_ACTN_T">
@@ -3319,7 +3342,7 @@
         <column default="SYS_GUID()" name="OBJ_ID" required="true"
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="FDOC_DESC" size="40" type="VARCHAR"/>
+        <column name="FDOC_DESC" size="255" type="VARCHAR"/>
         <column name="ORG_DOC_HDR_ID" size="10" type="VARCHAR"/>
         <column name="TMPL_DOC_HDR_ID" size="14" type="VARCHAR"/>
         <column name="EXPLANATION" size="400" type="VARCHAR"/>

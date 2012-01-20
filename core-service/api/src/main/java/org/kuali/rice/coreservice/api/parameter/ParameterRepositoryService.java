@@ -52,12 +52,9 @@ public interface ParameterRepositoryService {
     @WebResult(name = "parameter")
     @Caching(
             evict = {
-                    //@CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
+                    @CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
                     @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValueAsBoolean}' + 'key=' + #p0.getParameterKey().getCacheKey()"),
                     @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValuesAsString}' + 'key=' + #p0.getParameterKey().getCacheKey()")
-            },
-            put = {
-                    @CachePut(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()")
             }
     )
     Parameter createParameter(@WebParam(name = "parameter") Parameter parameter)
@@ -83,12 +80,9 @@ public interface ParameterRepositoryService {
     @WebResult(name = "parameter")
     @Caching(
         evict = {
-            //@CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
+            @CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
             @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValueAsBoolean}' + 'key=' + #p0.getParameterKey().getCacheKey()"),
             @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValuesAsString}' + 'key=' + #p0.getParameterKey().getCacheKey()")
-        },
-        put = {
-            @CachePut(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()")
         }
     )
     Parameter updateParameter(@WebParam(name = "parameter") Parameter parameter)

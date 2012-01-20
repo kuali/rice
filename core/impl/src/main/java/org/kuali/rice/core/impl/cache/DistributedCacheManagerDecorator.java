@@ -174,8 +174,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         public void put(Object key, Object value) {
             final String sKey = coerceStr(key);
             cache.put(sKey, value);
-            // need to treat it as an eviction on distributed caches as the value could exist in one of them.
-            doDistributed(CacheTarget.singleEntry(getName(), sKey));
         }
 
         @Override

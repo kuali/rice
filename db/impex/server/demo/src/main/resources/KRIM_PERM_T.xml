@@ -4,7 +4,7 @@
 <dataset>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows creation and modification of agendas via the agenda editor"
-        NM="Maintain KRMS Agenda" NMSPC_CD="KRMS_TEST"
+        NM="Maintain KRMS Agenda" NMSPC_CD="KR-RULE-TEST"
         OBJ_ID="AE3195EDFF2500E2E0404F8189D822AE" PERM_ID="10002"
         PERM_TMPL_ID="10001" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"

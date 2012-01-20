@@ -69,25 +69,6 @@ public interface GroupContract extends Versioned, GloballyUnique, Inactivatable,
 	String getKimTypeId();
 
     /**
-     * This a list of the members of the Group.
-     *
-     * <p>
-     * This returns a list of group members
-     * </p>
-     *
-     * @return members
-     */
-    //List<? extends GroupMemberContract> getMembers();
-
-    /*List<? extends PersonContract> getPersonMembers();
-
-    List<? extends GroupContract> getGroupMembers();*/
-
-
-
-
-
-    /**
      * This is a set of Attributes for a Group.
      *
      * <p>

@@ -90,6 +90,10 @@ public final class KewApiConstants {
     public static final String EMAIL_ATTRIBUTE_CLASS_PROPERTY = "customEmailAttributeClassName";
     public static final String NOTE_ATTRIBUTE_CLASS_PROPERTY = "customNoteAttributeClassName";
 
+    // DelegationType values
+    public static final String DELEGATION_PRIMARY = "PRIMARY";
+    public static final String DELEGATION_SECONDARY = "SECONDARY";
+
     /**
      * This is a UI option, not valid data for a delgationType value.
      */

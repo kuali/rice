@@ -32,7 +32,7 @@
 	<param name="config.location">classpath:META-INF/kew-test-config.xml</param>
 
 	<!-- Override the application id for the server -->
-	<param name="application.id">KEW</param>
+	<param name="application.id">KUALI</param>
 
     <param name="config.location">${alt.config.location}</param>
     

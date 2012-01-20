@@ -28,9 +28,10 @@ CREATE  TABLE krew_typ_t (
   actv VARCHAR2(1) DEFAULT 'Y' NOT NULL ,
   ver_nbr NUMBER(8) DEFAULT 0 NOT NULL ,
   PRIMARY KEY (typ_id) )
-;
+/
 
-CREATE UNIQUE INDEX krew_typ_tc1 ON krew_typ_t (nm, nmspc_cd) ;
+CREATE UNIQUE INDEX krew_typ_tc1 ON krew_typ_t (nm, nmspc_cd)
+/
 
 
 -- -----------------------------------------------------
@@ -49,11 +50,13 @@ CREATE  TABLE krew_ppl_flw_t (
   CONSTRAINT krew_ppl_flw_fk1
     FOREIGN KEY (typ_id )
     REFERENCES krew_typ_t (typ_id ))
-;
+/
 
-CREATE UNIQUE INDEX krew_ppl_flw_tc1 ON krew_ppl_flw_t (nm, nmspc_cd) ;
+CREATE UNIQUE INDEX krew_ppl_flw_tc1 ON krew_ppl_flw_t (nm, nmspc_cd)
+/
 
-CREATE INDEX krew_ppl_flw_fk1 ON krew_ppl_flw_t (typ_id) ;
+CREATE INDEX krew_ppl_flw_fk1 ON krew_ppl_flw_t (typ_id)
+/
 
 
 -- -----------------------------------------------------
@@ -70,9 +73,10 @@ CREATE  TABLE krew_attr_defn_t (
   ver_nbr NUMBER(8) DEFAULT 0 NOT NULL ,
   desc_txt VARCHAR2(40) NULL ,
   PRIMARY KEY (attr_defn_id) )
-;
+/
 
-CREATE UNIQUE INDEX krew_attr_defn_tc1 ON krew_attr_defn_t (nm, nmspc_cd) ;
+CREATE UNIQUE INDEX krew_attr_defn_tc1 ON krew_attr_defn_t (nm, nmspc_cd)
+/
 
 
 -- -----------------------------------------------------
@@ -93,13 +97,16 @@ CREATE  TABLE krew_typ_attr_t (
   CONSTRAINT krew_typ_attr_fk2
     FOREIGN KEY (typ_id )
     REFERENCES krew_typ_t (typ_id ))
-;
+/
 
-CREATE INDEX krew_typ_attr_ti1 ON krew_typ_attr_t (attr_defn_id) ;
+CREATE INDEX krew_typ_attr_ti1 ON krew_typ_attr_t (attr_defn_id)
+/
 
-CREATE INDEX krew_typ_attr_ti2 ON krew_typ_attr_t (typ_id) ;
+CREATE INDEX krew_typ_attr_ti2 ON krew_typ_attr_t (typ_id)
+/
 
-CREATE UNIQUE INDEX krew_typ_attr_tc1 ON krew_typ_attr_t (typ_id, attr_defn_id) ;
+CREATE UNIQUE INDEX krew_typ_attr_tc1 ON krew_typ_attr_t (typ_id, attr_defn_id)
+/
 
 
 -- -----------------------------------------------------
@@ -121,15 +128,19 @@ CREATE  TABLE krew_ppl_flw_mbr_t (
   CONSTRAINT krew_ppl_flw_mbr_fk2
     FOREIGN KEY (dlgt_frm_id )
     REFERENCES krew_ppl_flw_mbr_t (ppl_flw_mbr_id ))
-;
+/
 
-CREATE INDEX krew_ppl_flw_mbr_ti1 ON krew_ppl_flw_mbr_t (ppl_flw_id) ;
+CREATE INDEX krew_ppl_flw_mbr_ti1 ON krew_ppl_flw_mbr_t (ppl_flw_id)
+/
 
-CREATE INDEX krew_ppl_flw_mbr_ti2 ON krew_ppl_flw_mbr_t (ppl_flw_id, prio) ;
+CREATE INDEX krew_ppl_flw_mbr_ti2 ON krew_ppl_flw_mbr_t (ppl_flw_id, prio)
+/
 
-CREATE UNIQUE INDEX krew_ppl_flw_mbr_tc1 ON krew_ppl_flw_mbr_t (ppl_flw_id, mbr_typ_cd, mbr_id, dlgt_frm_id) ;
+CREATE UNIQUE INDEX krew_ppl_flw_mbr_tc1 ON krew_ppl_flw_mbr_t (ppl_flw_id, mbr_typ_cd, mbr_id, dlgt_frm_id)
+/
 
-CREATE INDEX krew_ppl_flw_mbr_fk2 ON krew_ppl_flw_mbr_t (dlgt_frm_id) ;
+CREATE INDEX krew_ppl_flw_mbr_fk2 ON krew_ppl_flw_mbr_t (dlgt_frm_id)
+/
 
 
 -- -----------------------------------------------------
@@ -149,46 +160,48 @@ CREATE  TABLE krew_ppl_flw_attr_t (
   CONSTRAINT krew_ppl_flw_attr_fk2
     FOREIGN KEY (attr_defn_id )
     REFERENCES krew_attr_defn_t (attr_defn_id ))
-;
+/
 
-CREATE INDEX krew_ppl_flw_attr_ti1 ON krew_ppl_flw_attr_t (ppl_flw_id) ;
+CREATE INDEX krew_ppl_flw_attr_ti1 ON krew_ppl_flw_attr_t (ppl_flw_id)
+/
 
-CREATE INDEX krew_ppl_flw_attr_ti2 ON krew_ppl_flw_attr_t (attr_defn_id) ;
+CREATE INDEX krew_ppl_flw_attr_ti2 ON krew_ppl_flw_attr_t (attr_defn_id)
+/
 
 
 -- -----------------------------------------------------
 -- Table krew_typ_s
 -- -----------------------------------------------------
 CREATE SEQUENCE krew_typ_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
-;
+/
 
 -- -----------------------------------------------------
 -- Table krew_typ_attr_s
 -- -----------------------------------------------------
 CREATE SEQUENCE krew_typ_attr_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
-;
+/
 
 -- -----------------------------------------------------
 -- Table krew_attr_defn_s
 -- -----------------------------------------------------
 CREATE SEQUENCE krew_attr_defn_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
-;
+/
 
 -- -----------------------------------------------------
 -- Table krew_ppl_flw_s
 -- -----------------------------------------------------
 CREATE SEQUENCE krew_ppl_flw_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
-;
+/
 
 -- -----------------------------------------------------
 -- Table krew_ppl_flw_attr_s
 -- -----------------------------------------------------
 CREATE SEQUENCE krew_ppl_flw_attr_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
-;
+/
 
 -- -----------------------------------------------------
 -- Table krew_ppl_flw_mbr_s
 -- -----------------------------------------------------
 CREATE SEQUENCE krew_ppl_flw_mbr_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
-;
+/
 

@@ -15,5 +15,6 @@
 --
 
 -- Drop foreign key constraint on krms_prop_t table
-alter table KRMS_PROP_T drop constraint KRMS_PROP_FK1;
+alter table KRMS_PROP_T drop constraint KRMS_PROP_FK1
+/
 

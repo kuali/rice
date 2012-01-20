@@ -60,14 +60,11 @@
     <property name="defaultTimeout" value="${transaction.timeout}"/>
   </bean>
 
-  <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true">
-    <!-- best to set from command line -Dbitronix.tm.Configuration= -->
-    <!--<property name="serverId" value="spring-btm" />
-    <property name="disableJmx" value="true" />-->
-  </bean>
+  <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true"/>
 
   <bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"
         factory-method="getTransactionManager" depends-on="btmConfig" destroy-method="shutdown" lazy-init="true"/>
+
   <alias name="transactionManager${connection.pool.impl}" alias="jtaTransactionManager"/>
   <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
 

@@ -40,6 +40,9 @@ ALTER TABLE trv_acct_ext ADD (OBJ_ID VARCHAR2(36))
 /
 ALTER TABLE trv_acct_ext ADD (VER_NBR NUMBER(8) DEFAULT 0)
 /
+/
+
+
 
 
 -- 
@@ -68,6 +71,9 @@ ALTER TABLE krns_sesn_doc_t ADD (VER_NBR NUMBER(8) DEFAULT 0)
 /
 
 
+/
+
+
 
 
 -- 
@@ -92,6 +98,9 @@ ALTER TABLE krns_sesn_doc_t ADD (VER_NBR NUMBER(8) DEFAULT 0)
 
 ALTER TABLE KRIM_PND_GRP_ATTR_DATA_T ADD (ACTV_IND VARCHAR2(1) default 'Y'
                                         , EDIT_FLAG VARCHAR2(1) default 'N')
+/
+
+
 
 
 -- 
@@ -143,6 +152,9 @@ alter table kren_recip_list_t add ver_nbr NUMBER(8)
 alter table kren_sndr_t add ver_nbr NUMBER(8)
 /
 alter table kren_recip_t add ver_nbr NUMBER(8)
+/
+
+
 
 
 -- 
@@ -179,6 +191,9 @@ UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='FiscalOfficerMainten
 /
 UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='TravelRequest'
 /
+/
+
+
 
 
 -- 
@@ -828,6 +843,9 @@ DROP TABLE OLD_KREW_DOC_LNK_T
 ALTER TABLE KREW_DOC_LNK_T ADD CONSTRAINT KREW_DOC_LNK_TP1 PRIMARY KEY (DOC_LNK_ID)
 /
 create INDEX KREW_DOC_LNK_TI1 on krew_doc_lnk_t(ORGN_DOC_ID)
+/
+
+
 /
 
 
@@ -1715,6 +1733,9 @@ CREATE SEQUENCE krms_cntxt_vld_event_s INCREMENT BY 1 START WITH 10000 NOMAXVALU
 /
 
 
+/
+
+
 
 
 -- 
@@ -1781,6 +1802,9 @@ CREATE INDEX KRSB_SVC_DEF_TI2 on KRSB_SVC_DEF_T (SVC_NM, STAT_CD)
 CREATE INDEX KRSB_SVC_DEF_TI3 on KRSB_SVC_DEF_T (STAT_CD)
 /
 
+/
+
+
 
 
 -- 
@@ -1838,6 +1862,9 @@ ALTER TABLE KR_POSTAL_CODE_T RENAME TO KRLC_PSTL_CD_T
 ALTER TABLE KR_COUNTY_T RENAME TO KRLC_CNTY_T
 /
 
+/
+
+
 
 
 -- 
@@ -1881,6 +1908,9 @@ alter table krms_rule_t rename column descr_txt to desc_txt
 /
 
 
+/
+
+
 
 
 -- 
@@ -1911,6 +1941,9 @@ update krew_rule_attr_t set cls_nm = 'org.kuali.rice.kns.workflow.attribute.Kual
 /
 update krew_rule_attr_t set cls_nm = 'org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl' where cls_nm = 'org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl'
 /
+/
+
+
 
 
 -- 
@@ -2555,6 +2588,9 @@ CREATE INDEX KREW_DOC_TYP_PROC_TI3
   ON KREW_DOC_TYP_PROC_T 
   (NM)
 /
+/
+
+
 
 
 -- 
@@ -2590,6 +2626,9 @@ alter table KRIM_RSP_TMPL_T modify NM varchar2(100) not null
 /
 alter table KRIM_RSP_TMPL_T add constraint KRIM_RSP_TMPL_TC1 unique (NM, NMSPC_CD)
 /
+/
+
+
 
 
 -- 
@@ -2645,6 +2684,9 @@ CREATE TABLE KRMS_FUNC_CTGRY_T
   , CONSTRAINT KRMS_FUNC_CTGRY_FK2 FOREIGN KEY (CTGRY_ID) REFERENCES KRMS_CTGRY_T (CTGRY_ID)
 )
 /
+/
+
+
 
 
 -- 
@@ -2809,6 +2851,9 @@ alter table KRIM_RSP_T modify NM varchar2(100) not null
 /
 alter table KRIM_RSP_T add constraint KRIM_RSP_T_TC1 unique (NM, NMSPC_CD)
 /
+/
+
+
 
 
 -- 
@@ -5388,6 +5433,9 @@ ALTER TABLE KREW_RTE_NODE_CFG_PARM_T
     REFERENCES KREW_RTE_NODE_T (RTE_NODE_ID)
 /
 
+/
+
+
 
 
 -- 
@@ -5455,6 +5503,9 @@ BEGIN
 END;
 /
 
+/
+
+
 
 
 -- 
@@ -5494,6 +5545,9 @@ ALTER TABLE KRCR_CMPNT_T RENAME COLUMN PARM_DTL_TYP_CD TO CMPNT_CD
 --KRLC_CMP_TYP_T
 ALTER TABLE KRLC_CMP_TYP_T DROP COLUMN DOBJ_MAINT_CD_ACTV_IND
 /
+/
+
+
 
 
 -- 
@@ -5525,6 +5579,9 @@ alter table krms_term_t add desc_txt varchar2(255) default null
 /
 alter table krms_attr_defn_t add desc_txt varchar2(255) default null
 /
+/
+
+
 
 
 -- 
@@ -5551,6 +5608,9 @@ drop sequence KREW_HLP_S
 /
 drop table KREW_HLP_T
 /
+/
+
+
 
 
 -- 
@@ -5585,6 +5645,9 @@ drop table KREW_RMV_RPLC_GRP_T
 /
 drop table KREW_RMV_RPLC_RULE_T
 /
+/
+
+
 
 
 -- 
@@ -5648,6 +5711,9 @@ BEGIN
 END;
 /
 
+/
+
+
 
 
 -- 
@@ -5672,6 +5738,9 @@ END;
 
 update KRIM_PERM_T t set NM='Take Requested Approve Action' where PERM_ID = '170'
 /
+/
+
+
 
 
 -- 
@@ -5785,6 +5854,9 @@ alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk1 forei
 /
 alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk2 foreign key (attr_defn_id) references krms_attr_defn_t (attr_defn_id)
 /
+/
+
+
 
 
 -- 
@@ -5999,6 +6071,9 @@ CREATE SEQUENCE krew_ppl_flw_mbr_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NO
 /
 
 
+/
+
+
 
 
 -- 
@@ -6026,6 +6101,9 @@ where nmspc_cd = 'KR-NS'
 and cmpnt_cd = 'All'
 and parm_nm in ('STRING_TO_DATE_FORMATS', 'STRING_TO_TIMESTAMP_FORMATS', 'TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE', 'DATE_TO_STRING_FORMAT_FOR_FILE_NAME', 'TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME')
 /
+/
+
+
 
 
 -- 
@@ -6050,6 +6128,9 @@ and parm_nm in ('STRING_TO_DATE_FORMATS', 'STRING_TO_TIMESTAMP_FORMATS', 'TIMEST
 
 delete from krcr_parm_t where PARM_NM = 'CACHING_IND'
 /
+/
+
+
 
 
 -- 
@@ -6092,6 +6173,9 @@ alter table KRIM_PND_ADDR_MT rename column CITY_NM to CITY
 /
 
 
+/
+
+
 
 
 -- 
@@ -6115,6 +6199,9 @@ alter table KRIM_PND_ADDR_MT rename column CITY_NM to CITY
 --
 
 delete from KREW_USR_OPTN_T where PRSN_OPTN_ID like 'DocSearch%'
+/
+
+
 /
 
 
@@ -6188,6 +6275,9 @@ alter table KRIM_PND_ADDR_MT add NOTE_MSG VARCHAR(1024)
 /
 
 
+/
+
+
 
 
 -- 
@@ -6248,6 +6338,9 @@ CREATE INDEX krew_ppl_flw_dlgt_ti1 ON krew_ppl_flw_dlgt_t (ppl_flw_mbr_id)
 
 CREATE SEQUENCE krew_ppl_flw_dlgt_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
 /
+/
+
+
 
 
 -- 
@@ -6325,6 +6418,9 @@ values (krim_role_perm_id_s.nextval,
         (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KR-RULE'),
         'Y', 1, sys_guid())
 /
+/
+
+
 
 
 -- 
@@ -6353,6 +6449,9 @@ ALTER TABLE KREW_DOC_TYP_T DROP COLUMN CSTM_ACTN_EMAIL_ATTRIB_CLS_NM
 /
 ALTER TABLE KREW_DOC_TYP_T DROP COLUMN CSTM_DOC_NTE_ATTRIB_CLS_NM
 /
+/
+
+
 
 
 -- 
@@ -6388,6 +6487,9 @@ insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
 values ('1001', 'approvalPeopleFlowActionType', 'KRMS_TEST', 'approvalPeopleFlowActionTypeService', 'Y', 1)
 /
+
+/
+
 
 
 
@@ -6435,6 +6537,9 @@ CREATE INDEX krms_cntxt_vld_agenda_ti1 on krms_cntxt_vld_agenda_t (cntxt_id ASC)
 
 CREATE SEQUENCE krms_cntxt_vld_agenda_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
 /
+/
+
+
 
 
 -- 
@@ -6465,6 +6570,9 @@ alter table KREW_PPL_FLW_DLGT_T add ACTN_RQST_PLCY_CD VARCHAR2(1)
 /
 alter table KREW_PPL_FLW_DLGT_T add RSP_ID VARCHAR2(40) NOT NULL
 /
+/
+
+
 
 
 -- 
@@ -6501,6 +6609,9 @@ WHERE NMSPC_CD = 'KR-WKFLW'
 /
 
 
+/
+
+
 
 
 -- 
@@ -6532,6 +6643,9 @@ create table krcr_cmpnt_set_t (
   ver_nbr number(8) default 0 not null,
   primary key (cmpnt_set_id) )
 /
+
+/
+
 
 
 
@@ -6565,6 +6679,9 @@ create table krcr_drvd_cmpnt_t (
   primary key (nmspc_cd, cmpnt_cd))
 /
 
+/
+
+
 
 
 -- 
@@ -6595,6 +6712,9 @@ update KRCR_PARM_T set CMPNT_CD='DocumentSearch' where CMPNT_CD='DocSearchCriter
 insert into KRCR_CMPNT_T (NMSPC_CD, CMPNT_CD, NM, ACTV_IND, OBJ_ID, VER_NBR)
 values ('KR-WKFLW', 'DocumentSearch', 'Document Search', 'Y', sys_guid(), 1)
 /
+/
+
+
 
 
 -- 
@@ -6622,6 +6742,9 @@ VALUES ('KR-WKFLW', 'Rule', 'Rule', 'Y', sys_guid(), 1)
 /
 update KRCR_CMPNT_T set cmpnt_cd='EDocLite' where cmpnt_cd like 'EDocLite%'
 /
+/
+
+
 
 
 -- 
@@ -6672,6 +6795,9 @@ values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where r
         (select perm_id from krim_perm_t where nm = 'Use Cache Adminstration Screen' and nmspc_cd = 'KR-SYS'),
         'Y', 1, sys_guid())
 /
+/
+
+
 
 
 -- 
@@ -6703,6 +6829,9 @@ ALTER TABLE krms_agenda_t MODIFY typ_id varchar2(40) null
 ALTER TABLE krms_cntxt_t MODIFY typ_id varchar2(40) null
 /
 
+/
+
+
 
 
 -- 
@@ -6727,6 +6856,9 @@ ALTER TABLE krms_cntxt_t MODIFY typ_id varchar2(40) null
 
 -- Drop foreign key constraint on krms_prop_t table
 alter table KRMS_PROP_T drop constraint KRMS_PROP_FK1
+/
+
+
 /
 
 
@@ -6764,6 +6896,9 @@ update krms_typ_t set nm='Route to PeopleFlow' where typ_id = '1001'
 alter table krms_cmpnd_prop_props_t modify seq_no NUMBER(5) null
 /
 
+/
+
+
 
 
 -- 
@@ -6795,6 +6930,9 @@ update krim_perm_t
 delete from krim_perm_attr_data_t
  where perm_id = (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KRMS_TEST')
 /
+/
+
+
 
 
 -- 
@@ -6819,6 +6957,9 @@ delete from krim_perm_attr_data_t
 
 alter table KREW_RTE_NODE_T modify ACTVN_TYP varchar(1)
 /
+
+/
+
 
 
 
@@ -6863,6 +7004,9 @@ update krms_prop_t set krms_prop_t.cmpnd_seq_no = (select seq_no from krms_cmpnd
 alter table krms_cmpnd_prop_props_t drop (seq_no)
 /
 
+/
+
+
 
 
 -- 
@@ -6886,6 +7030,9 @@ alter table krms_cmpnd_prop_props_t drop (seq_no)
 --
 
 UPDATE KRCR_NMSPC_T SET APPL_ID = 'RICE' WHERE NMSPC_CD = 'KUALI'
+/
+
+
 
 
 -- 
@@ -7020,6 +7167,9 @@ INSERT INTO KRIM_PERM_TMPL_T VALUES ('10017', sys_guid(), 1, 'KR-KRAD', 'Perform
 /
 
 
+/
+
+
 
 
 -- 
@@ -7050,6 +7200,9 @@ update KRMS_TERM_SPEC_T set TYP = 'java.lang.String' where TYP = 'T1'
 
 update KRMS_TERM_SPEC_T set TYP = 'java.lang.Integer' where TYP = 'T6'
 /
+
+/
+
 
 
 
@@ -7109,6 +7262,9 @@ UPDATE KRMS_RULE_T SET TYP_ID = NULL
 DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T
 /
 
+/
+
+
 
 
 -- 
@@ -7134,6 +7290,9 @@ DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T
 -- KULRICE-6299: New DB index to improve action list performance
 create index KREW_ACTN_ITM_TI6 on KREW_ACTN_ITM_T (DLGN_TYP, DLGN_PRNCPL_ID, DLGN_GRP_ID)
 /
+/
+
+
 
 
 -- 
@@ -7165,6 +7324,9 @@ drop sequence krms_cntxt_vld_event_s
 rename krms_cntxt_term_spec_prereq_s to krms_cntxt_vld_term_spec_s
 /
 
+/
+
+
 
 
 -- 
@@ -7189,6 +7351,9 @@ rename krms_cntxt_term_spec_prereq_s to krms_cntxt_vld_term_spec_s
 
 alter table KREW_DOC_HDR_T drop column RTE_LVL_MDFN_DT
 /
+/
+
+
 
 
 -- 
@@ -8183,6 +8348,9 @@ delete from krim_perm_attr_data_t
 /
 
 
+/
+
+
 
 
 -- 
@@ -8211,6 +8379,9 @@ ALTER TABLE KRIM_PND_GRP_MBR_T MODIFY (MBR_NM varchar2(100))
 
 
 
+
+
+/
 
 
 
@@ -8273,3 +8444,6 @@ CREATE TABLE KRCR_STYLE_T (
 	CONSTRAINT "KREW_STYLE_TC0" UNIQUE ("OBJ_ID")
 )
 /
+
+/
+

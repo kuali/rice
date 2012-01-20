@@ -195,15 +195,32 @@ function runHiddenScripts(id){
 	if(id){
 		jq("#" + id).find("input[name='script']").each(function(){
 			eval(jq(this).val());
+            jq(this).attr("script", "first_run");
 			jq(this).removeAttr("name");
 		});
 	}
 	else{
 		jq("input[name='script']").each(function(){
 			eval(jq(this).val());
+            jq(this).attr("script", "first_run");
 			jq(this).removeAttr("name");
 		});
 	}
+}
+
+function runHiddenScriptsAgain(id){
+    if(id){
+        jq("#" + id).find("script[name='first_run']").each(function(){
+            eval(jq(this).val());
+            jq(this).removeAttr("script");
+        });
+    }
+    else{
+        jq("input[script='first_run']").each(function(){
+            eval(jq(this).val());
+            jq(this).removeAttr("script");
+        });
+    }
 }
 
 /**

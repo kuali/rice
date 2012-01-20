@@ -304,7 +304,7 @@ function handleIncidentReport(content) {
     var viewId = jq("#viewId", content);
     if (viewId.length && viewId.val() === "Uif-IncidentReportView") {
         jq('#view_div').replaceWith(content);
-        runHiddenScripts("view_div");
+        runHiddenScriptsAgain("");
         return true;
     }
     else {

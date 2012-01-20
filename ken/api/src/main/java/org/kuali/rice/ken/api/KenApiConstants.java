@@ -44,7 +44,7 @@ public final class KenApiConstants {
     }
 
     public static final class ServiceNames {
-        public static final String SEND_NOTIFICATION_SERVICE = "SendNotificationService";
+        public static final String SEND_NOTIFICATION_SERVICE = "sendNotificationService";
     }
 
 

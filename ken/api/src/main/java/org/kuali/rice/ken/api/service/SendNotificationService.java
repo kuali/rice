@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.api.KenApiConstants;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -28,6 +29,6 @@ import javax.jws.soap.SOAPBinding;
 @WebService(name= KenApiConstants.ServiceNames.SEND_NOTIFICATION_SERVICE, targetNamespace = KenApiConstants.Namespaces.KEN_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public interface SendNotificationService {
-    @WebMethod
-    void invoke(String message) throws RiceIllegalArgumentException;
+    @WebMethod(operationName = "invoke")
+    void invoke(@WebParam(name = "message") String message) throws RiceIllegalArgumentException;
 }

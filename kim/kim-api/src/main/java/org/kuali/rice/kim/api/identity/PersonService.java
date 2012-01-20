@@ -97,11 +97,5 @@ public interface PersonService {
      * original object.  Otherwise, it pulls the Person from KIM based on the sourcePrincipalId.
      */
 	Person updatePersonIfNecessary(String sourcePrincipalId, Person currentPerson );
-	
-	/**
-	 * Checks whether the given set of search criteria contain any non-blank properties which need to be applied against
-	 * a related Person object.  This would be used by the lookup service to determine if special steps need
-	 * to be taken when performing a search.
-	 */
-	boolean hasPersonProperty(Class<? extends Person> businessObjectClass, Map<String,String> fieldValues);
+
 }

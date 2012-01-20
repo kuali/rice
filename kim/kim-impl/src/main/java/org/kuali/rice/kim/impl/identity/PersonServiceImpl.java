@@ -633,29 +633,6 @@ public class PersonServiceImpl implements PersonService {
     }
     
     /**
-     * @see org.kuali.rice.kim.api.identity.PersonService#hasPersonProperty(java.lang.Class, java.util.Map)
-     */
-    public boolean hasPersonProperty(Class<? extends Person> businessObjectClass, Map<String,String> fieldValues) {
-    	if ( businessObjectClass == null || fieldValues == null ) {
-    		return false;
-    	}
-    	try {
-	    	BusinessObject bo = businessObjectClass.newInstance();
-	        for ( String propertyName : fieldValues.keySet() ) {
-	            if (isPersonProperty(bo, propertyName)) {
-	            	return true;
-	            }
-	        }
-    	} catch (Exception ex) {
-    		if ( LOG.isDebugEnabled() ) {
-    			LOG.debug( "Error instantiating business object class passed into hasPersonProperty", ex );
-    		}
-			// do nothing
-		}
-        return false;
-    }    
-
-    /**
      * @see org.kuali.rice.kim.api.identity.PersonService#resolvePrincipalNamesToPrincipalIds(org.kuali.rice.krad.bo.BusinessObject, java.util.Map)
      */
     @SuppressWarnings("unchecked")

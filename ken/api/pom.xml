@@ -48,8 +48,8 @@
     </dependency>
   </dependencies>
   <properties>
-    <service.sendNotification.name>SendNotificationService</service.sendNotification.name>
-    <service.sendNotification.wsdl>${rice.wsdl.dir}/${service.sendNotification.name}.wsdl</service.sendNotification.wsdl>
+    <svc.sn.name>SendNotificationService</svc.sn.name>
+    <svc.sn.wsdl>${wsdl.dir}/${svc.sn.name}.wsdl</svc.sn.wsdl>
   </properties>
   <build>
     <plugins>
@@ -62,8 +62,8 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.ken.api.service.SendNotificationService</className>
-              <outputFile>${service.sendNotification.wsdl}</outputFile>
-              <serviceName>${service.sendNotification.name}</serviceName>
+              <outputFile>${svc.sn.wsdl}</outputFile>
+              <serviceName>SendNotificationService</serviceName>
             </configuration>
             <goals>
               <goal>java2ws</goal>
@@ -83,8 +83,8 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${service.sendNotification.wsdl}</file>
-                  <classifier>${service.sendNotification.name}</classifier>
+                  <file>${svc.sn.wsdl}</file>
+                  <classifier>${svc.sn.name}</classifier>
                   <type>wsdl</type>
                 </artifact>
               </artifacts>

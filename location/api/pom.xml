@@ -76,7 +76,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.location.api.campus.CampusService</className>
-              <outputFile>${project.build.outputDirectory}/wsdl/CampusService.wsdl</outputFile>
+              <outputFile>${svc.campus.wsdl}</outputFile>
               <serviceName>CampusService</serviceName>
             </configuration>
             <goals>
@@ -88,7 +88,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.location.api.county.CountyService</className>
-              <outputFile>${project.build.outputDirectory}/wsdl/CountyService.wsdl</outputFile>
+              <outputFile>${svc.county.wsdl}</outputFile>
               <serviceName>CountyService</serviceName>
             </configuration>
             <goals>
@@ -100,7 +100,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.location.api.postalcode.PostalCodeService</className>
-              <outputFile>${project.build.outputDirectory}/wsdl/PostalCodeService.wsdl</outputFile>
+              <outputFile>${svc.pc.wsdl}</outputFile>
               <serviceName>PostalCodeService</serviceName>
             </configuration>
             <goals>
@@ -112,7 +112,7 @@
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
               <className>org.kuali.rice.location.api.state.StateService</className>
-              <outputFile>${project.build.outputDirectory}/wsdl/StateService.wsdl</outputFile>
+              <outputFile>${svc.state.wsdl}</outputFile>
               <serviceName>StateService</serviceName>
             </configuration>
             <goals>

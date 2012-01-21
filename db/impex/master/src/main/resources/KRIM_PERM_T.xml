@@ -328,4 +328,9 @@
     <KRIM_PERM_T ACTV_IND="Y" NM="Add Message to Route Log"
         NMSPC_CD="KUALI" OBJ_ID="65677409-89e4-11df-98b1-1300c9ee50c1"
         PERM_ID="841" PERM_TMPL_ID="51" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows use of the cache administration screen"
+        NM="Use Cache Adminstration Screen" NMSPC_CD="KR-SYS"
+        OBJ_ID="B6FDEDA86F967F26E0402E0AA9D728AF" PERM_ID="842"
+        PERM_TMPL_ID="29" VER_NBR="1"/>
 </dataset>

@@ -268,4 +268,8 @@
     <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="881" ATTR_VAL="KualiDocument"
         KIM_ATTR_DEFN_ID="13" KIM_TYP_ID="3"
         OBJ_ID="717e2c18-89e4-11df-98b1-1300c9ee50c1" PERM_ID="841" VER_NBR="1"/>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="882"
+        ATTR_VAL="org.kuali.rice.core.web.cache.CacheAdminController"
+        KIM_ATTR_DEFN_ID="2" KIM_TYP_ID="12"
+        OBJ_ID="B6FDEDA86F977F26E0402E0AA9D728AF" PERM_ID="842" VER_NBR="1"/>
 </dataset>

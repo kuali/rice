@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -41,6 +42,8 @@ public class LookupForm extends KualiForm {
     private static final long serialVersionUID = 1L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupForm.class);
+    protected static final String HEADER_BAR_ENABLED_PARAM = "headerBarEnabled";
+    protected static final String SEARCH_CRITERIA_ENABLED_PARAM = "searchCriteriaEnabled";
 
     private String formKey;
     private Map<String, String> fields;
@@ -239,6 +242,15 @@ public class LookupForm extends KualiForm {
             }
 
 
+            /* Show/Hide All Criteria and/or the Workflow Header Bar
+             * The default value of each of the following parameters is 'true' in order to always show both the criteria and the header bar.
+             * To hide the header bar use the URL parameter 'headerBarEnabled' and set the value to 'false'.
+             * To hide all the search criteria (including the buttons) set the URL parameter 'searchCriteriaEnabled' to 'false'.
+             */
+            setHeaderBarEnabled(BooleanUtils.toBoolean(StringUtils.defaultIfBlank(getParameter(request, HEADER_BAR_ENABLED_PARAM),
+                                                       Boolean.TRUE.toString())));
+            setLookupCriteriaEnabled(BooleanUtils.toBoolean(StringUtils.defaultIfBlank(getParameter(request, SEARCH_CRITERIA_ENABLED_PARAM),
+                                                            Boolean.TRUE.toString())));
 
             // init lookupable with bo class
             localLookupable.setBusinessObjectClass((Class<? extends BusinessObject>) Class.forName(getBusinessObjectClassName()));

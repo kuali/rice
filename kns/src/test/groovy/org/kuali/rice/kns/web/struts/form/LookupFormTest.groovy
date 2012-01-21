@@ -26,7 +26,6 @@ import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import javax.xml.namespace.QName
 import org.kuali.rice.core.api.resourceloader.ResourceLoader
-import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
 import org.kuali.rice.coreservice.framework.parameter.ParameterService
 import org.kuali.rice.krad.util.KRADConstants
@@ -36,6 +35,11 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService
 import org.kuali.rice.kns.lookup.KualiLookupableImpl
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl
 import org.kuali.rice.kns.lookup.Lookupable
+import com.google.common.collect.Multimap
+import com.google.common.collect.Multimaps
+import com.google.common.base.Supplier
+import org.kuali.rice.core.framework.config.property.SimpleConfig
+import com.google.common.collect.HashMultimap
 
 /**
  * tests lookup form
@@ -47,7 +51,7 @@ class LookupFormTest {
 
     @Before
     void setupFakeEnv() {
-        def config = new JAXBConfigImpl();
+        def config = new SimpleConfig()
         config.putProperty(CoreConstants.Config.APPLICATION_ID, "APPID");
         ConfigContext.init(config);
 

@@ -69,6 +69,7 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
             "applicationDocumentStatus",
             "initiatorPrincipalName",
             "viewerPrincipalName",
+            "groupViewerId",
             "approverPrincipalName",
             "routeNodeName",
             "documentTypeName",

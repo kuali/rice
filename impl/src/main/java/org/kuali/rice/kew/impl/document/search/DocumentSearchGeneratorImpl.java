@@ -379,7 +379,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         // flags for the table being added to the FROM class of the sql
         String principalViewerSql = getViewerSql(criteria.getViewerPrincipalName(), getGeneratedPredicatePrefix(whereSQL.length()));
-        String groupViewerSql = getGroupViewerSql(criteria.getViewerGroupId(), getGeneratedPredicatePrefix(whereSQL.length()));
+        String groupViewerSql = getGroupViewerSql(criteria.getGroupViewerId(), getGeneratedPredicatePrefix(whereSQL.length()));
         if (StringUtils.isNotBlank(principalViewerSql) || StringUtils.isNotBlank(groupViewerSql)) {
             whereSQL.append(principalViewerSql);
             whereSQL.append(groupViewerSql);

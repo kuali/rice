@@ -490,13 +490,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     private void validateGroupCriteria(DocumentSearchCriteria.Builder criteria, List<WorkflowServiceError> errors) {
-        if (StringUtils.isNotBlank(criteria.getViewerGroupId())) {
-            Group group = KimApiServiceLocator.getGroupService().getGroup(criteria.getViewerGroupId());
+        if (StringUtils.isNotBlank(criteria.getGroupViewerId())) {
+            Group group = KimApiServiceLocator.getGroupService().getGroup(criteria.getGroupViewerId());
             if (group == null) {
                 errors.add(new WorkflowServiceErrorImpl("Workgroup Viewer Name is not a workgroup", "docsearch.DocumentSearchService.workgroup.viewer"));
             }
         } else {
-            criteria.setViewerGroupId(null);
+            criteria.setGroupViewerId(null);
         }
     }
 
@@ -563,7 +563,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         addAbbreviatedRangeString(abbreviatedStringMap, "App Doc Status Changed", criteria.getDateApplicationDocumentStatusChangedFrom(), criteria.getDateApplicationDocumentStatusChangedTo());
         addAbbreviatedString(abbreviatedStringMap, "Approver", criteria.getApproverPrincipalName());
         addAbbreviatedString(abbreviatedStringMap, "Viewer", criteria.getViewerPrincipalName());
-        addAbbreviatedString(abbreviatedStringMap, "Group Viewer", criteria.getViewerGroupId());
+        addAbbreviatedString(abbreviatedStringMap, "Group Viewer", criteria.getGroupViewerId());
         addAbbreviatedString(abbreviatedStringMap, "Node", criteria.getRouteNodeName());
         addAbbreviatedMultiValuedString(abbreviatedStringMap, "Status", criteria.getDocumentStatuses());
         addAbbreviatedMultiValuedString(abbreviatedStringMap, "Category", criteria.getDocumentStatusCategories());

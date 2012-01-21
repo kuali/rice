@@ -61,7 +61,8 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_STATUS,
     DocumentSearchCriteria.Elements.INITIATOR_PRINCIPAL_NAME,
     DocumentSearchCriteria.Elements.VIEWER_PRINCIPAL_NAME,
-    DocumentSearchCriteria.Elements.VIEWER_GROUP_ID,
+    DocumentSearchCriteria.Elements.GROUP_VIEWER_ID,
+    DocumentSearchCriteria.Elements.GROUP_VIEWER_NAME,
     DocumentSearchCriteria.Elements.APPROVER_PRINCIPAL_NAME,
     DocumentSearchCriteria.Elements.ROUTE_NODE_NAME,
     DocumentSearchCriteria.Elements.ROUTE_NODE_LOOKUP_LOGIC,
@@ -114,9 +115,12 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     @XmlElement(name = Elements.VIEWER_PRINCIPAL_NAME, required = false)
     private final String viewerPrincipalName;
 
-    @XmlElement(name = Elements.VIEWER_GROUP_ID, required = false)
-    private final String viewerGroupId;
+    @XmlElement(name = Elements.GROUP_VIEWER_ID, required = false)
+    private final String groupViewerId;
 
+    @XmlElement(name = Elements.GROUP_VIEWER_NAME, required = false)
+    private final String groupViewerName;
+    
     @XmlElement(name = Elements.APPROVER_PRINCIPAL_NAME, required = false)
     private final String approverPrincipalName;
 
@@ -206,7 +210,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.applicationDocumentStatus = null;
         this.initiatorPrincipalName = null;
         this.viewerPrincipalName = null;
-        this.viewerGroupId = null;
+        this.groupViewerId = null;
+        this.groupViewerName = null;
         this.approverPrincipalName = null;
         this.routeNodeName = null;
         this.routeNodeLookupLogic = null;
@@ -238,7 +243,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
         this.initiatorPrincipalName = builder.getInitiatorPrincipalName();
         this.viewerPrincipalName = builder.getViewerPrincipalName();
-        this.viewerGroupId = builder.getViewerGroupId();
+        this.groupViewerId = builder.getGroupViewerId();
+        this.groupViewerName = builder.getGroupViewerName();
         this.approverPrincipalName = builder.getApproverPrincipalName();
         this.routeNodeName = builder.getRouteNodeName();
         this.routeNodeLookupLogic = builder.getRouteNodeLookupLogic();
@@ -303,8 +309,13 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     }
 
     @Override
-    public String getViewerGroupId() {
-        return this.viewerGroupId;
+    public String getGroupViewerId() {
+        return this.groupViewerId;
+    }
+    
+    @Override
+    public String getGroupViewerName() {
+        return this.groupViewerName;
     }
 
     @Override
@@ -421,7 +432,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         private String applicationDocumentStatus;
         private String initiatorPrincipalName;
         private String viewerPrincipalName;
-        private String viewerGroupId;
+        private String groupViewerId;
+        private String groupViewerName;
         private String approverPrincipalName;
         private String routeNodeName;
         private RouteNodeLookupLogic routeNodeLookupLogic;
@@ -485,7 +497,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             builder.setApplicationDocumentStatus(contract.getApplicationDocumentStatus());
             builder.setInitiatorPrincipalName(contract.getInitiatorPrincipalName());
             builder.setViewerPrincipalName(contract.getViewerPrincipalName());
-            builder.setViewerGroupId(contract.getViewerGroupId());
+            builder.setGroupViewerId(contract.getGroupViewerId());
+            builder.setGroupViewerName(contract.getGroupViewerName());
             builder.setApproverPrincipalName(contract.getApproverPrincipalName());
             builder.setRouteNodeName(contract.getRouteNodeName());
             builder.setRouteNodeLookupLogic(contract.getRouteNodeLookupLogic());
@@ -562,10 +575,15 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         }
 
         @Override
-        public String getViewerGroupId() {
-            return this.viewerGroupId;
+        public String getGroupViewerId() {
+            return this.groupViewerId;
         }
 
+        @Override
+        public String getGroupViewerName() {
+            return this.groupViewerName;
+        }
+        
         @Override
         public String getApproverPrincipalName() {
             return this.approverPrincipalName;
@@ -698,8 +716,12 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             this.viewerPrincipalName = viewerPrincipalName;
         }
 
-        public void setViewerGroupId(String viewerGroupId) {
-            this.viewerGroupId = viewerGroupId;
+        public void setGroupViewerId(String groupViewerId) {
+            this.groupViewerId = groupViewerId;
+        }
+        
+        public void setGroupViewerName (String groupViewerName) {
+            this.groupViewerName = groupViewerName;
         }
 
         public void setApproverPrincipalName(String approverPrincipalName) {
@@ -836,7 +858,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
         final static String INITIATOR_PRINCIPAL_NAME = "initiatorPrincipalName";
         final static String VIEWER_PRINCIPAL_NAME = "viewerPrincipalName";
-        final static String VIEWER_GROUP_ID = "viewerGroupId";
+        final static String GROUP_VIEWER_ID = "groupViewerId";
+        final static String GROUP_VIEWER_NAME = "groupViewerName";
         final static String APPROVER_PRINCIPAL_NAME = "approverPrincipalName";
         final static String ROUTE_NODE_NAME = "routeNodeName";
         final static String ROUTE_NODE_LOOKUP_LOGIC = "routeNodeLookupLogic";

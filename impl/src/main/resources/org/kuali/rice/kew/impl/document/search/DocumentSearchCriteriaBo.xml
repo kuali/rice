@@ -97,7 +97,7 @@
           <property name="objectAttributeName" value="groupViewer"/>
           <property name="supportAttributes">
             <list>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="groupViewerName" p:targetName="name"/>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="groupViewerId" p:targetName="id"/>
             </list>
           </property>
         </bean>
@@ -159,7 +159,7 @@
     <property name="label" value="Group Viewer"/>
     <property name="shortLabel" value="Group Viewer"/>
     <property name="control">
-      <bean parent="LookupReadonlyControlDefinition" p:size="20"/>
+      <bean parent="HiddenControlDefinition" p:size="20"/>
     </property>
   </bean>
 
@@ -170,7 +170,7 @@
     <property name="label" value="Group Viewer Id"/>
     <property name="shortLabel" value="Group Viewer Id"/>
     <property name="control">
-      <bean parent="HiddenControlDefinition"/>
+      <bean parent="LookupReadonlyControlDefinition"/>
     </property>
   </bean>
 
@@ -378,7 +378,7 @@
         <bean parent="FieldDefinition" p:attributeName="approverPrincipalName"/>
         <bean parent="FieldDefinition" p:attributeName="viewerPrincipalName"/>
         <bean parent="FieldDefinition" p:attributeName="groupViewerName" p:noDirectInquiry="true"/>
-        <bean parent="FieldDefinition" p:attributeName="groupViewerId"/>
+        <bean parent="FieldDefinition" p:attributeName="groupViewerId" p:noDirectInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="documentId"/>
         <bean parent="FieldDefinition" p:attributeName="applicationDocumentId"/>
         <bean parent="FieldDefinition" p:attributeName="statusCode"/>

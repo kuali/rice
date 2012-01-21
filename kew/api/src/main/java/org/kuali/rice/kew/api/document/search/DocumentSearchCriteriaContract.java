@@ -130,7 +130,23 @@ public interface DocumentSearchCriteriaContract {
      *
      * @return the viewer principal name criteria
      */
-    String getViewerGroupId();
+    String getGroupViewerId();
+    
+    /**
+     * Returns the criteria for the name of a group who is a "viewer" of a document (a group who received an action request
+     * related to the document) to search against when executing the document search.  Group name criteria follows rules
+     * similar to principal name criteria:
+     *
+     * <ul>
+     *   <li>only literal group names that resolve to a valid group are allowed</li>
+     *   <li>however, if the group names don't resolve to valid groups, this simply means the search will return no results</li>
+     *   <li>"!" is allowed before a group id</li>
+     *   <li>when wanting to search on more than one viewer group name, use of "|" and "&&" is allowed, though they cannot be used together</li>
+     * </ul>
+     *
+     * @return the viewer principal name criteria
+     */
+    String getGroupViewerName();
 
     /**
      * Returns the criteria for the principal name of an "approver" of a document (someone who took action against

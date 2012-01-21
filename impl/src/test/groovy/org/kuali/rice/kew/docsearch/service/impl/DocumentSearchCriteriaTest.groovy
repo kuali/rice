@@ -132,7 +132,7 @@ class DocumentSearchCriteriaTest {
         builder.saveName = saveName
         builder.startAtIndex = 1
         builder.title = RandomStringUtils.randomAlphanumeric(20)
-        builder.viewerGroupId = RandomStringUtils.randomAlphanumeric(10)
+        builder.groupViewerId = RandomStringUtils.randomAlphanumeric(10)
         builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(20)
         builder.routeNodeLookupLogic = RouteNodeLookupLogic.EXACTLY
         return builder

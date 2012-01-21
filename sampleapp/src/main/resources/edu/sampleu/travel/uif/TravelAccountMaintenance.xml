@@ -74,6 +74,11 @@
                 <property name="fieldLookup">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
+                <property name="dependencyConstraints">
+                   <list>
+                     <bean parent="PrerequisiteConstraint" p:propertyName="number"/>
+                   </list>
+                 </property>
               </bean>
             </list>
           </property>

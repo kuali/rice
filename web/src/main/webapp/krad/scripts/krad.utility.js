@@ -14,6 +14,25 @@
  * limitations under the License.
  */
 var bodyHeight;
+
+/**
+ * Takes a name that may have characters incompatible with jQuery selection and escapes them so they can
+ * be used in selectors.  This method MUST be called when selecting on a name that can be ANY name on the page
+ * to avoid issues with collections(mainly)
+ *
+ * @returns a string that has been escaped for use in jQuery selectors
+ */
+function escapeName(name){
+    name = name.replace(/\\'/g, "'");
+    name = name.replace(/'/g, "\\'");
+    name = name.replace(/\\"/g, "\"");
+    name = name.replace(/"/g, "\\\"");
+    name = name.replace(/\./g, "\\.");
+    name = name.replace(/\[/g, "\\[");
+    name = name.replace(/\]/g, "\\]");
+    return name;
+}
+
 function publishHeight(){
     var parentUrl = "";
     if(navigator.cookieEnabled){
@@ -248,7 +267,7 @@ function setMethodToCall(methodToCall) {
  */
 function writeHiddenToForm(propertyName, propertyValue) {
     //removing because of performFinalize bug
-    jq('input[name="' + propertyName + '"]').remove();
+    jq('input[name="' + escapeName(propertyName) + '"]').remove();
 
     if (propertyValue.indexOf("'") != -1) {
         jq("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jq("#formComplete"));
@@ -262,7 +281,7 @@ function writeHiddenToForm(propertyName, propertyValue) {
  */
 function coerceValue(name){
 	var value = "";
-	var nameSelect = "[name='" + name + "']";
+	var nameSelect = "[name='" + escapeName(name) + "']";
 	if(jq(nameSelect + ":checkbox").length){
 		value = jq(nameSelect + ":checked").val();
 	}
@@ -294,7 +313,7 @@ function coerceValue(name){
  * @param value - value to set
  */
 function setValue(name, value) {
-    var nameSelect = "[name='" + name + "']";
+    var nameSelect = "[name='" + escapeName(name) + "']";
     jq(nameSelect).val(value);
 }
 
@@ -309,8 +328,8 @@ function isValueEmpty(value){
 
 //returns true if the field with name of name1 occurs before field with name2
 function occursBefore(name1, name2){
-	var field1 = jq("[name='" + name1 + "']");
-	var field2 = jq("[name='" + name2 + "']");
+	var field1 = jq("[name='" + escapeName(name1) + "']");
+	var field2 = jq("[name='" + escapeName(name2) + "']");
 
 	field1.addClass("prereqcheck");
 	field2.addClass("prereqcheck");
@@ -421,7 +440,7 @@ function performFocus(){
 
 //performs a focus on an the element with the name specified
 function focusOnElementByName(name){
-	var theElement =  jq("[name='" + name + "']");
+	var theElement =  jq("[name='" + escapeName(name) + "']");
 	if(theElement.length != 0){
 		theElement.focus();
 	}
@@ -436,7 +455,7 @@ function focusOnElementById(focusId){
 
 //Jump(scroll) to an element by name
 function jumpToElementByName(name){
-	var theElement =  jq("[name='" + name + "']");
+	var theElement =  jq("[name='" + escapeName(name) + "']");
 	if(theElement.length != 0){
 		if(top == self || jq("#fancybox-frame", parent.document).length){
 			jq.scrollTo(theElement, 0);

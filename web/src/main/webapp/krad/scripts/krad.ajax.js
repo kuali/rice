@@ -332,7 +332,7 @@ function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall){
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
 function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCall){
-	jq("[name='"+ controlName +"']").live('change', function() {
+	jq("[name='"+ escapeName(controlName) +"']").live('change', function() {
 		// visible check because a component must logically be visible to refresh
 		var refreshComp = jq("#" + refreshId + "_refreshWrapper");
 		if(refreshComp.length){
@@ -358,7 +358,7 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCa
  */
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall){
 	if (!baseId.match("\_c0$")) {
-		jq("[name='"+ controlName +"']").live('change', function() {
+		jq("[name='"+ escapeName(controlName) +"']").live('change', function() {
 			var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
 			if(refreshDisclosure.length){
                 var displayWithId = disclosureId;

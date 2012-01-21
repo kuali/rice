@@ -32,7 +32,14 @@
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"/>
+         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
+               p:constraintText="Requires Field 1 be filled out">
+           <property name="dependencyConstraints">
+             <list>
+               <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
+             </list>
+           </property>
+         </bean>
          <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
          <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
        </list>
@@ -61,7 +68,41 @@
          <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
            p:required="true" />
          <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
-           p:required="true" />
+           p:required="true" p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
+           <property name="mustOccurConstraints">
+             <list>
+               <bean parent="MustOccurConstraint">
+                 <property name="min" value="1" />
+                 <property name="max" value="2" />
+                 <property name="prerequisiteConstraints">
+                   <list>
+                     <bean parent="PrerequisiteConstraint" p:propertyName="field1" />
+                   </list>
+                 </property>
+                 <!-- essentially an OR'ed list: each MustOccur constraint in this
+                   list essentially counts towards the min max totals set at the top level,
+                   they are equivalent to having a PrerequisiteConstraint satisfied at the top
+                   level (count as one towards the total) so this constraint is saying you can
+                   fill out just field11 or you can fill out both field12 and field13, in addition
+                   filling out all 3 fields is fine in this context -->
+                 <property name="mustOccurConstraints">
+                   <list>
+                     <bean parent="MustOccurConstraint">
+                       <property name="min" value="2" />
+                       <property name="max" value="2" />
+                       <property name="prerequisiteConstraints">
+                         <list>
+                           <bean parent="PrerequisiteConstraint" p:propertyName="field2" />
+                           <bean parent="PrerequisiteConstraint" p:propertyName="field3" />
+                         </list>
+                       </property>
+                     </bean>
+                   </list>
+                 </property>
+               </bean>
+             </list>
+           </property>
+         </bean>
        </list>
      </property>
      <property name="filters">
@@ -83,9 +124,60 @@
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
-           p:required="true" />
+           p:required="true" p:constraintText="When this is A, Field 2 must be Alpha and maxLength 5.  When this is 1, Field 2 must be numeric and min 1 max 50">
+
+         </bean>
          <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-           p:required="true" />
+           p:required="true">
+           <property name="caseConstraint">
+              <bean parent="CaseConstraint">
+                <property name="propertyName" value="field1" />
+                <property name="whenConstraint">
+                  <list>
+                    <bean parent="WhenConstraint">
+                      <property name="values">
+                        <list>
+                          <value>A</value>
+                          <value>a</value>
+                        </list>
+                      </property>
+                      <property name="constraint">
+                        <bean parent="AlphaPatternConstraint" />
+                      </property>
+                    </bean>
+                    <bean parent="WhenConstraint">
+                      <property name="values">
+                        <list>
+                          <value>A</value>
+                          <value>a</value>
+                        </list>
+                      </property>
+                      <property name="constraint">
+                        <bean parent="SimpleConstraint">
+                          <property name="maxLength" value="5" />
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="WhenConstraint">
+                      <property name="value" value="1" />
+                      <property name="constraint">
+                        <bean parent="NumericPatternConstraint" />
+                      </property>
+                    </bean>
+                    <bean parent="WhenConstraint">
+                      <property name="value" value="1" />
+                      <property name="constraint">
+                        <bean parent="SimpleConstraint">
+                          <property name="exclusiveMin" value="0" />
+                          <property name="inclusiveMax" value="50" />
+                        </bean>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </property>
+         </bean>
          <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
            p:required="true" />
          <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -135,9 +227,58 @@
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
-           p:required="true" />
+           p:required="true" p:constraintText="When this is A, SubField 2 must be Alpha and maxLength 5.  When this is 1, SubField 2 must be numeric and min 1 max 50"/>
          <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
-           p:required="true" />
+           p:required="true">
+           <property name="caseConstraint">
+             <bean parent="CaseConstraint">
+               <property name="propertyName" value="field1" />
+               <property name="whenConstraint">
+                 <list>
+                   <bean parent="WhenConstraint">
+                     <property name="values">
+                       <list>
+                         <value>A</value>
+                         <value>a</value>
+                       </list>
+                     </property>
+                     <property name="constraint">
+                       <bean parent="AlphaPatternConstraint" />
+                     </property>
+                   </bean>
+                   <bean parent="WhenConstraint">
+                     <property name="values">
+                       <list>
+                         <value>A</value>
+                         <value>a</value>
+                       </list>
+                     </property>
+                     <property name="constraint">
+                       <bean parent="SimpleConstraint">
+                         <property name="maxLength" value="5" />
+                       </bean>
+                     </property>
+                   </bean>
+                   <bean parent="WhenConstraint">
+                     <property name="value" value="1" />
+                     <property name="constraint">
+                       <bean parent="NumericPatternConstraint" />
+                     </property>
+                   </bean>
+                   <bean parent="WhenConstraint">
+                     <property name="value" value="1" />
+                     <property name="constraint">
+                       <bean parent="SimpleConstraint">
+                         <property name="exclusiveMin" value="0" />
+                         <property name="inclusiveMax" value="50" />
+                       </bean>
+                     </property>
+                   </bean>
+                 </list>
+               </property>
+             </bean>
+           </property>
+         </bean>
          <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
            p:required="true" />
          <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"

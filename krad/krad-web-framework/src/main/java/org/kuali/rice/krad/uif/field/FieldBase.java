@@ -107,6 +107,10 @@ public class FieldBase extends ComponentBase implements Field {
             if (labelPlacement.equals(Position.RIGHT)) {
                 labelField.setRenderColon(false);
             }
+            
+            if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)){
+                labelField.addStyleClass("uif-labelBlock");
+            }
         }
     }
 

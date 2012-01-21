@@ -30,7 +30,8 @@
      <%-- required message --%>
      <krad:template component="${field.requiredMessageField}"/>
    </c:if>
-    
+
+
    <label id="${field.id}" for="${field.labelForComponentId}">
       ${label}
    </label>

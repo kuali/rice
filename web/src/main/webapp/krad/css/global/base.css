@@ -801,3 +801,7 @@ div.blockPage{
 .uif-progressiveDisclosure-highlight{
     background-color: #FFF8C6;
 }
+
+.uif-labelBlock{
+    display: block;
+}

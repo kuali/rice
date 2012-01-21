@@ -277,8 +277,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
     border-radius:4px;
     font-weight: normal;
     font-size:1.07692308em;   /* 14px divided by 13px */
-   text-shadow: 0px 1px 0px #83d485;
-   filter: dropshadow(color=#83d485, offX=0, offY=1);
+    text-shadow: 0px 1px 0px #83d485;
    }
 button.uif-primaryActionButton[disabled="true"], button.uif-primaryActionButton[disabled="disabled"] {
 		background-color:#C8EABC;

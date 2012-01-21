@@ -39,7 +39,7 @@ function setPageBreadcrumb(){
 			bcSet = true;
 		}
 		else if(pageId){
-			pageTitle = jq("a[name='"+ pageId + "']").text();
+			pageTitle = jq("a[name='"+ escapeName(pageId) + "']").text();
 			if(pageTitle && pageTitle != "&nbsp;"){
 				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 				jq("#current_breadcrumb_span").hide();
@@ -240,9 +240,9 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
     if (parent.jq == null) {
-        returnField = parent.$('#iframeportlet').contents().find('[name="' + fieldName + '"]');
+        returnField = parent.$('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }else{
-        returnField = parent.jq('[name="' + fieldName + '"]');
+        returnField = parent.jq('[name="' + escapeName(fieldName) + '"]');
     }
     returnField.val(value);
     returnField.focus();
@@ -287,11 +287,11 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
     for (i in parameterPairs) {
         parameters = parameterPairs[i].split(":");
 
-        if (jq('[name="' + parameters[0] + '"]').val() == "") {
+        if (jq('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
             alert("Please enter a value in the appropriate field.");
             return false;
         } else {
-            queryString = queryString + "&" + parameters[1] + "=" + jq('[name="' + parameters[0] + '"]').val();
+            queryString = queryString + "&" + parameters[1] + "=" + jq('[name="' + escapeName(parameters[0]) + '"]').val();
         }
     }
 
@@ -658,7 +658,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                         }
 
                         // check for regular fields
-                        var infoFieldSpan = jq("[name='" + returnField + "']");
+                        var infoFieldSpan = jq("[name='" + escapeName(returnField) + "']");
                         if (infoFieldSpan.length > 0) {
                             infoFieldSpan.val(fieldValue);
                             infoFieldSpan.change();

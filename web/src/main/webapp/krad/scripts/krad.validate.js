@@ -42,8 +42,8 @@ function dependsOnCheck(element, nameArray){
 	else{
 		name = jq(element).attr('name');
 	}
+    name = escapeName(name);
 	jq("[name='"+ name + "']").trigger("checkReq");
-	name = name.replace(/\./, "\\.");
 	nameArray.push(name);
 	
 
@@ -56,7 +56,7 @@ function dependsOnCheck(element, nameArray){
 		else{
 			elementName = jq(this).attr('name');
 		}
-		elementName = elementName.replace(/\./, "\\.");
+		elementName = escapeName(elementName);
 		
 		if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
 			jq.watermark.hide(this);
@@ -81,9 +81,9 @@ function dependsOnCheck(element, nameArray){
  * @param booleanFunction
  */
 function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction){
-	if(jq("[name='"+ controlName + "']").length){
+	if(jq("[name='"+ escapeName(controlName) + "']").length){
 
-		var id = jq("[name='"+ requiredName + "']").attr("id");
+		var id = jq("[name='"+ escapeName(requiredName) + "']").attr("id");
 		var indicator;
 		if(id){
 			var label = jq("#" + id + "_label_span");
@@ -99,11 +99,11 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction){
 		}
 
 		//also check condition when corresponding control is changed
-		jq("[name='"+ controlName + "']").change(function(){
+		jq("[name='"+ escapeName(controlName) + "']").change(function(){
 			checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
 		});
 		
-		jq("[name='"+ controlName + "']").bind("checkReq", function(){
+		jq("[name='"+ escapeName(controlName) + "']").bind("checkReq", function(){
 			checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
 		});
 	}
@@ -113,11 +113,11 @@ function checkForRequiredness(controlName, requiredName, booleanFunction, indica
 	if(indicator != null && indicator.length){
 		if(booleanFunction()){
 			indicator.show();
-            jq("[name='"+ requiredName + "']").attr("aria-required", "true");
+            jq("[name='"+ escapeName(requiredName) + "']").attr("aria-required", "true");
 		}
 		else{
 			indicator.hide();
-            jq("[name='"+ requiredName + "']").attr("aria-required", "false");
+            jq("[name='"+ escapeName(requiredName) + "']").attr("aria-required", "false");
 		}
 	}
 }

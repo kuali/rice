@@ -184,6 +184,7 @@ public final class KRADConstants {
     public static final String BACKDOOR_PARAMETER = "backdoorId";
     public static final String LOGOFF_REDIRECT_URL_PARAMETER = "LOGOFF_REDIRECT_URL";
     public static final String LOGOFF_REDIRECT_URL_PROPERTY = "rice.portal.logout.redirectUrl";
+    public static final String PORTAL_ALLOWED_REGEX = "rice.portal.allowed.regex";
 //    public static final String BLANKET_APPROVE_METHOD = "blanketApprove";
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
     public static final String DATA_OBJECT_CLASS_ATTRIBUTE = "dataObjectClassName";

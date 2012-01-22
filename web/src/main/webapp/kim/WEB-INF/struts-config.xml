@@ -59,7 +59,7 @@
 	<action-mappings>
 		<!--  Required KNS Action Mappings -->
 		<action path="/portal" name="KualiForm"
-			type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
+			type="org.kuali.rice.kns.web.struts.action.KualiPortalAction">
 			<forward name="basic" path="/portal.jsp" />
 		</action>
 

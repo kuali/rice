@@ -60,7 +60,7 @@
         </c:when>
         <c:otherwise>
             <kul:inquiryControls />
-            <input type="hidden" name="principalId" value="${KualiForm.principalId}" />
+            <input type="hidden" name="principalId" value="${KualiForm.document.principalId}" />
         </c:otherwise>
     </c:choose>
 

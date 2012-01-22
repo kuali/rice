@@ -109,6 +109,7 @@
 	     can be linked to -->
 	<param name="rice.portal.links.showRiceServerConfig" override="false">false</param>
 	<param name="rice.portal.logout.redirectUrl">${application.url}/portal.do</param>
+	<param name="rice.portal.allowed.regex" override="false">^${application.url}(/.*|)</param>
 
     <!-- App specific parameters -->
     <param name="externalizable.help.url" override="false">/${app.context.name}/kr/static/help/</param>

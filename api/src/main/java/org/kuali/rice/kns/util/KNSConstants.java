@@ -198,6 +198,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String KNS_SERVER_DATASOURCE = "knsServer.datasource";
     public static final String KNS_APPLICATION_DATASOURCE_JNDI = "knsApplication.datasource.jndi.location";
     public static final String KNS_SERVER_DATASOURCE_JNDI = "knsServer.datasource.jndi.location";
+    
+    public static final String PORTAL_ALLOWED_REGEX = "rice.portal.allowed.regex";
 
 
     // **************** Begin Note & Attachments defines

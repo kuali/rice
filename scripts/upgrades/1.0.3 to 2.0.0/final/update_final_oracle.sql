@@ -1,10 +1,3 @@
-
-
-
--- 
--- 2010-02-15.sql
--- 
-
 --
 -- Copyright 2005-2012 The Kuali Foundation
 --
@@ -20,6 +13,11 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
+
+-- 
+-- 2010-02-15.sql
+-- 
+
 
 ALTER TABLE trv_acct ADD (OBJ_ID VARCHAR2(36))
 /
@@ -40,7 +38,7 @@ ALTER TABLE trv_acct_ext ADD (OBJ_ID VARCHAR2(36))
 /
 ALTER TABLE trv_acct_ext ADD (VER_NBR NUMBER(8) DEFAULT 0)
 /
-/
+
 
 
 
@@ -49,29 +47,12 @@ ALTER TABLE trv_acct_ext ADD (VER_NBR NUMBER(8) DEFAULT 0)
 -- 2010-04-15.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 ALTER TABLE krns_sesn_doc_t ADD (OBJ_ID VARCHAR2(36))
 /
 ALTER TABLE krns_sesn_doc_t ADD (VER_NBR NUMBER(8) DEFAULT 0)
 /
 
-
-/
 
 
 
@@ -80,21 +61,6 @@ ALTER TABLE krns_sesn_doc_t ADD (VER_NBR NUMBER(8) DEFAULT 0)
 -- 2010-05-03.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 ALTER TABLE KRIM_PND_GRP_ATTR_DATA_T ADD (ACTV_IND VARCHAR2(1) default 'Y'
                                         , EDIT_FLAG VARCHAR2(1) default 'N')
@@ -107,21 +73,6 @@ ALTER TABLE KRIM_PND_GRP_ATTR_DATA_T ADD (ACTV_IND VARCHAR2(1) default 'Y'
 -- 2010-05-12.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table kren_chnl_subscrp_t add OBJ_ID varchar2(36)
 /
@@ -161,21 +112,6 @@ alter table kren_recip_t add ver_nbr NUMBER(8)
 -- 2011-03-23.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update KREW_DOC_TYP_T set POST_PRCSR='org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor'
 where POST_PRCSR='org.kuali.rice.kew.edl.EDocLitePostProcessor'
@@ -191,7 +127,7 @@ UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='FiscalOfficerMainten
 /
 UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='TravelRequest'
 /
-/
+
 
 
 
@@ -200,21 +136,6 @@ UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='TravelRequest'
 -- 2011-04-28.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 --
 -- KULRICE-4794
@@ -846,8 +767,6 @@ create INDEX KREW_DOC_LNK_TI1 on krew_doc_lnk_t(ORGN_DOC_ID)
 /
 
 
-/
-
 
 
 
@@ -855,21 +774,6 @@ create INDEX KREW_DOC_LNK_TI1 on krew_doc_lnk_t(ORGN_DOC_ID)
 -- 2011-05-09.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 
 --
@@ -1733,8 +1637,6 @@ CREATE SEQUENCE krms_cntxt_vld_event_s INCREMENT BY 1 START WITH 10000 NOMAXVALU
 /
 
 
-/
-
 
 
 
@@ -1742,21 +1644,6 @@ CREATE SEQUENCE krms_cntxt_vld_event_s INCREMENT BY 1 START WITH 10000 NOMAXVALU
 -- 2011-05-13.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 drop table KRSB_SVC_DEF_T
 /
@@ -1802,7 +1689,6 @@ CREATE INDEX KRSB_SVC_DEF_TI2 on KRSB_SVC_DEF_T (SVC_NM, STAT_CD)
 CREATE INDEX KRSB_SVC_DEF_TI3 on KRSB_SVC_DEF_T (STAT_CD)
 /
 
-/
 
 
 
@@ -1811,21 +1697,6 @@ CREATE INDEX KRSB_SVC_DEF_TI3 on KRSB_SVC_DEF_T (STAT_CD)
 -- 2011-06-06.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 ALTER TABLE KREW_DOC_TYP_T RENAME COLUMN SVC_NMSPC TO APPL_ID
 /
@@ -1862,7 +1733,6 @@ ALTER TABLE KR_POSTAL_CODE_T RENAME TO KRLC_PSTL_CD_T
 ALTER TABLE KR_COUNTY_T RENAME TO KRLC_CNTY_T
 /
 
-/
 
 
 
@@ -1871,21 +1741,6 @@ ALTER TABLE KR_COUNTY_T RENAME TO KRLC_CNTY_T
 -- 2011-06-08.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- make krms_rule_t.prop_id nullable
 alter table krms_rule_t modify (prop_id NULL)
@@ -1908,8 +1763,6 @@ alter table krms_rule_t rename column descr_txt to desc_txt
 /
 
 
-/
-
 
 
 
@@ -1917,21 +1770,6 @@ alter table krms_rule_t rename column descr_txt to desc_txt
 -- 2011-06-13-m6.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update krew_doc_typ_t set post_prcsr = 'org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor' where post_prcsr = 'org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor'
 /
@@ -1941,7 +1779,7 @@ update krew_rule_attr_t set cls_nm = 'org.kuali.rice.kns.workflow.attribute.Kual
 /
 update krew_rule_attr_t set cls_nm = 'org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl' where cls_nm = 'org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl'
 /
-/
+
 
 
 
@@ -1950,21 +1788,6 @@ update krew_rule_attr_t set cls_nm = 'org.kuali.rice.kns.workflow.attribute.Kual
 -- 2011-06-17-m6.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 --
 -- NOTE: when assembling this script for release, please merge any table rebuilds with those from 2011-04-28.sql
@@ -2588,7 +2411,7 @@ CREATE INDEX KREW_DOC_TYP_PROC_TI3
   ON KREW_DOC_TYP_PROC_T 
   (NM)
 /
-/
+
 
 
 
@@ -2597,21 +2420,6 @@ CREATE INDEX KREW_DOC_TYP_PROC_TI3
 -- 2011-06-21.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table KRIM_PERM_TMPL_T modify NMSPC_CD varchar2(40) not null
 /
@@ -2626,7 +2434,7 @@ alter table KRIM_RSP_TMPL_T modify NM varchar2(100) not null
 /
 alter table KRIM_RSP_TMPL_T add constraint KRIM_RSP_TMPL_TC1 unique (NM, NMSPC_CD)
 /
-/
+
 
 
 
@@ -2635,21 +2443,6 @@ alter table KRIM_RSP_TMPL_T add constraint KRIM_RSP_TMPL_TC1 unique (NM, NMSPC_C
 -- 2011-06-23.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 CREATE SEQUENCE KRMS_CTGRY_S INCREMENT BY 1 START WITH 1 NOMAXVALUE NOCYCLE NOCACHE ORDER
 /
@@ -2684,7 +2477,7 @@ CREATE TABLE KRMS_FUNC_CTGRY_T
   , CONSTRAINT KRMS_FUNC_CTGRY_FK2 FOREIGN KEY (CTGRY_ID) REFERENCES KRMS_CTGRY_T (CTGRY_ID)
 )
 /
-/
+
 
 
 
@@ -2693,21 +2486,6 @@ CREATE TABLE KRMS_FUNC_CTGRY_T
 -- 2011-06-29.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update KRIM_PERM_T t set NM='Use Document Operation Screen' where PERM_ID = '140'
 /
@@ -2851,7 +2629,7 @@ alter table KRIM_RSP_T modify NM varchar2(100) not null
 /
 alter table KRIM_RSP_T add constraint KRIM_RSP_T_TC1 unique (NM, NMSPC_CD)
 /
-/
+
 
 
 
@@ -2860,21 +2638,6 @@ alter table KRIM_RSP_T add constraint KRIM_RSP_T_TC1 unique (NM, NMSPC_CD)
 -- 2011-07-07-m6.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 --
 -- NOTE: when assembling this script for release, please merge any table rebuilds with those from 2011-04-28.sql
@@ -5434,7 +5197,6 @@ ALTER TABLE KREW_RTE_NODE_CFG_PARM_T
     REFERENCES KREW_RTE_NODE_T (RTE_NODE_ID)
 /
 
-/
 
 
 
@@ -5443,21 +5205,6 @@ ALTER TABLE KREW_RTE_NODE_CFG_PARM_T
 -- 2011-07-11-m6.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 --
 -- NOTE: when assembling this script for release, please merge any table rebuilds with those from 2011-04-28.sql
@@ -5504,7 +5251,6 @@ BEGIN
 END;
 /
 
-/
 
 
 
@@ -5513,21 +5259,6 @@ END;
 -- 2011-07-13.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 --KRCR_PARM_T
 ALTER TABLE KRCR_PARM_T RENAME column PARM_DTL_TYP_CD to CMPNT_CD
@@ -5546,7 +5277,7 @@ ALTER TABLE KRCR_CMPNT_T RENAME COLUMN PARM_DTL_TYP_CD TO CMPNT_CD
 --KRLC_CMP_TYP_T
 ALTER TABLE KRLC_CMP_TYP_T DROP COLUMN DOBJ_MAINT_CD_ACTV_IND
 /
-/
+
 
 
 
@@ -5555,21 +5286,6 @@ ALTER TABLE KRLC_CMP_TYP_T DROP COLUMN DOBJ_MAINT_CD_ACTV_IND
 -- 2011-07-22.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- Oracle sql for KULRICE-5419:
 alter table krms_cntxt_t add desc_txt varchar2(255) default null
@@ -5580,7 +5296,7 @@ alter table krms_term_t add desc_txt varchar2(255) default null
 /
 alter table krms_attr_defn_t add desc_txt varchar2(255) default null
 /
-/
+
 
 
 
@@ -5589,27 +5305,12 @@ alter table krms_attr_defn_t add desc_txt varchar2(255) default null
 -- 2011-07-24-m7.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 drop sequence KREW_HLP_S 
 /
 drop table KREW_HLP_T
 /
-/
+
 
 
 
@@ -5618,21 +5319,6 @@ drop table KREW_HLP_T
 -- 2011-07-25-m7.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 drop table KREW_RIA_DOC_T
 /
@@ -5646,7 +5332,7 @@ drop table KREW_RMV_RPLC_GRP_T
 /
 drop table KREW_RMV_RPLC_RULE_T
 /
-/
+
 
 
 
@@ -5655,21 +5341,6 @@ drop table KREW_RMV_RPLC_RULE_T
 -- 2011-07-28-m7.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -----------------------------------------------------------------------------
 -- KREW_INIT_RTE_NODE_INSTN_T
@@ -5712,7 +5383,6 @@ BEGIN
 END;
 /
 
-/
 
 
 
@@ -5721,25 +5391,10 @@ END;
 -- 2011-07-29-m7.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update KRIM_PERM_T t set NM='Take Requested Approve Action' where PERM_ID = '170'
 /
-/
+
 
 
 
@@ -5748,21 +5403,6 @@ update KRIM_PERM_T t set NM='Take Requested Approve Action' where PERM_ID = '170
 -- 2011-07-29.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 --
 -- make combo of nm & nmspc_cd unique in all applicable KRMS tables
@@ -5855,7 +5495,7 @@ alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk1 forei
 /
 alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk2 foreign key (attr_defn_id) references krms_attr_defn_t (attr_defn_id)
 /
-/
+
 
 
 
@@ -5864,21 +5504,6 @@ alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk2 forei
 -- 2011-08-11.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 
 
@@ -6072,8 +5697,6 @@ CREATE SEQUENCE krew_ppl_flw_mbr_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NO
 /
 
 
-/
-
 
 
 
@@ -6081,28 +5704,13 @@ CREATE SEQUENCE krew_ppl_flw_mbr_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NO
 -- 2011-08-17.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 delete from krcr_parm_t
 where nmspc_cd = 'KR-NS'
 and cmpnt_cd = 'All'
 and parm_nm in ('STRING_TO_DATE_FORMATS', 'STRING_TO_TIMESTAMP_FORMATS', 'TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE', 'DATE_TO_STRING_FORMAT_FOR_FILE_NAME', 'TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME')
 /
-/
+
 
 
 
@@ -6111,25 +5719,10 @@ and parm_nm in ('STRING_TO_DATE_FORMATS', 'STRING_TO_TIMESTAMP_FORMATS', 'TIMEST
 -- 2011-08-29.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 delete from krcr_parm_t where PARM_NM = 'CACHING_IND'
 /
-/
+
 
 
 
@@ -6138,21 +5731,6 @@ delete from krcr_parm_t where PARM_NM = 'CACHING_IND'
 -- 2011-09-07.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KULRICE-5360 rename KIM entity fields
 alter table KRIM_ENTITY_NM_T rename column TITLE_NM to PREFIX_NM
@@ -6174,8 +5752,6 @@ alter table KRIM_PND_ADDR_MT rename column CITY_NM to CITY
 /
 
 
-/
-
 
 
 
@@ -6183,27 +5759,10 @@ alter table KRIM_PND_ADDR_MT rename column CITY_NM to CITY
 -- 2011-09-15.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 delete from KREW_USR_OPTN_T where PRSN_OPTN_ID like 'DocSearch%'
 /
 
-
-/
 
 
 
@@ -6212,21 +5771,6 @@ delete from KREW_USR_OPTN_T where PRSN_OPTN_ID like 'DocSearch%'
 -- 2011-09-16.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KULRICE-5360 add KIM entity fields
 alter table KRIM_ENTITY_NM_T add TITLE_NM VARCHAR(20)
@@ -6276,8 +5820,6 @@ alter table KRIM_PND_ADDR_MT add NOTE_MSG VARCHAR(1024)
 /
 
 
-/
-
 
 
 
@@ -6285,21 +5827,6 @@ alter table KRIM_PND_ADDR_MT add NOTE_MSG VARCHAR(1024)
 -- 2011-09-18.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table KREW_PPL_FLW_T modify(TYP_ID NULL)
 /
@@ -6339,7 +5866,7 @@ CREATE INDEX krew_ppl_flw_dlgt_ti1 ON krew_ppl_flw_dlgt_t (ppl_flw_mbr_id)
 
 CREATE SEQUENCE krew_ppl_flw_dlgt_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
 /
-/
+
 
 
 
@@ -6348,21 +5875,6 @@ CREATE SEQUENCE krew_ppl_flw_dlgt_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE N
 -- 2011-09-26b.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KIM permissions
 insert into krcr_nmspc_t
@@ -6419,7 +5931,7 @@ values (krim_role_perm_id_s.nextval,
         (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KR-RULE'),
         'Y', 1, sys_guid())
 /
-/
+
 
 
 
@@ -6428,21 +5940,6 @@ values (krim_role_perm_id_s.nextval,
 -- 2011-09-26.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 ALTER TABLE KREW_DOC_TYP_T DROP COLUMN CSTM_ACTN_LIST_ATTRIB_CLS_NM
 /
@@ -6450,7 +5947,7 @@ ALTER TABLE KREW_DOC_TYP_T DROP COLUMN CSTM_ACTN_EMAIL_ATTRIB_CLS_NM
 /
 ALTER TABLE KREW_DOC_TYP_T DROP COLUMN CSTM_DOC_NTE_ATTRIB_CLS_NM
 /
-/
+
 
 
 
@@ -6459,21 +5956,6 @@ ALTER TABLE KREW_DOC_TYP_T DROP COLUMN CSTM_DOC_NTE_ATTRIB_CLS_NM
 -- 2011-09-27.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- Notification PeopleFlowActionType
 
@@ -6489,7 +5971,6 @@ insert into krms_typ_t
 values ('1001', 'approvalPeopleFlowActionType', 'KRMS_TEST', 'approvalPeopleFlowActionTypeService', 'Y', 1)
 /
 
-/
 
 
 
@@ -6498,21 +5979,6 @@ values ('1001', 'approvalPeopleFlowActionType', 'KRMS_TEST', 'approvalPeopleFlow
 -- 2011-09-30.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 
 
@@ -6538,7 +6004,7 @@ CREATE INDEX krms_cntxt_vld_agenda_ti1 on krms_cntxt_vld_agenda_t (cntxt_id ASC)
 
 CREATE SEQUENCE krms_cntxt_vld_agenda_s INCREMENT BY 1 START WITH 10000 NOMAXVALUE NOCYCLE NOCACHE ORDER
 /
-/
+
 
 
 
@@ -6547,21 +6013,6 @@ CREATE SEQUENCE krms_cntxt_vld_agenda_s INCREMENT BY 1 START WITH 10000 NOMAXVAL
 -- 2011-10-03.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table KREW_PPL_FLW_MBR_T add ACTN_RQST_PLCY_CD VARCHAR2(1)
 /
@@ -6571,7 +6022,7 @@ alter table KREW_PPL_FLW_DLGT_T add ACTN_RQST_PLCY_CD VARCHAR2(1)
 /
 alter table KREW_PPL_FLW_DLGT_T add RSP_ID VARCHAR2(40) NOT NULL
 /
-/
+
 
 
 
@@ -6580,21 +6031,6 @@ alter table KREW_PPL_FLW_DLGT_T add RSP_ID VARCHAR2(40) NOT NULL
 -- 2011-10-21.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KULRICE-5348
 ALTER TABLE KREW_RULE_T RENAME COLUMN PREV_RULE_VER_NBR TO PREV_VER_RULE_ID
@@ -6610,8 +6046,6 @@ WHERE NMSPC_CD = 'KR-WKFLW'
 /
 
 
-/
-
 
 
 
@@ -6619,21 +6053,6 @@ WHERE NMSPC_CD = 'KR-WKFLW'
 -- 2011-10-23.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table krcr_cmpnt_t add cmpnt_set_id varchar2(40)
 /
@@ -6645,7 +6064,6 @@ create table krcr_cmpnt_set_t (
   primary key (cmpnt_set_id) )
 /
 
-/
 
 
 
@@ -6654,21 +6072,6 @@ create table krcr_cmpnt_set_t (
 -- 2011-10-24.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table krcr_cmpnt_t drop column cmpnt_set_id
 /
@@ -6680,7 +6083,6 @@ create table krcr_drvd_cmpnt_t (
   primary key (nmspc_cd, cmpnt_cd))
 /
 
-/
 
 
 
@@ -6689,21 +6091,6 @@ create table krcr_drvd_cmpnt_t (
 -- 2011-10-25.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update KREW_RULE_ATTR_T set RULE_ATTR_TYP_CD='DocumentSecurityAttribute' where RULE_ATTR_TYP_CD='DocumentSearchSecurityFilterAttribute'
 /
@@ -6713,7 +6100,7 @@ update KRCR_PARM_T set CMPNT_CD='DocumentSearch' where CMPNT_CD='DocSearchCriter
 insert into KRCR_CMPNT_T (NMSPC_CD, CMPNT_CD, NM, ACTV_IND, OBJ_ID, VER_NBR)
 values ('KR-WKFLW', 'DocumentSearch', 'Document Search', 'Y', sys_guid(), 1)
 /
-/
+
 
 
 
@@ -6722,28 +6109,13 @@ values ('KR-WKFLW', 'DocumentSearch', 'Document Search', 'Y', sys_guid(), 1)
 -- 2011-10-26.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 insert into KRCR_CMPNT_T (NMSPC_CD, CMPNT_CD, NM, ACTV_IND, OBJ_ID, VER_NBR)
 VALUES ('KR-WKFLW', 'Rule', 'Rule', 'Y', sys_guid(), 1)
 /
 update KRCR_CMPNT_T set cmpnt_cd='EDocLite' where cmpnt_cd like 'EDocLite%'
 /
-/
+
 
 
 
@@ -6752,21 +6124,6 @@ update KRCR_CMPNT_T set cmpnt_cd='EDocLite' where cmpnt_cd like 'EDocLite%'
 -- 2011-10-27.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- create a KIM permission for the Cache Administrator screen/controller
 
@@ -6796,7 +6153,7 @@ values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where r
         (select perm_id from krim_perm_t where nm = 'Use Cache Adminstration Screen' and nmspc_cd = 'KR-SYS'),
         'Y', 1, sys_guid())
 /
-/
+
 
 
 
@@ -6805,21 +6162,6 @@ values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where r
 -- 2011-11-03.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- Make typ_id column optional where appropriate
 
@@ -6830,7 +6172,6 @@ ALTER TABLE krms_agenda_t MODIFY typ_id varchar2(40) null
 ALTER TABLE krms_cntxt_t MODIFY typ_id varchar2(40) null
 /
 
-/
 
 
 
@@ -6839,28 +6180,11 @@ ALTER TABLE krms_cntxt_t MODIFY typ_id varchar2(40) null
 -- 2011-11-14.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- Drop foreign key constraint on krms_prop_t table
 alter table KRMS_PROP_T drop constraint KRMS_PROP_FK1
 /
 
-
-/
 
 
 
@@ -6869,21 +6193,6 @@ alter table KRMS_PROP_T drop constraint KRMS_PROP_FK1
 -- 2011-11-23.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- give PeopleFlows friendlier names
 
@@ -6897,7 +6206,6 @@ update krms_typ_t set nm='Route to PeopleFlow' where typ_id = '1001'
 alter table krms_cmpnd_prop_props_t modify seq_no NUMBER(5) null
 /
 
-/
 
 
 
@@ -6906,21 +6214,6 @@ alter table krms_cmpnd_prop_props_t modify seq_no NUMBER(5) null
 -- 2011-11-28.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update krim_perm_t
    set nmspc_cd = 'KRMS_TEST'
@@ -6931,7 +6224,7 @@ update krim_perm_t
 delete from krim_perm_attr_data_t
  where perm_id = (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KRMS_TEST')
 /
-/
+
 
 
 
@@ -6940,26 +6233,10 @@ delete from krim_perm_attr_data_t
 -- 2011-11-29.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table KREW_RTE_NODE_T modify ACTVN_TYP varchar(1)
 /
 
-/
 
 
 
@@ -6968,21 +6245,6 @@ alter table KREW_RTE_NODE_T modify ACTVN_TYP varchar(1)
 -- 2011-12-07.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 
 -- correct fields in krms test data
@@ -7005,7 +6267,6 @@ update krms_prop_t set krms_prop_t.cmpnd_seq_no = (select seq_no from krms_cmpnd
 alter table krms_cmpnd_prop_props_t drop (seq_no)
 /
 
-/
 
 
 
@@ -7014,21 +6275,6 @@ alter table krms_cmpnd_prop_props_t drop (seq_no)
 -- 2011-12-21.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 UPDATE KRCR_NMSPC_T SET APPL_ID = 'RICE' WHERE NMSPC_CD = 'KUALI'
 /
@@ -7040,21 +6286,6 @@ UPDATE KRCR_NMSPC_T SET APPL_ID = 'RICE' WHERE NMSPC_CD = 'KUALI'
 -- 2012-01-03.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 INSERT INTO KRCR_NMSPC_T VALUES ('KR-KRAD', sys_guid(), 1, 'Kuali Rapid Application Development', 'Y', 'RICE')
 /
@@ -7168,8 +6399,6 @@ INSERT INTO KRIM_PERM_TMPL_T VALUES ('10017', sys_guid(), 1, 'KR-KRAD', 'Perform
 /
 
 
-/
-
 
 
 
@@ -7177,21 +6406,6 @@ INSERT INTO KRIM_PERM_TMPL_T VALUES ('10017', sys_guid(), 1, 'KR-KRAD', 'Perform
 -- 2012-01-04.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 update KRMS_TERM_SPEC_T set TYP = 'java.lang.String' where TYP = 'T2'
 /
@@ -7202,7 +6416,6 @@ update KRMS_TERM_SPEC_T set TYP = 'java.lang.String' where TYP = 'T1'
 update KRMS_TERM_SPEC_T set TYP = 'java.lang.Integer' where TYP = 'T6'
 /
 
-/
 
 
 
@@ -7211,21 +6424,6 @@ update KRMS_TERM_SPEC_T set TYP = 'java.lang.Integer' where TYP = 'T6'
 -- 2012-01-05.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 ALTER TABLE KRMS_CNTXT_VLD_ACTN_T RENAME CONSTRAINT KRMS_CNTXT_VLD_ACTN_FK1 TO KRMS_CNTXT_VLD_ACTN_TYP_FK1
 /
@@ -7263,7 +6461,6 @@ UPDATE KRMS_RULE_T SET TYP_ID = NULL
 DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T
 /
 
-/
 
 
 
@@ -7272,26 +6469,11 @@ DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T
 -- 2012-01-06.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KULRICE-6299: New DB index to improve action list performance
 create index KREW_ACTN_ITM_TI6 on KREW_ACTN_ITM_T (DLGN_TYP, DLGN_PRNCPL_ID, DLGN_GRP_ID)
 /
-/
+
 
 
 
@@ -7300,21 +6482,6 @@ create index KREW_ACTN_ITM_TI6 on KREW_ACTN_ITM_T (DLGN_TYP, DLGN_PRNCPL_ID, DLG
 -- 2012-01-11.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KULRICE-6452
 
@@ -7325,7 +6492,6 @@ drop sequence krms_cntxt_vld_event_s
 rename krms_cntxt_term_spec_prereq_s to krms_cntxt_vld_term_spec_s
 /
 
-/
 
 
 
@@ -7334,25 +6500,10 @@ rename krms_cntxt_term_spec_prereq_s to krms_cntxt_vld_term_spec_s
 -- 2012-01-18.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 alter table KREW_DOC_HDR_T drop column RTE_LVL_MDFN_DT
 /
-/
+
 
 
 
@@ -7361,21 +6512,6 @@ alter table KREW_DOC_HDR_T drop column RTE_LVL_MDFN_DT
 -- 2012-01-19b.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 
 --
@@ -8349,8 +7485,6 @@ delete from krim_perm_attr_data_t
 /
 
 
-/
-
 
 
 
@@ -8358,21 +7492,6 @@ delete from krim_perm_attr_data_t
 -- 2012-01-19c.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 -- KULRICE-6537 - increase size of MBR_NM field
 ALTER TABLE KRIM_PND_GRP_MBR_T MODIFY (MBR_NM varchar2(100))
@@ -8382,30 +7501,10 @@ ALTER TABLE KRIM_PND_GRP_MBR_T MODIFY (MBR_NM varchar2(100))
 
 
 
-/
-
-
-
-
 -- 
 -- 2012-01-19.sql
 -- 
 
---
--- Copyright 2005-2012 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
 
 CREATE TABLE KRCR_STYLE_T
 (
@@ -8446,5 +7545,4 @@ CREATE TABLE KRCR_STYLE_T (
 )
 /
 
-/
 

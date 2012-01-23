@@ -24,10 +24,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.core.api.cache.CacheManagerRegistry;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.cache.CacheManager;
@@ -96,29 +102,40 @@ public class CacheAdminController extends UifControllerBase {
 	@RequestMapping(params = "methodToCall=flush", method = RequestMethod.POST)
 	public ModelAndView flush(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
+        Person user = GlobalVariables.getUserSession().getPerson();
+        boolean isAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(
+						user.getPrincipalId(),
+						KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE,
+						KRADConstants.USE_CACHE_ADMINISTRATION_SCREEN,
+						Collections.<String, String>emptyMap(),
+						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, user.getPrincipalId()));
+        if(isAuthorized){
 
-        //FIXME: Could optimize this such that specific cache flushes don't execute if a complete CacheManager
-        //flush was requested
-        for (String name : ((CacheAdminForm) form).getFlush()) {
-            //path == cacheManager index, cache index
-            final List<Integer> path = path(removePrefix(name));
-            final Tree<String, String> tree = ((CacheAdminForm) form).getCacheTree();
-            final Integer cmIdx = path.get(0);
-            final Node<String, String> cmNode = tree.getRootElement().getChildren().get(cmIdx);
-            final String cmName = cmNode.getData();
-            final CacheManager cm = getRegistry().getCacheManager(cmName);
+            //FIXME: Could optimize this such that specific cache flushes don't execute if a complete CacheManager
+            //flush was requested
+            for (String name : ((CacheAdminForm) form).getFlush()) {
+                //path == cacheManager index, cache index
+                final List<Integer> path = path(removePrefix(name));
+                final Tree<String, String> tree = ((CacheAdminForm) form).getCacheTree();
+                final Integer cmIdx = path.get(0);
+                final Node<String, String> cmNode = tree.getRootElement().getChildren().get(cmIdx);
+                final String cmName = cmNode.getData();
+                final CacheManager cm = getRegistry().getCacheManager(cmName);
 
-            if (path.size() == 1) {
-                flushAllCaches(cm);
-                GlobalVariables.getMessageMap().putInfoForSectionId("mainGroup_div","flush.all.cachemanager", cmName);
-            } else {
-                final Integer cIdx = path.get(1);
-                final Node<String, String> cNode = cmNode.getChildren().get(cIdx);
-                final String cName = cNode.getData();
-                flushSpecificCache(cm, cName);
-                GlobalVariables.getMessageMap().putInfoForSectionId("mainGroup_div",
-                        "flush.single.cachemanager", cName, cmName);
+                if (path.size() == 1) {
+                    flushAllCaches(cm);
+                    GlobalVariables.getMessageMap().putInfoForSectionId("mainGroup_div","flush.all.cachemanager", cmName);
+                } else {
+                    final Integer cIdx = path.get(1);
+                    final Node<String, String> cNode = cmNode.getChildren().get(cIdx);
+                    final String cName = cNode.getData();
+                    flushSpecificCache(cm, cName);
+                    GlobalVariables.getMessageMap().putInfoForSectionId("mainGroup_div",
+                            "flush.single.cachemanager", cName, cmName);
+                }
             }
+        }else{
+           GlobalVariables.getMessageMap().putError("flush","error.authorization.general",user.getPrincipalName(),"flush","cachemanager");
         }
         return super.start(form, result, request, response);
     }

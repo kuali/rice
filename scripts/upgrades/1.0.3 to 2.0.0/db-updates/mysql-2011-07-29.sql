@@ -26,13 +26,13 @@
 -- remove cntxt_id from krms_term_rslvr_t, fix unique constraint
 alter table krms_term_rslvr_t drop index krms_term_rslvr_tc1;
 alter table krms_term_rslvr_t add constraint krms_term_rslvr_tc1 unique (nm, nmspc_cd);
-alter table krms_term_rslvr_t drop foreign key KRMS_TERM_RSLVR_FK2;
+alter table krms_term_rslvr_t drop foreign key krms_term_rslvr_fk2;
 alter table krms_term_rslvr_t drop column cntxt_id;
 
 -- remove fk from krms_term_spec_t to krms_cntxt_t
 alter table krms_term_spec_t add column nmspc_cd varchar(40) not null;
-alter table krms_term_spec_t DROP FOREIGN KEY KRMS_ASSET_FK1;
-alter table krms_term_spec_t drop key `KRMS_ASSET_TI1`;
+alter table krms_term_spec_t DROP FOREIGN KEY krms_asset_fk1;
+alter table krms_term_spec_t drop key krms_asset_ti1;
 alter table krms_term_spec_t drop index krms_asset_tc1;
 alter table krms_term_spec_t add constraint krms_term_spec_tc1 unique (nm, nmspc_cd);
 alter table krms_term_spec_t drop column cntxt_id;
@@ -42,9 +42,9 @@ alter table krms_term_spec_t drop column cntxt_id;
 --
 -- rename krms_cntxt_term_spec_prereq_t to krms_cntxt_vld_term_spec_t
 -- and add prereq column
-alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY KRMS_CNTXT_ASSET_PREREQ_FK1;
+alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY krms_cntxt_asset_prereq_fk1;
 alter table krms_cntxt_term_spec_prereq_t drop index krms_cntxt_asset_prereq_ti1;
-alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY KRMS_CNTXT_ASSET_PREREQ_FK2;
+alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY krms_cntxt_asset_prereq_fk2;
 alter table krms_cntxt_term_spec_prereq_t drop index krms_cntxt_asset_prereq_ti2;
 rename table krms_cntxt_term_spec_prereq_t to krms_cntxt_vld_term_spec_t;
 alter table krms_cntxt_vld_term_spec_t add column prereq varchar(1) default 'n';
@@ -70,11 +70,12 @@ alter table krms_rule_t add constraint krms_rule_tc1 unique (nm, nmspc_cd);
 -- clean up some crufty index and constraint names
 --
 
-alter table krms_term_rslvr_attr_t drop foreign key KRMS_ASSET_RSLVR_ATTR_FK1;
-alter table krms_term_rslvr_attr_t drop foreign key KRMS_ASSET_RSLVR_ATTR_FK2;
+alter table krms_term_rslvr_attr_t drop foreign key krms_asset_rslvr_attr_fk1;
+alter table krms_term_rslvr_attr_t drop foreign key krms_asset_rslvr_attr_fk2;
 alter table krms_term_rslvr_attr_t drop index krms_asset_rslvr_attr_ti1;
 create index krms_asset_rslvr_attr_ti1 on krms_term_rslvr_attr_t (term_rslvr_id);
 alter table krms_term_rslvr_attr_t drop index krms_asset_rslvr_attr_ti2;
 create index krms_term_rslvr_attr_ti2 on krms_term_rslvr_attr_t (attr_defn_id);
 alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk1 foreign key (term_rslvr_id) references krms_term_rslvr_t (term_rslvr_id);
 alter table krms_term_rslvr_attr_t add constraint krms_term_rslvr_attr_fk2 foreign key (attr_defn_id) references krms_attr_defn_t (attr_defn_id);
+

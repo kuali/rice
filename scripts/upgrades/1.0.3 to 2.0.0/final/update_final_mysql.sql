@@ -20,24 +20,24 @@
 
 
 ALTER TABLE trv_acct ADD (OBJ_ID VARCHAR(36))
-/
+;
 ALTER TABLE trv_acct ADD (VER_NBR DECIMAL(8) DEFAULT 0)
-/
+;
 
 ALTER TABLE trv_acct_type ADD (OBJ_ID VARCHAR(36))
-/
+;
 ALTER TABLE trv_acct_type ADD (VER_NBR DECIMAL(8) DEFAULT 0)
-/
+;
 
 ALTER TABLE trv_acct_fo ADD (OBJ_ID VARCHAR(36))
-/
+;
 ALTER TABLE trv_acct_fo ADD (VER_NBR DECIMAL(8) DEFAULT 0)
-/
+;
 
 ALTER TABLE trv_acct_ext ADD (OBJ_ID VARCHAR(36))
-/
+;
 ALTER TABLE trv_acct_ext ADD (VER_NBR DECIMAL(8) DEFAULT 0)
-/
+;
 
 
 -- 
@@ -46,9 +46,9 @@ ALTER TABLE trv_acct_ext ADD (VER_NBR DECIMAL(8) DEFAULT 0)
 
 
 ALTER TABLE krns_sesn_doc_t ADD (OBJ_ID VARCHAR(36))
-/
+;
 ALTER TABLE krns_sesn_doc_t ADD (VER_NBR DECIMAL(8) DEFAULT 0)
-/
+;
 
 
 
@@ -60,6 +60,7 @@ ALTER TABLE krns_sesn_doc_t ADD (VER_NBR DECIMAL(8) DEFAULT 0)
 
 ALTER TABLE KRIM_PND_GRP_ATTR_DATA_T ADD (ACTV_IND VARCHAR(1) default 'Y'
                                         , EDIT_FLAG VARCHAR(1) default 'N')
+;
 
 
 -- 
@@ -68,35 +69,35 @@ ALTER TABLE KRIM_PND_GRP_ATTR_DATA_T ADD (ACTV_IND VARCHAR(1) default 'Y'
 
 
 alter table kren_chnl_subscrp_t add OBJ_ID varchar(36)
-/
+;
 alter table kren_cntnt_typ_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_chnl_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_ntfctn_msg_deliv_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_ntfctn_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_prio_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_prodcr_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_recip_list_t add OBJ_ID varchar(36)
-/
+;
 alter table kren_sndr_t add OBJ_ID varchar(36)
-/
+;
 alter table kren_recip_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_rvwer_t add OBJ_ID varchar(36) 
-/
+;
 alter table kren_chnl_subscrp_t add ver_nbr decimal(8)
-/
+;
 alter table kren_recip_list_t add ver_nbr decimal(8)
-/
+;
 alter table kren_sndr_t add ver_nbr decimal(8)
-/
+;
 alter table kren_recip_t add ver_nbr decimal(8)
-
+;
 
 -- 
 -- mysql-2011-03-23.sql
@@ -105,18 +106,18 @@ alter table kren_recip_t add ver_nbr decimal(8)
 
 update KREW_DOC_TYP_T set POST_PRCSR='org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor'
 where POST_PRCSR='org.kuali.rice.kew.edl.EDocLitePostProcessor'
-/
+;
 
 update KREW_DOC_TYP_T set POST_PRCSR='org.kuali.rice.edl.framework.workflow.EDocLiteDatabasePostProcessor'
 where POST_PRCSR='org.kuali.rice.kew.edl.EDLDatabasePostProcessor'
-/
+;
 
 UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='TravelAccountMaintenanceDocument'
-/
+;
 UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='FiscalOfficerMaintenanceDocument'
-/
+;
 UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='TravelRequest'
-/
+;
 
 
 -- 
@@ -130,47 +131,47 @@ UPDATE KREW_DOC_TYP_T SET PARNT_ID='2681' WHERE DOC_TYP_NM='TravelRequest'
 --
 
 ALTER TABLE KREW_ACTN_ITM_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_ACTN_RQST_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_ACTN_TKN_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_APP_DOC_STAT_TRAN_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40)
-/
+;
 ALTER TABLE KREW_DOC_HDR_CNTNT_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_HDR_EXT_DT_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_HDR_EXT_FLT_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_HDR_EXT_LONG_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_HDR_EXT_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_HDR_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_NTE_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_TYP_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40)
-/
+;
 ALTER TABLE KREW_EDL_DMP_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_EDL_FLD_DMP_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_INIT_RTE_NODE_INSTN_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_OUT_BOX_ITM_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_RMV_RPLC_DOC_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_RMV_RPLC_GRP_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_RMV_RPLC_RULE_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_RTE_NODE_INSTN_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_RULE_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40)
-/
+;
 
 --
 -- The following statements will change the ORGN_DOC_ID and DEST_DOC_ID 
@@ -178,9 +179,9 @@ ALTER TABLE KREW_RULE_T CHANGE DOC_HDR_ID DOC_HDR_ID VARCHAR(40)
 --
 
 ALTER TABLE KREW_DOC_LNK_T CHANGE ORGN_DOC_ID ORGN_DOC_ID VARCHAR(40) NOT NULL
-/
+;
 ALTER TABLE KREW_DOC_LNK_T CHANGE DEST_DOC_ID DEST_DOC_ID VARCHAR(40) NOT NULL
-
+;
 
 
 -- 
@@ -365,11 +366,11 @@ CREATE  TABLE IF NOT EXISTS `krms_actn_t` (
   `seq_no` TINYINT NULL ,
   `ver_nbr` DECIMAL NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`actn_id`) ,
-  INDEX `KRMS_ACTN_TI2` (`rule_id` ASC) ,
-  INDEX `KRMS_ACTN_TI1` (`typ_id` ASC) ,
-  UNIQUE INDEX `KRMS_ACTN_TC2` (`actn_id` ASC, `rule_id` ASC, `seq_no` ASC) ,
-  INDEX `KRMS_ACTN_TI3` (`rule_id` ASC, `seq_no` ASC) ,
-  CONSTRAINT `KRMS_ACTN_FK1`
+  index `krms_actn_ti2` (`rule_id` asc) ,
+  index `krms_actn_ti1` (`typ_id` asc) ,
+  unique index `krms_actn_tc2` (`actn_id` asc, `rule_id` asc, `seq_no` asc) ,
+  index `krms_actn_ti3` (`rule_id` asc, `seq_no` asc) ,
+  constraint `krms_actn_fk1`
     FOREIGN KEY (`rule_id` )
     REFERENCES `krms_rule_t` (`rule_id` )
     ON DELETE NO ACTION
@@ -1130,24 +1131,24 @@ alter table krms_cntxt_vld_event_s auto_increment = 1000;
 
 
 drop table KRSB_SVC_DEF_T
-/
+;
 drop table KRSB_FLT_SVC_DEF_T
-/
+;
 drop table KRSB_SVC_DEF_S
-/
+;
 drop table KRSB_FLT_SVC_DEF_S
-/
+;
 CREATE TABLE KRSB_SVC_DSCRPTR_T (
   SVC_DSCRPTR_ID varchar(40) NOT NULL,
   DSCRPTR longtext NOT NULL,
   PRIMARY KEY (SVC_DSCRPTR_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 CREATE TABLE KRSB_SVC_DSCRPTR_S (
   ID bigint(19) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 CREATE TABLE KRSB_SVC_DEF_T (
   SVC_DEF_ID varchar(40) NOT NULL,
   SVC_NM varchar(255) NOT NULL,
@@ -1162,17 +1163,17 @@ CREATE TABLE KRSB_SVC_DEF_T (
   CHKSM varchar(30) NOT NULL,
   VER_NBR decimal(8,0) DEFAULT '0',
   PRIMARY KEY (SVC_DEF_ID),
-  INDEX KRSB_SVC_DEF_TI1 (INSTN_ID),
-  INDEX KRSB_SVC_DEF_TI2 (SVC_NM, STAT_CD),
-  INDEX KRSB_SVC_DEF_TI3 (STAT_CD),
-  FOREIGN KEY KRSB_SVC_DEF_FK1 (SVC_DSCRPTR_ID) REFERENCES KRSB_SVC_DSCRPTR_T(SVC_DSCRPTR_ID) ON DELETE CASCADE
+  index krsb_svc_def_ti1 (instn_id),
+  index krsb_svc_def_ti2 (svc_nm, stat_cd),
+  index krsb_svc_def_ti3 (stat_cd),
+  foreign key krsb_svc_def_fk1 (svc_dscrptr_id) references krsb_svc_dscrptr_t(svc_dscrptr_id) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 CREATE TABLE KRSB_SVC_DEF_S (
   ID bigint(19) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 
 
 -- 
@@ -1181,39 +1182,39 @@ CREATE TABLE KRSB_SVC_DEF_S (
 
 
 ALTER TABLE KREW_DOC_TYP_T CHANGE SVC_NMSPC APPL_ID VARCHAR(255)
-/
+;
 ALTER TABLE KREW_RULE_ATTR_T CHANGE SVC_NMSPC APPL_ID VARCHAR(255)
-/
+;
 ALTER TABLE KRSB_SVC_DEF_T CHANGE APPL_NMSPC APPL_ID VARCHAR(255)
-/
+;
 ALTER TABLE KRSB_MSG_QUE_T CHANGE SVC_NMSPC APPL_ID VARCHAR(255)
-/
+;
 ALTER TABLE KRNS_NMSPC_T CHANGE APPL_NMSPC_CD APPL_ID VARCHAR(255)
-/
+;
 ALTER TABLE KRNS_PARM_T CHANGE APPL_NMSPC_CD APPL_ID VARCHAR(255)
-/
+;
 
 RENAME TABLE KRNS_NMSPC_T TO KRCR_NMSPC_T
-/
+;
 RENAME TABLE KRNS_PARM_TYP_T TO KRCR_PARM_TYP_T
-/
+;
 RENAME TABLE KRNS_PARM_DTL_TYP_T TO KRCR_PARM_DTL_TYP_T
-/
+;
 RENAME TABLE KRNS_PARM_T TO KRCR_PARM_T
-/
+;
 
 RENAME TABLE KRNS_CAMPUS_T TO KRLC_CMP_T
-/
+;
 RENAME TABLE KRNS_CMP_TYP_T TO KRLC_CMP_TYP_T
-/
+;
 RENAME TABLE KR_COUNTRY_T TO KRLC_CNTRY_T
-/
+;
 RENAME TABLE KR_STATE_T TO KRLC_ST_T
-/
+;
 RENAME TABLE KR_POSTAL_CODE_T TO KRLC_PSTL_CD_T
-/
+;
 RENAME TABLE KR_COUNTY_T TO KRLC_CNTY_T
-/
+;
 
 
 
@@ -1279,11 +1280,11 @@ ALTER TABLE KREW_DOC_TYP_PROC_T CHANGE DOC_TYP_ID DOC_TYP_ID VARCHAR(40);
 
 alter table KRIM_PERM_TMPL_T change column NMSPC_CD NMSPC_CD varchar(40) not null;
 alter table KRIM_PERM_TMPL_T change column NM NM varchar(100) not null;
-alter table KRIM_PERM_TMPL_T add constraint KRIM_PERM_TMPL_TC1 unique (NM, NMSPC_CD);
+alter table KRIM_PERM_TMPL_T add constraint krim_perm_tmpl_tc1 unique (NM, NMSPC_CD);
 
 alter table KRIM_RSP_TMPL_T change column NMSPC_CD NMSPC_CD varchar(40) not null;
 alter table KRIM_RSP_TMPL_T change column NM NM varchar(100) not null;
-alter table KRIM_RSP_TMPL_T add constraint KRIM_RSP_TMPL_TC1 unique (NM, NMSPC_CD);
+alter table KRIM_RSP_TMPL_T add constraint krim_rsp_tmpl_tc1 unique (NM, NMSPC_CD);
 
 
 -- 
@@ -1306,7 +1307,7 @@ CREATE TABLE KRMS_CTGRY_T
       , NMSPC_CD VARCHAR(40) NOT NULL
       , VER_NBR DECIMAL(8) DEFAULT 0
     , PRIMARY KEY (CTGRY_ID)
-    , UNIQUE INDEX KRMS_CTGRY_TC0 (NM, NMSPC_CD)
+    , UNIQUE INDEX krms_ctgry_tc0 (NM, NMSPC_CD)
 )ENGINE = InnoDB;
 
 CREATE TABLE KRMS_TERM_SPEC_CTGRY_T
@@ -1314,8 +1315,8 @@ CREATE TABLE KRMS_TERM_SPEC_CTGRY_T
   TERM_SPEC_ID VARCHAR(40) NOT NULL
       , CTGRY_ID VARCHAR(40) NOT NULL
   , PRIMARY KEY (TERM_SPEC_ID, CTGRY_ID)
-  , CONSTRAINT KRMS_TERM_SPEC_CTGRY_FK1 FOREIGN KEY (TERM_SPEC_ID) REFERENCES KRMS_TERM_SPEC_T (TERM_SPEC_ID)
-  , CONSTRAINT KRMS_TERM_SPEC_CTGRY_FK2 FOREIGN KEY (CTGRY_ID) REFERENCES KRMS_CTGRY_T (CTGRY_ID)
+  , constraint krms_term_spec_ctgry_fk1 foreign key (term_spec_id) references krms_term_spec_t (term_spec_id)
+  , constraint krms_term_spec_ctgry_fk2 foreign key (ctgry_id) references krms_ctgry_t (ctgry_id)
 );
 
 CREATE TABLE KRMS_FUNC_CTGRY_T
@@ -1323,8 +1324,8 @@ CREATE TABLE KRMS_FUNC_CTGRY_T
   FUNC_ID VARCHAR(40) NOT NULL
   , CTGRY_ID VARCHAR(40) NOT NULL
   , PRIMARY KEY (FUNC_ID, CTGRY_ID)
-  , CONSTRAINT KRMS_FUNC_CTGRY_FK1 FOREIGN KEY (FUNC_ID) REFERENCES KRMS_FUNC_T (FUNC_ID)
-  , CONSTRAINT KRMS_FUNC_CTGRY_FK2 FOREIGN KEY (CTGRY_ID) REFERENCES KRMS_CTGRY_T (CTGRY_ID)
+  , constraint krms_func_ctgry_fk1 foreign key (func_id) references krms_func_t (func_id)
+  , constraint krms_func_ctgry_fk2 foreign key (ctgry_id) references krms_ctgry_t (ctgry_id)
 );
 
 
@@ -1401,11 +1402,11 @@ update KRIM_PERM_T t set NM='Add Message to Route Log'	where PERM_ID = '841';
 
 alter table KRIM_PERM_T change column NMSPC_CD NMSPC_CD varchar(40) not null;
 alter table KRIM_PERM_T change column NM NM varchar(100) not null;
-alter table KRIM_PERM_T add constraint KRIM_PERM_T_TC1 unique (NM, NMSPC_CD);
+alter table KRIM_PERM_T add constraint krim_perm_t_tc1 unique (NM, NMSPC_CD);
 
 alter table KRIM_RSP_T change column NMSPC_CD NMSPC_CD varchar(40) not null;
 alter table KRIM_RSP_T change column NM NM varchar(100) not null;
-alter table KRIM_RSP_T add constraint KRIM_RSP_T_TC1 unique (NM, NMSPC_CD);
+alter table KRIM_RSP_T add constraint krim_rsp_t_tc1 unique (NM, NMSPC_CD);
 
 
 -- 
@@ -1440,7 +1441,15 @@ ALTER TABLE KREW_RULE_TMPL_ATTR_T CHANGE RULE_ATTR_ID RULE_ATTR_ID VARCHAR(40);
 
 ALTER TABLE KREW_RULE_T CHANGE RULE_ID RULE_ID VARCHAR(40);
 ALTER TABLE KREW_RULE_T CHANGE RULE_TMPL_ID RULE_TMPL_ID VARCHAR(40);
+
+-- Have to deal w/ index & constraint changes here
+ALTER TABLE KREW_RULE_T DROP FOREIGN KEY KREW_RULE_TR1;
+ALTER TABLE KREW_RULE_T DROP KEY KREW_RULE_TR1;
+
 ALTER TABLE KREW_RULE_T CHANGE RULE_EXPR_ID RULE_EXPR_ID VARCHAR(40);
+-- add the key back, we'll re-add the foreign key after the target id column is converted
+ALTER TABLE KREW_RULE_T ADD KEY krew_rule_ti1 (RULE_EXPR_ID);
+
 ALTER TABLE KREW_RULE_T CHANGE PREV_RULE_VER_NBR PREV_RULE_VER_NBR VARCHAR(40);
 
 ALTER TABLE KREW_DLGN_RSP_T CHANGE DLGN_RULE_ID DLGN_RULE_ID VARCHAR(40);
@@ -1454,6 +1463,10 @@ ALTER TABLE KREW_RULE_RSP_T CHANGE RULE_ID RULE_ID VARCHAR(40);
 ALTER TABLE KREW_RULE_EXT_T CHANGE RULE_EXT_ID RULE_EXT_ID VARCHAR(40);
 ALTER TABLE KREW_RULE_EXT_T CHANGE RULE_TMPL_ATTR_ID RULE_TMPL_ATTR_ID VARCHAR(40);
 ALTER TABLE KREW_RULE_EXT_T CHANGE RULE_ID RULE_ID VARCHAR(40);
+
+-- Have to deal w/ index & constraint changes before KREW_RTE_NODE_T.RTE_NODE_ID is converted
+ALTER TABLE KREW_RTE_NODE_CFG_PARM_T DROP FOREIGN KEY EN_RTE_NODE_CFG_PARM_TR1;
+ALTER TABLE KREW_RTE_NODE_CFG_PARM_T DROP KEY KREW_RTE_NODE_CFG_PARM_TI1;
 
 ALTER TABLE KREW_RTE_NODE_T CHANGE RTE_NODE_ID RTE_NODE_ID VARCHAR(40);
 ALTER TABLE KREW_RTE_NODE_T CHANGE BRCH_PROTO_ID BRCH_PROTO_ID VARCHAR(40);
@@ -1492,7 +1505,12 @@ ALTER TABLE KREW_OUT_BOX_ITM_T CHANGE ACTN_RQST_ID ACTN_RQST_ID VARCHAR(40);
 ALTER TABLE KREW_OUT_BOX_ITM_T CHANGE RSP_ID RSP_ID VARCHAR(40);
 
 ALTER TABLE KREW_RTE_NODE_CFG_PARM_T CHANGE RTE_NODE_ID RTE_NODE_ID VARCHAR(40);
+-- add the key back, re-add the foreign key
+ALTER TABLE KREW_RTE_NODE_CFG_PARM_T ADD KEY krew_rte_node_cfg_parm_ti1 (RTE_NODE_ID);
+ALTER TABLE KREW_RTE_NODE_CFG_PARM_T ADD CONSTRAINT krew_rte_node_cfg_parm_tr1 FOREIGN KEY krew_rte_node_cfg_parm_ti1 (RTE_NODE_ID) REFERENCES KREW_RTE_NODE_T (RTE_NODE_ID);
+
 ALTER TABLE KREW_RTE_NODE_CFG_PARM_T CHANGE RTE_NODE_CFG_PARM_ID RTE_NODE_CFG_PARM_ID VARCHAR(40);
+
 
 ALTER TABLE KREW_DOC_TYP_PROC_T CHANGE DOC_TYP_PROC_ID DOC_TYP_PROC_ID VARCHAR(40);
 ALTER TABLE KREW_DOC_TYP_PROC_T CHANGE INIT_RTE_NODE_ID INIT_RTE_NODE_ID VARCHAR(40);
@@ -1507,6 +1525,9 @@ ALTER TABLE KREW_RULE_EXT_VAL_T CHANGE RULE_EXT_VAL_ID RULE_EXT_VAL_ID VARCHAR(4
 ALTER TABLE KREW_RULE_EXT_VAL_T CHANGE RULE_EXT_ID RULE_EXT_ID VARCHAR(40);
 
 ALTER TABLE KREW_RULE_EXPR_T CHANGE RULE_EXPR_ID RULE_EXPR_ID VARCHAR(40);
+ALTER TABLE KREW_RULE_T ADD CONSTRAINT krew_rule_fk1 FOREIGN KEY krew_rule_ti1 (RULE_EXPR_ID) REFERENCES KREW_RULE_EXPR_T (RULE_EXPR_ID);
+
+
 
 ALTER TABLE KREW_APP_DOC_STAT_TRAN_T CHANGE APP_DOC_STAT_TRAN_ID APP_DOC_STAT_TRAN_ID VARCHAR(40);
 
@@ -1580,9 +1601,9 @@ drop table krew_ria_doc_t;
 drop table krew_ria_doctype_map_id_s;
 drop table krew_ria_doctype_map_t;
 
-drop table krew_rmv_rplc_doc_t
-drop table krew_rmv_rplc_grp_t
-drop table krew_rmv_rplc_rule_t
+drop table krew_rmv_rplc_doc_t;
+drop table krew_rmv_rplc_grp_t;
+drop table krew_rmv_rplc_rule_t;
 
 
 -- 
@@ -1618,13 +1639,13 @@ update KRIM_PERM_T t set NM='Take Requested Approve Action' where PERM_ID = '170
 -- remove cntxt_id from krms_term_rslvr_t, fix unique constraint
 alter table krms_term_rslvr_t drop index krms_term_rslvr_tc1;
 alter table krms_term_rslvr_t add constraint krms_term_rslvr_tc1 unique (nm, nmspc_cd);
-alter table krms_term_rslvr_t drop foreign key KRMS_TERM_RSLVR_FK2;
+alter table krms_term_rslvr_t drop foreign key krms_term_rslvr_fk2;
 alter table krms_term_rslvr_t drop column cntxt_id;
 
 -- remove fk from krms_term_spec_t to krms_cntxt_t
 alter table krms_term_spec_t add column nmspc_cd varchar(40) not null;
-alter table krms_term_spec_t DROP FOREIGN KEY KRMS_ASSET_FK1;
-alter table krms_term_spec_t drop key `KRMS_ASSET_TI1`;
+alter table krms_term_spec_t DROP FOREIGN KEY krms_asset_fk1;
+alter table krms_term_spec_t drop key krms_asset_ti1;
 alter table krms_term_spec_t drop index krms_asset_tc1;
 alter table krms_term_spec_t add constraint krms_term_spec_tc1 unique (nm, nmspc_cd);
 alter table krms_term_spec_t drop column cntxt_id;
@@ -1634,9 +1655,9 @@ alter table krms_term_spec_t drop column cntxt_id;
 --
 -- rename krms_cntxt_term_spec_prereq_t to krms_cntxt_vld_term_spec_t
 -- and add prereq column
-alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY KRMS_CNTXT_ASSET_PREREQ_FK1;
+alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY krms_cntxt_asset_prereq_fk1;
 alter table krms_cntxt_term_spec_prereq_t drop index krms_cntxt_asset_prereq_ti1;
-alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY KRMS_CNTXT_ASSET_PREREQ_FK2;
+alter table krms_cntxt_term_spec_prereq_t DROP FOREIGN KEY krms_cntxt_asset_prereq_fk2;
 alter table krms_cntxt_term_spec_prereq_t drop index krms_cntxt_asset_prereq_ti2;
 rename table krms_cntxt_term_spec_prereq_t to krms_cntxt_vld_term_spec_t;
 alter table krms_cntxt_vld_term_spec_t add column prereq varchar(1) default 'n';
@@ -1662,8 +1683,8 @@ alter table krms_rule_t add constraint krms_rule_tc1 unique (nm, nmspc_cd);
 -- clean up some crufty index and constraint names
 --
 
-alter table krms_term_rslvr_attr_t drop foreign key KRMS_ASSET_RSLVR_ATTR_FK1;
-alter table krms_term_rslvr_attr_t drop foreign key KRMS_ASSET_RSLVR_ATTR_FK2;
+alter table krms_term_rslvr_attr_t drop foreign key krms_asset_rslvr_attr_fk1;
+alter table krms_term_rslvr_attr_t drop foreign key krms_asset_rslvr_attr_fk2;
 alter table krms_term_rslvr_attr_t drop index krms_asset_rslvr_attr_ti1;
 create index krms_asset_rslvr_attr_ti1 on krms_term_rslvr_attr_t (term_rslvr_id);
 alter table krms_term_rslvr_attr_t drop index krms_asset_rslvr_attr_ti2;
@@ -1909,7 +1930,7 @@ delete from krcr_parm_t
 where nmspc_cd = 'KR-NS'
 and cmpnt_cd = 'All'
 and parm_nm in ('STRING_TO_DATE_FORMATS', 'STRING_TO_TIMESTAMP_FORMATS', 'TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE', 'DATE_TO_STRING_FORMAT_FOR_FILE_NAME', 'TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME')
-/
+;
 
 
 -- 
@@ -1918,7 +1939,7 @@ and parm_nm in ('STRING_TO_DATE_FORMATS', 'STRING_TO_TIMESTAMP_FORMATS', 'TIMEST
 
 
 delete from krcr_parm_t where PARM_NM = 'CACHING_IND'
-/
+;
 
 
 -- 
@@ -1994,6 +2015,8 @@ alter table KRIM_PND_ADDR_MT add column NOTE_MSG VARCHAR(1024);
 
 alter table KREW_PPL_FLW_T CHANGE TYP_ID TYP_ID varchar(40) NULL;
 
+alter table KREW_PPL_FLW_MBR_T DROP FOREIGN KEY krew_ppl_flw_mbr_fk2;
+alter table KREW_PPL_FLW_MBR_T DROP KEY krew_ppl_flw_mbr_fk2;
 alter table KREW_PPL_FLW_MBR_T DROP COLUMN dlgt_frm_id;
 
 drop INDEX krew_ppl_flw_mbr_tc1 ON krew_ppl_flw_mbr_t;
@@ -2307,7 +2330,7 @@ ALTER TABLE krms_cntxt_t MODIFY typ_id varchar(40) default null;
 
 
 -- Drop foreign key constraint on krms_prop_t table
-alter table KRMS_PROP_T drop foreign key KRMS_PROP_FK1;
+alter table KRMS_PROP_T drop foreign key krms_prop_fk1;
 
 
 
@@ -2514,35 +2537,35 @@ update KRMS_TERM_SPEC_T set TYP = 'java.lang.Integer' where TYP = 'T6';
 -- 
 
 
-ALTER TABLE KRMS_CNTXT_VLD_ACTN_T DROP FOREIGN KEY KRMS_CNTXT_VLD_ACTN_FK1;
-DROP INDEX KRMS_CNTXT_VLD_ACTN_TI1 ON KRMS_CNTXT_VLD_ACTN_T;
-RENAME TABLE KRMS_CNTXT_VLD_ACTN_S TO KRMS_CNTXT_VLD_ACTN_TYP_S;
-RENAME TABLE KRMS_CNTXT_VLD_ACTN_T TO KRMS_CNTXT_VLD_ACTN_TYP_T;
-CREATE INDEX KRMS_CNTXT_VLD_ACTN_TYP_TI1 ON KRMS_CNTXT_VLD_ACTN_TYP_T (CNTXT_ID);
-ALTER TABLE KRMS_CNTXT_VLD_ACTN_TYP_T ADD CONSTRAINT KRMS_CNTXT_VLD_ACTN_TYP_FK1
-  FOREIGN KEY (CNTXT_ID) REFERENCES KRMS_CNTXT_T (CNTXT_ID);
+alter table krms_cntxt_vld_actn_t drop foreign key krms_cntxt_vld_actn_fk1;
+drop index krms_cntxt_vld_actn_ti1 on krms_cntxt_vld_actn_t;
+rename table krms_cntxt_vld_actn_s to krms_cntxt_vld_actn_typ_s;
+rename table krms_cntxt_vld_actn_t to krms_cntxt_vld_actn_typ_t;
+create index krms_cntxt_vld_actn_typ_ti1 on krms_cntxt_vld_actn_typ_t (cntxt_id);
+alter table krms_cntxt_vld_actn_typ_t add constraint krms_cntxt_vld_actn_typ_fk1
+  foreign key (cntxt_id) references krms_cntxt_t (cntxt_id);
 
-ALTER TABLE KRMS_CNTXT_VLD_AGENDA_T DROP FOREIGN KEY KRMS_CNTXT_VLD_AGENDA_FK1;
-DROP INDEX KRMS_CNTXT_VLD_AGENDA_TI1 ON KRMS_CNTXT_VLD_AGENDA_T;
-RENAME TABLE KRMS_CNTXT_VLD_AGENDA_S TO KRMS_CNTXT_VLD_AGENDA_TYP_S;
-RENAME TABLE KRMS_CNTXT_VLD_AGENDA_T TO KRMS_CNTXT_VLD_AGENDA_TYP_T;
-CREATE INDEX KRMS_CNTXT_VLD_AGENDA_TYP_TI1 ON KRMS_CNTXT_VLD_AGENDA_TYP_T (CNTXT_ID);
-ALTER TABLE KRMS_CNTXT_VLD_AGENDA_TYP_T ADD CONSTRAINT KRMS_CNTXT_VLD_AGENDA_TYP_FK1
-  FOREIGN KEY (CNTXT_ID) REFERENCES KRMS_CNTXT_T (CNTXT_ID);
+alter table krms_cntxt_vld_agenda_t drop foreign key krms_cntxt_vld_agenda_fk1;
+drop index krms_cntxt_vld_agenda_ti1 on krms_cntxt_vld_agenda_t;
+rename table krms_cntxt_vld_agenda_s to krms_cntxt_vld_agenda_typ_s;
+rename table krms_cntxt_vld_agenda_t to krms_cntxt_vld_agenda_typ_t;
+create index krms_cntxt_vld_agenda_typ_ti1 on krms_cntxt_vld_agenda_typ_t (cntxt_id);
+alter table krms_cntxt_vld_agenda_typ_t add constraint krms_cntxt_vld_agenda_typ_fk1
+  foreign key (cntxt_id) references krms_cntxt_t (cntxt_id);
 
-ALTER TABLE KRMS_CNTXT_VLD_RULE_T DROP FOREIGN KEY KRMS_CNTXT_VLD_RULE_FK1;
-DROP INDEX KRMS_CNTXT_VLD_RULE_TI1 ON KRMS_CNTXT_VLD_RULE_T;
-RENAME TABLE KRMS_CNTXT_VLD_RULE_S TO KRMS_CNTXT_VLD_RULE_TYP_S;
-RENAME TABLE KRMS_CNTXT_VLD_RULE_T TO KRMS_CNTXT_VLD_RULE_TYP_T;
-CREATE INDEX KRMS_CNTXT_VLD_RULE_TYP_TI1 ON KRMS_CNTXT_VLD_RULE_TYP_T (CNTXT_ID);
-ALTER TABLE KRMS_CNTXT_VLD_RULE_TYP_T ADD CONSTRAINT KRMS_CNTXT_VLD_RULE_TYP_FK1
-  FOREIGN KEY (CNTXT_ID) REFERENCES KRMS_CNTXT_T (CNTXT_ID);
+alter table krms_cntxt_vld_rule_t drop foreign key krms_cntxt_vld_rule_fk1;
+drop index krms_cntxt_vld_rule_ti1 on krms_cntxt_vld_rule_t;
+rename table krms_cntxt_vld_rule_s to krms_cntxt_vld_rule_typ_s;
+rename table krms_cntxt_vld_rule_t to krms_cntxt_vld_rule_typ_t;
+create index krms_cntxt_vld_rule_typ_ti1 on krms_cntxt_vld_rule_typ_t (cntxt_id);
+alter table krms_cntxt_vld_rule_typ_t add constraint krms_cntxt_vld_rule_typ_fk1
+  foreign key (cntxt_id) references krms_cntxt_t (cntxt_id);
 
-ALTER TABLE KRMS_CNTXT_VLD_RULE_TYP_T CHANGE RULE_ID RULE_TYP_ID VARCHAR(40) NOT NULL;
+alter table krms_cntxt_vld_rule_typ_t change rule_id rule_typ_id varchar(40) not null;
 
-UPDATE KRMS_AGENDA_T SET TYP_ID = NULL WHERE TYP_ID = 'T5';
-UPDATE KRMS_RULE_T SET TYP_ID = NULL;
-DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T;
+update krms_agenda_t set typ_id = null where typ_id = 'T5';
+update krms_rule_t set typ_id = null;
+delete from krms_cntxt_vld_rule_typ_t;
 
 
 -- 
@@ -2551,7 +2574,7 @@ DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T;
 
 
 -- KULRICE-6299: New DB index to improve action list performance
-create index KREW_ACTN_ITM_TI6 on KREW_ACTN_ITM_T (DLGN_TYP, DLGN_PRNCPL_ID, DLGN_GRP_ID);
+create index krew_actn_itm_ti6 on KREW_ACTN_ITM_T (DLGN_TYP, DLGN_PRNCPL_ID, DLGN_GRP_ID);
 
 
 -- 
@@ -2591,12 +2614,12 @@ ALTER TABLE KRNS_DOC_HDR_T MODIFY FDOC_DESC varchar(255);
 -- KULRICE-6463: New DB Indexes for KIM Permission checks
 --
 
-CREATE INDEX KRIM_ROLE_PERM_TI2 ON KRIM_ROLE_PERM_T (PERM_ID, ACTV_IND);
-CREATE INDEX KRIM_PERM_TI1 ON KRIM_PERM_T (PERM_TMPL_ID);
-CREATE INDEX KRIM_PERM_TI2 ON KRIM_PERM_T (PERM_TMPL_ID, ACTV_IND);
-CREATE INDEX KRIM_PERM_TMPL_TI1 ON KRIM_PERM_TMPL_T (NMSPC_CD, NM);
-CREATE INDEX KRIM_ROLE_MBR_TI2 ON KRIM_ROLE_MBR_T (role_id, mbr_id, mbr_typ_cd);
-CREATE INDEX KRIM_ROLE_MBR_TI3 ON KRIM_ROLE_MBR_T (mbr_id, mbr_typ_cd);
+create index krim_role_perm_ti2 on krim_role_perm_t (perm_id, actv_ind);
+create index krim_perm_ti1 on krim_perm_t (perm_tmpl_id);
+create index krim_perm_ti2 on krim_perm_t (perm_tmpl_id, actv_ind);
+create index krim_perm_tmpl_ti1 on krim_perm_tmpl_t (nmspc_cd, nm);
+create index krim_role_mbr_ti2 on krim_role_mbr_t (role_id, mbr_id, mbr_typ_cd);
+create index krim_role_mbr_ti3 on krim_role_mbr_t (mbr_id, mbr_typ_cd);
 
 
 --

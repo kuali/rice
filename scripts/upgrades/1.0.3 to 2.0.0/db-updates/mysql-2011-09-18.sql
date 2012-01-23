@@ -16,6 +16,8 @@
 
 alter table KREW_PPL_FLW_T CHANGE TYP_ID TYP_ID varchar(40) NULL;
 
+alter table KREW_PPL_FLW_MBR_T DROP FOREIGN KEY krew_ppl_flw_mbr_fk2;
+alter table KREW_PPL_FLW_MBR_T DROP KEY krew_ppl_flw_mbr_fk2;
 alter table KREW_PPL_FLW_MBR_T DROP COLUMN dlgt_frm_id;
 
 drop INDEX krew_ppl_flw_mbr_tc1 ON krew_ppl_flw_mbr_t;

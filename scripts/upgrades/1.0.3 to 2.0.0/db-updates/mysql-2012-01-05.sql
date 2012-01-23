@@ -14,32 +14,32 @@
 -- limitations under the License.
 --
 
-ALTER TABLE KRMS_CNTXT_VLD_ACTN_T DROP FOREIGN KEY KRMS_CNTXT_VLD_ACTN_FK1;
-DROP INDEX KRMS_CNTXT_VLD_ACTN_TI1 ON KRMS_CNTXT_VLD_ACTN_T;
-RENAME TABLE KRMS_CNTXT_VLD_ACTN_S TO KRMS_CNTXT_VLD_ACTN_TYP_S;
-RENAME TABLE KRMS_CNTXT_VLD_ACTN_T TO KRMS_CNTXT_VLD_ACTN_TYP_T;
-CREATE INDEX KRMS_CNTXT_VLD_ACTN_TYP_TI1 ON KRMS_CNTXT_VLD_ACTN_TYP_T (CNTXT_ID);
-ALTER TABLE KRMS_CNTXT_VLD_ACTN_TYP_T ADD CONSTRAINT KRMS_CNTXT_VLD_ACTN_TYP_FK1
-  FOREIGN KEY (CNTXT_ID) REFERENCES KRMS_CNTXT_T (CNTXT_ID);
+alter table krms_cntxt_vld_actn_t drop foreign key krms_cntxt_vld_actn_fk1;
+drop index krms_cntxt_vld_actn_ti1 on krms_cntxt_vld_actn_t;
+rename table krms_cntxt_vld_actn_s to krms_cntxt_vld_actn_typ_s;
+rename table krms_cntxt_vld_actn_t to krms_cntxt_vld_actn_typ_t;
+create index krms_cntxt_vld_actn_typ_ti1 on krms_cntxt_vld_actn_typ_t (cntxt_id);
+alter table krms_cntxt_vld_actn_typ_t add constraint krms_cntxt_vld_actn_typ_fk1
+  foreign key (cntxt_id) references krms_cntxt_t (cntxt_id);
 
-ALTER TABLE KRMS_CNTXT_VLD_AGENDA_T DROP FOREIGN KEY KRMS_CNTXT_VLD_AGENDA_FK1;
-DROP INDEX KRMS_CNTXT_VLD_AGENDA_TI1 ON KRMS_CNTXT_VLD_AGENDA_T;
-RENAME TABLE KRMS_CNTXT_VLD_AGENDA_S TO KRMS_CNTXT_VLD_AGENDA_TYP_S;
-RENAME TABLE KRMS_CNTXT_VLD_AGENDA_T TO KRMS_CNTXT_VLD_AGENDA_TYP_T;
-CREATE INDEX KRMS_CNTXT_VLD_AGENDA_TYP_TI1 ON KRMS_CNTXT_VLD_AGENDA_TYP_T (CNTXT_ID);
-ALTER TABLE KRMS_CNTXT_VLD_AGENDA_TYP_T ADD CONSTRAINT KRMS_CNTXT_VLD_AGENDA_TYP_FK1
-  FOREIGN KEY (CNTXT_ID) REFERENCES KRMS_CNTXT_T (CNTXT_ID);
+alter table krms_cntxt_vld_agenda_t drop foreign key krms_cntxt_vld_agenda_fk1;
+drop index krms_cntxt_vld_agenda_ti1 on krms_cntxt_vld_agenda_t;
+rename table krms_cntxt_vld_agenda_s to krms_cntxt_vld_agenda_typ_s;
+rename table krms_cntxt_vld_agenda_t to krms_cntxt_vld_agenda_typ_t;
+create index krms_cntxt_vld_agenda_typ_ti1 on krms_cntxt_vld_agenda_typ_t (cntxt_id);
+alter table krms_cntxt_vld_agenda_typ_t add constraint krms_cntxt_vld_agenda_typ_fk1
+  foreign key (cntxt_id) references krms_cntxt_t (cntxt_id);
 
-ALTER TABLE KRMS_CNTXT_VLD_RULE_T DROP FOREIGN KEY KRMS_CNTXT_VLD_RULE_FK1;
-DROP INDEX KRMS_CNTXT_VLD_RULE_TI1 ON KRMS_CNTXT_VLD_RULE_T;
-RENAME TABLE KRMS_CNTXT_VLD_RULE_S TO KRMS_CNTXT_VLD_RULE_TYP_S;
-RENAME TABLE KRMS_CNTXT_VLD_RULE_T TO KRMS_CNTXT_VLD_RULE_TYP_T;
-CREATE INDEX KRMS_CNTXT_VLD_RULE_TYP_TI1 ON KRMS_CNTXT_VLD_RULE_TYP_T (CNTXT_ID);
-ALTER TABLE KRMS_CNTXT_VLD_RULE_TYP_T ADD CONSTRAINT KRMS_CNTXT_VLD_RULE_TYP_FK1
-  FOREIGN KEY (CNTXT_ID) REFERENCES KRMS_CNTXT_T (CNTXT_ID);
+alter table krms_cntxt_vld_rule_t drop foreign key krms_cntxt_vld_rule_fk1;
+drop index krms_cntxt_vld_rule_ti1 on krms_cntxt_vld_rule_t;
+rename table krms_cntxt_vld_rule_s to krms_cntxt_vld_rule_typ_s;
+rename table krms_cntxt_vld_rule_t to krms_cntxt_vld_rule_typ_t;
+create index krms_cntxt_vld_rule_typ_ti1 on krms_cntxt_vld_rule_typ_t (cntxt_id);
+alter table krms_cntxt_vld_rule_typ_t add constraint krms_cntxt_vld_rule_typ_fk1
+  foreign key (cntxt_id) references krms_cntxt_t (cntxt_id);
 
-ALTER TABLE KRMS_CNTXT_VLD_RULE_TYP_T CHANGE RULE_ID RULE_TYP_ID VARCHAR(40) NOT NULL;
+alter table krms_cntxt_vld_rule_typ_t change rule_id rule_typ_id varchar(40) not null;
 
-UPDATE KRMS_AGENDA_T SET TYP_ID = NULL WHERE TYP_ID = 'T5';
-UPDATE KRMS_RULE_T SET TYP_ID = NULL;
-DELETE FROM KRMS_CNTXT_VLD_RULE_TYP_T;
+update krms_agenda_t set typ_id = null where typ_id = 'T5';
+update krms_rule_t set typ_id = null;
+delete from krms_cntxt_vld_rule_typ_t;

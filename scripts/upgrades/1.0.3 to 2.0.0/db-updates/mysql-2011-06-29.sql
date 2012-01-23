@@ -82,8 +82,8 @@ update KRIM_PERM_T t set NM='Add Message to Route Log'	where PERM_ID = '841';
 
 alter table KRIM_PERM_T change column NMSPC_CD NMSPC_CD varchar(40) not null;
 alter table KRIM_PERM_T change column NM NM varchar(100) not null;
-alter table KRIM_PERM_T add constraint KRIM_PERM_T_TC1 unique (NM, NMSPC_CD);
+alter table KRIM_PERM_T add constraint krim_perm_t_tc1 unique (NM, NMSPC_CD);
 
 alter table KRIM_RSP_T change column NMSPC_CD NMSPC_CD varchar(40) not null;
 alter table KRIM_RSP_T change column NM NM varchar(100) not null;
-alter table KRIM_RSP_T add constraint KRIM_RSP_T_TC1 unique (NM, NMSPC_CD);
+alter table KRIM_RSP_T add constraint krim_rsp_t_tc1 unique (NM, NMSPC_CD);

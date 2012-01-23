@@ -15,24 +15,24 @@
 --
 
 drop table KRSB_SVC_DEF_T
-/
+;
 drop table KRSB_FLT_SVC_DEF_T
-/
+;
 drop table KRSB_SVC_DEF_S
-/
+;
 drop table KRSB_FLT_SVC_DEF_S
-/
+;
 CREATE TABLE KRSB_SVC_DSCRPTR_T (
   SVC_DSCRPTR_ID varchar(40) NOT NULL,
   DSCRPTR longtext NOT NULL,
   PRIMARY KEY (SVC_DSCRPTR_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 CREATE TABLE KRSB_SVC_DSCRPTR_S (
   ID bigint(19) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 CREATE TABLE KRSB_SVC_DEF_T (
   SVC_DEF_ID varchar(40) NOT NULL,
   SVC_NM varchar(255) NOT NULL,
@@ -47,14 +47,14 @@ CREATE TABLE KRSB_SVC_DEF_T (
   CHKSM varchar(30) NOT NULL,
   VER_NBR decimal(8,0) DEFAULT '0',
   PRIMARY KEY (SVC_DEF_ID),
-  INDEX KRSB_SVC_DEF_TI1 (INSTN_ID),
-  INDEX KRSB_SVC_DEF_TI2 (SVC_NM, STAT_CD),
-  INDEX KRSB_SVC_DEF_TI3 (STAT_CD),
-  FOREIGN KEY KRSB_SVC_DEF_FK1 (SVC_DSCRPTR_ID) REFERENCES KRSB_SVC_DSCRPTR_T(SVC_DSCRPTR_ID) ON DELETE CASCADE
+  index krsb_svc_def_ti1 (instn_id),
+  index krsb_svc_def_ti2 (svc_nm, stat_cd),
+  index krsb_svc_def_ti3 (stat_cd),
+  foreign key krsb_svc_def_fk1 (svc_dscrptr_id) references krsb_svc_dscrptr_t(svc_dscrptr_id) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;
 CREATE TABLE KRSB_SVC_DEF_S (
   ID bigint(19) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-/
+;

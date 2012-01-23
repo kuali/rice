@@ -191,11 +191,11 @@ CREATE  TABLE IF NOT EXISTS `krms_actn_t` (
   `seq_no` TINYINT NULL ,
   `ver_nbr` DECIMAL NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`actn_id`) ,
-  INDEX `KRMS_ACTN_TI2` (`rule_id` ASC) ,
-  INDEX `KRMS_ACTN_TI1` (`typ_id` ASC) ,
-  UNIQUE INDEX `KRMS_ACTN_TC2` (`actn_id` ASC, `rule_id` ASC, `seq_no` ASC) ,
-  INDEX `KRMS_ACTN_TI3` (`rule_id` ASC, `seq_no` ASC) ,
-  CONSTRAINT `KRMS_ACTN_FK1`
+  index `krms_actn_ti2` (`rule_id` asc) ,
+  index `krms_actn_ti1` (`typ_id` asc) ,
+  unique index `krms_actn_tc2` (`actn_id` asc, `rule_id` asc, `seq_no` asc) ,
+  index `krms_actn_ti3` (`rule_id` asc, `seq_no` asc) ,
+  constraint `krms_actn_fk1`
     FOREIGN KEY (`rule_id` )
     REFERENCES `krms_rule_t` (`rule_id` )
     ON DELETE NO ACTION
@@ -746,204 +746,204 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 --
 
 
-create table krms_typ_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_typ_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_typ_s auto_increment = 1000;
 
 
-create table krms_prop_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_prop_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_prop_s auto_increment = 1000;
 
 
-create table krms_rule_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_rule_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_rule_s auto_increment = 1000;
 
 
-create table krms_cntxt_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_s auto_increment = 1000;
 
 
-create table krms_agenda_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_agenda_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_agenda_s auto_increment = 1000;
 
 
-create table krms_attr_defn_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_attr_defn_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_attr_defn_s auto_increment = 1000;
 
 
-create table krms_typ_attr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_typ_attr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_typ_attr_s auto_increment = 1000;
 
 
-create table krms_actn_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_actn_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_actn_s auto_increment = 1000;
 
 
-create table krms_actn_attr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_actn_attr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_actn_attr_s auto_increment = 1000;
 
 
-create table krms_agenda_itm_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_agenda_itm_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_agenda_itm_s auto_increment = 1000;
 
 
-create table krms_rule_attr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_rule_attr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_rule_attr_s auto_increment = 1000;
 
 
-create table krms_cntxt_attr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_attr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_attr_s auto_increment = 1000;
 
 
-create table krms_cntxt_vld_actn_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_vld_actn_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_vld_actn_s auto_increment = 1000;
 
 
-create table krms_agenda_attr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_agenda_attr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_agenda_attr_s auto_increment = 1000;
 
 
-create table krms_cmpnd_prop_props_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cmpnd_prop_props_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cmpnd_prop_props_s auto_increment = 1000;
 
 
-create table krms_prop_parm_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_prop_parm_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_prop_parm_s auto_increment = 1000;
 
 
-create table krms_term_spec_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_spec_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_spec_s auto_increment = 1000;
 
 
-create table krms_term_rslvr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_rslvr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_rslvr_s auto_increment = 1000;
 
 
-create table krms_term_rslvr_attr_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_rslvr_attr_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_rslvr_attr_s auto_increment = 1000;
 
 
-create table krms_term_rslvr_input_spec_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_rslvr_input_spec_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_rslvr_input_spec_s auto_increment = 1000;
 
 
-create table krms_cntxt_term_spec_prereq_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_term_spec_prereq_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_term_spec_prereq_s auto_increment = 1000;
 
 
-create table krms_term_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_s auto_increment = 1000;
 
 
-create table krms_term_rslvr_parm_spec_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_rslvr_parm_spec_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_rslvr_parm_spec_s auto_increment = 1000;
 
 
-create table krms_term_parm_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_term_parm_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_term_parm_s auto_increment = 1000;
 
 
-create table krms_func_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_func_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_func_s auto_increment = 1000;
 
 
-create table krms_func_parm_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_func_parm_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_func_parm_s auto_increment = 1000;
 
 
-create table krms_cntxt_vld_func_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_vld_func_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_vld_func_s auto_increment = 1000;
 
 
-create table krms_cntxt_vld_rule_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_vld_rule_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_vld_rule_s auto_increment = 1000;
 
 
-create table krms_cntxt_vld_event_s ( 
-  id bigint(19) not null auto_increment, 
-  primary key (id) 
-) ENGINE MyISAM; 
+create table krms_cntxt_vld_event_s (
+  id bigint(19) not null auto_increment,
+  primary key (id)
+) ENGINE MyISAM;
 alter table krms_cntxt_vld_event_s auto_increment = 1000;

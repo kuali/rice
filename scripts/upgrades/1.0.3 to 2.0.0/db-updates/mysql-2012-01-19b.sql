@@ -26,12 +26,12 @@ ALTER TABLE KRNS_DOC_HDR_T MODIFY FDOC_DESC varchar(255);
 -- KULRICE-6463: New DB Indexes for KIM Permission checks
 --
 
-CREATE INDEX KRIM_ROLE_PERM_TI2 ON KRIM_ROLE_PERM_T (PERM_ID, ACTV_IND);
-CREATE INDEX KRIM_PERM_TI1 ON KRIM_PERM_T (PERM_TMPL_ID);
-CREATE INDEX KRIM_PERM_TI2 ON KRIM_PERM_T (PERM_TMPL_ID, ACTV_IND);
-CREATE INDEX KRIM_PERM_TMPL_TI1 ON KRIM_PERM_TMPL_T (NMSPC_CD, NM);
-CREATE INDEX KRIM_ROLE_MBR_TI2 ON KRIM_ROLE_MBR_T (role_id, mbr_id, mbr_typ_cd);
-CREATE INDEX KRIM_ROLE_MBR_TI3 ON KRIM_ROLE_MBR_T (mbr_id, mbr_typ_cd);
+create index krim_role_perm_ti2 on krim_role_perm_t (perm_id, actv_ind);
+create index krim_perm_ti1 on krim_perm_t (perm_tmpl_id);
+create index krim_perm_ti2 on krim_perm_t (perm_tmpl_id, actv_ind);
+create index krim_perm_tmpl_ti1 on krim_perm_tmpl_t (nmspc_cd, nm);
+create index krim_role_mbr_ti2 on krim_role_mbr_t (role_id, mbr_id, mbr_typ_cd);
+create index krim_role_mbr_ti3 on krim_role_mbr_t (mbr_id, mbr_typ_cd);
 
 
 --

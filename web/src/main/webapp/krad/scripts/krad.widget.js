@@ -109,10 +109,11 @@ function createVerticalMenu(listId, options) {
  * @param label - label to be used in popout
  * @param summary - summary to be used in popout
  * @param constraint - constraint to be used in popout
+ * @param imageUrl - the url for the popout icon
  */
-function setupTextPopout(id, label, summary, constraint) {
+function setupTextPopout(id, label, summary, constraint, imageUrl) {
     var options = {label: label, summary: summary, constraint: constraint};
-    jq("#" + id).initPopoutText(options);
+    jq("#" + id).initPopoutText(options, imageUrl);
 }
 
 /**

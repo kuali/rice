@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 (function($) {
-	$.fn.initPopoutText = function(options){
+	$.fn.initPopoutText = function(options, imageUrl){
 		return this.each(function(){
 			
 			options = options || {};
@@ -48,7 +48,7 @@
 				constraintHtml="<span class='constraint'>" + options.constraint + "</span>";
 			}
 			
-			$(this).after('<a id="expand_btn_' + id + '" title="Expand"><img src="' + getConfigParam("kradImageLocation") + 'pencil_add.png" alt="Expand"/></a>');
+			$(this).after('<a id="expand_btn_' + id + '" title="Expand"><img src="' + imageUrl + 'pencil_add.png" alt="Expand"/></a>');
 			$(document).ready(function()
 			{
 				$("a#expand_btn_" + id).click(function(e){

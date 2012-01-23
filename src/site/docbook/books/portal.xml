@@ -25,15 +25,15 @@
     <sect1 xml:id="download" xreflabel="Download">
         <title>Download</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="http://kuali.org/rice/download">Download Kuali Rice ${project.version}</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://kuali.org/rice/download">Download Kuali Rice ${project.version}</link></para></listitem>
             <listitem>
                 <para>Maven Repository - <link
-                        xlink:href="http://nexus.kuali.org/content/groups/public/"
+                        xlink:show="new" xlink:href="http://nexus.kuali.org/content/groups/public/"
                         >http://nexus.kuali.org/content/groups/public/</link></para>
             </listitem>
             <listitem>
                 <para>From Kuali svn repository - <link
-                        xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}"
+                        xlink:show="new" xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}"
                     >https://test.kuali.org/svn/rice/tags/rice-${project.version}</link></para>
             </listitem>
         </itemizedlist>        
@@ -41,7 +41,7 @@
     <sect1>
         <title>Release Documentation</title>
         <para>Some of the documentation listed below has not been updated to reflect changes for
-            ${project.version}. If you find a problem, please <link xlink:href="UG.html#reporting_rice_jira">report
+            ${project.version}. If you find a problem, please <link xlink:show="new" xlink:href="UG.html#reporting_rice_jira">report
                 in Jira</link> and set the component to Documentation. Indicate the guide and
             section that has the problem in the Jira. Thanks for your help in improving the
             documentation!</para>
@@ -49,47 +49,47 @@
             <orderedlist>
                 <listitem>
                     <para><emphasis role="bold">Release Notes</emphasis> (<link
-                            xlink:href="release-notes.html">HTML</link> / <link
-                            xlink:href="../pdf/release-notes.pdf">PDF</link> )</para>
+                            xlink:show="new" xlink:href="release-notes.html">HTML</link> / <link
+                            xlink:show="new" xlink:href="../pdf/release-notes.pdf">PDF</link> )</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Installation Guide</emphasis> (<link
-                            xlink:href="IG.html">HTML</link> /<link xlink:href="../pdf/IG.pdf"
+                            xlink:show="new" xlink:href="IG.html">HTML</link> /<link xlink:show="new" xlink:href="../pdf/IG.pdf"
                             >PDF</link> ) - How to install Kuali Rice (for technical administrators
                         and developers)</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Introduction to Rice</emphasis> (<link
-                            xlink:href="Intro_To_Rice.html">HTML</link> /<link
-                            xlink:href="../pdf/Intro_To_Rice.pdf">PDF</link> ) - Introduction to
+                            xlink:show="new" xlink:href="Intro_To_Rice.html">HTML</link> /<link
+                            xlink:show="new" xlink:href="../pdf/Intro_To_Rice.pdf">PDF</link> ) - Introduction to
                         Rice Concepts and Architecture</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:href="UG.html"
-                            >HTML</link> / <link xlink:href="../pdf/UG.pdf">PDF</link> ) - How to
+                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:show="new" xlink:href="UG.html"
+                            >HTML</link> / <link xlink:show="new" xlink:href="../pdf/UG.pdf">PDF</link> ) - How to
                         use a feature </para>
                 </listitem>
 <!--            TODO: Flesh out this guide    
                 <listitem>
-                    <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:href="CDG.html"
-                        >HTML</link> / <link xlink:href="../pdf/CDG.pdf">PDF</link> ) -
+                    <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:show="new" xlink:href="CDG.html"
+                        >HTML</link> / <link xlink:show="new" xlink:href="../pdf/CDG.pdf">PDF</link> ) -
                         How to build client applications that take advantage of the feature
                         programmatically (for application programmers)</para>
                 </listitem>
 -->                
                 <listitem>
                     <para><emphasis role="bold">Technical Guide</emphasis> (<link
-                            xlink:href="TRG.html">HTML</link> / <link xlink:href="../pdf/TRG.pdf"
+                            xlink:show="new" xlink:href="TRG.html">HTML</link> / <link xlink:show="new" xlink:href="../pdf/TRG.pdf"
                             >PDF</link> ) - Technical Reference for Developers </para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold"><link
-                                xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html"
+                                xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html"
                                 >Javadocs</link></emphasis> - Api Reference for Developers</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold"><link
-                        xlink:href="Help.html"
+                        xlink:show="new" xlink:href="Help.html"
                         >Online Help</link></emphasis></para>
                 </listitem>
                 <listitem>
@@ -98,37 +98,37 @@
                         <para>* When using Internet Explorer, we recommend viewing the PDF files
                             since the size of the diagrams may be illegible in IE.</para>
                         <listitem>
-                            <para><link xlink:href="../db_diagrams/schema.html">Schema</link></para>
+                            <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
                         </listitem>
                         <listitem>
-                            <para>RiceKREN (<link xlink:href="../db_diagrams/RiceKREN.png"
-                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKREN.pdf"
+                            <para>RiceKREN (<link xlink:show="new" xlink:href="../db_diagrams/RiceKREN.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/RiceKREN.pdf"
                                     >pdf</link>)</para>
                         </listitem>
                         <listitem>
-                            <para>RiceKREW (<link xlink:href="../db_diagrams/RiceKREW.png"
-                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKREW.pdf"
+                            <para>RiceKREW (<link xlink:show="new" xlink:href="../db_diagrams/RiceKREW.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/RiceKREW.pdf"
                                     >pdf</link>)</para>
                         </listitem>
                         <listitem>
-                            <para>RiceKRIM (<link xlink:href="../db_diagrams/RiceKRIM.png"
-                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKRIM.pdf"
+                            <para>RiceKRIM (<link xlink:show="new" xlink:href="../db_diagrams/RiceKRIM.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/RiceKRIM.pdf"
                                     >pdf</link>)</para>
                         </listitem>
                         <listitem>
-                            <para>RiceKRNS (<link xlink:href="../db_diagrams/RiceKRNS.png"
-                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKRNS.pdf"
+                            <para>RiceKRNS (<link xlink:show="new" xlink:href="../db_diagrams/RiceKRNS.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/RiceKRNS.pdf"
                                     >pdf</link>)</para>
                         </listitem>
                         <listitem>
-                            <para>RiceKRSB (<link xlink:href="../db_diagrams/RiceKRSB.png"
-                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKRSB.pdf"
+                            <para>RiceKRSB (<link xlink:show="new" xlink:href="../db_diagrams/RiceKRSB.png"
+                                    >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/RiceKRSB.pdf"
                                     >pdf</link>)</para>
                         </listitem>
                         <listitem>
-                            <para>RiceKRSB_QRTZ (<link xlink:href="../db_diagrams/RiceKRSB_QRTZ.png"
+                            <para>RiceKRSB_QRTZ (<link xlink:show="new" xlink:href="../db_diagrams/RiceKRSB_QRTZ.png"
                                     >png*</link> / <link
-                                    xlink:href="../db_diagrams/RiceKRSB_QRTZ.pdf">pdf</link>)</para>
+                                    xlink:show="new" xlink:href="../db_diagrams/RiceKRSB_QRTZ.pdf">pdf</link>)</para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -140,26 +140,26 @@
         <title>Collaboration Tools</title>
         <itemizedlist>
             <listitem>
-                <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Home">Kuali Rice Development
+                <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Home">Kuali Rice Development
                         Wiki</link> - information about the Rice project, developer documentation, and more</para>
             </listitem>
             <listitem>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE">Issue
+                <para><link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE">Issue
                     Tracking</link></para>
             </listitem>
-            <listitem><para><link xlink:href="https://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
-            <listitem><para><link xlink:href="https://test.kuali.org/svn/rice/">Source Code Repository</link></para></listitem>
-            <listitem><para><link xlink:href="http://fisheye.kuali.org/browse/rice">FishEye</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="https://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="https://test.kuali.org/svn/rice/">Source Code Repository</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://fisheye.kuali.org/browse/rice">FishEye</link></para></listitem>
         </itemizedlist>
     </sect1>
     <sect1>
         <title>Getting Involved</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="http://kuali.org/kis/projectTeams/team/111">Joining the Mailing List</link> - Create a KIS account or Login to add or remove yourself from this group</para></listitem>
-            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Collaboration">Collaborate</link></para></listitem>
-            <listitem><para><link xlink:href="https://wiki.kuali.org/display/CONTRIB/Home">Contribute</link></para></listitem>
-            <listitem><para>Visit Kuali Rice Website - <link xlink:href="http://kuali.org/rice">http://kuali.org/rice</link></para></listitem>
-            <listitem><para><link xlink:href="http://kuali.org/kd/">Attend Kuali Days</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://kuali.org/kis/projectTeams/team/111">Joining the Mailing List</link> - Create a KIS account or Login to add or remove yourself from this group</para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Collaboration">Collaborate</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/CONTRIB/Home">Contribute</link></para></listitem>
+            <listitem><para>Visit Kuali Rice Website - <link xlink:show="new" xlink:href="http://kuali.org/rice">http://kuali.org/rice</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://kuali.org/kd/">Attend Kuali Days</link></para></listitem>
         </itemizedlist>
     </sect1>
 

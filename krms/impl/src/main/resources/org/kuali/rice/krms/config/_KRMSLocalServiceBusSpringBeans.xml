@@ -70,4 +70,18 @@
 		</property>
 	</bean>
 
+  <!--
+  <bean id="rice.krms.comparisonOperatorService.exporter" parent="krmsServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="krmsService">
+        <property name="service">
+          <ref bean="comparisonOperatorService" />
+        </property>
+        <property name="localServiceName" value="comparisonOperatorService" />
+        <property name="busSecurity" value="${rice.krms.comparisonOperatorService.secure}" />
+      </bean>
+    </property>
+  </bean>
+  -->
+
 </beans>

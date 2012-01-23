@@ -60,7 +60,9 @@
 
   <bean id="customComparisonOperator" class="org.rice.krms.test.CustomComparisonOperator"/>
 
-  <bean id="comparisonOperatorService" class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl">
+  <bean id="comparisonOperatorService"
+        class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl"
+        factory-method="getInstance">
       <property name="operators">
         <list><ref bean="customComparisonOperator"/></list>
       </property>

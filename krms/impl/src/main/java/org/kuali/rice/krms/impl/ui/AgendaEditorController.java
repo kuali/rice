@@ -366,16 +366,19 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
         } else if (!StringUtils.isBlank(termId)) {
-            // validate that the constant value is comparable against the term
-            String termType = lookupTermType(termId);
-            
-            StringCoercionExtension coercionExtension = determineStringCoercionExtension(termType, propConstant);
-            if (coercionExtension.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
-                // checked a null value?
-                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
-                        "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
-                result &= false;
-            }
+            // TODO
+            // See KULRICE-6558: Resolve remoting situation for string coercion service used for proposition validation
+            // DISABLING until remoting situation is cleaned up
+//            // validate that the constant value is comparable against the term
+//            String termType = lookupTermType(termId);
+//
+//            StringCoercionExtension coercionExtension = determineStringCoercionExtension(termType, propConstant);
+//            if (coercionExtension.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
+//                // checked a null value?
+//                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+//                        "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
+//                result &= false;
+//            }
         }
 
         if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {

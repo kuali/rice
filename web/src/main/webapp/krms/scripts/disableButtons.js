@@ -76,6 +76,9 @@ function enabledCheck(id) {
     } else if (id == 'add') {
         onProp = true;
         propButtonsInit();
+    } else if (id == '385') { // 385 add parent
+        onProp = true;
+        propButtonsInit();
     } else if (id == '391') { // 391 left
         onProp = true;
         propButtonsInit();

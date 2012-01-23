@@ -239,4 +239,8 @@
 
   <bean id="validationActionTypeService" class="org.kuali.rice.krms.impl.validation.ValidationActionTypeServiceImpl"/>
 
+  <bean id="comparisonOperatorService"
+        class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl"
+        factory-method="getInstance"/>
+
 </beans>

@@ -316,17 +316,12 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('add');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('385');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
           "
               p:actionLabel="Add Parent">
-          <property name="styleClasses">
-            <list merge="true">
-              <value>kr-add-button</value>
-            </list>
-          </property>
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="../krms/images/node-parent-and-child.png"
                   p:altText="Add Parent"/>

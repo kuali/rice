@@ -47,4 +47,9 @@
         p:serviceName="approvalPeopleFlowActionTypeService"
         p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
 
+  <bean id="comparisonOperatorService"
+        parent="rice.krms.remote.import"
+        p:serviceName="comparisonOperatorService"
+        p:objectType="org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService"/>
+
 </beans>

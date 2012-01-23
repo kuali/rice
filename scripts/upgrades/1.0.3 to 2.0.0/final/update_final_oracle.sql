@@ -179,7 +179,7 @@ DROP TABLE OLD_KREW_ACTN_ITM_T
 /
 ALTER TABLE KREW_ACTN_ITM_T ADD CONSTRAINT KREW_ACTN_ITM_TP1 PRIMARY KEY (ACTN_ITM_ID)
 /
-CREATE INDEX KREW_ACTN_ITM_T1 ON KREW_ACTN_ITM_T(PRNCPL_ID)
+CREATE INDEX KREW_ACTN_ITM_TI1 ON KREW_ACTN_ITM_T(PRNCPL_ID)
 /
 CREATE INDEX KREW_ACTN_ITM_TI2 ON KREW_ACTN_ITM_T(DOC_HDR_ID)
 /
@@ -2763,44 +2763,44 @@ END;
 DECLARE
 c NUMBER;
 BEGIN
-select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_T1' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_TI1' ;
 IF c>0 THEN
-EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_T1';
+EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_TI1';
 ELSE
-DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_T1 does not exist, so not running statement to change/drop it.');
+DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_TI1 does not exist, so not running statement to change/drop it.');
 END IF;
 END;
 /
 DECLARE
 c NUMBER;
 BEGIN
-select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_T2' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_TI2' ;
 IF c>0 THEN
-EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_T2';
+EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_TI2';
 ELSE
-DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_T2 does not exist, so not running statement to change/drop it.');
+DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_TI2 does not exist, so not running statement to change/drop it.');
 END IF;
 END;
 /
 DECLARE
 c NUMBER;
 BEGIN
-select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_T3' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_TI3' ;
 IF c>0 THEN
-EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_T3';
+EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_TI3';
 ELSE
-DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_T3 does not exist, so not running statement to change/drop it.');
+DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_TI3 does not exist, so not running statement to change/drop it.');
 END IF;
 END;
 /
 DECLARE
 c NUMBER;
 BEGIN
-select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_T5' ;
+select count(*) into c from all_indexes where INDEX_NAME = 'KREW_ACTN_ITM_TI5' ;
 IF c>0 THEN
-EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_T5';
+EXECUTE IMMEDIATE 'DROP INDEX KREW_ACTN_ITM_TI5';
 ELSE
-DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_T5 does not exist, so not running statement to change/drop it.');
+DBMS_OUTPUT.PUT_LINE('KREW_ACTN_ITM_TI5 does not exist, so not running statement to change/drop it.');
 END IF;
 END;
 /
@@ -2833,28 +2833,22 @@ ALTER TABLE KREW_ACTN_ITM_T
     ADD CONSTRAINT KREW_ACTN_ITM_TP1
 PRIMARY KEY (ACTN_ITM_ID)
 /
-CREATE INDEX KREW_ACTN_ITM_T1 
+CREATE INDEX KREW_ACTN_ITM_TI1
   ON KREW_ACTN_ITM_T 
   (PRNCPL_ID)
 /
-
--- Commenting out these index creation statements,
--- these already exist
-
---CREATE INDEX KREW_ACTN_ITM_TI2
---  ON KREW_ACTN_ITM_T
---  (DOC_HDR_ID)
---/
---CREATE INDEX KREW_ACTN_ITM_TI3
---  ON KREW_ACTN_ITM_T
---  (ACTN_RQST_ID)
---/
---CREATE INDEX KREW_ACTN_ITM_TI5
---  ON KREW_ACTN_ITM_T
---  (PRNCPL_ID, DLGN_TYP, DOC_HDR_ID)
---/
-
-
+CREATE INDEX KREW_ACTN_ITM_TI2
+  ON KREW_ACTN_ITM_T
+  (DOC_HDR_ID)
+/
+CREATE INDEX KREW_ACTN_ITM_TI3
+  ON KREW_ACTN_ITM_T
+  (ACTN_RQST_ID)
+/
+CREATE INDEX KREW_ACTN_ITM_TI5
+  ON KREW_ACTN_ITM_T
+  (PRNCPL_ID, DLGN_TYP, DOC_HDR_ID)
+/
 INSERT INTO KREW_ACTN_ITM_T
 (ACTN_ITM_ID, PRNCPL_ID, ASND_DT, RQST_CD, ACTN_RQST_ID, DOC_HDR_ID, ROLE_NM, DLGN_PRNCPL_ID, 
  DOC_HDR_TTL, DOC_TYP_LBL, DOC_HDLR_URL, DOC_TYP_NM, RSP_ID, DLGN_TYP, VER_NBR, DTYPE, 

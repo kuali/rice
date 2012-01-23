@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.0.0-rc1-SNAPSHOT</version>
+  <version>2.0.0-rc1</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -1938,9 +1938,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>
-    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/trunk</developerConnection>
-    <url>https://test.kuali.org/svn/rice/trunk</url>
+    <connection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-2.0.0-rc1</connection>
+    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-2.0.0-rc1</developerConnection>
+    <url>https://test.kuali.org/svn/rice/tags/rice-2.0.0-rc1</url>
   </scm>
 
 </project>

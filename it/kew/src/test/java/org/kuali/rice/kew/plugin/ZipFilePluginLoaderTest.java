@@ -113,8 +113,8 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 		ConfigContext.getCurrentContextConfig());
 	this.plugin = loader.load();
 	assertNotNull("Plugin should have been successfully loaded.", plugin);
-	// check the plugin name, it's QName should be '{KEW}ziptest', it's plugin name should be 'ziptest'
-	assertEquals("Plugin QName should be '{KEW}ziptest'", new QName("KEW", "ziptest"), plugin.getName());
+	// check the plugin name, it's QName should be '{KUALI}ziptest', it's plugin name should be 'ziptest'
+	assertEquals("Plugin QName should be '{KUALI}ziptest'", new QName("KUALI", "ziptest"), plugin.getName());
 
 	// start the plugin
 	this.plugin.start();

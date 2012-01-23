@@ -94,7 +94,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     	document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
     	documentId = document.getDocumentId();
     	applicationId = routeHeaderService.getApplicationIdByDocumentId(documentId);
-    	assertEquals("applicationId should be KEW", "KEW", applicationId);
+    	assertEquals("applicationId should be KUALI", "KUALI", applicationId);
     }
 
     @Test public void testLockRouteHeader() throws Exception {

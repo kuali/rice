@@ -17,13 +17,8 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.web.format.BooleanFormatter;
-import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -37,6 +32,7 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
+import org.kuali.rice.krad.uif.util.UifFormManager;
 import org.kuali.rice.krad.uif.util.UifWebUtils;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
@@ -55,14 +51,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework
@@ -87,41 +80,45 @@ public abstract class UifControllerBase {
     protected static final String REDIRECT_PREFIX = "redirect:";
 
     /**
-     * Create/obtain the model(form) object before it is passed
-     * to the Binder/BeanWrapper. This method is not intended to be overridden
-     * by client applications as it handles framework setup and session
-     * maintenance. Clients should override createIntialForm() instead when they
-     * need custom form initialization.
+     * Create/obtain the model(form) object before it is passed to the Binder/BeanWrapper. This method
+     * is not intended to be overridden by client applications as it handles framework setup and session
+     * maintenance. Clients should override createIntialForm() instead when they need custom form initialization.
+     *
+     * @param request - the http request that was made
      */
     @ModelAttribute(value = "KualiForm")
-    public UifFormBase initForm(HttpServletRequest request) {
+    public final UifFormBase initForm(HttpServletRequest request) {
         UifFormBase form = null;
+
+        // get Uif form manager from session if exists or setup a new one for the session
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(
+                UifParameters.FORM_MANAGER);
+        if (uifFormManager == null) {
+            uifFormManager = new UifFormManager();
+            request.getSession().setAttribute(UifParameters.FORM_MANAGER, uifFormManager);
+        }
+
+        // add form manager to GlobalVariables for easy reference by other controller methods
+        GlobalVariables.setUifFormManager(uifFormManager);
+
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-        String documentNumber = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
-
         if (StringUtils.isNotBlank(formKeyParam)) {
-            form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
-
-            // retrieve from db if form not in session
-            if (form == null) {
-                UserSession userSession = (UserSession) request.getSession().getAttribute(
-                        KRADConstants.USER_SESSION_KEY);
-                form = getSessionDocumentService().getDocumentForm(documentNumber, formKeyParam, userSession,
-                        request.getRemoteAddr());
-            }
+            form = uifFormManager.getForm(formKeyParam);
         } else {
             form = createInitialForm(request);
         }
+
+        uifFormManager.setCurrentForm(form);
 
         return form;
     }
 
     /**
-     * Called to create a new model(form) object when
-     * necessary. This usually occurs on the initial request in a conversation
-     * (when the model is not present in the session). This method must be
-     * overridden when extending a controller and using a different form type
-     * than the superclass.
+     * Called to create a new model(form) object when necessary. This usually occurs on the initial request
+     * in a conversation (when the model is not present in the session). This method must be
+     * overridden when extending a controller and using a different form type than the superclass.
+     *
+     * @param request - the http request that was made
      */
     protected abstract UifFormBase createInitialForm(HttpServletRequest request);
 
@@ -590,6 +587,9 @@ public abstract class UifControllerBase {
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
         // since we are redirecting and will not be rendering the view, we need to reset the view from the previous
         form.setView(form.getPreviousView());
+
+        // clear current form from session
+        GlobalVariables.getUifFormManager().removeForm(form);
 
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());

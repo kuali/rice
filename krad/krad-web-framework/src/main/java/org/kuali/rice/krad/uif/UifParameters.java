@@ -33,6 +33,7 @@ public class UifParameters {
 	public static final String DISABLE_SEARCH_BUTTONS = "disableSearchButtons";
     public static final String DOC_NUM = "docNum";
     public static final String FORM_KEY = "formKey";
+    public static final String FORM_MANAGER = "formManager";
 	public static final String HEADER_BAR_ENABLED = "headerBarEnabled";
 	public static final String HIDE_RETURN_LINK = "hideReturnLink";
     public static final String LIGHTBOX_CALL = "lightBoxCall";

@@ -17,12 +17,10 @@ package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -32,7 +30,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,40 +47,6 @@ import java.util.Map;
  */
 public class UifWebUtils {
     private static final Logger LOG = Logger.getLogger(UifWebUtils.class);
-
-    /**
-     * Gets the form from the request
-     *
-     * <p>
-     * Looks for the form on the session by using the form key. If the form is not
-     * on the session it will attempt to get it from the database.
-     * </p>
-     *
-     * @param request the http request
-     * @return the form from request
-     */
-    public static UifFormBase getFormFromRequest(HttpServletRequest request) {
-        UifFormBase form = null;
-
-        String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-        if (StringUtils.isBlank(formKeyParam)) {
-            formKeyParam = (String) request.getAttribute(UifParameters.FORM_KEY);
-        }
-
-        String docId = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
-        if (StringUtils.isNotBlank(formKeyParam)) {
-            form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
-            // retrieve from db if form not in session
-            if (form == null) {
-                UserSession userSession = (UserSession) request.getSession().getAttribute(
-                        KRADConstants.USER_SESSION_KEY);
-                form = KRADServiceLocatorWeb.getSessionDocumentService().getDocumentForm(docId, formKeyParam,
-                        userSession, request.getRemoteAddr());
-            }
-        }
-
-        return form;
-    }
 
     /**
      * Configures the <code>ModelAndView</code> instance containing the form

@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
@@ -74,7 +75,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         // log exception
         LOG.error(ex.getMessage(), ex);
 
-        UifFormBase form = UifWebUtils.getFormFromRequest(request);
+        UifFormBase form = GlobalVariables.getUifFormManager().getCurrentForm();
         if (form instanceof DocumentFormBase) {
             if (((DocumentFormBase) form).getDocument() != null) {
                 incidentDocId = ((DocumentFormBase) form).getDocument().getDocumentNumber();

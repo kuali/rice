@@ -31,6 +31,7 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
@@ -228,6 +229,9 @@ public class LookupController extends UifControllerBase {
         }
 
         parameters.put(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
+
+        // clear lookup form from session
+        GlobalVariables.getUifFormManager().removeForm(lookupForm);
 
         return performRedirect(lookupForm, lookupForm.getReturnLocation(), parameters);
     }

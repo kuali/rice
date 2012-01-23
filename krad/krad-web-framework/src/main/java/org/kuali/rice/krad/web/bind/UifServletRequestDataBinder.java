@@ -17,11 +17,11 @@ package org.kuali.rice.krad.web.bind;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.core.convert.ConversionService;
@@ -150,11 +150,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
         form.postBind((HttpServletRequest) request);
 
-        // set form key as request attribute so form can be pulled from request
-        request.setAttribute(UifParameters.FORM_KEY, form.getFormKey());
-
-        // set form in session
-        ((HttpServletRequest) request).getSession().setAttribute(form.getFormKey(), form);
+        // add form to manager
+        GlobalVariables.getUifFormManager().addForm(form);
     }
 
     protected View getViewFromPreviousModel(UifFormBase form) {

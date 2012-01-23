@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.util;
 
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.uif.util.UifFormManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -62,6 +62,7 @@ public final class GlobalVariables {
     private String hideSessionFromTestsMessage = null;
     private MessageMap messageMap = new MessageMap();
     private Map<String,Object> requestCache = new HashMap<String, Object>();
+    private UifFormManager uifFormManager = null;
 
     private GlobalVariables() {}
 
@@ -132,6 +133,27 @@ public final class GlobalVariables {
     public static void setRequestCache(String cacheName, Object cacheObject) {
         GlobalVariables vars = getCurrentGlobalVariables();
         vars.requestCache.put(cacheName, cacheObject);
+    }
+
+    /**
+     * Retrieves the {@link org.kuali.rice.krad.uif.util.UifFormManager} which can be used to store and remove forms
+     * from the session
+     *
+     * @return UifFormManager
+     */
+    public static UifFormManager getUifFormManager() {
+        GlobalVariables vars = getCurrentGlobalVariables();
+        return vars.uifFormManager;
+    }
+
+    /**
+     * Sets a {@link org.kuali.rice.krad.uif.util.UifFormManager} for the current thread
+     *
+     * @param uifFormManager
+     */
+    public static void setUifFormManager(UifFormManager uifFormManager) {
+        GlobalVariables vars = getCurrentGlobalVariables();
+        vars.uifFormManager = uifFormManager;
     }
 
     /**

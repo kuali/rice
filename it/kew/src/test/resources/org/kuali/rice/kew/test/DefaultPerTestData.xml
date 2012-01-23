@@ -119,7 +119,7 @@
 			<docHandler>_blank</docHandler>
 			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
-			<applicationId>KEW</applicationId>
+			<applicationId>KUALI</applicationId>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>

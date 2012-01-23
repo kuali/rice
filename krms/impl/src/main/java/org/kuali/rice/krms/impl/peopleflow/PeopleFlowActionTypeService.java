@@ -178,9 +178,11 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         }
 
         String peopleFlowName = actionDefinition.getAttributes().get(NAME_ATTRIBUTE_FIELD);
-        if (StringUtils.isBlank(peopleFlowName)) {
-            throw new RiceIllegalArgumentException(NAME_ATTRIBUTE_FIELD + " attribute must not be null or blank");
-        }
+
+        // DISABLING for now, see KULRICE-6004
+//        if (StringUtils.isBlank(peopleFlowName)) {
+//            throw new RiceIllegalArgumentException(NAME_ATTRIBUTE_FIELD + " attribute must not be null or blank");
+//        }
 
         // if the ActionDefinition is valid, constructing the PeopleFlowAction is cake
         return new PeopleFlowAction(type, peopleFlowId, peopleFlowName);
@@ -395,7 +397,9 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
             if (type == null) throw new IllegalArgumentException("type must not be null");
             if (StringUtils.isBlank(peopleFlowId)) throw new IllegalArgumentException("peopleFlowId must not be null or blank");
-            if (StringUtils.isBlank(peopleFlowName)) throw new IllegalArgumentException("peopleFlowName must not be null or blank");
+
+            // DISABLING for now, see KULRICE-6004
+//            if (StringUtils.isBlank(peopleFlowName)) throw new IllegalArgumentException("peopleFlowName must not be null or blank");
 
             this.type = type;
             this.peopleFlowId = peopleFlowId;

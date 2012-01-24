@@ -37,7 +37,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "initiatorPrincipalName", fieldLabel: "Initiator", fieldType: "text" ],
         [ propertyName: "approverPrincipalName", fieldLabel: "Approver", fieldType: "text" ],
         [ propertyName: "viewerPrincipalName", fieldLabel: "Viewer", fieldType: "text" ],
-        [ propertyName: "groupViewerName", fieldLabel: "Group Viewer", fieldType: "lookupreadonly" ],
+        [ propertyName: "groupViewerId", fieldLabel: "Group Viewer Id", fieldType: "lookupreadonly" ],
         [ propertyName: "documentId", fieldLabel: "Document Id", fieldType: "text" ],
         [ propertyName: "applicationDocumentId", fieldLabel: "Application Document Id", fieldType: "text" ],
         [ propertyName: "statusCode", fieldLabel: "Document Status", fieldType: "multiselect" ],
@@ -56,7 +56,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "dateFinalized", fieldLabel: "Date Finalized To", fieldType: "text" ],
         [ propertyName: "title", fieldLabel: "Title", fieldType: "text" ],
         [ propertyName: "saveName", fieldLabel: "Name this search (optional)", fieldType: "text" ],
-        [ propertyName: "groupViewerId", fieldLabel: "Group Viewer Id", fieldType: "hidden" ]
+        [ propertyName: "groupViewerName", fieldLabel: "Group Viewer", fieldType: "hidden" ]
     ]
 
     // the list of *default* fields the DSCPKEWAdapter will return for a basic search
@@ -64,7 +64,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         "documentTypeName",
         "initiatorPrincipalName",
         "documentId",
-        "groupViewerName",
+        "groupViewerId",
         "dateCreated",
         "rangeLowerBoundKeyPrefix_dateCreated",
         "saveName"

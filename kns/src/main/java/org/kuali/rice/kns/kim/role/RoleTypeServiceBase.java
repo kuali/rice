@@ -139,7 +139,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 		if ( StringUtils.isNotBlank( principalId ) ) {
 		    List<RoleMembership> members = getRoleMembersFromDerivedRole(namespaceCode, roleName, qualification);
 		    for ( RoleMembership rm : members ) {
-		    	if ( StringUtils.isBlank( rm.getId() ) ) {
+		    	if ( StringUtils.isBlank( rm.getMemberId() ) ) {
 		    		continue;
 		    	}
 		        if ( MemberType.PRINCIPAL.equals(rm.getType()) ) {

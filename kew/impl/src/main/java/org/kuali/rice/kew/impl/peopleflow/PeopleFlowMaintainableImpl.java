@@ -22,11 +22,14 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
+import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 
 import java.util.ArrayList;
@@ -138,6 +141,104 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
         }
 
-        processAfterAddLine(view, collectionGroup, model, addLine);
+        processAfterAddLine(view, collectionGroup, model, addLine, collectionPath);
     }
+
+    /**
+     * In the case of edit maintenance adds a new blank line to the old side
+     * This method is intended to override the method in MaintainableImpl
+     * but has a different set of parameters, so it is not actually an override.
+     * This version was needed to fetch the old collection from a different path
+     * than MaintainableImpl uses.
+     *
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterAddLine(org.kuali.rice.krad.uif.view.View,
+     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
+     *      java.lang.Object)
+     */
+    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine, String collectionPath) {
+        // Check for maintenance documents in edit but exclude notes
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
+//            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+//            MaintenanceDocument document = maintenanceForm.getDocument();
+
+            // get the old object's collection
+            String oldCollectionPath = collectionPath.replace("newMaintainableObject","oldMaintainableObject");
+            Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(model, oldCollectionPath );
+            try {
+                Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
+                oldCollection.add(blankLine);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to create new line instance for old maintenance object", e);
+            }
+        }
+    }
+
+    /**
+     * This method is an override of ViewHelperService.processCollectionDeleteLine().
+     * It is virtually identical except that a local processAfterDeleteLine() method is called
+     * with a different parameter set than is called from within this method to delete the line
+     * from the old maintainable object.
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionDeleteLine(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, java.lang.String, int)
+     */
+    @Override
+    public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex) {
+        // get the collection group from the view
+        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+        if (collectionGroup == null) {
+            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+        }
+
+        // get the collection instance for adding the new line
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+        if (collection == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+        }
+
+        // TODO: look into other ways of identifying a line so we can deal with
+        // unordered collections
+        if (collection instanceof List) {
+            Object deleteLine = ((List<Object>) collection).get(lineIndex);
+
+            // validate the delete action is allowed for this line
+            boolean isValid = performDeleteLineValidation(view, collectionGroup, deleteLine);
+            if (isValid) {
+                ((List<Object>) collection).remove(lineIndex);
+                processAfterDeleteLine(view, collectionPath, model, lineIndex);
+            }
+        } else {
+            logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
+        }
+    }
+
+    /**
+     * In the case of edit maintenance deleted the item on the old side.
+     * This method is intended to override the method in MaintainableImpl
+     * but has a different set of parameters, so it is not actually an override.
+     * This was needed to fetch the old collection from a different path
+     * than MaintainableImpl uses. This version has the path (to the newMaintainableObject
+     * provided as a parameter, this is used to generate a path to the oldMaintainableObject
+     *
+     *
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(View,
+     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,  int)
+     */
+    protected void processAfterDeleteLine(View view, String collectionPath, Object model, int lineIndex) {
+
+        // Check for maintenance documents in edit
+        if (model instanceof MaintenanceForm && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceForm)model).getMaintenanceAction())) {
+
+            // get the old object's collection
+            String oldCollectionPath = collectionPath.replace("newMaintainableObject","oldMaintainableObject");
+            Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(model, oldCollectionPath);
+            try {
+                // Remove the object at lineIndex from the collection
+                oldCollection.remove(oldCollection.toArray()[lineIndex]);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to delete line instance for old maintenance object", e);
+            }
+        }
+    }
+
+
 }

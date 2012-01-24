@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.krms.api.engine.expression;
 
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.framework.engine.expression.EngineComparatorExtension;
 import org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension;
 
+import javax.jws.WebMethod;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 /**
@@ -27,6 +32,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "comparisonOperatorService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ComparisonOperatorService extends StringCoercionExtension {
 
     /**
@@ -40,6 +47,16 @@ public interface ComparisonOperatorService extends StringCoercionExtension {
      * @param operators
      */
     public void setOperators(List<EngineComparatorExtension> operators);
+
+    @Override
+    @WebMethod(operationName = "canCoerce")
+    @WebResult(name = "coerced")
+    public boolean canCoerce(String type, String value);
+
+    @Override
+    @WebMethod(operationName = "coerce")
+    @WebResult(name = "coerced")
+    public Object coerce(String type, String value);
 
     /**
      * Returns the int result of a compare between the lhs and rhs objects.

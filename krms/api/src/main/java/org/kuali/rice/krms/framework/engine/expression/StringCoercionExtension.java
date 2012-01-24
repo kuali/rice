@@ -32,7 +32,7 @@ public interface StringCoercionExtension {
     boolean canCoerce(String type, String value);
 
     /**
-     *
+     * Returns an Object of the given type populated with the given value.
      * @param type to coerce Object to
      * @param value to coerce
      * @return Object of given type with given value

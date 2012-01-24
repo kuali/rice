@@ -368,16 +368,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         } else if (!StringUtils.isBlank(termId)) {
             // validate that the constant value is comparable against the term
             String termType = lookupTermType(termId);
-// TODO EGHM KULRICE-6558
-//            ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
-//            if (comparisonOperatorService.canCoerce(termType, propConstant)) {
-//                if (comparisonOperatorService.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
-//                // checked a null value?
-//                    GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
-//                            "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
-//                    result &= false;
-//                }
-//            }
+            ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
+            if (comparisonOperatorService.canCoerce(termType, propConstant)) {
+                if (comparisonOperatorService.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
+                // checked a null value?
+                    GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                            "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
+                    result &= false;
+                }
+            }
         }
 
         if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {

@@ -106,9 +106,8 @@ public enum ComparisonOperator implements Coded {
      * @return boolean value of comparison results based on the type of operator.
      */
 	public boolean compare(Object lhs, Object rhs) {
-        EngineComparatorExtension extension = determineComparatorOperator(lhs, rhs);
-
-        int result = extension.compare(lhs, rhs);
+        ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
+        int result = comparisonOperatorService.compare(lhs, rhs);
 
         if (this == EQUALS) {
             return result == 0;
@@ -126,32 +125,6 @@ public enum ComparisonOperator implements Coded {
         throw new IllegalStateException("Invalid comparison operator detected: " + this);
 	}
 
-    /**
-     * Return registered {@link EngineComparatorExtension} for the given objects or the {@link DefaultComparisonOperator}.
-     * @param lhs left hand side object
-     * @param rhs right hand side object
-     * @return EngineComparatorExtension
-     */
-    // TODO EGHM move to utility class, or service if new possible breakage is okay. AgendaEditorController has similar code with different extension
-    private EngineComparatorExtension determineComparatorOperator(Object lhs, Object rhs) {
-        EngineComparatorExtension extension = null;
-        try {
-            // If instance is of a registered type, use configured ComparisonOperator
-            // KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("comparisonOperatorRegistration"); // lotta moves
-            ComparisonOperatorService service = KrmsApiServiceLocator.getComparisonOperatorService();
-            if (service.canCompare(lhs, rhs)) {
-                extension = service.findComparatorExtension(lhs, rhs); // maybe better to get result from service?
-            }
-        } catch (Exception e) {
-            e.printStackTrace();   // TODO EGHM log
-        }
-        if (extension == null) {
-            // It's tempting to have findStringCoercionExtension return this default, but if the Service lookup fails we
-            // will be broken in a new way.  Would that be okay? - EGHM
-            extension = new DefaultComparisonOperator();
-        }
-        return extension;
-    }
 
     /**
      * Operator codes, unmodifiable Collection

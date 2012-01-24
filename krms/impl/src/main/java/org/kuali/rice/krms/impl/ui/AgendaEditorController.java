@@ -366,18 +366,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
         } else if (!StringUtils.isBlank(termId)) {
-            // TODO
-            // See KULRICE-6558: Resolve remoting situation for string coercion service used for proposition validation
-            // DISABLING until remoting situation is cleaned up
-//            // validate that the constant value is comparable against the term
-//            String termType = lookupTermType(termId);
-//
-//            StringCoercionExtension coercionExtension = determineStringCoercionExtension(termType, propConstant);
-//            if (coercionExtension.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
+            // validate that the constant value is comparable against the term
+            String termType = lookupTermType(termId);
+// TODO EGHM KULRICE-6558
+//            ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
+//            if (comparisonOperatorService.canCoerce(termType, propConstant)) {
+//                if (comparisonOperatorService.coerce(termType, propConstant) == null) { // HMM, what if we wanted a rule that
 //                // checked a null value?
-//                GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
-//                        "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
-//                result &= false;
+//                    GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+//                            "error.rule.proposition.simple.invalidValue", proposition.getDescription(), propConstant);
+//                    result &= false;
+//                }
 //            }
         }
 
@@ -485,33 +484,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
     }
 
-    /**
-     * Return registered {@link org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension} for the given objects
-     * or the {@link org.kuali.rice.krms.framework.engine.expression.DefaultComparisonOperator}. // or StringCoer...
-     * @param type
-     * @param value
-     * @return StringCoercionExtension
-     */
-    // TODO EGHM move to utility class, or service if new possible breakage is okay.  ComparisonOperator has similar code with different extension
-    private StringCoercionExtension determineStringCoercionExtension(String type, String value) {
-        StringCoercionExtension extension = null;
-        try {
-            // If instance is of a registered type, use configured ComparisonOperator
-            // KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("comparisonOperatorRegistration"); // lotta moves
-            ComparisonOperatorService service = KrmsApiServiceLocator.getComparisonOperatorService();
-            if (service.canCompare(type, value)) {
-                extension = service.findStringCoercionExtension(type, value); // maybe better to get result from service?
-            }
-        } catch (Exception e) {
-            e.printStackTrace();   // TODO EGHM log
-        }
-        if (extension == null) {
-            // It's tempting to have findStringCoercionExtension return this default, but if the Service lookup fails we
-            // will be broken in a new way.  Would that be okay? - EGHM
-            extension = new DefaultComparisonOperator(); // or DefaultStringCoer....?
-        }
-        return extension;
-    }
 
     /**
      * This method returns the agendaId of the given agenda.  If the agendaId is null a new id will be created.

@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * {@link ComparisonOperator} Implementation.
+ * {@link ComparisonOperatorService} Implementation.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComparisonOperatorServiceImpl implements ComparisonOperatorService {
@@ -61,6 +61,13 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
         this.operators = operators;
     }
 
+    /**
+     * Returns the {@link EngineComparatorExtension} that can compare the lhs and rhs objects.  If none, then returns the
+     * {@link DefaultComparisonOperator}
+     * @param lhs left hand side object
+     * @param rhs right hand side object
+     * @return an EngineComparatorExtension that can compare the lhs and rhs
+     */
     @Override
     public EngineComparatorExtension findComparatorExtension(Object lhs, Object rhs) {
         EngineComparatorExtension extension;
@@ -71,7 +78,12 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
                 return extension;
             }
         }
-        return null;
+        return new DefaultComparisonOperator();
+    }
+
+    @Override
+    public int compare(Object lhs, Object rhs) {
+        return findComparatorExtension(lhs, rhs).compare(lhs, rhs);
     }
 
     @Override
@@ -79,6 +91,13 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
         return findComparatorExtension(lhs, rhs) != null;
     }
 
+    /**
+     * Returns the {@link EngineComparatorExtension} that can coerce the lhs and rhs objects.  If none, then returns the
+     * {@link DefaultComparisonOperator}, which also handles default coercion
+     * @param type class type to attempt to coerce to
+     * @param value value to attempt to coerce the given type with
+     * @return an EngineComparatorExtension that can coerce the type and value
+     */
     @Override
     public StringCoercionExtension findStringCoercionExtension(String type, String value) {
         StringCoercionExtension extension;
@@ -89,7 +108,7 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
                 return extension;
             }
         }
-        return null;
+        return new DefaultComparisonOperator(); // default coercion is also in the DefaultComparisonOperator
     }
 
     @Override

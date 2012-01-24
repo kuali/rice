@@ -42,6 +42,14 @@ public interface ComparisonOperatorService extends StringCoercionExtension {
     public void setOperators(List<EngineComparatorExtension> operators);
 
     /**
+     * Returns the int result of a compare between the lhs and rhs objects.
+     * @param lhs left hand side object
+     * @param rhs right hand side object
+     * @return int result of compare between lhs and rhs objects
+     */
+    public int compare(Object lhs, Object rhs);
+
+    /**
      * Does the service have an Extension that can compare the given objects?
      *
      * @param leftHandSide left hand side Object
@@ -80,4 +88,5 @@ public interface ComparisonOperatorService extends StringCoercionExtension {
      */
     // this would move to a StringCoercionExtensionService if we go that way
     StringCoercionExtension findStringCoercionExtension(String type, String value);
+
 }

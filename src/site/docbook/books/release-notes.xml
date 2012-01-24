@@ -25,10 +25,10 @@
     </info>
     <section xml:id="overview" xreflabel="Overview">
         <title>Kuali Rice 2.0 Overview</title>
-        <para>Welcome to the Kuali Rice version 2.0!</para>
+        <para>Welcome to Kuali Rice version 2.0!</para>
         <para>This is the first major release of the Kuali Rice software since version 1.0 which was
             released in August of 2009. This release brings many new and exciting features and
-            improvements to the Kuali Rice middlware and application development platforms. </para>
+            improvements to the Kuali Rice middleware and application development platforms. </para>
         <para>This release candidate version includes all functionality for Rice 2.0 and is ready for
             development use. Continued documentation and testing is underway to ensure a quality release
             of Rice 2.0 once we reach final version. </para>

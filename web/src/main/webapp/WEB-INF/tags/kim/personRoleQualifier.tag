@@ -11,7 +11,7 @@
         	<th width="5%" rowspan="20" style="border-style:none">&nbsp;</th>
 			<th>&nbsp;</th> 
 			<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
-       			<c:set var="attr" value="${attrDefn.value}" />
+       	  <c:set var="attr" value="${attrDefn.attributeField}" />
     			<%-- AttrDefn: ${attr}<br /> --%>
 				<c:set var="fieldName" value="${attr.name}" />
 				<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
@@ -29,7 +29,7 @@
 					<c:out value="Add:" />
 				</th>
 				<c:forEach var="attrDefn" items="${role.definitions}" varStatus="status1">
-					<c:set var="attr" value="${attrDefn.value}" />
+					<c:set var="attr" value="${attrDefn.attributeField}" />
 					<c:set var="fieldName" value="${attr.name}" />
 					<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
 					<c:set var="attrDefinition" value="${role.definitionsKeyedByAttributeName[fieldName]}"/>
@@ -40,7 +40,7 @@
 			      		   TODO: code (probably) does not pull the remote property name properly
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
 			      		   --%>
-                   			<c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
+                   			<c:forEach var="widget" items="${attrDefn.attributeField.widgets}" >
                           <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not readOnlyRole}">
     				       		    <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${widget}" />
@@ -88,8 +88,8 @@
 						</th>
 				        <c:forEach var="attrDefn" items="${role.definitions}" varStatus="status">
 			        	    <c:forEach var="qualifier" items="${rolePrncpl.qualifiers}" varStatus="status2">			        			    
-				        		<c:if test="${attrDefn.value.name == qualifier.kimAttribute.attributeName}">
-					        		<c:set var="attr" value="${attrDefn.value}" />
+				        		<c:if test="${attrDefn.attributeField.name == qualifier.kimAttribute.attributeName}">
+					        		<c:set var="attr" value="${attrDefn.attributeField}" />
 					        		<c:set var="fieldName" value="${attr.name}" />
 					        		<c:set var="attrEntry" value="${role.attributeEntry[fieldName]}" />
                     				<c:set var="attrDefinition" value="${role.definitionsKeyedByAttributeName[fieldName]}"/>
@@ -98,7 +98,7 @@
 				                <div align="center"> 
 				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 
-                        <c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
+                        <c:forEach var="widget" items="${attrDefn.attributeField.widgets}" >
                           <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not attrReadOnly}">
     				       		    <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${widget}" />

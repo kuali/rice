@@ -24,6 +24,10 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -114,10 +118,15 @@ public class AttributesMapBuilder {
 
         ExportMap keyLabelMap = new ExportMap("keyLabelMap");
 
-        for (Map.Entry<String, String> entry : attribute.getOptionsFinder().getKeyLabelMap().entrySet()) {
-            if (StringUtils.isNotBlank(entry.getKey())) {
-                keyLabelMap.set(entry.getKey(), entry.getValue());
+        List<Map.Entry<String, String>> keyLabelList = new ArrayList<Map.Entry<String, String>>(attribute.getOptionsFinder().getKeyLabelMap().entrySet());
+        Collections.sort(keyLabelList, new Comparator<Map.Entry<String, String>>() {
+            @Override
+            public int compare(Map.Entry<String, String> o1, Map.Entry<String, String> o2) {
+                 return o1.getValue().compareTo(o2.getValue());
             }
+        });
+        for (Map.Entry<String, String> entry : keyLabelList) {
+            keyLabelMap.set(entry.getKey(), entry.getValue());
         }
         return keyLabelMap;
     }
@@ -153,7 +162,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isSelect()) {
             controlMap.set("select", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass());
+            if (control.getValuesFinderClass() != null) {
+                controlMap.set("valuesFinder", control.getValuesFinderClass());
+            }
             if (control.getBusinessObjectClass() != null) {
                 controlMap.set("businessObject", control.getBusinessObjectClass());
             }

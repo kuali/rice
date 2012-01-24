@@ -1,5 +1,6 @@
 <%@ tag import="java.util.Map" %>
 <%@ tag import="org.kuali.rice.kns.util.ActionFormUtilMap" %>
+<%@ tag import="java.util.ArrayList" %>
 <%--
  Copyright 2005-2007 The Kuali Foundation
 
@@ -149,14 +150,29 @@ if (attributeEntry == null) {
 				 <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 				   	     
 				 <c:choose>
+
+             <c:when test="${not empty finderClass}">
+               <c:set var="keyLabelMapEntries" value="<%=java.util.Collections.EMPTY_SET%>"/>
+               <c:choose>
 	               <c:when test="${not empty businessObjectClass}">
 	                 <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
 	               </c:when>
 	               <c:otherwise>
 	                 <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
 	               </c:otherwise>
-	           	 </c:choose>
-	           	 <jsp:useBean id="methodAndParms" type="java.lang.String"/> 
+               </c:choose>
+             </c:when>
+             <c:otherwise>
+               <c:set var="methodAndParms" value="" />
+               <c:choose>
+                 <c:when test="${not empty attributeEntry.keyLabelMap}">
+                   <c:set var="keyLabelMapEntries" value='<%= ((Map)((Map)getJspContext().findAttribute("attributeEntry")).get("keyLabelMap")).entrySet() %>' />
+                 </c:when>
+               </c:choose>
+             </c:otherwise>
+         </c:choose>
+         <jsp:useBean id="keyLabelMapEntries" type="java.util.Set"/> 
+	       <jsp:useBean id="methodAndParms" type="java.lang.String"/>
            	  
 			     <%
 			        java.lang.String selectedOptionDescription = "";
@@ -171,8 +187,16 @@ if (attributeEntry == null) {
 			   	    } else if (value instanceof java.util.Collection) {
 			   		  propertyValue.addAll((java.util.Collection)value);
 			   	    }
-			   	    java.util.List collection = (java.util.List) TagUtils.lookup(pageCtx, "org.apache.struts.taglib.html.BEAN", methodAndParms, null);
-			   	
+              java.util.List collection;
+              if (methodAndParms.length() > 0) {
+			   	      collection = (java.util.List) TagUtils.lookup(pageCtx, "org.apache.struts.taglib.html.BEAN", methodAndParms, null);
+              } else {
+                collection = new ArrayList<org.kuali.rice.core.api.util.KeyValue>();
+                for (Map.Entry<String, String> entry : ((java.util.Set<Map.Entry<String, String>>)keyLabelMapEntries)) {
+                  collection.add(new org.kuali.rice.core.api.util.ConcreteKeyValue(entry));
+                }
+              }
+
 			   	    if(collection != null && collection.size() > 0) {
 			   		  for(Object obj : collection) {
 				   	    org.kuali.rice.core.api.util.KeyValue pair = (org.kuali.rice.core.api.util.KeyValue) obj;
@@ -234,12 +258,27 @@ if (attributeEntry == null) {
               <c:choose>
                 <c:when test="${not empty businessObjectClass}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
-              	</c:when>
+                  <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                </c:when>
               	<c:otherwise>
-                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                  <c:choose>
+                    <c:when test="${not empty finderClass}">
+                      <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                      <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                    </c:when>
+                    <c:when test="${not empty attributeEntry.keyLabelMap}">
+                      <c:forEach var="opt" items="${attributeEntry.keyLabelMap}" varStatus="x">
+                        <html:option value="${opt.key}">${opt.value}</html:option>
+                      </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                      <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                      <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                    </c:otherwise>
+                  </c:choose>
               	</c:otherwise>
            	  </c:choose>
-              <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+              <%--<html:optionsCollection property="${methodAndParms}" label="value" value="key"/>--%>
             </html:select>
     </c:when>
 
@@ -251,12 +290,27 @@ if (attributeEntry == null) {
 			  <c:choose>
               	<c:when test="${not empty businessObjectClass}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
-              	</c:when>
+                  <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                </c:when>
               	<c:otherwise>
-                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                  <c:choose>
+                    <c:when test="${not empty finderClass}">
+                      <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                      <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                    </c:when>
+                    <c:when test="${not empty attributeEntry.keyLabelMap}">
+                      <c:forEach var="opt" items="${attributeEntry.keyLabelMap}" varStatus="x">
+                        <html:option value="${opt.key}">${opt.value}</html:option>
+                      </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                      <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                      <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                    </c:otherwise>
+                  </c:choose>
               	</c:otherwise>
            	  </c:choose>
-              <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+
 
             </html:select>
             <c:if test="${disableField == false}">
@@ -273,7 +327,21 @@ if (attributeEntry == null) {
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
       	  	</c:when>
       	  	<c:otherwise>
-            	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+              <c:choose>
+                <c:when test="${not empty finderClass}">
+                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                  <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                </c:when>
+                <c:when test="${not empty attributeEntry.keyLabelMap}">
+                  <c:forEach var="opt" items="${attributeEntry.keyLabelMap}" varStatus="x">
+                    <html:option value="${opt.key}">${opt.value}</html:option>
+                  </c:forEach>
+                </c:when>
+                <c:otherwise>
+                  <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
+                  <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+                </c:otherwise>
+              </c:choose>
       	  	</c:otherwise>
    	    </c:choose>
 

@@ -26,6 +26,7 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 import javax.persistence.Transient;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,8 +97,11 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 	public List<KimAttributeField> getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = getKimTypeService(getKimType());
-	        if(kimTypeService!=null)
+	        if(kimTypeService!=null) {
 	        	this.definitions = kimTypeService.getAttributeDefinitions(getKimType().getId());
+            } else {
+                this.definitions = Collections.emptyList();
+            }
 		}
 		return this.definitions;
 	}

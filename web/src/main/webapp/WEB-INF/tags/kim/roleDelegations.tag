@@ -119,13 +119,13 @@
                 </div>
                 </td>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
-					<c:set var="fieldName" value="${qualifier.attributeName}" />
+					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
+		               	<div align="center"> <kul:htmlControlAttribute property="delegationMember.qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 
-                        <c:forEach var="widget" items="${KualiForm.document.definitions.attributeField.widgets}" >
+                        <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                           <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not canModifyAssignees}">
     				       		    <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="delegationMember" attr="${widget}" />
@@ -196,17 +196,20 @@
 				</td>
 				<c:set var="numberOfColumns" value="${KualiForm.member.numberOfQualifiers+6}"/>
 				<c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
-					<c:set var="fieldName" value="${qualifier.attributeName}" />
+					<c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
         			<c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
         			<c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
         			<c:set var="attrReadOnly" value="${!canModifyAssignees}"/>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}"  />
-		               	<c:if test="${attrDefinition.hasLookupBoDefinition}"> 
-                            <c:if test="${!empty attrDefinition.lookupBoClass and not attrReadOnly}">
-    			       		  <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.delegationMembers[${statusMember.index}]" attr="${attrDefinition}" />
-    			          	</c:if>
+		               	<div align="center">
+                    <kul:htmlControlAttribute property="document.delegationMembers[${statusMember.index}].qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}"  />
+                    <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
+                      <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                        <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">
+                          <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="document.delegationMembers[${statusMember.index}]" attr="${widget}" />
                         </c:if>
+                      </c:if>
+                    </c:forEach>
 						</div>
 					</td>
 		        </c:forEach>

@@ -90,6 +90,7 @@ public final class DataDictionaryTypeServiceHelper {
                 RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
                 b.setMultiple(false);
                 b.setSize(control.getSize());
+                return b;
             } else if (control.isText()) {
                 final RemotableTextInput.Builder b = RemotableTextInput.Builder.create();
                 b.setSize(control.getSize());

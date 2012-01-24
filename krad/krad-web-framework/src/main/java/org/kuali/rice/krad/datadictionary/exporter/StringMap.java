@@ -59,9 +59,6 @@ public class StringMap extends LinkedHashMap<String, Object> {
      * @param value
      */
     private void setUnique(String key, Object value) {
-        if (StringUtils.isBlank(key)) {
-            throw new IllegalArgumentException("invalid (blank) key");
-        }
         if (value == null) {
             throw new IllegalArgumentException("invalid (null) value");
         }

@@ -32,7 +32,7 @@
                 </tr>     
                 <tr>
                     <c:forEach var="qualifier" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="statusQualifier">
-                        <c:set var="fieldName" value="${qualifier.attributeName}" />
+                        <c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
                         <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                         <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                         <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>

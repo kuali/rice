@@ -150,6 +150,14 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 		return kimRoleType;
 	}
 
+    public Map<String, KimAttributeField> getDefinitionsKeyedByAttributeName() {
+        final Map<String, KimAttributeField> map = new HashMap<String, KimAttributeField>();
+        for (KimAttributeField field : getDefinitions()) {
+            map.put(field.getAttributeField().getName(), field);
+        }
+        return map;
+    }
+
 	public List<KimAttributeField> getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
 	        KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(KimTypeBo.to(

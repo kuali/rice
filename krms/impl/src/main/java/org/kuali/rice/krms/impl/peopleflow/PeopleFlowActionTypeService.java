@@ -179,10 +179,9 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         String peopleFlowName = actionDefinition.getAttributes().get(NAME_ATTRIBUTE_FIELD);
 
-        // DISABLING for now, see KULRICE-6004
-//        if (StringUtils.isBlank(peopleFlowName)) {
-//            throw new RiceIllegalArgumentException(NAME_ATTRIBUTE_FIELD + " attribute must not be null or blank");
-//        }
+        if (StringUtils.isBlank(peopleFlowName)) {
+            throw new RiceIllegalArgumentException(NAME_ATTRIBUTE_FIELD + " attribute must not be null or blank");
+        }
 
         // if the ActionDefinition is valid, constructing the PeopleFlowAction is cake
         return new PeopleFlowAction(type, peopleFlowId, peopleFlowName);

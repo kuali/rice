@@ -18,6 +18,9 @@
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1005"
         DESC_TXT="Message validation action returns"
         LBL="Action Message" NM="Action Message" NMSPC_CD="KR-RULE" VER_NBR="1"/>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1006"
+        DESC_TXT="PeopleFlow Name" LBL="PeopleFlow Name"
+        NM="peopleFlowName" NMSPC_CD="KR_RULE" VER_NBR="1"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="T1000" DESC_TXT="null"
         LBL="Context 1 Qualifier" NM="Context1Qualifier"
         NMSPC_CD="KR-RULE-TEST" VER_NBR="1"/>

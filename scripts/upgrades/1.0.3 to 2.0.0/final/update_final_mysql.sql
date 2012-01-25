@@ -3576,3 +3576,24 @@ ALTER TABLE KRIM_PND_GRP_MBR_T MODIFY MBR_NM varchar(100);
 ALTER TABLE KREW_STYLE_T CHANGE STYLE_ID STYLE_ID VARCHAR(40) NOT NULL;
 
 RENAME TABLE KREW_STYLE_T TO KRCR_STYLE_T;
+
+
+--
+-- mysql-2010-01-24.sql
+--
+
+
+-- unset type on My Fabulous Agenda since the required attribute isn't specified
+UPDATE krms_agenda_t SET TYP_ID=null WHERE AGENDA_ID='T1000'
+;
+
+-- PeopleFlow Name
+insert into krms_attr_defn_t (attr_defn_id, nm, nmspc_cd, lbl, actv, cmpnt_nm, ver_nbr, desc_txt)
+values ('1006', 'peopleFlowName', 'KR_RULE', 'PeopleFlow Name', 'Y', null, 1, 'PeopleFlow Name')
+;
+insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
+values ('1007', 3, '1000', '1006', 'Y', 1)
+;
+insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
+values ('1008', 3, '1001', '1006', 'Y', 1)
+;

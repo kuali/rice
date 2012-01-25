@@ -314,7 +314,6 @@
           <configuration>
             <sourceDirectory>${rice.docbook.filtered}/books</sourceDirectory>
             <xincludeSupported>true</xincludeSupported>
-            <useExtensions>1</useExtensions>
           </configuration>
           <dependencies>
             <dependency>

@@ -27,6 +27,9 @@
   <bean id="Uif-BaseTheme-parentBean" abstract="true" class="org.kuali.rice.krad.uif.view.ViewTheme">
     <property name="stylesheets">
       <list>
+        <!-- TODO: Test this -->
+        <!--<value>/css/krad.min.css</value>-->
+        <!-- For Debugging, uncomment out the values below (and comment out the minimized css above) -->
         <value>/krad/css/global/fss-reset.css</value>
         <value>/krad/css/global/fss-layout.css</value>
         <value>/krad/css/global/fss-text.css</value>
@@ -44,6 +47,9 @@
     </property>
     <property name="jsFiles">
       <list>
+        <!-- TODO: Test this -->
+        <!--<value>/js/krad.min.js</value>-->
+        <!-- For Debugging, uncomment out the values below (and comment out the minimized js above) -->
         <value>krad/plugins/jquery/jquery-1.6.3.js</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.9.js</value>
         <value>krad/plugins/cookie/jquery.cookie.js</value>

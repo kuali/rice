@@ -120,6 +120,36 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.samaxes.maven</groupId>
+        <artifactId>maven-minify-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-minify</id>
+            <phase>process-resources</phase>
+            <configuration>
+              <webappSourceDir>${basedir}/src/main/webapp</webappSourceDir>
+              <cssSourceDir>krad</cssSourceDir>
+              <cssSourceIncludes>
+                <cssSourceInclude>css/**/*.css</cssSourceInclude>
+                <cssSourceInclude>plugins/**/*.css</cssSourceInclude>
+                <cssSourceExclude>css/ks/*.css</cssSourceExclude>
+                <cssSourceExclude>css/kns/*.css</cssSourceExclude>
+              </cssSourceIncludes>
+              <jsSourceDir>krad</jsSourceDir>
+              <jsSourceIncludes>
+                <jsSourceInclude>scripts/*.js</jsSourceInclude>
+                <jsSourceInclude>plugins/**/*.js</jsSourceInclude>
+              </jsSourceIncludes>
+              <cssFinalFile>krad.css</cssFinalFile>
+              <jsFinalFile>krad.js</jsFinalFile>
+            </configuration>
+            <goals>
+              <goal>minify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 

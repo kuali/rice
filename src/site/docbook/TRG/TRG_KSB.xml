@@ -2127,8 +2127,8 @@ protected WorkflowDocumentService workflowDocumentService;</programlisting>
                     that are exported.</para>
             </sect3>
         </sect2>
-        <sect2>
-            <title>Bus Security</title>
+        <sect2 xml:id="security_and_keystores">
+            <title>Security and Keystores</title>
             <sect3>
                 <title>Generating the Keystore</title>
                 <para>For client applications to be able to consume secured services hosted from a

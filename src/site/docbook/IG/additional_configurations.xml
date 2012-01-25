@@ -16,8 +16,109 @@
     limitations under the License.
 
 -->
-<appendix xml:id="appendix_multiple_instances" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
-    <title>Running Multiple Instances of Rice Within a Single Tomcat Instance</title>        
+<chapter xml:id="additional_configurations" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+    <title>Additional Configurations</title>
+    <para>There is a number of additional configurations that Rice supports. We've collected a few
+        of them here and provided setup instructions below.</para>
+    <para>See <link linkend="appendix_server_configs">Example Server Configurations</link> in the
+        appendix for examples of hardware and software configurations of Kuali Rice servers.</para>
+    <section>
+        <title>Setting Up a Load-Balanced Clustered Production Environment</title>
+        <para>This describes how to set up Rice instances for a load-balanced production environment
+            across multiple servers. <orderedlist>
+                <listitem>
+                    <para>The configuration parameter <emphasis role="bold">${environment}</emphasis>
+                        must be set to the text: <emphasis role="bold">prd</emphasis>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>When the configuration parameter <emphasis role="bold"
+                        >${environment}</emphasis> is set to <emphasis role="bold">prd</emphasis>,
+                        the code triggers: <orderedlist>
+                            <listitem>
+                                <para>Sending email to specified individuals </para>
+                            </listitem>
+                            <listitem>
+                                <para>Turning off some of the Rice “back doors” </para>
+                            </listitem>
+                        </orderedlist></para>
+                </listitem>
+            </orderedlist></para>
+        <para>The high-level process for creating multiple Rice instances:<orderedlist>
+            <listitem>
+                <para>Ensure that these are set up properly so no additional configuration is needed
+                    during installation:<orderedlist>
+                        <listitem>
+                            <para>Quartz is configured properly for clustering (there are various
+                                settings that make this possible). </para>
+                        </listitem>
+                        <listitem>
+                            <para>The initial software setup has the proper configuration to support
+                                a clustered production environment. </para>
+                        </listitem>
+                        <listitem>
+                            <para>Rice’s initial settings are in the file,
+                                common-config-defaults.xml. </para>
+                        </listitem>
+                    </orderedlist></para>
+                <para>Here are some of the parameters in the common-config-defaults.xml that setup
+                    Quartz for clustering:</para>
+                <para><programlisting>&lt;param name="useQuartzDatabase" override="false">true&lt;/param>
+&lt;param name="ksb.org.quartz.scheduler.instanceId” override="false">AUTO&lt;/param>
+&lt;param name="ksb.org.quartz.scheduler.instanceName" override="false">KSBScheduler&lt;/param>
+&lt;param name="ksb.org.quartz.jobStore.isClustered" override="false">true&lt;/param>
+&lt;param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_&lt;/param></programlisting></para>
+                <para>If it becomes necessary to pass additional parameters to Quartz during rice
+                    startup, just add parameters in the <emphasis role="bold"
+                        >rice-config.xml</emphasis> file prefixed with<emphasis role="bold">
+                            ksb.org.quartz.*</emphasis></para>
+                <para>The parameter <emphasis role="bold">useQuartzDatabase</emphasis> MUST be set
+                    to <emphasis role="bold">true</emphasis> for Quartz clustering to work. (This is
+                    required because it uses the database to accomplish coordination between the
+                    different scheduler instances in the cluster.)</para>
+            </listitem>
+            <listitem>
+                <para>Ensure that all service bus endpoint URLs are unique on each machine: Make
+                    sure that each Rice server in the cluster has a unique serviceServletUrl
+                    parameter in the rice-config.xml configuration file.</para>
+                <para>One way to accomplish this is to pass a system parameter into the JVM that
+                    runs the Tomcat server that identifies the IP and port number of that particular
+                    Tomcat Server. For example: </para>
+                <para>
+                    <programlisting>-Dhttp.url=129.79.216.156:8806</programlisting>
+                </para>
+                <para>You can then configure your <emphasis role="bold">serviceServletUrl</emphasis>
+                    in the <emphasis role="bold">rice-config.xml</emphasis> to use that IP and port
+                    number. </para>
+                <para>
+                    <programlisting>&lt;param name="serviceServletUrl">http://${http.url}/${app.context.name}/remoting/&lt;/param> </programlisting>
+                </para>
+                <para>You could have different values for <emphasis role="bold"
+                    >serviceServletUrl</emphasis> in the <emphasis role="bold"
+                        >rice-config.xml</emphasis> on each machine in the cluster. </para>
+            </listitem>
+            <listitem>
+                <para>If you are using notes and attachments in workflow, then the <emphasis
+                    role="bold">attachment.dir.location</emphasis> parameter must point to a
+                    shared file system mount (one that is mounted by all machines in the cluster).
+                </para>
+            </listitem>
+            <listitem>
+                <para>The specifics of setting up and configuring a shared file system location are
+                    part of how you set up your infrastructure environment. Those are beyond the
+                    scope of this Guide.</para>
+            </listitem>
+            <listitem>
+                <para>In general, to accomplish a load-balanced clustered environment, you must
+                    implement some type of load balancing technology with session affinity (i.e., it
+                    keeps the browser client associated with the specific machine in the cluster
+                    that it authenticated with). An example of a load balancing appliance-software
+                    is the open source product, Zeus.</para>
+            </listitem>
+        </orderedlist></para>
+    </section>
+    <section>
+            <title>Running Multiple Instances of Rice Within a Single Tomcat Instance</title>        
     <para>There are two different structural methods to run multiple instances of Rice within a
         single Tomcat instance. You can use either method:<orderedlist>
             <listitem>
@@ -30,7 +131,7 @@
                 </para>
             </listitem>
         </orderedlist></para>   
-    <sect1>
+    <section>
         <title>Running a Staging and a Test Environment</title>
         <para>To show you how to set up a staging and a test environment within one Tomcat instance,
             this section presents the configuration recipe as though it were a Quick Start Best
@@ -161,11 +262,11 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
                         </itemizedlist></para>
                 </listitem>
             </itemizedlist></para>
-    </sect1>
-    <sect1>
+    </section>
+    <section>
         <title>Running Multiple Production Environments</title>
         <para>This describes how to set up two production Rice instances running side by side. </para>
-        <sect2>
+        <section>
             <title>Items specific to running a Production Platform:</title>
             <orderedlist>
                 <listitem>
@@ -191,8 +292,8 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
                 software from source and deploy the example <emphasis role="bold"
                     >kualirice.war</emphasis> file. This example starts from rebuilding the source
                 to accomplish a test and staging instance compilation.</para>
-        </sect2>
-        <sect2>
+        </section>
+        <section>
             <title>The high-level process for creating multiple Rice instances:</title>
             <orderedlist>
                 <listitem>
@@ -615,9 +716,9 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
                             application for each site.</para>
                     </listitem>
                 </itemizedlist></para>
-        </sect2>
-    </sect1>
-    <sect1>
+        </section>
+    </section>
+    <section>
         <title>Keystore Implementation Variations</title>
         <para>If multiple instances of Rice are running under the same Tomcat instance, they can use
             the same keystore. You can set up multiple keystores for multiple instances, but you
@@ -625,5 +726,6 @@ Using JRE_HOME:		/usr/java/jdk1.6.0_16</programlisting></para>
                 >WEB-INF/web.xml</emphasis> to point to the different keystores. Beyond this, the
             set up depends on how you want your Tomcat instance configured and your
             implementation-specific parameter settings.</para>
-    </sect1>
-</appendix>
+    </section>
+    </section>
+</chapter>

@@ -41,10 +41,13 @@
                 <para>Install and configure Tomcat.</para>
             </listitem>
             <listitem>
-                <para>Install and Configure Rice</para>
+                <para>Install and Configure Rice.</para>
             </listitem>
             <listitem>
-                <para>Launch the Sample Application</para>
+                <para>Launch the Sample Application.</para>
+            </listitem>
+            <listitem>
+                <para>Set up a Keystore.</para>
             </listitem>
         </orderedlist>
     </para>
@@ -55,9 +58,8 @@
         <title>Suggested Server Hardware</title>
         <para>Note that hardware needs may vary depending on the amount of expected load, the
             operating system being used, and the number of applications that are integrated with
-            Kuali Rice. Kuali Rice is typically deployed as a Standalone Server with the database
-            server separate from the application server. Suggested requirements below are for the
-            Rice Standalone application server.</para>
+            Kuali Rice. Kuali Rice is typically deployed as a standalone server with the database
+            server separate from the application server. </para>
         <para>The recommended minimum requirements are as follows:<itemizedlist>
             <listitem>
                 <para>Processor 1.5 GHz or faster (2 GHz preferred)</para>
@@ -73,42 +75,9 @@
                     <note><para>Additional space needed if storing attachments.</para></note>
             </listitem>
         </itemizedlist></para>
-    </section>
-    <section>
-        <title>Distribution</title>
-        <para>To begin installation with a Kuali Rice provided distribution, just uncompress the
-            software you retrieved from download location at the Rice web site. For the purposes of
-            this guide, we will be focusing on installation of the server distribution.</para>
-        <!-- Quick Start Best Practice -->
-        <para>Uncompress the server distribution downloaded from the Rice site:<orderedlist>
-                <listitem>
-                    <para>Verify that you are logged in as the <emphasis role="bold">root</emphasis>
-                        user</para>
-                </listitem>
-                <listitem>
-                    <para>Change directory to where the distributions are located</para>
-                    <programlisting># cd /opt/software/distribution</programlisting>
-                </listitem>
-                <listitem>
-                    <para>Uncompress the distribution<orderedlist>
-                            <listitem>
-                                <para>Follow the steps below to uncompress the Binary
-                                    distribution:</para>
-                                <programlisting># mkdir binary
-# unzip rice-1.0.3-bin.zip -d binary
-# chmod -R 777 /opt/software                                                  </programlisting>
-                            </listitem>
-                            <listitem>
-                                <para>Follow the steps below to uncompress the Server
-                                    distribution:</para>
-                                <programlisting># mkdir server
-# unzip rice-1.0.3-server.zip -d server
-# chmod -R 777 /opt/software                                                 </programlisting>
-                            </listitem>
-                        </orderedlist></para>
-                </listitem>
-            </orderedlist></para>
-        <!-- End Quick Start Best Practice -->
+        <para>See <link linkend="appendix_server_configs">Example Server Configurations</link> in
+            the appendix for examples of hardware and software configurations of Kuali Rice
+            servers.</para>
     </section>
     <section>
         <title>Install and Setup Apache Tomcat</title>
@@ -119,91 +88,50 @@
                 <listitem>
                     <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
                 </listitem>
-            </itemizedlist></para>
-<!-- Quick Start Best Practice --> 
-        <para>Once you have downloaded Tomcat , please install it using these steps:<itemizedlist>
-                <listitem>
-                    <para>Log in as root</para>
-                </listitem>
-                <listitem>
-                    <para>Copy or download the file <emphasis role="bold"
-                            >apache-tomcat-5.5.27.zip</emphasis> to <emphasis role="bold"
-                            >/opt/software/tomcat</emphasis> using this code:</para>
-                    <para><programlisting>cd /opt/software/Tomcat
-unzip apache-tomcat-5.5.27.zip -d /usr/local
-ln -s /usr/local/apache-tomcat-5.5.27 /usr/local/tomcat
-chown -R rice:rice /usr/local/apache-tomcat-5.5.27
-cd /usr/local/tomcat/bin
-chmod -R 755 *.sh
-su - rice
-cd /usr/local/tomcat/bin
-./startup.sh               </programlisting></para>
-                </listitem>
-                <listitem>
-                    <para>You should see something like this:</para>
-                    <para><programlisting>Using CATALINA_BASE:	/usr/local/tomcat
-Using CATALINA_HOME:	/usr/local/tomcat
-Using CATALINA_TMPDIR:	/usr/local/tomcat/temp
-Using JRE_HOME:		/usr/java/jdk1.6.0_16                            </programlisting></para>
-                </listitem>
         </itemizedlist></para>
-        <para>Now that Tomcat is running:<orderedlist>
-                <listitem>
-                    <para>To test that Tomcat came up successfully, try to browse
-                            to<emphasis role="bold"> http:// yourlocalip:8080</emphasis>.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>If you successfully browsed to http://yourlocalip:8080, then
-                        execute this command as the rice user:</para>
-                    <para><programlisting>./shutdown.sh
-Using CATALINA_BASE:	/usr/local/tomcat
-Using CATALINA_HOME:   	/usr/local/tomcat
-Using CATALINA_TMPDIR:	/usr/local/tomcat/temp
-Using JRE_HOME:	 	    /usr/java/jdk1.6.0_16</programlisting></para>
-                </listitem>
-        </orderedlist></para>
-        <warning>
-            <para>At times, Tomcat can have a session related problem with OJB where if you stop the server it won’t start again.  This can be fixed by deleting the SESSIONS.ser file in the  %TOMCAT_HOME%/work/Catalina/%host name%/%webapp% directory</para>
-            <para>This can be prevented by setting the saveOnRestart property to be false in
-                the web application’s context.xml file as documented here: <link
-                    xlink:href="http://tomcat.apache.org/tomcat-5.5-doc/config/manager.html"
-                    >http://tomcat.apache.org/tomcat-5.5-doc/config/manager.html</link>.</para>
-        </warning>
-<!-- End Quick Start Best Practice -->
+        <para>Please visit the <link xlink:href="http://tomcat.apache.org/">Apache Tomcat
+                site</link> for information on how to install and configure Tomcat.</para>
+        <para>Other servlet containers can be used with Kuali Rice, but this guide will focus on
+            Tomcat.</para>
     </section>
     <section>
         <title>Setting Up the Rice Application</title>
         <section>
+            <title>Install Rice from distribution</title>
+            <para>The quickest way to get Rice installed on a standalone server is to download the
+                    <emphasis role="bold">Standalone Server</emphasis> distribution from the <link
+                    xlink:href="http://kuali.org/rice/download">kuali.org download site</link>. Once
+                downloaded, uncompress the software.</para>
+        </section>
+        <section>
             <title>Deploying the WAR file</title>
-            <para>Copy the kr-dev.war file from the base directory of the server distribution to the
-                directory that contains web applications in your servlet container. For Apache
-                Tomcat 5.5.x, this is <emphasis role="bold"
-                    >[Tomcat-root-directory]/webapps</emphasis>.</para>
-            <section>
-                <title>Setting Up the Database JDBC Drivers for Tomcat</title>
-                <para>Copy the database-specific JDBC driver to the
-                [Tomcat-root-directory]/common/lib.</para>
-<!-- Quick Start Best Practice --> 
-                <itemizedlist>
+            <para>
+                <orderedlist>
                     <listitem>
-                        <para>Login as the root user:</para>
-                        <para><programlisting>su – rice</programlisting></para>
+                        <para>Copy the kr-dev.war file from the base directory of the server
+                            distribution to the directory that contains web applications in your
+                            servlet container. For Tomcat, this is <emphasis role="bold"
+                                >[Tomcat-root-directory]/webapps</emphasis>.</para>
                     </listitem>
                     <listitem>
-                        <para>MySQL</para>
-                        <para><programlisting>cp -p /java/drivers/mysql-connector-java-5.1.5-bin.jar /usr/local/tomcat/common/lib</programlisting></para>
+                        <para>Copy the database-specific JDBC driver to the
+                        [Tomcat-root-directory]/common/lib. Examples:</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>MySQL</para>
+                                <para>
+                                    <programlisting>cp -p /java/drivers/mysql-connector-java-5.1.5-bin.jar /usr/local/tomcat/common/lib</programlisting>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>Oracle</para>
+                                <para>
+                                    <programlisting>cp -p /java/drivers/ojdbc14.jar /usr/local/tomcat/common/lib</programlisting>
+                                </para>
+                            </listitem>
+                        </itemizedlist>
                     </listitem>
-                    <listitem>
-                        <para>Oracle</para>
-                        <para><programlisting>cp -p /java/drivers/ojdbc14.jar /usr/local/tomcat/common/lib</programlisting></para>
-                    </listitem>
-                </itemizedlist>
-<!-- End Quick Start Best Practice -->                
-            </section>
-            <section>
-                <title>Configuring the rice-config.xml File</title>
-                <para>By default when it starts, Rice attempts to read the <emphasis role="bold"
+                <listitem><para>Configure the rice-config.xml File. By default when it starts, Rice attempts to read the <emphasis role="bold"
                         >rice-config.xml</emphasis> configuration file from the paths in this order:<orderedlist>
                         <listitem>
                             <para>/usr/local/rice/rice-config.xml </para>
@@ -233,66 +161,68 @@ Using JRE_HOME:	 	    /usr/java/jdk1.6.0_16</programlisting></para>
                         </listitem>
                     </orderedlist></para>
                 <para>An example <emphasis role="bold">rice-config.xml</emphasis> file is included
-                    in the server distribution under <emphasis role="bold"
-                        >web/src/main/config/example-config</emphasis></para>
-<!-- Quick Start Best Practice -->  
-                <para>To get the <emphasis role="bold">rice-config.xml</emphasis> and other Rice
-                    configuration files into their correct locations, follow these steps:<itemizedlist>
-                        <listitem>
-                            <para>Login as root:</para>
-                            <para><programlisting>mkdir /usr/local/rice
-chown rice:rice /usr/local/rice
-chmod 755 /usr/local/rice
-cd /opt/software/kuali/src/rice-release-1-0-2-br/web/src/main/config/example-config/
-cp -p rice-config.xml /usr/local/rice
-cp -p log4j.properties /usr/local/rice
-cd /usr/local/rice
-chown rice:rice log4j.properties
-chown rice:rice rice-config.xml
-su - rice 
-cd /usr/local/rice</programlisting></para>
-                            <para>Modify the database parameters in the <emphasis role="bold"
-                                    >rice-config.xml</emphasis> file. The values should conform to
-                                the values you used with the ImpEx tool (listed in the <emphasis
-                                    role="bold">impex-build.properties</emphasis> file). </para>
-                            <para><programlisting>datasource.url=jdbc:mysql://localhost:3306/rice
+                            in the server distribution under <emphasis role="bold"
+                                >web/src/main/config/example-config</emphasis>.</para>  
+                <para>For MySQL, just modify the following database parameters in the <emphasis
+                                role="bold">rice-config.xml</emphasis> file. The values should
+                            conform to the values you will use with the ImpEx tool via the <emphasis
+                                role="bold">impex-build.properties</emphasis> file. ImpEx is set up
+                    in the <link linkend="database_setup">Installing and
+                        Configuring the Database Management System</link> section of this guide. </para>
+                    <para>
+                        <programlisting>datasource.url=jdbc:mysql://localhost:3306/rice
 datasource.username=rice
 datasource.password=kualirice
 datasource.url=jdbc:mysql://remoteMySQLServerComputerName:3306/rice
 datasource.username=rice
-datasource.password=kualirice</programlisting></para>
-                            <para>If you are using Oracle, the JDBC URL will have this general
-                                form:</para>
-                            <para><programlisting>datasource.url=jdbc:oracle:thin:@remoteMySQLServerComputerName:1521:ORACLE_SID</programlisting></para>
-                            <para>At this point, you are ready to try to bring up the Tomcat server
-                                with the Rice web application:</para>
-                            <para><programlisting>cd /usr/local/tomcat/bin
-./startup.sh</programlisting></para>
-                        </listitem>
-                        <listitem>
-                            <para>Check if Tomcat and Rice started successfully:</para>
-                            <para><programlisting>cd /usr/local/tomcat/logs
-tail -n 500 -f catalina.out</programlisting></para>
-                            <para>If your Rice server started up successfully, browse to the site
-                                    <emphasis role="bold">http://yourlocalip:8080/kr-dev</emphasis>.
-                                You should see the Rice portal screen which will look something like this:
-                            </para>
-                            <figure>
-                                <title>Rice Portal Main Menu</title>
-                                <mediaobject>
-                                    <imageobject>
-                                        <imagedata fileref="../images/rice_portal_main_menu.png"/>
-                                    </imageobject>
-                                    </mediaobject>
-                            </figure>    
-                        </listitem>
-                    </itemizedlist></para>    
-<!-- End Quick Start Best Practice -->
-                <section>
+datasource.password=kualirice</programlisting>
+                    </para>
+                    <para>If you are using Oracle, the JDBC URL will have this
+                        general form:</para>
+                    <para>
+                        <programlisting>datasource.url=jdbc:oracle:thin:@remoteMySQLServerComputerName:1521:ORACLE_SID</programlisting>
+                    </para>
+                    <note><para>Additional configuration parameters are described in the <link linkend="database_setup">Parameters</link> section of this guide.</para></note>
+                </listitem>
+                <listitem>
+                    <para>At this point, you are ready to try to bring up the Tomcat
+                        server with the Rice web application:</para>
+                    <para>
+                        <programlisting>cd /usr/local/tomcat/bin
+./startup.sh</programlisting>
+                    </para>
+                </listitem>
+                <listitem>    
+                    <para>Check if Tomcat and Rice started successfully:</para>
+                    <para>
+                        <programlisting>cd /usr/local/tomcat/logs
+tail -n 500 -f catalina.out</programlisting>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>If your Rice server started up successfully, browse to the
+                        site <emphasis role="bold"
+                            >http://yourlocalip:8080/kr-dev</emphasis>. You should
+                        see the Rice portal screen which will look something like
+                        this: </para>
+                    <figure>
+                        <title>Rice Portal Main Menu</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata
+                                    fileref="../images/rice_portal_main_menu.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+            </listitem></orderedlist>
+            </para>
+            </section>
+             <section xml:id="rice_config_parameters"> 
                     <title>Parameters</title>
-                <para>The tables below have the basic set of parameters for rice-config.xml that you
-                    need to get an instance of Rice running. Please use these tables as a beginning
-                    reference to modify your rice-config.xml file. </para>
+                <para>The tables below have the basic set of parameters for <emphasis role="bold"
+                    >rice-config.xml</emphasis> that you need to get an instance of Rice running.
+                Please use these tables as a beginning reference to modify your <emphasis
+                    role="bold">rice-config.xml</emphasis> file. </para>
                 <warning>
                     <para>Make sure the <emphasis role="bold">application.url</emphasis> and
                         database user name and password are set correctly.</para>
@@ -565,39 +495,38 @@ tail -n 500 -f catalina.out</programlisting></para>
                 </table>   
               </section>     
             </section>
-        </section>
-    </section>
     <section xml:id="keystore">
-        <title>Generating the Keystore</title>
-        <para>For client applications to consume secured services hosted from a Rice server, you must
-            generate a keystore. As an initial setup, you can use the keystore provided by Rice. There
-            are three ways to get this keystore:<orderedlist>
+        <title>Setup a Keystore</title>
+        <para>For client applications to consume secured services hosted from a Rice server, you
+            must generate a keystore. As an initial setup, you can use the keystore provided by
+            Rice. Once a keystore is generated, you must configure the KSB to use the
+            keystore.</para>
+        <section>
+            <title>Generating a Keystore</title>
+            <para>There are three ways to get this keystore:<orderedlist>
                 <listitem>
                     <para>If you are doing a source code build of Rice, it is in the directory <emphasis
                         role="bold">&lt;source root>/security</emphasis> and it has a file name of
                         <emphasis role="bold">rice.keystore</emphasis></para>
-                    <para><note><para>r1c3pw is the password used for the example provided.</para></note></para>
                 </listitem>
                 <listitem>
                     <para>The keystore is also located in the server distribution under the security
                         directory. </para>
-                    <para><note><para>keypass and storepass should be the same. r1c3pw is the password used for the
-                        example provided</para></note></para>
                 </listitem>
                 <listitem>
-                    <para>You can generate the keystore yourself. Please refer to the KSB Technical
-                        Reference Guide for the steps to accomplish this.</para>
+                    <para>You can generate the keystore yourself. Please refer to the <link xlink:href="TRG.html#security_and_keystores">Security and Keystores</link> 
+                        section in the <link xlink:href="TRG.html#TRG_KSB">KSB chapter</link> of the <link xlink:href="TRG.html">Technical Reference Guide</link> for the
+                        steps to accomplish this.</para>
                 </listitem>
             </orderedlist></para>
+        </section>
         <section>
             <title>Configure KSB to use the keystore</title>
             <para>You must have these params in the xml config to allow KSB to use the keystore:</para>
             <para>
-                <programlisting>
-                    &lt;param name="keystore.file">/usr/local/rice/rice.keystore&lt;/param>
-                    &lt;param name="keystore.alias">rice&lt;/param>
-                    &lt;param name="keystore.password">r1c3pw&lt;/param>
-            </programlisting>
+                <programlisting>&lt;param name="keystore.file">/usr/local/rice/rice.keystore&lt;/param>
+&lt;param name="keystore.alias">rice&lt;/param>
+&lt;param name="keystore.password">r1c3pw&lt;/param>            </programlisting>
             </para>    
             <itemizedlist>
                 <listitem>

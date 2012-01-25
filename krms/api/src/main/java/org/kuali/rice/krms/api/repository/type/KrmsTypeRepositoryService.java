@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 
@@ -40,6 +42,7 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalStateException if the KrmsType already exists in the system
      */
     @WebMethod(operationName="createKrmsType")
+    @WebResult(name = "krmsType")
     KrmsTypeDefinition createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -51,7 +54,8 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalStateException if the KrmsType does not exist in the system
      */
     @WebMethod(operationName="updateKrmsType")
-    void updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
+    @WebResult(name = "krmsType")
+    KrmsTypeDefinition updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
@@ -92,6 +96,8 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalArgumentException if the given namespaceCode is a null or blank value
      */
     @WebMethod(operationName = "findAllTypesByNamespace")
+    @XmlElementWrapper(name = "namespaceTypes", required = true)
+    @XmlElement(name = "namespaceType", required = false)
     @WebResult(name = "namespaceTypes")
     List<KrmsTypeDefinition> findAllTypesByNamespace(
     		@WebParam(name = "namespaceCode") String namespaceCode)
@@ -103,7 +109,9 @@ public interface KrmsTypeRepositoryService {
      * @return all KRMS types
      */
     @WebMethod(operationName = "findAllTypes")
-    @WebResult(name = "allTypes")
+    @XmlElementWrapper(name = "types", required = true)
+    @XmlElement(name = "type", required = false)
+    @WebResult(name = "types")
     List<KrmsTypeDefinition> findAllTypes();
 
     /**
@@ -113,6 +121,10 @@ public interface KrmsTypeRepositoryService {
      * @return all agenda types for the given contextId
      * @throws IllegalArgumentException if the given contextId is a null or blank value
      */
+    @WebMethod(operationName = "findAllAgendaTypesByContextId")
+    @XmlElementWrapper(name = "agendaTypes", required = true)
+    @XmlElement(name = "agendaType", required = false)
+    @WebResult(name = "agendaTypes")
     List<KrmsTypeDefinition> findAllAgendaTypesByContextId(
             @WebParam(name="contextId") String contextId)
         throws RiceIllegalArgumentException;
@@ -125,6 +137,8 @@ public interface KrmsTypeRepositoryService {
      * @return agendaType or null if none is found
      * @throws IllegalArgumentException if the given agendaTypeId or contextId is a null or blank value
      */
+    @WebMethod(operationName = "getAgendaTypeByAgendaTypeIdAndContextId")
+    @WebResult(name = "type")
     KrmsTypeDefinition getAgendaTypeByAgendaTypeIdAndContextId(
             @WebParam(name="agendaTypeId") String agendaTypeId,
             @WebParam(name="contextId") String contextId)
@@ -137,6 +151,10 @@ public interface KrmsTypeRepositoryService {
      * @return all rule types for the given contextId
      * @throws IllegalArgumentException if the given contextId is a null or blank value
      */
+    @WebMethod(operationName = "findAllRuleTypesByContextId")
+    @XmlElementWrapper(name = "ruleTypes", required = true)
+    @XmlElement(name = "ruleType", required = false)
+    @WebResult(name = "ruleTypes")
     List<KrmsTypeDefinition> findAllRuleTypesByContextId(
             @WebParam(name="contextId") String contextId)
         throws RiceIllegalArgumentException;
@@ -149,6 +167,8 @@ public interface KrmsTypeRepositoryService {
      * @return ruleType or null if none is found
      * @throws IllegalArgumentException if the given ruleTypeId or contextId is a null or blank value
      */
+    @WebMethod(operationName = "getRuleTypeByRuleTypeIdAndContextId")
+    @WebResult(name = "ruleType")
     KrmsTypeDefinition getRuleTypeByRuleTypeIdAndContextId(
             @WebParam(name="ruleTypeId") String ruleTypeId,
             @WebParam(name="contextId") String contextId)
@@ -161,6 +181,10 @@ public interface KrmsTypeRepositoryService {
      * @return all action types for the given contextId
      * @throws IllegalArgumentException if the given contextId is a null or blank value
      */
+    @WebMethod(operationName = "findAllActionTypesByContextId")
+    @XmlElementWrapper(name = "actionTypes", required = true)
+    @XmlElement(name = "actionType", required = false)
+    @WebResult(name = "actionTypes")
     List<KrmsTypeDefinition> findAllActionTypesByContextId(
             @WebParam(name="contextId") String contextId)
         throws RiceIllegalArgumentException;
@@ -173,6 +197,8 @@ public interface KrmsTypeRepositoryService {
      * @return actionType or null if none is found
      * @throws IllegalArgumentException if the given actionTypeId or contextId is a null or blank value
      */
+    @WebMethod(operationName = "getActionTypeByActionTypeIdAndContextId")
+    @WebResult(name = "actionType")
     KrmsTypeDefinition getActionTypeByActionTypeIdAndContextId(
             @WebParam(name="actionTypeId") String actionTypeId,
             @WebParam(name="contextId") String contextId)
@@ -188,6 +214,7 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalArgumentException if the given attributeDefinitionId is a null or blank value
      */
     @WebMethod(operationName = "getAttributeDefinitionById")
+    @WebResult(name = "attribute")
     KrmsAttributeDefinition getAttributeDefinitionById(@WebParam(name = "attributeDefinitionId") String attributeDefinitionId)
             throws RiceIllegalArgumentException;
 
@@ -203,6 +230,7 @@ public interface KrmsTypeRepositoryService {
      * @throws RiceIllegalArgumentException if the given namespaceCode or name is a null or blank value
      */
     @WebMethod(operationName = "getAttributeDefinitionByName")
+    @WebResult(name = "attribute")
     KrmsAttributeDefinition getAttributeDefinitionByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name

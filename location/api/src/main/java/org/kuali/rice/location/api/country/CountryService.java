@@ -25,6 +25,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 
@@ -70,6 +72,8 @@ public interface CountryService {
      * @return all countries that are not restricted
      */
     @WebMethod(operationName = "findAllCountriesNotRestricted")
+    @XmlElementWrapper(name = "countriesNotRestricted", required = false)
+    @XmlElement(name = "countryNotRestricted", required = false)
     @WebResult(name = "countriesNotRestricted")
     @Cacheable(value=Country.Cache.NAME, key="'allRestricted'")
     List<Country> findAllCountriesNotRestricted();
@@ -80,7 +84,9 @@ public interface CountryService {
      * @return all countries
      */
     @WebMethod(operationName = "findAllCountries")
-    @WebResult(name = "allCountries")
+    @XmlElementWrapper(name = "countries", required = false)
+    @XmlElement(name = "country", required = false)
+    @WebResult(name = "countries")
     @Cacheable(value=Country.Cache.NAME, key="'all'")
     List<Country> findAllCountries();
 

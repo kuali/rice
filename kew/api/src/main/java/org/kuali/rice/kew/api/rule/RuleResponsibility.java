@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -63,32 +64,47 @@ public final class RuleResponsibility
 {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
+
     @XmlElement(name = Elements.PRIORITY, required = false)
     private final Integer priority;
+
     @XmlElement(name = Elements.RESPONSIBILITY_ID, required = true)
     private final String responsibilityId;
+
     @XmlElement(name = Elements.ACTION_REQUESTED_CD, required = false)
     private final String actionRequestedCd;
+
     @XmlElement(name = Elements.APPROVE_POLICY, required = false)
     private final String approvePolicy;
+
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)
     private final String principalId;
+
     @XmlElement(name = Elements.GROUP_ID, required = false)
     private final String groupId;
+
     @XmlElement(name = Elements.ROLE_NAME, required = false)
     private final String roleName;
-    @XmlElement(name = Elements.DELEGATION_RULES, required = false)
+
+    @XmlElementWrapper(name = Elements.DELEGATION_RULES, required = false)
+    @XmlElement(name = Elements.DELEGATION_RULE, required = false)
     private final List<RuleDelegation> delegationRules;
+
     @XmlElement(name = Elements.USING_ROLE, required = false)
     private final boolean usingRole;
+
     @XmlElement(name = Elements.USING_PRINCIPAL, required = false)
     private final boolean usingPrincipal;
+
     @XmlElement(name = Elements.USING_GROUP, required = false)
     private final boolean usingGroup;
+
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
     private final String objectId;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -453,6 +469,7 @@ public final class RuleResponsibility
         final static String GROUP_ID = "groupId";
         final static String ROLE_NAME = "roleName";
         final static String DELEGATION_RULES = "delegationRules";
+        final static String DELEGATION_RULE = "delegationRule";
         final static String USING_ROLE = "usingRole";
         final static String USING_PRINCIPAL = "usingPrincipal";
         final static String USING_GROUP = "usingGroup";

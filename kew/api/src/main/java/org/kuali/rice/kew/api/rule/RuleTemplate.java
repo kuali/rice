@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -55,20 +56,30 @@ public final class RuleTemplate
 
     @XmlElement(name = Elements.NAME, required = false)
     private final String name;
+
     @XmlElement(name = Elements.DESCRIPTION, required = false)
     private final String description;
+
     @XmlElement(name = Elements.DELEGATION_TEMPLATE, required = false)
     private final RuleTemplate delegationTemplate;
-    @XmlElement(name = Elements.RULE_TEMPLATE_ATTRIBUTES, required = false)
+
+    @XmlElementWrapper(name = Elements.RULE_TEMPLATE_ATTRIBUTES, required = false)
+    @XmlElement(name = Elements.RULE_TEMPLATE_ATTRIBUTE, required = false)
     private final List<RuleTemplateAttribute> ruleTemplateAttributes;
-    @XmlElement(name = Elements.RULE_TEMPLATE_OPTIONS, required = false)
+
+    @XmlElementWrapper(name = Elements.RULE_TEMPLATE_OPTIONS, required = false)
+    @XmlElement(name = Elements.RULE_TEMPLATE_OPTION, required = false)
     private final List<RuleTemplateOption> ruleTemplateOptions;
+
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
+
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
     private final String objectId;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -338,6 +349,8 @@ public final class RuleTemplate
         final static String DELEGATION_TEMPLATE = "delegationTemplate";
         final static String RULE_TEMPLATE_ATTRIBUTES = "ruleTemplateAttributes";
         final static String RULE_TEMPLATE_OPTIONS = "ruleTemplateOptions";
+        final static String RULE_TEMPLATE_ATTRIBUTE = "ruleTemplateAttribute";
+        final static String RULE_TEMPLATE_OPTION = "ruleTemplateOption";
         final static String ID = "id";
 
     }

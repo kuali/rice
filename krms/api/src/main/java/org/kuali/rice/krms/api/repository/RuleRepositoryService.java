@@ -26,6 +26,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -81,6 +83,8 @@ public interface RuleRepositoryService {
 	 * @throws IllegalArgumentException if the given list of agendaIds is null
 	 */
 	@WebMethod(operationName = "getAgendaTrees")
+    @XmlElementWrapper(name = "agendaTrees", required = true)
+    @XmlElement(name = "agendaTree", required = false)
 	@WebResult(name = "agendaTrees")
 	public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds);
 	
@@ -116,6 +120,8 @@ public interface RuleRepositoryService {
 	 * @throws IllegalArgumentException if the given list of ruleIds is null
 	 */
 	@WebMethod(operationName = "getRules")
+    @XmlElementWrapper(name = "rules", required = true)
+    @XmlElement(name = "rule", required = false)
 	@WebResult(name = "rules")
 	public List<RuleDefinition> getRules(@WebParam(name = "ruleIds") List<String> ruleIds);
 

@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -74,6 +76,8 @@ public interface PostalCodeService {
      * @throws IllegalArgumentException country code is blank
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
+    @XmlElementWrapper(name = "postalCodes", required = false)
+    @XmlElement(name = "postalCode", required = false)
     @WebResult(name = "postalCodes")
     @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #p0")
     List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode)

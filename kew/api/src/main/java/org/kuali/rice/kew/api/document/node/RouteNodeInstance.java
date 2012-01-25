@@ -56,25 +56,35 @@ public final class RouteNodeInstance extends AbstractDataTransferObject
 
     @XmlElement(name = Elements.NAME, required = false)
     private final String name;
+
     @XmlElementWrapper(name = Elements.STATE, required = false)
     @XmlElement(name = Elements.ROUTE_NODE_INSTANCE_STATE, required = false)
     private final List<RouteNodeInstanceState> state;
+
     @XmlElement(name = Elements.DOCUMENT_ID, required = false)
     private final String documentId;
+
     @XmlElement(name = Elements.BRANCH_ID, required = false)
     private final String branchId;
+
     @XmlElement(name = Elements.ROUTE_NODE_ID, required = false)
     private final String routeNodeId;
+
     @XmlElement(name = Elements.PROCESS_ID, required = false)
     private final String processId;
+
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
+
     @XmlElement(name = Elements.COMPLETE, required = false)
     private final boolean complete;
+
     @XmlElement(name = Elements.INITIAL, required = false)
     private final boolean initial;
+
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
+
     @XmlElementWrapper(name = Elements.NEXT_NODE_INSTANCES, required = false)
     @XmlElement(name = Elements.NEXT_NODE_INSTANCE, required = false)
     private final List<RouteNodeInstance> nextNodeInstances;

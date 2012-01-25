@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -82,7 +83,8 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> qualifier;
 
-    @XmlElement(name=Elements.DELEGATES, required = false)
+    @XmlElementWrapper(name = Elements.DELEGATES, required = false)
+    @XmlElement(name=Elements.DELEGATE, required = false)
     private final List<DelegateType> delegates;
 
     @SuppressWarnings("unused")
@@ -319,6 +321,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         final static String ROLE_SORTING_CODE = "roleSortingCode";
         final static String QUALIFIER = "qualifier";
         final static String DELEGATES = "delegates";
+        final static String DELEGATE = "delegate";
     }
 
     /**

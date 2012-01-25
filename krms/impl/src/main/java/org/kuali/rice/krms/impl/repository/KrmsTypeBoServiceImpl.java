@@ -66,7 +66,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
 	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
 	 */
 	@Override
-	public void updateKrmsType(KrmsTypeDefinition krmsType) {
+	public KrmsTypeDefinition updateKrmsType(KrmsTypeDefinition krmsType) {
         if (krmsType == null) {
             throw new RiceIllegalArgumentException("krmsType is null");
         }
@@ -84,7 +84,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
         	toUpdate = krmsType;
         }
         
-        businessObjectService.save(KrmsTypeBo.from(toUpdate));
+        return KrmsTypeBo.to(businessObjectService.save(KrmsTypeBo.from(toUpdate)));
 	}
 
     @Override

@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * The function repository contains information about custom functions which
@@ -68,6 +70,8 @@ public interface FunctionRepositoryService {
 	 * @throws IllegalArgumentException if the given list of functionIds is null
 	 */
 	@WebMethod(operationName = "getFunctions")
+    @XmlElementWrapper(name = "functions", required = true)
+    @XmlElement(name = "function", required = false)
 	@WebResult(name = "functions")
 	public List<FunctionDefinition> getFunctions(@WebParam(name = "functionIds") List<String> functionIds);
 

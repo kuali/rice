@@ -58,28 +58,39 @@ public final class RuleReportCriteria
 
     @XmlElement(name = Elements.RULE_DESCRIPTION, required = false)
     private final String ruleDescription;
+
     @XmlElement(name = Elements.DOCUMENT_TYPE_NAME, required = false)
     private final String documentTypeName;
+
     @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
     private final String ruleTemplateName;
+
     @XmlElementWrapper(name = Elements.ACTION_REQUEST_CODES, required = false)
     @XmlElement(name = Elements.ACTION_REQUEST_CODE, required = false)
     private final List<String> actionRequestCodes;
+
     @XmlElement(name = Elements.RESPONSIBLE_PRINCIPAL_ID, required = false)
     private final String responsiblePrincipalId;
+
     @XmlElement(name = Elements.RESPONSIBLE_GROUP_ID, required = false)
     private final String responsibleGroupId;
+
     @XmlElement(name = Elements.RESPONSIBLE_ROLE_NAME, required = false)
     private final String responsibleRoleName;
+
     @XmlElement(name = Elements.RULE_EXTENSIONS, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> ruleExtensions;
+
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
+
     @XmlElement(name = Elements.CONSIDER_GROUP_MEMBERSHIP, required = false)
     private final boolean considerGroupMembership;
+
     @XmlElement(name = Elements.INCLUDE_DELEGATIONS, required = false)
     private final boolean includeDelegations;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;

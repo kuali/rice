@@ -48,6 +48,8 @@ public interface RemotableAttributeOwner {
      * Will not return null.
      */
     @WebMethod(operationName="getAttributeFields")
+    @XmlElementWrapper(name = "attributeFields", required = true)
+    @XmlElement(name = "attributeField", required = false)
     @WebResult(name = "attributeFields")
     List<RemotableAttributeField> getAttributeFields( @WebParam(name = "krmsTypeId") String krmsTypeId )
             throws RiceIllegalArgumentException;

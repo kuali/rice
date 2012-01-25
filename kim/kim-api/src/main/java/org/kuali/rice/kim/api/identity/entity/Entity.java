@@ -86,50 +86,68 @@ public final class Entity extends AbstractDataTransferObject
 {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
+
     @XmlElementWrapper(name = Elements.PRINCIPALS, required = false)
     @XmlElement(name = Elements.PRINCIPAL, required = false)
     private final List<Principal> principals;
+
     @XmlElementWrapper(name = Elements.ENTITY_TYPE_CONTACT_INFOS, required = false)
     @XmlElement(name = Elements.ENTITY_TYPE_CONTACT_INFO, required = false)
     private final List<EntityTypeContactInfo> entityTypeContactInfos;
+
     @XmlElementWrapper(name = Elements.EXTERNAL_IDENTIFIERS, required = false)
     @XmlElement(name = Elements.EXTERNAL_IDENTIFIER, required = false)
     private final List<EntityExternalIdentifier> externalIdentifiers;
+
     @XmlElementWrapper(name = Elements.AFFILIATIONS, required = false)
     @XmlElement(name = Elements.AFFILIATION, required = false)
     private final List<EntityAffiliation> affiliations;
+
     @XmlElementWrapper(name = Elements.NAMES, required = false)
     @XmlElement(name = Elements.NAME, required = false)
     private final List<EntityName> names;
+
     @XmlElementWrapper(name = Elements.EMPLOYMENT_INFORMATION, required = false)
     @XmlElement(name = Elements.EMPLOYMENT, required = false)
     private final List<EntityEmployment> employmentInformation;
+
     @XmlElement(name = Elements.PRIVACY_PREFERENCES, required = false)
     private final EntityPrivacyPreferences privacyPreferences;
+
     @XmlElement(name = Elements.BIO_DEMOGRAPHICS, required = false)
     private final EntityBioDemographics bioDemographics;
+
     @XmlElementWrapper(name = Elements.CITIZENSHIPS, required = false)
     @XmlElement(name = Elements.CITIZENSHIP, required = false)
     private final List<EntityCitizenship> citizenships;
+
     @XmlElement(name = Elements.PRIMARY_EMPLOYMENT, required = false)
     private final EntityEmployment primaryEmployment;
+
     @XmlElement(name = Elements.DEFAULT_AFFILIATION, required = false)
     private final EntityAffiliation defaultAffiliation;
+
     @XmlElement(name = Elements.DEFAULT_NAME, required = false)
     private final EntityName defaultName;
+
     @XmlElementWrapper(name = Elements.ETHNICITIES, required = false)
     @XmlElement(name = Elements.ETHNICITY, required = false)
     private final List<EntityEthnicity> ethnicities;
+
     @XmlElementWrapper(name = Elements.RESIDENCIES, required = false)
     @XmlElement(name = Elements.RESIDENCY, required = false)
     private final List<EntityResidency> residencies;
+
     @XmlElementWrapper(name = Elements.VISAS, required = false)
     @XmlElement(name = Elements.VISA, required = false)
     private final List<EntityVisa> visas;
+
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
     private final String objectId;
+
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
 

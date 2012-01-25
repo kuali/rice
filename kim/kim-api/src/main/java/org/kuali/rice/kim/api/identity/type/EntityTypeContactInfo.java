@@ -66,31 +66,43 @@ public final class EntityTypeContactInfo extends AbstractDataTransferObject
 
     @XmlElement(name = Elements.ENTITY_ID, required = true)
     private final String entityId;
+
     @XmlElement(name = Elements.ENTITY_TYPE_CODE, required = true)
     private final String entityTypeCode;
+
     @XmlElement(name = Elements.ENTITY_TYPE, required = false)
     private final CodedAttribute entityType;
+
     @XmlElementWrapper(name = Elements.ADDRESSES, required = false)
     @XmlElement(name = Elements.ADDRESS, required = false)
     private final List<EntityAddress> addresses;
+
     @XmlElementWrapper(name = Elements.EMAIL_ADDRESSES, required = false)
     @XmlElement(name = Elements.EMAIL_ADDRESS, required = false)
     private final List<EntityEmail> emailAddresses;
+
     @XmlElementWrapper(name = Elements.PHONE_NUMBERS, required = false)
     @XmlElement(name = Elements.PHONE_NUMBER, required = false)
     private final List<EntityPhone> phoneNumbers;
+
     @XmlElement(name = Elements.DEFAULT_ADDRESS, required = false)
     private final EntityAddress defaultAddress;
+
     @XmlElement(name = Elements.DEFAULT_EMAIL_ADDRESS, required = false)
     private final EntityEmail defaultEmailAddress;
+
     @XmlElement(name = Elements.DEFAULT_PHONE_NUMBER, required = false)
     private final EntityPhone defaultPhoneNumber;
+
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
+
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
     private final String objectId;
+
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;

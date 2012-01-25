@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -75,7 +76,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> attributes;
 
-    @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTIONS, required = false)
+    @XmlElementWrapper(name = Elements.ROLE_RESPONSIBILITY_ACTIONS, required = false)
+    @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTION, required = false)
     private final List<RoleResponsibilityAction> roleResponsibilityActions;
 
     @XmlElement(name = Elements.MEMBER_ID, required = true)
@@ -437,6 +439,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         final static String ROLE_ID = "roleId";
         final static String ATTRIBUTES = "attributes";
         final static String ROLE_RESPONSIBILITY_ACTIONS = "roleResponsibilityActions";
+        final static String ROLE_RESPONSIBILITY_ACTION = "roleResponsibilityAction";
         final static String MEMBER_ID = "memberId";
         final static String TYPE_CODE = "typeCode";
         final static String MEMBER_NAME = "memberName";

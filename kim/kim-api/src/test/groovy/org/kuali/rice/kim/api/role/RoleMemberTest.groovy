@@ -68,6 +68,7 @@ class RoleMemberTest {
          <roleId>${ROLE_ID}</roleId>
          <attributes/>
          <roleResponsibilityActions>
+           <roleResponsibilityAction>
             <id>${RoleResponsibilityActionTest.ID}</id>
             <roleResponsibilityId>${RoleResponsibilityActionTest.ROLE_RESPONSIBILITY_ID}</roleResponsibilityId>
             <roleMemberId>${RoleResponsibilityActionTest.ROLE_MEMBER_ID}</roleMemberId>
@@ -83,6 +84,7 @@ class RoleMemberTest {
                 <versionNumber>1</versionNumber>
             </roleResponsibility>
             <versionNumber>1</versionNumber>
+          </roleResponsibilityAction>
          </roleResponsibilityActions>
          <memberId>${MEMBER_ID}</memberId>
          <typeCode>${MEMBER_TYPE_CODE}</typeCode>

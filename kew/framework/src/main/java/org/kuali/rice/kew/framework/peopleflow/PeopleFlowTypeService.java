@@ -50,6 +50,8 @@ public interface PeopleFlowTypeService {
      */
     @WebMethod(operationName="filterToSelectableRoleIds")
     @WebResult(name = "selectableRoleIds")
+    @XmlElementWrapper(name = "selectableRoleIds", required = false)
+    @XmlElement(name = "selectableRoleId", required = false)
     List<String> filterToSelectableRoleIds(
             @WebParam(name = "kewTypeId") String kewTypeId,
             @WebParam(name = "roleIds") List<String> roleIds
@@ -84,6 +86,8 @@ public interface PeopleFlowTypeService {
      */
     @WebMethod(operationName="getAttributeFields")
     @WebResult(name = "attributeFields")
+    @XmlElementWrapper(name = "attributeFields", required = false)
+    @XmlElement(name = "attributeField", required = false)
     List<RemotableAttributeField> getAttributeFields( @WebParam(name = "kewTypeId") String kewTypeId );
 
     /**

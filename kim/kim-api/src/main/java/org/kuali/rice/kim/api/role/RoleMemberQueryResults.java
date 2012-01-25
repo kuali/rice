@@ -45,7 +45,7 @@ import java.util.List;
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public class RoleMemberQueryResults extends AbstractDataTransferObject implements QueryResults<RoleMember> {
 
-	@XmlElementWrapper(name = Elements.RESULTS, required = false)
+    @XmlElementWrapper(name = Elements.RESULTS, required = false)
 	@XmlElement(name = Elements.RESULT_ELEM, required = false)
 	private final List<RoleMember> results;
 

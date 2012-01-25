@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -64,35 +65,51 @@ public final class ResponsibilityAction extends AbstractDataTransferObject
 
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)
     private final String principalId;
+
     @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTION_ID, required = false)
     private final String roleResponsibilityActionId;
+
     @XmlElement(name = Elements.PARALLEL_ROUTING_GROUPING_CODE, required = false)
     private final String parallelRoutingGroupingCode;
+
     @XmlElement(name = Elements.ACTION_TYPE_CODE, required = false)
     private final String actionTypeCode;
+
     @XmlElement(name = Elements.ACTION_POLICY_CODE, required = false)
     private final String actionPolicyCode;
+
     @XmlElement(name = Elements.PRIORITY_NUMBER, required = false)
     private final Integer priorityNumber;
+
     @XmlElement(name = Elements.GROUP_ID, required = true)
     private final String groupId;
+
     @XmlElement(name = Elements.MEMBER_ROLE_ID, required = true)
     private final String memberRoleId;
+
     @XmlElement(name = Elements.RESPONSIBILITY_NAME, required = true)
     private final String responsibilityName;
+
     @XmlElement(name = Elements.RESPONSIBILITY_ID, required = true)
     private final String responsibilityId;
+
     @XmlElement(name = Elements.RESPONSIBILITY_NAMESPACE_CODE, required = true)
     private final String responsibilityNamespaceCode;
+
     @XmlElement(name = Elements.FORCE_ACTION, required = true)
     private final boolean forceAction;
+
     @XmlElement(name = Elements.QUALIFIER, required = true)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> qualifier;
-    @XmlElement(name = Elements.DELEGATES, required = true)
+
+    @XmlElementWrapper(name = Elements.DELEGATES, required = false)
+    @XmlElement(name = Elements.DELEGATE, required = true)
     private final List<DelegateType> delegates;
+
     @XmlElement(name = Elements.ROLE_ID, required = true)
     private final String roleId;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -487,6 +504,7 @@ public final class ResponsibilityAction extends AbstractDataTransferObject
         final static String FORCE_ACTION = "forceAction";
         final static String QUALIFIER = "qualifier";
         final static String DELEGATES = "delegates";
+        final static String DELEGATE = "delegate";
         final static String ROLE_ID = "roleId";
 
     }

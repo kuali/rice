@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -69,7 +70,8 @@ public final class KimType extends AbstractDataTransferObject implements KimType
     @XmlElement(name = KimType.Elements.NAME, required = false)
     private final String name;
 
-    @XmlElement(name = KimType.Elements.ATTRIBUTE_DEFNS, required = false)
+    @XmlElementWrapper(name = Elements.ATTRIBUTE_DEFNS, required = false)
+    @XmlElement(name = KimType.Elements.ATTRIBUTE_DEFN, required = false)
     private final List<KimTypeAttribute> attributeDefinitions;
 
     @XmlElement(name = KimType.Elements.ACTIVE, required = false)
@@ -370,6 +372,7 @@ public final class KimType extends AbstractDataTransferObject implements KimType
         static final String NAMESPACE_CODE = "namespaceCode";
         static final String NAME = "name";
         static final String ATTRIBUTE_DEFNS = "attributeDefinitions";
+        static final String ATTRIBUTE_DEFN = "attributeDefinition";
         static final String ACTIVE = "active";
     }
 

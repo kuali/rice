@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -51,26 +52,41 @@ public final class RoutingReportCriteria extends AbstractDataTransferObject impl
 
     @XmlElement(name = Elements.DOCUMENT_ID, required = false)
     private final String documentId;
+
     @XmlElement(name = Elements.TARGET_NODE_NAME, required = false)
     private final String targetNodeName;
-    @XmlElement(name = Elements.TARGET_PRINCIPAL_IDS, required = false)
+
+    @XmlElementWrapper(name = Elements.TARGET_PRINCIPAL_IDS, required = false)
+    @XmlElement(name = Elements.TARGET_PRINCIPAL_ID, required = false)
     private final List<String> targetPrincipalIds;
+
     @XmlElement(name = Elements.ROUTING_PRINCIPAL_ID, required = false)
     private final String routingPrincipalId;
+
     @XmlElement(name = Elements.DOCUMENT_TYPE_NAME, required = false)
     private final String documentTypeName;
+
     @XmlElement(name = Elements.XML_CONTENT, required = false)
     private final String xmlContent;
-    @XmlElement(name = Elements.RULE_TEMPLATE_NAMES, required = false)
+
+    @XmlElementWrapper(name = Elements.RULE_TEMPLATE_NAMES, required = false)
+    @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
     private final List<String> ruleTemplateNames;
-    @XmlElement(name = Elements.NODE_NAMES, required = false)
+
+    @XmlElementWrapper(name = Elements.NODE_NAMES, required = false)
+    @XmlElement(name = Elements.NODE_NAME, required = false)
     private final List<String> nodeNames;
-    @XmlElement(name = Elements.ACTIONS_TO_TAKE, required = false)
+
+    @XmlElementWrapper(name = Elements.ACTIONS_TO_TAKE, required = false)
+    @XmlElement(name = Elements.ACTION_TO_TAKE, required = false)
     private final List<RoutingReportActionToTake> actionsToTake;
+
     @XmlElement(name = Elements.ACTIVATE_REQUESTS, required = false)
     private final boolean activateRequests;
+
     @XmlElement(name = Elements.FLATTEN_NODES, required = false)
     private final boolean flattenNodes;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -368,12 +384,16 @@ public final class RoutingReportCriteria extends AbstractDataTransferObject impl
         final static String DOCUMENT_ID = "documentId";
         final static String TARGET_NODE_NAME = "targetNodeName";
         final static String TARGET_PRINCIPAL_IDS = "targetPrincipalIds";
+        final static String TARGET_PRINCIPAL_ID = "targetPrincipalId";
         final static String ROUTING_PRINCIPAL_ID = "routingPrincipalId";
         final static String DOCUMENT_TYPE_NAME = "documentTypeName";
         final static String XML_CONTENT = "xmlContent";
         final static String RULE_TEMPLATE_NAMES = "ruleTemplateNames";
+        final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
         final static String NODE_NAMES = "nodeNames";
+        final static String NODE_NAME = "nodeName";
         final static String ACTIONS_TO_TAKE = "actionsToTake";
+        final static String ACTION_TO_TAKE = "actionToTake";
         final static String ACTIVATE_REQUESTS = "activateRequests";
         final static String FLATTEN_NODES = "flattenNodes";
     }

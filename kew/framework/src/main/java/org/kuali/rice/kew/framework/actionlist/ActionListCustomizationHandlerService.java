@@ -23,6 +23,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -58,8 +59,9 @@ public interface ActionListCustomizationHandlerService {
      * @throws RiceIllegalArgumentException if any of the action items ???
      */
     @WebMethod(operationName = "customizeActionList")
-    @WebResult(name = "actionList")
-    @XmlElement(name = "actionList", required = false)
+    @WebResult(name = "actionListCustomizations")
+    @XmlElementWrapper(name = "actionListCustomizations", required = false)
+    @XmlElement(name = "actionListCustomization", required = false)
     List<ActionItemCustomization> customizeActionList(
             @WebParam(name = "principalId") String principalId, 
             @WebParam(name = "actionItems") List<ActionItem> actionItems)

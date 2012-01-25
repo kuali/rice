@@ -341,7 +341,9 @@ public interface PermissionService {
 	 * component and permission template name.
 	 */
 	@WebMethod(operationName = "findPermsByNamespaceCodeTemplateName")
-    @WebResult(name = "permission")
+    @XmlElementWrapper(name = "permissions", required = true)
+    @XmlElement(name = "permission", required = false)
+    @WebResult(name = "permissions")
     @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #p1 + '|' + 'templateName=' + #p2")
     List<Permission> findPermsByNamespaceCodeTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "templateName") String templateName) throws RiceIllegalArgumentException;

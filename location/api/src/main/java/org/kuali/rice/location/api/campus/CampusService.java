@@ -21,8 +21,11 @@ import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 /**
@@ -43,6 +46,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampus")
+    @WebResult(name = "campus")
     @Cacheable(value=Campus.Cache.NAME, key="'code=' + #p0")
     Campus getCampus(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
@@ -50,6 +54,9 @@ public interface CampusService {
      * This will return all {@link Campus}.
      */
     @WebMethod(operationName="findAllCampuses")
+    @XmlElementWrapper(name = "campuses", required = false)
+    @XmlElement(name = "campus", required = false)
+    @WebResult(name = "campuses")
     @Cacheable(value=Campus.Cache.NAME, key="'all'")
     List<Campus> findAllCampuses();
     
@@ -63,6 +70,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampusType")
+    @WebResult(name = "campusType")
     @Cacheable(value=CampusType.Cache.NAME, key="'code=' + #p0")
     CampusType getCampusType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
@@ -70,6 +78,9 @@ public interface CampusService {
      * This will return all {@link CampusType}.
      */
     @WebMethod(operationName="findAllCampusTypes")
+    @XmlElementWrapper(name = "campusTypes", required = false)
+    @XmlElement(name = "campusType", required = false)
+    @WebResult(name = "campusTypes")
     @Cacheable(value=CampusType.Cache.NAME, key="'all'")
     List<CampusType> findAllCampusTypes();
 }

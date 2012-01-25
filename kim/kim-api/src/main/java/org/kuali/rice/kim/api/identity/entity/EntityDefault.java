@@ -65,28 +65,38 @@ import java.util.List;
 public class EntityDefault extends AbstractDataTransferObject {
     @XmlElement(name = Elements.ENTITY_ID, required = false)
     private final String entityId;
+
     @XmlElement(name = Elements.NAME, required = false)
     private final EntityName name;
+
     @XmlElementWrapper(name = Elements.PRINCIPALS, required = false)
     @XmlElement(name = Elements.PRINCIPAL, required = false)
     private final List<Principal> principals;
+
     @XmlElementWrapper(name = Elements.ENTITY_TYPE_CONTACT_INFOS, required = false)
     @XmlElement(name = Elements.ENTITY_TYPE_CONTACT_INFO, required = false)
     private final List<EntityTypeContactInfoDefault> entityTypeContactInfos;
+
     @XmlElementWrapper(name = Elements.AFFILIATIONS, required = false)
     @XmlElement(name = Elements.AFFILIATION, required = false)
     private final List<EntityAffiliation> affiliations;
+
     @XmlElement(name = Elements.DEFAULT_AFFILIATION, required = false)
     private final EntityAffiliation defaultAffiliation;
+
     @XmlElement(name = Elements.EMPLOYMENT, required = false)
     private final EntityEmployment employment;
+
     @XmlElementWrapper(name = Elements.EXTERNAL_IDENTIFIERS, required = false)
     @XmlElement(name = Elements.EXTERNAL_IDENTIFIER, required = false)
     private final List<EntityExternalIdentifier> externalIdentifiers;
+
     @XmlElement(name = Elements.PRIVACY_PREFERENCES, required = false)
     private final EntityPrivacyPreferences privacyPreferences;
+
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;

@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 @WebService(name = "KEWTypeService", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
@@ -83,6 +85,8 @@ public interface KewTypeRepositoryService {
      */
     @WebMethod(operationName = "findAllTypesByNamespace")
     @WebResult(name = "namespaceTypes")
+    @XmlElementWrapper(name = "namespaceTypes", required = false)
+    @XmlElement(name = "namespaceType", required = false)
     List<KewTypeDefinition> findAllTypesByNamespace(
     		@WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
 
@@ -92,7 +96,9 @@ public interface KewTypeRepositoryService {
      * @return all KEW types
      */
     @WebMethod(operationName = "findAllTypes")
-    @WebResult(name = "allTypes")
+    @WebResult(name = "types")
+    @XmlElementWrapper(name = "types", required = false)
+    @XmlElement(name = "type", required = false)
     List<KewTypeDefinition> findAllTypes();
     
     /**

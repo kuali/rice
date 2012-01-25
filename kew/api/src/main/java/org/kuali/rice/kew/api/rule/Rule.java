@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
@@ -63,32 +64,48 @@ public final class Rule
 {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
+
     @XmlElement(name = Elements.NAME, required = false)
     private final String name;
+
     @XmlElement(name = Elements.RULE_TEMPLATE, required = false)
     private final RuleTemplate ruleTemplate;
+
     @XmlElement(name = Elements.ACTIVE, required = false)
     private final boolean active;
+
     @XmlElement(name = Elements.DESCRIPTION, required = false)
     private final String description;
+
     @XmlElement(name = Elements.DOC_TYPE_NAME, required = false)
     private final String docTypeName;
+
     @XmlElement(name = Elements.FROM_DATE, required = false)
     private final DateTime fromDate;
+
     @XmlElement(name = Elements.TO_DATE, required = false)
     private final DateTime toDate;
+
     @XmlElement(name = Elements.FORCE_ACTION, required = false)
     private final boolean forceAction;
+
     @XmlElement(name = Elements.PREVIOUS_VERSION_ID, required = false)
     private final String previousRuleId;
-    @XmlElement(name = Elements.RULE_RESPONSIBILITIES, required = false)
+
+    @XmlElementWrapper(name = Elements.RULE_RESPONSIBILITIES, required = false)
+    @XmlElement(name = Elements.RULE_RESPONSIBILITY, required = false)
     private final List<RuleResponsibility> ruleResponsibilities;
-    @XmlElement(name = Elements.RULE_EXTENSIONS, required = false)
+
+    @XmlElementWrapper(name = Elements.RULE_EXTENSIONS, required = false)
+    @XmlElement(name = Elements.RULE_EXTENSION, required = false)
     private final List<RuleExtension> ruleExtensions;
+
     @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
     private final String ruleTemplateName;
+
     @XmlElement(name = Elements.RULE_EXPRESSION_DEF, required = false)
     private final RuleExpression ruleExpressionDef;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -459,7 +476,9 @@ public final class Rule
         final static String TO_DATE = "toDate";
         final static String FORCE_ACTION = "forceAction";
         final static String RULE_RESPONSIBILITIES = "ruleResponsibilities";
+        final static String RULE_RESPONSIBILITY = "ruleResponsibility";
         final static String RULE_EXTENSIONS = "ruleExtensions";
+        final static String RULE_EXTENSION = "ruleExtension";
         final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
         final static String RULE_EXPRESSION_DEF = "ruleExpressionDef";
         final static String PREVIOUS_VERSION_ID = "previousRuleId";

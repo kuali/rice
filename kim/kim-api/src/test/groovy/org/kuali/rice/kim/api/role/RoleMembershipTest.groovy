@@ -63,6 +63,7 @@ public class RoleMembershipTest {
         <roleSortingCode>${ROLE_SORTING_CODE}</roleSortingCode>
         <qualifier></qualifier>
         <delegates>
+          <delegate>
             <roleId>${DelegateTypeTest.ROLE_ID}</roleId>
             <delegationId>${DelegateTypeTest.DELEGATION_ID}</delegationId>
             <delegationTypeCode>${DelegateTypeTest.DELEGATION_TYPE.code}</delegationTypeCode>
@@ -85,6 +86,7 @@ public class RoleMembershipTest {
               </member>
             </members>
             <active>${DelegateTypeTest.ACTIVE}</active>
+          </delegate>
         </delegates>
     </roleMembership>
     """

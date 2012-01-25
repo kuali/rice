@@ -25,6 +25,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 @WebService(name = "namespaceService", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
@@ -54,6 +56,8 @@ public interface NamespaceService {
      */
     @WebMethod(operationName = "findAllNamespaces")
     @WebResult(name = "namespaces")
+    @XmlElementWrapper(name = "namespaces", required = true)
+    @XmlElement(name = "namespace", required = false)
     @Cacheable(value=Namespace.Cache.NAME, key="'all'")
     List<Namespace> findAllNamespaces();
 }

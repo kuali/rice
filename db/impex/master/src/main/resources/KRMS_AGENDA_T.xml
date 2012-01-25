@@ -2,8 +2,7 @@
 <!DOCTYPE dataset SYSTEM "data.dtd">
 <dataset>
     <KRMS_AGENDA_T ACTV="Y" AGENDA_ID="T1000" CNTXT_ID="CONTEXT1"
-        INIT_AGENDA_ITM_ID="T1000" NM="My Fabulous Agenda"
-        TYP_ID="T1005" VER_NBR="1"/>
+        INIT_AGENDA_ITM_ID="T1000" NM="My Fabulous Agenda" VER_NBR="1"/>
     <KRMS_AGENDA_T ACTV="Y" AGENDA_ID="T1001" CNTXT_ID="CONTEXT1"
         INIT_AGENDA_ITM_ID="T1007" NM="SimpleAgendaCompoundProp"
         TYP_ID="T1004" VER_NBR="1"/>

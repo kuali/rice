@@ -31,6 +31,7 @@ import org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 
 import java.util.Collections;
@@ -57,8 +58,13 @@ public class ValidationRuleTest {
     ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionFlag.LOG_EXECUTION, true);
     private ActionMock actionMock;
 
+    private ComparisonOperator operatorEquals;
+
     @Before
     public void setUp() {
+        operatorEquals = ComparisonOperator.EQUALS;
+        operatorEquals.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+
         actionMock = new ActionMock("a1");
         actionMock.resetActionsFired();
         facts.put(term, "true");
@@ -67,7 +73,7 @@ public class ValidationRuleTest {
     @Test
     public void testValidRulePassesActionDoesntFire() {
         Rule validationRule = new ValidationRule(ValidationRuleType.VALID, "testValidRulePassesActionDoesntFire",
-                new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "true"), Collections
+                new ComparableTermBasedProposition(operatorEquals, term, "true"), Collections
                 .<Action>singletonList(actionMock));
         assertTrue(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
                 termResolutionEngine)));
@@ -77,7 +83,7 @@ public class ValidationRuleTest {
     @Test
     public void testValidRuleFailsActionFires() {
         Rule validationRule = new ValidationRule(ValidationRuleType.VALID, "testValidRuleFailsActionFires",
-                new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "false"), Collections
+                new ComparableTermBasedProposition(operatorEquals, term, "false"), Collections
                 .<Action>singletonList(actionMock));
         assertFalse(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
                 termResolutionEngine)));
@@ -87,7 +93,7 @@ public class ValidationRuleTest {
     @Test
     public void testInvalidRulePassesActionFires() {
         Rule validationRule = new ValidationRule(ValidationRuleType.INVALID, "testInvalidRulePassesActionFires",
-                new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "true"), Collections
+                new ComparableTermBasedProposition(operatorEquals, term, "true"), Collections
                 .<Action>singletonList(actionMock));
         assertTrue(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
                 termResolutionEngine)));
@@ -97,7 +103,7 @@ public class ValidationRuleTest {
     @Test
     public void testInvalidRuleFalseActionDoesntFire() {
         Rule validationRule = new ValidationRule(ValidationRuleType.INVALID, "testInvalidRuleFalseActionDoesntFire",
-                new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "false"), Collections
+                new ComparableTermBasedProposition(operatorEquals, term, "false"), Collections
                 .<Action>singletonList(actionMock));
         assertFalse(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
                 termResolutionEngine)));

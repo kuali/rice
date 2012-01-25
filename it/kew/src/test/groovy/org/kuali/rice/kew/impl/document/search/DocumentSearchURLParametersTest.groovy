@@ -167,11 +167,11 @@ class DocumentSearchURLParametersTest extends DocumentSearchTestBase {
         assertEquals("Document type was not parsed from request params", DOCUMENT_TYPE_NAME, crit.documentTypeName)
         // dateCreated gets mapped directly into criteria object
         assertEquals(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("11/11/11")).withMillisOfDay(0), crit.dateCreatedFrom)
-        assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/12")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
+        assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/15")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
         assertEquals(["string searchable attr"], crit.documentAttributeValues[TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY])
         assertEquals(["1"], crit.documentAttributeValues[TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY])
         assertEquals(["2.0"], crit.documentAttributeValues[TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY])
-        assertEquals(["09/09/09>..<12/12/15"], crit.documentAttributeValues[TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY])
+        assertEquals(["09/09/09>..<12/12/13"], crit.documentAttributeValues[TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY])
     }
 
     /**
@@ -204,7 +204,7 @@ class DocumentSearchURLParametersTest extends DocumentSearchTestBase {
         assertEquals("Document type was not parsed from request params", DOCUMENT_TYPE_NAME, crit.documentTypeName)
         // dateCreated gets mapped directly into criteria object
         assertEquals(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("11/11/11")).withMillisOfDay(0), crit.dateCreatedFrom)
-        assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/12")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
+        assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/15")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
         assertEquals(["string searchable attr"], crit.documentAttributeValues[TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY])
         assertEquals(["1"], crit.documentAttributeValues[TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY])
         assertEquals(["2.0"], crit.documentAttributeValues[TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY])

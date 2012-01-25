@@ -51,6 +51,7 @@ import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl;
 
 public class ResultLoggingTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
@@ -59,8 +60,13 @@ public class ResultLoggingTest {
 	public void integrationTest() {
 
 		// build a simple rule
-		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1));
-		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostTerm, Integer.valueOf(1000));
+        ComparisonOperator greaterThan = ComparisonOperator.GREATER_THAN;
+        greaterThan.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+        ComparisonOperator lessThan = ComparisonOperator.LESS_THAN;
+        lessThan.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+
+		Proposition prop1 = new ComparableTermBasedProposition(greaterThan, totalCostTerm, Integer.valueOf(1));
+		Proposition prop2 = new ComparableTermBasedProposition(lessThan, totalCostTerm, Integer.valueOf(1000));
 		CompoundProposition compoundProp1 = new CompoundProposition(LogicalOperator.AND, Arrays.asList(prop1, prop2));
 		
 		Action action1 = new SayHelloAction();

@@ -64,6 +64,8 @@ public enum ComparisonOperator implements Coded {
 	
 	private final String code;
 
+    ComparisonOperatorService comparisonOperatorService;
+
     /**
      * Create a ComparisonOperator from the given code
      * @param code code the ComparisonOperator should be of.
@@ -106,7 +108,9 @@ public enum ComparisonOperator implements Coded {
      * @return boolean value of comparison results based on the type of operator.
      */
 	public boolean compare(Object lhs, Object rhs) {
-        ComparisonOperatorService comparisonOperatorService = KrmsApiServiceLocator.getComparisonOperatorService();
+        if (comparisonOperatorService == null) {
+            setComparisonOperatorService(KrmsApiServiceLocator.getComparisonOperatorService());
+        }
         int result = comparisonOperatorService.compare(lhs, rhs);
 
         if (this == EQUALS) {
@@ -139,6 +143,10 @@ public enum ComparisonOperator implements Coded {
     public static final Collection<String> OPERATOR_NAMES =
         Collections.unmodifiableCollection(Arrays.asList(EQUALS.name(), NOT_EQUALS.name(), GREATER_THAN.name(),
                 GREATER_THAN_EQUAL.name(), LESS_THAN.name(), LESS_THAN_EQUAL.name()));
+
+    public void setComparisonOperatorService(ComparisonOperatorService comparisonOperatorService) {
+        this.comparisonOperatorService = comparisonOperatorService;
+    }
 
     /**
      *

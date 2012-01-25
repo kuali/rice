@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
@@ -49,16 +50,28 @@ import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl;
 
 public class KRMSTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
+    private ComparisonOperator operatorGreaterThan;
+    private ComparisonOperator operatorLessThan;
+
+    @Before
+    public void setUp() {
+        operatorGreaterThan = ComparisonOperator.GREATER_THAN;
+        operatorGreaterThan.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+        operatorLessThan = ComparisonOperator.LESS_THAN;
+        operatorLessThan.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+    }
+
 	@Test
 	public void compoundPropositionTest() {
 
-		Proposition prop1 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1));
-		Proposition prop2 = new ComparableTermBasedProposition(ComparisonOperator.LESS_THAN, totalCostTerm, Integer.valueOf(1000));
-		Proposition prop3 = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1000));
+		Proposition prop1 = new ComparableTermBasedProposition(operatorGreaterThan, totalCostTerm, Integer.valueOf(1));
+		Proposition prop2 = new ComparableTermBasedProposition(operatorLessThan, totalCostTerm, Integer.valueOf(1000));
+		Proposition prop3 = new ComparableTermBasedProposition(operatorGreaterThan, totalCostTerm, Integer.valueOf(1000));
 		CompoundProposition compoundProp1 = new CompoundProposition(LogicalOperator.AND, Arrays.asList(prop1, prop2, prop3));
 		
 		Rule rule = new BasicRule("InBetween",compoundProp1, null);

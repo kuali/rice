@@ -52,19 +52,27 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl;
 
 public class AgendaTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
+	// totalCostTerm will resolve to the Integer value 5
+    private ComparisonOperator operatorGreaterThan;
+	private Proposition trueProp;
+	private Proposition falseProp;
+
 	@Before
 	public void setUp() {
+        operatorGreaterThan = ComparisonOperator.GREATER_THAN;
+        operatorGreaterThan.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+        trueProp = new ComparableTermBasedProposition(operatorGreaterThan, totalCostTerm, Integer.valueOf(1));
+        falseProp = new ComparableTermBasedProposition(operatorGreaterThan, totalCostTerm, Integer.valueOf(1000));
+
 		ActionMock.resetActionsFired();
 	}
 
-	// totalCostTerm will resolve to the Integer value 5
-	private Proposition trueProp = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1));
-	private Proposition falseProp = new ComparableTermBasedProposition(ComparisonOperator.GREATER_THAN, totalCostTerm, Integer.valueOf(1000));
-	
+
 	@Test
 	public void testAllRulesAgenda() {
 

@@ -52,13 +52,18 @@ import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl;
 
 public class CollectionOfComparablesTermBasedPropositionTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 	
-	
+    private ComparisonOperator operatorGreaterThan;
+
 	@Before
 	public void setUp() {
+        operatorGreaterThan = ComparisonOperator.GREATER_THAN;
+        operatorGreaterThan.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
+
 		ActionMock.resetActionsFired();
 	}
 
@@ -68,17 +73,17 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		// True cases:
 		
 		// this can be read as "for the collection (100, 1000), all elements are greater than 1"
-		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 1f);
+		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.ALL, operatorGreaterThan, 1f);
 		
-		assertRuleTrue(Arrays.asList(100f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 1f);
+		assertRuleTrue(Arrays.asList(100f), CollectionOperator.ALL, operatorGreaterThan, 1f);
 		// This can bend the intuition a bit, but this behavior is correct -- see Wikipedia's entry on the empty set
-		assertRuleTrue(Arrays.<Float>asList(), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 1f);
+		assertRuleTrue(Arrays.<Float>asList(), CollectionOperator.ALL, operatorGreaterThan, 1f);
 		
 		// False cases:
-		assertRuleFalse(Arrays.asList(100f, 1000f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 10000f);
-		assertRuleFalse(Arrays.asList(100f, 1000f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 500f);
-		assertRuleFalse(Arrays.asList(1000f, 100f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 500f);
-		assertRuleFalse(Arrays.asList(100f), CollectionOperator.ALL, ComparisonOperator.GREATER_THAN, 10000f);
+		assertRuleFalse(Arrays.asList(100f, 1000f), CollectionOperator.ALL, operatorGreaterThan, 10000f);
+		assertRuleFalse(Arrays.asList(100f, 1000f), CollectionOperator.ALL, operatorGreaterThan, 500f);
+		assertRuleFalse(Arrays.asList(1000f, 100f), CollectionOperator.ALL, operatorGreaterThan, 500f);
+		assertRuleFalse(Arrays.asList(100f), CollectionOperator.ALL, operatorGreaterThan, 10000f);
 
 	}
 	
@@ -88,15 +93,15 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		// True cases:
 		
 		// this can be read as "for the collection (100, 1000), one or more elements are greater than 500"
-		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 500f);
-		assertRuleTrue(Arrays.asList(1000f, 100f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 500f);
-		assertRuleTrue(Arrays.asList(1000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 500f);
+		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 500f);
+		assertRuleTrue(Arrays.asList(1000f, 100f), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 500f);
+		assertRuleTrue(Arrays.asList(1000f), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 500f);
 
 		// False cases:
-		assertRuleFalse(Arrays.asList(1000f, 2000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleFalse(Arrays.asList(2000f, 1000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleFalse(Arrays.asList(1000f), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleFalse(Arrays.<Float>asList(), CollectionOperator.ONE_OR_MORE, ComparisonOperator.GREATER_THAN, 5000f);
+		assertRuleFalse(Arrays.asList(1000f, 2000f), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 5000f);
+		assertRuleFalse(Arrays.asList(2000f, 1000f), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 5000f);
+		assertRuleFalse(Arrays.asList(1000f), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 5000f);
+		assertRuleFalse(Arrays.<Float>asList(), CollectionOperator.ONE_OR_MORE, operatorGreaterThan, 5000f);
 
 	}
 	
@@ -106,14 +111,14 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		// True cases:
 		
 		// this can be read as "for the collection (100, 1000), none of the elements are greater than 5000"
-		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleTrue(Arrays.asList(1000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleTrue(Arrays.<Float>asList(), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
+		assertRuleTrue(Arrays.asList(100f, 1000f), CollectionOperator.NONE, operatorGreaterThan, 5000f);
+		assertRuleTrue(Arrays.asList(1000f), CollectionOperator.NONE, operatorGreaterThan, 5000f);
+		assertRuleTrue(Arrays.<Float>asList(), CollectionOperator.NONE, operatorGreaterThan, 5000f);
 		
 		// False cases:
-		assertRuleFalse(Arrays.asList(1000f, 7000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleFalse(Arrays.asList(7000f, 1000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
-		assertRuleFalse(Arrays.asList(7000f), CollectionOperator.NONE, ComparisonOperator.GREATER_THAN, 5000f);
+		assertRuleFalse(Arrays.asList(1000f, 7000f), CollectionOperator.NONE, operatorGreaterThan, 5000f);
+		assertRuleFalse(Arrays.asList(7000f, 1000f), CollectionOperator.NONE, operatorGreaterThan, 5000f);
+		assertRuleFalse(Arrays.asList(7000f), CollectionOperator.NONE, operatorGreaterThan, 5000f);
 
 	}
 	

@@ -31,6 +31,7 @@ public class ComparisonOperatorTest {
     @Test
     public void testEquals() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.EQUALS.toString());
+        op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
         assertTrue(op.compare("StringOne", "StringOne"));
         assertTrue(op.compare(123, "123"));
         assertTrue(op.compare(BigInteger.TEN, "10"));
@@ -44,6 +45,7 @@ public class ComparisonOperatorTest {
     @Test
     public void testNotEquals() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.NOT_EQUALS.toString());
+        op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
         assertTrue(op.compare("StringOne", "StringTwo"));
         assertTrue(op.compare(122, "123"));
         assertTrue(op.compare(BigInteger.TEN, "11"));
@@ -54,6 +56,7 @@ public class ComparisonOperatorTest {
     @Test
     public void testLess() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.LESS_THAN.toString());
+        op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
         assertTrue(op.compare(123, "124"));
         assertTrue(op.compare(new Double(123.2), "124"));
         assertTrue(op.compare(null, "124"));
@@ -67,6 +70,7 @@ public class ComparisonOperatorTest {
     @Test
     public void testLessThanEqual() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.LESS_THAN_EQUAL.toString());
+        op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
         assertTrue(op.compare(123, "124"));
         assertTrue(op.compare(123.1, "123.1"));
         assertTrue(op.compare(null, null));
@@ -77,6 +81,7 @@ public class ComparisonOperatorTest {
     @Test
     public void testGreaterThanEqual() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.GREATER_THAN_EQUAL.toString());
+        op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
         assertFalse(op.compare(123, "124"));
         assertTrue(op.compare(123.1, "123.1"));
         assertFalse(op.compare(null, "124"));

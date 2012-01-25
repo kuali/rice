@@ -64,13 +64,21 @@ public class UserSession implements Serializable {
      * @param principalName
      */
     public UserSession(String principalName) {
+        initPerson(principalName);
+        this.nextObjectKey = new AtomicInteger(0);
+        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
+    }
+
+    /**
+     * Loads the Person object from KIM. Factored out for testability.
+     * @param principalName the principalName
+     */
+    protected void initPerson(String principalName) {
         this.person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         if (this.person == null) {
             throw new IllegalArgumentException(
                     "Failed to locate a principal with principal name '" + principalName + "'");
         }
-        this.nextObjectKey = new AtomicInteger(0);
-        this.objectMap = Collections.synchronizedMap(new HashMap<String, Object>());
     }
 
     /**

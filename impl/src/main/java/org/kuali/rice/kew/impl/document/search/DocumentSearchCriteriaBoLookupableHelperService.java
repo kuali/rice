@@ -20,8 +20,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -30,6 +28,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
@@ -84,6 +83,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     private static final String DOCUMENT_ATTRIBUTE_PROPERTY_NAME_PREFIX = "documentAttribute.";
 
     static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
+    static final String DOCUMENT_TYPE_NAME_PARAM = "documentTypeName";
 
     // warning message keys
 
@@ -105,13 +105,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected DocumentSearchCriteria criteria = null;
 
     @Override
-    protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues,
-            boolean unbounded) {
+    protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
         criteria = loadCriteria(fieldValues);
         searchResults = null;
         try {
-            searchResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(
-                    GlobalVariables.getUserSession().getPrincipalId(), criteria);
+            searchResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(GlobalVariables.getUserSession().getPrincipalId(), criteria);
             if (searchResults.isCriteriaModified()) {
                 criteria = searchResults.getCriteria();
             }
@@ -121,8 +119,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                     // merge the message maps
                     GlobalVariables.getMessageMap().merge(workflowServiceError.getMessageMap());
                 } else {
-                    GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(),
-                            RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
+                    GlobalVariables.getMessageMap().putError(workflowServiceError.getMessage(), RiceKeyConstants.ERROR_CUSTOM, workflowServiceError.getMessage());
                 }
             }
         }
@@ -153,18 +150,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         int numFiltered = searchResults.getNumberOfSecurityFilteredResults();
         int numResults = searchResults.getSearchResults().size();
         if (overThreshold && numFiltered > 0) {
-            GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES,
-                    EXCEED_THRESHOLD_AND_SECURITY_FILTERED_MESSAGE_KEY,
-                    String.valueOf(numResults),
-                    String.valueOf(numFiltered));
+            GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES, EXCEED_THRESHOLD_AND_SECURITY_FILTERED_MESSAGE_KEY, String.valueOf(numResults), String.valueOf(numFiltered));
         } else if (numFiltered > 0) {
-            GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES,
-                    SECURITY_FILTERED_MESSAGE_KEY,
-                    String.valueOf(numFiltered));
+            GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES, SECURITY_FILTERED_MESSAGE_KEY, String.valueOf(numFiltered));
         } else if (overThreshold) {
-            GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES,
-                    EXCEED_THRESHOLD_MESSAGE_KEY,
-                    String.valueOf(numResults));
+            GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES, EXCEED_THRESHOLD_MESSAGE_KEY, String.valueOf(numResults));
         }
     }
 
@@ -173,11 +163,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * Namely, this handles populating the form with today's date if the create date was not filled in on the form.
      */
     protected void applyCriteriaChangesToFields(DocumentSearchCriteriaContract criteria) {
-        for (Field field: getFormFields()) {
-            if(StringUtils.equals(field.getPropertyName(), KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
-                if (criteria.getDateCreatedFrom() != null) {
-                    field.setPropertyValue(CoreApiServiceLocator.getDateTimeService().toDateString(criteria.getDateCreatedFrom().toDate()));
-                }
+        Field field = getFormFields().getField(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateCreated");
+        if (field != null && StringUtils.isEmpty(field.getPropertyValue())) {
+            if (criteria.getDateCreatedFrom() != null) {
+                field.setPropertyValue(CoreApiServiceLocator.getDateTimeService().toDateString(criteria.getDateCreatedFrom().toDate()));
             }
         }
     }
@@ -216,9 +205,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         String[] savedSearchToLoad = getParameters().get(SAVED_SEARCH_NAME_PARAM);
         boolean savedSearch = savedSearchToLoad != null && savedSearchToLoad.length > 0 && StringUtils.isNotBlank(savedSearchToLoad[0]);
         if (savedSearch) {
-            DocumentSearchCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad[0]);
+            DocumentSearchCriteria criteria = getDocumentSearchService().getNamedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad[0]);
             if (criteria != null) {
-                mergeFieldValues(getDocumentSearchCriteriaTranslator().translateCriteriaToFields(criteria));
+                getFormFields().setFieldValues(getDocumentSearchCriteriaTranslator().translateCriteriaToFields(criteria));
                 return criteria;
             }
         }
@@ -244,74 +233,14 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     /**
-     * Sets a Field value appropriately, depending on whether it is a "multi-value" field type
-     */
-    protected static void setFieldValue(Field field, String[] values) {
-        if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-            field.setPropertyValue(values[0]);
-        } else {
-            //multi value, set to values
-            field.setPropertyValues(values);
-        }
-    }
-
-    /**
-     * Preserves Field values, saving single or array property value depending on field type; single property value is
-     * converted into String[1]
-     * This implementation makes the assumption that a Field can either represent a single property value, or an array
-     * of values but not both! (only one is preserved)
-     * @return a Map<String, String[]> containing field values depending on field type
-     */
-    protected Map<String, String[]> getFormFieldsValues() {
-        Map<String, String[]> values = new HashMap<String, String[]>();
-        for (Field field : getFormFields()) {
-            String[] value;
-            if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-                value = new String[] { field.getPropertyValue() };
-            } else {
-                //multi value, set to values
-                value = field.getPropertyValues();
-            }
-            values.put(field.getPropertyName(), value);
-        }
-        return values;
-    }
-
-    /**
      * Overrides a Field value; sets a fallback/restored value if there is no new value
      */
-    protected static void overrideFieldValue(Field field, Map<String, String[]> newValues, Map<String, String[]> oldValues) {
+    protected void overrideFieldValue(Field field, Map<String, String[]> newValues, Map<String, String[]> oldValues) {
         if (StringUtils.isNotBlank(field.getPropertyName())) {
             if (newValues.get(field.getPropertyName()) != null) {
-                setFieldValue(field, newValues.get(field.getPropertyName()));
+                getFormFields().setFieldValue(field, newValues.get(field.getPropertyName()));
             } else if (oldValues.get(field.getPropertyName()) != null) {
-                setFieldValue(field, oldValues.get(field.getPropertyName()));
-            }
-        }
-    }
-
-    /**
-     * Overrides Row Field values with Map values
-     * @param values
-     */
-    protected void mergeFieldValues(Map<String, String[]> values) {
-        for (Field field: getFormFields()) {
-            if (StringUtils.isNotBlank(field.getPropertyName())) {
-                if (values.get(field.getPropertyName()) != null) {
-                    setFieldValue(field, values.get(field.getPropertyName()));
-                }
-            }
-        }
-    }
-
-    /**
-     * Sets a single form field
-     */
-    protected void setFormField(String name, String value) {
-        for (Field field : getFormFields()) {
-            if(StringUtils.equals(field.getPropertyName(), name)) {
-                setFieldValue(field, new String[] { value });
-                break;
+                getFormFields().setFieldValue(field, oldValues.get(field.getPropertyName()));
             }
         }
     }
@@ -322,13 +251,13 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      */
     protected void toggleFormView() {
         Map<String,String[]> fieldValues = new HashMap<String,String[]>();
-        Map<String, String[]> savedValues = getFormFieldsValues();
+        Map<String, String[]> savedValues = getFormFields().getFieldValues();
 
         // the original implementation saved the form values and then re-applied them
         // we do the same here, however I suspect we may be able to avoid this re-application
         // of existing values
 
-        for (Field field: getFormFields()) {
+        for (Field field: getFormFields().getFields()) {
             overrideFieldValue(field, this.getParameters(), savedValues);
             // if we are sure this does not depend on or cause side effects in other fields
             // then this phase can be extracted and these loops simplified
@@ -338,7 +267,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         // checkForAdditionalFields generates the form (setRows)
         if (checkForAdditionalFieldsMultiValued(fieldValues)) {
-            for (Field field: getFormFields()) {
+            for (Field field: getFormFields().getFields()) {
                 overrideFieldValue(field, this.getParameters(), savedValues);
                 fieldValues.put(field.getPropertyName(), new String[] { field.getPropertyValue() });
              }
@@ -346,7 +275,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         // unset the clear search param, since this is not really a state, but just an action
         // it can never be toggled "off", just "on"
-        setFormField(DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, "");
+        getFormFields().setFieldValue(DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, "");
     }
 
     /**
@@ -364,7 +293,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 //if we're ignoring errors and we got an error just return, no reason to continue.  Also set false to indicate not to perform lookup
                 return false;
             }
-            setFormField(SAVED_SEARCH_NAME_PARAM, "");
+            getFormFields().setFieldValue(SAVED_SEARCH_NAME_PARAM, "");
         }
         if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
@@ -397,7 +326,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
 
         // sets the field values on the form, trying criteria object properties if a field value is not present in the map
-        for (Field field : getFormFields()) {
+        for (Field field : getFormFields().getFields()) {
             if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
                 // UI Fields know whether they are single or multiple value
                 // just set both so they can make the determination and render appropriately
@@ -418,7 +347,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                     }
                 }
                 if (values != null) {
-                    setFieldValue(field, values);
+                    getFormFields().setFieldValue(field, values);
                 }
             }
         }
@@ -583,10 +512,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     /**
-     * Returns an iterable of current form fields
+     * Returns wrapper around current form fields
      */
-    protected Iterable<Field> getFormFields() {
-        return getFields(this.getRows());
+    protected FormFields getFormFields() {
+        return new FormFields(this.getRows());
     }
 
     /**
@@ -623,18 +552,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             numCols = KRADConstants.DEFAULT_NUM_OF_COLUMNS;
         }
 
-        super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows), numCols));
+        super.getRows().addAll(FieldUtils.wrapFields(new FormFields(rows).getFieldList(), numCols));
 
-    }
-
-    private static List<Field> getFields(Collection<? extends Row> rows) {
-        List<Field> rList = new ArrayList<Field>();
-        for (Row r : rows) {
-            for (Field f : r.getFields()) {
-                rList.add(f);
-            }
-        }
-        return rList;
     }
 
     /**
@@ -699,11 +618,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      */
     @Override
     public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
-        return checkForAdditionalFieldsForDocumentType(fieldValues.get("documentTypeName"));
+        return checkForAdditionalFieldsForDocumentType(fieldValues.get(DOCUMENT_TYPE_NAME_PARAM));
     }
 
     private boolean checkForAdditionalFieldsMultiValued(Map<String, String[]> fieldValues) {
-        String[] valArray = fieldValues.get("documentTypeName");
+        String[] valArray = fieldValues.get(DOCUMENT_TYPE_NAME_PARAM);
         String val = null; 
         if (valArray != null && valArray.length > 0) {
             val = valArray[0];
@@ -750,19 +669,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         boolean advancedSearch = isAdvancedSearch();
         boolean superUserSearch = isSuperUserSearch();
         int fieldsRepopulated = 0;
-        for (Field field: getFields(super.getRows())) {
-            if (fieldsRepopulated >= 2) {
-                break;
-            }
-            if (DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD.equals(field.getPropertyName())) {
-                field.setPropertyValue(advancedSearch ? "YES" : "NO");
-                fieldsRepopulated++;
-            } else if (DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD.equals(field.getPropertyName())) {
-                field.setPropertyValue(advancedSearch ? "YES" : "NO");
-                fieldsRepopulated++;
-            }
-        }
-
+        Map<String, String[]> values = new HashMap<String, String[]>();
+        values.put(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD, new String[] { advancedSearch ? "YES" : "NO" });
+        values.put(DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD, new String[] { superUserSearch ? "YES" : "NO" });
+        getFormFields().setFieldValues(values);
     }
 
     /**
@@ -777,13 +687,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         DocumentSearchResultSetConfiguration resultSetConfiguration = null;
         DocumentSearchCriteriaConfiguration criteriaConfiguration = null;
         if (documentType != null) {
-            resultSetConfiguration =
-                KEWServiceLocator.getDocumentSearchCustomizationMediator().customizeResultSetConfiguration(
-                        documentType, criteria);
-            criteriaConfiguration =
-                    KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentSearchCriteriaConfiguration(
-                            documentType);
-
+            resultSetConfiguration = KEWServiceLocator.getDocumentSearchCustomizationMediator().customizeResultSetConfiguration(documentType, criteria);
+            criteriaConfiguration =  KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentSearchCriteriaConfiguration(documentType);
         }
         int index = 0;
         for (ResultRow resultRow : resultRows) {
@@ -842,8 +747,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         // now assemble the custom columns
         List<Column> customColumns = new ArrayList<Column>();
-        List<Column> additionalAttributeColumns = FieldUtils.constructColumnsFromAttributeFields(
-                resultSetConfiguration.getAdditionalAttributeFields());
+        List<Column> additionalAttributeColumns = FieldUtils.constructColumnsFromAttributeFields(resultSetConfiguration.getAdditionalAttributeFields());
 
         outer:for (String additionalFieldNameToInclude : additionalFieldNamesToInclude) {
             // search the search attribute fields
@@ -880,8 +784,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     protected void populateCustomColumns(List<Column> customColumns, DocumentSearchResult searchResult) {
         for (Column customColumn : customColumns) {
-            DocumentAttribute documentAttribute =
-                    searchResult.getSingleDocumentAttributeByName(customColumn.getPropertyName());
+            DocumentAttribute documentAttribute = searchResult.getSingleDocumentAttributeByName(customColumn.getPropertyName());
             if (documentAttribute != null && documentAttribute.getValue() != null) {
                 wrapDocumentAttributeColumnName(customColumn);
                 // list moving forward if the attribute has more than one value
@@ -919,5 +822,4 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     public void setDocumentSearchCriteriaTranslator(DocumentSearchCriteriaTranslator documentSearchCriteriaTranslator) {
         this.documentSearchCriteriaTranslator = documentSearchCriteriaTranslator;
     }
-
 }

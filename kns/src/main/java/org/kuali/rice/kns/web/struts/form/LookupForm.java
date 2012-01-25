@@ -17,6 +17,7 @@ package org.kuali.rice.kns.web.struts.form;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -47,7 +48,7 @@ public class LookupForm extends KualiForm {
 
     private String formKey;
     private Map<String, String> fields;
-    private Map fieldsForLookup;
+    private Map<String, String> fieldsForLookup;
     private String lookupableImplServiceName;
     private String conversionFields;
     private Map<String, String> fieldConversions;
@@ -174,7 +175,8 @@ public class LookupForm extends KualiForm {
 
                 setLookupableImplServiceName(lookupImplID);
             }
-            localLookupable = KNSServiceLocator.getLookupable(getLookupableImplServiceName());
+            
+            localLookupable = this.getLookupable(getLookupableImplServiceName());
 
             if (localLookupable == null) {
                 LOG.error("Lookup impl not found for lookup impl name " + getLookupableImplServiceName());
@@ -247,10 +249,8 @@ public class LookupForm extends KualiForm {
              * To hide the header bar use the URL parameter 'headerBarEnabled' and set the value to 'false'.
              * To hide all the search criteria (including the buttons) set the URL parameter 'searchCriteriaEnabled' to 'false'.
              */
-            setHeaderBarEnabled(BooleanUtils.toBoolean(StringUtils.defaultIfBlank(getParameter(request, HEADER_BAR_ENABLED_PARAM),
-                                                       Boolean.TRUE.toString())));
-            setLookupCriteriaEnabled(BooleanUtils.toBoolean(StringUtils.defaultIfBlank(getParameter(request, SEARCH_CRITERIA_ENABLED_PARAM),
-                                                            Boolean.TRUE.toString())));
+            setHeaderBarEnabled(Truth.strToBooleanIgnoreCase(getParameter(request, HEADER_BAR_ENABLED_PARAM), Boolean.TRUE));
+            setLookupCriteriaEnabled(Truth.strToBooleanIgnoreCase(getParameter(request, SEARCH_CRITERIA_ENABLED_PARAM), Boolean.TRUE));
 
             // init lookupable with bo class
             localLookupable.setBusinessObjectClass((Class<? extends BusinessObject>) Class.forName(getBusinessObjectClassName()));
@@ -356,6 +356,10 @@ public class LookupForm extends KualiForm {
      */
     public String getLookupableImplServiceName() {
         return lookupableImplServiceName;
+    }
+
+    protected Lookupable getLookupable(String beanName) {
+        return KNSServiceLocator.getLookupable(beanName);
     }
 
     /**

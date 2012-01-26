@@ -7171,7 +7171,7 @@ EDL EDoclite Example
                     <para>Common search criteria fields can be populated by supplying their values in the URL query parameters.  For example, the following URL specifies a search on <emphasis role="bold">KualiNotification</emphasis> documents with initiator <emphasis role="bold">user1</emphasis>:</para>
                     <programlisting>http://yourlocalip:8080/DocumentSearch.do?documentTypeName=KualiNotification&amp;initiatorPrincipalName=user1</programlisting>
                     <para>Common search criteria fields include:</para>
-                    <itemizedlist>
+                    <unorderedlist>
                       <listitem>
                         <para><emphasis role="bold">documentTypeName</emphasis> - the document type name</para>
                       </listitem>
@@ -7205,7 +7205,7 @@ EDL EDoclite Example
                       <listitem>
                         <para><emphasis role="bold">title</emphasis> - the document title(use with advanced search)</para>
                       </listitem>
-                    </itemizedlist>
+                    </unorderedlist>
                     <para>For a comprehensive list of search criteria fields, consult the
                           <programlisting>org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo</programlisting> class.</para>
                 </sect4>

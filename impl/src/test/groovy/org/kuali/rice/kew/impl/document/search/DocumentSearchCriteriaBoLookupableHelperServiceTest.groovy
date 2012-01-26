@@ -38,12 +38,21 @@ import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl
 import org.kuali.rice.core.api.resourceloader.ResourceLoader
 import java.text.SimpleDateFormat
 import org.joda.time.DateTime
+import org.kuali.rice.krad.util.GlobalVariables
+import org.kuali.rice.krad.UserSession
+import java.util.concurrent.Callable
 
 /**
  * Tests parsing of document search criteria form
  */
 class DocumentSearchCriteriaBoLookupableHelperServiceTest {
     def lookupableHelperService = new DocumentSearchCriteriaBoLookupableHelperService()
+
+    static class FakeUserSession extends UserSession {
+        public FakeUserSession(String s) { super(s); }
+        @Override
+        protected void initPerson(String principalName) { }
+    }
 
     @Before
     void setupFakeEnv() {
@@ -95,11 +104,17 @@ class DocumentSearchCriteriaBoLookupableHelperServiceTest {
                      "category:" + DocumentStatusCategory.UNSUCCESSFUL.getCode()] as String[])
 
         lookupableHelperService.setParameters(params)
-        def crit = lookupableHelperService.loadCriteria(fields)
-        assertNotNull(crit)
+        
+        
+        GlobalVariables.doInNewGlobalVariables(new FakeUserSession(), new Callable() {
+            public Object call() {
+                def crit = lookupableHelperService.loadCriteria(fields)
+                assertNotNull(crit)
 
-        assertEquals([ DocumentStatus.INITIATED, DocumentStatus.PROCESSED, DocumentStatus.FINAL ], crit.getDocumentStatuses())
-        assertEquals([ DocumentStatusCategory.SUCCESSFUL, DocumentStatusCategory.UNSUCCESSFUL ], crit.getDocumentStatusCategories())
+                assertEquals([ DocumentStatus.INITIATED, DocumentStatus.PROCESSED, DocumentStatus.FINAL ], crit.getDocumentStatuses())
+                assertEquals([ DocumentStatusCategory.SUCCESSFUL, DocumentStatusCategory.UNSUCCESSFUL ], crit.getDocumentStatusCategories())
+            }
+        })
     }
 
     @Test
@@ -119,8 +134,12 @@ class DocumentSearchCriteriaBoLookupableHelperServiceTest {
         def fields = new HashMap<String, String>()
         fields.put("dateCreated", "11/11/11..12/12/12")
         lookupableHelperService.setParameters([:]) // otherwise NPE
-        def crit = lookupableHelperService.loadCriteria(fields)
-        assertEquals(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("11/11/11")).withMillisOfDay(0), crit.dateCreatedFrom)
-        assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/12")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
+        GlobalVariables.doInNewGlobalVariables(new FakeUserSession(), new Callable() {
+            public Object call() {
+                def crit = lookupableHelperService.loadCriteria(fields)
+                assertEquals(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("11/11/11")).withMillisOfDay(0), crit.dateCreatedFrom)
+                assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/12")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
+            }
+        });
     }
 }

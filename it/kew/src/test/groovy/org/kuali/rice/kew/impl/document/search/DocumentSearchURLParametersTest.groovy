@@ -62,6 +62,7 @@ import org.kuali.rice.kns.web.ui.ResultRow
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertEquals
+import org.apache.commons.lang.StringUtils
 
 /**
  */
@@ -112,9 +113,13 @@ class DocumentSearchURLParametersTest extends DocumentSearchTestBase {
         assertFalse(lhs.clearSavedSearch)
         assertNull(lhs.savedSearchName)
 
-        def crit = lhs.loadCriteria(form.fieldsForLookup)
-        assertEquals("Document type was not parsed from request params", null, crit.documentTypeName)
-        assertEquals(0, crit.documentAttributeValues.size())
+        GlobalVariables.doInNewGlobalVariables(new UserSession(PRINCIPAL_NAME), new Callable() {
+            Object call() {
+            def crit = lhs.loadCriteria(form.fieldsForLookup)
+                assertEquals("Document type was not parsed from request params", null, crit.documentTypeName)
+                assertEquals(0, crit.documentAttributeValues.size())
+            }
+        })
     }
 
     protected populateForm(params) {
@@ -277,6 +282,60 @@ class DocumentSearchURLParametersTest extends DocumentSearchTestBase {
         })
         // the saved search should be (re) executed and we should get 1 result
         assertEquals(1, bos.size())
+    }
+
+    @Test
+    void testCurrentUserReplacement() {
+        final UserSession userSession = new UserSession(PRINCIPAL_NAME)
+
+        def TESTS = [
+            // all id types
+            CURRENT_USER: userSession.getPerson().getPrincipalName(),
+            ("CURRENT_USER.authenticationId"): userSession.getPerson().getPrincipalName(),
+            ("CURRENT_USER.a"): userSession.getPerson().getPrincipalName(),
+            ("CURRENT_USER.principalName"): userSession.getPerson().getPrincipalName(),
+            ("CURRENT_USER.workflowId"): userSession.getPerson().getPrincipalId(),
+            ("CURRENT_USER.w"): userSession.getPerson().getPrincipalId(),
+            ("CURRENT_USER.principalId"): userSession.getPerson().getPrincipalId(),
+            ("CURRENT_USER.emplId"): userSession.getPerson().getEmployeeId(),
+            ("CURRENT_USER.e"): userSession.getPerson().getEmployeeId(),
+
+            // whitespace/terminals
+            (" CURRENT_USER "): " ${userSession.getPerson().getPrincipalName()} ",
+            (" !CURRENT_USER.authenticationId "): " !${userSession.getPerson().getPrincipalName()} ",
+
+            // non-matching
+            ("abcdCURRENT_USER"): null,
+            ("CURRENT_USERdef"): null,
+            ("abcdCURRENT_USER "): null,
+            ("!CURRENT_USERdef"): null,
+
+            // empty entries
+            (null): null,
+            (""): null,
+
+            // more sophisticated expressions
+            (" CURRENT_USER > 'abcd' && !(CURRENT_USER.emplId == 'defg') "): " ${userSession.getPerson().getPrincipalName()} > 'abcd' && !(${userSession.getPerson().getEmployeeId()} == 'defg') ",
+        ]
+
+        TESTS.each { value, expected ->
+            // test replaceCurrentUserToken impl
+            if (StringUtils.isNotEmpty(value)) {
+                String actual = DocumentSearchCriteriaBoLookupableHelperService.replaceCurrentUserToken(value, userSession.getPerson())
+                assertEquals("pattern: '" + value + "' expected '" + expected + "' got '" + actual + "'", expected?.toString(), actual)
+            }
+
+            // test cleanupFieldValues is overriding values correctly
+            GlobalVariables.doInNewGlobalVariables(userSession, new Callable() {
+                Object call() {
+                    Map<String, String> values = DocumentSearchCriteriaBoLookupableHelperService.cleanupFieldValues([f: value], [p: [value] as String[]])
+
+                    assertEquals("pattern: '" + value + "' expected field value '" + (expected == null ? value : expected.toString()) + "' got '" + values['f'] + "'", expected == null ? value : expected.toString(), values['f'])
+                    // parameters are not all included by cleanupFieldValues
+                    //assertEquals("pattern: '" + value + "' expected param value '" + expected + "' got '" + values['p'] + "'", expected?.toString(), values['p'])
+                }
+            })
+        }
     }
 
     protected void routeDoc() {

@@ -47,6 +47,8 @@ import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfi
 import org.kuali.rice.kew.framework.document.search.StandardResultField;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -57,6 +59,7 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -71,6 +74,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of lookupable helper service which handles the complex lookup behavior required by the KEW
@@ -100,9 +105,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     private DocumentSearchCriteriaProcessor documentSearchCriteriaProcessor;
     private DocumentSearchCriteriaTranslator documentSearchCriteriaTranslator;
 
-    // unfortunately, lookup helpers are stateful, need to store these here for other methods to use
-    protected DocumentSearchResults searchResults = null;
-    protected DocumentSearchCriteria criteria = null;
+    // These two fields are *only* used to pass side-channel information across the superclass API boundary between
+    // performLookup and getSearchResultsHelper.
+    // (in theory these could be replaced with some threadlocal subterfuge, but keeping as-is for simplicity)
+    private DocumentSearchResults searchResults = null;
+    private DocumentSearchCriteria criteria = null;
 
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
@@ -171,11 +178,41 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
     }
 
+    // CURRENT_USER token pattern: CURRENT_USER(.type) surrounded by positive lookahead/lookbehind for non-alphanum terminal tokens
+    // (to support expression operators)
+    private static final Pattern CURRENT_USER_PATTERN = Pattern.compile("(?<=[\\s\\p{Punct}]|^)CURRENT_USER(\\.\\w+)?(?=[\\s\\p{Punct}]|$)");
+
+    protected static String replaceCurrentUserToken(String value, Person person) {
+        Matcher matcher = CURRENT_USER_PATTERN.matcher(value);
+        boolean matched = false;
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matched = true;
+            String idType = "principalName";
+            if (matcher.groupCount() > 0) {
+                String group = matcher.group(1);
+                if (group != null) {
+                    idType = group.substring(1); // discard period after CURRENT_USER
+                }
+            }
+            String idValue = UserUtils.getIdValue(idType, person);
+            if (!StringUtils.isBlank(idValue)) {
+                value = idValue;
+            } else {
+                value = matcher.group();
+            }
+            matcher.appendReplacement(sb, value);
+
+        }
+        matcher.appendTail(sb);
+        return matched ? sb.toString() : null;
+    }
+
     /**
      * Cleans up various issues with fieldValues coming from the lookup form (namely, that they don't include
      * multi-valued field values!). Handles these by adding them comma-separated.
      */
-    protected Map<String, String> cleanupFieldValues(Map<String, String> fieldValues, Map<String, String[]> parameters) {
+    protected static Map<String, String> cleanupFieldValues(Map<String, String> fieldValues, Map<String, String[]> parameters) {
         Map<String, String> cleanedUpFieldValues = new HashMap<String, String>(fieldValues);
         if (ArrayUtils.isNotEmpty(parameters.get(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE))) {
             cleanedUpFieldValues.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE,
@@ -193,6 +230,18 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         // if any of the document attributes are range values, process them
         documentAttributeFieldValues.putAll(LookupUtils.preProcessRangeFields(documentAttributeFieldValues));
         cleanedUpFieldValues.putAll(documentAttributeFieldValues);
+
+        Person person = GlobalVariables.getUserSession().getPerson();
+        // replace the dynamic CURRENT_USER token
+        for (Map.Entry<String, String> entry: cleanedUpFieldValues.entrySet()) {
+            if (StringUtils.isNotEmpty(entry.getValue())) {
+                String replaced = replaceCurrentUserToken(entry.getValue(), person);
+                if (replaced != null) {
+                    entry.setValue(replaced);
+                }
+            }
+        }
+
         return cleanedUpFieldValues;
     }
 

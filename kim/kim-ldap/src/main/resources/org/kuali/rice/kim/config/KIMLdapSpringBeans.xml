@@ -21,6 +21,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+  	<bean id="rice.kim.ldap.import.parameterService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="parameterService"/>
+
     <bean id="contextSource"
         class="org.springframework.ldap.core.support.LdapContextSource">
         <property name="url" value="${rice.ldap.url}" />
@@ -167,7 +171,7 @@
           abstract="true" 
           class="org.kuali.rice.kim.ldap.PrincipalMapper" >
       <property name="constants"        ref="kimConstants" />
-      <property name="parameterService" ref="parameterService" />
+      <property name="parameterService" ref="rice.kim.ldap.import.parameterService" />
     </bean>
     <!-- //////////////////////////////////////////////////////////////// -->
     <!-- // End of Mappings                                            // -->
@@ -204,7 +208,7 @@
 
     <bean id="ldapPrincipalDao" class="org.kuali.rice.kim.dao.impl.LdapPrincipalDaoImpl">
       <property name="ldapTemplate"     ref="ldapTemplate" />
-      <property name="parameterService" ref="parameterService" />
+      <property name="parameterService" ref="rice.kim.ldap.import.parameterService" />
       <property name="kimConstants"     ref="kimConstants" />
 
       <property name="contextMappers">
@@ -227,8 +231,8 @@
     </bean>
 
     <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl"
-    	p:businessObjectService-ref="businessObjectService"
-        p:criteriaLookupService-ref="criteriaLookupService">
+    	p:businessObjectService-ref="rice.kim.import.businessObjectService"
+        p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService">
       <property name="principalDao" ref="ldapPrincipalDao" />
     </bean>
 

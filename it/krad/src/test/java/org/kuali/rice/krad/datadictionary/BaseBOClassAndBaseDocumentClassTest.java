@@ -57,14 +57,18 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 
 		dd = new DataDictionary();
 
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifControlDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifFieldDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
@@ -197,7 +201,6 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 	 * 
 	 * @param docClass The documentClass of the entry.
 	 * @param docBaseClass The "base" class of the entry.
-	 * @param docClassFirst Indicates if either the doc class or the "base" class should be set first.
 	 * @param shouldSucceed Indicates whether the construction task should succeed or fail.
 	 * @throws Exception
 	 */

@@ -60,7 +60,12 @@ public class ExtensionAttributeTest extends KRADTestCase {
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
+        //dd.addConfigFileLocation("file:" + getUserDir() + "/../../krad/krad-web-framework/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");

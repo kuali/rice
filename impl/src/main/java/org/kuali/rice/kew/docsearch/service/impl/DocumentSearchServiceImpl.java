@@ -464,7 +464,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     public static DictionaryValidationService getDictionaryValidationService() {
 		if (dictionaryValidationService == null) {
-			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocator.getKNSDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}

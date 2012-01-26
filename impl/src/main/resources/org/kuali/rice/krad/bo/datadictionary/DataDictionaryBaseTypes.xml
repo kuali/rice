@@ -80,11 +80,11 @@
 	<bean id="CollectionDefinition" class="org.kuali.rice.krad.datadictionary.CollectionDefinition"
 		abstract="true" />
 
-	<bean id="uifMaintenanceDocumentEntry"
-		class="org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry"
+	<bean id="uifMaintenanceDocumentEntry" class="org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry"
 		abstract="true">
         <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
         <property name="dataObjectClass" value="org.kuali.rice.krad.maintenance.MaintenanceDocumentBase"/>
+        <property name="businessRulesClass" value="org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase"/>
     </bean>
 
 	<bean id="InactivationBlockingDefinition"

@@ -19,18 +19,25 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.web.format.DateFormatter;
+import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
+import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttributeValueReader;
 import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
@@ -41,8 +48,8 @@ import java.util.regex.Pattern;
  */
 @Deprecated
 public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service.impl.DictionaryValidationServiceImpl implements DictionaryValidationService {
-    private static org.apache.log4j.Logger LOG =
-            org.apache.log4j.Logger.getLogger(DictionaryValidationServiceImpl.class);
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            DictionaryValidationServiceImpl.class);
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentRecursively
@@ -57,54 +64,119 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                 depth);
     }
 
+    @Override
+    @Deprecated
+    public void validateBusinessObject(BusinessObject businessObject) {
+        validateBusinessObject(businessObject, true);
+    }
+
+    @Override
+    @Deprecated
+    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
+        if (ObjectUtils.isNull(businessObject)) {
+            return;
+        }
+        try {
+            // validate the primitive attributes of the bo
+            validatePrimitivesFromDescriptors(businessObject.getClass().getName(), businessObject,
+                    PropertyUtils.getPropertyDescriptors(businessObject.getClass()), "", validateRequired);
+        } catch (RuntimeException e) {
+            LOG.error(String.format("Exception while validating %s", businessObject.getClass().getName()), e);
+            throw e;
+        }
+    }
+
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateBusinessObjectOnMaintenanceDocument(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String)
      * @deprecated since 1.1
      */
     @Deprecated
     public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
-
-        MaintenanceDocumentEntry entry = (MaintenanceDocumentEntry)
-                KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
-        validate(new MaintenanceDocumentAttributeValueReader(businessObject, docTypeName, entry,
-                persistenceStructureService), true);
+        MaintenanceDocumentEntry entry =
+                KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+        for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
+            validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(),
+                    "");
+        }
     }
 
-//	protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject, List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
-//
-//		for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
-//			if (itemDefinition instanceof MaintainableFieldDefinition) {
-//		        if (getDataDictionaryService().isAttributeDefined(businessObject.getClass(), itemDefinition.getName())) {
-//		            Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
-//		            if (value != null && StringUtils.isNotBlank(value.toString())) {
-//			            Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(), persistenceStructureService);
-//			            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-//			                // check value format against dictionary
-//		                    if (!TypeUtils.isTemporalClass(propertyType)) {
-//		                        validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(), value.toString(), errorPrefix + itemDefinition.getName());
-//		                    }
-//			            }
-//		            }
-//		        }
-//			}
-//			/*
-//			TODO: reenable when we come up with a strategy to handle fields that are not editable
-//			else if (itemDefinition instanceof MaintainableCollectionDefinition) {
-//				MaintainableCollectionDefinition collectionDefinition = (MaintainableCollectionDefinition) itemDefinition;
-//				Collection<BusinessObject> c = (Collection<BusinessObject>) ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
-//				if (c != null) {
-//					int i = 0;
-//					for (BusinessObject o : c) {
-//						String newErrorPrefix = errorPrefix + itemDefinition.getName() + "[" + i + "].";
-//						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableCollections(), newErrorPrefix);
-//						validateBusinessObjectOnMaintenanceDocumentHelper(o, collectionDefinition.getMaintainableFields(), newErrorPrefix);
-//						i++;
-//					}
-//				}
-//			}*/
-//		}
-//	}
+    protected void validateBusinessObjectOnMaintenanceDocumentHelper(BusinessObject businessObject,
+            List<? extends MaintainableItemDefinition> itemDefinitions, String errorPrefix) {
+        for (MaintainableItemDefinition itemDefinition : itemDefinitions) {
+            if (itemDefinition instanceof MaintainableFieldDefinition) {
+                if (getDataDictionaryService().isAttributeDefined(businessObject.getClass(),
+                        itemDefinition.getName())) {
+                    Object value = ObjectUtils.getPropertyValue(businessObject, itemDefinition.getName());
+                    if (value != null && StringUtils.isNotBlank(value.toString())) {
+                        Class propertyType = ObjectUtils.getPropertyType(businessObject, itemDefinition.getName(),
+                                persistenceStructureService);
+                        if (TypeUtils.isStringClass(propertyType) ||
+                                TypeUtils.isIntegralClass(propertyType) ||
+                                TypeUtils.isDecimalClass(propertyType) ||
+                                TypeUtils.isTemporalClass(propertyType)) {
+                            // check value format against dictionary
+                            if (!TypeUtils.isTemporalClass(propertyType)) {
+                                validateAttributeFormat(businessObject.getClass().getName(), itemDefinition.getName(),
+                                        value.toString(), errorPrefix + itemDefinition.getName());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * iterates through property descriptors looking for primitives types, calls validate format and required check
+     *
+     * @param entryName
+     * @param object
+     * @param propertyDescriptors
+     * @param errorPrefix
+     */
+    @Deprecated
+    protected void validatePrimitivesFromDescriptors(String entryName, Object object,
+            PropertyDescriptor[] propertyDescriptors, String errorPrefix, boolean validateRequired) {
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, errorPrefix, validateRequired);
+        }
+    }
+
+    /**
+     * calls validate format and required check for the given propertyDescriptor
+     *
+     * @param entryName
+     * @param object
+     * @param propertyDescriptor
+     * @param errorPrefix
+     */
+    @Override
+    @Deprecated
+    public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor,
+            String errorPrefix, boolean validateRequired) {
+        // validate the primitive attributes if defined in the dictionary
+        if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName,
+                propertyDescriptor.getName())) {
+            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+            Class propertyType = propertyDescriptor.getPropertyType();
+
+            if (TypeUtils.isStringClass(propertyType) ||
+                    TypeUtils.isIntegralClass(propertyType) ||
+                    TypeUtils.isDecimalClass(propertyType) ||
+                    TypeUtils.isTemporalClass(propertyType)) {
+
+                // check value format against dictionary
+                if (value != null && StringUtils.isNotBlank(value.toString())) {
+                    if (!TypeUtils.isTemporalClass(propertyType)) {
+                        validateAttributeFormat(entryName, propertyDescriptor.getName(), value.toString(),
+                                errorPrefix + propertyDescriptor.getName());
+                    }
+                } else if (validateRequired) {
+                    validateAttributeRequired(entryName, propertyDescriptor.getName(), value, Boolean.FALSE,
+                            errorPrefix + propertyDescriptor.getName());
+                }
+            }
+        }
+    }
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateAttributeFormat
@@ -132,13 +204,9 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
 
     /**
      * The attributeDataType parameter should be one of the data types specified by the SearchableAttribute
-     * interface;
-     * will
-     * default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttribute is specified.
+     * interface; will default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttribute
+     * is specified.
      *
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateAttributeFormat(java.lang.String,
-     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     *      objectClassName is the docTypeName
      * @deprecated since 1.1
      */
     @Deprecated
@@ -173,22 +241,22 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
             if (StringUtils.isNotBlank(attributeValue)) {
                 Integer minLength = getDataDictionaryService().getAttributeMinLength(objectClassName, attributeName);
                 if ((minLength != null) && (minLength.intValue() > attributeValue.length())) {
-                    String errorLabel =
-                            getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+                    String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName,
+                            attributeName);
                     GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MIN_LENGTH,
                             new String[]{errorLabel, minLength.toString()});
                     return;
                 }
                 Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
                 if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
-                    String errorLabel =
-                            getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+                    String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName,
+                            attributeName);
                     GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH,
                             new String[]{errorLabel, maxLength.toString()});
                     return;
                 }
-                Pattern validationExpression =
-                        getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
+                Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(
+                        objectClassName, attributeName);
                 if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," +
@@ -199,8 +267,8 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                         // Retrieving formatter class
                         if (formatterClass == null) {
                             // this is just a cache check... all dates ranges get called twice
-                            formatterClass =
-                                    getDataDictionaryService().getAttributeFormatter(objectClassName, attributeName);
+                            formatterClass = getDataDictionaryService().getAttributeFormatter(objectClassName,
+                                    attributeName);
                         }
 
                         if (formatterClass != null) {
@@ -222,8 +290,8 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                                     }
                                 }
 
-                                Method validatorMethod =
-                                        formatterClass.getDeclaredMethod(VALIDATE_METHOD, new Class<?>[]{String.class});
+                                Method validatorMethod = formatterClass.getDeclaredMethod(VALIDATE_METHOD,
+                                        new Class<?>[]{String.class});
                                 Object o = validatorMethod.invoke(formatterClass.newInstance(), attributeValue);
                                 if (o instanceof Boolean) {
                                     isError = !((Boolean) o).booleanValue();
@@ -238,32 +306,35 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                             }
                             if (isError) {
                                 checkDateBounds = false; // it's already invalid, no need to check date bounds
-                                String errorMessageKey = getDataDictionaryService()
-                                        .getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                                String[] errorMessageParameters = getDataDictionaryService()
-                                        .getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                                GlobalVariables.getMessageMap()
-                                        .putError(errorKeyPrefix + errorKey, errorMessageKey, errorMessageParameters);
+                                String errorMessageKey =
+                                        getDataDictionaryService().getAttributeValidatingErrorMessageKey(
+                                                objectClassName, attributeName);
+                                String[] errorMessageParameters =
+                                        getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
+                                                objectClassName, attributeName);
+                                GlobalVariables.getMessageMap().putError(errorKeyPrefix + errorKey, errorMessageKey,
+                                        errorMessageParameters);
                             }
                         } else {
                             // if it fails the default validation and has no formatter class then it's still a std failure.
-                            String errorMessageKey = getDataDictionaryService()
-                                    .getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                            String[] errorMessageParameters = getDataDictionaryService()
-                                    .getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
+                            String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(
+                                    objectClassName, attributeName);
+                            String[] errorMessageParameters =
+                                    getDataDictionaryService().getAttributeValidatingErrorMessageParameters(
+                                            objectClassName, attributeName);
                             GlobalVariables.getMessageMap().putError(errorKey, errorMessageKey, errorMessageParameters);
                         }
                     }
                 }
                 /*BigDecimal*/
-                String exclusiveMin =
-                        getDataDictionaryService().getAttributeExclusiveMin(objectClassName, attributeName);
+                String exclusiveMin = getDataDictionaryService().getAttributeExclusiveMin(objectClassName,
+                        attributeName);
                 if (exclusiveMin != null) {
                     try {
                         BigDecimal exclusiveMinBigDecimal = new BigDecimal(exclusiveMin);
                         if (exclusiveMinBigDecimal.compareTo(new BigDecimal(attributeValue)) >= 0) {
-                            String errorLabel =
-                                    getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+                            String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName,
+                                    attributeName);
                             GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                                     // todo: Formatter for currency?
                                     new String[]{errorLabel, exclusiveMin.toString()});
@@ -274,14 +345,14 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                     }
                 }
                 /*BigDecimal*/
-                String inclusiveMax =
-                        getDataDictionaryService().getAttributeInclusiveMax(objectClassName, attributeName);
+                String inclusiveMax = getDataDictionaryService().getAttributeInclusiveMax(objectClassName,
+                        attributeName);
                 if (inclusiveMax != null) {
                     try {
                         BigDecimal inclusiveMaxBigDecimal = new BigDecimal(inclusiveMax);
                         if (inclusiveMaxBigDecimal.compareTo(new BigDecimal(attributeValue)) < 0) {
-                            String errorLabel =
-                                    getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
+                            String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName,
+                                    attributeName);
                             GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                                     // todo: Formatter for currency?
                                     new String[]{errorLabel, inclusiveMax.toString()});
@@ -303,41 +374,40 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
                 uVal = CoreApiServiceLocator.getDateTimeService().convertToSqlTimestamp(attributeValues.get(1));
             } catch (Exception ex) {
                 // this shouldn't happen because the tests passed above.
-                String errorMessageKey = getDataDictionaryService()
-                        .getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                String[] errorMessageParameters = getDataDictionaryService()
-                        .getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                GlobalVariables.getMessageMap()
-                        .putError(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey,
-                                errorMessageParameters);
+                String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(
+                        objectClassName, attributeName);
+                String[] errorMessageParameters =
+                        getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName,
+                                attributeName);
+                GlobalVariables.getMessageMap().putError(
+                        KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey,
+                        errorMessageParameters);
             }
 
             if (lVal != null && lVal.compareTo(uVal) > 0) { // check the bounds
-                String errorMessageKey = getDataDictionaryService()
-                        .getAttributeValidatingErrorMessageKey(objectClassName, attributeName);
-                String[] errorMessageParameters = getDataDictionaryService()
-                        .getAttributeValidatingErrorMessageParameters(objectClassName, attributeName);
-                GlobalVariables.getMessageMap()
-                        .putError(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey,
-                                errorMessageKey + ".range", errorMessageParameters);
+                String errorMessageKey = getDataDictionaryService().getAttributeValidatingErrorMessageKey(
+                        objectClassName, attributeName);
+                String[] errorMessageParameters =
+                        getDataDictionaryService().getAttributeValidatingErrorMessageParameters(objectClassName,
+                                attributeName);
+                GlobalVariables.getMessageMap().putError(
+                        KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + errorKey, errorMessageKey + ".range",
+                        errorMessageParameters);
             }
         }
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateAttributeRequired
-     */
     // FIXME: JLR - this is now redundant and should be using the same code as the required processing elsewhere, but the control definition stuff doesn't really fit
     // it doesn't seem to be used anywhere
     @Deprecated
     public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue,
             Boolean forMaintenance, String errorKey) {
         // check if field is a required field for the business object
-        if (attributeValue == null ||
-                (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
+        if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank(
+                (String) attributeValue))) {
             Boolean required = getDataDictionaryService().isAttributeRequired(objectClassName, attributeName);
-            ControlDefinition controlDef =
-                    getDataDictionaryService().getAttributeControlDefinition(objectClassName, attributeName);
+            ControlDefinition controlDef = getDataDictionaryService().getAttributeControlDefinition(objectClassName,
+                    attributeName);
 
             if (required != null && required.booleanValue() && !(controlDef != null && controlDef.isHidden())) {
 

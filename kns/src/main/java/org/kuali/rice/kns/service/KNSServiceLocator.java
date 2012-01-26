@@ -34,7 +34,7 @@ public class KNSServiceLocator {
     public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
     public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
-    public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
+    public static final String DICTIONARY_VALIDATION_SERVICE = "knsDictionaryValidationService";
     public static final String DOCUMENT_HELPER_SERVICE = "documentHelperService";
     public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
     public static final String KUALI_INQUIRABLE = "kualiInquirable";
@@ -55,7 +55,7 @@ public class KNSServiceLocator {
         return getService(BUSINESS_OBJECT_METADATA_SERVICE);
     }
 
-    public static DictionaryValidationService getDictionaryValidationService() {
+    public static DictionaryValidationService getKNSDictionaryValidationService() {
 	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
     }
 

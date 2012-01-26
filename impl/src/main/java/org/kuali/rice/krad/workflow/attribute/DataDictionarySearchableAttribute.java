@@ -231,7 +231,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     public List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition,
             DocumentSearchCriteria documentSearchCriteria) {
         List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
-        DictionaryValidationService validationService = KNSServiceLocator.getDictionaryValidationService();
+        DictionaryValidationService validationService = KNSServiceLocator.getKNSDictionaryValidationService();
 
         // validate the document attribute values
         Map<String, List<String>> documentAttributeValues = documentSearchCriteria.getDocumentAttributeValues();

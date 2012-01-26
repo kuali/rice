@@ -170,6 +170,7 @@
 		abstract="true">
         <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
         <property name="dataObjectClass" value="org.kuali.rice.kns.document.MaintenanceDocumentBase"/>
+        <property name="businessRulesClass" value="org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase"/>
      </bean>
 
 </beans>

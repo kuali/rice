@@ -129,7 +129,7 @@
 		</property>
 	</bean>
 
-    <bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
+    <bean id="knsDictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>

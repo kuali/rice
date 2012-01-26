@@ -644,7 +644,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecks(org.kuali.rice.krad.bo.BusinessObject)
      */
     public boolean validateDefaultExistenceChecks(BusinessObject bo) {
-
         boolean success = true;
 
         // get a collection of all the referenceDefinitions setup for this object
@@ -761,7 +760,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
       * This is the top-level validation method for all attribute value readers
       */
     public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {
-
         DictionaryValidationResult result = new DictionaryValidationResult();
 
         if (valueReader.getAttributeName() == null) {

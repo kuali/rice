@@ -38,7 +38,7 @@ class StateServiceImplTest {
     private MockFor mockBoService
     private BusinessObjectService boService
     
-    private static Country uSCountry
+    static Country uSCountry
     
     StateServiceImpl stateServiceImpl;
     StateService stateService

@@ -19,18 +19,17 @@ import java.util.Properties;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.config.property.ConfigParserImplConfig;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.framework.config.property.SimpleConfig;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.test.KSBTestCase;
 
 import static org.junit.Assert.*;
 
-public class KSBResourceLoaderFactoryTest {
+public class KSBResourceLoaderFactoryTest extends KSBTestCase {
 
 	private static String simpleConfig = "SIMPLE_CONFIG";
 	private static String jaxbConfig = "JAXB_CONFIG";

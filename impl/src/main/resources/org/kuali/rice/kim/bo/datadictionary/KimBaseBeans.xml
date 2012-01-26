@@ -49,7 +49,8 @@
   <bean id="KimBaseBeans-principalId-parentBean" parent="KimBaseBeans-id" abstract="true"
         p:name="principalId"
         p:label="Principal ID"
-        p:shortLabel="Principal ID" />
+        p:shortLabel="Principal ID"
+        p:forceUppercase="false"/>
         
   <bean id="KimBaseBeans-principalName" parent="KimBaseBeans-principalName-parentBean" />
   <bean id="KimBaseBeans-principalName-parentBean" parent="AttributeDefinition" abstract="true"

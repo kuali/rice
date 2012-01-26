@@ -186,7 +186,7 @@ public class CriteriaLookupDaoOjb extends PlatformAwareDaoBaseOjb implements Cri
             parent.addLessThan(pp, value);
         } else if (p instanceof LikePredicate) {
             //no need to convert * or ? since ojb handles the conversion/escaping
-            parent.addLike(pp, value);
+            parent.addLike(genUpperFunc(pp), ((String) value).toUpperCase());
         } else if (p instanceof NotEqualPredicate) {
             parent.addNotEqualTo(pp, value);
         } else if (p instanceof NotEqualIgnoreCasePredicate) {

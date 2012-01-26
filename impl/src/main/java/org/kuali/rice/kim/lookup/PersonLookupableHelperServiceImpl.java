@@ -51,6 +51,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 		if (fieldValues != null && StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.Person.PRINCIPAL_NAME))) {
 			fieldValues.put(KIMPropertyConstants.Person.PRINCIPAL_NAME, fieldValues.get(KIMPropertyConstants.Person.PRINCIPAL_NAME).toLowerCase());
 		}
+
 		return super.getSearchResults(fieldValues);
 	}
 

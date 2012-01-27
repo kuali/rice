@@ -29,10 +29,12 @@ import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -58,6 +60,7 @@ import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +76,15 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 	private static final long serialVersionUID = 1L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AgendaEditorMaintainable.class);
+
+    // Seems like all these database tables should be defined someplace (else)
+    private static final String KRMS_AGENDA_ITM_S = "KRMS_AGENDA_ITM_S";
+    private static final String KRMS_AGENDA_S = "KRMS_AGENDA_S";
+
+    public static final String COPY_OF_TEXT = "Copy of ";
+    public static final String NEW_AGENDA_EDITOR_DOCUMENT_TEXT = "New Agenda Editor Document";
+
+    private transient SequenceAccessorService sequenceAccessorService;
 
 	/**
 	 * @return the boService
@@ -336,17 +348,42 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             AgendaEditor agendaEditor = new AgendaEditor();
             AgendaBo agenda = getLookupService().findObjectBySearch(((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
+                // TODO EGHM move copyAgenda to AgendaBo
+                AgendaBo copiedAgenda;// = new AgendaBo();
+                copiedAgenda = (AgendaBo) ObjectUtils.deepCopy(agenda);
+                String copiedAgendaNewId = getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S).toString();
+                String dateTimeStamp = (new Date()).getTime() + "";
+                copiedAgenda.setName(COPY_OF_TEXT + agenda.getName() + " " + dateTimeStamp);
+
+                // Previous Comment:
                 // If we don't clear the primary key and set the fieldsClearedOnCopy flag then the
                 // MaintenanceDocumentServiceImpl.processMaintenanceObjectForCopy() will try to locate the primary keys in
                 // an attempt to clear them which again would cause an exception due to the wrapper class.
-                agenda.setId(null);
-                document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
+                // agenda.setId(null);
+                // Update: Using a copiedAgenda we don't mess with the existing agenda at all.
+                copiedAgenda.setId(copiedAgendaNewId);
+                document.getDocumentHeader().setDocumentDescription(NEW_AGENDA_EDITOR_DOCUMENT_TEXT);
                 document.setFieldsClearedOnCopy(true);
-            }
-            agendaEditor.setAgenda(agenda);
 
-            // set custom attributes map in AgendaEditor
-            agendaEditor.setCustomAttributesMap(agenda.getAttributes());
+                String initAgendaItemId = agenda.getFirstItemId();
+                List<AgendaItemBo> agendaItems = agenda.getItems();
+                List<AgendaItemBo> copiedAgendaItems = new ArrayList<AgendaItemBo>();
+                for (AgendaItemBo agendaItem: agendaItems) {
+                    AgendaItemBo copiedAgendaItem = copyAgendaItem(copiedAgenda, agendaItem, dateTimeStamp);
+                    if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
+                        copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
+                    }
+                    copiedAgendaItems.add(copiedAgendaItem);
+                }
+                copiedAgenda.setItems(copiedAgendaItems);
+                agendaEditor.setAgenda(copiedAgenda);
+            } else {
+                // set custom attributes map in AgendaEditor
+                //                agendaEditor.setCustomAttributesMap(agenda.getAttributes());
+                agendaEditor.setAgenda(agenda);
+            }
+            agendaEditor.setCustomAttributesMap(agenda.getAttributes()); // TODO EGHM
+
 
             // set extra fields on AgendaEditor
             agendaEditor.setNamespace(agenda.getContext().getNamespace());
@@ -364,6 +401,63 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return dataObject;
     }
 
+    // TODO EGHM Move this to AgendaItemBo copyAgendaItem
+    private AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, final AgendaItemBo agendaItem, String dts) {
+        if (agendaItem == null) return null;
+
+        // Use deepCopy and update all the ids.
+        AgendaItemBo copiedAgendaItem = (AgendaItemBo) ObjectUtils.deepCopy(agendaItem);
+
+        copiedAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S).toString());
+        
+        copiedAgendaItem.setAgendaId(copiedAgenda.getId());
+
+        copiedAgendaItem.setRule(copyRule(agendaItem.getRule(), COPY_OF_TEXT + agendaItem.getRule().getName() + " " + dts));
+        copiedAgendaItem.setRuleId(copiedAgendaItem.getRule().getId());
+
+        copiedAgendaItem.setWhenFalse(copyAgendaItem(copiedAgenda, agendaItem.getWhenFalse(), dts));
+        if (copiedAgendaItem.getWhenFalse() != null) {
+            copiedAgendaItem.setWhenFalseId(copiedAgendaItem.getWhenFalse().getId());
+        }
+
+        copiedAgendaItem.setWhenTrue(copyAgendaItem(copiedAgenda, agendaItem.getWhenTrue(), dts));
+        if (copiedAgendaItem.getWhenTrue() != null) {
+            copiedAgendaItem.setWhenTrueId(copiedAgendaItem.getWhenTrue().getId());
+        }
+
+        copiedAgendaItem.setAlways(copyAgendaItem(copiedAgenda, agendaItem.getAlways(), dts));
+        if (copiedAgendaItem.getAlways() != null) {
+            copiedAgendaItem.setAlwaysId(copiedAgendaItem.getAlways().getId());
+        }
+
+        return copiedAgendaItem;
+    }
+
+    /**
+     * Returns a new copy of a rule with new ids.
+     * @param rule to copy
+     * @return RuleBo a copy of the given rule, with new ids
+     */
+    private RuleBo copyRule(RuleBo rule, String newRuleName) {
+        if (rule == null) return null;
+        RuleBo copiedRule = RuleBo.copyRule(rule);
+// Rule names cannot be the same, the error for being the same name is not displayed to the user, and the document is
+// said to have been successfully submitted.
+//        copiedRule.setName(rule.getName());
+        copiedRule.setName(newRuleName);
+        return copiedRule;
+    }
+
+    /**
+     *  Returns the sequenceAssessorService
+     * @return {@link SequenceAccessorService}
+     */
+    private SequenceAccessorService getSequenceAccessorService() {
+        if ( sequenceAccessorService == null ) {
+            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+        }
+        return sequenceAccessorService;
+    }
     /**
 	 * {@inheritDoc}
 	 */

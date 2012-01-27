@@ -216,7 +216,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService 
 	}
     @Override
     public Group getGroupByName(String namespaceCode, String groupName) {
-		return getGroupService().getGroupByNameAndNamespaceCode(namespaceCode, groupName);
+		return getGroupService().getGroupByNamespaceCodeAndName(namespaceCode, groupName);
     }
     @Override
     public List<String> getParentGroupIds(String groupId) {

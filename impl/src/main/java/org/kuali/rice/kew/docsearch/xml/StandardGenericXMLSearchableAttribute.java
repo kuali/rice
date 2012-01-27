@@ -421,7 +421,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                 }
                 GroupService groupService = KimApiServiceLocator.getGroupService();
 
-                Group group = groupService.getGroupByNameAndNamespaceCode(field.visibility.groupNamespace, field.visibility.groupName);
+                Group group = groupService.getGroupByNamespaceCodeAndName(field.visibility.groupNamespace, field.visibility.groupName);
                 visible =  group == null ? false : groupService.isMemberOfGroup(session.getPerson().getPrincipalId(), group.getId());
             }
         }

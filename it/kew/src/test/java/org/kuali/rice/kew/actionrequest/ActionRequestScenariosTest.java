@@ -346,10 +346,10 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	}
 
     private String getGroupIdFromGroupName(String namespace, String groupName) {
-        return KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespace, groupName).getId();
+        return KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespace, groupName).getId();
     }
 
     private String getRoleIdFromRoleName(String namespaceCode, String roleName) {
-        return KimApiServiceLocator.getRoleService().getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
+        return KimApiServiceLocator.getRoleService().getRoleIdByNamespaceCodeAndName(namespaceCode, roleName);
     }
 }

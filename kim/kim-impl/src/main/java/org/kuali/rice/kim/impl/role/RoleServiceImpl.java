@@ -261,7 +261,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public Role getRoleByNameAndNamespaceCode(String namespaceCode, String roleName) throws RiceIllegalStateException  {
+    public Role getRoleByNamespaceCodeAndName(String namespaceCode, String roleName) throws RiceIllegalStateException  {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
 
@@ -273,11 +273,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public String getRoleIdByNameAndNamespaceCode(String namespaceCode, String roleName) throws RiceIllegalStateException  {
+    public String getRoleIdByNamespaceCodeAndName(String namespaceCode, String roleName) throws RiceIllegalStateException  {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
 
-        Role role = getRoleByNameAndNamespaceCode(namespaceCode, roleName);
+        Role role = getRoleByNamespaceCodeAndName(namespaceCode, roleName);
         if (role != null) {
             return role.getId();
         } else {
@@ -352,7 +352,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
 
-        String roleId = getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
+        String roleId = getRoleIdByNamespaceCodeAndName(namespaceCode, roleName);
         if (roleId == null) {
             return Collections.emptyList();
         }
@@ -367,7 +367,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
 
-        String roleId = getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
+        String roleId = getRoleIdByNamespaceCodeAndName(namespaceCode, roleName);
         if (roleId == null) {
             return new ArrayList<Map<String, String>>(0);
         }
@@ -471,7 +471,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
-        List<String> roleIds = Collections.singletonList(getRoleIdByNameAndNamespaceCode(namespaceCode, roleName));
+        List<String> roleIds = Collections.singletonList(getRoleIdByNamespaceCodeAndName(namespaceCode, roleName));
         for (RoleMembership roleMembership : getRoleMembers(roleIds, qualification, false, foundRoleTypeMembers)) {
             if (MemberType.GROUP.equals(roleMembership.getType())) {
                 principalIds.addAll(getGroupService().getMemberPrincipalIds(roleMembership.getMemberId()));

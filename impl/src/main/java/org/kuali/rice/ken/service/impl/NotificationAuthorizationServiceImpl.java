@@ -72,7 +72,7 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
 	    }
 
         final GroupService groupService = KimApiServiceLocator.getGroupService();
-        Group group = groupService.getGroupByNameAndNamespaceCode(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE,
+        Group group = groupService.getGroupByNamespaceCodeAndName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE,
                 groupNameId);
 		return group == null ? false : groupService.isMemberOfGroup(user.getPrincipalId(), group.getId());
     }

@@ -209,7 +209,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode())) {
-        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+        	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                     newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
         		newMember.setMemberId(tempGroup.getId());

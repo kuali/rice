@@ -55,7 +55,7 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
         	String groupName = request.getParameter(KimConstants.UniqueKeyConstants.GROUP_NAME);
         	
         	if (!StringUtils.isBlank(namespaceCode) && !StringUtils.isBlank(groupName)) {
-        		group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespaceCode, groupName);
+        		group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespaceCode, groupName);
             }
         }
         if (group != null) {

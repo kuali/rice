@@ -173,7 +173,7 @@ public class ActionListTest extends KEWTestCase {
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	String user1PrincipalId = getPrincipalIdForName("user1");
 
-    	Group NonSIT = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+    	Group NonSIT = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                 KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();

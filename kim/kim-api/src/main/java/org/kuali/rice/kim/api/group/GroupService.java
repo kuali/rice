@@ -154,10 +154,10 @@ public interface GroupService {
      *         non-existant id is supplied.
      * @throws IllegalArgumentException if the namespaceCode, groupName is null or blank
      */
-    @WebMethod(operationName = "getGroupByNameAndNamespaceCode")
+    @WebMethod(operationName = "getGroupByNamespaceCodeAndName")
     @WebResult(name = "group")
     @Cacheable(value= Group.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'groupName=' + #p1")
-    Group getGroupByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
+    Group getGroupByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "groupName") String groupName) throws RiceIllegalArgumentException;
 
     /**

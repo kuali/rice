@@ -620,7 +620,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      */
     private void createFirstApproveRolePeopleFlow() {
         RoleService roleService = KimApiServiceLocator.getRoleService();
-        Role role = roleService.getRoleByNameAndNamespaceCode("KR-SYS", "Technical Administrator");
+        Role role = roleService.getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
         assertNotNull("Technical Administrator role should exist!", role);
         assertEquals(2, roleService.getRoleMembers(Collections.singletonList(role.getId()),
                 new HashMap<String, String>()).size());
@@ -692,7 +692,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      */
     private void createAllApproveRolePeopleFlow() {
         RoleService roleService = KimApiServiceLocator.getRoleService();
-        Role role = roleService.getRoleByNameAndNamespaceCode("KR-SYS", "Technical Administrator");
+        Role role = roleService.getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
         assertNotNull("Technical Administrator role should exist!", role);
         assertEquals(2, roleService.getRoleMembers(Collections.singletonList(role.getId()),
                 new HashMap<String, String>()).size());

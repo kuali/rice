@@ -194,7 +194,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 if (NotificationConstants.RECIPIENT_TYPES.GROUP.equalsIgnoreCase(node.getLocalName())) {
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
                     recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
-                    recipient.setRecipientId(KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+                    recipient.setRecipientId(KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                             Utilities.parseGroupNamespaceCode(node.getTextContent()), Utilities.parseGroupName(
                             node.getTextContent())).getId());
                 } else if (NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(node.getLocalName())){
@@ -504,7 +504,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             	    userRecipients.add(recipientIds.item(i).getTextContent().trim());
             	} else {
             	    //String groupName = recipientIds.item(i).getTextContent().trim();
-            	    //KimGroup recipGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByNameAndNamespaceCode(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+            	    //KimGroup recipGroup = KimApiServiceLocator.getIdentityManagementService().getGroupByNamespaceCodeAndName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
             	    //workgroupRecipients.add(recipGroup.getGroupId());
             	    workgroupRecipients.add(recipientIds.item(i).getTextContent().trim());
             	}

@@ -175,7 +175,7 @@ public class ActionRequestFactory {
         
         Group notifyExclusionWorkgroup = null;
         if(!StringUtils.isBlank(groupName)){
-        	notifyExclusionWorkgroup = getGroupService().getGroupByNameAndNamespaceCode(
+        	notifyExclusionWorkgroup = getGroupService().getGroupByNamespaceCodeAndName(
                     Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
         }
         

@@ -103,7 +103,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 //		assertNotNull( "role list must not be null", roles );
 //		System.out.println( roles );
 //		assertTrue( "role list must have non-zero length", roles.size() > 0 );
-//		KimRole r = KimImplServiceLocator.getAuthorizationService().getRoleByNameAndNamespaceCode( org.kuali.rice.kim.util.KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" );
+//		KimRole r = KimImplServiceLocator.getAuthorizationService().getRoleByNamespaceCodeAndName( org.kuali.rice.kim.util.KimApiConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE, "SY_FUNCTIONAL_SUPER_USERS" );
 //		assertTrue( "one of the roles must be SY_FUNCTIONAL_SUPER_USERS", roles.contains( r ) );
 //	}
 //

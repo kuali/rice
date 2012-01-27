@@ -211,7 +211,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 if (groupNamespaceParam == null) {
                     groupNamespaceParam = KimConstants.KIM_GROUP_DEFAULT_NAMESPACE_CODE;
                 }
-                group = getGroupService().getGroupByNameAndNamespaceCode(groupNamespaceParam, groupNameParam.trim());
+                group = getGroupService().getGroupByNamespaceCodeAndName(groupNamespaceParam, groupNameParam.trim());
                 if (group == null) {
                     GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
                 } else {
@@ -361,7 +361,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!StringUtils.isEmpty(groupName) && !StringUtils.isEmpty(groupNamespace)) {
-            Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(groupNamespace,
+            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespace,
                     groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);

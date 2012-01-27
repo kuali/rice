@@ -461,7 +461,7 @@ public class RuleXmlParser {
         	}
             groupName = Utilities.substituteConfigParameters(groupName);
             groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(groupNamespace,
+            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespace,
                     groupName);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
@@ -491,7 +491,7 @@ public class RuleXmlParser {
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);
 
-            Group workgroupObject = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+            Group workgroupObject = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                     workgroupNamespace, workgroupName);
             if (workgroupObject == null) {
                 throw new XmlException("Could not locate workgroup: " + workgroup);

@@ -641,7 +641,7 @@ public class DocumentTypeXmlParser {
             	exceptionWgName = Utilities.parseGroupName(exceptionWg);
             	exceptionWgNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
         	}
-            Group exceptionGroup = getGroupService().getGroupByNameAndNamespaceCode(exceptionWgNamespace,
+            Group exceptionGroup = getGroupService().getGroupByNamespaceCodeAndName(exceptionWgNamespace,
                     exceptionWgName);
             if(exceptionGroup == null) {
                	throw new WorkflowRuntimeException("Exception workgroup name " + exceptionWgName + " does not exist");
@@ -871,7 +871,7 @@ public class DocumentTypeXmlParser {
         if (StringUtils.isBlank(groupNamespace) || StringUtils.isBlank(groupName)) {
             throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
         }
-        Group workgroup = getGroupService().getGroupByNameAndNamespaceCode(groupNamespace, groupName);
+        Group workgroup = getGroupService().getGroupByNamespaceCodeAndName(groupNamespace, groupName);
         if (workgroup == null) {
             throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
         }
@@ -1223,7 +1223,7 @@ public class DocumentTypeXmlParser {
         }
         if (org.apache.commons.lang.StringUtils.isNotEmpty(exceptionWorkgroupName)
                 && org.apache.commons.lang.StringUtils.isNotEmpty(exceptionWorkgroupNamespace)) {
-            exceptionWorkgroup = getGroupService().getGroupByNameAndNamespaceCode(exceptionWorkgroupNamespace,
+            exceptionWorkgroup = getGroupService().getGroupByNamespaceCodeAndName(exceptionWorkgroupNamespace,
                     exceptionWorkgroupName);
             if (exceptionWorkgroup == null) {
                 throw new GroupNotFoundException("Could not locate exception workgroup with namespace '" + exceptionWorkgroupNamespace + "' and name '" + exceptionWorkgroupName + "'");

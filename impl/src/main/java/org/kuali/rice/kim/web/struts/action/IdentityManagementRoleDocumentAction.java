@@ -301,7 +301,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
                 && StringUtils.isNotEmpty(newMember.getMemberName())
                 && StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
                 && StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode())) {
-            Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+            Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                     newMember.getMemberNamespaceCode(), newMember.getMemberName());
             if (tempGroup != null) {
                 newMember.setMemberId(tempGroup.getId());
@@ -447,7 +447,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
                 && StringUtils.isNotEmpty(newDelegationMember.getMemberName())
                 && StringUtils.isNotEmpty(newDelegationMember.getMemberNamespaceCode())
                 && StringUtils.equals(newDelegationMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode())) {
-            Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+            Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                     newDelegationMember.getMemberNamespaceCode(), newDelegationMember.getMemberName());
             if (tempGroup != null) {
                 newDelegationMember.setMemberId(tempGroup.getId());

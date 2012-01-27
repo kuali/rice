@@ -168,7 +168,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
-        Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(roleDoc.getRoleNamespace(),
+        Role role = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName(roleDoc.getRoleNamespace(),
                 roleDoc.getRoleName());
     	boolean rulePassed = true;
     	if(role!=null){

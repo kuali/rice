@@ -331,7 +331,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
     @Override
-    public Group getGroupByNameAndNamespaceCode(String namespaceCode, String groupName) throws RiceIllegalArgumentException{
+    public Group getGroupByNamespaceCodeAndName(String namespaceCode, String groupName) throws RiceIllegalArgumentException{
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(groupName, "groupName");
 

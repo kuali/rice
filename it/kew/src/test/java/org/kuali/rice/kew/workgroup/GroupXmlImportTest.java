@@ -50,7 +50,7 @@ public class GroupXmlImportTest extends KEWTestCase {
         IdentityService identityService = KimApiServiceLocator.getIdentityService();
         GroupService groupService = KimApiServiceLocator.getGroupService();
         //verify that the group was ingested
-        Group group = groupService.getGroupByNameAndNamespaceCode(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE,
+        Group group = groupService.getGroupByNamespaceCodeAndName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE,
                 "TestUserGroup");
 
         assertNotNull(group);
@@ -59,7 +59,7 @@ public class GroupXmlImportTest extends KEWTestCase {
         assertTrue(groupService.isMemberOfGroup(identityService.getPrincipalByPrincipalName("ewestfal").getPrincipalId(), group.getId()));
         assertTrue(groupService.isMemberOfGroup(identityService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getId()));
         assertTrue(groupService.isMemberOfGroup("2015", group.getId()));
-        assertTrue(KimApiServiceLocator.getGroupService().isGroupMemberOfGroup(groupService.getGroupByNameAndNamespaceCode(
+        assertTrue(KimApiServiceLocator.getGroupService().isGroupMemberOfGroup(groupService.getGroupByNamespaceCodeAndName(
                 KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getId(), group.getId()));
     }
 }

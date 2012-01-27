@@ -222,6 +222,6 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	}
 
 	protected String getGroupIdForName(String namespace, String groupName) {
-		return KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespace, groupName).getId();
+		return KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespace, groupName).getId();
 	}
 }

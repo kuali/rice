@@ -114,20 +114,20 @@ public interface RoleService {
 	 * and role name.
 	 *
 	 */
-    @WebMethod(operationName = "getRoleByNameAndNamespaceCode")
+    @WebMethod(operationName = "getRoleByNamespaceCodeAndName")
     @WebResult(name = "role")
     @Cacheable(value=Role.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
-    Role getRoleByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
+    Role getRoleByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
 	/**
 	 * Return the Role ID for the given unique combination of namespace,
 	 * component and role name.
 	 */
-    @WebMethod(operationName = "getRoleIdByNameAndNamespaceCode")
+    @WebMethod(operationName = "getRoleIdByNamespaceCodeAndName")
     @WebResult(name = "roleId")
-    @Cacheable(value=Role.Cache.NAME, key="'{getRoleIdByNameAndNamespaceCode}' + 'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
-	String getRoleIdByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
+    @Cacheable(value=Role.Cache.NAME, key="'{getRoleIdByNamespaceCodeAndName}' + 'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
+	String getRoleIdByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
 	/**

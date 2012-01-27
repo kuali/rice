@@ -1820,13 +1820,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             }
 
        } else if(MemberType.GROUP.equals(memberType)){
-        	Group groupInfo = getGroupService().getGroupByNameAndNamespaceCode(memberNamespaceCode, memberName);
+        	Group groupInfo = getGroupService().getGroupByNamespaceCodeAndName(memberNamespaceCode, memberName);
         	if (groupInfo!=null) {
                 memberId = groupInfo.getId();
             }
 
         } else if(MemberType.ROLE.equals(memberType)){
-        	memberId = getRoleService().getRoleIdByNameAndNamespaceCode(memberNamespaceCode, memberName);
+        	memberId = getRoleService().getRoleIdByNamespaceCodeAndName(memberNamespaceCode, memberName);
         }
         return memberId;
     }

@@ -106,7 +106,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	protected boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
         Group group = null;
         if(null != groupDoc.getGroupNamespace() && null != groupDoc.getGroupName()){
-            group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+            group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                 groupDoc.getGroupNamespace(), groupDoc.getGroupName());
         }
         boolean rulePassed = true;

@@ -576,7 +576,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Assign it a role that was created above.  This should mean that every
          * principle in the role can have the delegate added below as a delegate
          */
-        Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(NAMESPACE, ROLE_NAME);
+        Role role = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName(NAMESPACE, ROLE_NAME);
         assertNotNull("Role should exist.", role);
         delegate.setRoleId(role.getId());
         delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
@@ -761,7 +761,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
                     // first let's clear all of the members out of our role
 
-                    Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(NAMESPACE,
+                    Role role = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName(NAMESPACE,
                             ROLE_NAME);
                     Map<String, String> criteria = new HashMap<String, String>();
                     criteria.put("roleId", role.getId());

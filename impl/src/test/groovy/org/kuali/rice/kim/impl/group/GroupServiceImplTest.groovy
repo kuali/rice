@@ -193,7 +193,7 @@ class GroupServiceImplTest {
 
         for (String name : sampleGroupsByName.keySet()) {
             GroupBo tempGroup = sampleGroupsByName.get(name)
-            Group group = groupService.getGroupByNameAndNamespaceCode(tempGroup.namespaceCode, tempGroup.name)
+            Group group = groupService.getGroupByNamespaceCodeAndName(tempGroup.namespaceCode, tempGroup.name)
             Assert.assertEquals(GroupBo.to(sampleGroupsByName.get(name)), group)
         }
         businessObjectServiceMockFor.verify(bos)
@@ -206,7 +206,7 @@ class GroupServiceImplTest {
         }
         injectBusinessObjectServiceIntoGroupService()
 
-        Group group = groupService.getGroupByNameAndNamespaceCode("badNamespace", "noname")
+        Group group = groupService.getGroupByNamespaceCodeAndName("badNamespace", "noname")
         Assert.assertNull(group)
         businessObjectServiceMockFor.verify(bos)
     }

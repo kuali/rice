@@ -60,7 +60,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 
 	public String getIdForGroupName(String namespace, String groupName) {
-		Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespace, groupName);
+		Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespace, groupName);
 		if (group == null) {
 			throw new RiceIllegalArgumentException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
 		}
@@ -90,7 +90,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Group getGroupByName(String namespaceCode, String name) {
-		Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(namespaceCode, name);
+		Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(namespaceCode, name);
 		if (group == null) {
 			throw new RiceIllegalArgumentException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
 		}
@@ -136,7 +136,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		} else if (groupId instanceof WorkflowGroupId) {
 			return KimApiServiceLocator.getGroupService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 		} else if (groupId instanceof GroupNameId) {
-			return KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
+			return KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                     ((GroupNameId) groupId).getNamespace(), ((GroupNameId) groupId).getNameId());
 		}
 		throw new RiceIllegalArgumentException("Invalid GroupId type was passed: " + groupId);

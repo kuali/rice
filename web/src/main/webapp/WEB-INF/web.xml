@@ -146,7 +146,7 @@
     <servlet-name>edoclite</servlet-name>
   </filter-mapping>
 
-  ${monitoring.license}
+  ${monitoring.listener}
 
   <listener>
     <listener-class>org.kuali.rice.krad.web.session.NonSerializableSessionListener</listener-class>

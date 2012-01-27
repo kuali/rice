@@ -16,7 +16,6 @@
 package org.kuali.rice.core.api.config.module;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
 
 import java.util.List;
 
@@ -26,6 +25,4 @@ public interface Configurer extends Lifecycle {
 	void addToConfig();
 	void validateConfigurerState();
 	void initializeResourceLoaders() throws Exception;
-	void doContextStartedLogic();
-	void doContextStoppedLogic();
 }

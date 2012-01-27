@@ -43,6 +43,11 @@ import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.ContextStoppedEvent;
+import org.springframework.context.event.SmartApplicationListener;
+import org.springframework.core.Ordered;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -62,7 +67,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class KSBConfigurer extends ModuleConfigurer {
+public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationListener {
 	
 	private static final String SERVICE_BUS_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbServiceBusClientSpringBeans.xml";
 	private static final String MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbMessageClientSpringBeans.xml";
@@ -183,8 +188,16 @@ public class KSBConfigurer extends ModuleConfigurer {
 		}
     }
 
-	@Override
-	public void doAdditionalContextStartedLogic() {
+    @Override
+    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        if (applicationEvent instanceof ContextRefreshedEvent) {
+            doAdditionalContextStartedLogic();
+        } else if (applicationEvent instanceof ContextStoppedEvent) {
+            doAdditionalContextStoppedLogic();
+        }
+    }
+
+	protected void doAdditionalContextStartedLogic() {
         validateServices(getServices());
 		ServicePublisher servicePublisher = new ServicePublisher(getServices());
 		Lifecycle serviceBus = new ServiceDelegatingLifecycle(KsbApiServiceLocator.SERVICE_BUS);
@@ -209,6 +222,30 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 		requeueMessages();
 	}
+
+    protected void doAdditionalContextStoppedLogic() {
+        try {
+            HttpInvokerConnector.shutdownIdleConnectionTimeout();
+        } catch (Exception e) {
+            LOG.error("Failed to shutdown idle connection timeout evictor thread.", e);
+        }
+        cleanUpConfiguration();
+    }
+
+    @Override
+    public boolean supportsEventType(Class<? extends ApplicationEvent> aClass) {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSourceType(Class<?> aClass) {
+        return true;
+    }
+
+    @Override
+    public int getOrder() {
+        return Ordered.LOWEST_PRECEDENCE;
+    }
 
     @Override
     protected void doAdditionalModuleStartLogic() throws Exception {
@@ -291,17 +328,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
 		ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
-	
-	@Override
-	public void doAdditionalContextStoppedLogic() {
-		try {
-			HttpInvokerConnector.shutdownIdleConnectionTimeout();
-		} catch (Exception e) {
-			LOG.error("Failed to shutdown idle connection timeout evictor thread.", e);
-		}
-	    cleanUpConfiguration();
-	}
-	
+
 	/**
      * Because our configuration is global, shutting down Rice does not get rid of objects stored there.  For that reason
      * we need to manually clean these up.  This is most important in the case of the service bus because the configuration

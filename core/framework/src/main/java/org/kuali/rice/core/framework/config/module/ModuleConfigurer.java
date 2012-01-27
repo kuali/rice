@@ -33,10 +33,6 @@ import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
@@ -49,7 +45,7 @@ import java.util.List;
 import java.util.Properties;
 
 // FIXME: this class must be put in an API module somehow
-public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent>, ServletContextAware {
+public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ServletContextAware {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     private List<RunMode> validRunModes = new ArrayList<RunMode>();
@@ -327,33 +323,6 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		return container;
 	}
 
-	@Override
-	public final void onApplicationEvent(ApplicationEvent event) {
-		if (event instanceof ContextRefreshedEvent) {
-			doContextStartedLogic();
-		} else if (event instanceof ContextClosedEvent) {
-			doContextStoppedLogic();
-		}
-	}
-
-	@Override
-	public final void doContextStartedLogic() {
-		doAdditionalContextStartedLogic();
-	}
-
-	@Override
-	public final void doContextStoppedLogic() {
-		doAdditionalContextStoppedLogic();
-	}
-	
-	protected void doAdditionalContextStartedLogic() {
-		//override in subclasses
-	}
-
-	protected void doAdditionalContextStoppedLogic() {
-		//override in subclasses
-	}
-	
 	@Override
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;

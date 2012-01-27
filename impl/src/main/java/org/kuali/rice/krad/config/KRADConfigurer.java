@@ -23,6 +23,10 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.SmartApplicationListener;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -32,7 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class KRADConfigurer extends ModuleConfigurer {
+public class KRADConfigurer extends ModuleConfigurer implements SmartApplicationListener {
 
     private DataSource applicationDataSource;
 
@@ -67,9 +71,28 @@ public class KRADConfigurer extends ModuleConfigurer {
     }
 
     @Override
-    public void doAdditionalContextStartedLogic() {
-        loadDataDictionary();
-        publishDataDictionaryComponents();
+    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        if (applicationEvent instanceof ContextRefreshedEvent) {
+            loadDataDictionary();
+            publishDataDictionaryComponents();
+        }
+    }
+
+    @Override
+    public boolean supportsEventType(Class<? extends ApplicationEvent> aClass) {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSourceType(Class<?> aClass) {
+        return true;
+    }
+
+    @Override
+    public int getOrder() {
+        // return a lower value which will give the data dictionary indexing higher precedence since DD indexing should
+        // be started as soon as it can be
+        return -1000;
     }
 
     /**

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.core.api.lifecycle;
 
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-
-
 /**
  * An abstract superclass to aid in implementing lifeycles.
  *

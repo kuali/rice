@@ -114,10 +114,11 @@ public class KualiInitializeListener implements ServletContextListener {
 
     @Override
 	public void contextDestroyed(ServletContextEvent sce) {
-        LOG.info("Shutting down Kuali Rice Application.");
+        LOG.info("Shutting down Kuali Rice...");
         if (context != null) {
             context.close();
         }
+        LOG.info("...completed shutdown of Kuali Rice.");
     }
 
     public XmlWebApplicationContext getContext() {

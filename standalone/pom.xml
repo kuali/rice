@@ -57,6 +57,7 @@
             <overlay>
               <groupId>${project.groupId}</groupId>
               <artifactId>rice-web</artifactId>
+              <filtered>false</filtered>
               <excludes>
                 <exclude>WEB-INF/web.xml</exclude>
               </excludes>

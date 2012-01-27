@@ -85,6 +85,7 @@
                 <exclude>${war.overlay.pattern.1}</exclude>
                 <exclude>${war.overlay.exclude.2}</exclude>
               </excludes>
+              <filtered>false</filtered>
             </overlay>
           </overlays>
         </configuration>

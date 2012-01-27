@@ -18,7 +18,6 @@ package org.kuali.rice.krad.web.bind;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -33,7 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * Spring Exception intercepter
@@ -50,7 +48,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
     private static final Logger LOG = Logger.getLogger(UifHandlerExceptionResolver.class);
 
     /**
-     * Builds the incident report model and view from the request that threw the exception.
+     * Builds the incident report model and view from the request that threw the exception
      * 
      * @param request -
      *            the request
@@ -68,12 +66,13 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception ex) {    
-        LOG.error("The following error was caught by the UifHandlerExceptionResolver : ", ex);        
-        String incidentDocId = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
-        String incidentViewId = "";
+        LOG.error("The following error was caught by the UifHandlerExceptionResolver : ", ex);
 
         // log exception
         LOG.error(ex.getMessage(), ex);
+
+        String incidentDocId = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
+        String incidentViewId = "";
 
         UifFormBase form = GlobalVariables.getUifFormManager().getCurrentForm();
         if (form instanceof DocumentFormBase) {
@@ -82,6 +81,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
             }
             incidentViewId = ((DocumentFormBase) form).getViewId();
         }
+        GlobalVariables.getUifFormManager().removeForm(form);
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
         IncidentReportForm incidentReportForm = new IncidentReportForm();
@@ -91,6 +91,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         String postUrl = request.getRequestURL().toString();        
         postUrl = postUrl.substring(0, postUrl.lastIndexOf("/")) + "/incidentReport";
         incidentReportForm.setFormPostUrl(postUrl);
+
         incidentReportForm.setException(ex);
         incidentReportForm.setIncidentDocId(incidentDocId);
         incidentReportForm.setIncidentViewId(incidentViewId);
@@ -100,6 +101,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
         incidentReportForm.setViewId("Uif-IncidentReportView");
+
         // Set the view object
         incidentReportForm.setView(getViewService().getViewById("Uif-IncidentReportView"));
 
@@ -118,16 +120,14 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }
-        request.getSession().setAttribute(incidentReportForm.getFormKey(), incidentReportForm);
+
+        GlobalVariables.getUifFormManager().setCurrentForm(incidentReportForm);
+
         return modelAndView;
     }
 
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
-    }
-
-    protected SessionDocumentService getSessionDocumentService() {
-        return KRADServiceLocatorWeb.getSessionDocumentService();
     }
 
 }

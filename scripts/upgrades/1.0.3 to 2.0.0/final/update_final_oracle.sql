@@ -5898,7 +5898,7 @@ values (krim_perm_id_s.nextval,
 
 insert into krim_perm_attr_data_t
 (attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
-values (krim_attr_defn_id_s.nextval,
+values (krim_attr_data_id_s.nextval,
         (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KR-RULE'),
         (select kim_typ_id from krim_typ_t where nm = 'Namespace' and nmspc_cd = 'KR-NS'),
         (select kim_attr_defn_id from krim_attr_defn_t where nm = 'namespaceCode'),

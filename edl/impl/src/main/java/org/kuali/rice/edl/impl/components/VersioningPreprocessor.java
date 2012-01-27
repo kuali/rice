@@ -83,7 +83,8 @@ public class VersioningPreprocessor implements EDLModelComponent {
 				return version;
 			}
 		}
-		return null;
+		return EDLXmlUtils.getVersionFromData(dataElement, new Integer(0));
+
 	}
 
 }

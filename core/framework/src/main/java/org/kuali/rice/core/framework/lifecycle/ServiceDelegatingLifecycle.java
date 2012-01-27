@@ -32,6 +32,7 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BaseLifecycle.class);
 
 	private QName serviceName;
+    private Lifecycle service;
 
 	public ServiceDelegatingLifecycle(QName serviceName) {
 		this.serviceName = serviceName;
@@ -43,7 +44,11 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 
 	public void start() throws Exception {
 	    if (!isStarted()) {
-	        loadService(this.serviceName).start();
+	        this.service = loadService(this.serviceName);
+            if (this.service == null) {
+                throw new IllegalStateException("Failed to load the service with the given name: " + this.serviceName);
+            }
+            this.service.start();
 	    }
 		super.start();
 	}
@@ -51,17 +56,16 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 	public void stop() throws Exception {
 	    if (isStarted()) {
 	    	try {
-	    		Lifecycle lifecycle = loadService(this.serviceName);
-	    		if (lifecycle == null) {
+	    		if (this.service == null) {
 	    			LOG.warn("Couldn't stop service, failed to locate service with name " + serviceName);
 	    		} else {
-	    			lifecycle.stop();
+	    			this.service.stop();
 	    		}
 	    	} catch (Exception e) {
-	    		LOG.warn("couldn't stop service " + this.serviceName);
-	    		throw e;
+	    		LOG.warn("couldn't stop service " + this.serviceName, e);
 	    	}
 	    }
+        this.service = null;
 		super.stop();
 	}
 
@@ -71,7 +75,7 @@ public class ServiceDelegatingLifecycle extends BaseLifecycle {
 	        return null;
 	    }
 	    if (!(service instanceof Lifecycle)) {
-	        throw new RuntimeException("Service with name " + serviceName + " does not implement the Lifecycle interface!");
+	        throw new IllegalStateException("Service with name " + serviceName + " does not implement the Lifecycle interface!");
 	    }
 	    return (Lifecycle) service;
 	}

@@ -17,11 +17,11 @@ package org.kuali.rice.kew.plugin;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.impl.resourceloader.ResourceLoaderUtil;
-import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 
 import javax.xml.namespace.QName;
 import java.io.File;
@@ -141,7 +141,7 @@ public final class PluginUtils {
     }
 
     public static PluginRegistry getPluginRegistry() {
-    	return ((CoreResourceLoader)GlobalResourceLoader.getResourceLoader(CoreResourceLoader.NAME)).getRegistry();
+    	return (PluginRegistry)GlobalResourceLoader.getResourceLoader(new QName(CoreConfigHelper.getApplicationId(), ResourceLoader.PLUGIN_REGISTRY_LOADER_NAME));
     }
 
     public static void installResourceLoader(Plugin plugin) {

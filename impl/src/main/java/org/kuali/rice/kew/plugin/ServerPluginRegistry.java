@@ -60,32 +60,35 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	}
 
 	public void start() throws Exception {
-		LOG.info("Starting server Plugin Registry...");
-		scheduledExecutor = Executors.newScheduledThreadPool(2, new KEWThreadFactory());
-		sharedPluginDirectory = loadSharedPlugin();
-		reloader = new Reloader();
-		hotDeployer = new HotDeployer(PluginUtils.getPluginRegistry(), sharedPluginDirectory, pluginDirectories);
-		loadPlugins(sharedPluginDirectory);
-		// TODO make the delay configurable
-		this.reloaderFuture = scheduledExecutor.scheduleWithFixedDelay(reloader, 5, 5, TimeUnit.SECONDS);
-		this.hotDeployerFuture = scheduledExecutor.scheduleWithFixedDelay(hotDeployer, 5, 5, TimeUnit.SECONDS);
-		super.start();
-		LOG.info("...server Plugin Registry successfully started.");
+        if (!isStarted()) {
+		    LOG.info("Starting server Plugin Registry...");
+		    scheduledExecutor = Executors.newScheduledThreadPool(2, new KEWThreadFactory());
+		    sharedPluginDirectory = loadSharedPlugin();
+		    reloader = new Reloader();
+		    hotDeployer = new HotDeployer(this, sharedPluginDirectory, pluginDirectories);
+		    loadPlugins(sharedPluginDirectory);
+		    this.reloaderFuture = scheduledExecutor.scheduleWithFixedDelay(reloader, 5, 5, TimeUnit.SECONDS);
+		    this.hotDeployerFuture = scheduledExecutor.scheduleWithFixedDelay(hotDeployer, 5, 5, TimeUnit.SECONDS);
+		    super.start();
+		    LOG.info("...server Plugin Registry successfully started.");
+        }
 	}
 
 	public void stop() throws Exception {
-		LOG.info("Stopping server Plugin Registry...");
-		stopReloader();
-		stopHotDeployer();
-		reloader = null;
-		hotDeployer = null;
+        if (isStarted()) {
+		    LOG.info("Stopping server Plugin Registry...");
+		    stopReloader();
+		    stopHotDeployer();
+		    reloader = null;
+		    hotDeployer = null;
 
-		if (scheduledExecutor != null) {
-			scheduledExecutor.shutdownNow();
-			scheduledExecutor = null;
-		}
-		super.stop();
-		LOG.info("...server Plugin Registry successfully stopped.");
+		    if (scheduledExecutor != null) {
+			    scheduledExecutor.shutdownNow();
+			    scheduledExecutor = null;
+		    }
+		    super.stop();
+		    LOG.info("...server Plugin Registry successfully stopped.");
+        }
 	}
 
 	protected void stopReloader() {
@@ -109,7 +112,6 @@ public class ServerPluginRegistry extends BasePluginRegistry {
 	protected void loadPlugins(File sharedPluginDirectory) {
         Map<String, File> pluginLocations = new TreeMap<String, File>(new PluginNameComparator());
 		PluginZipFileFilter pluginFilter = new PluginZipFileFilter();
-        //PluginDirectoryFilter pluginFilter = new PluginDirectoryFilter(sharedPluginDirectory);
         Set<File> visitedFiles = new HashSet<File>();
         for (String pluginDir : pluginDirectories) {
             LOG.info("Reading plugins from " + pluginDir);

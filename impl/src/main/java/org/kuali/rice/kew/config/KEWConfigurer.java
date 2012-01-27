@@ -114,35 +114,15 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	@Override
 	public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
-		// create the plugin registry
-		PluginRegistry registry = null;
+        List<ResourceLoader> resourceLoaders = new ArrayList<ResourceLoader>();
 		String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
 		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled).booleanValue()) {
-			registry = new PluginRegistryFactory().createPluginRegistry();
+    		// create the plugin registry
+			PluginRegistry registry = new PluginRegistryFactory().createPluginRegistry();
+            registry.start();
+            resourceLoaders.add(registry);
 		}
-
-		final Collection<ResourceLoader> rls = new ArrayList<ResourceLoader>();
-		for (ResourceLoader rl : RiceResourceLoaderFactory.getSpringResourceLoaders()) {
-			CoreResourceLoader coreResourceLoader = 
-				new CoreResourceLoader(rl, registry);
-			coreResourceLoader.start();
-
-			//wait until core resource loader is started to attach to GRL;  this is so startup
-			//code can depend on other things hooked into GRL without incomplete KEW resources
-			//messing things up.
-
-			GlobalResourceLoader.addResourceLoader(coreResourceLoader);
-
-			// now start the plugin registry if there is one
-			if (registry != null) {
-				registry.start();
-				// the registry resourceloader is now being handled by the CoreResourceLoader
-				//GlobalResourceLoader.addResourceLoader(registry);
-			}
-			rls.add(coreResourceLoader);
-		}
-
-		return rls;
+        return resourceLoaders;
 	}
 
 	public DataSource getDataSource() {

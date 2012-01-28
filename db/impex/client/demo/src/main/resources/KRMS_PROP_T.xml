@@ -32,7 +32,8 @@
         DSCRM_TYP_CD="S" PROP_ID="T1012" RULE_ID="T1008" VER_NBR="1"/>
     <KRMS_PROP_T CMPND_OP_CD="|" DESC_TXT="is purchased item controlled"
         DSCRM_TYP_CD="C" PROP_ID="T1013" RULE_ID="T1008" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="is it for a special event" DSCRM_TYP_CD="C"
+    <KRMS_PROP_T CMPND_OP_CD="&amp;"
+        DESC_TXT="is it for a special event" DSCRM_TYP_CD="C"
         PROP_ID="T1014" RULE_ID="T1008" VER_NBR="1"/>
     <KRMS_PROP_T DESC_TXT="is item purchased animal" DSCRM_TYP_CD="S"
         PROP_ID="T1015" RULE_ID="T1008" VER_NBR="1"/>

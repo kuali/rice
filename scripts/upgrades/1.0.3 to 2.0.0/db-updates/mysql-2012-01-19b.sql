@@ -718,8 +718,8 @@ insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id)
 values ('T1011', 'T1013');
 
 -- is it special
-insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
-values ('T1014', 'is it for a special event', null, 'C','T1008', 1);
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
+values ('T1014', 'is it for a special event', null, 'C','T1008', '&', 1);
 
 insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id)
 values ('T1011', 'T1014');

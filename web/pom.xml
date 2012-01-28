@@ -142,7 +142,9 @@
                 <jsSourceInclude>scripts/*.js</jsSourceInclude>
                 <jsSourceInclude>plugins/**/*.js</jsSourceInclude>
               </jsSourceIncludes>
+              <cssTargetDir>krad/css</cssTargetDir>
               <cssFinalFile>krad.css</cssFinalFile>
+              <jsTargetDir>krad/scripts</jsTargetDir>
               <jsFinalFile>krad.js</jsFinalFile>
             </configuration>
             <goals>

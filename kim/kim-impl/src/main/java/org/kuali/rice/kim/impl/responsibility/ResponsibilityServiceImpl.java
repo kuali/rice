@@ -34,7 +34,6 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
-import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
@@ -171,21 +170,19 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public boolean hasResponsibility(final String principalId, final String namespaceCode,
-            final String respName, final Map<String, String> qualification,
-            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+            final String respName, final Map<String, String> qualification) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(respName, "respName");
         incomingParamCheck(qualification, "qualification");
-        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
-        return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
+        return hasResp(principalId, namespaceCode, responsibilities, qualification);
     }
 
     @Override
-    public boolean hasResponsibilityByTemplateName(final String principalId, final String namespaceCode,
+    public boolean hasResponsibilityByTemplate(final String principalId, final String namespaceCode,
             final String respTemplateName, final Map<String, String> qualification,
             final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
@@ -196,16 +193,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
 
         // get all the responsibility objects whose name match that requested
-        final List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
-        return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
+        final List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
+        return hasResp(principalId, namespaceCode, responsibilities, qualification);
     }
 
     private boolean hasResp(final String principalId, final String namespaceCode,
-            final List<Responsibility> responsibilities, final Map<String, String> qualification,
-            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+            final List<Responsibility> responsibilities, final Map<String, String> qualification) throws RiceIllegalArgumentException {
         // now, filter the full list by the detail passed
         final List<String> ids = new ArrayList<String>();
-        for (Responsibility r : getMatchingResponsibilities(responsibilities, responsibilityDetails)) {
+        for (Responsibility r : getMatchingResponsibilities(responsibilities, null)) {
             ids.add(r.getId());
         }
         final List<String> roleIds = getRoleIdsForResponsibilities(ids);
@@ -214,35 +210,32 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     @Override
     public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode,
-            final String responsibilityName, final Map<String, String> qualification,
-            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+            final String responsibilityName, final Map<String, String> qualification) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(responsibilityName, "responsibilityName");
         incomingParamCheck(qualification, "qualification");
-        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
-        return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
+        return getRespActions(namespaceCode, responsibilities, qualification);
     }
 
     @Override
-    public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(final String namespaceCode,
+    public List<ResponsibilityAction> getResponsibilityActionsByTemplate(final String namespaceCode,
             final String respTemplateName, final Map<String, String> qualification,
             final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(respTemplateName, "respTemplateName");
         incomingParamCheck(qualification, "qualification");
-        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
         // get all the responsibility objects whose name match that requested
-        List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
-        return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
+        List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
+        return getRespActions(namespaceCode, responsibilities, qualification);
     }
 
-    private List<ResponsibilityAction> getRespActions(final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
+    private List<ResponsibilityAction> getRespActions(final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification) {
         // now, filter the full list by the detail passed
-        List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, responsibilityDetails);
+        List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, null);
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
         for (Responsibility r : applicableResponsibilities) {
             List<String> roleIds = getRoleIdsForResponsibility(r.getId());
@@ -451,7 +444,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return Collections.unmodifiableList(roleIds);
     }
 
-    private List<Responsibility> findRespsByNamespaceCodeAndTemplateName(final String namespaceCode, final String templateName) {
+    private List<Responsibility> findRespsByTemplate(final String namespaceCode, final String templateName) {
         if (namespaceCode == null) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
         }

@@ -190,20 +190,11 @@ public interface IdentityManagementService {
               Map<String, String> qualification
     );
 
-    boolean hasPermissionByTemplateName(
-             String principalId,
-             String namespaceCode,
-             String permissionTemplateName,
-              Map<String, String> permissionDetails
-    );
+    boolean hasPermissionByTemplate(String principalId, String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails);
 
-    boolean isAuthorizedByTemplateName(
-             String principalId,
-             String namespaceCode,
-             String permissionTemplateName,
-             Map<String, String> permissionDetails,
-             Map<String, String> qualification
-    );
+    boolean isAuthorizedByTemplate(String principalId, String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails, Map<String, String> qualification);
 
     /**
      * Returns the matching permission objects for a principal.
@@ -216,13 +207,8 @@ public interface IdentityManagementService {
               Map<String, String> qualification
     );
 
-    List<Permission> getAuthorizedPermissionsByTemplateName(
-             String principalId,
-             String namespaceCode,
-             String permissionTemplateName,
-              Map<String, String> permissionDetails,
-              Map<String, String> qualification
-    );
+    List<Permission> getAuthorizedPermissionsByTemplate(String principalId, String namespaceCode,
+            String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification);
 
     List<Assignee> getPermissionAssignees(
              String namespaceCode,
@@ -231,12 +217,8 @@ public interface IdentityManagementService {
               Map<String, String> qualification
     );
 
-    List<Assignee> getPermissionAssigneesForTemplateName(
-             String namespaceCode,
-             String permissionTemplateName,
-             Map<String, String> permissionDetails,
-             Map<String, String> qualification
-    );
+    List<Assignee> getPermissionAssigneesForTemplate(String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails, Map<String, String> qualification);
 
     // ----------------------
     // Responsibility Methods
@@ -263,20 +245,14 @@ public interface IdentityManagementService {
              String principalId,
              String namespaceCode,
              String responsibilityName,
-              Map<String, String> qualification,
-              Map<String, String> responsibilityDetails
+              Map<String, String> qualification
     );
 
     /**
      * Check whether the principal has the given responsibility within the passed qualifier.
      */
-    boolean hasResponsibilityByTemplateName(
-             String principalId,
-             String namespaceCode,
-             String responsibilityTemplateName,
-              Map<String, String> qualification,
-              Map<String, String> responsibilityDetails
-    );
+    boolean hasResponsibilityByTemplate(String principalId, String namespaceCode, String responsibilityTemplateName,
+            Map<String, String> qualification, Map<String, String> responsibilityDetails);
 
     List<ResponsibilityAction> getResponsibilityActions(
              String namespaceCode,
@@ -285,21 +261,15 @@ public interface IdentityManagementService {
               Map<String, String> responsibilityDetails
     );
 
-    List<ResponsibilityAction> getResponsibilityActionsByTemplateName(
-             String namespaceCode,
-             String responsibilityTemplateName,
-              Map<String, String> qualification,
-              Map<String, String> responsibilityDetails
-    );
+    List<ResponsibilityAction> getResponsibilityActionsByTemplate(String namespaceCode,
+            String responsibilityTemplateName, Map<String, String> qualification,
+            Map<String, String> responsibilityDetails);
 
     /**
      * Returns true if there are any assigned permissions with the given template.
      */
-    boolean isPermissionDefinedForTemplateName(
-             String namespaceCode,
-             String permissionTemplateName,
-              Map<String, String> permissionDetails
-    );
+    boolean isPermissionDefinedForTemplate(String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails);
 
 
     // ----------------------

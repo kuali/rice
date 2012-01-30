@@ -130,7 +130,9 @@ public class BackdoorAction extends KualiAction {
     	Map<String, String> permissionDetails = new HashMap<String, String>();
     	permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, KewApiConstants.KEW_NAMESPACE);
     	permissionDetails.put(KimConstants.AttributeConstants.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
-    	boolean isAdmin = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KRADConstants.KNS_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new HashMap<String, String>());
+    	boolean isAdmin = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(getUserSession(request)
+                .getPrincipalId(), KRADConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN,
+                permissionDetails, new HashMap<String, String>());
         backdoorForm.setIsAdmin(isAdmin);
     }
 

@@ -37,13 +37,12 @@ public class AgendaAuthorizationServiceImpl implements AgendaAuthorizationServic
             namespace = context.getNamespace();
         }
 
-        Map qualification = new HashMap<String, String>();
+        Map<String, String> qualification = new HashMap<String, String>();
         boolean isAuthorized = getPermissionService().isAuthorized(
                 GlobalVariables.getUserSession().getPrincipalId(),
                 namespace,
                 permissionName,
-                qualification,
-                new HashMap<String, String>());
+                qualification);
         return isAuthorized;
     }
 

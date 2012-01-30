@@ -46,11 +46,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 				KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
 				permissionDetails)
 				|| getPermissionService()
-						.isAuthorizedByTemplateName(
-								user.getPrincipalId(),
-								KRADConstants.KNS_NAMESPACE,
-								KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-								permissionDetails, new HashMap<String, String>());
+						.isAuthorizedByTemplate(user.getPrincipalId(), KRADConstants.KNS_NAMESPACE,
+                                KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, permissionDetails,
+                                new HashMap<String, String>());
 	}
 
 	public final boolean canMaintain(Object dataObject, Person user) {

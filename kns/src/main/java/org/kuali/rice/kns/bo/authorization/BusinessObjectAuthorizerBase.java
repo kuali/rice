@@ -38,7 +38,7 @@ public class BusinessObjectAuthorizerBase extends DataObjectAuthorizerBase imple
 			BusinessObject businessObject, String namespaceCode,
 			String permissionTemplateName) {
 		return getPermissionService()
-				.isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName, new HashMap<String, String>(
+				.isPermissionDefinedByTemplate(namespaceCode, permissionTemplateName, new HashMap<String, String>(
                         getPermissionDetailValues(businessObject)));
 	}
 
@@ -49,24 +49,22 @@ public class BusinessObjectAuthorizerBase extends DataObjectAuthorizerBase imple
 				getPermissionDetailValues(businessObject));
 		combinedPermissionDetails.putAll(permissionDetails);
 		return getPermissionService()
-				.isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName, combinedPermissionDetails);
+				.isPermissionDefinedByTemplate(namespaceCode, permissionTemplateName, combinedPermissionDetails);
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
 			String namespaceCode, String permissionName, String principalId) {
 		return getPermissionService().isAuthorized(principalId,
 				namespaceCode, permissionName,
-				new HashMap<String, String>(getPermissionDetailValues(businessObject)),
 				new HashMap<String, String>(getRoleQualification(businessObject, principalId)));
 	}
 
 	public final boolean isAuthorizedByTemplate(BusinessObject dataObject,
 			String namespaceCode, String permissionTemplateName,
 			String principalId) {
-		return getPermissionService().isAuthorizedByTemplateName(
-				principalId, namespaceCode, permissionTemplateName,
-				new HashMap<String, String>(getPermissionDetailValues(dataObject)),
-				new HashMap<String, String>(getRoleQualification(dataObject, principalId)));
+		return getPermissionService().isAuthorizedByTemplate(principalId, namespaceCode, permissionTemplateName,
+                new HashMap<String, String>(getPermissionDetailValues(dataObject)), new HashMap<String, String>(
+                getRoleQualification(dataObject, principalId)));
 	}
 
 	public final boolean isAuthorized(BusinessObject businessObject,
@@ -83,17 +81,17 @@ public class BusinessObjectAuthorizerBase extends DataObjectAuthorizerBase imple
 			roleQualifiers = new HashMap<String, String>(
 					getRoleQualification(businessObject, principalId));
 		}
-		if (collectionOrFieldLevelPermissionDetails != null) {
+		/*if (collectionOrFieldLevelPermissionDetails != null) {
 			permissionDetails = new HashMap<String, String>(
 					getPermissionDetailValues(businessObject));
 			permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
 		} else {
 			permissionDetails = new HashMap<String, String>(
 					getPermissionDetailValues(businessObject));
-		}
+		}*/
 		
 		return getPermissionService().isAuthorized(principalId,
-				namespaceCode, permissionName, permissionDetails,
+				namespaceCode, permissionName,
 				roleQualifiers);
 	}
 
@@ -114,16 +112,18 @@ public class BusinessObjectAuthorizerBase extends DataObjectAuthorizerBase imple
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.authorization.BusinessObjectAuthorizer#getCollectionItemPermissionDetails(org.kuali.rice.krad.bo.BusinessObject)
+	 * @see org.kuali.rice.kns.authorization.BusinessObjectAuthorizer#getCollectionItemPermissionDetails(org.kuali.rice.krad.bo.BusinessObject)
 	 */
+    @Override
 	public Map<String, String> getCollectionItemPermissionDetails(
 			BusinessObject collectionItemBusinessObject) {
 		return new HashMap<String, String>();
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.authorization.BusinessObjectAuthorizer#getCollectionItemRoleQualifications(org.kuali.rice.krad.bo.BusinessObject)
+	 * @see org.kuali.rice.kns.authorization.BusinessObjectAuthorizer#getCollectionItemRoleQualifications(org.kuali.rice.krad.bo.BusinessObject)
 	 */
+    @Override
 	public Map<String, String> getCollectionItemRoleQualifications(
 			BusinessObject collectionItemBusinessObject) {
 		return new HashMap<String, String>();

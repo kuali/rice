@@ -67,11 +67,10 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
 	        permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
 	        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
-	        allowsEdit = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(
-	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
-	        				KRADConstants.KNS_NAMESPACE,
-	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-	        				permissionDetails, Collections.<String, String>emptyMap());
+	        allowsEdit = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(
+                    GlobalVariables.getUserSession().getPerson().getPrincipalId(), KRADConstants.KNS_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER, permissionDetails,
+                    Collections.<String, String>emptyMap());
 	        if(!allowsEdit){
 	        	putGlobalError(RiceKeyConstants.AUTHORIZATION_ERROR_PARAMETER);
 	        }

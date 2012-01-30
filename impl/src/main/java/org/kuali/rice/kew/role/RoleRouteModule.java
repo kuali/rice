@@ -90,8 +90,8 @@ public class RoleRouteModule implements RouteModule {
 				} else {
 					responsibilityDetails.remove( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
 				}
-				List<ResponsibilityAction> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName,
-                        qualifier, responsibilityDetails);
+				List<ResponsibilityAction> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplate(
+                        namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Found " + responsibilities.size() + " responsibilities from ResponsibilityService");
 				}

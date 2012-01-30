@@ -127,7 +127,7 @@ public class ModuleLockingHandlerInterceptor implements HandlerInterceptor {
             String permissionName = KimConstants.PermissionNames.ACCESS_LOCKED_MODULE;
             Map<String, String> permissionDetails = new HashMap<String, String>();
             Map<String, String> qualification = new HashMap<String, String>();
-            if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification)) {
+            if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, qualification)) {
                 return true;
             }
         }

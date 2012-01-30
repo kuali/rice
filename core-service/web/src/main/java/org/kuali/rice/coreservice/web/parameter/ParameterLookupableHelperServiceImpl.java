@@ -56,11 +56,10 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
         permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
-        return KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(
-        		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
-				KRADConstants.KNS_NAMESPACE,
-				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
-				permissionDetails, Collections.<String, String>emptyMap());
+        return KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(
+                GlobalVariables.getUserSession().getPerson().getPrincipalId(), KRADConstants.KNS_NAMESPACE,
+                KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER, permissionDetails,
+                Collections.<String, String>emptyMap());
     }
     
     @Override

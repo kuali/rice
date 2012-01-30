@@ -45,7 +45,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
         Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, documentTypeName);
 
-        return getPermissionService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode,
+        return getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), nameSpaceCode,
                 KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT, permissionDetails,
                 Collections.<String, String>emptyMap());
     }

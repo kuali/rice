@@ -66,7 +66,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
 	}
 
 	protected List<Assignee> getPermissionAssignees(Map<String, String> qualification) {
-		return getPermissionService().getPermissionAssigneesByTemplateName(permissionTemplateNamespace,
+		return getPermissionService().getPermissionAssigneesByTemplate(permissionTemplateNamespace,
                 permissionTemplateName, new HashMap<String, String>(qualification), new HashMap<String, String>(
                 qualification));
 	}
@@ -117,7 +117,9 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
         }
 
         // FIXME: dangerous - data changes could cause an infinite loop - should add thread-local to trap state and abort
-        return getPermissionService().isAuthorizedByTemplateName(principalId, permissionTemplateNamespace, permissionTemplateName, new HashMap<String, String>(qualification), new HashMap<String, String>(qualification));
+        return getPermissionService().isAuthorizedByTemplate(principalId, permissionTemplateNamespace,
+                permissionTemplateName, new HashMap<String, String>(qualification), new HashMap<String, String>(
+                qualification));
     }
 
     /**

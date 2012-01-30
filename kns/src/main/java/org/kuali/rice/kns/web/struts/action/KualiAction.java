@@ -878,8 +878,9 @@ public abstract class KualiAction extends DispatchAction {
     	Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
     	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KNS_NAMESPACE,
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(principalId,
+                KRADConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails,
+                roleQualifier))
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
             		methodToCall,
@@ -1148,9 +1149,8 @@ public abstract class KualiAction extends DispatchAction {
 			String principalId = GlobalVariables.getUserSession().getPrincipalId();
 			String namespaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
 			String permissionName = KimConstants.PermissionNames.ACCESS_LOCKED_MODULE;
-			Map<String, String> permissionDetails = new HashMap<String, String>();
 			Map<String, String> qualification = getRoleQualification(form, methodToCall);
-			if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification)) {
+			if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, qualification)) {
 				ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
 				String messageParamNamespaceCode = moduleService.getModuleConfiguration().getNamespaceCode();
 				String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;

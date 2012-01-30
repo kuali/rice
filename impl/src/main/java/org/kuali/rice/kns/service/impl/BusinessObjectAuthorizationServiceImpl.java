@@ -536,12 +536,9 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			} 
 		}
 		if (result == null) { 
-			result = getPermissionService().isAuthorizedByTemplateName(
-					user.getPrincipalId(),
-					KRADConstants.KNS_NAMESPACE,
-					KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD,
-					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass, fieldName)),
-					Collections.<String, String>emptyMap());
+			result = getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), KRADConstants.KNS_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, new HashMap<String, String>(
+                    getFieldPermissionDetails(dataObjectClass, fieldName)), Collections.<String, String>emptyMap());
 		}
 		return result; // should be safe to return Boolean here since the only circumstances that
 		               // will leave it null will result in an exception being thrown above.
@@ -557,12 +554,9 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 			return false;
 
 		if ( document == null ) {
-			return getPermissionService().isAuthorizedByTemplateName(
-					user.getPrincipalId(),
-					KRADConstants.KNS_NAMESPACE,
-					KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD,
-					new HashMap<String, String>(getFieldPermissionDetails(dataObjectClass,fieldName)),
-					Collections.<String, String>emptyMap());
+			return getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), KRADConstants.KNS_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, new HashMap<String, String>(
+                    getFieldPermissionDetails(dataObjectClass, fieldName)), Collections.<String, String>emptyMap());
 		} else { // if a document was passed, evaluate the permission in the context of a document
 			return getDocumentHelperService().getDocumentAuthorizer( document )
 					.isAuthorizedByTemplate( document, 

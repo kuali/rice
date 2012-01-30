@@ -43,10 +43,6 @@ import org.kuali.rice.core.api.membership.MemberType
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 import org.kuali.rice.core.api.criteria.LookupCustomizer
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults
-import org.kuali.rice.kim.impl.type.KimTypeAttributeBo
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
-import org.junit.Ignore;
-
 
 class ResponsibilityServiceImplTest {
     private MockFor mockBoService;
@@ -381,43 +377,39 @@ class ResponsibilityServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithNullPrincipalIdFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility(null, "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility(null, "test", "test", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithBlankPrincipalIdFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("", "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility("", "test", "test", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithNullNamespaceCodeFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("test", null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility("test", null, "test", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithBlankNamespaceCodeFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "", "test", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithNullRespNameFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", null, new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", null, new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithBlankRespNameFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", "", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", "", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityWithNullQualificationFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", "test", null, new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", "test", null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testHasResponsibilityWithNullResponsibilityDetailsFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibility("test", "test", "test", new HashMap<String, String>(), null);
-    }
 
     @Test
     public void testHasResponsibilitySucceeds() {
@@ -468,49 +460,49 @@ class ResponsibilityServiceImplTest {
 
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
         responsibilityDetails.put("test", "test");
-        boolean hasResponsibility = responsibilityService.hasResponsibility("principalid", "namespacecodeone", "respnameone", new HashMap<String, String>(), responsibilityDetails);
+        boolean hasResponsibility = responsibilityService.hasResponsibility("principalid", "namespacecodeone", "respnameone", new HashMap<String, String>());
 
         Assert.assertEquals(true, hasResponsibility);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithNullPrincipalIdFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName(null, "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate(null, "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithBlankPrincipalIdFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("", "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("", "test", "test", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithNullNamespaceCodeFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("test", null, "test", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithBlankNamespaceCodeFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("test", "", "test", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithNullRespTemplateNameFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", null, new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("test", "test", null, new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithBlankRespTemplateNameFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", "", new HashMap<String, String>(), new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("test", "test", "", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithNullQualificationFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", "test", null, new HashMap<String, String>());
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("test", "test", "test", null, new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHasResponsibilityByTemplateNameWithNullResponsibilityDetailsFails() {
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("test", "test", "test", new HashMap<String, String>(), null);
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("test", "test", "test", new HashMap<String, String>(), null);
     }
 
     @Test
@@ -562,39 +554,34 @@ class ResponsibilityServiceImplTest {
 
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
         responsibilityDetails.put("test", "test");
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("principalid", "respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplate("principalid", "respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
 
         Assert.assertEquals(true, hasResponsibility);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsWithNullNamespaceCodeFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions(null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions(null, "test", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsWithBlankNamespaceCodeFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("", "test", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsWithNullResponsibilityNameFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", null, new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", null, new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsWithBlankResponsibilityNameFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "", new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsWithNullQualificationFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "test", null, new HashMap<String, String>());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetResponsibilityActionsWithNullResponsibilityDetailsFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "test", new HashMap<String, String>(), null);
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("test", "test", null);
     }
 
     @Test
@@ -650,7 +637,7 @@ class ResponsibilityServiceImplTest {
         injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("namespacecodeone", "respnameone", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActions("namespacecodeone", "respnameone", new HashMap<String, String>());
 
         Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
         Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);
@@ -661,32 +648,27 @@ class ResponsibilityServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsByTemplateNameWithNullNamespaceCodeFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName(null, "test", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate(null, "test", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsByTemplateNameWithBlankNamespaceCodeFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("", "test", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate("", "test", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsByTemplateNameWithNullTemplateNameFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", null, new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate("test", null, new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsByTemplateNameWithBlankTemplateNameFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", "", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate("test", "", new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetResponsibilityActionsByTemplateNameWithNullQualificationFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", "test", null, new HashMap<String, String>());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetResponsibilityActionsByTemplateNameWithNullResponsibilityDetailsFails() {
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("test", "test", new HashMap<String, String>(), null);
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate("test", "test", null, new HashMap<String, String>());
     }
 
     @Test
@@ -742,7 +724,7 @@ class ResponsibilityServiceImplTest {
         injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplate("respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), new HashMap<String, String>());
 
         Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
         Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);

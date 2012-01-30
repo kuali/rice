@@ -142,7 +142,6 @@ class KimInternalSuppressUtils {
 				GlobalVariables.getUserSession().getPrincipalId(),
 				KimConstants.NAMESPACE_CODE,
 				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
-				Collections.<String, String>emptyMap(),
 				Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, principalId) );
 	}
 

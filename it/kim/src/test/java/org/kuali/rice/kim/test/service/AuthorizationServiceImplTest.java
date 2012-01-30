@@ -253,12 +253,12 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 	@Test
 	public void testHasPermission() {
 		
-		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm1", Collections.<String, String>emptyMap() ));
-		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm2", Collections.<String, String>emptyMap() ) );
-		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "KR-NS", "perm3", Collections.<String, String>emptyMap() ) );
-		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "KR-NS", "perm3", Collections.<String, String>emptyMap() ) );
-		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "KR-NS", "perm1", Collections.<String, String>emptyMap())  );
-		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "KR-NS", "perm2", Collections.<String, String>emptyMap())  );
+		assertTrue( "p1 must have perm1 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm1" ));
+		assertTrue( "p1 must have perm2 (via r1)", permissionService.hasPermission( "p1", "KR-NS", "perm2" ) );
+		assertTrue( "p1 must have perm3 (via r2)", permissionService.hasPermission( "p1", "KR-NS", "perm3" ) );
+		assertTrue( "p3 must have perm3 (via r2)", permissionService.hasPermission( "p3", "KR-NS", "perm3" ) );
+		assertFalse( "p3 must not have perm1", permissionService.hasPermission( "p3", "KR-NS", "perm1")  );
+		assertFalse( "p3 must not have perm2", permissionService.hasPermission( "p3", "KR-NS", "perm2")  );
 	}
 	
 //	protected boolean hasPermission( List<PermissionDetailsInfo> perms, String permissionId ) {

@@ -107,7 +107,6 @@ public class CacheAdminController extends UifControllerBase {
 						user.getPrincipalId(),
 						KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE,
 						KRADConstants.USE_CACHE_ADMINISTRATION_SCREEN,
-						Collections.<String, String>emptyMap(),
 						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, user.getPrincipalId()));
         if(isAuthorized){
 

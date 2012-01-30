@@ -33,7 +33,6 @@ import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionQueryResults;
 import org.kuali.rice.kim.api.permission.PermissionService;
-import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.type.KimType;
@@ -98,24 +97,23 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public boolean hasPermission(String principalId, String namespaceCode,
-                                 String permissionName, Map<String, String> permissionDetails) throws RiceIllegalArgumentException  {
+                                 String permissionName) throws RiceIllegalArgumentException  {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
 
-        return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, Collections.<String, String>emptyMap() );
+        return isAuthorized( principalId, namespaceCode, permissionName, Collections.<String, String>emptyMap() );
     }
 
     @Override
     public boolean isAuthorized(String principalId, String namespaceCode,
-                                String permissionName, Map<String, String> permissionDetails,
-                                Map<String, String> qualification ) throws RiceIllegalArgumentException {
+                                String permissionName, Map<String, String> qualification ) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
         incomingParamCheck(qualification, "qualification");
 
-        List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
+        List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName );
     	if ( roleIds.isEmpty() ) {
     		return false;
     	}
@@ -124,18 +122,18 @@ public class PermissionServiceImpl implements PermissionService {
 
     }
     @Override
-    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode,
-            String permissionTemplateName, Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
+    public boolean hasPermissionByTemplate(String principalId, String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
 
-        return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, Collections.<String, String>emptyMap() );
+        return isAuthorizedByTemplate(principalId, namespaceCode, permissionTemplateName, permissionDetails,
+                Collections.<String, String>emptyMap());
     }
     @Override
-    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode,
-                                              String permissionTemplateName, Map<String, String> permissionDetails,
-                                              Map<String, String> qualification ) throws RiceIllegalArgumentException {
+    public boolean isAuthorizedByTemplate(String principalId, String namespaceCode, String permissionTemplateName,
+            Map<String, String> permissionDetails, Map<String, String> qualification) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
@@ -149,7 +147,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
     @Override
     public List<Permission> getAuthorizedPermissions( String principalId,
-            String namespaceCode, String permissionName, Map<String, String> permissionDetails,
+            String namespaceCode, String permissionName,
             Map<String, String> qualification ) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
@@ -159,13 +157,12 @@ public class PermissionServiceImpl implements PermissionService {
         // get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
+    	List<Permission> applicablePermissions = getMatchingPermissions( permissions, null );
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
     @Override
-    public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode,
-            String permissionTemplateName, Map<String, String> permissionDetails,
-            Map<String, String> qualification ) throws RiceIllegalArgumentException {
+    public List<Permission> getAuthorizedPermissionsByTemplate(String principalId, String namespaceCode,
+            String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification) throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
@@ -253,13 +250,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
     @Override
     public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName,
-            Map<String, String> permissionDetails, Map<String, String> qualification ) throws RiceIllegalArgumentException {
+            Map<String, String> qualification ) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
         incomingParamCheck(qualification, "qualification");
 
 
-    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
+    	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName);
     	if ( roleIds.isEmpty() ) {
     		return Collections.emptyList();
     	}
@@ -282,7 +279,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public List<Assignee> getPermissionAssigneesByTemplateName(String namespaceCode, String permissionTemplateName,
+    public List<Assignee> getPermissionAssigneesByTemplate(String namespaceCode, String permissionTemplateName,
             Map<String, String> permissionDetails, Map<String, String> qualification) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
@@ -311,19 +308,18 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public boolean isPermissionDefined( String namespaceCode, String permissionName,
-             Map<String, String> permissionDetails ) throws RiceIllegalArgumentException {
+    public boolean isPermissionDefined( String namespaceCode, String permissionName ) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
 
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
-    	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();
+    	return !getMatchingPermissions( permissions, null ).isEmpty();
     }
 
     @Override
-    public boolean isPermissionDefinedByTemplateName(String namespaceCode, String permissionTemplateName,
+    public boolean isPermissionDefinedByTemplate(String namespaceCode, String permissionTemplateName,
             Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
 
         incomingParamCheck(namespaceCode, "namespaceCode");
@@ -336,15 +332,14 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public List<String> getRoleIdsForPermission(String namespaceCode, String permissionName,
-            Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
+    public List<String> getRoleIdsForPermission(String namespaceCode, String permissionName) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
 
         // get all the permission objects whose name match that requested
         List<PermissionBo> permissions = getPermissionImplsByName(namespaceCode, permissionName);
         // now, filter the full list by the detail passed
-        List<Permission> applicablePermissions = getMatchingPermissions(permissions, permissionDetails);
+        List<Permission> applicablePermissions = getMatchingPermissions(permissions, null);
         return getRoleIdsForPermissions(applicablePermissions);
     }
 
@@ -372,8 +367,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     @Override
-    public List<Permission> findPermsByNamespaceCodeTemplateName(String namespaceCode,
-            String permissionTemplateName) throws RiceIllegalArgumentException {
+    public List<Permission> findPermissionsByTemplate(String namespaceCode, String permissionTemplateName) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
 

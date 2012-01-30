@@ -346,7 +346,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                 GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
                         RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
             } else if (!getPermissionService().hasPermission(user.getPrincipalId(),
-                    KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.PermissionNames.LOG_IN, null)) {
+                    KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.PermissionNames.LOG_IN)) {
                 GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
                         RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
             } else {

@@ -42,9 +42,9 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase im
 
         return !permissionExistsByTemplate(KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, permissionDetails)
-                || getPermissionService().isAuthorizedByTemplateName(user.getPrincipalId(),
-                KRADConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
-                permissionDetails, new HashMap<String, String>());
+                || getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), KRADConstants.KNS_NAMESPACE,
+                KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, permissionDetails,
+                new HashMap<String, String>());
     }
 
     public final boolean canMaintain(Object dataObject, Person user) {

@@ -201,8 +201,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
             return false;
         }
         return KimApiServiceLocator.getPermissionService().isAuthorized(session.getPrincipalId(),
-                KewApiConstants.KEW_NAMESPACE, KewApiConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH,
-                new HashMap<String, String>(), new HashMap<String, String>());
+                KewApiConstants.KEW_NAMESPACE, KewApiConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new HashMap<String, String>());
     }
 
     protected boolean checkStandardAuthorization(DocumentTypeSecurity security, String principalId, Document document,
@@ -364,7 +363,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
             return false;
         }
         return KimApiServiceLocator.getPermissionService().isAuthorized(session.getPrincipalId(),
-                permissionNamespaceCode, permissionName, permissionDetails, qualification);
+                permissionNamespaceCode, permissionName, qualification);
     }
 
     private String getReplacementString(Document document, String value) throws Exception {

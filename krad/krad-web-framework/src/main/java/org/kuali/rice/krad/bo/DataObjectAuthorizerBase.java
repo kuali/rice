@@ -37,8 +37,7 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
     public final boolean isAuthorized(Object dataObject, String namespaceCode, String permissionName,
             String principalId) {
         return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName,
-                new HashMap<String, String>(getPermissionDetailValues(dataObject)), new HashMap<String, String>(
-                getRoleQualification(dataObject, principalId)));
+                new HashMap<String, String>(getRoleQualification(dataObject, principalId)));
     }
 
     /**
@@ -47,7 +46,7 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
      */
     public final boolean isAuthorizedByTemplate(Object dataObject, String namespaceCode, String permissionTemplateName,
             String principalId) {
-        return getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName,
+        return getPermissionService().isAuthorizedByTemplate(principalId, namespaceCode, permissionTemplateName,
                 new HashMap<String, String>(getPermissionDetailValues(dataObject)), new HashMap<String, String>(
                 (getRoleQualification(dataObject, principalId))));
     }
@@ -74,8 +73,7 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
             permissionDetails = new HashMap<String, String>(getPermissionDetailValues(dataObject));
         }
 
-        return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails,
-                roleQualifiers);
+        return getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, roleQualifiers);
     }
 
     /**
@@ -96,7 +94,7 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
             permissionDetails.putAll(collectionOrFieldLevelPermissionDetails);
         }
 
-        return getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName,
+        return getPermissionService().isAuthorizedByTemplate(principalId, namespaceCode, permissionTemplateName,
                 permissionDetails, roleQualifiers);
     }
 
@@ -137,13 +135,13 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
 
     protected final boolean permissionExistsByTemplate(Object dataObject, String namespaceCode,
             String permissionTemplateName) {
-        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedByTemplate(namespaceCode, permissionTemplateName,
                 new HashMap<String, String>(getPermissionDetailValues(dataObject)));
     }
 
     protected final boolean permissionExistsByTemplate(String namespaceCode, String permissionTemplateName,
             Map<String, String> permissionDetails) {
-        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedByTemplate(namespaceCode, permissionTemplateName,
                 new HashMap<String, String>(permissionDetails));
     }
 
@@ -153,7 +151,7 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
                 dataObject));
         combinedPermissionDetails.putAll(permissionDetails);
 
-        return getPermissionService().isPermissionDefinedByTemplateName(namespaceCode, permissionTemplateName,
+        return getPermissionService().isPermissionDefinedByTemplate(namespaceCode, permissionTemplateName,
                 combinedPermissionDetails);
     }
 

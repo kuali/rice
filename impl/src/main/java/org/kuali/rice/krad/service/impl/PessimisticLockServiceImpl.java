@@ -136,7 +136,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      */
     public boolean isPessimisticLockAdminUser(Person user) {
     	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING,
-                Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap() );
+                Collections.<String, String>emptyMap() );
     }
 
     /**

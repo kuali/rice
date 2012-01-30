@@ -49,40 +49,40 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	@Test
 	public void testHasPermission() {
-		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm1", new HashMap<String, String>()));
-		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm2", new HashMap<String, String>()));
-		assertFalse(getPermissionService().hasPermission("entity124pId", "KR-NS", "perm2", new HashMap<String, String>()));
+		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm1"));
+		assertTrue(getPermissionService().hasPermission("entity123pId", "KR-NS", "perm2"));
+		assertFalse(getPermissionService().hasPermission("entity124pId", "KR-NS", "perm2"));
 	}
 	
 	@Test
 	public void testIsAuthorized() {
-		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm1", new HashMap<String, String>(), new HashMap<String, String>()));
-		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm2", new HashMap<String, String>(), new HashMap<String, String>()));
-		assertFalse(getPermissionService().isAuthorized("entity124pId", "KR-NS", "perm2", new HashMap<String, String>(), new HashMap<String, String>()));
+		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm1", new HashMap<String, String>()));
+		assertTrue(getPermissionService().isAuthorized("entity123pId", "KR-NS", "perm2", new HashMap<String, String>()));
+		assertFalse(getPermissionService().isAuthorized("entity124pId", "KR-NS", "perm2", new HashMap<String, String>()));
 	}
 	
 	@Test
 	public void testHasPermissionByTemplateName() {
-		assertTrue(getPermissionService().hasPermissionByTemplateName("entity123pId", "KUALI", "Default", new HashMap<String, String>()));
+		assertTrue(getPermissionService().hasPermissionByTemplate("entity123pId", "KUALI", "Default",
+                new HashMap<String, String>()));
 		// TODO - getting a SOAPFaultException on this call; fix and un-comment
-		// assertFalse(getPermissionService().hasPermissionByTemplateName("entity124pId", "KUALI", "Default", new Map<String, String>()));
+		// assertFalse(getPermissionService().hasPermissionByTemplate("entity124pId", "KUALI", "Default", new Map<String, String>()));
 	}
 	
 	@Test
 	public void testIsAuthorizedByTemplateName() {
-		// assertTrue(getPermissionService().isAuthorizedByTemplateName(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new Map<String, String>()));
+		// assertTrue(getPermissionService().isAuthorizedByTemplate(principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification)("entity123pId", "KR-NS", "1", new Map<String, String>()));
 	}
 	
 	@Test
 	public void testGetPermissionAssignees() {
 		
-		List<Assignee> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", Collections
-                .<String, String>emptyMap(), Collections.<String, String>emptyMap());
+		List<Assignee> assignees = getPermissionService().getPermissionAssignees("KUALI", "Log In Kuali Portal", Collections.<String, String>emptyMap());
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
 		Assignee permInfo = assignees.get(0);
 		assertEquals("entity123pId", permInfo.getPrincipalId());
-		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap());
+		assignees = getPermissionService().getPermissionAssignees("KUALI", "Not A Valid Permission Name", Collections.<String, String>emptyMap());
 		// TODO - jax-ws remoted service returns null; local return empty List. Fix webservice return
 		assertTrue(null == assignees || assignees.size() == 0);
 	}

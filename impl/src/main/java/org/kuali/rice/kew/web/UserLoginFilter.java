@@ -131,7 +131,6 @@ public class UserLoginFilter implements Filter {
 				principalId, 
 				KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
 				KimConstants.PermissionNames.LOG_IN,
-				Collections.<String, String>emptyMap(),
 				Collections.singletonMap("principalId", principalId));
 	}
 	

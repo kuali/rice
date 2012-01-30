@@ -16,13 +16,11 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -107,7 +105,7 @@ public class ExpressionFunctions {
         Person user = GlobalVariables.getUserSession().getPerson();
 
         return KimApiServiceLocator.getPermissionService().hasPermission(user.getPrincipalId(), namespaceCode,
-                permissionName, new HashMap<String, String>());
+                permissionName);
     }
 
     /**
@@ -125,7 +123,7 @@ public class ExpressionFunctions {
         Person user = GlobalVariables.getUserSession().getPerson();
 
         return KimApiServiceLocator.getPermissionService().isAuthorized(user.getPrincipalId(), namespaceCode,
-                permissionName, permissionDetails, roleQualifiers);
+                permissionName, roleQualifiers);
     }
 
     /**
@@ -143,7 +141,7 @@ public class ExpressionFunctions {
             Map<String, String> roleQualifiers) {
         Person user = GlobalVariables.getUserSession().getPerson();
 
-        return KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(user.getPrincipalId(),
-                namespaceCode, templateName, permissionDetails, roleQualifiers);
+        return KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), namespaceCode,
+                templateName, permissionDetails, roleQualifiers);
     }
 }

@@ -154,7 +154,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			for ( Permission perm : perms ) {
                 PermissionBo permBo = PermissionBo.from(perm);
 				List<String> roleIds = getPermissionService().getRoleIdsForPermission(perm.getNamespaceCode(),
-                        perm.getName(), Collections.<String, String>emptyMap());
+                        perm.getName());
 				permRoles.put( perm.getId(), getRoleService().getRoles(roleIds) );
 				for ( String attributeName : permBo.getDetails().keySet() ) {
 					addAttributeLabel(form, attributeName);

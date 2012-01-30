@@ -49,7 +49,7 @@ import java.util.Map;
  * template would define the name of the specific Document Type that can be initiated as a permission
  * detail.
  * 
- * <p>The isAuthorized and isAuthorizedByTemplateName operations
+ * <p>The isAuthorized and isAuthorizedByTemplate operations
  * on this service are used to execute authorization checks for a principal against a
  * permission.  Permissions are always assigned to roles (never directly to a principal or
  * group).  A particular principal will be authorized for a given permission if the permission
@@ -67,10 +67,10 @@ import java.util.Map;
 public interface PermissionService {
 
     /**
-     * This will create a {@link Permission} exactly like the permission passed in.
+     * This will create a {@link org.kuali.rice.kim.api.permission.Permission} exactly like the permission passed in.
      *
      * @param permission the permission to create
-     * @return the id of the newly created object.  will never be null.
+     * @return the newly created object.  will never be null.
      * @throws IllegalArgumentException if the permission is null
      * @throws IllegalStateException if the permission is already existing in the system
      */
@@ -84,6 +84,7 @@ public interface PermissionService {
      * This will update a {@link Permission}.
      *
      * @param permission the permission to update
+     * @return the updated object.  will never be null
      * @throws IllegalArgumentException if the permission is null
      * @throws IllegalStateException if the permission does not exist in the system
      */
@@ -98,39 +99,46 @@ public interface PermissionService {
     // --------------------
 	
     /**
-     * Checks whether the principal has been granted a permission matching the given details
-     * without taking role qualifiers into account.
-     * 
-	 * This method should not be used for true authorization checks since a principal
-	 * may only have this permission within a given context.  It could be used to
-	 * identify that the user would have some permissions within a certain area.
-	 * Later checks would identify exactly what permissions were granted.
-	 * 
-	 * It can also be used when the client application KNOWS that this is a role which
-	 * is never qualified.
+     * Checks in a given principal id has a permission using the passed in permission information.
+     * This method should not be used for true authorization checks since a principal
+     * may only have this permission within a given context.  It could be used to
+     * identify that the user would have some permissions within a certain area.
+     * Later checks would identify exactly what permissions were granted.
+     *
+     * It can also be used when the client application KNOWS that this is a role which
+     * is never qualified.
+     *
+     * @param principalId the principal id to check.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionName the permission name. cannot be null or blank.
+     * @return true is principal has permission
+     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
     @WebMethod(operationName = "hasPermission")
     @WebResult(name = "hasPermission")
     boolean hasPermission( @WebParam(name="principalId") String principalId,
     					   @WebParam(name="namespaceCode") String namespaceCode,
-    					   @WebParam(name="permissionName") String permissionName,
-    					   @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                           @WebParam(name="permissionDetails") Map<String, String> permissionDetails ) throws RiceIllegalArgumentException;
+    					   @WebParam(name="permissionName") String permissionName) throws RiceIllegalArgumentException;
+
 
 
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermission(String, String, String, Map<String, String>)}.
-     * 
-     * Each role assigned to the principal is checked for qualifications.  If a qualifier 
+     * then this method behaves the same as {@link #hasPermission(String, String, String)}.
+     *
+     * Each role assigned to the principal is checked for qualifications.  If a qualifier
      * exists on the principal's membership in that role, that is checked first through
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
-     * 
-     * Each permission is checked against the permissionDetails.  The PermissionTypeService
-     * is called for each permission with the given permissionName to see if the 
-     * permissionDetails matches its details.
+     *
+     *
+     * @param principalId the principal id to check.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionName the permission name. cannot be null or blank.
+     * @param qualification the qualifications to test against.
+     * @return true is principal has permission
+     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
@@ -138,53 +146,68 @@ public interface PermissionService {
     					  @WebParam(name="namespaceCode") String namespaceCode,
     					  @WebParam(name="permissionName") String permissionName,
                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    					  @WebParam(name="permissionDetails") Map<String, String> permissionDetails,
-                          @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     					  @WebParam(name="qualification") Map<String, String> qualification  ) throws RiceIllegalArgumentException;
 
     /**
      * Checks whether the principal has been granted a permission matching the given details
      * without taking role qualifiers into account.
-     * 
-	 * This method should not be used for true authorization checks since a principal
-	 * may only have this permission within a given context.  It could be used to
-	 * identify that the user would have some permissions within a certain area.
-	 * Later checks would identify exactly what permissions were granted.
-	 * 
-	 * It can also be used when the client application KNOWS that this is a role which
-	 * is never qualified.
+     *
+     * This method should not be used for true authorization checks since a principal
+     * may only have this permission within a given context.  It could be used to
+     * identify that the user would have some permissions within a certain area.
+     * Later checks would identify exactly what permissions were granted.
+     *
+     * It can also be used when the client application KNOWS that this is a role which
+     * is never qualified.
+     *
+     * @param principalId the principal id to check.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionTemplateName the permission name. cannot be null or blank.
+     * @param permissionDetails the permission details
+     * @return true is principal has permission
+     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
-    @WebMethod(operationName = "hasPermissionByTemplateName")
+    @WebMethod(operationName = "hasPermissionByTemplate")
     @WebResult(name = "hasPermission")
-    boolean hasPermissionByTemplateName( @WebParam(name="principalId") String principalId,
-    									 @WebParam(name="namespaceCode") String namespaceCode,
-    									 @WebParam(name="permissionTemplateName") String permissionTemplateName,
-                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									 @WebParam(name="permissionDetails") Map<String, String> permissionDetails ) throws RiceIllegalArgumentException;
+    boolean hasPermissionByTemplate(@WebParam(name = "principalId") String principalId,
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
+                    name = "permissionDetails") Map<String, String> permissionDetails) throws RiceIllegalArgumentException;
     
+
     /**
      * Checks whether the given qualified permission is granted to the principal given
      * the passed roleQualification.  If no roleQualification is passed (null or empty)
-     * then this method behaves the same as {@link #hasPermission(String, String, String, Map<String, String>)}.
-     * 
-     * Each role assigned to the principal is checked for qualifications.  If a qualifier 
+     * then this method behaves the same as {@link #hasPermission(String, String, String)}.
+     *
+     * Each role assigned to the principal is checked for qualifications.  If a qualifier
      * exists on the principal's membership in that role, that is checked first through
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
-     * 
+     *
      * Each permission is checked against the permissionDetails.  The PermissionTypeService
-     * is called for each permission with the given permissionName to see if the 
+     * is called for each permission with the given permissionName to see if the
      * permissionDetails matches its details.
+     *
+     * @param principalId the principal id to check.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionTemplateName the permission name. cannot be null or blank.
+     * @param permissionDetails the permission details
+     * @param qualification the permission qualifications
+     * @return true is principal has permission
+     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
-    @WebMethod(operationName = "isAuthorizedByTemplateName")
+    @WebMethod(operationName = "isAuthorizedByTemplate")
     @WebResult(name = "isAuthorized")
-    boolean isAuthorizedByTemplateName( @WebParam(name="principalId") String principalId,
-    									@WebParam(name="namespaceCode") String namespaceCode,
-    									@WebParam(name="permissionTemplateName") String permissionTemplateName,
-                                        @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									@WebParam(name="permissionDetails") Map<String, String> permissionDetails,
-                                        @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									@WebParam(name="qualification") Map<String, String> qualification  ) throws RiceIllegalArgumentException;
+    boolean isAuthorizedByTemplate(@WebParam(name = "principalId") String principalId,
+                                   @WebParam(name = "namespaceCode") String namespaceCode,
+                                   @WebParam(name = "permissionTemplateName") String permissionTemplateName,
+                                   @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                   @WebParam(name = "permissionDetails") Map<String, String> permissionDetails,
+                                   @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                   @WebParam(name = "qualification") Map<String, String> qualification)
+            throws RiceIllegalArgumentException;
     
     
     /**
@@ -196,18 +219,22 @@ public interface PermissionService {
      * exists on the principal's membership in that role, that is checked first through
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
-     * 
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionName the permission name. cannot be null or blank.
+     * @param qualification the permission qualifications
+     * @return list of assignees that have been assigned the permissions
+     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
 	@WebMethod(operationName = "getPermissionAssignees")
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
     List<Assignee> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
-    													 @WebParam(name="permissionName") String permissionName,
-                                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    													 @WebParam(name="permissionDetails") Map<String, String> permissionDetails,
-                                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    													 @WebParam(name="qualification") Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    									   @WebParam(name="permissionName") String permissionName,
+                                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    									   @WebParam(name="qualification") Map<String, String> qualification )
+            throws RiceIllegalArgumentException;
 
     /**
      * Get the list of principals/groups who have a given permission that match the given 
@@ -219,13 +246,19 @@ public interface PermissionService {
      * exists on the principal's membership in that role, that is checked first through
      * the role's type service.  Once it is determined that the principal has the role
      * in the given context (qualification), the permissions are examined.
-     * 
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionTemplateName the permission name. cannot be null or blank.
+     * @param permissionDetails the permission details.
+     * @param qualification the permission qualifications
+     * @return list of assignees that have been assigned the permissions by template
+     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
-	@WebMethod(operationName = "getPermissionAssigneesByTemplateName")
+	@WebMethod(operationName = "getPermissionAssigneesByTemplate")
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
-    List<Assignee> getPermissionAssigneesByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
+    List<Assignee> getPermissionAssigneesByTemplate(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
                     name = "permissionDetails") Map<String, String> permissionDetails,
@@ -234,54 +267,66 @@ public interface PermissionService {
     
     /**
      * Returns true if the given permission is defined on any Roles.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionName the permission name. cannot be null or blank.
+     * @return true if given permission is defined on any Roles
+     * @throws IllegalArgumentException if the namespaceCode or permissionName is null or blank
      */
     @WebMethod(operationName = "isPermissionDefined")
     @WebResult(name = "isPermissionDefined")
     boolean isPermissionDefined( @WebParam(name="namespaceCode") String namespaceCode,
-    							 @WebParam(name="permissionName") String permissionName,
-                                 @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    							 @WebParam(name="permissionDetails") Map<String, String> permissionDetails ) throws RiceIllegalArgumentException;
+    							 @WebParam(name="permissionName") String permissionName)
+            throws RiceIllegalArgumentException;
     
     /**
      * Returns true if the given permission template is defined on any Roles.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionTemplateName the permission name. cannot be null or blank.
+     * @param permissionDetails the permission template details
+     * @return true if given permission template is defined on any Roles
+     * @throws IllegalArgumentException if the namespaceCode or permissionName is null or blank
      */
-    @WebMethod(operationName = "isPermissionDefinedByTemplateName")
-    @WebResult(name = "isPermissionDefinedByTemplateName")
-    boolean isPermissionDefinedByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
-            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
-                    name = "permissionDetails") Map<String, String> permissionDetails) throws RiceIllegalArgumentException;
+    @WebMethod(operationName = "isPermissionDefinedByTemplate")
+    @WebResult(name = "isPermissionDefinedByTemplate")
+    boolean isPermissionDefinedByTemplate(@WebParam(name = "namespaceCode")
+                                          String namespaceCode,
+                                          @WebParam(name = "permissionTemplateName")
+                                          String permissionTemplateName,
+                                          @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                          @WebParam(name = "permissionDetails")
+                                          Map<String, String> permissionDetails)
+            throws RiceIllegalArgumentException;
     
     /**
      * Returns permissions (with their details) that are granted to the principal given
      * the passed qualification.  If no qualification is passed (null or empty)
      * then this method does not check any qualifications on the roles.
-     * 
-     * All permissions with the given name are checked against the permissionDetails.  
-     * The PermissionTypeService is called for each permission to see if the 
-     * permissionDetails matches its details.
-     * 
-     * An asterisk (*) as a value in any permissionDetails key-value pair will match any value.
-     * This forms a way to provide a wildcard to obtain multiple permissions in one call.
-     * 
+     *
      * After the permissions are determined, the roles that hold those permissions are determined.
      * Each role that matches between the principal and the permission objects is checked for 
      * qualifications.  If a qualifier 
      * exists on the principal's membership in that role, that is checked through
      * the role's type service. 
-     * 
+     *
+     * @param principalId the principal Id.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionName the permission name. cannot be null or blank.
+     * @param qualification the permission qualifications
+     * @return list of permissions that are authorized with the given parameters
+     * @throws IllegalArgumentException if the principalId, namespaceCode or permissionName is null or blank
      */
 	@WebMethod(operationName = "getAuthorizedPermissions")
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
     List<Permission> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
-    												  @WebParam(name="namespaceCode") String namespaceCode,
-    												  @WebParam(name="permissionName") String permissionName,
-                                                      @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    												  @WebParam(name="permissionDetails") Map<String, String> permissionDetails,
-                                                      @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    												  @WebParam(name="qualification") Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    										   @WebParam(name="namespaceCode") String namespaceCode,
+    										   @WebParam(name="permissionName") String permissionName,
+                                               @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    										   @WebParam(name="qualification") Map<String, String> qualification )
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -300,103 +345,144 @@ public interface PermissionService {
      * qualifications.  If a qualifier 
      * exists on the principal's membership in that role, that is checked through
      * the role's type service. 
-     * 
+     *
+     * @param principalId the principal Id.  cannot be null or blank.
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param permissionTemplateName the permission name. cannot be null or blank.
+     * @param permissionDetails the permission template details.
+     * @param qualification the permission qualifications
+     * @return list of permissions that are authorized with the given parameters
+     * @throws IllegalArgumentException if the principalId, namespaceCode or permissionTemplateName is null or blank
      */
-	@WebMethod(operationName = "getAuthorizedPermissionsByTemplateName")
+	@WebMethod(operationName = "getAuthorizedPermissionsByTemplate")
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
-    List<Permission> getAuthorizedPermissionsByTemplateName( @WebParam(name="principalId") String principalId,
-    																@WebParam(name="namespaceCode") String namespaceCode,
-    																@WebParam(name="permissionTemplateName") String permissionTemplateName,
-                                                                    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    																@WebParam(name="permissionDetails") Map<String, String> permissionDetails,
-                                                                    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    																@WebParam(name="qualification") Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    List<Permission> getAuthorizedPermissionsByTemplate(@WebParam(name = "principalId") String principalId,
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "permissionTemplateName") String permissionTemplateName,
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
+                    name = "permissionDetails") Map<String, String> permissionDetails,
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
+                    name = "qualification") Map<String, String> qualification) throws RiceIllegalArgumentException;
 
     // --------------------
     // Permission Data
     // --------------------
 
     /**
-     * Get the permission object with the given ID.
+     * Gets a {@link org.kuali.rice.kim.api.permission.Permission} from an id.
+     *
+     * <p>
+     *   This method will return null if the permission does not exist.
+     * </p>
+     *
+     * @param id the unique id to retrieve the permission by. cannot be null or blank.
+     * @return a {@link org.kuali.rice.kim.api.permission.Permission} or null
+     * @throws IllegalArgumentException if the id is null or blank
      */
 	@WebMethod(operationName = "getPermission")
     @WebResult(name = "permission")
     @Cacheable(value=Permission.Cache.NAME, key="'id=' + #p0")
     Permission getPermission( @WebParam(name="id") String id );
-	
-	/** Get the Permission object with the unique combination of namespace and permission name.
+
+    /**
+     * Gets a {@link org.kuali.rice.kim.api.permission.Permission} with the unique combination of namespace and name.
      *
-     * If any parameter is blank, this method returns <code>null</code>.
+     * <p>
+     *   This method will return null if the permission does not exist.
+     * </p>
+     *
+     * @param namespaceCode namespace code for permission. cannot be null or blank.
+     * @param name name of permission.  cannot be null or blank.
+     * @return a {@link org.kuali.rice.kim.api.permission.Permission} or null
+     * @throws IllegalArgumentException if the namespaceCode or name is null or blank
      */
     @WebMethod(operationName = "findPermByNamespaceCodeAndName")
     @WebResult(name = "permission")
     @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
-    Permission findPermByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
+    Permission findPermByNamespaceCodeAndName(
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "name") String name)
+            throws RiceIllegalArgumentException;
    
 	/** 
-	 * Return the permission object for the given unique combination of namespace,
+	 * Return the permissions for the given unique combination of namespace,
 	 * component and permission template name.
+     *
+     * @param namespaceCode namespace code for permission. cannot be null or blank.
+     * @param templateName name of permission template.  cannot be null or blank.
+     * @return a list of {@link org.kuali.rice.kim.api.permission.Permission} or null
+     * @throws IllegalArgumentException if the namespaceCode or name is null or blank
 	 */
-	@WebMethod(operationName = "findPermsByNamespaceCodeTemplateName")
+	@WebMethod(operationName = "findPermissionsByTemplate")
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
     @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #p1 + '|' + 'templateName=' + #p2")
-    List<Permission> findPermsByNamespaceCodeTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "templateName") String templateName) throws RiceIllegalArgumentException;
+    List<Permission> findPermissionsByTemplate(
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "templateName") String templateName)
+            throws RiceIllegalArgumentException;
 
-	/**
-	 * 
-	 * Return the Permission Template given the Template ID.
-	 * 
-	 * @param id
-	 * @return PermissionTemplate
-	 */
+    /**
+     * Gets a {@link Template} from an id.
+     *
+     * <p>
+     *   This method will return null if the template does not exist.
+     * </p>
+     *
+     * @param id the unique id to retrieve the template by. cannot be null or blank.
+     * @return a {@link Template} or null
+     * @throws IllegalArgumentException if the id is null or blank
+     */
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "id")
     @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'id=' + #p0")
     Template getPermissionTemplate( @WebParam(name="id") String id ) throws RiceIllegalArgumentException;
 
-	/**
-	 * 
-	 * Return the Permission Template given the Template Name and Namespace Code.
-	 * 
-	 * @param namespaceCode, permissionTemplateName
-	 * @return PermissionTemplate
-	 */
+    /**
+     * Finds a {@link Template} for namespaceCode and name.
+     *
+     * @param namespaceCode the namespace code.  cannot be null or blank.
+     * @param name the template name. cannot be null or blank.
+     * @return a {@link Template} or null
+     * @throws IllegalArgumentException if the id or namespaceCode is null or blank
+     */
 	@WebMethod(operationName = "findPermTemplateByNamespaceCodeAndName")
     @WebResult(name = "permissionTemplate")
     @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
-    Template findPermTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
+    Template findPermTemplateByNamespaceCodeAndName(
+            @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
-	/**
-	 * 
-	 * Return all Permission Templates.
-	 *
-	 * @return PermissionTemplate
-	 */
+
+    /**
+     * Finds a {@link Template} for namespaceCode and name.
+     *
+     * @return a list of {@link Template} or an empty list if none found
+     */
 	@WebMethod(operationName = "getAllTemplates")
     @XmlElementWrapper(name = "templates", required = true)
     @XmlElement(name = "template", required = false)
     @WebResult(name = "templates")
     @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'all'")
     List<Template> getAllTemplates();
-    
+
     /**
      * Get the role IDs for the given permission.
+     *
+     * @param namespaceCode the permission namespace code.  cannot be null or blank.
+     * @param permissionName the permission name. cannot be null or blank.
+     * @return a list of role Ids, or an empty list if none found
+     * @throws IllegalArgumentException if the namespaceCode or permissionName is null or blank
      */
 	@WebMethod(operationName = "getRoleIdsForPermission")
     @XmlElementWrapper(name = "roleIds", required = true)
     @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
     List<String> getRoleIdsForPermission( @WebParam(name="namespaceCode") String namespaceCode,
-    									  @WebParam(name="permissionName") String permissionName,
-                                          @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									  @WebParam(name="permissionDetails") Map<String, String> permissionDetails) throws RiceIllegalArgumentException;
+    									  @WebParam(name="permissionName") String permissionName) throws RiceIllegalArgumentException;
 
     /**
      * This method find Permissions based on a query criteria.  The criteria cannot be null.

@@ -140,7 +140,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         String nameSpaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
         Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, documentTypeName);
-        return getPermissionService().isAuthorizedByTemplateName(user.getPrincipalId(), nameSpaceCode,
+        return getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), nameSpaceCode,
                 KimConstants.PermissionTemplateNames.INITIATE_DOCUMENT, permissionDetails,
                 Collections.<String, String>emptyMap());
     }

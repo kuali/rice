@@ -28,7 +28,6 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -127,8 +126,9 @@ public abstract class KSBAction extends DispatchAction {
     	Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
     	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KNS_NAMESPACE,
-        		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(principalId,
+                KRADConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails,
+                roleQualifier))
         {
         	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 
             		methodToCall,
@@ -193,7 +193,7 @@ public abstract class KSBAction extends DispatchAction {
             String permissionName = KimConstants.PermissionNames.ACCESS_LOCKED_MODULE;
 	        Map<String, String> permissionDetails = new HashMap<String, String>();
 	        Map<String, String> qualification = new HashMap<String, String>(getRoleQualification(form, methodToCall));
-	        if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification)) {
+	        if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, qualification)) {
                 ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
                 String messageParamNamespaceCode = moduleService.getModuleConfiguration().getNamespaceCode();
                 String messageParamComponentCode = KRADConstants.DetailTypes.ALL_DETAIL_TYPE;

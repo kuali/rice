@@ -342,7 +342,7 @@ public class ActionListForm extends KualiForm {
         }
         boolean isHelpDeskAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(principalId,
                 KewApiConstants.KEW_NAMESPACE, KewApiConstants.PermissionNames.VIEW_OTHER_ACTION_LIST,
-                new HashMap<String, String>(), new HashMap<String, String>());
+                new HashMap<String, String>());
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }

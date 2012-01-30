@@ -93,12 +93,12 @@ class PermissionServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     void testIsAuthorizedWithNullFails() {
-        permissionService.isAuthorized(null, null, null, null, null);
+        permissionService.isAuthorized(null, null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     void testIsAuthorizedWithBlanksFails() {
-        permissionService.isAuthorized("", "", "", null, null);
+        permissionService.isAuthorized("", "", "", null);
     }
 
     @Test
@@ -132,19 +132,19 @@ class PermissionServiceImplTest {
         injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        Assert.assertEquals(true, permissionService.isAuthorized(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification));
+        Assert.assertEquals(true, permissionService.isAuthorized(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedQualification));
 
         mockBoService.verify(boService)
     }
 
     @Test(expected = IllegalArgumentException.class)
     void testIsAuthorizedByTemplateNameWithNullFails() {
-        permissionService.isAuthorizedByTemplateName(null, null, null, null, null);
+        permissionService.isAuthorizedByTemplate(null, null, null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     void testIsAuthorizedByTemplateNameWithBlanksFails() {
-        permissionService.isAuthorizedByTemplateName("", "", "", null, null);
+        permissionService.isAuthorizedByTemplate("", "", "", null, null);
     }
 
     @Test
@@ -178,19 +178,19 @@ class PermissionServiceImplTest {
         injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        Assert.assertEquals(true, permissionService.isAuthorizedByTemplateName(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification));
+        Assert.assertEquals(true, permissionService.isAuthorizedByTemplate(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification));
 
         mockBoService.verify(boService)
     }
 
     @Test(expected = IllegalArgumentException.class)
     void testGetAuthorizedPermissionsWithNullFails() {
-        permissionService.getAuthorizedPermissions(null, null, null, null, null);
+        permissionService.getAuthorizedPermissions(null, null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     void testGetAuthorizedPermissionsWithBlanksFails() {
-        permissionService.getAuthorizedPermissions("", "", "", null, null);
+        permissionService.getAuthorizedPermissions("", "", "", null);
     }
 
     @Test
@@ -226,7 +226,7 @@ class PermissionServiceImplTest {
         injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-		List<Permission> actualPermissions = permissionService.getAuthorizedPermissions(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
+		List<Permission> actualPermissions = permissionService.getAuthorizedPermissions(authorizedPrincipalId, authorizedNamespaceCode, authorizedPermissionName, authorizedQualification);
 
         Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
         Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);
@@ -236,12 +236,12 @@ class PermissionServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     void testGetAuthorizedPermissionsByTemplateNameWithNullFails() {
-        permissionService.getAuthorizedPermissionsByTemplateName(null, null, null, null, null);
+        permissionService.getAuthorizedPermissionsByTemplate(null, null, null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     void testGetAuthorizedPermissionsByTemplateNameWithBlanksFails() {
-        permissionService.getAuthorizedPermissionsByTemplateName("", "", "", null, null);
+        permissionService.getAuthorizedPermissionsByTemplate("", "", "", null, null);
     }
 
     @Test
@@ -277,7 +277,7 @@ class PermissionServiceImplTest {
         injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        List<Permission> actualPermissions = permissionService.getAuthorizedPermissionsByTemplateName(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification);
+        List<Permission> actualPermissions = permissionService.getAuthorizedPermissionsByTemplate(authorizedPrincipalId, authorizedNamespaceCode, permissionTemplateName, authorizedPermissionDetails, authorizedQualification);
 
         Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
         Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);
@@ -323,7 +323,7 @@ class PermissionServiceImplTest {
 		injectCriteriaLookupServiceIntoPermissionService();
 		injectRoleServiceIntoPermissionService();
 
-		List<Assignee> actualPermissions = permissionService.getPermissionAssignees(authorizedNamespaceCode, authorizedPermissionName, authorizedPermissionDetails, authorizedQualification);
+		List<Assignee> actualPermissions = permissionService.getPermissionAssignees(authorizedNamespaceCode, authorizedPermissionName, authorizedQualification);
 
 		Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
 		Assert.assertEquals(expectedPermissions[0], actualPermissions[0]);
@@ -366,7 +366,7 @@ class PermissionServiceImplTest {
         injectCriteriaLookupServiceIntoPermissionService();
         injectRoleServiceIntoPermissionService();
 
-        List<PermissionAssigneeInfo> actualPermissions = permissionService.getPermissionAssigneesByTemplateName(authorizedNamespaceCode, permissionName, authorizedPermissionDetails, authorizedQualification);
+        List<Assignee> actualPermissions = permissionService.getPermissionAssigneesByTemplate(authorizedNamespaceCode, permissionName, authorizedPermissionDetails, authorizedQualification);
 
         Assert.assertEquals(expectedPermissions.size(), actualPermissions.size());
         Assert.assertEquals(expectedPermissions[0].principalId, actualPermissions[0].principalId);

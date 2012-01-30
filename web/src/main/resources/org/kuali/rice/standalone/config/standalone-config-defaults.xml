@@ -59,9 +59,10 @@
   <param name="notification.quartz.autostartup">true</param>
   <param name="notification.concurrent.jobs">true</param>
 
+  <!-- turn on component publishing for standalone server -->
+  <param name="rice.krad.componentPublishing.enabled">true</param>
 
   <!-- Change Configurer Modes to LOCAL -->
-
   <param name="location.mode">LOCAL</param>
   <param name="coreservice.mode">LOCAL</param>
   <param name="ken.mode">LOCAL</param>

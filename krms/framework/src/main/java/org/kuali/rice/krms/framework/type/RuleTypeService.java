@@ -19,7 +19,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.framework.engine.Rule;
 
 /**
- * Interface for definign the loading of a {@link Rule} given a {@link RuleDefinition}
+ * Interface for defining the loading of a {@link Rule} given a {@link RuleDefinition}
  *
  * @see Rule
  * @see RuleDefinition

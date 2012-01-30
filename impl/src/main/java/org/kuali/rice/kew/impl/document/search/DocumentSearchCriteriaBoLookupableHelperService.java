@@ -231,9 +231,15 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         documentAttributeFieldValues.putAll(LookupUtils.preProcessRangeFields(documentAttributeFieldValues));
         cleanedUpFieldValues.putAll(documentAttributeFieldValues);
 
+        replaceCurrentUserInFields(cleanedUpFieldValues);
+
+        return cleanedUpFieldValues;
+    }
+    
+    protected static void replaceCurrentUserInFields(Map<String, String> fields) {
         Person person = GlobalVariables.getUserSession().getPerson();
         // replace the dynamic CURRENT_USER token
-        for (Map.Entry<String, String> entry: cleanedUpFieldValues.entrySet()) {
+        for (Map.Entry<String, String> entry: fields.entrySet()) {
             if (StringUtils.isNotEmpty(entry.getValue())) {
                 String replaced = replaceCurrentUserToken(entry.getValue(), person);
                 if (replaced != null) {
@@ -241,8 +247,6 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 }
             }
         }
-
-        return cleanedUpFieldValues;
     }
 
     /**

@@ -7,11 +7,6 @@
         OBJ_ID="5ADF18B6D4847954E0404F8189D85002" ROLE_ID="1"
         ROLE_NM="User" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y"
-        DESC_TXT="This role maintains KRMS agendas and rules."
-        KIM_TYP_ID="1" LAST_UPDT_DT="20110930160005" NMSPC_CD="KR-RULE"
-        OBJ_ID="AE3195EDFF2700E2E0404F8189D822AE" ROLE_ID="10002"
-        ROLE_NM="Kuali Rules Management System Administrator" VER_NBR="1"/>
-    <KRIM_ROLE_T ACTV_IND="Y"
         DESC_TXT="This role derives its members from users with that have received an action request for a given document."
         KIM_TYP_ID="42" LAST_UPDT_DT="20081114141017"
         NMSPC_CD="KR-WKFLW" OBJ_ID="5BABFACC4F62A8EEE0404F8189D8770F"
@@ -71,4 +66,9 @@
         KIM_TYP_ID="42" LAST_UPDT_DT="20090821035258"
         NMSPC_CD="KR-WKFLW" OBJ_ID="67F145466EB09160E0404F8189D86771"
         ROLE_ID="97" ROLE_NM="Non-Ad Hoc Approve Request Recipient" VER_NBR="1"/>
+    <KRIM_ROLE_T ACTV_IND="Y"
+        DESC_TXT="This role maintains KRMS agendas and rules."
+        KIM_TYP_ID="1" LAST_UPDT_DT="20120131160404" NMSPC_CD="KR-RULE"
+        OBJ_ID="B7DBFABEFD2D8CBFE0402E0AA9D757C9" ROLE_ID="98"
+        ROLE_NM="Kuali Rules Management System Administrator" VER_NBR="1"/>
 </dataset>

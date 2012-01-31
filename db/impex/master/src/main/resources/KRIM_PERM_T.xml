@@ -2,11 +2,6 @@
 <!DOCTYPE dataset SYSTEM "data.dtd">
 <dataset>
     <KRIM_PERM_T ACTV_IND="Y"
-        DESC_TXT="Allows creation and modification of agendas via the agenda editor"
-        NM="Maintain KRMS Agenda" NMSPC_CD="KR-RULE-TEST"
-        OBJ_ID="AE3195EDFF2500E2E0404F8189D822AE" PERM_ID="10002"
-        PERM_TMPL_ID="10001" VER_NBR="1"/>
-    <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows users to access the Document Operation screen."
         NM="Use Document Operation Screen" NMSPC_CD="KR-WKFLW"
         OBJ_ID="5B4F09744944EF33E0404F8189D84F24" PERM_ID="140"
@@ -333,4 +328,9 @@
         NM="Use Cache Adminstration Screen" NMSPC_CD="KR-SYS"
         OBJ_ID="B6FDEDA86F967F26E0402E0AA9D728AF" PERM_ID="842"
         PERM_TMPL_ID="29" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows creation and modification of agendas via the agenda editor"
+        NM="Maintain KRMS Agenda" NMSPC_CD="KR-RULE-TEST"
+        OBJ_ID="B7DBFABEFD2B8CBFE0402E0AA9D757C9" PERM_ID="843"
+        PERM_TMPL_ID="52" VER_NBR="1"/>
 </dataset>

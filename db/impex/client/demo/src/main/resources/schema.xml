@@ -89,6 +89,12 @@
         <column name="TOTAL_PRICE" scale="2" size="15" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRNS_DOC_HDR_T" name="BK_ORDER_ENTRY_T_KRNS_DO_ADV1">
+            <reference foreign="DOC_HDR_ID" local="DOC_HDR_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="BK_BOOK_T" name="BK_ORDER_ENTRY_T_BK_BOOK_T">
+            <reference foreign="BOOK_ID" local="BOOK_ID"/>
+        </foreign-key>
     </table>
     <table name="KRCR_CMPNT_SET_T">
         <column name="CMPNT_SET_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -104,6 +110,9 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="NM" size="255" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" required="true" size="1" type="CHAR"/>
+        <foreign-key foreignTable="KRCR_NMSPC_T" name="KRNS_PARM_DTL_TYP_TR1">
+            <reference foreign="NMSPC_CD" local="NMSPC_CD"/>
+        </foreign-key>
         <unique name="KRNS_PARM_DTL_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -139,6 +148,12 @@
         <column name="EVAL_OPRTR_CD" size="1" type="VARCHAR"/>
         <column default="KUALI" name="APPL_ID" primaryKey="true"
             size="20" type="VARCHAR"/>
+        <foreign-key foreignTable="KRCR_PARM_TYP_T" name="KRNS_PARM_TR2">
+            <reference foreign="PARM_TYP_CD" local="PARM_TYP_CD"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRCR_NMSPC_T" name="KRNS_PARM_TR1">
+            <reference foreign="NMSPC_CD" local="NMSPC_CD"/>
+        </foreign-key>
         <unique name="KRNS_PARM_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -168,6 +183,12 @@
     <table name="KREN_CHNL_PRODCR_T">
         <column name="CHNL_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column name="PRODCR_ID" primaryKey="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREN_PRODCR_T" name="KREN_CHNL_PRODCR_FK2">
+            <reference foreign="PRODCR_ID" local="PRODCR_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KREN_CHNL_T" name="KREN_CHNL_PRODCR_FK1">
+            <reference foreign="CHNL_ID" local="CHNL_ID"/>
+        </foreign-key>
         <index name="KREN_CHNL_PRODCR_TI1">
             <index-column name="CHNL_ID"/>
         </index>
@@ -181,6 +202,9 @@
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
         <column name="VER_NBR" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREN_CHNL_T" name="KREN_CHAN_SUBSCRP_FK1">
+            <reference foreign="CHNL_ID" local="CHNL_ID"/>
+        </foreign-key>
         <unique name="KREN_CHNL_SUBSCRP_TC0">
             <unique-column name="CHNL_ID"/>
             <unique-column name="PRNCPL_ID"/>
@@ -226,6 +250,9 @@
         <column default="0" name="PROC_CNT" required="true" size="4" type="DECIMAL"/>
         <column name="LOCKD_DTTM" type="DATE"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KREN_MSG_T" name="KREN_MSG_DELIV_FK1">
+            <reference foreign="MSG_ID" local="MSG_ID"/>
+        </foreign-key>
         <unique name="KREN_MSG_DELIV_TC0">
             <unique-column name="MSG_ID"/>
             <unique-column name="TYP_NM"/>

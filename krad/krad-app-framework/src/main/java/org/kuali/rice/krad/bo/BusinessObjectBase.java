@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 
 /**
@@ -31,26 +34,22 @@ public abstract class BusinessObjectBase implements BusinessObject {
     public BusinessObjectBase() {
     }
 
-    /** @deprecated will be removed in rice 1.1 */
-    @Deprecated
-    protected final String toStringBuilder(LinkedHashMap<String, Object> fieldValues) {
-        throw new UnsupportedOperationException("do not call. this method will be removed from rice 1.1");
-    }
-
-    /** @deprecated will be removed in rice 1.1 */
-    @Deprecated
-     protected final LinkedHashMap<String, Object> toStringMapper() {
-         throw new UnsupportedOperationException("do not call.  this method will be removed from rice 1.1");
-     }
-
     @Override
 	public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        class BusinessObjectToStringBuilder extends ReflectionToStringBuilder {
+            private BusinessObjectToStringBuilder(Object object) {
+                super(object);
+            }
+
+            public boolean accept(Field field) {
+                if (BusinessObject.class.isAssignableFrom(field.getType())) {
+                    return false;
+                }
+                return super.accept(field);
+            }
+        };
+        ReflectionToStringBuilder toStringBuilder = new BusinessObjectToStringBuilder(this);
+        return toStringBuilder.toString();
     }
 
-    /** @deprecated will be removed in rice 1.1 */
-    @Deprecated
-    public final void prepareForWorkflow() {
-        throw new UnsupportedOperationException("do not call.  this method will be removed from rice 1.1");
-    }
 }

@@ -72,7 +72,6 @@ class PrincipalBo extends PersistableBusinessObjectBase implements PrincipalCont
     bo.principalId = immutable.principalId
     bo.entityId = immutable.entityId
     bo.principalName = immutable.principalName
-    bo.password = immutable.password
     bo.active = immutable.active
     bo.versionNumber = immutable.versionNumber
     bo.objectId = immutable.objectId

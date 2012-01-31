@@ -84,7 +84,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
         identityManagementPersonDocument.setPrincipalId(principal.getPrincipalId());
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
-        identityManagementPersonDocument.setPassword(principal.getPassword());
+        //identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
         Entity kimEntity = this.getIdentityService().getEntity(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getId());
@@ -161,7 +161,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
 		Principal.Builder principal = Principal.Builder.create(identityManagementPersonDocument.getPrincipalName());
 		principal.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
-		principal.setPassword(identityManagementPersonDocument.getPassword());
+		//principal.setPassword(identityManagementPersonDocument.getPassword());
 		principal.setActive(identityManagementPersonDocument.isActive());
 		principal.setEntityId(identityManagementPersonDocument.getEntityId());
 		if(ObjectUtils.isNotNull(origPrincipals)){

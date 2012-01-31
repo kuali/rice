@@ -83,7 +83,6 @@ class EntityTest {
                         <principalId>${PRINCIPAL.principalId}</principalId>
                         <principalName>${PRINCIPAL.principalName}</principalName>
                         <entityId>${PRINCIPAL.entityId}</entityId>
-                        <password>${PRINCIPAL.password}</password>
                         <active>${PRINCIPAL.active}</active>
                         <versionNumber>${PRINCIPAL.versionNumber}</versionNumber>
                         <objectId>${PRINCIPAL.objectId}</objectId>

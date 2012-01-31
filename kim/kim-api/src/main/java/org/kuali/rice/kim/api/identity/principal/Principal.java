@@ -37,7 +37,6 @@ import java.util.Collection;
     Principal.Elements.PRINCIPAL_ID,
     Principal.Elements.PRINCIPAL_NAME,
     Principal.Elements.ENTITY_ID,
-    Principal.Elements.PASSWORD,
     Principal.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
@@ -47,8 +46,6 @@ public final class Principal extends AbstractDataTransferObject
     implements PrincipalContract
 {
 
-    @XmlElement(name = Elements.PASSWORD, required = false)
-    private final String password;
     @XmlElement(name = Elements.PRINCIPAL_ID, required = false)
     private final String principalId;
     @XmlElement(name = Elements.PRINCIPAL_NAME, required = false)
@@ -70,7 +67,6 @@ public final class Principal extends AbstractDataTransferObject
      * 
      */
     private Principal() {
-        this.password = null;
         this.principalId = null;
         this.principalName = null;
         this.entityId = null;
@@ -80,18 +76,12 @@ public final class Principal extends AbstractDataTransferObject
     }
 
     private Principal(Builder builder) {
-        this.password = builder.getPassword();
         this.principalId = builder.getPrincipalId();
         this.principalName = builder.getPrincipalName();
         this.entityId = builder.getEntityId();
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
     }
 
     @Override
@@ -132,7 +122,6 @@ public final class Principal extends AbstractDataTransferObject
         implements Serializable, ModelBuilder, PrincipalContract
     {
 
-        private String password;
         private String principalId;
         private String principalName;
         private String entityId;
@@ -145,7 +134,6 @@ public final class Principal extends AbstractDataTransferObject
         }
 
         public static Builder create(String principalName) {
-            // TODO modify as needed to pass any required values and add them to the signature of the 'create' method
             return new Builder(principalName);
         }
 
@@ -153,9 +141,7 @@ public final class Principal extends AbstractDataTransferObject
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            // TODO if create() is modified to accept required parameters, this will need to be modified
             Builder builder = create(contract.getPrincipalName());
-            builder.setPassword(contract.getPassword());
             builder.setPrincipalId(contract.getPrincipalId());
             builder.setEntityId(contract.getEntityId());
             builder.setActive(contract.isActive());
@@ -168,10 +154,6 @@ public final class Principal extends AbstractDataTransferObject
             return new Principal(this);
         }
 
-        @Override
-        public String getPassword() {
-            return this.password;
-        }
 
         @Override
         public String getPrincipalId() {
@@ -201,10 +183,6 @@ public final class Principal extends AbstractDataTransferObject
         @Override
         public String getObjectId() {
             return this.objectId;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
         }
 
         public void setPrincipalId(String principalId) {
@@ -257,7 +235,6 @@ public final class Principal extends AbstractDataTransferObject
      */
     static class Elements {
 
-        final static String PASSWORD = "password";
         final static String PRINCIPAL_ID = "principalId";
         final static String PRINCIPAL_NAME = "principalName";
         final static String ENTITY_ID = "entityId";

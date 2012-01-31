@@ -218,17 +218,20 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public Principal updatePrincipal(Principal principal) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(principal, "principal");
-        Principal originalPrincipal = null;
+        PrincipalBo originalPrincipal = null;
         if (StringUtils.isEmpty(principal.getEntityId()) || StringUtils.isBlank(principal.getEntityId())
                 || StringUtils.isEmpty(principal.getPrincipalName()) || StringUtils.isBlank(principal.getPrincipalName())) {
             throw new RiceIllegalStateException("Principal's entityId and PrincipalName must be populated before update");
         }  else {
-             originalPrincipal = getPrincipalByPrincipalName(principal.getPrincipalName());
+             originalPrincipal = getPrincipalBoByPrincipalName(principal.getPrincipalName());
             if (StringUtils.isEmpty(principal.getPrincipalId()) || originalPrincipal == null) {
                 throw new RiceIllegalStateException("the Principal to update does not exist: " + principal);
             }
         }
+        
         PrincipalBo bo = PrincipalBo.from(principal);
+        //Password is not set on the principal DTO, so we need to make sure the value is kept from existing principal
+        bo.setPassword(originalPrincipal.getPassword());
         PrincipalBo updatedPrincipal = businessObjectService.save(bo);
         if (originalPrincipal.isActive()
                 && !updatedPrincipal.isActive()) {
@@ -699,11 +702,16 @@ public class IdentityServiceImpl implements IdentityService {
 	public Principal getPrincipalByPrincipalName(String principalName) throws RiceIllegalArgumentException {
 		incomingParamCheck(principalName, "principalName");
 
-		Map<String,Object> criteria = new HashMap<String,Object>(1);
+		return PrincipalBo.to(getPrincipalBoByPrincipalName(principalName));
+    }
+
+    private PrincipalBo getPrincipalBoByPrincipalName(String principalName) throws RiceIllegalArgumentException {
+
+        Map<String,Object> criteria = new HashMap<String,Object>(1);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
         Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
         if (!principals.isEmpty() && principals.size() == 1) {
-            return PrincipalBo.to(principals.iterator().next());
+            return principals.iterator().next();
         }
         return null;
     }

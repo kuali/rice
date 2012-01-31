@@ -298,7 +298,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
         identityManagementPersonDocument.setPrincipalId(principal.getPrincipalId());
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
-        identityManagementPersonDocument.setPassword(principal.getPassword());
+        //identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
         Entity kimEntity = this.getIdentityService().getEntity(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getId());
@@ -859,9 +859,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument, EntityBo kimEntity, List<PrincipalBo> origPrincipals) {
     	boolean inactivatingPrincipal = false;
 		List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-		Principal.Builder principal = Principal.Builder.create(identityManagementPersonDocument.getPrincipalName());
+		PrincipalBo principal = new PrincipalBo();
+        principal.setPrincipalName(identityManagementPersonDocument.getPrincipalName());
 		principal.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
-		principal.setPassword(identityManagementPersonDocument.getPassword());
 		principal.setActive(identityManagementPersonDocument.isActive());
 		principal.setEntityId(identityManagementPersonDocument.getEntityId());
 		if(ObjectUtils.isNotNull(origPrincipals)){
@@ -869,6 +869,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if (prncpl.getPrincipalId()!=null && StringUtils.equals(prncpl.getPrincipalId(), principal.getPrincipalId())) {
 					principal.setVersionNumber(prncpl.getVersionNumber());
                     principal.setObjectId(prncpl.getObjectId());
+                    principal.setPassword(prncpl.getPassword());
 					// check if inactivating the principal
 					if ( prncpl.isActive() && !principal.isActive() ) {
 						inactivatingPrincipal = true;
@@ -876,7 +877,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 			}
 		}
-		principals.add(PrincipalBo.from(principal.build()));
+		principals.add(principal);
 
 		kimEntity.setPrincipals(principals);
 		return inactivatingPrincipal;

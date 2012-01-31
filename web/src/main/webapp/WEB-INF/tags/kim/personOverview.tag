@@ -37,16 +37,6 @@
 				<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.active}" /> 
 		 		<kim:cell inquiry="${inquiry}" property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnlyEntity}" />
 		 	</tr>
-		 	<tr>
-		 		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="right" attributeEntry="${personAttributes.password}" /> 
-		 		<td>
-			 		<c:if test="${not readOnlyEntity}">
-			 		    <html:password property="document.password" />
-			 		</c:if>
-		 		</td>
-		 		<th></th>
-		 		<td></td>
-		 	</tr>
 		</table>
 		<kim:personAffln />
 	</div>

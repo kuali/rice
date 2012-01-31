@@ -34,12 +34,6 @@ public interface PrincipalContract extends Inactivatable, Versioned, GloballyUni
 	String getPrincipalName();
 	
 	/**
-     * Gets this {@link PrincipalContract}'s password.
-     * @return the password for this {@link PrincipalContract}, or null if none has been assigned.
-     */
-	String getPassword();
-	
-	/**
      * Gets this {@link PrincipalContract}'s identity id.
      * @return the identity id for this {@link PrincipalContract}, or null if none has been assigned.
      */

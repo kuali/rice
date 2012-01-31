@@ -5884,21 +5884,22 @@ values ('KR-RULE','Kuali Rules','Y','RICE',1,sys_guid())
 
 insert into krim_perm_tmpl_t
 (perm_tmpl_id, nm, nmspc_cd, desc_txt, kim_typ_id, actv_ind, ver_nbr, obj_id)
-values (krim_perm_tmpl_id_s.nextval,'KRMS Agenda Permission','KR-RULE','View/Maintain Agenda',
+values ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000),
+        'KRMS Agenda Permission','KR-RULE','View/Maintain Agenda',
         (select kim_typ_id from krim_typ_t where nm = 'Namespace' and nmspc_cd = 'KR-NS'),
         'Y',1,sys_guid())
 /
 
 insert into krim_perm_t
 (perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
-values (krim_perm_id_s.nextval,
+values ((select (max(to_number(perm_id)) + 1) from krim_perm_t where perm_id is not NULL and to_number(perm_id) < 10000),
         (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'KRMS Agenda Permission' and nmspc_cd = 'KR-RULE'),
         'KR-RULE','Maintain KRMS Agenda','Allows creation and modification of agendas via the agenda editor','Y',1,sys_guid())
 /
 
 insert into krim_perm_attr_data_t
 (attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
-values (krim_attr_data_id_s.nextval,
+values ((select (max(to_number(attr_data_id)) + 1) from krim_perm_attr_data_t where attr_data_id is not NULL and to_number(attr_data_id) < 10000),
         (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KR-RULE'),
         (select kim_typ_id from krim_typ_t where nm = 'Namespace' and nmspc_cd = 'KR-NS'),
         (select kim_attr_defn_id from krim_attr_defn_t where nm = 'namespaceCode'),
@@ -5908,7 +5909,7 @@ values (krim_attr_data_id_s.nextval,
 -- KIM roles
 insert into krim_role_t
 (role_id, role_nm, nmspc_cd, desc_txt, kim_typ_id, actv_ind, last_updt_dt, obj_id)
-values (krim_role_id_s.nextval,
+values ((select (max(to_number(role_id)) + 1) from krim_role_t where role_id is not NULL and to_number(role_id) < 10000),
         'Kuali Rules Management System Administrator',
         'KR-RULE',
         'This role maintains KRMS agendas and rules.',
@@ -5918,7 +5919,7 @@ values (krim_role_id_s.nextval,
 
 insert into krim_role_mbr_t
 (role_mbr_id, role_id, mbr_id, mbr_typ_cd, last_updt_dt, ver_nbr, obj_id)
-values (krim_role_mbr_id_s.nextval,
+values ((select (max(to_number(role_mbr_id)) + 1) from krim_role_mbr_t where role_mbr_id is not NULL and to_number(role_mbr_id) < 10000),
         (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
         (select prncpl_id from krim_prncpl_t where prncpl_nm = 'admin'),
         'P', current_date, 1, sys_guid())
@@ -5926,12 +5927,11 @@ values (krim_role_mbr_id_s.nextval,
 
 insert into krim_role_perm_t
 (role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
-values (krim_role_perm_id_s.nextval,
+values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where role_perm_id is not NULL and to_number(role_perm_id) < 10000),
         (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
         (select perm_id from krim_perm_t where nm = 'Maintain KRMS Agenda' and nmspc_cd = 'KR-RULE'),
         'Y', 1, sys_guid())
 /
-
 
 
 
@@ -6289,113 +6289,113 @@ UPDATE KRCR_NMSPC_T SET APPL_ID = 'RICE' WHERE NMSPC_CD = 'KUALI'
 
 INSERT INTO KRCR_NMSPC_T VALUES ('KR-KRAD', sys_guid(), 1, 'Kuali Rapid Application Development', 'Y', 'RICE')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('47', sys_guid(), 1, 'viewId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'viewId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('48', sys_guid(), 1, 'actionEvent', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'actionEvent', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('49', sys_guid(), 1, 'collectionPropertyName', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'collectionPropertyName', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('50', sys_guid(), 1, 'fieldId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'fieldId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('51', sys_guid(), 1, 'groupId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'groupId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('52', sys_guid(), 1, 'widgetId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'widgetId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_ATTR_DEFN_T VALUES ('53', sys_guid(), 1, 'actionId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
+INSERT INTO KRIM_ATTR_DEFN_T VALUES ((select (max(to_number(KIM_ATTR_DEFN_ID)) + 1) from KRIM_ATTR_DEFN_T where KIM_ATTR_DEFN_ID is not NULL and to_number(KIM_ATTR_DEFN_ID) < 10000), sys_guid(), 1, 'actionId', null, 'Y', 'KR-KRAD', 'org.kuali.rice.kim.bo.impl.KimAttributes')
 /
-INSERT INTO KRIM_TYP_T VALUES ('69', sys_guid(), 1, 'View', 'viewPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View', 'viewPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('70', sys_guid(), 1, 'View Edit Mode', 'viewEditModePermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Edit Mode', 'viewEditModePermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('71', sys_guid(), 1, 'View Field', 'viewFieldPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Field', 'viewFieldPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('72', sys_guid(), 1, 'View Group', 'viewGroupPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Group', 'viewGroupPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('73', sys_guid(), 1, 'View Widget', 'viewWidgetPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Widget', 'viewWidgetPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('74', sys_guid(), 1, 'View Action', 'viewActionPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Action', 'viewActionPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('75', sys_guid(), 1, 'View Line Field', 'viewLineFieldPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Line Field', 'viewLineFieldPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_T VALUES ('76', sys_guid(), 1, 'View Line Action', 'viewLineActionPermissionTypeService', 'Y', 'KR-KRAD')
+INSERT INTO KRIM_TYP_T VALUES ((select (max(to_number(kim_typ_id)) + 1) from KRIM_TYP_T where kim_typ_id is not NULL and to_number(kim_typ_id) < 10000), sys_guid(), 1, 'View Line Action', 'viewLineActionPermissionTypeService', 'Y', 'KR-KRAD')
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('113', sys_guid(), 1, 'a', '69', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('114', sys_guid(), 1, 'a', '70', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Edit Mode'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('115', sys_guid(), 1, 'b', '70', '10', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Edit Mode'), '10', 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('116', sys_guid(), 1, 'a', '71', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Field'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('117', sys_guid(), 1, 'b', '71', '50', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Field'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='fieldId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('118', sys_guid(), 1, 'c', '71', '6', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'c', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Field'), '6', 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('119', sys_guid(), 1, 'a', '72', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('120', sys_guid(), 1, 'b', '72', '51', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='groupId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('121', sys_guid(), 1, 'c', '72', '49', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'c', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='fieldId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('122', sys_guid(), 1, 'a', '73', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Widget'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('123', sys_guid(), 1, 'b', '73', '52', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Widget'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='widgetId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('124', sys_guid(), 1, 'a', '74', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('125', sys_guid(), 1, 'b', '74', '53', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='actionId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('126', sys_guid(), 1, 'c', '74', '48', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'c', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='actionEvent'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('127', sys_guid(), 1, 'a', '75', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('128', sys_guid(), 1, 'b', '75', '51', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='groupId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('129', sys_guid(), 1, 'c', '75', '49', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'c', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='collectionPropertyName'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('130', sys_guid(), 1, 'd', '75', '50', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'd', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='fieldId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('131', sys_guid(), 1, 'e', '75', '6', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'e', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), '6', 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('132', sys_guid(), 1, 'a', '76', '47', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'a', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='viewId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('133', sys_guid(), 1, 'b', '76', '51', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'b', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='groupId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('134', sys_guid(), 1, 'c', '76', '49', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'c', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='collectionPropertyName'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('135', sys_guid(), 1, 'd', '76', '53', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'd', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='actionId'), 'Y');
 /
-INSERT INTO KRIM_TYP_ATTR_T VALUES ('136', sys_guid(), 1, 'e', '76', '48', 'Y')
+INSERT INTO KRIM_TYP_ATTR_T VALUES ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from KRIM_TYP_ATTR_T where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000), sys_guid(), 1, 'e', (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Action'), (select KIM_ATTR_DEFN_ID from KRIM_ATTR_DEFN_T where NMSPC_CD='KR-KRAD' and NM='actionEvent'), 'Y');
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10003', sys_guid(), 1, 'KR-KRAD', 'Open View', null, '69', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Open View', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10004', sys_guid(), 1, 'KR-KRAD', 'Edit View', null, '69', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Edit View', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10005', sys_guid(), 1, 'KR-KRAD', 'Use View', null, '70', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Use View', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Edit Mode'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10006', sys_guid(), 1, 'KR-KRAD', 'View Field', null, '71', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'View Field', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Field'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10007', sys_guid(), 1, 'KR-KRAD', 'Edit Field', null, '71', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Edit Field', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Field'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10008', sys_guid(), 1, 'KR-KRAD', 'View Group', null, '72', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'View Group', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10009', sys_guid(), 1, 'KR-KRAD', 'Edit Group', null, '72', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Edit Group', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10010', sys_guid(), 1, 'KR-KRAD', 'View Widget', null, '73', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'View Widget', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Widget'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10011', sys_guid(), 1, 'KR-KRAD', 'Edit Widget', null, '73', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Edit Widget', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Widget'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10012', sys_guid(), 1, 'KR-KRAD', 'Perform Action', null, '74', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Perform Action', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Action'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10013', sys_guid(), 1, 'KR-KRAD', 'View Line', null, '72', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'View Line', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10014', sys_guid(), 1, 'KR-KRAD', 'Edit Line', null, '72', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Edit Line', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Group'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10015', sys_guid(), 1, 'KR-KRAD', 'View Line Field', null, '75', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'View Line Field', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10016', sys_guid(), 1, 'KR-KRAD', 'Edit Line Field', null, '75', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Edit Line Field', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Field'), 'Y')
 /
-INSERT INTO KRIM_PERM_TMPL_T VALUES ('10017', sys_guid(), 1, 'KR-KRAD', 'Perform Line Action', null, '76', 'Y')
+INSERT INTO KRIM_PERM_TMPL_T VALUES ((select (max(to_number(perm_tmpl_id)) + 1) from krim_perm_tmpl_t where perm_tmpl_id is not NULL and to_number(perm_tmpl_id) < 10000), sys_guid(), 1, 'KR-KRAD', 'Perform Line Action', null, (select kim_typ_id from krim_typ_t where NMSPC_CD='KR-KRAD' and NM='View Line Action'), 'Y')
 /
 
 
@@ -7545,5 +7545,17 @@ values ('1007', 3, '1000', '1006', 'Y', 1)
 /
 insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
 values ('1008', 3, '1001', '1006', 'Y', 1)
+/
+
+
+--
+-- 2010-01-31.sql
+--
+
+
+-- KULRICE-6481
+ALTER TABLE KRIM_ROLE_PERM_T MODIFY (ROLE_ID NOT NULL)
+/
+ALTER TABLE KRIM_ROLE_PERM_T MODIFY (PERM_ID NOT NULL)
 /
 

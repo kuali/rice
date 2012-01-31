@@ -873,27 +873,40 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public Entity updateEntity(Entity entity) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(entity, "entity");
-
-        if (StringUtils.isBlank(entity.getId()) || getEntity(entity.getId()) == null) {
+        EntityBo oldBo = null;
+        Map<String, String> passwdMap = new HashMap<String, String>();
+        if (StringUtils.isBlank(entity.getId())) {
             throw new RiceIllegalStateException("the Entity does not exist: " + entity);
+        } else {
+            oldBo = getEntityBo(entity.getId());
+            if (oldBo == null) {
+                throw new RiceIllegalStateException("the Entity does not exist: " + entity);    
+            }
         }
 
+        for (PrincipalBo principalBo : oldBo.getPrincipals()) {
+            passwdMap.put(principalBo.getPrincipalId(), principalBo.getPassword());
+        }
         EntityBo bo = EntityBo.from(entity);
+        for (PrincipalBo principal : bo.getPrincipals()) {
+            principal.setPassword(passwdMap.get(principal.getPrincipalId()));
+        }
         return EntityBo.to(businessObjectService.save(bo));
     }
+
+
 
     @Override
     public Entity inactivateEntity(String entityId) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(entityId, "entityId");
 
-        Entity entity = getEntity(entityId);
+        EntityBo entity = getEntityBo(entityId);
         if (entity == null) {
             throw new RiceIllegalStateException("an Entity does not exist for entityId: " + entityId);
         }
 
-        EntityBo bo = EntityBo.from(entity);
-        bo.setActive(false);
-        return EntityBo.to(businessObjectService.save(bo));
+        entity.setActive(false);
+        return EntityBo.to(businessObjectService.save(entity));
     }
 
     @Override

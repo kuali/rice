@@ -24,6 +24,18 @@
 
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedServiceBusSpringBeans.xml"/>
 
+  <bean id="rice.kew.workflowDocumentService.exporter" parent="kewServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="rice.kew.workflowDocumentService"/>
+        </property>
+        <property name="localServiceName" value="workflowDocumentService"/>
+        <property name="busSecurity" value="${rice.kew.workflowDocumentService.secure}"/>
+      </bean>
+    </property>
+  </bean>
+
   <bean id="rice.kew.actionListService.exporter" parent="kewServiceExporter">
     <property name="serviceDefinition">
       <bean parent="kewService">

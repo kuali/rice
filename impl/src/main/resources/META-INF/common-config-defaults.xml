@@ -493,6 +493,7 @@
   <param name="weeklyEmail.active" override="false">true</param>
 
   <param name="rice.kew.workflowDocumentActionsService.secure" override="false">true</param>
+  <param name="rice.kew.workflowDocumentService.secure" override="false">true</param>
   <param name="rice.kew.actionListService.secure" override="false">true</param>
   <param name="rice.kew.documentTypeService.secure" override="false">true</param>
   <param name="rice.kew.noteService.secure" override="false">true</param>

@@ -305,6 +305,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         documentBuilder.setApplicationDocumentStatus(applicationDocumentStatus);
 
         // TODO - KULRICE-5755 - should probably set as many properties on the document as we can
+        documentBuilder.setDocumentHandlerUrl(rs.getString("DOC_HDLR_URL"));
 
         if (isUsingAtLeastOneSearchAttribute(criteria)) {
             populateDocumentAttributesValues(resultBuilder, searchAttributeStatement);

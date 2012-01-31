@@ -114,6 +114,10 @@ public class DocumentSearchTest extends KEWTestCase {
         criteria.setMaxResults(2);
         results = docSearchService.lookupDocuments(principalId, criteria.build());
         assertEquals(2, results.getSearchResults().size());
+
+        // test search result document population
+        // break out into separate test if/when we have more fields to test
+        assertEquals("_blank", results.getSearchResults().get(0).getDocument().getDocumentHandlerUrl());
     }
 
     @Test public void testDocSearch_maxResultsIsNull() throws Exception {

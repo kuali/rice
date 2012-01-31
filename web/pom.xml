@@ -95,7 +95,6 @@
               <filtering>true</filtering>
               <!-- this is relative to the pom.xml directory -->
               <directory>src/main/webapp/</directory>
-              <targetPath>WEB-INF</targetPath>
               <includes>
                 <include>**/web.xml</include>
               </includes>

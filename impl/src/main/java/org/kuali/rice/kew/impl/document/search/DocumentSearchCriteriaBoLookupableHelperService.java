@@ -457,6 +457,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         link.setDisplayText(documentId);
         if (isDocumentHandlerPopup()) {
             link.setTarget("_blank");
+        }else{
+            link.setTarget("_self");
         }
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/";
         if (superUserSearch) {

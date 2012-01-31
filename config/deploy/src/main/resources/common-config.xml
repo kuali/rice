@@ -34,7 +34,7 @@
   <param name="keystore.password">r1c3pw</param>
   <param name="travel.externalizable.images.url">${externalizable.images.url}</param>
 
-  <!-- SMTP Settings -->
+  <!-- Email Settings -->
   <param name="mail.debug">false</param>
   <param name="mail.smtp.host">email-smtp.us-east-1.amazonaws.com</param>
   <param name="mail.smtp.port">465</param>

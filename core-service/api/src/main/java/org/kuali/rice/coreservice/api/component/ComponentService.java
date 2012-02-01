@@ -36,6 +36,16 @@ import java.util.List;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ComponentService {
 
+
+    /**
+     * This will return a {@link org.kuali.rice.coreservice.api.component.Component} with the given namespaceCode and
+     * componentCode
+     *
+     * @param namespaceCode the namespaceCode of the component
+     * @param componentCode the componentCode of the component
+     * @return the component with the given namespaceCode and componentCode
+     * @throws IllegalArgumentException if the namespaceCode or componentCode is null or blank
+     */
     @WebMethod(operationName = "getComponentByCode")
     @WebResult(name = "component")
     Component getComponentByCode(
@@ -43,6 +53,15 @@ public interface ComponentService {
             @WebParam(name = "componentCode") String componentCode
     ) throws RiceIllegalArgumentException;
 
+
+    /**
+     * This will return a list of all {@link org.kuali.rice.coreservice.api.component.Component} with the
+     * given namespaceCode
+     *
+     * @param namespaceCode the namespaceCode of the component
+     * @return a list of components with the given namespaceCode
+     * @throws IllegalArgumentException if the namespaceCode is null or blank
+     */
     @WebMethod(operationName = "getAllComponentsByNamespaceCode")
     @WebResult(name = "components")
     @XmlElementWrapper(name = "components", required = true)
@@ -51,6 +70,15 @@ public interface ComponentService {
             @WebParam(name = "namespaceCode") String namespaceCode
     ) throws RiceIllegalArgumentException;
 
+
+    /**
+     * This will return a list of active {@link org.kuali.rice.coreservice.api.component.Component} with the
+     * given namespaceCode
+     *
+     * @param namespaceCode the namespaceCode of the component
+     * @return a list of active components with the given namespaceCode
+     * @throws IllegalArgumentException if the namespaceCode is null or blank
+     */
     @WebMethod(operationName = "getActiveComponentsByNamespaceCode")
     @WebResult(name = "components")
     @XmlElementWrapper(name = "components", required = true)
@@ -59,6 +87,15 @@ public interface ComponentService {
             @WebParam(name = "namespaceCode") String namespaceCode
     ) throws RiceIllegalArgumentException;
 
+
+    /**
+     * This will return a list of derived {@link org.kuali.rice.coreservice.api.component.Component} with the
+     * given componentSetId
+     *
+     * @param componentSetId the componentSetId of the component
+     * @return a list of components with the given componentSetId
+     * @throws IllegalArgumentException if the componentSetId is null or blank
+     */
     @WebMethod(operationName = "getDerivedComponentSet")
     @WebResult(name = "components")
     @XmlElementWrapper(name = "components", required = true)

@@ -2472,8 +2472,8 @@
         <column name="ROLE_PERM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="ROLE_ID" size="40" type="VARCHAR"/>
-        <column name="PERM_ID" size="40" type="VARCHAR"/>
+        <column name="ROLE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="PERM_ID" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <foreign-key foreignTable="KRIM_PERM_T" name="KRIM_ROLE_PERM_TR1">
             <reference foreign="PERM_ID" local="PERM_ID"/>

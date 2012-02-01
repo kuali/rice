@@ -73,7 +73,7 @@ import java.util.Map;
  */
 public class AgendaEditorMaintainable extends MaintainableImpl {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AgendaEditorMaintainable.class);
 
@@ -86,12 +86,12 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
     private transient SequenceAccessorService sequenceAccessorService;
 
-	/**
-	 * @return the boService
-	 */
-	public BusinessObjectService getBoService() {
-		return KRADServiceLocator.getBusinessObjectService();
-	}
+    /**
+     * @return the boService
+     */
+    public BusinessObjectService getBoService() {
+        return KRADServiceLocator.getBusinessObjectService();
+    }
 
     /**
      * return the contextBoService
@@ -207,7 +207,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         Node<RuleTreeNode, String> result = null;
         if (node.getData() != null && node.getData().getProposition() != null &&
                 node.getData().getProposition().getEditMode()) {
-                result = node;
+            result = node;
         } else {
             for (Node<RuleTreeNode, String> child : node.getChildren()) {
                 result = findEditedProposition(child);
@@ -223,8 +223,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         //
 
         KrmsTypeDefinition krmsType =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
-                            getTypeById(krmsTypeId);
+                KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
+                        getTypeById(krmsTypeId);
 
         AgendaTypeService agendaTypeService = null;
 
@@ -292,9 +292,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         // Get the ActionTypeService by hook or by crook
         //
 
-        KrmsTypeDefinition krmsType =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
-                            getTypeById(krmsTypeId);
+        KrmsTypeDefinition krmsType = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(krmsTypeId);
 
         ActionTypeService actionTypeService = null;
 
@@ -309,7 +307,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             actionTypeService = ActionTypeServiceBase.defaultActionTypeService;
         }
 
-//        if (actionTypeService == null) { actionTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
+        //        if (actionTypeService == null) { actionTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
 
         return actionTypeService;
     }
@@ -347,10 +345,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             // Since the dataObject is a wrapper class we need to build it and populate with the agenda bo.
             AgendaEditor agendaEditor = new AgendaEditor();
             AgendaBo agenda = getLookupService().findObjectBySearch(((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
+            List<AgendaItemBo> agendaItems = agenda.getItems();
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
                 // TODO EGHM move copyAgenda to AgendaBo
-                AgendaBo copiedAgenda;// = new AgendaBo();
-                copiedAgenda = (AgendaBo) ObjectUtils.deepCopy(agenda);
+                AgendaBo copiedAgenda = (AgendaBo) ObjectUtils.deepCopy(agenda);
                 String copiedAgendaNewId = getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S).toString();
                 String dateTimeStamp = (new Date()).getTime() + "";
                 copiedAgenda.setName(COPY_OF_TEXT + agenda.getName() + " " + dateTimeStamp);
@@ -366,10 +364,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 document.setFieldsClearedOnCopy(true);
 
                 String initAgendaItemId = agenda.getFirstItemId();
-                List<AgendaItemBo> agendaItems = agenda.getItems();
                 List<AgendaItemBo> copiedAgendaItems = new ArrayList<AgendaItemBo>();
+                Map<String, RuleBo> oldRuleIdToNew = new HashMap<String, RuleBo>();
                 for (AgendaItemBo agendaItem: agendaItems) {
-                    AgendaItemBo copiedAgendaItem = copyAgendaItem(copiedAgenda, agendaItem, dateTimeStamp);
+                    AgendaItemBo copiedAgendaItem = copyAgendaItem(copiedAgenda, agendaItem, oldRuleIdToNew, dateTimeStamp);
                     if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
                         copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
                     }
@@ -402,7 +400,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     }
 
     // TODO EGHM Move this to AgendaItemBo copyAgendaItem
-    private AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, final AgendaItemBo agendaItem, String dts) {
+    private AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, final AgendaItemBo agendaItem,  Map<String, RuleBo> oldRuleIdToNew, final String dts) {
         if (agendaItem == null) return null;
 
         // Use deepCopy and update all the ids.
@@ -412,20 +410,27 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
 
-        copiedAgendaItem.setRule(copyRule(agendaItem.getRule(), COPY_OF_TEXT + agendaItem.getRule().getName() + " " + dts));
-        copiedAgendaItem.setRuleId(copiedAgendaItem.getRule().getId());
+        // Don't create another copy of a rule that we have already copied.
+        if (!oldRuleIdToNew.containsKey(agendaItem.getRuleId())) {
+            copiedAgendaItem.setRule(copyRule(agendaItem.getRule(), COPY_OF_TEXT + agendaItem.getRule().getName() + " " + dts));
+            copiedAgendaItem.setRuleId(copiedAgendaItem.getRule().getId());
+            oldRuleIdToNew.put(agendaItem.getRuleId(), copiedAgendaItem.getRule());
+        } else {
+            copiedAgendaItem.setRule(oldRuleIdToNew.get(agendaItem.getRuleId()));
+            copiedAgendaItem.setRuleId(oldRuleIdToNew.get(agendaItem.getRuleId()).getId());
+        }
 
-        copiedAgendaItem.setWhenFalse(copyAgendaItem(copiedAgenda, agendaItem.getWhenFalse(), dts));
+        copiedAgendaItem.setWhenFalse(copyAgendaItem(copiedAgenda, agendaItem.getWhenFalse(), oldRuleIdToNew, dts));
         if (copiedAgendaItem.getWhenFalse() != null) {
             copiedAgendaItem.setWhenFalseId(copiedAgendaItem.getWhenFalse().getId());
         }
 
-        copiedAgendaItem.setWhenTrue(copyAgendaItem(copiedAgenda, agendaItem.getWhenTrue(), dts));
+        copiedAgendaItem.setWhenTrue(copyAgendaItem(copiedAgenda, agendaItem.getWhenTrue(), oldRuleIdToNew, dts));
         if (copiedAgendaItem.getWhenTrue() != null) {
             copiedAgendaItem.setWhenTrueId(copiedAgendaItem.getWhenTrue().getId());
         }
 
-        copiedAgendaItem.setAlways(copyAgendaItem(copiedAgenda, agendaItem.getAlways(), dts));
+        copiedAgendaItem.setAlways(copyAgendaItem(copiedAgenda, agendaItem.getAlways(), oldRuleIdToNew, dts));
         if (copiedAgendaItem.getAlways() != null) {
             copiedAgendaItem.setAlwaysId(copiedAgendaItem.getAlways().getId());
         }
@@ -441,9 +446,9 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     private RuleBo copyRule(RuleBo rule, String newRuleName) {
         if (rule == null) return null;
         RuleBo copiedRule = RuleBo.copyRule(rule);
-// Rule names cannot be the same, the error for being the same name is not displayed to the user, and the document is
-// said to have been successfully submitted.
-//        copiedRule.setName(rule.getName());
+        // Rule names cannot be the same, the error for being the same name is not displayed to the user, and the document is
+        // said to have been successfully submitted.
+        //        copiedRule.setName(rule.getName());
         copiedRule.setName(newRuleName);
         return copiedRule;
     }
@@ -459,15 +464,13 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return sequenceAccessorService;
     }
     /**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void processAfterNew(MaintenanceDocument document,
-			Map<String, String[]> requestParameters) {
-
-		super.processAfterNew(document, requestParameters);
-        document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
-	}
+     * {@inheritDoc}
+     */
+    @Override
+    public void processAfterNew(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        super.processAfterNew(document, requestParameters);
+        document.getDocumentHeader().setDocumentDescription(NEW_AGENDA_EDITOR_DOCUMENT_TEXT);
+    }
 
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
@@ -505,7 +508,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             throw new RuntimeException(
                     "Cannot save object of type: " + agendaBo + " with business object service");
         }
-   }
+    }
 
     /**
      * walk the proposition tree and save any new parameterized terms that are contained therein
@@ -554,8 +557,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
      * @return
      */
     private Map<String, KrmsAttributeDefinition> buildAttributeDefinitionMap(String agendaTypeId) {
-        KrmsAttributeDefinitionService attributeDefinitionService =
-            KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+        KrmsAttributeDefinitionService attributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
 
         // build a map from attribute name to definition
         Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
@@ -594,7 +596,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return isOldDataObjectInExistence;
     }
 
-     // Since the dataObject is a wrapper class we need to return the agendaBo instead.
+    // Since the dataObject is a wrapper class we need to return the agendaBo instead.
     @Override
     public Class getDataObjectClass() {
         return AgendaBo.class;

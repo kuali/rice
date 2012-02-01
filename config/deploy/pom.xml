@@ -71,7 +71,7 @@
     <db.vendor>oracle</db.vendor>
     <impex.url>${impex.oracle.url}</impex.url>
     <impex.dba.url>${impex.oracle.url}</impex.dba.url>
-    <deploy.impex.location>https://test.kuali.org/svn/rice/trunk/db/impex/master</deploy.impex.location>
+    <deploy.impex.location>http://svn.kuali.org/repos/trunk/db/impex/master</deploy.impex.location>
 
     <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
     <jdbc.driver.artifactId>${oracle.jdbc.artifactId}</jdbc.driver.artifactId>

@@ -40,7 +40,6 @@
   <param name="mail.smtp.port">465</param>
   <param name="mail.smtp.ssl.enable">true</param>
   <param name="mail.smtp.auth">true</param>
-  <param name="mail.smtp.submitter">jcaddel@kuali.org</param>
   <param name="mail.smtp.username">AKIAJJUBCVBNS3N2K5WA</param>
   <param name="mail.smtp.password">${rice.ses.password}</param>
 </config>

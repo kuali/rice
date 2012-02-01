@@ -33,8 +33,8 @@
             </listitem>
             <listitem>
                 <para>From Kuali svn repository - <link
-                        xlink:show="new" xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}"
-                    >https://test.kuali.org/svn/rice/tags/rice-${project.version}</link></para>
+                        xlink:show="new" xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}"
+                    >http://svn.kuali.org/repos/rice/tags/rice-${project.version}</link></para>
             </listitem>
         </itemizedlist>        
     </sect1>
@@ -148,7 +148,7 @@
                     Tracking</link></para>
             </listitem>
             <listitem><para><link xlink:show="new" xlink:href="https://ci.rice.kuali.org/">Continuous Integration</link></para></listitem>
-            <listitem><para><link xlink:show="new" xlink:href="https://test.kuali.org/svn/rice/">Source Code Repository</link></para></listitem>
+            <listitem><para><link xlink:show="new" xlink:href="http://svn.kuali.org/repos/rice/">Source Code Repository</link></para></listitem>
             <listitem><para><link xlink:show="new" xlink:href="http://fisheye.kuali.org/browse/rice">FishEye</link></para></listitem>
         </itemizedlist>
     </sect1>

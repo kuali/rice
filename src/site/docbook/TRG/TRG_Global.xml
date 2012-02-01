@@ -770,8 +770,8 @@ value=”classpath:my/app/package/MyCustomSpringFile.xml”/>
                 </listitem>
                 <listitem>
                     <para>Set up a new SVN repository in Eclipse: <link
-                            xlink:href="https://test.kuali.org/svn/rice"
-                            >https://test.kuali.org/svn/rice</link>
+                            xlink:href="http://svn.kuali.org/repos/rice"
+                            >http://svn.kuali.org/repos/rice</link>
                     </para>
                 </listitem>
                 <listitem>

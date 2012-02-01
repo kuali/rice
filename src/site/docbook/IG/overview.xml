@@ -102,8 +102,8 @@
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Subversion Repository</emphasis> - <link
-                            xlink:href="https://test.kuali.org/svn/rice/tags/rice-${project.version}"
-                            >https://test.kuali.org/svn/rice/tags/rice-${project.version}</link></para>
+                            xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}"
+                            >http://svn.kuali.org/repos/rice/tags/rice-${project.version}</link></para>
                 </listitem>
             </orderedlist>
         </para>

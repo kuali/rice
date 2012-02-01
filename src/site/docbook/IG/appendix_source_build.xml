@@ -245,7 +245,7 @@ torque.sql.dir=${torque.schema.dir}/sql
                                             <para><programlisting>cd /opt/software/kuali
 mkdir src
 cd src
-svn co https://test.kuali.org/svn/rice/branches/rice-release-1-0-2-br/
+svn co http://svn.kuali.org/repos/rice/branches/rice-release-1-0-2-br/
 cd ..
 pwd
 /opt/software/kuali

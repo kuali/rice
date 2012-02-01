@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.springframework.util.Log4jConfigurer;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import javax.servlet.ServletContext;
@@ -119,6 +120,7 @@ public class KualiInitializeListener implements ServletContextListener {
             context.close();
         }
         LOG.info("...completed shutdown of Kuali Rice.");
+        Log4jConfigurer.shutdownLogging();
     }
 
     public XmlWebApplicationContext getContext() {

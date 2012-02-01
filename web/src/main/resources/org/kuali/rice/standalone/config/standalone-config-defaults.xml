@@ -69,5 +69,6 @@
   <param name="kim.mode">LOCAL</param>
   <param name="kew.mode">LOCAL</param>
   <param name="krms.mode">LOCAL</param>
+  <param name="ksb.mode">LOCAL</param>
 
 </config>

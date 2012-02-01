@@ -205,8 +205,6 @@
     <param name="initialDelaySecs" override="false">10</param>
 
     <param name="rice.logging.configure" override="false">false</param>
-    <param name="log4j.settings.reloadInterval" override="false">5</param>
-    <param name="log4j.settings.path" override="false">classpath:log4j.properties</param>
 
     <param name="classpath.resource.prefix" override="false">/WEB-INF/classes/</param>
 
@@ -456,7 +454,7 @@
 	<!-- KSB -->
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
 	<param name="ksb.url" override="false">${application.url}/ksb</param>
-	<param name="ksb.mode" override="false">LOCAL</param>
+	<param name="ksb.mode" override="false">REMOTE</param>
 	<param name="keystore.alias" override="false"></param>
 	<param name="keystore.password" override="false"></param>
 	<param name="keystore.file" override="false"></param>

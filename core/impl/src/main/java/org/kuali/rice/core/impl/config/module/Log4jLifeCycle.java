@@ -22,6 +22,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.springframework.util.Log4jConfigurer;
 import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;
 
@@ -103,11 +104,10 @@ class Log4jLifeCycle extends BaseLifecycle {
 					log.warn("Invalid reload interval: " + log4jReloadInterval + ", using default: " + DEFAULT_RELOAD_INTERVAL + " milliseconds");
 				}
 			}
-            PropertyConfigurator.configureAndWatch(log4jconfig, reloadInterval);
+            Log4jConfigurer.initLogging(log4jconfig, reloadInterval);
 			log = Logger.getLogger(getClass());
 		} else {
-
-            PropertyConfigurator.configureAndWatch(AUTOMATIC_LOGGING_CONFIG_URL, DEFAULT_RELOAD_INTERVAL);
+            Log4jConfigurer.initLogging(AUTOMATIC_LOGGING_CONFIG_URL);
             log = Logger.getLogger(getClass());
 		}
 		super.start();
@@ -137,17 +137,6 @@ class Log4jLifeCycle extends BaseLifecycle {
 		}
 
 		return exists;
-	}
-
-    @Override
-    public void stop() throws Exception {
-    	// commenting out LogManager.shutdown() for now because it kills logging before shutdown of the rest of the system is complete
-    	// so if there are other errors that are encountered during shutdown, they won't be logged!
-
-    	// move this to the standalone initialize listener instead
-
-		//LogManager.shutdown();
-		super.stop();
 	}
 
 }

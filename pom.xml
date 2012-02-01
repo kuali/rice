@@ -1942,9 +1942,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>
-    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/trunk</developerConnection>
-    <url>https://test.kuali.org/svn/rice/trunk</url>
+    <connection>scm:svn:http://svn.kuali.org/repos/rice/trunk</connection>
+    <developerConnection>scm:svn:http://svn.kuali.org/repos/rice/trunk</developerConnection>
+    <url>http://svn.kuali.org/repos/rice/trunk</url>
   </scm>
 
 </project>

@@ -31,18 +31,26 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
     
     @Override
     protected void beforeRequest(HttpServletRequest httpServletRequest, String s) {
-        startTime = new Date().getTime();
+        if (loggableExtension(s)) {
+            startTime = new Date().getTime();
+        }
     }
 
     @Override
     protected void afterRequest(HttpServletRequest httpServletRequest, String s) {
-        if (s.endsWith(".js]") || s.endsWith(".png]") || s.endsWith(".css]") || s.endsWith(".gif]")) {
-            return;
+        if (loggableExtension(s)) {
+            long endTime = new Date().getTime();
+            long elapsedTime = endTime - startTime;
+            StringBuffer sb = new StringBuffer(s);
+            sb.append(" ").append(elapsedTime).append(" ms.");
+            LOG.info(sb.toString());
         }
-        long endTime = new Date().getTime();
-        long elapsedTime = endTime - startTime;
-        StringBuffer sb = new StringBuffer(s);
-        sb.append(" ").append(elapsedTime).append(" ms.");
-        LOG.info(sb.toString());
+    }
+
+    private boolean loggableExtension(String s) {
+        if (s.endsWith(".js]") || s.endsWith(".png]") || s.endsWith(".css]") || s.endsWith(".gif]")) {
+            return false;
+        }
+        return true;
     }
 }

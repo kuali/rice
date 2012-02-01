@@ -3717,16 +3717,6 @@
         <column name="SVC_DSCRPTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DSCRPTR" required="true" type="CLOB"/>
     </table>
-    <table name="KR_KIM_TEST_BO"/>
-    <table name="TRAV_DOC_2_ACCOUNTS"/>
-    <table name="TRV_ACCT"/>
-    <table name="TRV_ACCT_EXT"/>
-    <table name="TRV_ACCT_FO"/>
-    <table name="TRV_ACCT_TYPE"/>
-    <table name="TRV_ACCT_USE_RT_T"/>
-    <table name="TRV_DOC_2"/>
-    <table name="TRV_DOC_ACCT"/>
-    <table name="TST_SEARCH_ATTR_INDX_TST_DOC_T"/>
     <view name="KRIM_GRP_MBR_V" viewdefinition="SELECT g.NMSPC_CD&#xa;, g.grp_nm&#xa;, g.GRP_ID&#xa;, p.PRNCPL_NM&#xa;, p.PRNCPL_ID&#xa;, mg.GRP_NM AS mbr_grp_nm&#xa;, mg.GRP_ID AS mbr_grp_id&#xa;FROM KRIM_GRP_MBR_T gm&#xa;LEFT JOIN krim_grp_t g&#xa;ON g.GRP_ID = gm.GRP_ID&#xa;LEFT OUTER JOIN krim_grp_t mg&#xa;ON mg.GRP_ID = gm.MBR_ID&#xa;AND gm.MBR_TYP_CD = 'G'&#xa;LEFT OUTER JOIN krim_prncpl_t p&#xa;ON p.PRNCPL_ID = gm.MBR_ID&#xa;AND gm.MBR_TYP_CD = 'P'&#xa;LEFT OUTER JOIN krim_entity_nm_t en&#xa;ON en.ENTITY_ID = p.ENTITY_ID&#xa;AND en.DFLT_IND = 'Y'&#xa;AND en.ACTV_IND = 'Y'&#xa;ORDER BY nmspc_cd, grp_nm, prncpl_nm&#xa;&#xa;&#xa; &#xa; &#xa;&#xa;"/>
     <view name="KRIM_GRP_V" viewdefinition="SELECT g.NMSPC_CD&#xa;, g.grp_nm&#xa;, g.GRP_ID&#xa;, t.NM AS grp_typ_nm&#xa;, a.NM AS attr_nm&#xa;, d.ATTR_VAL AS attr_val&#xa;FROM krim_grp_t g&#xa;LEFT OUTER JOIN KRIM_GRP_ATTR_DATA_T d&#xa;ON d.grp_id = g.GRP_ID&#xa;LEFT OUTER JOIN KRIM_ATTR_DEFN_T a&#xa;ON a.KIM_ATTR_DEFN_ID = d.KIM_ATTR_DEFN_ID&#xa;LEFT OUTER JOIN KRIM_TYP_T t&#xa;ON g.KIM_TYP_ID = t.KIM_TYP_ID&#xa;&#xa;&#xa; &#xa; &#xa;&#xa;"/>
     <view name="KRIM_PERM_ATTR_V" viewdefinition="SELECT&#xa;t.nmspc_cd AS tmpl_nmspc_cd&#xa;, t.NM AS tmpl_nm&#xa;, t.PERM_TMPL_ID&#xa;, p.nmspc_cd AS perm_nmspc_cd&#xa;, p.NM AS perm_nm&#xa;, p.PERM_ID&#xa;, a.NM AS attr_nm&#xa;, ad.ATTR_VAL AS attr_val&#xa;FROM KRIM_PERM_T p&#xa;LEFT JOIN KRIM_PERM_TMPL_T t&#xa;ON p.PERM_TMPL_ID = t.PERM_TMPL_ID&#xa;LEFT OUTER JOIN KRIM_PERM_ATTR_DATA_T ad&#xa;ON p.PERM_ID = ad.perm_id&#xa;LEFT OUTER JOIN KRIM_ATTR_DEFN_T a&#xa;ON ad.KIM_ATTR_DEFN_ID = a.KIM_ATTR_DEFN_ID&#xa;ORDER BY tmpl_nmspc_cd, tmpl_nm, perm_nmspc_cd, perm_id, attr_nm&#xa;&#xa;&#xa; &#xa; &#xa;&#xa;"/>

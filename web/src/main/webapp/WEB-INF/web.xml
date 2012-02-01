@@ -35,7 +35,7 @@
 
   <filter>
     <filter-name>HttpRequestLogger</filter-name>
-    <filter-class>org.kuali.rice.core.HttpRequestLogger</filter-class>
+    <filter-class>org.kuali.rice.core.RequestLoggingFilter</filter-class>
   </filter>
 
   <filter>

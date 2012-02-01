@@ -539,7 +539,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		for (PersonDocumentRole role : docRoles) {
 			role.setDefinitions(getAttributeDefinitionsForRole(role));
         	// when post again, it will need this during populate
-            role.setNewRolePrncpl(new KimDocumentRoleMember());
+            KimDocumentRoleMember newRolePrncpl = new KimDocumentRoleMember();
+            newRolePrncpl.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
+            newRolePrncpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
+            role.setNewRolePrncpl(newRolePrncpl);
             if(role.getDefinitions()!=null){
 	            for (KimAttributeField key : role.getDefinitions()) {
 	            	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
@@ -2244,7 +2247,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
                             (origRoleMemberImpl.getType()!=null && org.apache.commons.lang.ObjectUtils.equals(origRoleMemberImpl.getType(), newRoleMember.getType())) &&
                             !origRoleMemberImpl.isActive() &&
-                            !kimTypeService.validateAttributesAgainstExisting(identityManagementRoleDocument.getKimType().getId(),
+                            !kimTypeService.validateUniqueAttributes(
+                                    identityManagementRoleDocument.getKimType().getId(),
                                     documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes()).isEmpty()) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...

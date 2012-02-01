@@ -415,7 +415,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
                             (origRoleMemberImpl.getType()!=null && org.apache.commons.lang.ObjectUtils.equals(origRoleMemberImpl.getType(), newRoleMember.getType())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
-                            !kimTypeService.validateAttributesAgainstExisting(identityManagementRoleDocument.getKimType().getId(),
+                            !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getId(),
                                     documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes()).isEmpty()) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...

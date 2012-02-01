@@ -723,7 +723,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    roleIds.add(role.getRoleId());
 	    for(KimDocumentRoleMember member: role.getRolePrncpls()){
 	    	oldMemberQualifiers = member.getQualifierAsMap();
-	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
+	    	errorsAttributesAgainstExisting = kimTypeService.validateUniqueAttributes(
 	    			role.getKimRoleType().getId(), newMemberQualifiers, oldMemberQualifiers);
 	    	validationErrors.addAll(
 					attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
@@ -779,7 +779,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 				valid = false;
 				GlobalVariables.getMessageMap().putError("document."+errorPath, RiceKeyConstants.ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION, new String[]{});
 			} else{
-				kimTypeService.validateAttributesAgainstExisting(kimType.getId(), roleMember.getAttributes(), mapToValidate);
+				kimTypeService.validateUnmodifiableAttributes(kimType.getId(), roleMember.getAttributes(), mapToValidate);
 				validationErrors.addAll(
 						attributeValidationHelper.convertErrors(errorPath, attributeValidationHelper
                                 .convertQualifiersToAttrIdxMap(delegationMember.getQualifiers()), errorsTemp));

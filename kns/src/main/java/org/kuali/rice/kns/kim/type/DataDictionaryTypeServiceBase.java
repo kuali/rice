@@ -188,11 +188,11 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
         if (oldAttributes == null) {
             throw new RiceIllegalArgumentException("oldAttributes was null or blank");
         }
+        return Collections.emptyList();
+        //final List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+        //errors.addAll(validateUniqueAttributes(kimTypeId, newAttributes, oldAttributes));
+        //return Collections.unmodifiableList(errors);
 
-        final List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
-        errors.addAll(validateUniqueAttributes(kimTypeId, newAttributes, oldAttributes));
-        errors.addAll(validateUnmodifiableAttributes(kimTypeId, newAttributes, oldAttributes));
-        return Collections.unmodifiableList(errors);
 	}
 
 	/**
@@ -646,9 +646,20 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 	}
 
 
-	
-	protected List<RemotableAttributeError> validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes) {
-		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
+	@Override
+	public List<RemotableAttributeError> validateUniqueAttributes(String kimTypeId, Map<String, String> newAttributes, Map<String, String> oldAttributes) {
+        if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        if (newAttributes == null) {
+            throw new RiceIllegalArgumentException("newAttributes was null or blank");
+        }
+
+        if (oldAttributes == null) {
+            throw new RiceIllegalArgumentException("oldAttributes was null or blank");
+        }
+        List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		if(uniqueAttributes==null || uniqueAttributes.isEmpty()){
 			return Collections.emptyList();
 		} else{
@@ -702,8 +713,20 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
         return Collections.unmodifiableList(uniqueAttributes);
 	}
 
-	protected List<RemotableAttributeError> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> originalAttributes, Map<String, String> newAttributes){
-		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
+    @Override
+	public List<RemotableAttributeError> validateUnmodifiableAttributes(String kimTypeId, Map<String, String> originalAttributes, Map<String, String> newAttributes){
+        if (StringUtils.isBlank(kimTypeId)) {
+            throw new RiceIllegalArgumentException("kimTypeId was null or blank");
+        }
+
+        if (newAttributes == null) {
+            throw new RiceIllegalArgumentException("newAttributes was null or blank");
+        }
+
+        if (originalAttributes == null) {
+            throw new RiceIllegalArgumentException("oldAttributes was null or blank");
+        }
+        List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
 		KimType kimType = getTypeInfoService().getKimType(kimTypeId);
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 		for(String attributeNameKey: uniqueAttributes){

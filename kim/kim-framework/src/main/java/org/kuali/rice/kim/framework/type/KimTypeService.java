@@ -132,5 +132,62 @@ public interface KimTypeService {
                                                                     @WebParam(name = "oldAttributes")
                                                                     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                                                     Map<String, String> oldAttributes) throws RiceIllegalArgumentException;
+
+
+    /**
+     * This method validates the passed in attributes for a kimTypeId generating a List of {@link RemotableAttributeError}.
+     * This method used the oldAttributes to aid in validation.  This method specifically determines if attributes should be
+     * unique and verifying them against other attributes that have been set to determine uniqueness
+     *
+     * The order of the attribute errors in the list
+     * can be used as a hint to a ui framework consuming these errors as to how to organize these errors.
+     *
+     * @param kimTypeId the kimTypeId that is associated with the attributes. Cannot be null or blank.
+     * @param newAttributes the kim type attributes to validate. Cannot be null.
+     * @param oldAttributes the old kim type attributes to use for validation. Cannot be null.
+     * @return an immutable list of RemotableAttributeError. Will not return null.
+     * @throws IllegalArgumentException if the kimTypeId is null or blank or the newAttributes or oldAttributes are null
+     */
+    @WebMethod(operationName="validateUniqueAttributes")
+    @XmlElementWrapper(name = "attributeErrors", required = true)
+    @XmlElement(name = "attributeError", required = false)
+    @WebResult(name = "attributeErrors")
+    List<RemotableAttributeError> validateUniqueAttributes(@WebParam(name = "kimTypeId")
+                                                           String kimTypeId,
+                                                           @WebParam(name = "newAttributes")
+                                                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                           Map<String, String> newAttributes,
+                                                           @WebParam(name = "oldAttributes")
+                                                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                           Map<String, String> oldAttributes)
+                                                    throws RiceIllegalArgumentException;
+
+    /**
+     * This method validates the passed in attributes for a kimTypeId generating a List of {@link RemotableAttributeError}.
+     * This method used the oldAttributes to aid in validation.  This method specifically validates that the new attribute
+     * values have not been changed if they are unmodifiable.
+     *
+     * The order of the attribute errors in the list
+     * can be used as a hint to a ui framework consuming these errors as to how to organize these errors.
+     *
+     * @param kimTypeId the kimTypeId that is associated with the attributes. Cannot be null or blank.
+     * @param newAttributes the kim type attributes to validate. Cannot be null.
+     * @param originalAttributes the old kim type attributes to use for validation. Cannot be null.
+     * @return an immutable list of RemotableAttributeError. Will not return null.
+     * @throws IllegalArgumentException if the kimTypeId is null or blank or the newAttributes or oldAttributes are null
+     */
+    @WebMethod(operationName="validateUnmodifiableAttributes")
+    @XmlElementWrapper(name = "attributeErrors", required = true)
+    @XmlElement(name = "attributeError", required = false)
+    @WebResult(name = "attributeErrors")
+    List<RemotableAttributeError> validateUnmodifiableAttributes(@WebParam(name = "kimTypeId")
+                                                                 String kimTypeId,
+                                                                 @WebParam(name = "originalAttributes")
+                                                                 @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                                 Map<String, String> originalAttributes,
+                                                                 @WebParam(name = "newAttributes")
+                                                                 @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                                                                 Map<String, String> newAttributes)
+                                                     throws RiceIllegalArgumentException;
 }
 

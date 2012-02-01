@@ -434,12 +434,17 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         int selectedRoleIdx = getSelectedLine(request);
         PersonDocumentRole role = personDOc.getRoles().get(selectedRoleIdx);
         KimDocumentRoleMember newRolePrncpl = role.getNewRolePrncpl();
+        newRolePrncpl.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
+        newRolePrncpl.setMemberId(personDOc.getPrincipalId());
     	
     	if (getKualiRuleService().applyRules(new AddPersonDocumentRoleQualifierEvent("",
     			personDOc, newRolePrncpl, role, selectedRoleIdx))) {
         	setupRoleRspActions(role, newRolePrncpl);
     		role.getRolePrncpls().add(newRolePrncpl);
-	        role.setNewRolePrncpl(new KimDocumentRoleMember());
+            KimDocumentRoleMember roleMember = new KimDocumentRoleMember();
+            roleMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
+            roleMember.setMemberId(personDocumentForm.getPrincipalId());
+	        role.setNewRolePrncpl(roleMember);
 	        for (KimAttributeField key : role.getDefinitions()) {
 	        	KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
 	        	//qualifier.setQualifierKey(key);

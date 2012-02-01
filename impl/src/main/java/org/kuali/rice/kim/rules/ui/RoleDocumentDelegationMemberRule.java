@@ -69,7 +69,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 
 	    int i = 0;
 	    for (RoleDocumentDelegationMember member: document.getDelegationMembers()){
-	    	List<RemotableAttributeError> localErrors = kimTypeService.validateAttributesAgainstExisting(
+	    	List<RemotableAttributeError> localErrors = kimTypeService.validateUniqueAttributes(
 					document.getKimType().getId(),
 					attributeValidationHelper.convertQualifiersToMap(newMember.getQualifiers()), 
 					attributeValidationHelper.convertQualifiersToMap(member.getQualifiers()));

@@ -67,12 +67,12 @@ import java.util.Map;
 
 /**
  * {@link Maintainable} for the {@link AgendaEditor}
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class AgendaEditorMaintainable extends MaintainableImpl {
-	
+
 	private static final long serialVersionUID = 1L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AgendaEditorMaintainable.class);
@@ -409,7 +409,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         AgendaItemBo copiedAgendaItem = (AgendaItemBo) ObjectUtils.deepCopy(agendaItem);
 
         copiedAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S).toString());
-        
+
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
 
         copiedAgendaItem.setRule(copyRule(agendaItem.getRule(), COPY_OF_TEXT + agendaItem.getRule().getName() + " " + dts));
@@ -485,7 +485,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     @Override
     public void saveDataObject() {
         AgendaBo agendaBo = ((AgendaEditor) getDataObject()).getAgenda();
-        
+
         // handle saving new parameterized terms
         for (AgendaItemBo agendaItem : agendaBo.getItems()) {
             PropositionBo propositionBo = agendaItem.getRule().getProposition();
@@ -493,7 +493,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 saveNewParameterizedTerms(propositionBo);
             }
         }
-        
+
         if (agendaBo instanceof PersistableBusinessObject) {
             Map<String,String> primaryKeys = new HashMap<String, String>();
             primaryKeys.put("id", agendaBo.getId());

@@ -18,8 +18,11 @@ package org.kuali.rice.core;
 import org.apache.log4j.Logger;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
+import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,17 +31,23 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     private static final Logger LOG = Logger.getLogger(RequestLoggingFilter.class);
     private long startTime;
-    
+    private List<String> extensionsToIgnore = Arrays.asList(".js"   + DEFAULT_AFTER_MESSAGE_SUFFIX,
+                                                            ".css"  + DEFAULT_AFTER_MESSAGE_SUFFIX,
+                                                            ".png"  + DEFAULT_AFTER_MESSAGE_SUFFIX,
+                                                            ".gif"  + DEFAULT_AFTER_MESSAGE_SUFFIX,
+                                                            ".jpg"  + DEFAULT_AFTER_MESSAGE_SUFFIX,
+                                                            ".jpeg" + DEFAULT_AFTER_MESSAGE_SUFFIX);
+
     @Override
     protected void beforeRequest(HttpServletRequest httpServletRequest, String s) {
-        if (loggableExtension(s)) {
+        if (loggableExtensions(s)) {
             startTime = new Date().getTime();
         }
     }
 
     @Override
     protected void afterRequest(HttpServletRequest httpServletRequest, String s) {
-        if (loggableExtension(s)) {
+        if (loggableExtensions(s)) {
             long endTime = new Date().getTime();
             long elapsedTime = endTime - startTime;
             StringBuffer sb = new StringBuffer(s);
@@ -47,9 +56,10 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
         }
     }
 
-    private boolean loggableExtension(String s) {
-        if (s.endsWith(".js]") || s.endsWith(".png]") || s.endsWith(".css]") || s.endsWith(".gif]")) {
-            return false;
+    private boolean loggableExtensions(String s) {
+        if (s.contains(".") && s.endsWith(DEFAULT_AFTER_MESSAGE_SUFFIX)) {
+            String match = s.substring(s.lastIndexOf("."), s.length());
+            return !extensionsToIgnore.contains(match);
         }
         return true;
     }

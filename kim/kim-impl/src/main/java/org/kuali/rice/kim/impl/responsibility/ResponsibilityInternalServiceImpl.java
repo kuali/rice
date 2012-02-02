@@ -55,13 +55,16 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 
         return member;
 	}
+
+
     @Override
 	public void removeRoleMember(RoleMemberBo roleMember){
 		//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
-    	// add row to member table
-    	getBusinessObjectService().delete( roleMember );
+    	// need to set end date to inactivate, not delete
+        roleMember.setActiveToDateValue(new java.sql.Timestamp(System.currentTimeMillis()));
+    	getBusinessObjectService().save( roleMember );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added

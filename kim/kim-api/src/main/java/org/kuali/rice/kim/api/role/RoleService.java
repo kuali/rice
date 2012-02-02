@@ -69,8 +69,8 @@ public interface RoleService {
      *
      * @param role the role to create
      * @return the newly created object.  will never be null.
-     * @throws IllegalArgumentException if the responsibility is null
-     * @throws IllegalStateException if the responsibility is already existing in the system
+     * @throws RiceIllegalArgumentException if the role passed in is null
+     * @throws RiceIllegalStateException if the role is already existing in the system
      */
     @WebMethod(operationName="createRole")
     @WebResult(name = "role")
@@ -82,8 +82,8 @@ public interface RoleService {
      * This will update a {@link Role}.
      *
      * @param role the role to update
-     * @throws IllegalArgumentException if the role is null
-     * @throws IllegalStateException if the role does not exist in the system
+     * @throws RiceIllegalArgumentException if the role is null
+     * @throws RiceIllegalStateException if the role does not exist in the system
      */
     @WebMethod(operationName="updateRole")
     @WebResult(name = "role")
@@ -94,6 +94,9 @@ public interface RoleService {
 	/**
 	 * Get the KIM Role object with the given ID.
 	 *
+     * @param id the id of the role.
+     * @return the role with the given id or null if role doesn't exist.
+     * @throws RiceIllegalArgumentException if roleId is null or Blank
 	 */
     @WebMethod(operationName = "getRole")
     @WebResult(name = "role")
@@ -102,6 +105,10 @@ public interface RoleService {
 
 	/**
 	 * Get the KIM Role objects for the role IDs in the given List.
+     *
+     * @param ids the ids of the roles.
+     * @return a list of roles with the given ids or null if no roles are found.
+     * @throws RiceIllegalArgumentException if ids is null or Blank
 	 */
     @WebMethod(operationName = "getRoles")
     @XmlElementWrapper(name = "roles", required = true)
@@ -113,6 +120,10 @@ public interface RoleService {
 	/** Get the KIM Role object with the unique combination of namespace, component,
 	 * and role name.
 	 *
+     * @param namespaceCode the namespace code of the role.
+     * @param name the name of the role.
+     * @return a role with the given namespace code and name or null if role does not exist.
+     * @throws RiceIllegalArgumentException if namespaceCode or name is null or blank.
 	 */
     @WebMethod(operationName = "getRoleByNamespaceCodeAndName")
     @WebResult(name = "role")
@@ -123,6 +134,11 @@ public interface RoleService {
 	/**
 	 * Return the Role ID for the given unique combination of namespace,
 	 * component and role name.
+     *
+     * @param namespaceCode the namespace code of the role.
+     * @param name the name of the role.
+     * @return a role id for a role with the given namespace code and name or null if role does not exist.
+     * @throws RiceIllegalArgumentException if namespaceCode or name is null or blank.
 	 */
     @WebMethod(operationName = "getRoleIdByNamespaceCodeAndName")
     @WebResult(name = "roleId")
@@ -133,8 +149,9 @@ public interface RoleService {
 	/**
 	 * Checks whether the role with the given role ID is active.
 	 *
-	 * @param id
-	 * @return
+	 * @param id the unique id of a role.
+	 * @return true if the role with the given id is active.
+     * @throws RiceIllegalArgumentException if id is null or blank.
 	 */
     @WebMethod(operationName = "isRoleActive")
     @WebResult(name = "isRoleActive")
@@ -145,6 +162,12 @@ public interface RoleService {
      * Returns a list of role qualifiers that the given principal has without taking into consideration
      * that the principal may be a member via an assigned group or role.  Use in situations where
      * you are only interested in the qualifiers that are directly assigned to the principal.
+     *
+     * @param principalId the principalId to
+     * @param roleIds the namespace code of the role.
+     * @param qualification the qualifications for the roleIds.
+     * @return a map of role qualifiers for the given principalId, roleIds and qualifications or an empty map if none found.
+     * @throws RiceIllegalArgumentException if principalId is null or blank or roleIds is null.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalByRoleIds")
     @XmlElementWrapper(name = "attributes", required = true)
@@ -160,6 +183,13 @@ public interface RoleService {
      * Returns a list of role qualifiers that the given principal has without taking into consideration
      * that the principal may be a member via an assigned group or role.  Use in situations where
      * you are only interested in the qualifiers that are directly assigned to the principal.
+     *
+     * @param principalId the principalId to
+     * @param namespaceCode the namespace code of the role.
+     * @param roleName the name of the role.
+     * @param qualification the qualifications for the roleIds.
+     * @return a map of role qualifiers for the given parameters or an empty map if none found.
+     * @throws RiceIllegalArgumentException if principalId, namespaceCode, or roleName is null or blank.
      */
     @WebMethod(operationName = "getRoleQualifersForPrincipalByNamespaceAndRolename")
     @XmlElementWrapper(name = "attributes", required = true)
@@ -175,6 +205,13 @@ public interface RoleService {
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
+     *
+     * @param principalId the principalId to
+     * @param namespaceCode the namespace code of the role.
+     * @param roleName the name of the role.
+     * @param qualification the qualifications for the roleIds.
+     * @return a map of nested role qualifiers for the given parameters or an empty map if none found.
+     * @throws RiceIllegalArgumentException if principalId, namespaceCode, or roleName is null or blank.
      */
     @WebMethod(operationName = "getNestedRoleQualifersForPrincipalByNamespaceAndRolename")
     @XmlElementWrapper(name = "attributes", required = true)
@@ -190,6 +227,12 @@ public interface RoleService {
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
      * is via a group or role, that group or role's qualifier on the given role is returned.
+     *
+     * @param principalId the principalId to
+     * @param roleIds the namespace code of the role.
+     * @param qualification the qualifications for the roleIds.
+     * @return a map of role qualifiers for the given roleIds and qualifications or an empty map if none found.
+     * @throws RiceIllegalArgumentException if principalId, namespaceCode, or roleName is null or blank.
      */
     @WebMethod(operationName = "getNestedRoleQualifiersForPrincipalByRoleIds")
     @XmlElementWrapper(name = "attributes", required = true)
@@ -215,31 +258,51 @@ public interface RoleService {
      *
      * The return object will have each membership relationship along with the delegations
      *
+     * @param roleIds a list of role Ids.
+     * @param qualification the qualifications for the roleIds.
+     * @return a list of role members for the given roleIds and qualifications or an empty list if none found.
+     * @throws RiceIllegalArgumentException if roleIds is null.
      */
     @WebMethod(operationName = "getRoleMembers")
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
-    List<RoleMembership> getRoleMembers( @WebParam(name="roleIds") List<String> roleIds,
-            @WebParam(name="qualification")@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
+    List<RoleMembership> getRoleMembers(
+                @WebParam(name="roleIds")
+                List<String> roleIds,
+                @WebParam(name="qualification")
+                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                Map<String, String> qualification )
             throws RiceIllegalArgumentException;
 
     /**
 	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
 	 *
-	 * @return list of member principal ids
+     * @param namespaceCode the namespace code of the role.
+     * @param roleName the name of the role
+     * @param qualification the qualifications for the roleIds.
+     * @return a list of role member principalIds for the given roleIds and qualifications, or an empty list if none found.
+     * @throws RiceIllegalArgumentException if namespaceCode, or roleName is null or blank.
 	 */
     @WebMethod(operationName = "getRoleMemberPrincipalIds")
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
-            @WebParam(name="roleName") String roleName,
-            @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification)
+                @WebParam(name="roleName") String roleName,
+                @WebParam(name="qualification")
+                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                Map<String, String> qualification)
             throws RiceIllegalArgumentException;
 
     /**
      * Returns whether the given principal has any of the passed role IDs with the given qualification.
+     *
+     * @param principalId the principal Id to check.
+     * @param roleIds the list of role ids.
+     * @param qualification the qualifications for the roleIds.
+     * @return true if the principal is assigned the one of the given roleIds with the passed in qualifications.
+     * @throws RiceIllegalArgumentException if roleIds is null or principalId is null or blank.
      */
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
@@ -251,6 +314,13 @@ public interface RoleService {
     /**
      * Returns the subset of the given principal ID list which has the given role and qualification.
      * This is designed to be used by lookups of people by their roles.
+     *
+     * @param principalIds the principal Ids to check.
+     * @param roleNamespaceCode the namespaceCode of the role.
+     * @param roleName the name of the role.
+     * @param qualification the qualifications for the roleIds.
+     * @return list of principalIds that is the subset of list passed in with the given role and qualifications or an empty list.
+     * @throws RiceIllegalArgumentException if principalIds is null or the roleNamespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "getPrincipalIdSubListWithRole")
     @XmlElementWrapper(name = "principalIds", required = true)
@@ -265,6 +335,10 @@ public interface RoleService {
     /**
 	 *
 	 * This method gets search results for role lookup
+     *
+     * @param queryByCriteria the qualifications for the roleIds.
+     * @return query results.  will never return null.
+     * @throws RiceIllegalArgumentException if queryByCriteria is null.
 	 */
     @WebMethod(operationName = "getRolesSearchResults")
     @WebResult(name = "results")
@@ -280,18 +354,25 @@ public interface RoleService {
      *  all the roles with the specified ids.  The list is not guaranteed to be
      *  in any particular order and may have membership info for the
      *  different roles interleaved with each other.
+     *
+     * @param roleIds a list of  role Ids.
+     * @return list of RoleMembership that contains membership for the specified roleIds or empty list if none found.
+     * @throws RiceIllegalArgumentException if roleIds is null.
      */
     @WebMethod(operationName = "getFirstLevelRoleMembers")
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
     @Cacheable(value=RoleMembership.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
-	List<RoleMembership> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds) throws RiceIllegalArgumentException;
+	List<RoleMembership> getFirstLevelRoleMembers(
+                @WebParam(name="roleIds") List<String> roleIds) throws RiceIllegalArgumentException;
 
 	/**
-	 * Gets role member information based on the given search criteria.  The
-	 * map of criteria contains attributes of RoleMembership as it's
-	 * key and the values to search on as the value.
+	 * Gets role member information based on the given search criteria.
+     *
+     * @param queryByCriteria the qualifications for the roleIds.
+     * @return query results.  will never return null.
+     * @throws RiceIllegalArgumentException if queryByCriteria is null.
 	 */
     @WebMethod(operationName = "findRoleMemberships")
     @WebResult(name = "results")
@@ -299,6 +380,11 @@ public interface RoleService {
 
 	/**
 	 * Gets a list of Roles that the given member belongs to.
+     *
+     * @param memberType the role member type.
+     * @param memberId the role member id (principalId, roleId, groupId).
+     * @return list of RoleMembership that contains membership for the specified roleIds or an empty list if none found.
+     * @throws RiceIllegalArgumentException if memberType or memberId is null or blank.
 	 */
     @WebMethod(operationName = "getMemberParentRoleIds")
     @XmlElementWrapper(name = "roleIds", required = true)
@@ -308,10 +394,25 @@ public interface RoleService {
 	List<String> getMemberParentRoleIds(String memberType, String memberId) throws RiceIllegalArgumentException;
 
 
+    /**
+     * Gets role members based on the given search criteria.
+     *
+     * @param queryByCriteria the qualifications for the roleIds.
+     * @return query results.  will never return null.
+     * @throws RiceIllegalArgumentException if queryByCriteria is null.
+     */
     @WebMethod(operationName = "findRoleMembers")
     @WebResult(name = "results")
 	RoleMemberQueryResults findRoleMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets a list of Roles Ids that are a member of the given roleId, including nested membership.
+     *
+     * @param roleId the role id.
+     * @return list of RoleIds that are members of the given role or and empty list if none found.
+     * @throws RiceIllegalArgumentException if roleId is null or blank.
+     */
     @WebMethod(operationName = "getRoleTypeRoleMemberIds")
     @XmlElementWrapper(name = "memberIds", required = true)
     @XmlElement(name = "memberId", required = false)
@@ -319,14 +420,24 @@ public interface RoleService {
     @Cacheable(value=RoleMember.Cache.NAME, key="'{getRoleTypeRoleMemberIds}' + 'roleId=' + #p0")
     Set<String> getRoleTypeRoleMemberIds(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets role members based on the given search criteria.
+     *
+     * @param queryByCriteria the qualifications for the roleIds.
+     * @return query results.  will never return null.
+     * @throws RiceIllegalArgumentException if queryByCriteria is null.
+     */
     @WebMethod(operationName = "findDelegateMembers")
     @WebResult(name = "results")
     DelegateMemberQueryResults findDelegateMembers(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
 	/**
-	 * Gets delegation member information based on the given search criteria.  The
-	 * map of criteria contains attributes of Delegate as it's
-	 * key and the values to search on as the value.
+	 * Gets the delegate members for the given delegation.
+     *
+     * @param delegateId the delegate id.
+     * @return list of delegate members that are members of the given delegation or an empty list if none found.
+     * @throws RiceIllegalArgumentException if delegationId is null or blank.
 	 */
     @WebMethod(operationName = "getDelegationMembersByDelegationId")
     @XmlElementWrapper(name = "delegateMembers", required = true)
@@ -336,17 +447,42 @@ public interface RoleService {
     List<DelegateMember> getDelegationMembersByDelegationId(
             @WebParam(name = "delegateId") String delegateId) throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets the delegate member for the given delegationId and memberId.
+     *
+     * @param delegationId the delegate id.
+     * @param memberId the member id matching the DelegateMember
+     * @return the delegate member with the given parameters or null if not found.
+     * @throws RiceIllegalArgumentException if delegationId or memberId is null or blank.
+     */
     @WebMethod(operationName = "getDelegationMemberByDelegationAndMemberId")
     @WebResult(name = "delegateMember")
     @Cacheable(value=DelegateMember.Cache.NAME, key="'delegateId=' + #p0 + '|' + 'memberId=' + #p1")
     DelegateMember getDelegationMemberByDelegationAndMemberId(
             @WebParam(name = "delegationId") String delegationId, @WebParam(name = "memberId") String memberId) throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets the delegate member with the given delegation member id.
+     *
+     * @param id the member id matching the DelegateMember
+     * @return the delegate member with the given parameters or null if not found.
+     * @throws RiceIllegalArgumentException if delegationId or memberId is null or blank.
+     */
     @WebMethod(operationName = "getDelegationMemberById")
     @WebResult(name = "delegateMember")
     @Cacheable(value=DelegateMember.Cache.NAME, key="'id=' + #p0")
     DelegateMember getDelegationMemberById(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets a list of role reponsibilities for the given role id.
+     *
+     * @param roleId the role Id.
+     * @return a list of RoleResponsibilities for the given role Id, or an empty list if none found.
+     * @throws RiceIllegalArgumentException if roleId is null or blank.
+     */
     @WebMethod(operationName = "getRoleResponsibilities")
     @XmlElementWrapper(name = "roleResponsibilities", required = true)
     @XmlElement(name = "roleResponsibility", required = false)
@@ -354,6 +490,14 @@ public interface RoleService {
     @Cacheable(value=RoleResponsibility.Cache.NAME, key="'roleId=' + #p0")
 	List<RoleResponsibility> getRoleResponsibilities(@WebParam(name="roleId") String roleId)  throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets a list of RoleResponsibilityActions for the given role member id.
+     *
+     * @param roleMemberId the role member Id.
+     * @return a list of RoleResponsibilityActions for the given role member Id, or an empty list if none found.
+     * @throws RiceIllegalArgumentException if roleMemberId is null or blank.
+     */
     @WebMethod(operationName = "getRoleMemberResponsibilityActions")
     @XmlElementWrapper(name = "roleResponsibilityActions", required = true)
     @XmlElement(name = "roleResponsibilityAction", required = false)
@@ -362,12 +506,29 @@ public interface RoleService {
 	List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(
             @WebParam(name = "roleMemberId") String roleMemberId)  throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets a DelegateTyupe for the given role id and delegation type.
+     *
+     * @param roleId the role Id.
+     * @param delegateType type of delegation
+     * @return the DelegateType for the given role Id and delegationType, or null if none found.
+     * @throws RiceIllegalArgumentException if roleId or delegationType is null or blank.
+     */
     @WebMethod(operationName = "getDelegateTypeByRoleIdAndDelegateTypeCode")
     @WebResult(name = "delegateType")
     @Cacheable(value=DelegateType.Cache.NAME, key="'roleId=' + #p0 + '|' + 'code=' + #p1")
     DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(@WebParam(name = "roleId") String roleId,
             @WebParam(name = "delegateType") DelegationType delegateType)  throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets a DelegateType for the given delegation id.
+     *
+     * @param delegationId the id of delegation
+     * @return the DelegateType for the given delegation Id, or null if none found.
+     * @throws RiceIllegalArgumentException if delegationId is null or blank.
+     */
     @WebMethod(operationName = "getDelegateTypeByDelegationId")
     @WebResult(name = "delegateType")
     @Cacheable(value=DelegateType.Cache.NAME, key="'delegationId=' + #p0")
@@ -376,17 +537,36 @@ public interface RoleService {
     /**
 	 * Assigns the principal with the given id to the role with the specified
 	 * namespace code and name with the supplied set of qualifications.
+     *
+     * @param principalId the principalId
+     * @param namespaceCode the namespaceCode of the Role
+     * @param roleName the name of the role
+     * @param qualifications the qualifications for the principalId to be assigned to the role
+     * @return void.
+     * @throws RiceIllegalArgumentException if princiapId, namespaceCode or roleName is null or blank.
 	 */
     @WebMethod(operationName = "assignPrincipalToRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void assignPrincipalToRole(@WebParam(name="principalId") String principalId,
-    		@WebParam(name="namespaceCode") String namespaceCode,
-    		@WebParam(name="roleName") String roleName,
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws RiceIllegalArgumentException;
+                @WebParam(name="namespaceCode")
+                String namespaceCode,
+                @WebParam(name="roleName")
+                String roleName,
+                @WebParam(name="qualifications")
+                @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+                Map<String, String> qualifications)
+            throws RiceIllegalArgumentException;
 
 	/**
 	 * Assigns the group with the given id to the role with the specified
 	 * namespace code and name with the supplied set of qualifications.
+     *
+     * @param groupId the groupId
+     * @param namespaceCode the namespaceCode of the Role
+     * @param roleName the name of the role
+     * @param qualifications the qualifications for the principalId to be assigned to the role
+     * @return void.
+     * @throws RiceIllegalArgumentException if princiapId, namespaceCode or roleName is null or blank.
 	 */
     @WebMethod(operationName = "assignGroupToRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
@@ -398,6 +578,13 @@ public interface RoleService {
 	/**
 	 * Assigns the role with the given id to the role with the specified
 	 * namespace code and name with the supplied set of qualifications.
+     *
+     * @param roleId the roleId
+     * @param namespaceCode the namespaceCode of the Role
+     * @param roleName the name of the role
+     * @param qualifications the qualifications for the principalId to be assigned to the role
+     * @return void.
+     * @throws RiceIllegalArgumentException if princiapId, namespaceCode or roleName is null or blank.
 	 */
     @WebMethod(operationName = "assignRoleToRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
@@ -408,36 +595,67 @@ public interface RoleService {
 
 	/**
 	 * Creates a new RoleMember.  Needs to be passed a valid RoleMember object that does not currently exist.
+     *
+     * @param roleMember the new RoleMember to save.
+     * @return RoleMember as created.
+     * @throws RiceIllegalArgumentException if roleMember is null.
+     * @throws RiceIllegalStateException if roleMember already exists.
 	 */
     @WebMethod(operationName = "createRoleMember")
     @WebResult(name = "roleMember")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
-    RoleMember createRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
+    RoleMember createRoleMember(
+                @WebParam(name = "roleMember")
+                RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-	 * Assigns the role with the given id to the role with the specified
-	 * namespace code and name with the supplied set of qualifications.
+	 * Updates the given roleMember to the values in the passed in roleMember
+     *
+     * @param roleMember the new RoleMember to save.
+     * @return RoleMember as updated.
+     * @throws RiceIllegalArgumentException if roleMember is null.
+     * @throws RiceIllegalStateException if roleMember does not yet exist.
 	 */
     @WebMethod(operationName = "updateRoleMember")
     @WebResult(name = "roleMember")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember updateRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
+
+    /**
+     * Creates a new RoleResponsibilityAction.  Needs to be passed a valid RoleResponsibilityAction
+     * object that does not currently exist.
+     *
+     * @param roleResponsibilityAction the new RoleResponsibilityAction to save.
+     * @return RoleResponsibilityAction as created.
+     * @throws RiceIllegalArgumentException if roleResponsibilityAction is null.
+     * @throws RiceIllegalStateException if roleResponsibilityAction already exists.
+     */
     @WebMethod(operationName = "createRoleResponsibilityAction")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleResponsibilityAction createRoleResponsibilityAction(@WebParam(name = "roleResponsibilityAction") RoleResponsibilityAction roleResponsibilityAction) throws RiceIllegalArgumentException;
 
-	/**
-	 * Assigns the member with the given id as a delegation member to the role
-	 * with the specified namespace code and name with the supplied set of qualifications.
-	 */
+    /**
+     * Creates a new DelegateType.  Needs to be passed a valid DelegateType
+     * object that does not currently exist.
+     *
+     * @param delegateType the new DelegateType to save.
+     * @return DelegateType as created.
+     * @throws RiceIllegalArgumentException if delegateType is null.
+     * @throws RiceIllegalStateException if delegateType already exists.
+     */
     @WebMethod(operationName = "createDelegateType")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     DelegateType createDelegateType(@WebParam(name="delegateType") DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-	 * Updates a delegation type, including attached members
-	 */
+     * Updates the given DelegateType to the values in the passed in delegateType
+     *
+     * @param delegateType the new DelegateType to save.
+     * @return DelegateType as updated.
+     * @throws RiceIllegalArgumentException if delegateType is null.
+     * @throws RiceIllegalStateException if delegateType does not yet exist.
+     */
     @WebMethod(operationName = "updateDelegateType")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     DelegateType updateDelegateType(@WebParam(name="delegateType") DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException;
@@ -445,6 +663,13 @@ public interface RoleService {
     /**
      * Remove the principal with the given id and qualifications from the role
      * with the specified namespace code and role name.
+     *
+     * @param principalId the principalId
+     * @param namespaceCode the namespaceCode of the Role
+     * @param roleName the name of the role
+     * @param qualifications the qualifications for the principalId to be assigned to the role
+     * @return void.
+     * @throws RiceIllegalArgumentException if principalId, namespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "removePrincipalFromRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
@@ -456,6 +681,13 @@ public interface RoleService {
     /**
      * Remove the group with the given id and qualifications from the role
      * with the specified namespace code and role name.
+     *
+     * @param groupId the groupId
+     * @param namespaceCode the namespaceCode of the Role
+     * @param roleName the name of the role
+     * @param qualifications the qualifications for the principalId to be assigned to the role
+     * @return void.
+     * @throws RiceIllegalArgumentException if groupId, namespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "removeGroupFromRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
@@ -467,6 +699,13 @@ public interface RoleService {
     /**
      * Remove the group with the given id and qualifications from the role
      * with the specified namespace code and role name.
+     *
+     * @param roleId the roleId
+     * @param namespaceCode the namespaceCode of the Role
+     * @param roleName the name of the role
+     * @param qualifications the qualifications for the principalId to be assigned to the role
+     * @return void.
+     * @throws RiceIllegalArgumentException if roleId, namespaceCode or roleName is null or blank.
      */
     @WebMethod(operationName = "removeRoleFromRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
@@ -477,8 +716,31 @@ public interface RoleService {
 
     /**
      * Assigns the given permission to the given role
+     *
+     * @param permissionId the permissionId
+     * @param roleId the roleId
+     * @return void.
+     * @throws RiceIllegalArgumentException if permissionId or roleId is null or blank.
      */
     @WebMethod(operationName = "assignPermissionToRole")
     @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
-    void assignPermissionToRole(@WebParam(name = "permissionId") String permissionId, @WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
+    void assignPermissionToRole(
+            @WebParam(name = "permissionId") String permissionId,
+            @WebParam(name = "roleId") String roleId)
+            throws RiceIllegalArgumentException;
+
+    /**
+     * Removes the given permission to the given role
+     *
+     * @param permissionId the permissionId
+     * @param roleId the roleId
+     * @return void.
+     * @throws RiceIllegalArgumentException if permissionId or roleId is null or blank.
+     */
+    @WebMethod(operationName = "revokePermissionFromRole")
+    @CacheEvict(value={RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    void revokePermissionFromRole(
+            @WebParam(name = "permissionId") String permissionId,
+            @WebParam(name = "roleId") String roleId)
+            throws RiceIllegalArgumentException;
 }

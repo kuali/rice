@@ -1726,6 +1726,25 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         getBusinessObjectService().save(newRolePermission);
     }
 
+    @Override
+    public void revokePermissionFromRole(String permissionId, String roleId) throws RiceIllegalStateException {
+        incomingParamCheck(permissionId, "permissionId");
+        incomingParamCheck(roleId, "roleId");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("roleId", roleId);
+        params.put("permissionId", permissionId);
+        params.put("active", Boolean.TRUE);
+        Collection<RolePermissionBo> rolePermissionBos = getBusinessObjectService().findMatching(RolePermissionBo.class, params);
+        List<RolePermissionBo> rolePermsToSave = new ArrayList<RolePermissionBo>();
+        for (RolePermissionBo rolePerm : rolePermissionBos) {
+            rolePerm.setActive(false);
+            rolePermsToSave.add(rolePerm);
+        }
+
+        getBusinessObjectService().save(rolePermsToSave);
+    }
+
     protected void addMemberAttributeData(RoleMemberBo roleMember, Map<String, String> qualifier, String kimTypeId) {
         List<RoleMemberAttributeDataBo> attributes = new ArrayList<RoleMemberAttributeDataBo>();
         for (Map.Entry<String, String> entry : qualifier.entrySet()) {

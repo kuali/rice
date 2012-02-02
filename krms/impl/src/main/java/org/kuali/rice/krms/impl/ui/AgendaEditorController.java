@@ -2068,17 +2068,27 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedPropId = agendaEditor.getSelectedPropositionId();
         Node<RuleTreeNode, String> root = agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
 
-        PropositionBo parent = findParentPropositionNode(root, selectedPropId).getData().getProposition();
-        if (parent != null){
-            List <PropositionBo> children = parent.getCompoundComponents();
-            for( int index=0; index< children.size(); index++){
-                if (selectedPropId.equalsIgnoreCase(children.get(index).getId())){
-                    parent.getCompoundComponents().remove(index);
-                    break;
+        Node<RuleTreeNode, String> parentNode = findParentPropositionNode(root, selectedPropId);
+
+        // what if it is the root?
+        if (parentNode != null && parentNode.getData() != null) { // it is not the root as there is a parent w/ a prop
+            PropositionBo parent = parentNode.getData().getProposition();
+            if (parent != null){
+                List <PropositionBo> children = parent.getCompoundComponents();
+                for( int index=0; index< children.size(); index++){
+                    if (selectedPropId.equalsIgnoreCase(children.get(index).getId())){
+                        parent.getCompoundComponents().remove(index);
+                        break;
+                    }
                 }
             }
+        } else { // no parent, it is the root
+            parentNode.getChildren().clear();
+            agendaEditor.getAgendaItemLine().getRule().getPropositionTree().setRootElement(null);
+            agendaEditor.getAgendaItemLine().getRule().setPropId(null);
+            agendaEditor.getAgendaItemLine().getRule().setProposition(null);
         }
-        //TODO: handle edit mode
+
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(false);
         return super.updateComponent(form, result, request, response);
     }

@@ -34,15 +34,14 @@
 
 	  <!-- below used by atomikos data sources -->
     <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
-    <param name="datasource.pool.maxActive" override="false">50</param>
-    <param name="datasource.minIdle" override="false">7</param>
+    <param name="datasource.pool.maxActive" override="false">10</param>
+    <param name="datasource.minIdle" override="false">5</param>
+    <param name="datasource.initialSize" override="false">5</param>
     <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
-    <param name="datasource.initialSize" override="false">7</param>
 
-  	<param name="datasource.pool.minSize" override="false">0</param>
-    <param name="datasource.pool.maxSize" override="false">5</param>
+  	<param name="datasource.pool.minSize" override="false">10</param>
+    <param name="datasource.pool.maxSize" override="false">50</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
-
 
     <param name="datasource.ojb.platform" override="false">Oracle9i</param>
 

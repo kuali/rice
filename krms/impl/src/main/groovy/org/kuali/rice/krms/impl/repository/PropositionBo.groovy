@@ -279,6 +279,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
             PropositionBo newProp = createSimplePropositionBoStub(existing, PropositionType.SIMPLE.code)
             newProp.setDescription("New Proposition " + UUID.randomUUID().toString());
             components.add(newProp);
+            prop.setEditMode(false); // set the parent edit mode back to null or we end up with 2 props in edit mode
         }
 
         prop.setCompoundComponents(components);

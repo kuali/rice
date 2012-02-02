@@ -1643,7 +1643,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
                         // create a new compound proposition
                         PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(child.getData().getProposition(), true);
-                        compound.setEditMode(true);
+                        // don't set compound.setEditMode(true) as the Simple Prop in the compound prop is the only prop in edit mode
                         rule.setProposition(compound);
                         rule.refreshPropositionTree(null);
                     }

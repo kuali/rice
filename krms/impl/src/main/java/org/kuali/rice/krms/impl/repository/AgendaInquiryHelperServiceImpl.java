@@ -15,27 +15,24 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.framework.type.ActionTypeService;
-import org.kuali.rice.krms.framework.type.AgendaTypeService;
-import org.kuali.rice.krms.framework.type.RuleTypeService;
-import org.kuali.rice.krms.impl.type.ActionTypeServiceBase;
-import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
-import org.kuali.rice.krms.impl.type.RuleTypeServiceBase;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
+import org.kuali.rice.krms.impl.util.KrmsRetriever;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
+
+    private transient KrmsRetriever krmsRetriever = new KrmsRetriever();
 
     @Override
     public AgendaEditor retrieveDataObject(Map fieldValues) {
@@ -54,22 +51,50 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
         return agendaEditor;
     }
 
-    public List<RemotableAttributeField> retrieveAgendaCustomAttributes(View view, Object model, Container container) {
-        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
-
+    /**
+     * Returns the AgendaEditor from the given InquiryForm
+     * @param model InquiryFrom to retrieve the AgendaEditor from.
+     * @return AgendaEditor retrieved from the given InquiryForm.
+     */
+    private AgendaEditor retrieveAgendaEditor(InquiryForm model) {
         InquiryForm inquiryForm = (InquiryForm)model;
-        AgendaEditor agendaEditor = (AgendaEditor)inquiryForm.getDataObject();
+        return (AgendaEditor)inquiryForm.getDataObject();
+    }
 
-        // if we have an agenda w/ a typeId set on it
-        if (agendaEditor.getAgenda() != null && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
+    /**
+     * Returns the Agenda's RemotableAttributeFields
+     * @param view
+     * @param model InquiryFrom to retrieve the AgendaEditor from.
+     * @param container
+     * @return List<RemotableAttributeField>
+     */
+    public List<RemotableAttributeField> retrieveAgendaCustomAttributes(View view, Object model, Container container) {
+        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm) model);
+        return krmsRetriever.retrieveAgendaCustomAttributes(agendaEditor);
+    }
 
-            String krmsTypeId = agendaEditor.getAgenda().getTypeId();
+    /**
+     * Returns the Rule Action RemotableAttributeFields. This only supports a single action within a rule.
+     * @param view
+     * @param model InquiryFrom to retrieve the AgendaEditor from.
+     * @param container
+     * @return List<RemotableAttributeField>
+     */
+    public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model, Container container) {
+        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm)model);
+        return krmsRetriever.retrieveRuleActionCustomAttributes(agendaEditor);
+    }
 
-            AgendaTypeService agendaTypeService = getAgendaTypeService(krmsTypeId);
-            results.addAll(agendaTypeService.getAttributeFields(krmsTypeId));
-        }
-
-        return results;
+    /**
+     * Returns the Rule RemotableAttributeFields. This only supports a single action within a rule.
+     * @param view
+     * @param model InquiryFrom to retrieve the AgendaEditor from.
+     * @param container
+     * @return List<RemotableAttributeField>
+     */
+    public List<RemotableAttributeField> retrieveRuleCustomAttributes(View view, Object model, Container container) {
+        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm)model);
+        return krmsRetriever.retrieveRuleCustomAttributes(agendaEditor);
     }
 
 
@@ -77,123 +102,12 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
      * Retrieve a list of {@link RemotableAttributeField}s for the parameters (if any) required by the resolver for
      * the selected term in the proposition that is under edit.  Since this method is part of the inquiry view,
      * non of the propositions will ever be under edit when it is called, and an empty list will be returned.
+     * @param view
+     * @param model InquiryFrom to retrieve the AgendaEditor from.
+     * @param container
+     * @return List<RemotableAttributeField> Collections.emptyList()
      */
     public List<RemotableAttributeField> retrieveTermParameters(View view, Object model, Container container) {
         return Collections.emptyList();
     }
-
-
-    private AgendaTypeService getAgendaTypeService(String krmsTypeId) {
-        //
-        // Get the AgendaTypeService by hook or by crook
-        //
-
-        KrmsTypeDefinition krmsType =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
-                            getTypeById(krmsTypeId);
-
-        AgendaTypeService agendaTypeService = null;
-
-        if (!StringUtils.isBlank(krmsTypeId)) {
-            String serviceName = krmsType.getServiceName();
-
-            if (!StringUtils.isBlank(serviceName)) {
-                agendaTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
-            }
-        }
-
-        if (agendaTypeService == null) { agendaTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
-
-        return agendaTypeService;
-    }
-
-    /**
-     *  This only supports a single action within a rule.
-     */
-    public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model, Container container) {
-        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
-
-        InquiryForm inquiryForm = (InquiryForm)model;
-        AgendaEditor agendaEditor = (AgendaEditor)inquiryForm.getDataObject();
-
-        // if we have an rule action w/ a typeId set on it
-        if (!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
-            ActionTypeService actionTypeService = getActionTypeService(agendaEditor.getAgendaItemLineRuleAction().getTypeId());
-            results.addAll(actionTypeService.getAttributeFields(agendaEditor.getAgendaItemLineRuleAction().getTypeId()));
-        }
-
-        return results;
-    }
-
-    public List<RemotableAttributeField> retrieveRuleCustomAttributes(View view, Object model, Container container) {
-        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
-
-        InquiryForm inquiryForm = (InquiryForm)model;
-        AgendaEditor agendaEditor = (AgendaEditor)inquiryForm.getDataObject();
-
-        // if we have an rule w/ a typeId set on it
-        if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
-                && !StringUtils.isBlank(agendaEditor.getAgendaItemLine().getRule().getTypeId())) {
-
-            String krmsTypeId = agendaEditor.getAgendaItemLine().getRule().getTypeId();
-
-            RuleTypeService ruleTypeService = getRuleTypeService(krmsTypeId);
-            results.addAll(ruleTypeService.getAttributeFields(krmsTypeId));
-        }
-
-        return results;
-    }
-
-    private ActionTypeService getActionTypeService(String krmsTypeId) {
-        //
-        // Get the ActionTypeService by hook or by crook
-        //
-
-        KrmsTypeDefinition krmsType =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
-                            getTypeById(krmsTypeId);
-
-        ActionTypeService actionTypeService = null;
-
-        if (!StringUtils.isBlank(krmsTypeId)) {
-            String serviceName = krmsType.getServiceName();
-
-            if (!StringUtils.isBlank(serviceName)) {
-                actionTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
-            }
-        }
-        if (actionTypeService == null) {
-            actionTypeService = ActionTypeServiceBase.defaultActionTypeService;
-        }
-
-//        if (actionTypeService == null) { actionTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
-
-        return actionTypeService;
-    }
-
-    private RuleTypeService getRuleTypeService(String krmsTypeId) {
-        RuleTypeService ruleTypeService = null;
-        String serviceName = getRuleTypeServiceName(krmsTypeId);
-
-        if (!StringUtils.isBlank(serviceName)) {
-            ruleTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
-        }
-        if (ruleTypeService == null) {
-            ruleTypeService = RuleTypeServiceBase.defaultRuleTypeService;
-        }
-        return ruleTypeService;
-    }
-
-    private String getRuleTypeServiceName(String krmsTypeId) {
-        String serviceName = null;
-        KrmsTypeDefinition krmsType =
-                KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
-                        getTypeById(krmsTypeId);
-
-        if (!StringUtils.isBlank(krmsTypeId)) {
-            serviceName = krmsType.getServiceName();
-        }
-        return serviceName;
-    }
-
 }

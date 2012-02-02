@@ -19,9 +19,14 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract
 import org.apache.commons.lang.StringUtils
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
+import org.kuali.rice.krad.util.ObjectUtils
+import org.kuali.rice.krad.service.SequenceAccessorService
+import org.kuali.rice.krad.service.KRADServiceLocator
 
 
 public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
+
+    private static final String KRMS_AGENDA_S = "KRMS_AGENDA_S";
 
 	def String id
 	def String name
@@ -70,74 +75,46 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
             }
         }
     }
-    
 
-	
-//	/**
-//	 * Converts a mutable bo to it's immutable counterpart
-//	 * @param bo the mutable business object
-//	 * @return the immutable object
-//	 */
-//	static AgendaDefinition to(AgendaBo bo) {
-//		if (bo == null) { return null }
-//		return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build()
-//	}
-//
-//
-//	/**
-//	* Converts a immutable object to it's mutable bo counterpart
-//	* TODO: move to() and from() to impl service
-//	* @param im immutable object
-//	* @return the mutable bo
-//	*/
-//   static public AgendaBo from(AgendaDefinition im) {
-//	   if (im == null) { return null }
-//
-//	   AgendaBo bo = new AgendaBo()
-//	   bo.setId( im.getId() )
-//	   bo.setNamespace( im.getNamespace() )
-//	   bo.setName( im.getName() )
-//	   bo.setTypeId( im.getTypeId() )
-//	   bo.setContextId( im.getContextId() )
-//	   bo.setFirstItemId( im.getFirstItemId() )
-//
-//	   Map<String,String> attrList = convertAttributeKeys
-//	   Set<AgendaAttributeBo> attrList = new HashSet<AgendaAttributeBo>()
-//	   for (attr in im.getAttributes()){
-//		   
-//		   attrList.add ( AgendaAttributeBo.from() )
-//	   }
-//	   bo.setAttributes(attrList)
-//	   return bo
-//   }
+    /**
+     * Returns of copy of this agenda, with the given newAgendaName and new ids.
+     * @param newAgendaName name of the newly copied AgendaBo
+     * @param dateTimeStamp to append to the names of objects
+     * @return AgendaBo copy of this Agenda with new ids and name
+     */
+    public AgendaBo copyAgenda(String newAgendaName, String dateTimeStamp) {
+        List<AgendaItemBo> agendaItems = this.getItems();
+        AgendaBo copiedAgenda = (AgendaBo) ObjectUtils.deepCopy(this);
+        copiedAgenda.setName(newAgendaName);
+        // Previous Comment:
+        // If we don't clear the primary key and set the fieldsClearedOnCopy flag then the
+        // MaintenanceDocumentServiceImpl.processMaintenanceObjectForCopy() will try to locate the primary keys in
+        // an attempt to clear them which again would cause an exception due to the wrapper class.
+        // agenda.setId(null);
+        // Update: Using a copiedAgenda we don't mess with the existing agenda at all.
+        copiedAgenda.setId(getNewId());
 
+        String initAgendaItemId = this.getFirstItemId();
+        List<AgendaItemBo> copiedAgendaItems = new ArrayList<AgendaItemBo>();
+        Map<String, RuleBo> oldRuleIdToNew = new HashMap<String, RuleBo>();
+        for (AgendaItemBo agendaItem: agendaItems) {
+            AgendaItemBo copiedAgendaItem = agendaItem.copyAgendaItem(copiedAgenda, oldRuleIdToNew, dateTimeStamp);
+            if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
+                copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
+            }
+            copiedAgendaItems.add(copiedAgendaItem);
+        }
+        copiedAgenda.setItems(copiedAgendaItems);
+        return copiedAgenda;
+    }
 
-// The deletionAwareList does not solve the rule deletion issues since agendaItems are linked to each others.  These links
-// have a foreign key constraint in the database. So the agendaItems need to be deleted in a specific order.
-// On top of this comes that the agendaItems may have been moved within the tree which may make it even harder to
-// determine the proper order.
-//
-// Instead we have resorted to deleting the whole agendaItems tree and adding it anew.
-//
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    List buildListOfDeletionAwareLists() {
-//        List managedLists = super.buildListOfDeletionAwareLists();
-//
-//        // The deletionAwareLists must be of a constant size, so we create a list for each collection type that a
-//        // child (rule) might have
-//        List<ActionBo> ruleActions = new ArrayList<ActionBo>();
-//        List<RuleAttributeBo> ruleAttributeBos = new ArrayList<RuleAttributeBo>();
-//        for (AgendaItemBo agendaItemBo : items) {
-//            ruleActions.addAll(agendaItemBo.getRule().getActions());
-//            ruleAttributeBos.addAll(agendaItemBo.getRule().getAttributeBos());
-//        }
-//        managedLists.add(ruleActions);
-//        managedLists.add(ruleAttributeBos);
-//
-//        managedLists.add(this.attributeBos);
-//        managedLists.add(this.items);
-//
-//        return managedLists;
-//    }
+    /**
+     * Returns the next available Agenda id.
+     * @return String the next available id
+     */
+    private static String getNewId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
+        return id.toString();
+    }
 }

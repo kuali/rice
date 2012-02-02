@@ -324,6 +324,22 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
         return newRule;
     }
+
+    /**
+     * Returns a new copy of this rule with new ids.
+     * @param newRuleName name of the copied rule
+     * @return RuleBo a copy of the this rule, with new ids, and the given name
+     */
+    public RuleBo copyRule(String newRuleName) {
+        RuleBo copiedRule = RuleBo.copyRule(this);
+        // Rule names cannot be the same, the error for being the same name is not displayed to the user, and the document is
+        // said to have been successfully submitted.
+        //        copiedRule.setName(rule.getName());
+        copiedRule.setName(newRuleName);
+        return copiedRule;
+    }
+
+
     public static List<RuleAttributeBo> copyRuleAttributes(RuleBo existing){
         List<RuleAttributeBo> newAttributes = new ArrayList<RuleAttributeBo> ();
         for(RuleAttributeBo attr : existing.getAttributeBos()){

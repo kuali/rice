@@ -34,7 +34,6 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -77,11 +76,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AgendaEditorMaintainable.class);
 
-    // Seems like all these database tables should be defined someplace (else)
-    private static final String KRMS_AGENDA_ITM_S = "KRMS_AGENDA_ITM_S";
-    private static final String KRMS_AGENDA_S = "KRMS_AGENDA_S";
-
-    public static final String COPY_OF_TEXT = "Copy of ";
     public static final String NEW_AGENDA_EDITOR_DOCUMENT_TEXT = "New Agenda Editor Document";
 
     private transient SequenceAccessorService sequenceAccessorService;
@@ -292,7 +286,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         // Get the ActionTypeService by hook or by crook
         //
 
-        KrmsTypeDefinition krmsType = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(krmsTypeId);
+        KrmsTypeDefinition krmsType = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(
+                krmsTypeId);
 
         ActionTypeService actionTypeService = null;
 
@@ -345,42 +340,21 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             // Since the dataObject is a wrapper class we need to build it and populate with the agenda bo.
             AgendaEditor agendaEditor = new AgendaEditor();
             AgendaBo agenda = getLookupService().findObjectBySearch(((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
-            List<AgendaItemBo> agendaItems = agenda.getItems();
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
-                // TODO EGHM move copyAgenda to AgendaBo
-                AgendaBo copiedAgenda = (AgendaBo) ObjectUtils.deepCopy(agenda);
-                String copiedAgendaNewId = getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S).toString();
                 String dateTimeStamp = (new Date()).getTime() + "";
-                copiedAgenda.setName(COPY_OF_TEXT + agenda.getName() + " " + dateTimeStamp);
+                String newAgendaName = AgendaItemBo.COPY_OF_TEXT + agenda.getName() + " " + dateTimeStamp;
 
-                // Previous Comment:
-                // If we don't clear the primary key and set the fieldsClearedOnCopy flag then the
-                // MaintenanceDocumentServiceImpl.processMaintenanceObjectForCopy() will try to locate the primary keys in
-                // an attempt to clear them which again would cause an exception due to the wrapper class.
-                // agenda.setId(null);
-                // Update: Using a copiedAgenda we don't mess with the existing agenda at all.
-                copiedAgenda.setId(copiedAgendaNewId);
+                AgendaBo copiedAgenda = agenda.copyAgenda(newAgendaName, dateTimeStamp);
+
                 document.getDocumentHeader().setDocumentDescription(NEW_AGENDA_EDITOR_DOCUMENT_TEXT);
                 document.setFieldsClearedOnCopy(true);
-
-                String initAgendaItemId = agenda.getFirstItemId();
-                List<AgendaItemBo> copiedAgendaItems = new ArrayList<AgendaItemBo>();
-                Map<String, RuleBo> oldRuleIdToNew = new HashMap<String, RuleBo>();
-                for (AgendaItemBo agendaItem: agendaItems) {
-                    AgendaItemBo copiedAgendaItem = copyAgendaItem(copiedAgenda, agendaItem, oldRuleIdToNew, dateTimeStamp);
-                    if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
-                        copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
-                    }
-                    copiedAgendaItems.add(copiedAgendaItem);
-                }
-                copiedAgenda.setItems(copiedAgendaItems);
                 agendaEditor.setAgenda(copiedAgenda);
             } else {
                 // set custom attributes map in AgendaEditor
                 //                agendaEditor.setCustomAttributesMap(agenda.getAttributes());
                 agendaEditor.setAgenda(agenda);
             }
-            agendaEditor.setCustomAttributesMap(agenda.getAttributes()); // TODO EGHM
+            agendaEditor.setCustomAttributesMap(agenda.getAttributes());
 
 
             // set extra fields on AgendaEditor
@@ -397,60 +371,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         }
 
         return dataObject;
-    }
-
-    // TODO EGHM Move this to AgendaItemBo copyAgendaItem
-    private AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, final AgendaItemBo agendaItem,  Map<String, RuleBo> oldRuleIdToNew, final String dts) {
-        if (agendaItem == null) return null;
-
-        // Use deepCopy and update all the ids.
-        AgendaItemBo copiedAgendaItem = (AgendaItemBo) ObjectUtils.deepCopy(agendaItem);
-
-        copiedAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S).toString());
-
-        copiedAgendaItem.setAgendaId(copiedAgenda.getId());
-
-        // Don't create another copy of a rule that we have already copied.
-        if (!oldRuleIdToNew.containsKey(agendaItem.getRuleId())) {
-            copiedAgendaItem.setRule(copyRule(agendaItem.getRule(), COPY_OF_TEXT + agendaItem.getRule().getName() + " " + dts));
-            copiedAgendaItem.setRuleId(copiedAgendaItem.getRule().getId());
-            oldRuleIdToNew.put(agendaItem.getRuleId(), copiedAgendaItem.getRule());
-        } else {
-            copiedAgendaItem.setRule(oldRuleIdToNew.get(agendaItem.getRuleId()));
-            copiedAgendaItem.setRuleId(oldRuleIdToNew.get(agendaItem.getRuleId()).getId());
-        }
-
-        copiedAgendaItem.setWhenFalse(copyAgendaItem(copiedAgenda, agendaItem.getWhenFalse(), oldRuleIdToNew, dts));
-        if (copiedAgendaItem.getWhenFalse() != null) {
-            copiedAgendaItem.setWhenFalseId(copiedAgendaItem.getWhenFalse().getId());
-        }
-
-        copiedAgendaItem.setWhenTrue(copyAgendaItem(copiedAgenda, agendaItem.getWhenTrue(), oldRuleIdToNew, dts));
-        if (copiedAgendaItem.getWhenTrue() != null) {
-            copiedAgendaItem.setWhenTrueId(copiedAgendaItem.getWhenTrue().getId());
-        }
-
-        copiedAgendaItem.setAlways(copyAgendaItem(copiedAgenda, agendaItem.getAlways(), oldRuleIdToNew, dts));
-        if (copiedAgendaItem.getAlways() != null) {
-            copiedAgendaItem.setAlwaysId(copiedAgendaItem.getAlways().getId());
-        }
-
-        return copiedAgendaItem;
-    }
-
-    /**
-     * Returns a new copy of a rule with new ids.
-     * @param rule to copy
-     * @return RuleBo a copy of the given rule, with new ids
-     */
-    private RuleBo copyRule(RuleBo rule, String newRuleName) {
-        if (rule == null) return null;
-        RuleBo copiedRule = RuleBo.copyRule(rule);
-        // Rule names cannot be the same, the error for being the same name is not displayed to the user, and the document is
-        // said to have been successfully submitted.
-        //        copiedRule.setName(rule.getName());
-        copiedRule.setName(newRuleName);
-        return copiedRule;
     }
 
     /**

@@ -17,10 +17,14 @@ package org.kuali.rice.krms.impl.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
@@ -31,6 +35,9 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
  *
  */
 public class AgendaItemBo extends PersistableBusinessObjectBase {
+
+    public static final String COPY_OF_TEXT = "Copy of ";
+    private static final String KRMS_AGENDA_ITM_S = "KRMS_AGENDA_ITM_S";
 
 	private String id;
 	private String agendaId;
@@ -313,4 +320,58 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	   
 	   return bo;
    }
-} 
+
+    /**
+     * Returns a copy of this AgendaItem
+     * @param copiedAgenda the new Agenda that the copied AgendiaItem will be associated with
+     * @param oldRuleIdToNew Map<String, RuleBo> mapping of old rule id to the new RuleBo
+     * @param dts DateTimeStamp to append to the copied AgendaItem name
+     * @return AgendaItemBo copy of this AgendaItem with new id and name
+     */
+    public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda,  Map<String, RuleBo> oldRuleIdToNew, final String dts) {
+        // Use deepCopy and update all the ids.
+        AgendaItemBo copiedAgendaItem = (AgendaItemBo) ObjectUtils.deepCopy(this);
+
+        copiedAgendaItem.setId(getNewId());
+
+        copiedAgendaItem.setAgendaId(copiedAgenda.getId());
+
+        // Don't create another copy of a rule that we have already copied.
+        if (!oldRuleIdToNew.containsKey(this.getRuleId())) {
+            copiedAgendaItem.setRule(this.getRule().copyRule(COPY_OF_TEXT + this.getRule().getName() + " " + dts));
+            copiedAgendaItem.setRuleId(copiedAgendaItem.getRule().getId());
+            oldRuleIdToNew.put(this.getRuleId(), copiedAgendaItem.getRule());
+        } else {
+            copiedAgendaItem.setRule(oldRuleIdToNew.get(this.getRuleId()));
+            copiedAgendaItem.setRuleId(oldRuleIdToNew.get(this.getRuleId()).getId());
+        }
+
+        if (copiedAgendaItem.getWhenFalse() != null) {
+            copiedAgendaItem.setWhenFalse(this.getWhenFalse().copyAgendaItem(copiedAgenda, oldRuleIdToNew, dts));
+            copiedAgendaItem.setWhenFalseId(copiedAgendaItem.getWhenFalse().getId());
+        }
+
+        if (copiedAgendaItem.getWhenTrue() != null) {
+            copiedAgendaItem.setWhenTrue(this.getWhenTrue().copyAgendaItem(copiedAgenda, oldRuleIdToNew, dts));
+            copiedAgendaItem.setWhenTrueId(copiedAgendaItem.getWhenTrue().getId());
+        }
+
+        if (copiedAgendaItem.getAlways() != null) {
+            copiedAgendaItem.setAlways(this.getAlways().copyAgendaItem(copiedAgenda, oldRuleIdToNew, dts));
+            copiedAgendaItem.setAlwaysId(copiedAgendaItem.getAlways().getId());
+        }
+
+        return copiedAgendaItem;
+    }
+
+    /**
+     * Returns the next available AgendaItem id.
+     * @return String the next available id
+     */
+    private static String getNewId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class);
+        return id.toString();
+    }
+
+}

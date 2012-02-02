@@ -125,7 +125,10 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 
         if (UserAction.ACTION_ROUTE.equals(action)) {
             document.route(annotation);
-        } else if (UserAction.ACTION_APPROVE.equals(action)) {
+        }else if(UserAction.ACTION_CREATE.equals(action)){
+               document.saveDocumentData();
+        }
+        else if (UserAction.ACTION_APPROVE.equals(action)) {
             document.approve(annotation);
         } else if (UserAction.ACTION_DISAPPROVE.equals(action)) {
             document.disapprove(annotation);

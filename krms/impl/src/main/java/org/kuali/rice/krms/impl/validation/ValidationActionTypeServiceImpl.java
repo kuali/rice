@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
@@ -150,11 +151,11 @@ public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase impleme
      */
     private RemotableAttributeField createMessageField(KrmsAttributeDefinition krmsAttributeDefinition) {
 
-        RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
-        controlBuilder.setSize(30);
-        controlBuilder = RemotableTextInput.Builder.create();
-        controlBuilder.setSize(Integer.valueOf(40));
-        controlBuilder.setWatermark("action message");
+        RemotableTextarea.Builder controlBuilder = RemotableTextarea.Builder.create();
+        controlBuilder = RemotableTextarea.Builder.create();
+        controlBuilder.setRows(Integer.valueOf(2));
+        controlBuilder.setCols(Integer.valueOf(30));
+        controlBuilder.setWatermark("Enter a Validation Action Message");
 
         RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(krmsAttributeDefinition.getName());
         builder.setRequired(true);
@@ -163,7 +164,7 @@ public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase impleme
         builder.setLongLabel(krmsAttributeDefinition.getLabel());
         builder.setShortLabel("Message");
         builder.setMinLength(Integer.valueOf(1));
-        builder.setMaxLength(Integer.valueOf(40));
+        builder.setMaxLength(Integer.valueOf(400));
 
         return builder.build();
     }

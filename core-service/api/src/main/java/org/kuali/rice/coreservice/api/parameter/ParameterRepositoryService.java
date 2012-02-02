@@ -50,13 +50,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="createParameter")
     @WebResult(name = "parameter")
-    @Caching(
-            evict = {
-                    @CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
-                    @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValueAsBoolean}' + 'key=' + #p0.getParameterKey().getCacheKey()"),
-                    @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValuesAsString}' + 'key=' + #p0.getParameterKey().getCacheKey()")
-            }
-    )
+     @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
     Parameter createParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -78,13 +72,8 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="updateParameter")
     @WebResult(name = "parameter")
-    @Caching(
-        evict = {
-            @CacheEvict(value={Parameter.Cache.NAME}, key="'key=' + #p0.getParameterKey().getCacheKey()"),
-            @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValueAsBoolean}' + 'key=' + #p0.getParameterKey().getCacheKey()"),
-            @CacheEvict(value={Parameter.Cache.NAME}, key="'{getParameterValuesAsString}' + 'key=' + #p0.getParameterKey().getCacheKey()")
-        }
-    )
+    @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
+
     Parameter updateParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 

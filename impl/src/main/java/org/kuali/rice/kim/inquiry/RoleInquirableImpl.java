@@ -40,8 +40,8 @@ import java.util.Map;
  */
 public class RoleInquirableImpl extends KualiInquirableImpl {
 
-	protected final String ROLE_NAME = "roleName";
-	protected final String ROLE_ID = "roleId";
+	protected final String ROLE_NAME = "name";
+	protected final String ROLE_ID = "id";
 	protected final String NAMESPACE_CODE = "namespaceCode";
 	
 	@Override

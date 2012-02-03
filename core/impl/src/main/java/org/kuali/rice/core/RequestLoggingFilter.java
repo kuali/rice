@@ -61,6 +61,7 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
             String match = s.substring(s.lastIndexOf("."), s.length());
             return !extensionsToIgnore.contains(match);
         }
-        return true;
+        // Don't log requests to javamelody's monitoring
+        return !s.endsWith("/monitoring]");
     }
 }

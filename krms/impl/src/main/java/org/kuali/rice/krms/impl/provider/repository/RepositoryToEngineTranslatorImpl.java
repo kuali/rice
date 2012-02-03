@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -46,8 +48,10 @@ import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
+import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 import org.kuali.rice.krms.impl.repository.TermBoService;
+import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 import org.springframework.util.CollectionUtils;
 
@@ -110,9 +114,20 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	
 	@Override
 	public Agenda translateAgendaDefinition(AgendaDefinition agendaDefinition) {
+        Agenda result = null;
+        
+        // unless the type is undefined, translate it using the AgendaTypeService
+        if (StringUtils.isEmpty(agendaDefinition.getTypeId())) {
+            // our default agenda implementation
+            result = AgendaTypeServiceBase.defaultAgendaTypeService.loadAgenda(agendaDefinition);
+        } else {
+            AgendaTypeService agendaTypeService = typeResolver.getAgendaTypeService(agendaDefinition);
+            // our typeResolver will throw an appropriate exception if it can't get the type
+            // so no need for null check here
+            result = agendaTypeService.loadAgenda(agendaDefinition);
+        }
 
-	    // TODO: this limits an agenda to a single event.  Is that good enough?
-		return new BasicAgenda(agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, this));
+		return result;
 	}
 		
 	@Override

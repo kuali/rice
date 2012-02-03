@@ -18,7 +18,9 @@ package org.kuali.rice.krms.impl.type;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Agenda;
+import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
+import org.kuali.rice.krms.impl.provider.repository.LazyAgendaTree;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
 import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 
@@ -39,6 +41,6 @@ public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements Agenda
         if (repositoryToEngineTranslator == null) {
             return null;
         }
-        return repositoryToEngineTranslator.translateAgendaDefinition(agendaDefinition);
+        return new BasicAgenda(agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, repositoryToEngineTranslator));
     }
 }

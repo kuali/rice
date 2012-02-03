@@ -25,7 +25,7 @@ import org.kuali.rice.krms.framework.engine.AgendaTree;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-final class LazyAgendaTree implements AgendaTree {
+public final class LazyAgendaTree implements AgendaTree {
 
 	private final Object mutex = new Object();
 	private final AgendaDefinition agendaDefinition;

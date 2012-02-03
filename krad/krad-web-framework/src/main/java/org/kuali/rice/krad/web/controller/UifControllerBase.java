@@ -588,9 +588,6 @@ public abstract class UifControllerBase {
         // since we are redirecting and will not be rendering the view, we need to reset the view from the previous
         form.setView(form.getPreviousView());
 
-        // clear current form from session
-        GlobalVariables.getUifFormManager().removeForm(form);
-
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
 

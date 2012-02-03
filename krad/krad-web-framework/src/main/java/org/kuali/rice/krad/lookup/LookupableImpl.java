@@ -599,7 +599,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                         if (props.containsKey(returnField)) {
                             Object fieldName = returnField.replace("'", "\\'");
                             Object value = props.get(returnField);
-                            script = script.append("returnLookupResultByScript('" + returnField + "', '" + value + "');");
+                            script = script.append("returnLookupResultByScript(\"" + returnField + "\", '" + value + "');");
                         }
                     }
                     returnLinkField.setOnClickScript(script.append("closeLightbox();").toString());

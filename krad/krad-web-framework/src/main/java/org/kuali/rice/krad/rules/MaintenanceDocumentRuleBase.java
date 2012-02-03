@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.Formatter;
@@ -126,7 +127,10 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // apply rules that are specific to the class of the maintenance document
         // (if implemented). this will always succeed if not overloaded by the
         // subclass
-        processCustomSaveDocumentBusinessRules(maintenanceDocument);
+        if (!processCustomSaveDocumentBusinessRules(maintenanceDocument)) {
+            resumeErrorPath();
+            return false;
+        }
 
         // return the original set of items to the errorPath
         resumeErrorPath();
@@ -165,13 +169,19 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         if (workflowDocument.isInitiated() || workflowDocument.isSaved()){
-        	success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());
-            if (success == false) {
+            try {
+                success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());
+                if (success == false) {
+                    GlobalVariables.getMessageMap()
+                            .putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT,
+                                    new String[]{GlobalVariables.getUserSession().getPerson().getPrincipalName(),
+                                            "Create/Maintain", getDocumentDictionaryService()
+                                            .getMaintenanceDocumentTypeName(newDataObject.getClass())});
+                }
+            } catch (RiceIllegalArgumentException e) {
+                // TODO error message the right way
                 GlobalVariables.getMessageMap()
-                        .putError(KRADConstants.DOCUMENT_ERRORS, RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT,
-                                new String[]{GlobalVariables.getUserSession().getPerson().getPrincipalName(),
-                                        "Create/Maintain", getDocumentDictionaryService()
-                                        .getMaintenanceDocumentTypeName(newDataObject.getClass())});
+                        .putError("Unable to determine authorization due to previous errors","Unable to determine authorization due to previous errors");
             }
         }
         // apply rules that are common across all maintenance documents, regardless of class

@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krms.impl.authorization;
 
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
@@ -34,7 +36,9 @@ public class AgendaAuthorizationServiceImpl implements AgendaAuthorizationServic
         String namespace = "";
         if (contextId != null) {
             ContextDefinition context = getContextBoService().getContextByContextId(contextId);
-            namespace = context.getNamespace();
+            if (context != null) { // business rules should have already reported this as an error.
+                namespace = context.getNamespace();
+            }
         }
 
         Map<String, String> qualification = new HashMap<String, String>();

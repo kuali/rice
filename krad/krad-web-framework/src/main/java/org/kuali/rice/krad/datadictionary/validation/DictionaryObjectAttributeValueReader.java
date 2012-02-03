@@ -20,14 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.ComplexAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.NullValueInNestedPathException;
+import org.springframework.beans.InvalidPropertyException;
 
 /**
  * This class allows a dictionary object to expose information about its fields / attributes, including the values of
@@ -130,10 +129,9 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		Exception e = null;
 		try {
 			attributeValue = (X) beanWrapper.getPropertyValue(attrName);
-
 		} catch (IllegalArgumentException iae) {
 			e = iae;
-		} catch (NullValueInNestedPathException nvinp){
+		} catch (InvalidPropertyException ipe){
 			//just return null
 		}
 		

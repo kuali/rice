@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>An {@link TermResolver} implementor is a utility class used for resolution (reification) of {@link Term}s.  There are a
- * few key concepts to understand how {@link TermResolver}s function and work together.
+ * <p>An {@link TermResolver} implementor is a utility class used for resolution (reification) of fact values for one or
+ * more{@link Term}s.  There are a few key concepts to understand how {@link TermResolver}s function and work together.
  * </p>
  * <ul>
- * <li><b>they can require prerequisite {@link Term}s (which must not have any parameters)</b>.  If they do, when the {@link TermResolutionEngine} calls 
+ * <li><b>they can require prerequisite {@link Term}s</b> (which must not have any parameters).  If they do, when the {@link TermResolutionEngine} calls
  * {@link #resolve(Map, Map)} it will pass the resolved prerequisites in the first argument.
  * <li><b>they can be chained.</b>  This means that if the {@link TermResolutionEngine} has {@link TermResolver}s (a &lt;- b) and 
  * (b &lt;- c), and you have the fact 'c', you can ask for term 'a' and the engine will chain the resolvers together
@@ -45,33 +45,45 @@ import java.util.Set;
 public interface TermResolver <T> {
 	
 	/**
-	 * @return the names of the terms that this resolver requires to resolve its output, or an empty set if it has no prereqs;
+     * Gets the names of the terms that this resolver requires in order to be able to resolve its output,
+     * or an empty set if it has no prereqs;
+     *
+	 * @return the prerequisite term names
 	 */
 	Set<String> getPrerequisites();
 	
 	/**
-	 * @return the name of the term that the implementor resolves
+     * Gets the name of the term that this TermResolver resolves.
+     *
+	 * @return the name of the term this TermResolver resolves.
 	 */
 	String getOutput();
 	
 	/**
-	 * 
-	 * @return the names of any parameters that this {@link TermResolver} requires to churn out values for multiple {@link Term}s.  This may 
-	 * be null if no parameters are required.  If this is non-null/non-empty, then this resolver can not be used as an intermediate
-	 * in a term resolution chain.
+	 * Gets the names of any parameters that this {@link TermResolver} requires to resolve {@link Term}s.
+     * This may be null if no parameters are required.  If this is non-null/non-empty, then this
+     * resolver can not be used as an intermediate in a term resolution chain.
+     *
+     * @return the names of parameters this TermResolver requires for resolution.
 	 */
 	Set<String> getParameterNames();
 	
 	/**
-	 * @return an integer representing the cost of resolving the term. 1 is cheap, Integer.MAX_INT is expensive.
+	 * Gets an int representing the cost of resolving the term. 1 is cheap, Integer.MAX_INT is expensive.
+     *
+     * @return the cost.
 	 */
 	int getCost();
 	
 	/**
-	 * @param resolvedPrereqs the resolved prereqs
-	 * @param parameters any parameters on the {@link Term} to be resolved (which must match those declared via {@link #getParameterNames()} 
-	 * @return the resolved fact value for the specified {@link Term}
-	 * @throws {@link TermResolutionException} if something bad happens during the term resolution process
+     * Resolves the output term's fact value given the resolved prerequisite terms and term parameters. The term
+     * resolution engine will call this method providing the following parameters to the resolver:
+     *
+	 * @param resolvedPrereqs the resolved prereqs.  May be empty, but never null.
+	 * @param parameters any parameters on the {@link Term} to be resolved (which must match those declared via
+     * {@link #getParameterNames()}.  May be empty, but never null.
+	 * @return the resolved fact value for the specified {@link Term}.  May be null.
+	 * @throws {@link TermResolutionException} if something bad happens during the term resolution process.
 	 */
 	T resolve(Map<String, Object> resolvedPrereqs, Map<String, String> parameters) throws TermResolutionException;
 }

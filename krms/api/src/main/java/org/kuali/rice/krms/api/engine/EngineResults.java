@@ -25,8 +25,6 @@ import java.util.List;
  */
 public interface EngineResults {
 
-	// TODO - need to determine what goes here...
-
     /**
      * Return the ResultEvent for the given index
      * @param index of the ResultEvent to return

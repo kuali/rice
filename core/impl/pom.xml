@@ -28,6 +28,7 @@
 
     <properties>
         <monitoring.spring.import />
+        <monitoring.spring.service></monitoring.spring.service>
     </properties>
 
     <dependencies>
@@ -427,6 +428,16 @@
           <monitoring.spring.import><![CDATA[
           <import resource="classpath:net/bull/javamelody/monitoring-spring.xml" />
           ]]></monitoring.spring.import>
+          <monitoring.spring.service><![CDATA[
+          <import resource="classpath:net/bull/javamelody/monitoring-spring.xml" />
+          <bean id="facadeMonitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
+          <property name="pointcut">
+          <bean class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+          <property name="pattern" value=".*(krad|krms|location|edl|kim|kcb|ken|kew|kns|ksb).*ServiceImp.*" />
+          </bean>
+          </property>
+          </bean>
+          ]]></monitoring.spring.service>
         </properties>
       </profile>
     </profiles>

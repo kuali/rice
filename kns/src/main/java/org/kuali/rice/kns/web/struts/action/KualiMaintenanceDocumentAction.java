@@ -566,7 +566,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			String customAction = StringUtils.substringBetween(fullParameter, KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 			String[] actionValue = new String[1];
 			actionValue[0]= StringUtils.substringAfter(customAction, ".");
-			Map<String,String[]> paramMap = request.getParameterMap();
+			Map<String,String[]> paramMap = new HashMap<String,String[]>(request.getParameterMap());
 			paramMap.put(KRADConstants.CUSTOM_ACTION, actionValue);
 			doProcessingAfterPost( (KualiMaintenanceForm) form, paramMap );
 		}

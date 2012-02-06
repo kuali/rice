@@ -1229,11 +1229,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            if (collection instanceof List) {
-                ((List) collection).add(0, addLine);
-            } else {
-                collection.add(addLine);
-            }
+            addLine(collection, addLine);
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
@@ -1241,6 +1237,22 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         processAfterAddLine(view, collectionGroup, model, addLine);
     }
+
+    /**
+     * Add addLine to collection while giving derived classes an opportunity to override
+     * for things like sorting.
+     *
+     * @param collection - the Collection to add the given addLine to
+     * @param addLine - the line to add to the given collection
+     */
+    protected void addLine(Collection<Object> collection, Object addLine) {
+        if (collection instanceof List) {
+            ((List) collection).add(0, addLine);
+        } else {
+            collection.add(addLine);
+        }
+    }
+
 
     /**
      * Performs validation on the new collection line before it is added to the

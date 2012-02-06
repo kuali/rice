@@ -45,6 +45,33 @@ import java.util.List;
  */
 public class PeopleFlowMaintainableImpl extends MaintainableImpl {
 
+
+    /**
+     * sort {@link org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo}s by stop number (priority)
+     *
+     * @param collection - the Collection to add the given addLine to
+     * @param addLine - the line to add to the given collection
+     */
+    @Override
+    protected void addLine(Collection<Object> collection, Object addLine) {
+        if (collection instanceof List) {
+            ((List) collection).add(0, addLine);
+            if (addLine instanceof PeopleFlowMemberBo) {
+                Collections.sort((List) collection, new Comparator<Object>() {
+                    public int compare(Object o1, Object o2) {
+                        if ((o1 instanceof PeopleFlowMemberBo) && (o1 instanceof PeopleFlowMemberBo)) {
+                            return ((PeopleFlowMemberBo) o1).getPriority() - ((PeopleFlowMemberBo) o2)
+                                    .getPriority();
+                        }
+                        return 0; // if not both PeopleFlowMemberBo something strange is going on.  Use equals as doing nothing.
+                    }
+                });
+            }
+        } else {
+            collection.add(addLine);
+        }
+    }
+
     /**
      * Invokes the {@link org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService} to retrieve the remotable
      * field definitions for the attributes associated with the selected type
@@ -86,62 +113,6 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
         } else {
             KewApiServiceLocator.getPeopleFlowService().createPeopleFlow(peopleFlowDefinition);
         }
-    }
-
-    @Override
-    public void processCollectionAddLine(View view, Object model, String collectionPath) {
-        // =======================================================================================
-        // COPIED FROM ViewHelperServiceImpl processCollectionAddLine to add sorting of collection
-        // =======================================================================================
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
-        }
-
-        // get the collection instance for adding the new line
-        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
-        if (collection == null) {
-            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
-        }
-
-        // now get the new line we need to add
-        String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-        Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
-        if (addLine == null) {
-            logAndThrowRuntime("Add line instance not found for path: " + addLinePath);
-        }
-
-        processBeforeAddLine(view, collectionGroup, model, addLine);
-
-        // validate the line to make sure it is ok to add
-        boolean isValidLine = performAddLineValidation(view, collectionGroup, model, addLine);
-        if (isValidLine) {
-            // TODO: should check to see if there is an add line method on the
-            // collection parent and if so call that instead of just adding to
-            // the collection (so that sequence can be set)
-            if (collection instanceof List) {
-                ((List) collection).add(0, addLine);
-                // ADDED sorting for PeopleFlowMemberBo
-                if (addLine instanceof PeopleFlowMemberBo) {
-                    Collections.sort((List) collection, new Comparator<Object>() {
-                        public int compare(Object o1, Object o2) {
-                            if ((o1 instanceof PeopleFlowMemberBo) && (o1 instanceof PeopleFlowMemberBo)) {
-                                return ((PeopleFlowMemberBo)o1).getPriority() - ((PeopleFlowMemberBo)o2).getPriority();
-                            }
-                            return 0; // if not both PeopleFlowMemberBo something strange is going on.  Use equals as doing nothing.
-                        }
-                    });
-                }
-            } else {
-                collection.add(addLine);
-            }
-
-            // make a new instance for the add line
-            collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
-        }
-
-        processAfterAddLine(view, collectionGroup, model, addLine, collectionPath);
     }
 
     /**

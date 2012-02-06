@@ -37,7 +37,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import java.util.concurrent.Callable;
 
 /**
  * This class is the postProcessor for the Kuali application, and it is responsible for plumbing events up to documents using the
@@ -55,69 +55,94 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
     @Override
-    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-        try {
-        	if ( LOG.isInfoEnabled() ) {
-        		LOG.info(new StringBuffer("started handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getDocumentId()));
-        	}
-            establishGlobalVariables();
-            Document document = documentService.getByDocumentHeaderId(statusChangeEvent.getDocumentId());
-            if (document == null) {
-                if (!KewApiConstants.ROUTE_HEADER_CANCEL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
-                    throw new RuntimeException("unable to load document " + statusChangeEvent.getDocumentId());
-                }
-            }
-            else {
-                document.doRouteStatusChange(statusChangeEvent);
-                // PLEASE READ BEFORE YOU MODIFY:
-                // we dont want to update the document on a Save, as this will cause an
-                // OptimisticLockException in many cases, because the DB versionNumber will be
-                // incremented one higher than the document in the browser, so when the user then
-                // hits Submit or Save again, the versionNumbers are out of synch, and the
-                // OptimisticLockException is thrown. This is not the optimal solution, and will
-                // be a problem anytime where the user can continue to edit the document after a
-                // workflow state change, without reloading the form.
-                if (!document.getDocumentHeader().getWorkflowDocument().isSaved()) {
-                    documentService.updateDocument(document);
-                }
-            }
-            if ( LOG.isInfoEnabled() ) {
-            	LOG.info(new StringBuffer("finished handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getDocumentId()));
-            }
-        }
-        catch (Exception e) {
-            logAndRethrow("route status", e);
-        }
-        return new ProcessDocReport(true, "");
+    public ProcessDocReport doRouteStatusChange(final DocumentRouteStatusChange statusChangeEvent) throws Exception {
+        return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(),
+                new Callable<ProcessDocReport>() {
+                    public ProcessDocReport call() throws Exception {
+
+                        try {
+                            if (LOG.isInfoEnabled()) {
+                                LOG.info(new StringBuffer("started handling route status change from ").append(
+                                        statusChangeEvent.getOldRouteStatus()).append(" to ").append(
+                                        statusChangeEvent.getNewRouteStatus()).append(" for document ").append(
+                                        statusChangeEvent.getDocumentId()));
+                            }
+
+                            Document document = documentService.getByDocumentHeaderId(
+                                    statusChangeEvent.getDocumentId());
+                            if (document == null) {
+                                if (!KewApiConstants.ROUTE_HEADER_CANCEL_CD.equals(
+                                        statusChangeEvent.getNewRouteStatus())) {
+                                    throw new RuntimeException(
+                                            "unable to load document " + statusChangeEvent.getDocumentId());
+                                }
+                            } else {
+                                document.doRouteStatusChange(statusChangeEvent);
+                                // PLEASE READ BEFORE YOU MODIFY:
+                                // we dont want to update the document on a Save, as this will cause an
+                                // OptimisticLockException in many cases, because the DB versionNumber will be
+                                // incremented one higher than the document in the browser, so when the user then
+                                // hits Submit or Save again, the versionNumbers are out of synch, and the
+                                // OptimisticLockException is thrown. This is not the optimal solution, and will
+                                // be a problem anytime where the user can continue to edit the document after a
+                                // workflow state change, without reloading the form.
+                                if (!document.getDocumentHeader().getWorkflowDocument().isSaved()) {
+                                    documentService.updateDocument(document);
+                                }
+                            }
+                            if (LOG.isInfoEnabled()) {
+                                LOG.info(new StringBuffer("finished handling route status change from ").append(
+                                        statusChangeEvent.getOldRouteStatus()).append(" to ").append(
+                                        statusChangeEvent.getNewRouteStatus()).append(" for document ").append(
+                                        statusChangeEvent.getDocumentId()));
+                            }
+                        } catch (Exception e) {
+                            logAndRethrow("route status", e);
+                        }
+                        return new ProcessDocReport(true, "");
+                    }
+                });
     }
 
     /**
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
      */
-    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
-        // on route level change we'll serialize the XML for the document. we
-        // are doing this here cause it's a heavy hitter, and we
-        // want to avoid the user waiting for this during sync processing
-        try {
-        	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug(new StringBuffer("started handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getDocumentId()));
-        	}
-            establishGlobalVariables();
-            Document document = documentService.getByDocumentHeaderId(levelChangeEvent.getDocumentId());
-            if (document == null) {
-                throw new RuntimeException("unable to load document " + levelChangeEvent.getDocumentId());
-            }
-            document.populateDocumentForRouting();
-            document.doRouteLevelChange(levelChangeEvent);
-            document.getDocumentHeader().getWorkflowDocument().saveDocumentData();
-            if ( LOG.isDebugEnabled() ) {
-            	LOG.debug(new StringBuffer("finished handling route level change from ").append(levelChangeEvent.getOldNodeName()).append(" to ").append(levelChangeEvent.getNewNodeName()).append(" for document ").append(levelChangeEvent.getDocumentId()));
-            }
-        }
-        catch (Exception e) {
-            logAndRethrow("route level", e);
-        }
-        return new ProcessDocReport(true, "");
+    public ProcessDocReport doRouteLevelChange(final DocumentRouteLevelChange levelChangeEvent) throws Exception {
+        return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(),
+                new Callable<ProcessDocReport>() {
+                    public ProcessDocReport call() throws Exception {
+
+                        // on route level change we'll serialize the XML for the document. we
+                        // are doing this here cause it's a heavy hitter, and we
+                        // want to avoid the user waiting for this during sync processing
+                        try {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(new StringBuffer("started handling route level change from ").append(
+                                        levelChangeEvent.getOldNodeName()).append(" to ").append(
+                                        levelChangeEvent.getNewNodeName()).append(" for document ").append(
+                                        levelChangeEvent.getDocumentId()));
+                            }
+
+                            Document document = documentService.getByDocumentHeaderId(levelChangeEvent.getDocumentId());
+                            if (document == null) {
+                                throw new RuntimeException(
+                                        "unable to load document " + levelChangeEvent.getDocumentId());
+                            }
+                            document.populateDocumentForRouting();
+                            document.doRouteLevelChange(levelChangeEvent);
+                            document.getDocumentHeader().getWorkflowDocument().saveDocumentData();
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(new StringBuffer("finished handling route level change from ").append(
+                                        levelChangeEvent.getOldNodeName()).append(" to ").append(
+                                        levelChangeEvent.getNewNodeName()).append(" for document ").append(
+                                        levelChangeEvent.getDocumentId()));
+                            }
+                        } catch (Exception e) {
+                            logAndRethrow("route level", e);
+                        }
+                        return new ProcessDocReport(true, "");
+                    }
+                });
     }
 
     /**
@@ -132,124 +157,153 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
     @Override
-    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
-        try {
-        	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
-        	}
-            establishGlobalVariables();
-            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
-            if (ObjectUtils.isNull(document)) {
-                // only throw an exception if we are not cancelling
-                if (!KewApiConstants.ACTION_TAKEN_CANCELED.equals(event.getActionTaken())) {
-                    LOG.warn("doActionTaken() Unable to load document with id " + event.getDocumentId() + 
-                            " using action taken code '" + KewApiConstants.ACTION_TAKEN_CD.get(event.getActionTaken().getActionTaken()));
-//                    throw new RuntimeException("unable to load document " + event.getDocumentId());
+    public ProcessDocReport doActionTaken(final ActionTakenEvent event) throws Exception {
+         return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
+            public ProcessDocReport call() throws Exception {
+                try {
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
+                    }
+                    Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
+                    if (ObjectUtils.isNull(document)) {
+                        // only throw an exception if we are not cancelling
+                        if (!KewApiConstants.ACTION_TAKEN_CANCELED.equals(event.getActionTaken())) {
+                            LOG.warn("doActionTaken() Unable to load document with id " + event.getDocumentId() +
+                                    " using action taken code '" + KewApiConstants.ACTION_TAKEN_CD.get(event.getActionTaken().getActionTaken()));
+        //                    throw new RuntimeException("unable to load document " + event.getDocumentId());
+                        }
+                    } else {
+                        document.doActionTaken(event);
+                        if ( LOG.isDebugEnabled() ) {
+                            LOG.debug(new StringBuffer("finished doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
+                        }
+                    }
                 }
-            } else {
-                document.doActionTaken(event);
-                if ( LOG.isDebugEnabled() ) {
-                	LOG.debug(new StringBuffer("finished doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
+                catch (Exception e) {
+                    logAndRethrow("do action taken", e);
                 }
+                return new ProcessDocReport(true, "");
+
             }
-        }
-        catch (Exception e) {
-            logAndRethrow("do action taken", e);
-        }
-        return new ProcessDocReport(true, "");
+        });
     }
 
     /**
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#afterWorkflowEngineProcess(boolean)} method will be invoked on it
-     * 
+     *
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterProcess(org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent)
      */
     @Override
-    public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
-        try {
-        	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug(new StringBuffer("started after process method for document ").append(event.getDocumentId()));
-        	}
-            establishGlobalVariables();
-            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
-            if (ObjectUtils.isNull(document)) {
-                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
-                LOG.warn("afterProcess() Unable to load document with id " + event.getDocumentId() + "... ignoring post processing");
-            } else {
-                document.afterWorkflowEngineProcess(event.isSuccessfullyProcessed());
-                if ( LOG.isDebugEnabled() ) {
-                	LOG.debug(new StringBuffer("finished after process method for document ").append(event.getDocumentId()));
-                }
-            }
-        }
-        catch (Exception e) {
-            logAndRethrow("after process", e);
-        }
-        return new ProcessDocReport(true, "");
+    public ProcessDocReport afterProcess(final AfterProcessEvent event) throws Exception {
+        return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(),
+                new Callable<ProcessDocReport>() {
+                    public ProcessDocReport call() throws Exception {
+
+                        try {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(new StringBuffer("started after process method for document ").append(
+                                        event.getDocumentId()));
+                            }
+
+                            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
+                            if (ObjectUtils.isNull(document)) {
+                                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
+                                LOG.warn("afterProcess() Unable to load document with id "
+                                        + event.getDocumentId()
+                                        + "... ignoring post processing");
+                            } else {
+                                document.afterWorkflowEngineProcess(event.isSuccessfullyProcessed());
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug(new StringBuffer("finished after process method for document ").append(
+                                            event.getDocumentId()));
+                                }
+                            }
+                        } catch (Exception e) {
+                            logAndRethrow("after process", e);
+                        }
+                        return new ProcessDocReport(true, "");
+                    }
+                });
     }
 
     /**
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
-     * 
+     *
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#beforeProcess(org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent)
      */
     @Override
-    public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
-        try {
-        	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug(new StringBuffer("started before process method for document ").append(event.getDocumentId()));
-        	}
-            establishGlobalVariables();
-            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
-            if (ObjectUtils.isNull(document)) {
-                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
-                LOG.warn("beforeProcess() Unable to load document with id " + event.getDocumentId() + "... ignoring post processing");
-            } else {
-                document.beforeWorkflowEngineProcess();
-                if ( LOG.isDebugEnabled() ) {
-                	LOG.debug(new StringBuffer("finished before process method for document ").append(event.getDocumentId()));
-                }
-            }
-        }
-        catch (Exception e) {
-            logAndRethrow("before process", e);
-        }
-        return new ProcessDocReport(true, "");
+    public ProcessDocReport beforeProcess(final BeforeProcessEvent event) throws Exception {
+        return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(),
+                new Callable<ProcessDocReport>() {
+                    public ProcessDocReport call() throws Exception {
+
+                        try {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(new StringBuffer("started before process method for document ").append(
+                                        event.getDocumentId()));
+                            }
+                            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
+                            if (ObjectUtils.isNull(document)) {
+                                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
+                                LOG.warn("beforeProcess() Unable to load document with id "
+                                        + event.getDocumentId()
+                                        + "... ignoring post processing");
+                            } else {
+                                document.beforeWorkflowEngineProcess();
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug(new StringBuffer("finished before process method for document ").append(
+                                            event.getDocumentId()));
+                                }
+                            }
+                        } catch (Exception e) {
+                            logAndRethrow("before process", e);
+                        }
+                        return new ProcessDocReport(true, "");
+                    }
+                });
     }
-    
+
     /**
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
-     * 
+     *
      * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#beforeProcess(org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent)
      */
-    public List<String> getDocumentIdsToLock(DocumentLockingEvent event) throws Exception {
-        try {
-        	if ( LOG.isDebugEnabled() ) {
-        		LOG.debug(new StringBuffer("started get document ids to lock method for document ").append(event.getDocumentId()));
-        	}
-            establishGlobalVariables();
-            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
-            if (ObjectUtils.isNull(document)) {
-                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
-                LOG.warn("getDocumentIdsToLock() Unable to load document with id " + event.getDocumentId() + "... ignoring post processing");
-            } else {
-                List<String> documentIdsToLock = document.getWorkflowEngineDocumentIdsToLock();
-                if ( LOG.isDebugEnabled() ) {
-                	LOG.debug(new StringBuffer("finished get document ids to lock method for document ").append(event.getDocumentId()));
-                }
-                if (documentIdsToLock == null) {
-                	return null;
-                }
-                return documentIdsToLock;                
-            }
-        }
-        catch (Exception e) {
-            logAndRethrow("before process", e);
-        }
-        return null;
+    public List<String> getDocumentIdsToLock(final DocumentLockingEvent event) throws Exception {
+        return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(),
+                new Callable<List<String>>() {
+                    public List<String> call() throws Exception {
+
+                        try {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(new StringBuffer("started get document ids to lock method for document ")
+                                        .append(event.getDocumentId()));
+                            }
+                            Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
+                            if (ObjectUtils.isNull(document)) {
+                                // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
+                                LOG.warn("getDocumentIdsToLock() Unable to load document with id "
+                                        + event.getDocumentId()
+                                        + "... ignoring post processing");
+                            } else {
+                                List<String> documentIdsToLock = document.getWorkflowEngineDocumentIdsToLock();
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug(new StringBuffer("finished get document ids to lock method for document ")
+                                            .append(event.getDocumentId()));
+                                }
+                                if (documentIdsToLock == null) {
+                                    return null;
+                                }
+                                return documentIdsToLock;
+                            }
+                        } catch (Exception e) {
+                            logAndRethrow("before process", e);
+                        }
+                        return null;
+                    }
+                });
     }
 
     private void logAndRethrow(String changeType, Exception e) throws RuntimeException {
@@ -292,11 +346,11 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     /**
      * Establishes the UserSession if one does not already exist.
      */
-    protected void establishGlobalVariables() throws WorkflowException {
-        if (GlobalVariables.getUserSession() == null) {
-            GlobalVariables.setUserSession(new UserSession(KRADConstants.SYSTEM_USER));
+    protected UserSession establishPostProcessorUserSession() throws WorkflowException {
+       if (GlobalVariables.getUserSession() == null) {
+            return new UserSession(KRADConstants.SYSTEM_USER);
+        } else {
+            return GlobalVariables.getUserSession();
         }
-        GlobalVariables.clear();
     }
-
 }

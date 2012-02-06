@@ -78,10 +78,10 @@ class RoleTest {
     }
 
     @Test
-    public void test_setId_null() {
+    public void test_setId_whitespace() {
         Role.Builder b = Role.Builder.create()
         shouldFail(IllegalArgumentException) {
-            b.setId(null)
+            b.setId("  ")
         }
     }
 

@@ -1394,8 +1394,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void assignPrincipalToRole(String principalId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
+    public RoleMember assignPrincipalToRole(String principalId,
+            String namespaceCode, String roleName, Map<String, String> qualifier) 
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1408,7 +1409,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // check that identical member does not already exist
     	if ( doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier) ||
     			doAnyMemberRecordsMatch( role.getMembers(), principalId, MemberType.PRINCIPAL.getCode(), qualifier ) ) {
-    		return;
+    		throw new RiceIllegalStateException("Principal is already assigned to role.");
     	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
@@ -1422,12 +1423,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         // add row to member table
         // When members are added to roles, clients must be notified.
-        getResponsibilityInternalService().saveRoleMember(newRoleMember);
+        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(newRoleMember));
     }
 
     @Override
-    public void assignGroupToRole(String groupId, String namespaceCode,
-            String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
+    public RoleMember assignGroupToRole(String groupId, String namespaceCode,
+            String roleName, Map<String, String> qualifier) throws RiceIllegalStateException, RiceIllegalStateException {
         incomingParamCheck(groupId, "groupId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1438,7 +1439,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // check that identical member does not already exist
     	if ( doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier) ||
     			doAnyMemberRecordsMatch( role.getMembers(), groupId, MemberType.GROUP.getCode(), qualifier ) ) {
-    		return;
+            throw new RiceIllegalStateException("Group is already assigned to role.");
     	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
@@ -1450,12 +1451,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
 
         // When members are added to roles, clients must be notified.
-        getResponsibilityInternalService().saveRoleMember(newRoleMember);
+        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(newRoleMember));
     }
 
     @Override
-    public void assignRoleToRole(String roleId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
+    public RoleMember assignRoleToRole(String roleId,
+            String namespaceCode, String roleName, Map<String, String> qualifier) 
+            throws RiceIllegalStateException, RiceIllegalStateException {
         incomingParamCheck(roleId, "roleId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1466,7 +1468,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // check that identical member does not already exist
     	if ( doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier) ||
     			doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, MemberType.ROLE.getCode(), qualifier ) ) {
-    		return;
+            throw new RiceIllegalStateException("Role is already assigned to role.");
     	}
         // Check to make sure this doesn't create a circular membership
         if (!checkForCircularRoleMembership(roleId, roleBo)) {
@@ -1481,7 +1483,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         addMemberAttributeData(newRoleMember, qualifier, roleBo.getKimTypeId());
 
         // When members are added to roles, clients must be notified.
-        getResponsibilityInternalService().saveRoleMember(newRoleMember);
+        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(newRoleMember));
     }
 
     @Override

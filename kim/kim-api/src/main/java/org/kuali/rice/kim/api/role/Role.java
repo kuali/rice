@@ -216,8 +216,8 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
         }
 
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id cannot be blank or null");
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id cannot be blank");
             }
             this.id = id;
         }

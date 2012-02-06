@@ -17,18 +17,14 @@ package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
-import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,16 +90,6 @@ public class UifWebUtils {
                 Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
                 if (model instanceof UifFormBase) {
                     form = (UifFormBase) model;
-
-                    form.setPreviousView(null);
-
-                    // persist document form to db
-                    if (form instanceof DocumentFormBase) {
-                        UserSession userSession = (UserSession) request.getSession().getAttribute(
-                                KRADConstants.USER_SESSION_KEY);
-                        getSessionDocumentService().setDocumentForm((DocumentFormBase) form, userSession,
-                                request.getRemoteAddr());
-                    }
 
                     // prepare view instance
                     prepareViewForRendering(request, form);
@@ -173,10 +159,6 @@ public class UifWebUtils {
 
         // set dirty flag
         form.setValidateDirty(view.isValidateDirty());
-    }
-
-    protected static SessionDocumentService getSessionDocumentService() {
-        return KRADServiceLocatorWeb.getSessionDocumentService();
     }
 
     protected static ViewService getViewService() {

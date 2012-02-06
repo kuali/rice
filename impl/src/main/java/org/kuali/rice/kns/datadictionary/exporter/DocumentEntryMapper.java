@@ -17,11 +17,11 @@ package org.kuali.rice.kns.datadictionary.exporter;
 
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * DocumentEntryMapper
@@ -40,7 +40,7 @@ public abstract class DocumentEntryMapper {
      * @return Map containing entries for properties common to all DocumentEntry subclasses
      */
     @SuppressWarnings("unchecked")
-	protected ExportMap mapEntry(DocumentEntry entry) {
+	protected ExportMap mapEntry(KNSDocumentEntry entry) {
         if (entry == null) {
             throw new IllegalArgumentException("invalid (null) entry");
         }
@@ -80,8 +80,8 @@ public abstract class DocumentEntryMapper {
         entryMap.set("useWorkflowPessimisticLocking", Boolean.toString(entry.getUseWorkflowPessimisticLocking()));
         entryMap.set("sessionDocument", Boolean.toString(entry.isSessionDocument()));
         
-        entryMap.set(new AttributesMapBuilder().buildAttributesMap(entry));
-        entryMap.set(new CollectionsMapBuilder().buildCollectionsMap(entry));
+        entryMap.set(new AttributesMapBuilder().buildAttributesMap((DataDictionaryEntryBase) entry));
+        entryMap.set(new CollectionsMapBuilder().buildCollectionsMap((DataDictionaryEntryBase) entry));
 
         return entryMap;
     }

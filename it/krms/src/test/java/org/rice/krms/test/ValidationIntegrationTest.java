@@ -294,10 +294,8 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     }
 
     private void createAgendaDefinition(ContextDefinition contextDefinition, String eventName, String nameSpace ) {
-        KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace);
-
         AgendaDefinition agendaDef =
-            AgendaDefinition.Builder.create(null, "testAgenda", krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
+            AgendaDefinition.Builder.create(null, "testAgenda", null, contextDefinition.getId()).build();
         agendaDef = agendaBoService.createAgenda(agendaDef);
 
         AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
@@ -306,28 +304,10 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         AgendaItemDefinition agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
 
         AgendaDefinition.Builder agendaDefBuilder1 = AgendaDefinition.Builder.create(agendaDef);
-        agendaDefBuilder1.setAttributes(Collections.singletonMap("Event", eventName));
         agendaDefBuilder1.setFirstItemId(agendaItem1.getId());
         agendaDef = agendaDefBuilder1.build();
 
         agendaBoService.updateAgenda(agendaDef);
-    }
-
-    private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace) {
-	    // Attribute Defn for generic type;
-        KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Event", nameSpace);
-        genericTypeAttributeDefnBuilder.setLabel("event name");
-        KrmsAttributeDefinition genericTypeAttributeDefinition1 = krmsAttributeDefinitionService.createAttributeDefinition(genericTypeAttributeDefnBuilder.build());
-
-        // Attr for generic type;
-        KrmsTypeAttribute.Builder genericTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, genericTypeAttributeDefinition1.getId(), 1);
-
-		// Can use this generic type for KRMS bits that don't actually rely on services on the bus at this point in time
-	    KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestGenericType", nameSpace);
-	    krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
-	    KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepositoryService.createKrmsType(krmsGenericTypeDefnBuilder.build());
-
-        return krmsGenericTypeDefinition;
     }
 
     private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String nameSpace) {
@@ -372,7 +352,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         contextQualifiers.put("namespaceCode", KrmsConstants.KRMS_NAMESPACE);
 
         SelectionCriteria sc1 = SelectionCriteria.createCriteria(new DateTime(),
-                contextQualifiers, Collections.singletonMap(AgendaDefinition.Constants.EVENT, EVENT_ATTRIBUTE));
+                contextQualifiers, Collections.<String,String>emptyMap());
 
         Facts.Builder factsBuilder1 = Facts.Builder.create();
 //        factsBuilder1.addFact(TERM_NAME, 49999);
@@ -604,15 +584,11 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     }
 
     private AgendaBo createAgenda(RuleBo ruleBo, ContextBo contextBo, KrmsAttributeDefinitionBo eventAttributeDefinition) {
-        KrmsAttributeTypeDefinitionAndBuilders defs = createKrmsAttributeTypeDefinitionAndBuilders(
-                "AgendaAttributeName", KrmsConstants.KRMS_NAMESPACE, "AgendaLabel", true, "AgendaTypeName",
-                "AgendaTypeId", "AgendaServiceName", krmsTypeRepositoryService, 1);
-
         AgendaBo agendaBo = new AgendaBo();
-        agendaBo.setActive(defs.typeDef.isActive());
+        agendaBo.setActive(true);
         agendaBo.setContextId(contextBo.getId());
         agendaBo.setName("MyAgenda");
-        agendaBo.setTypeId(defs.typeDef.getId());
+        agendaBo.setTypeId(null);
         agendaBo = (AgendaBo)getBoService().save(agendaBo);
 
         agendaBo.setFirstItemId(ruleBo.getId());

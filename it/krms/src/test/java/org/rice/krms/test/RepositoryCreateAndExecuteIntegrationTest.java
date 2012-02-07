@@ -210,7 +210,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     }
 
     private void createAgendaDefinition(ContextDefinition contextDefinition, String eventName, String nameSpace ) {
-        KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace);
+        KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace, "testAgendaTypeService");
 
         AgendaDefinition agendaDef =
             AgendaDefinition.Builder.create(null, "testAgenda", krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
@@ -245,6 +245,12 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     }
 
     private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace) {
+        return createKrmsGenericTypeDefinition(nameSpace, null);
+    }
+    
+    
+
+        private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace, String serviceName) {
 	    // Attribute Defn for generic type;
         KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Event", nameSpace);
         genericTypeAttributeDefnBuilder.setLabel("event name");
@@ -255,6 +261,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
 		// Can use this generic type for KRMS bits that don't actually rely on services on the bus at this point in time
 	    KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestGenericType", nameSpace);
+        krmsGenericTypeDefnBuilder.setServiceName(serviceName);
 	    krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
 	    KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepository.createKrmsType(krmsGenericTypeDefnBuilder.build());
 

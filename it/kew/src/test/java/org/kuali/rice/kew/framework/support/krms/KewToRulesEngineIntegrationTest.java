@@ -235,15 +235,11 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
 
     private AgendaBo createAgenda(RuleBo ruleBo, ContextBo contextBo, KrmsAttributeDefinitionBo eventAttributeDefinition) {
         // set up a simple default type for the agenda
-        KrmsTypeRepositoryService krmsTypeRepositoryService = KrmsApiServiceLocator.getKrmsTypeRepositoryService();
-        KrmsTypeDefinition.Builder typeDefinition = KrmsTypeDefinition.Builder.create(KrmsConstants.KRMS_NAMESPACE, "DefaultAgendaType");
-        KrmsTypeDefinition defaultAgendaType = krmsTypeRepositoryService.createKrmsType(typeDefinition.build());
-
         AgendaBo agendaBo = new AgendaBo();
         agendaBo.setActive(true);
         agendaBo.setContextId(contextBo.getId());
         agendaBo.setName("MyAgenda");
-        agendaBo.setTypeId(defaultAgendaType.getId());
+        agendaBo.setTypeId(null);
         agendaBo = businessObjectService.save(agendaBo);
 
         agendaBo.setFirstItemId(ruleBo.getId());

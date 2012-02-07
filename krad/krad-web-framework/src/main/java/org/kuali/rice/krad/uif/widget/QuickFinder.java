@@ -296,10 +296,27 @@ public class QuickFinder extends WidgetBase {
         return components;
     }
 
+    /**
+     * Returns the URL for the lookup for which parameters will be added
+     *
+     * <p>
+     * The base URL includes the domain, context, and controller mapping for the lookup invocation. Parameters are
+     * then added based on configuration to complete the URL. This is generally defaulted to the application URL and
+     * internal KRAD servlet mapping, but can be changed to invoke another application such as the Rice standalone
+     * server
+     * </p>
+     *
+     * @return String lookup base URL
+     */
     public String getBaseLookupUrl() {
         return this.baseLookupUrl;
     }
 
+    /**
+     * Setter for the lookup base url (comain, context, and controller)
+     *
+     * @param baseLookupUrl
+     */
     public void setBaseLookupUrl(String baseLookupUrl) {
         this.baseLookupUrl = baseLookupUrl;
     }

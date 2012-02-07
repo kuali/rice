@@ -28,7 +28,7 @@ public final class KsbApiConstants {
 	/**
 	 * The name of the KSB module
 	 */
-	public static final String KSB_MODULE_NAME = "KSB";
+	public static final String KSB_MODULE_NAME = "ksb";
 
     public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 	

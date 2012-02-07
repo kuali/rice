@@ -36,7 +36,7 @@ public class EDLConfigurer extends ModuleConfigurer {
 	private DataSource dataSource;
 
     public EDLConfigurer() {
-        super("EDL");
+        super("edl");
         setValidRunModes(Arrays.asList(RunMode.LOCAL));
     }
 

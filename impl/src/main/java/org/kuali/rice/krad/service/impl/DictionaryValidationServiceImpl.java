@@ -356,7 +356,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             return;
         }
 
-        validate(businessObject, businessObject.getClass().getName());
+        validate(businessObject, businessObject.getClass().getName(), validateRequired);
     }
 
     /**

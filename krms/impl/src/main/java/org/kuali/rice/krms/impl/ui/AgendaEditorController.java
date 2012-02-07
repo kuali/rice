@@ -34,8 +34,6 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.framework.engine.expression.DefaultComparisonOperator;
-import org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
@@ -1583,16 +1581,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     PropositionBo prop = child.getData().getProposition();
                     propositionToToggleEdit = prop;
                     newEditMode =  !prop.getEditMode();
-
-                    // if compound node, set all children into same edit mode
-//                    if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
-//                       for ( PropositionBo compoundComponent : prop.getCompoundComponents() ){
-//                           compoundComponent.setEditMode(editMode);
-//                       }
-//                    }
-//
-//                    //refresh the tree
-//                    rule.refreshPropositionTree(null);
                     break;
                 } else {
                     child.getData().getProposition().setEditMode(false);
@@ -2004,7 +1992,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String cutPropId = agendaEditor.getCutPropositionId();
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
-        if (selectedPropId == cutPropId) {
+        if (StringUtils.isNotBlank(selectedPropId) && selectedPropId.equals(cutPropId)) {
                 // do nothing; can't paste to itself
         } else {
 

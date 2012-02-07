@@ -314,7 +314,7 @@
         <field-descriptor name="specificationId" column="TERM_SPEC_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <reference-descriptor name="specification" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <reference-descriptor name="specification" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none">
             <foreignkey field-ref="specificationId" />
         </reference-descriptor>
         <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.TermParameterBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">

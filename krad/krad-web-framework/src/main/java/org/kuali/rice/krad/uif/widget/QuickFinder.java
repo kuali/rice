@@ -321,10 +321,26 @@ public class QuickFinder extends WidgetBase {
         this.baseLookupUrl = baseLookupUrl;
     }
 
+    /**
+     * Full class name the lookup should be provided for
+     * 
+     * <p>
+     * This is passed on to the lookup request for the data object the lookup should be rendered for. This is then 
+     * used by the lookup framework to select the lookup view (if more than one lookup view exists for the same
+     * data object class name, the {@link #getViewName()} property should be specified to select the view to render).
+     * </p>
+     * 
+     * @return String lookup class name
+     */
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
 
+    /**
+     * Setter for the class name that lookup should be provided for
+     * 
+     * @param dataObjectClassName
+     */
     public void setDataObjectClassName(String dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
     }

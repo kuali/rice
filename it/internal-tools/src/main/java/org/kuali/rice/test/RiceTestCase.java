@@ -209,6 +209,20 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     	return getClass().getSimpleName() + "." + getName();
     }
 
+    /**
+     * configures logging using custom properties file if specified, or the default one.
+     * Log4j also uses any file called log4.properties in the classpath
+     *
+     * <p>To configure a custom logging file, set a JVM system property on using -D. For example
+     * -Dalt.log4j.config.location=file:/home/me/kuali/test/dev/log4j.properties
+     * </p>
+     *
+     * <p>The above option can also be set in the run configuration for the unit test in the IDE.
+     * To avoid log4j using files called log4j.properties that are defined in the classpath, add the following system property:
+     * -Dlog4j.defaultInitOverride=true
+     * </p>
+     * @throws IOException
+     */
 	protected void configureLogging() throws IOException {
         ResourceLoader resourceLoader = new FileSystemResourceLoader();
         String altLog4jConfigLocation = System.getProperty(ALT_LOG4J_CONFIG_LOCATION_PROP);

@@ -283,8 +283,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Performs initialization of a component by these steps:
      *
      * <ul>
-     * <li>If component id not set, assigns to next available int for view</li>
-     * <li>For <code>InputField</code> instances, set defaults from the data
+     * <li>For <code>DataField</code> instances, set defaults from the data
      * dictionary.</li>
      * <li>Invoke the initialize method on the component. Here the component can
      * setup defaults and do other initialization that is specific to that
@@ -300,6 +299,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Note the order various initialize points are called, this can sometimes
      * be an important factor to consider when initializing a component
      * </p>
+     *
+     * @throws RiceRuntimeException if the component id or factoryId is not specified
      *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)

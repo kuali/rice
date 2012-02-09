@@ -50,7 +50,9 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 		
 
 		ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
-				
+        constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+        constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
+
 		if (!processMustOccurConstraint(constraintValidationResult, constraint, attributeValueReader)) {
 			// If the processing of this constraint was not successful then it's an error
 		    if (attributeValueReader.getAttributeName() == null){
@@ -63,7 +65,7 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 		} 
 
 		// Store the label key (if one exists) for this constraint on the constraint validation result so it can be shown later
-		constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+
 		// Add it to the DictionaryValidationResult object
 		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
 
@@ -93,6 +95,8 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
         if (prerequisiteConstraints != null) {
 	        for (PrerequisiteConstraint prerequisiteConstraint : prerequisiteConstraints) {
 	        	ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(prerequisiteConstraint, attributeValueReader);
+                constraintValidationResult.setConstraintLabelKey(prerequisiteConstraint.getLabelKey());
+                constraintValidationResult.setErrorParameters(prerequisiteConstraint.getValidationMessageParamsArray());
 	        	// Add the result of each prerequisite constraint validation to the top level result object as a child
 	        	topLevelResult.addChild(constraintValidationResult);
 	            trueCount += (constraintValidationResult.getStatus().getLevel() <= ErrorLevel.WARN.getLevel()) ? 1 : 0;
@@ -105,6 +109,8 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	        	// Create a new constraint validation result for this must occur constraint and make it child of the top-level constraint, 
 	        	// then pass it in to the recursive call so that prerequisite constraints can be placed under it
 	        	ConstraintValidationResult constraintValidationResult = new ConstraintValidationResult(CONSTRAINT_NAME);
+                constraintValidationResult.setConstraintLabelKey(mustOccurConstraint.getLabelKey());
+                constraintValidationResult.setErrorParameters(mustOccurConstraint.getValidationMessageParamsArray());
 	        	topLevelResult.addChild(constraintValidationResult);
 	            trueCount += (processMustOccurConstraint(constraintValidationResult, mustOccurConstraint, attributeValueReader)) ? 1 : 0;
 	        }

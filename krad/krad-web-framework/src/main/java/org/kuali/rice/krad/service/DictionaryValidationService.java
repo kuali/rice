@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
+import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.TransactionalDocument;
@@ -187,6 +188,17 @@ public interface DictionaryValidationService {
      * are required or not), false otherwise
      */
     public void validate(String entryName, String attributeName, Object attributeValue, boolean doOptionalProcessing);
+
+    /**
+     * Same as other validate method except, allows you to provide the attributeValueReader directly for evaluation
+     *
+     * @param valueReader - an object to validate
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
+     * are required or not), false otherwise
+     * @return the dictionary validation result object associated with this validation
+     * @since 1.1
+     */
+    public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing);
 
     /**
      * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to

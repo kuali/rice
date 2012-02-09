@@ -96,6 +96,8 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
     		return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
     	
     	result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
+        constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+        constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
     	return constraintValidationResult;
 	}
 	
@@ -120,9 +122,11 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
 				String parsedAttributeValue = parsedAttributeValues.get(i);
 				
 				ConstraintValidationResult constraintValidationResult = doProcessValidCharConstraint(validCharsConstraint, parsedAttributeValue);
-		
+
 				// If this is an error then some non-null validation result will be returned
 				if (constraintValidationResult != null) {
+                    constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getLabelKey());
+                    constraintValidationResult.setErrorParameters(validCharsConstraint.getValidationMessageParamsArray());
 					// Another strange KNS thing -- if the validation fails (not sure why only in that case) then some further error checking is done using the formatter, if one exists
 					if (formatterClass == null) {
     					String formatterClassName = definition.getFormatterClass();
@@ -192,6 +196,8 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
             	} 
             	
             	constraintValidationResult.setError(RiceKeyConstants.ERROR_INVALID_FORMAT, fieldValue.toString());
+                constraintValidationResult.setConstraintLabelKey(validCharsConstraint.getLabelKey());
+                constraintValidationResult.setErrorParameters(validCharsConstraint.getValidationMessageParamsArray());
             	return constraintValidationResult;
             }
 //        }

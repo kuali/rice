@@ -776,9 +776,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     if (attributePath == null || attributePath.isEmpty()){
                         attributePath = constraintValidationResult.getAttributeName();
                     }
-                    setFieldError(constraintValidationResult.getEntryName(),
-                            attributePath, constraintValidationResult.getErrorKey(),
-                            constraintValidationResult.getErrorParameters());
+                    if(constraintValidationResult.getConstraintLabelKey() != null){
+                        GlobalVariables.getMessageMap().putError(attributePath,
+                                constraintValidationResult.getConstraintLabelKey(),
+                                constraintValidationResult.getErrorParameters());
+                    }
+                    else{
+                        GlobalVariables.getMessageMap().putError(attributePath,
+                                constraintValidationResult.getErrorKey(),
+                                constraintValidationResult.getErrorParameters());
+                    }
                 }
             }
         }
@@ -861,7 +868,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
                     Collection<Constraint> processorResultContraints = processorResult.getConstraints();
                     if (processorResultContraints != null && processorResultContraints.size() > 0)
-                        additionalConstraints.addAll(processorResultContraints);
+                        constraintQueue.addAll(processorResultContraints);
 
                     // Change the selected definition to whatever was returned from the processor
                     if (processorResult.isDefinitionProvided())
@@ -869,9 +876,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     // Change the selected attribute value reader to whatever was returned from the processor
                     if (processorResult.isAttributeValueReaderProvided())
                         selectedAttributeValueReader = processorResult.getAttributeValueReader();
+
                 }
 
-                // After iterating through all the constraints for this processor, add additional constraints for following processors
+                // After iterating through all the constraints for this processor, add the ones that werent consumed by this processor to the queue
                 constraintQueue.addAll(additionalConstraints);
             }
         }
@@ -905,7 +913,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     "Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() +
                             "\" on entry \"" + attributeValueReader.getEntryName() +
                             "\" because no attribute definition can be found.");
-
+        
         Object value = attributeValueReader.getValue();
 
         processElementConstraints(result, value, definition, attributeValueReader, checkIfRequired);

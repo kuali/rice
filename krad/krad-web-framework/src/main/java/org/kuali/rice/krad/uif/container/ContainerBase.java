@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.HeaderField;
@@ -423,6 +424,29 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		return inputFields;
 		
 	}
+
+    /**
+     * getAllInputFields gets all the input fields contained in this container, but also in
+     * every sub-container that is a child of this container.  When called from the top level
+     * View this will be every InputField across all pages.
+     * @return every InputField that is a child at any level of this container
+     */
+    public List<InputField> getAllInputFields(){
+        List<InputField> inputFields = new ArrayList<InputField>();
+        for(Component c: this.getComponentsForLifecycle()){
+            if(c instanceof InputField){
+                inputFields.add((InputField)c);
+            }
+            else if(c instanceof ContainerBase){
+                inputFields.addAll( ((ContainerBase) c).getAllInputFields());
+            }
+            else if(c instanceof FieldGroup){
+                ContainerBase cb = ((FieldGroup) c).getGroup();
+                inputFields.addAll(cb.getAllInputFields());
+            }
+        }
+        return inputFields;    
+    }
 
 	/**
 	 * This property is true if the container is used to display a group of fields that is visually a single

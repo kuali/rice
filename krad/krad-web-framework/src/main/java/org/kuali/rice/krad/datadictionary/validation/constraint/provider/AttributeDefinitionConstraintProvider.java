@@ -23,13 +23,16 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ExistenceConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
+import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.CaseConstraintResolver;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.ConstraintResolver;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.MustOccurConstraintsResolver;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.PrerequisiteConstraintsResolver;
+import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.SimpleConstraintResolver;
 import org.kuali.rice.krad.datadictionary.validation.constraint.resolver.ValidCharactersConstraintResolver;
+import org.kuali.rice.krad.uif.field.InputField;
 
 import java.util.HashMap;
 
@@ -60,7 +63,7 @@ public class AttributeDefinitionConstraintProvider extends BaseConstraintProvide
 	@Override
 	public boolean isSupported(Constrainable definition) {
 		
-		if (definition instanceof AttributeDefinition)
+		if (definition instanceof AttributeDefinition || definition instanceof InputField)
 			return true;
 		
 		return false;

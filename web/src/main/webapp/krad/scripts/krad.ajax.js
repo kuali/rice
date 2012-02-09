@@ -113,7 +113,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 function validateAndSubmit(methodToCall, successCallback){
 	jq.watermark.hideAll();
 
-	if(jq("#kualiForm").valid()){
+    var validForm = true;
+    if(validateClient){
+        validForm = jq("#kualiForm").valid();
+    }
+
+	if(validForm){
 		jq.watermark.showAll();
 		ajaxSubmitForm(methodToCall, successCallback, null, null);
 	}

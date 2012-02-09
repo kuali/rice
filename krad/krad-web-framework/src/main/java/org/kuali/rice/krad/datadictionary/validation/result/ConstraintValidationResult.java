@@ -37,7 +37,7 @@ public class ConstraintValidationResult {
 	private ErrorLevel level;
 	
 	private String errorKey;
-	private String[] errorParameters;
+	private String[] errorParameters = {};
 	private String constraintLabelKey;
 	
 	private List<ConstraintValidationResult> children;

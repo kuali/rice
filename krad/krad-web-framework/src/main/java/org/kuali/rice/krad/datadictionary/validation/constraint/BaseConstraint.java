@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -88,6 +89,21 @@ public class BaseConstraint implements Constraint {
      */
     public List<String> getValidationMessageParams() {
         return this.validationMessageParams;
+    }
+    
+    /**
+     * Parameters to be used in the string retrieved by this constraint's labelKey, ordered by number of
+     * the param
+     * @return the validationMessageParams
+     */
+    public String[] getValidationMessageParamsArray() {
+        if(this.getValidationMessageParams() != null){
+            return this.getValidationMessageParams().toArray(new String[this.getValidationMessageParams().size()]);
+        }
+        else{
+            return null;
+        }
+
     }
 
     /**

@@ -44,6 +44,8 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
 		
 
 		ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint, attributeValueReader);
+        constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+        constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
 		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
 
 		

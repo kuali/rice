@@ -154,6 +154,8 @@ public interface AttributeValueReader {
 	 * @param attributeName
 	 */
 	public void setAttributeName(String attributeName);
+    
+    public AttributeValueReader clone();
 	
 }
 

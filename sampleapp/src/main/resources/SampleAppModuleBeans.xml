@@ -108,7 +108,9 @@
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx10.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifValidationDemoServerSide.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifLayoutView.xml</value>
+        <value>classpath:edu/sampleu/demo/layout/UifStandardLayout.xml</value>
         <value>classpath:edu/sampleu/demo/auth/TestOpenAuthView.xml</value>
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>

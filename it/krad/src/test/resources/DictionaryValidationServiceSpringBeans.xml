@@ -39,7 +39,10 @@
 
 	<bean id="dictionaryValidationDefinitionConstraintResolver"
 		class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver"/>
-	
+
+  <bean id="dictionaryValidationSimpleConstraintResolver"
+  		class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.SimpleConstraintResolver"/>
+
 	<bean id="dictionaryValidationCaseConstraintResolver"
 		class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.CaseConstraintResolver"/>
 	
@@ -67,6 +70,8 @@
 		<!-- Element constraint processors are classes that determine if a passed value is valid for a specific constraint at the individual object or object attribute level -->
 		<property name="elementConstraintProcessors">
 			<list>
+        <bean class="org.kuali.rice.krad.datadictionary.validation.processor.SimpleConstraintProcessor"
+        					parent="mandatoryElementConstraintProcessor"/>
 				<bean class="org.kuali.rice.krad.datadictionary.validation.processor.CaseConstraintProcessor"
 					parent="mandatoryElementConstraintProcessor"/>
 				<bean class="org.kuali.rice.krad.datadictionary.validation.processor.ExistenceConstraintProcessor"/>

@@ -28,6 +28,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.TextControl;
 
@@ -216,7 +217,7 @@ public class ClientValidationUtils {
 		}
 
 		String operator = "==";
-		if (constraint.getOperator().equalsIgnoreCase("not_equals")) {
+		if (constraint.getOperator().equalsIgnoreCase("not_equals") || constraint.getOperator().equalsIgnoreCase("not_equal")) {
 			operator = "!=";
 		}
 		else if (constraint.getOperator().equalsIgnoreCase("greater_than_equal")) {
@@ -768,61 +769,64 @@ public class ClientValidationUtils {
 	@SuppressWarnings("boxing")
 	public static void processAndApplyConstraints(InputField field, View view) {
 		methodKey = 0;
-		if ((field.getRequired() != null) && (field.getRequired().booleanValue())) {
-			field.getControl().addStyleClass("required");
-		}
-
-		if (field.getExclusiveMin() != null) {
-			if (field.getControl() instanceof TextControl && ((TextControl) field.getControl()).getDatePicker() != null) {
-				((TextControl) field.getControl()).getDatePicker().getComponentOptions().put("minDate", field.getExclusiveMin());
-			}
-			else{
-				String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n minExclusive: ["+ field.getExclusiveMin() + "]});";
-				addScriptToPage(view, field, rule);
-			}
-		}
-
-		if (field.getInclusiveMax() != null) {
-			if (field.getControl() instanceof TextControl && ((TextControl) field.getControl()).getDatePicker() != null) {
-				((TextControl) field.getControl()).getDatePicker().getComponentOptions().put("maxDate", field.getInclusiveMax());
-			}
-			else{
-				String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n maxInclusive: ["+ field.getInclusiveMax() + "]});";
-				addScriptToPage(view, field, rule);
-			}
-		}
-
-		if (field.getValidCharactersConstraint() != null && field.getValidCharactersConstraint().getApplyClientSide()) {
-			if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getValue())) {
-				// set regex value takes precedence
-				addScriptToPage(view, field, ClientValidationUtils.getRegexMethod(field, field.getValidCharactersConstraint()));
-				field.getControl().addStyleClass("validChar-" + field.getBindingInfo().getBindingPath()+ methodKey);
-				methodKey++;
-			}
-			else {
-				//blindly assume that if there is no regex value defined that there must be a method by this name
-				if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getLabelKey())){
-					field.getControl().addStyleClass(field.getValidCharactersConstraint().getLabelKey());
-				}
-			}
-		}
-
-		if (field.getCaseConstraint() != null && field.getCaseConstraint().getApplyClientSide()) {
-			processCaseConstraint(field, view, field.getCaseConstraint(), null);
-		}
-
-		if (field.getDependencyConstraints() != null) {
-			for (PrerequisiteConstraint prc : field.getDependencyConstraints()) {
-				processPrerequisiteConstraint(field, prc, view);
-			}
-		}
-
-		if (field.getMustOccurConstraints() != null) {
-			for (MustOccurConstraint mc : field.getMustOccurConstraints()) {
-				processMustOccurConstraint(field, view, mc, "true");
-			}
-		}
-		
-	}
-
+        if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
+            if(field.getSimpleConstraint() != null && field.getSimpleConstraint().getApplyClientSide()){
+                if ((field.getRequired() != null) && (field.getRequired().booleanValue())) {
+                    field.getControl().addStyleClass("required");
+                }
+        
+                if (field.getExclusiveMin() != null) {
+                    if (field.getControl() instanceof TextControl && ((TextControl) field.getControl()).getDatePicker() != null) {
+                        ((TextControl) field.getControl()).getDatePicker().getComponentOptions().put("minDate", field.getExclusiveMin());
+                    }
+                    else{
+                        String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n minExclusive: ["+ field.getExclusiveMin() + "]});";
+                        addScriptToPage(view, field, rule);
+                    }
+                }
+        
+                if (field.getInclusiveMax() != null) {
+                    if (field.getControl() instanceof TextControl && ((TextControl) field.getControl()).getDatePicker() != null) {
+                        ((TextControl) field.getControl()).getDatePicker().getComponentOptions().put("maxDate", field.getInclusiveMax());
+                    }
+                    else{
+                        String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n maxInclusive: ["+ field.getInclusiveMax() + "]});";
+                        addScriptToPage(view, field, rule);
+                    }
+                }
+            }
+    
+            if (field.getValidCharactersConstraint() != null && field.getValidCharactersConstraint().getApplyClientSide()) {
+                if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getValue())) {
+                    // set regex value takes precedence
+                    addScriptToPage(view, field, ClientValidationUtils.getRegexMethod(field, field.getValidCharactersConstraint()));
+                    field.getControl().addStyleClass("validChar-" + field.getBindingInfo().getBindingPath()+ methodKey);
+                    methodKey++;
+                }
+                else {
+                    //blindly assume that if there is no regex value defined that there must be a method by this name
+                    if(StringUtils.isNotEmpty(field.getValidCharactersConstraint().getLabelKey())){
+                        field.getControl().addStyleClass(field.getValidCharactersConstraint().getLabelKey());
+                    }
+                }
+            }
+    
+            if (field.getCaseConstraint() != null && field.getCaseConstraint().getApplyClientSide()) {
+                processCaseConstraint(field, view, field.getCaseConstraint(), null);
+            }
+    
+            if (field.getDependencyConstraints() != null) {
+                for (PrerequisiteConstraint prc : field.getDependencyConstraints()) {
+                    processPrerequisiteConstraint(field, prc, view);
+                }
+            }
+    
+            if (field.getMustOccurConstraints() != null) {
+                for (MustOccurConstraint mc : field.getMustOccurConstraints()) {
+                    processMustOccurConstraint(field, view, mc, "true");
+                }
+            }
+            
+        }
+    }
 }

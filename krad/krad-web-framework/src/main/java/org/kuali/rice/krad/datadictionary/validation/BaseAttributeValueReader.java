@@ -65,5 +65,8 @@ public abstract class BaseAttributeValueReader implements AttributeValueReader {
 	public String getEntryName() {
 		return this.entryName;
 	}
-	
+
+    @Override
+    public abstract AttributeValueReader clone();
+
 }

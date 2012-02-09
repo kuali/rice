@@ -34,6 +34,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 public class ExistenceConstraintProcessor extends OptionalElementConstraintProcessor<ExistenceConstraint> {
 
 	private static final String CONSTRAINT_NAME = "existence constraint";
+    private static final String REQUIRED_KEY = "validation.required";
 	
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
@@ -68,7 +69,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		if (constraint.isRequired().booleanValue() && !skipConstraint(attributeValueReader)) {
 			// If this attribute is required and the value is null then 
 			if (ValidationUtils.isNullOrEmpty(value)) 
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED);
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, REQUIRED_KEY);
 			
 			return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
 		}

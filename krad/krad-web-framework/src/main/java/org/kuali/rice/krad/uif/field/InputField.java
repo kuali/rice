@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -24,6 +25,15 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.Formatable;
+import org.kuali.rice.krad.datadictionary.validation.capability.HierarchicallyConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.RangeConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.SimpleConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
@@ -33,6 +43,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
+import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
@@ -62,7 +73,8 @@ import java.util.List;
  * Field that encapsulates data input/output captured by an attribute within the
  * application
  *
- * <p>                                                                                                                                    R
+ * <p>
+ * R
  * The <code>AttributField</code> provides the majority of the data input/output
  * for the screen. Through these fields the model can be displayed and updated.
  * For data input, the field contains a <code>Control</code> instance will
@@ -76,7 +88,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InputField extends DataField {
+public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
     // constraint variables
@@ -86,6 +98,7 @@ public class InputField extends DataField {
     private List<PrerequisiteConstraint> dependencyConstraints;
     private List<MustOccurConstraint> mustOccurConstraints;
     private SimpleConstraint simpleConstraint;
+    private DataType dataType;
 
     // display props
     private Control control;
@@ -158,7 +171,7 @@ public class InputField extends DataField {
             }
 
             if ((control != null) && control instanceof MultiValueControlBase) {
-               ((MultiValueControlBase) control).setOptions(fieldOptions);
+                ((MultiValueControlBase) control).setOptions(fieldOptions);
             }
         }
 
@@ -208,13 +221,11 @@ public class InputField extends DataField {
         if (caseConstraint != null) {
             String propertyName = getBindingInfo().getPropertyAdjustedBindingPath(caseConstraint.getPropertyName());
             caseConstraint.setPropertyName(propertyName);
-        }        
+        }
 
         setupFieldQuery();
 
-        if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
-            ClientValidationUtils.processAndApplyConstraints(this, view);
-        }
+        ClientValidationUtils.processAndApplyConstraints(this, view);
     }
 
     protected void adjustMustOccurConstraintBinding(List<MustOccurConstraint> mustOccurConstraints) {
@@ -229,7 +240,8 @@ public class InputField extends DataField {
     protected void adjustPrerequisiteConstraintBinding(List<PrerequisiteConstraint> prerequisiteConstraints) {
         if (prerequisiteConstraints != null) {
             for (PrerequisiteConstraint prerequisiteConstraint : prerequisiteConstraints) {
-                String propertyName = getBindingInfo().getPropertyAdjustedBindingPath(prerequisiteConstraint.getPropertyName());
+                String propertyName = getBindingInfo().getPropertyAdjustedBindingPath(
+                        prerequisiteConstraint.getPropertyName());
                 prerequisiteConstraint.setPropertyName(propertyName);
             }
         }
@@ -345,6 +357,14 @@ public class InputField extends DataField {
             //if still null, default to false
             if (getRequired() == null) {
                 setRequired(false);
+            }
+        }
+        
+        if (this.dataType == null) {
+            setDataType(attributeDefinition.getDataType());
+            //Assume date if dataType is still null and using a DatePicker
+            if(this.dataType == null && control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
+                setDataType(DataType.DATE);
             }
         }
 
@@ -875,5 +895,42 @@ public class InputField extends DataField {
      */
     public void setPerformUppercase(boolean performUppercase) {
         this.performUppercase = performUppercase;
+    }
+
+    /**
+     * Returns the full binding path (the path used in the name attribute of the input).
+     * This differs from propertyName in that it uses BindingInfo to determine the path.
+     * @return full binding path name
+     */
+    @Override
+    public String getName() {
+        return this.getBindingInfo().getBindingPath();
+    }
+
+    public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
+        return dependencyConstraints;
+    }
+
+    /**
+     * This does not have to be set, represents the DataType constraint of this field.
+     * This is only checked during server side validation.
+     * @param dataType the dataType to set
+     */
+    public void setDataType(DataType dataType) {
+        this.simpleConstraint.setDataType(dataType);
+    }
+
+    public void setDataType(String dataType) {
+        this.simpleConstraint.setDataType(DataType.valueOf(dataType));
+    }
+
+    /**
+     * Gets the DataType of this InputField, note that DataType set to be date
+     * when this field is using a date picker with a TextControl and hasnt otherwise been
+     * explicitly set.
+     * @return
+     */
+    public DataType getDataType() {
+        return this.simpleConstraint.getDataType();
     }
 }

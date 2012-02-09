@@ -41,6 +41,9 @@ import java.util.Date;
 public class RangeConstraintProcessor extends MandatoryElementConstraintProcessor<RangeConstraint> {
 
 	private static final String CONSTRAINT_NAME = "range constraint";
+    private static final String MIN_EXCLUSIVE_KEY = "validation.minExclusive";
+    private static final String MAX_INCLUSIVE_KEY = "validation.maxInclusive";
+    private static final String RANGE_KEY = "validation.range";
 
 	/**
 	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
@@ -67,8 +70,10 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 	
 	protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value, RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
 		// Can't process any range constraints on null values
-		if (ValidationUtils.isNullOrEmpty(value))
+		if (ValidationUtils.isNullOrEmpty(value) ||
+                (constraint.getExclusiveMin() == null && constraint.getInclusiveMax() ==  null)){
 			return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);
+        }
 		
 	
 		// This is necessary because sometimes we'll be getting a string, for example, that represents a date. 
@@ -77,7 +82,17 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
 
 		if (dataType != null) {
 			typedValue = ValidationUtils.convertToDataType(value, dataType, dateTimeService);
-		}	
+		}
+        else if(value instanceof String){
+            //assume string is a number of type double
+            try{
+                Double d = Double.parseDouble((String)value);
+                typedValue = d;
+            }
+            catch(NumberFormatException n){
+                //do nothing, typedValue is never reset
+            }
+        }
 
 		// TODO: decide if there is any reason why the following would be insufficient - i.e. if something numeric could still be cast to String at this point
 		if (typedValue instanceof Date)
@@ -134,13 +149,13 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
         
         // If both comparisons happened then if either comparison failed we can show the end user the expected range on both sides.
         if (lessThanMax != Result.UNDEFINED && greaterThanMin != Result.UNDEFINED) 
-        	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_OUT_OF_RANGE, exclusiveMinText, inclusiveMaxText);
+        	return result.addError(RANGE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_OUT_OF_RANGE, exclusiveMinText, inclusiveMaxText);
         // If it's the max comparison that fails, then just tell the end user what the max can be
         else if (lessThanMax == Result.INVALID)
-        	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INCLUSIVE_MAX, inclusiveMaxText);
+        	return result.addError(MAX_INCLUSIVE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INCLUSIVE_MAX, inclusiveMaxText);
         // Otherwise, just tell them what the min can be
         else 
-        	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, exclusiveMinText);
+        	return result.addError(MIN_EXCLUSIVE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, exclusiveMinText);
 	}
 	
 }

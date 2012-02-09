@@ -23,12 +23,15 @@ jQuery.blockUI.defaults.overlayCSS = {};
 
 // validation init
 var pageValidatorReady = false;
+var validateClient = true;
 
 //sets up the validator with the necessary default settings and methods
+//also sets up the dirty check and other page scripts
 //note the use of onClick and onFocusout for on the fly validation client side
-function setupValidator(){
+function setupPage(validate){
 	jq('#kualiForm').dirty_form({changedClass: 'dirty'});
 
+    validateClient = validate;
 	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){
 		var validateDirty = jq("[name='validateDirty']").val();
@@ -49,18 +52,22 @@ function setupValidator(){
 		onsubmit: false,
 		ignore: ".ignoreValid",
 		onclick: function(element) {
-            if(element.type != "select-one") {
-			    var valid = jq(element).valid();
-			    dependsOnCheck(element, new Array());
+            if(validateClient){
+                if(element.type != "select-one") {
+                    var valid = jq(element).valid();
+                    dependsOnCheck(element, new Array());
+                }
             }
 		},
 		onfocusout: function(element) {
-			var valid = jq(element).valid();
-			dependsOnCheck(element, new Array());
-			if((element.type == "select-one" || element.type == "select-multiple") && jq(element).hasClass("valid")){
-				applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
-				showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
-			}
+            if(validateClient){
+                var valid = jq(element).valid();
+                dependsOnCheck(element, new Array());
+                if((element.type == "select-one" || element.type == "select-multiple") && jq(element).hasClass("valid")){
+                    applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
+                    showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
+                }
+            }
 		},
 		wrapper: "li",
 		highlight: function(element, errorClass, validClass) {

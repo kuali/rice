@@ -312,14 +312,15 @@ public interface WorkflowDocumentService {
      *
      * @param documentId the unique id of a Document
      *
-     * @return the status value for the {@link Document} with the
+     * @return the current status of the {@link Document} with the
      * given documentId
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */
     @WebMethod(operationName = "getDocumentStatus")
     @WebResult(name = "documentStatus")
-	String getDocumentStatus(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
+	DocumentStatus getDocumentStatus(@WebParam(name = "documentId") String documentId)
+            throws RiceIllegalArgumentException;
 
 
     /**
@@ -373,26 +374,6 @@ public interface WorkflowDocumentService {
     @WebResult(name = "principalId")
 	String getRoutedByPrincipalIdByDocumentId(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
-
-
-    /**
-     * Gets a map of actions requested for a given principalId and documentId
-     * The action request code is filled for the key value of the map, and a string representation
-     * of a boolean value is the value.
-     *
-     * @param documentId the unique id of a Document
-     *
-     * @return the {@link Document}'s 'routed by' principalId
-     *
-     * @throws RiceIllegalArgumentException if {@code documentId} is null
-     */
-    @WebMethod(operationName = "getActionsRequested")
-    @WebResult(name = "actionsRequested")
-	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-	Map<String, String> getActionsRequested(@WebParam(name = "principalId") String principalId,
-			                                @WebParam(name = "documentId") String documentId)
-            throws RiceIllegalArgumentException;
-
 
     /**
      * Does a direct search for searchableAttributes without going through the document search

@@ -207,11 +207,18 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         validate(document, documentEntryName, attributeName, true);
     }
 
+    /**
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean)
+     */
+    @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
             boolean validateRequired) {
         validateDocumentAndUpdatableReferencesRecursively(document, maxDepth, validateRequired, false);
     }
-    
+    /**
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean, boolean)
+     */
+    @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, 
             boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
@@ -465,8 +472,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String, java.lang.String, boolean)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject, String)
      */
     public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
 
@@ -515,7 +521,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param reference the <code>ReferenceDefinition</code> of the collection to validate
      * @param displayFieldName the name of the field
      * @param intermediateCollections array containing the path to the collection as tokens
-     * @param pathToAttribute the rebuilt path to the ReferenceDefinition.attributeToHighlightOnFail which includes the
+     * @param pathToAttributeI the rebuilt path to the ReferenceDefinition.attributeToHighlightOnFail which includes the
      * index of
      * each subcollection
      * @return
@@ -552,8 +558,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject, String, String, String)
      */
 
     public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName,
@@ -696,8 +701,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * This overridden method ...
-     *
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.krad.document.TransactionalDocument)
      */
     public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
@@ -717,10 +720,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument,
-     *      org.kuali.rice.krad.bo.PersistableBusinessObject)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument, org.kuali.rice.krad.bo.BusinessObject, String)
      */
     public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
             BusinessObject newCollectionItem, String collectionName) {

@@ -344,6 +344,11 @@ jq(document).ready(function() {
 	runHiddenScripts("");
     jq("#view_div").show();
     createLoading(false);
+
+    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
+    jq(window).unload(function() {
+        createLoading(false);
+    });
 });
 
 

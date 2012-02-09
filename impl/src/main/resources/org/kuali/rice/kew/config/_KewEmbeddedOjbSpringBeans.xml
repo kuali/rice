@@ -32,6 +32,10 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" />
 	</bean>
 
+  <bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kewDataSource" />
+  </bean>
+
   <bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOOjbImpl" lazy-init="true">
     <property name="jcdAlias" value="kewDataSource" />
   </bean>

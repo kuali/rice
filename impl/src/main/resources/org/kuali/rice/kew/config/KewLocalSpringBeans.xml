@@ -151,11 +151,6 @@
     <property name="dataSource" ref="kewDataSource"/>
   </bean>
 
-  <!--  DocumentTypeService -->
-  <bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl">
-    <property name="documentTypeDAO" ref="enDocumentTypeDAO"/>
-  </bean>
-
   <!--  StatsService -->
   <bean id="enStatsService" class="org.kuali.rice.kew.stats.service.impl.StatsServiceImpl">
     <property name="statsDAO">

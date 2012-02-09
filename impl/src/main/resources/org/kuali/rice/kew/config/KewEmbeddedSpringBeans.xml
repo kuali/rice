@@ -44,6 +44,11 @@
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="parameterService"/>
 
+  <!--  DocumentTypeService -->
+  <bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl">
+    <property name="documentTypeDAO" ref="enDocumentTypeDAO"/>
+  </bean>
+
   <!--  RouteHeaderService -->
   <bean id="enDocumentRouteHeaderService"
         class="org.kuali.rice.kew.routeheader.service.impl.RouteHeaderServiceImpl"

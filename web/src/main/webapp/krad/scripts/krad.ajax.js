@@ -284,7 +284,7 @@ function performCollectionAction(collectionGroupId){
 //called when a line is added to a collection
 function addLineToCollection(collectionGroupId, collectionBaseId){
 	if(collectionBaseId){
-		var addFields = jq("input." + collectionBaseId + "-addField:visible");
+		var addFields = jq("." + collectionBaseId + "-addField:visible");
 		jq.watermark.hideAll();
 
 		var valid = true;

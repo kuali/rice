@@ -42,12 +42,15 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
 		if (ValidationUtils.isNullOrEmpty(value))
 			return new ProcessorResult(result.addSkipped(attributeValueReader, CONSTRAINT_NAME));
 		
-
+        
 		ConstraintValidationResult constraintValidationResult = processPrerequisiteConstraint(constraint, attributeValueReader);
-        constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
-        constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
-		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
 
+        if(constraint != null){
+            constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+            constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
+        }
+
+		result.addConstraintValidationResult(attributeValueReader, constraintValidationResult);
 		
 		return new ProcessorResult(constraintValidationResult);
 	}

@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -100,7 +101,8 @@ public class AlphaPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
+    @Ignore
 	@Test
 	public void testValueNotValidChars() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "city", cityAlphaPatternConstraint);
@@ -109,7 +111,8 @@ public class AlphaPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
+    @Ignore
 	@Test
 	public void testValueAllValidCharsAllowWhitespace() {
 		ConstraintValidationResult result = process(newYorkNYAddress, "street1", street1AlphaPatternConstraint);
@@ -118,7 +121,8 @@ public class AlphaPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.OK, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
+    @Ignore
 	@Test
 	public void testValueNotValidCharsAllowWhitespace() {
 		ConstraintValidationResult result = process(washingtonDCAddress, "street1", street1AlphaPatternConstraint);
@@ -127,7 +131,8 @@ public class AlphaPatternConstraintTest {
 		Assert.assertEquals(ErrorLevel.ERROR, result.getStatus());
 		Assert.assertEquals(new ValidCharactersConstraintProcessor().getName(), result.getConstraintName());
 	}
-	
+
+    @Ignore
 	@Test
 	public void testValueWithSpecialCharsAllowWhitespace() {
 		ConstraintValidationResult result = process(sydneyAUSAddress, "street1", street1AlphaPatternConstraint);

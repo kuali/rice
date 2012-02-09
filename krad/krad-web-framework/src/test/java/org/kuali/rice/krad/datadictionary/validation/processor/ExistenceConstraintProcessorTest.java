@@ -159,7 +159,7 @@ public class ExistenceConstraintProcessorTest {
 		// Make sure that it's status is ERROR
 		Assert.assertEquals(ErrorLevel.ERROR, constraintValidationResult.getStatus());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals("error.required", constraintValidationResult.getErrorKey());
+		Assert.assertEquals("validation.required", constraintValidationResult.getErrorKey());
 		
 		// Make sure that the iterator works too
 		int countConstraints = 0;

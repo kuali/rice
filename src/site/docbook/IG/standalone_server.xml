@@ -19,38 +19,34 @@
 <chapter xml:id="standalone_server" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Standalone Server Setup</title>
     <para>This chapter is designed to provide simple step-by-step instructions on how to set up a
-        Kuali Rice standalone server intended for enterprise deployment.</para>
+        Kuali Rice standalone server intended for enterprise deployment. The same steps can be used
+        to set up a standalone server locally for development purposes, you would just install the
+        database on the same machine.</para>
     <para>The steps to install and setup a standalone server with Kuali Rice are:</para>
-    <para>First, <emphasis role="bold">set up the database server</emphasis>. Kuali Rice is
-        typically deployed as a Standalone Server with the database server separate from the
-        application server.Please refer to the <link linkend="database_setup">Installing and
-            Configuring the Database Management System</link> section of this guide to install and
-        configure your database on the database server.</para>
-    <para>Next, set up your standalone Rice server with the following steps:<orderedlist>
-            <listitem>
-                <para>Determine your expected load and storage needs and consult the Suggested
-                    Server Hardware section for guidance. Install OS.</para>
-            </listitem>
-            <listitem>
-                <para><emphasis role="bold">Install &amp; configure required software</emphasis> -
-                    Please refer to the <link linkend="common_setup">Common Setup</link> section of
-                    this guide to install and configure software required by both development and
-                    standalone server environments.</para>
-            </listitem>
-            <listitem>
-                <para>Install and configure Tomcat.</para>
-            </listitem>
-            <listitem>
-                <para>Install and Configure Rice.</para>
-            </listitem>
-            <listitem>
-                <para>Launch the Sample Application.</para>
-            </listitem>
-            <listitem>
-                <para>Set up a Keystore.</para>
-            </listitem>
-        </orderedlist>
-    </para>
+    <orderedlist>
+        <listitem>
+            <para>Determine your expected load and storage needs and consult the Suggested Server
+                Hardware section for guidance. Install OS.</para>
+        </listitem>
+        <listitem>
+            <para>Install &amp; configure the database management system.</para>
+        </listitem>
+        <listitem>
+            <para>Install &amp; configure required software</para>
+        </listitem>
+        <listitem>
+            <para>Install and configure Tomcat.</para>
+        </listitem>
+        <listitem>
+            <para>Install and configure Rice.</para>
+        </listitem>
+        <listitem>
+            <para>Launch the sample application.</para>
+        </listitem>
+        <listitem>
+            <para>Set up a Keystore.</para>
+        </listitem>
+    </orderedlist>
     <note><para>Rather than install and setup as the root user on systems designed for production, you may
             want to create a non-privilieged user named something like 'rice' to use for this
             purpose.</para></note>
@@ -80,29 +76,683 @@
             servers.</para>
     </section>
     <section>
-        <title>Install and Setup Apache Tomcat</title>
-        <para>Kuali Rice ${project.version} supports the following Tomcat versions:<itemizedlist>
-                <listitem>
-                    <para>Tomcat 6 (Servlet API 2.5, JSP 2.1) </para>
-                </listitem>
-                <listitem>
-                    <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
-                </listitem>
+        <title>Installing and Configuring the Database Management System</title>
+        <para>Kuali Rice was developed using two relational database management systems: <emphasis
+                role="bold">MySQL</emphasis> and <emphasis role="bold">Oracle</emphasis>. The
+            typical production install involves running the Rice server separate from the database
+            server, however both can be run on the same machine for development purposes.</para>
+        <para>Rice runs, and has been tested with the following versions:<itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">Oracle</emphasis>
+                    <itemizedlist>
+                        <listitem>
+                            <para>Oracle Database 10g</para>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle Database 11g</para>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle Express Edition (XE)</para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>Use the Oracle JDBC Driver to connect to these databases.</para>
+                <para>Ensure that the Oracle database you intend to use encodes character data in a
+                    UTF variant by default. For Oracle XE, this entails downloading the "Universal"
+                    flavor of the binary, which uses AL32UTF8.</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">MySQL</emphasis><itemizedlist>
+                    <listitem>
+                        <para>MySQL 5.1.+</para>
+                    </listitem>
+                </itemizedlist></para>
+                <para>Use the MySQL Connector/J (5.1.+) to connect to MySQL databases.</para>
+            </listitem>
         </itemizedlist></para>
-        <para>Please visit the <link xlink:href="http://tomcat.apache.org/">Apache Tomcat
-                site</link> for information on how to install and configure Tomcat.</para>
-        <para>Other servlet containers can be used with Kuali Rice, but this guide will focus on
-            Tomcat.</para>
-    </section>
-    <section>
-        <title>Setting Up the Rice Application</title>
+        <para>You should be able to adapt Rice to other standard relational databases (e.g., Sybase,
+            Microsoft SQL Server, DB2, etc.). However, this Installation Guide does not provide
+            information for running Rice with these products.</para>
+        <section xml:id ="database_software_locations">
+            <title>Locations for Database Software</title>
+            <para>Below are locations from which Oracle and MySQL could be downloaded at the time of
+                release of Rice ${project.version}.</para>
+            <table frame="none">
+                <title>Locations for Database Software</title>
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="4.11*"/>
+                    <thead>
+                        <row>
+                            <entry>Software</entry>
+                            <entry>Download Location</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>Oracle Standard and Enterprise Editions </entry>
+                            <entry><link
+                                xlink:href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
+                                >http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html</link></entry>
+                        </row>
+                        <row>
+                            <entry>Oracle Express Edition</entry>
+                            <entry><link
+                                xlink:href="http://www.oracle.com/technetwork/database/express-edition/downloads/index.html"
+                                >http://www.oracle.com/technetwork/database/express-edition/downloads/index.html</link></entry>
+                        </row>
+                        <row>
+                            <entry>Oracle JDBC DB Driver</entry>
+                            <entry><link
+                                xlink:href="http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html"
+                                >http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html</link></entry>
+                        </row>
+                        <row>
+                            <entry>MySQL </entry>
+                            <entry><link xlink:href="http://www.mysql.com/downloads/"
+                                >http://www.mysql.com/downloads/</link></entry>
+                        </row>
+                        <row>
+                            <entry>MySQL Connector/J JDBC Driver</entry>
+                            <entry><link xlink:href="http://www.mysql.com/products/connector/j/"
+                                >http://www.mysql.com/products/connector/j/</link></entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </section>
         <section>
-            <title>Install Rice from distribution</title>
+            <title>MySQL Database Preparation</title>
+            <para>Kuali Rice supports both MySQL and Oracle databases. However, MySQL is easier to
+                install than Oracle and uses less machine resources so many developers prefer to use
+                that when getting started with Rice.</para>
+            <section>
+                <title>Installation</title>
+                <para>The installation steps for MySQL are going to be different for each platform.
+                    Please download the latest version MySQL Server from the location listed in the
+                    <link linkend="database_software_locations">Locations for Database Software</link> section of this document and follow the installation
+                    instructions for your platform.</para>
+                <note>
+                    <para>You may be required to create an account on the MySQL site in order to
+                        download the software.</para>
+                    <para>Please be sure to follow the instructions for installing MySQL on your
+                        platform very carefully. If downloading for Mac OS X, <emphasis role="bold"
+                            >be careful</emphasis> to download the appropriate version for your
+                        platform (32-bit vs. 64-bit and 10.6 vs 10.7)</para>
+                </note>
+            </section>
+            <section>
+                <title>Configuration</title>
+                <para>There are a few MySQL database configuration options that are required in
+                    order for Kuali Rice to work properly. These will need to be set in either your
+                    <emphasis role="bold">my.cnf</emphasis> or <emphasis role="bold"
+                        >my.ini</emphasis> file. The location and names of these files will differ
+                    depending on which platform you are working on. For details on where these files
+                    can be found, see the following document:</para>
+                <para><link xlink:href="http://dev.mysql.com/doc/refman/5.1/en/option-files.html"
+                    >http://dev.mysql.com/doc/refman/5.1/en/option-files.html</link></para>
+                <para>Once you have located this file, please add the following options, paying
+                    special attention to the line that needs to be commented out:</para>
+                <programlisting>[mysqld]
+max_allowed_packet=20M
+transaction-isolation=READ-COMMITTED
+lower_case_table_names=1
+max_connections=1000
+innodb_locks_unsafe_for_binlog=1
+...
+# Be sure to comment this out if it's in the file!!!
+#log-bin=mysql-bin</programlisting>
+                <para>Note that the <emphasis role="bold">[mysqld]</emphasis> section may already be
+                    in your my.cnf file. If so, you can just add the options listed above underneath
+                    that section</para>
+                <caution>
+                    <para>It is very important that you comment out <emphasis role="bold"
+                        >log-bin</emphasis>. Otherwise you will end up with some very bad
+                        problems later!</para>
+                </caution>
+            </section>
+            <section>
+                <title>Verification</title>
+                <para>Before verifying your mysql installation you will need to ensure that MySQL is
+                    running. Some of the platform-specific packages will set this up automatically
+                    (or allow you to install yourself in the case of Mac OS X). If MySQL is not
+                    starting automatically you can start it using a command like the following
+                    example from Mac OS X:</para>
+                <programlisting>sudo /usr/local/mysql/bin/mysqld_safe</programlisting>
+                <para>This will start the MySQL server.</para>
+                <para>To verify that you can actually connect to the server, execute the following
+                    at the command line:</para>
+                <programlisting>mysql -uroot</programlisting>
+                <para>This should bring yu to a command line client interface for the MySQL server.
+                    Type "show databases;" and press return. You should see output similar to the
+                    following.</para>
+                <programlisting>Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1
+Server version: 5.1.50-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| test               |
++--------------------+
+3 rows in set (0.13 sec)
+
+mysql> </programlisting>
+            </section>
+            <section>
+                <title>Install the JDBC Driver</title>
+                <para>Kuali Rice uses the MySQL Connector/J product as the native JDBC driver. Please
+                    download this driver from the location specified in the <link
+                        linkend="database_software_locations">Locations for Database Software</link>
+                    section of this Guide.</para>
+                <para>Once you have downloaded the JDBC driver that corresponds to your version of
+                    MySQL, copy it to <emphasis role="bold">/java/drivers</emphasis>. <emphasis
+                        role="bold">/java/drivers</emphasis> is a hard coded directory that the Rice
+                    scripts use as a default directory in which to search for drivers when the
+                    installation scripts are running.</para>
+            </section>
+        </section>    
+        <section>
+            <title>Oracle Database Preparation</title>
+            <section>
+                <title>Installation</title>
+                <para>The installation steps for Oracle are going to be different for each platform and
+                    version of Oracle. Please download from the location listed in the <link
+                        linkend="database_software_locations">Locations for Database Software</link>
+                    section of this document and follow the installation instructions for your
+                    platform.</para>
+                <para>To run the database completely on your local machine, we recommend installing
+                    Oracle Express (XE). Please refer to the <link linkend="database_software_locations"
+                        >Locations for Database Software</link> section of this Installation Guide to
+                    find the download location for this software.</para>
+            </section>
+            <section>
+                <title>Configuration</title>
+                <para>By default, OracleXE registers a web user interface on port 8080. This is the
+                    same port that the standalone version of Rice is preconfigured to use. To avoid
+                    a port conflict, you must change the port that the OracleXE web user interface
+                    uses with the Oracle XE admin webapp:
+                    <figure>
+                        <title>Oracle XE admin webapp</title>
+                        <mediaobject>    
+                            <imageobject>
+                                <imagedata fileref="../images/oracle_xe_admin_webapp.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </para>
+                <para>If you prefer, you can use the Oracle SQL tool described here to change the
+                    OracleXE web user interface port: <link
+                        xlink:href="http://daust.blogspot.com/2006/01/xe-changing-default-http-port.html"
+                        >http://daust.blogspot.com/2006/01/xe-changing-default-http-port.html</link></para>
+                <para>Please edit your hosts file with an entry to refer to your Oracle database.
+                    When this Installation Guide refers to the Oracle database host server, it will
+                    be referred to in the examples as koracle.</para>
+                <para>Now edit the hosts file and add this:</para>
+                <programlisting>&lt;ip address of mysql server&gt; koracle</programlisting>
+            </section>
+            <section>
+                <title>Verification</title>
+                <para>To connect to the supporting Oracle database (i.e., run scripts, view database
+                    tables, etc.), we recommend installing the Squirrel SQL client.  Please see the
+                    <link linkend="squirrel_SQL">section on Squirrel SQL</link> for more information.</para>
+            </section>
+            <section>
+                <title>Install the JDBC Driver</title>
+                <para>Kuali Rice uses the standard Oracle JDBC driver as the native JDBC driver. Please
+                    download this driver from the location specified in the <link
+                        linkend="database_software_locations">Locations for Database Software</link>
+                    section of this Guide.</para>
+                <para>Once you have downloaded the JDBC driver that corresponds to your version of
+                    Oracle, copy it to <emphasis role="bold">/java/drivers</emphasis>. <emphasis
+                        role="bold">/java/drivers</emphasis> is a hard coded directory that the Rice
+                    scripts use as a default directory in which to search for drivers when the
+                    installation scripts are running.</para>
+            </section>
+        </section>
+        <section>
+            <title>Suggested SQL Client Software</title>
+            <para>To examine and test your database setup, SQL client software is useful. Any SQL client
+                software that will connect to a MySQL or Oracle database will work. Two tools used by
+                the development team are the <emphasis role="bold">mysql</emphasis> command-line client
+                and SQuirrel SQL.</para>
+            <section>
+                <title>mysql client software</title>
+                <para>The <emphasis role="bold">mysql</emphasis> command-line client only works with MySQL
+                    and is usually installed with the MySQL Server software. An example of connection to
+                    MySQL as root and then switching to a database named <emphasis role="bold"
+                        >test</emphasis> can be found below:</para>
+                <programlisting>Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.1.50-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2010, Oracle and/or its affiliates. All rights reserved.
+This software comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to modify and redistribute it under the GPL v2 license
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Database changed</programlisting>
+            </section>
+            <section xml:id="squirrel_SQL">
+                <title>SQuirrel SQL</title>
+                <para>Tools like SQuirrel SQL use JDBC to access the database and will work with both
+                    MySQL and Oracle databases. You can download and install it from the following
+                    URL:</para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><link xlink:href="http://squirrel-sql.sourceforge.net/"
+                                >http://squirrel-sql.sourceforge.net/</link></para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+                <section>
+                    <title>With MySQL</title>
+                    <para>Connecting to a MySQL database with the name <emphasis role="bold">test</emphasis>
+                        would have a JDBC url like the following: <emphasis role="bold"
+                            >jdbc:mysql://localhost:3306/test</emphasis>.</para>
+                </section>
+                <section>
+                    <title>With Oracle</title>
+                    <para>The Rice SQL files use slash ‘/‘ as the statement delimiter. You may have to
+                        configure your SQL client appropriately so it can run the Rice SQL. In SQuirreL, you
+                        do this in Session->Session Properties->SQL->Statement Separator.</para>
+                </section>
+            </section>
+        </section>
+    </section> 
+    <section>
+        <title>Install and Configure Required Software</title>
+        <section>
+            <title>Overview</title>
+            <para>Kuali Rice requires the following software to be setup and configured:<itemizedlist>
+                <listitem>
+                    <para>Sun Microsystems Java Development Kit (JDK 1.6.x)</para>
+                    <warning>
+                        <para>You must use a JDK and not a Java runtime environment (JRE); the JDK
+                            you use must be version 1.6.x. Additionally, Rice has not been tested on
+                            JDKs other than Sun. So alternative implementations like OpenJDK should
+                            be used at your own risk.</para>
+                    </warning>
+                </listitem>
+                <listitem>
+                    <para>Maven 3</para>
+                </listitem>
+            </itemizedlist></para>
+            <para>First, some environment variables need to be configured.</para>
+            <section xml:id="environment_variables">
+                <title>Environment Variables</title>
+                <section>
+                    <title>Mac OS X</title>
+                    <para>Environment variables in Mac OS X can be set in a number of ways, but here we will
+                        show how to modify or create the .profile files in your user home directory. On OS X
+                        your user home directory is typically located at /Users/&lt;username>,</para>
+                    <para>An example .profile can be found below:</para>
+                    <programlisting>ANT_HOME=/usr/local/ant
+ANT_OPTS="-Xmx512m -XX:MaxPermSize=192m"
+M2_HOME=/usr/local/maven
+MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"
+GROOVY_HOME=/usr/local/groovy
+JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
+CATALINA_HOME=/usr/local/tomcat
+MYSQL_HOME=/usr/local/mysql
+    
+PATH="$ANT_HOME/bin:$M2_HOME/bin:$GROOVY_HOME/bin:$CATALINA_HOME:$MYSQL_HOME/bin:$PATH"
+export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_HOME MYSQL_HOME</programlisting>
+                    <note><para>It is important to export your environment variables once they are defined as the
+                        file above does.</para></note>
+                </section>
+                <section>
+                    <title>Windows XP</title>
+                    <para>To get to the screen where you can define environment variables on Windows XP
+                        follow these steps:<orderedlist>
+                            <listitem>
+                                <para>Click on the "Start" button in the bottom left-hand corner.</para>
+                            </listitem>
+                            <listitem>
+                                <para>On the resulting screen, right click on "My Computer".</para>
+                            </listitem>
+                            <listitem>
+                                <para>In the context menu, click on "Properties".</para>
+                            </listitem>
+                            <listitem>
+                                <para>This will open up the "System Properties" dialog window.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Click on the "Advanced" tab.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Click on the "Environment Variables" button.</para>
+                            </listitem>
+                            <listitem>
+                                <para>You will see the screen below where you can edit existing environment
+                                    variables or define new ones:</para>
+                                <para>&lt;TODO: Insert screen shot here></para>
+                            </listitem>
+                        </orderedlist></para>
+                </section>
+                <section>
+                    <title>Windows Vista and Windows 7</title>
+                    <para>To get to the screen where you can define environment variables on Windows Vista
+                        or Windows 7 follow these steps:<orderedlist>
+                            <listitem>
+                                <para>Click on the "Start" button in the bottom left-hand corner.</para>
+                            </listitem>
+                            <listitem>
+                                <para>On the resulting screen, right click on "Computer".</para>
+                            </listitem>
+                            <listitem>
+                                <para>This will open up the Control Panel "System" dialog.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Click on the "Advanced system settings".</para>
+                            </listitem>
+                            <listitem>
+                                <para>In the resulting window, click on the "Environment Variables..."
+                                    button.</para>
+                            </listitem>
+                            <listitem>
+                                <para>You will see the screen below where you can edit existing environment
+                                    variables or define new ones:</para>
+                                <para>&lt;TODO: Insert screen shot here></para>
+                            </listitem>
+                        </orderedlist></para>
+                </section>
+            </section>
+            <section>
+                <title>Java SDK</title>
+                <section>
+                    <title>Installation</title>
+                    <para>You should download and install the latest version of JDK 6. If you are on
+                        Windows, you can download it from the following URL: <link
+                            xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
+                            >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>.</para>
+                    <para>If you are on a Mac, then Java 6 should alredy be installed if you are up to date
+                        with the latest updates from Apple.</para>
+                </section>
+                <section>
+                    <title>Configuration</title>
+                    <para>You will also want to set up your <emphasis role="bold">JAVA_HOME</emphasis>
+                        environment variable to point to the installation directory of your JDK. In both
+                        Windows and Mac environments, the <emphasis role="bold">java</emphasis> executable
+                        program should already be on your path. But if it is not, you will want to include
+                        <emphasis role="bold">JAVA_HOME/bin</emphasis> in your <emphasis role="bold"
+                            >PATH</emphasis> environment variable.</para>
+                    <para>If you do not know how to do this, see the <command
+                        linkend="environment_variables">Environment Variables</command> section above
+                        for your platform.</para>
+                </section>
+                <section>
+                    <title>Verification</title>
+                    <para>In order to verify that your JDK has been installed successfully, open a command
+                        prompt and type the following:</para>
+                    <programlisting>java -version</programlisting>
+                    <para>You should see output similar to the following:</para>
+                    <programlisting>java version "1.6.0_26"
+    Java(TM) SE Runtime Environment (build 1.6.0_26-b03-383-11A511)
+    Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisting>
+                    <para>If you receive an error indicating that the "java" command could not be found,
+                        please ensure that the java command is on your machine's <emphasis role="bold"
+                            >PATH</emphasis> environment variable.</para>
+                </section>
+            </section>
+            <!-- TODO: Determine if we need to add a section for ant or if we're done here -->
+            <section>
+                <title>Maven</title>
+                <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
+                    project object model (POM) that defines various standards and conventions surrounding
+                    the organization of a project. This faciliates a set of standard build goals and
+                    lifecycle phases (such as compile, test, package, etc.)</para>
+                <section>
+                    <title>Installation</title>
+                    <para>To download version 3 of Maven, use the following link: <link
+                        xlink:href="http://maven.apache.org/download.html"
+                        >http://maven.apache.org/download.html</link></para>
+                    <para>Once you have downloaded the zip file, unzip it to a location of your
+                        choosing.</para>
+                </section>
+                <section>
+                    <title>Configuration</title>
+                    <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environement
+                        variable to point to the location where you unzipped Maven. You will additionally
+                        want to include <emphasis role="bold">M2_HOME/bin</emphasis> in your <emphasis
+                            role="bold">PATH</emphasis> environment variable so that maven can be executed
+                        from the command line without having to specify the full path.</para>
+                    <para>Finally, to prevent potential out of memory errors when compiling Rice with Maven,
+                        you should set your <emphasis role="bold">MAVEN_OPTS</emphasis> environment to a
+                        value like the following:</para>
+                    <programlisting>MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"</programlisting>
+                    <para>If you do not know how to do this, see the <link
+                        linkend="environment_variables">Environment Variables</link> section above
+                        for your platform.</para>
+                </section>
+                <section>
+                    <title>Verification</title>
+                    <para>In order to verify that Maven has been installed successfully and is available on
+                        the path, open a command prompt and type the following:</para>
+                    <programlisting>mvn -version</programlisting>
+                    <para>You should see output like the following:</para>
+                    <programlisting>Apache Maven 3.0.3 (r1075438; 2011-02-28 10:31:09-0700)
+    Maven home: /usr/local/maven
+    Java version: 1.6.0_26, vendor: Apple Inc.
+    Java home: /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+    Default locale: en_US, platform encoding: MacRoman
+    OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programlisting>
+                    <para>If you receive an error indicating hat the "mvn" command could not be found,
+                        please ensure that the directory that includes the mvn executable (<emphasis
+                            role="bold">M2_HOME/bin</emphasis>) is on your machine's <emphasis role="bold"
+                                >PATH</emphasis> environment variable.</para>
+                </section>
+            </section>
+        </section>
+        <section>
+            <title>Install and Setup Apache Tomcat</title>
+            <para>Kuali Rice ${project.version} supports the following Tomcat versions:<itemizedlist>
+                    <listitem>
+                        <para>Tomcat 6 (Servlet API 2.5, JSP 2.1) </para>
+                    </listitem>
+                    <listitem>
+                        <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>Please visit the <link xlink:href="http://tomcat.apache.org/">Apache Tomcat
+                    site</link> for information on how to install and configure Tomcat.</para>
+            <para>Other servlet containers can be used with Kuali Rice, but this guide will focus on
+                Tomcat.</para>
+        </section>
+        <section>
+            <title>Install Rice software from distribution</title>
             <para>The quickest way to get Rice installed on a standalone server is to download the
-                    <emphasis role="bold">Standalone Server</emphasis> distribution from the <link
+                <emphasis role="bold">Standalone Server</emphasis> distribution from the <link
                     xlink:href="http://kuali.org/rice/download">kuali.org download site</link>. Once
                 downloaded, uncompress the software.</para>
         </section>
+    </section>
+    <section>
+        <title>Building the Rice Database</title>
+        <section>
+            <title>Overview</title>
+            <para>The ImpEx tool is a Kuali-developed application which is based on <link
+                xlink:href="http://db.apache.org/torque">Apache Torque</link>. It reads in
+                database structure and data from XML files in a platform independent way and
+                then creates the resulting database in either Oracle or MySQL.</para>
+        </section>
+        
+        <section>
+            <title>Obtaining the ImpEx Tool</title>
+            <para>The ImpEx tool is included in the Rice binary and server distributions. It is
+                located in the <emphasis role="bold">database/database-impex</emphasis> directory of
+                the relevant archive. If you are building Rice from source, the ImpEx tool can be
+                acquired from Subversion:</para>
+            <programlisting>svn co https://test.kuali.org/svn/kul-cfg-dbs/trunk</programlisting>
+        </section>
+        <section>
+            <title>Oracle ImpEx Preconfiguration Setup</title>
+            <para>For Oracle users, you must run two scripts on your Oracle database before
+                continuing on to the ImpEx development database ingestion process. Please contact
+                your DBA and have him or her run these two setup scripts as the <emphasis
+                    role="bold">Oracle SYS user</emphasis>. These scripts will be in the <emphasis
+                        role="bold">database/database-impex</emphasis> distribution (or the impex
+                subdirectory if you checked out the tool from svn). These are the commands, and they
+                must be run in this order:<orderedlist>
+                    <listitem>
+                        <para><emphasis role="bold">create_kul_developer.sql</emphasis> (Creates the
+                            <emphasis role="bold">KUL_DEVELOPER</emphasis> role and applies
+                            grants)</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">system_grants.sql</emphasis> (Creates the
+                            <emphasis role="bold">KULUSERMAINT</emphasis> user for Rice Oracle
+                            system maintenance)</para>
+                    </listitem>
+                </orderedlist></para>
+            <note><para>Please inform your DBA that the above scripts must be run under the Oracle SYS account.</para></note>
+            <para>After your DBA runs the above scripts, you must run two more scripts as the kulusermaint:<orderedlist>
+                <listitem>
+                    <para><emphasis role="bold">create_admin_user.sql</emphasis> (Creates the
+                        <emphasis role="bold">kuluser_admin</emphasis> user)</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">kuluser_maint_pk.sql</emphasis> (Creates the
+                        package containing the functions that the Rice system uses to do Oracle
+                        system maintenance)</para>
+                </listitem>
+            </orderedlist></para>
+        </section>
+        <section>
+            <title>ImpEx Configuration Overview</title>
+            <para>The Rice team released four different sets of data with Rice 1.0.3. The server
+                distribution contains only the first two listed, whereas the binary distribution
+                contains all four. You can find these datasets in the /database directory of the
+                relevant archive:<orderedlist>
+                    <listitem>
+                        <para><emphasis role="bold">bootstrap-server-dataset</emphasis> – This is
+                            the core dataset. The Rice standalone server cannot function properly
+                            without this data.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">demo-server-dataset </emphasis>– This is a
+                            superset of the bootstrap-server-dataset which, in addition to necessary
+                            bootstrap data, includes sample security groups and workflow
+                            documents.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">bootstrap-client-dataset</emphasis> – This
+                            dataset is necessary for creating a Rice client application </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">demo-client-dataset </emphasis>– This is a
+                            superset of the data in the bootstrap-client-dataset. In addition to
+                            necessary bootstrap data, it includes tables used by some of the Rice
+                            sample client applications.</para>
+                    </listitem>
+                </orderedlist></para>
+            <para>This guide does not deal with developing a client application; for more information on creating a Rice client application and the use of the client datasets, see the Global Technical Reference Guide.</para>
+        </section>
+        <section>
+            <title>impex-build.properties Reference</title>
+            <para>After you have uncompressed the distribution (Binary or Server) you will use for
+                Rice, login as the user that you use to run the Tomcat server:<orderedlist>
+                    <listitem>
+                        <para>1. Go to the sub-directory, <emphasis role="bold">&lt;directory where
+                            uncompressed>/database/database-impex</emphasis>. This directory is
+                            the same for each of the distributions.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Copy the <emphasis role="bold"
+                            >impex-build.properties.sample</emphasis> file to your home
+                            directory, renaming the file to <emphasis role="bold"
+                                >impex-build.properties</emphasis>.</para>
+                    </listitem>
+                </orderedlist></para>
+        </section>
+        <section>
+            <title>Specific impex-build.properties database parameter setup</title>
+            <section>
+                <title>For MySQL Users</title>
+                <orderedlist>
+                    <listitem>
+                        <para>Configure the <emphasis role="bold">drivers.directory</emphasis>, the
+                            directory where the MySQL and Oracle JDBC drivers are located.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Configure <emphasis role="bold">import.torque.database.*</emphasis>.
+                            Set the user and password to the user under which you want to run the
+                            Rice software.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Configure <emphasis role="bold">import.admin.user</emphasis> and
+                            <emphasis role="bold">import.admin.password</emphasis>.</para>
+                    </listitem>
+                </orderedlist>
+            </section>
+            <section>
+                <title>For Local MySQL Server</title>
+                <para>Set import.admin.url as follows:</para>
+                <para><programlisting>import.admin.url=jdbc:mysql://localMySQLServerComputerName:MySQL-port-number/</programlisting></para>
+                <para>Example: <emphasis role="bold"
+                    >import.admin.url=jdbc:mysql://localhost:3306/</emphasis></para>
+            </section>
+            <section>
+                <title>For Remote MySQL Server</title>
+                <para>Set import.admin.url as follows:</para>
+                <para><programlisting>import.admin.url=jdbc:mysql://remoteMySQLServerComputerName:MySQL-port-number/</programlisting></para>
+                <para>Example: <emphasis role="bold"
+                    >import.admin.url=jdbc:mysql://192.168.25.22:3306/</emphasis></para>
+                <para>To setup the database from one of the distributions, change directories to
+                    /database/database-impex and use these commands:</para>
+                <para><programlisting>ant create-schema 
+ant import</programlisting></para>
+            </section>
+            <section>
+                <title>For Oracle users</title>
+                <orderedlist>
+                    <listitem>
+                        <para>Configure the <emphasis role="bold">drivers.directory</emphasis>, the
+                            directory where the MySQL and Oracle JDBC drivers are located.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Configure <emphasis role="bold">import.torque.database.*</emphasis>
+                            for the Oracle setup. Set the user and password to the user under which
+                            you want to run the Rice software.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Configure <emphasis role="bold">import.admin.user</emphasis> and
+                            <emphasis role="bold">import.admin.password</emphasis>.</para>
+                        <para><programlisting>import.admin.url= ${import.torque.database.url}</programlisting></para>
+                    </listitem>
+                    <listitem>
+                        <para>Configure <emphasis role="bold">oracle.usermaint.*</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para>To setup the database from one of the distributions, use these Ant
+                            commands:</para>
+                        <para><programlisting>ant create-schema 
+ant import </programlisting></para>
+                    </listitem>
+                </orderedlist>
+            </section>
+        </section>
+        <section>
+            <title>Verifying your Database Installation</title>
+            <para>At this point, your Kuali Rice database should be successfully installed. To
+                verify this, log into your database and verify the number of tables that are
+                present. There should be at least 200 (the number will be different for mysql and
+                oracle).</para>
+        </section>
+    </section>    
+    <section>
+        <title>Configure Rice</title>
         <section>
             <title>Deploying the WAR file</title>
             <para>

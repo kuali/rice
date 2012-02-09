@@ -28,12 +28,9 @@
       documentation!</para></legalnotice>
   </info>
     
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/overview.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/common_setup.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/developer_setup.xml"/> 
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/overview.xml"/> 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/standalone_server.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/database_install.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/build_database.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/developer_setup.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/tuning_rice.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/additional_configurations.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/appendix_server_configs.xml"/>

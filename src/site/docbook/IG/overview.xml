@@ -115,27 +115,20 @@
                     <para>Install a database and JDBC drivers. </para>
                 </listitem>
                 <listitem>
-                    <para>Install and configure a JDK and other required software.</para>
-                </listitem>
-                <listitem>
-                    <para>Install Rice software.</para>
+                    <para>Install and configure a JDK, Rice,  and other required software.</para>
                 </listitem>
                 <listitem>
                     <para>Set up ImpEx process to create the database schema and populate it.</para>
                 </listitem>
                 <listitem>
+                    <para>Configure Rice software.</para>
+                </listitem>
+                <listitem>
                     <para>Test the installation</para>
                 </listitem>
             </orderedlist></para>
-        <para>This Guide will provide installation instructions for:<itemizedlist>
-                <listitem>
-                    <para><link xlink:href="#developer_setup">Application Developers</link> -
-                        development systems</para>
-                </listitem>
-                <listitem>
-                    <para><link xlink:href="#standalone_server">Rice Standalone Server</link> -
-                        production systems</para>
-                </listitem>
-            </itemizedlist></para>
+        <para>This Guide will provide installation instructions for the Rice standalone server as
+            well as instructions on how to set up Eclipse to create a client application with
+            Rice.</para>
     </section>
 </chapter>

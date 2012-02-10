@@ -171,7 +171,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     public <X> X getValue() throws AttributeValidationException {
         X fieldValue = null;
         if(StringUtils.isNotBlank(this.attributeName)){
-            fieldValue = ObjectPropertyUtils.getPropertyValue(form, this.attributeName);
+            fieldValue = ObjectPropertyUtils.<X>getPropertyValue(form, this.attributeName);
         }
         return fieldValue;
     }
@@ -187,7 +187,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     public <X> X getValue(String attributeName) throws AttributeValidationException {
         X fieldValue = null;
         if(StringUtils.isNotBlank(attributeName)){
-            fieldValue = ObjectPropertyUtils.getPropertyValue(form, attributeName);
+            fieldValue = ObjectPropertyUtils.<X>getPropertyValue(form, this.attributeName);
         }
         return fieldValue;
     }

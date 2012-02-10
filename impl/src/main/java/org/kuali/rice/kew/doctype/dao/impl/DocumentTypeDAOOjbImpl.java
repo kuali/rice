@@ -205,17 +205,17 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		}
 	}
 
-	public List findAllCurrentRootDocuments() {
+	public List<DocumentType> findAllCurrentRootDocuments() {
 		Criteria crit = new Criteria();
 		crit.addIsNull("docTypeParentId");
 		return findAllCurrent(crit);
 	}
 
-    public List findAllCurrent() {
+    public List<DocumentType> findAllCurrent() {
 	return findAllCurrent(new Criteria());
     }
 
-    public List findAllCurrentByName(String name) {
+    public List<DocumentType> findAllCurrentByName(String name) {
 	Criteria crit = new Criteria();
 	crit.addEqualTo("name", name);
 	return findAllCurrent(crit);

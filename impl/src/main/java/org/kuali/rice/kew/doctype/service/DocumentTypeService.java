@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -34,10 +35,18 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
 
     @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME}, allEntries = true)
     void save(DocumentType documentType);
-    List findAllCurrentRootDocuments();
-    List findAllCurrent();
+
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}allCurrentRootDocuments'")
+    List<DocumentType> findAllCurrentRootDocuments();
+
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}allCurrent'")
+    List<DocumentType> findAllCurrent();
+
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}{previousInstances}' + 'documentTypeName=' + #p0")
     List<DocumentType> findPreviousInstances(String documentTypeName);
-    List getChildDocumentTypes(String documentTypeId);
+
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}{childDocumentTypes}' + 'documentTypeId=' + #p0")
+    List<DocumentType> getChildDocumentTypes(String documentTypeId);
 
     /**
      *

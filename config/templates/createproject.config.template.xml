@@ -19,13 +19,15 @@
 	<!-- App specific parameters -->
 	<param name="application.id">${PROJECT_NAME}</param>
 	<param name="app.code">${PROJECT_NAME}</param>
-	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="app.context.name">${app.code}</param>
+	<param name="application.url">http://localhost:8080/${app.context.name}</param>
 	<param name="production.environment.code">PRD</param>
 
 	<!-- Misc parameters -->
-	<param name="institution">iu</param>
+	<param name="institution">rice</param>
 	<param name="version">03/19/2007 01:59 PM</param>
-
+	<param name="transaction.timeout">3600</param>
+		
 	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
 	<param name="datasource.username">rice</param>
 	<param name="datasource.password">*** password ***</param>

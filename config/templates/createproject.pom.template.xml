@@ -43,7 +43,28 @@
 		</dependency>
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-impex-master</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-web</artifactId>
+			<version>${RICE_VERSION}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-impl</artifactId>
+			<version>${RICE_VERSION}</version>
+        </dependency>
+        <dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-edl-impl</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>
+        <dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-krms-impl</artifactId>
 			<version>${RICE_VERSION}</version>
         </dependency>
         <dependency>

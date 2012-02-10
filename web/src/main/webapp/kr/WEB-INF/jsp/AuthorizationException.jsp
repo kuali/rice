@@ -19,11 +19,11 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
 <c:set var="parameters"
-       value="<%=request.getAttribute(\"AuthorizationExceptionAction\")%>" />
+       value="<%=request.getAttribute(\"org.kuali.rice.kns.web.struts.action.AuthorizationExceptionAction\")%>" />
 
-<c:if test="${not empty parameters['message']}">
+<c:if test="${not empty parameters}">
 	<c:set var="message" value="${parameters.message}" />
-  <c:if test="${not empty message}">
+  <c:if test="${empty message}">
     <c:set var="exception" value='<%=request.getAttribute("org.apache.struts.action.EXCEPTION")%>'/>
     <c:set var="message" value="${exception['class'].name}" />
   </c:if>

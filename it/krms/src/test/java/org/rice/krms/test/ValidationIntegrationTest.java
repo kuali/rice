@@ -42,6 +42,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.type.ValidationActionType;
 import org.kuali.rice.krms.framework.type.ValidationActionTypeService;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
@@ -299,7 +300,9 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         agendaDef = agendaBoService.createAgenda(agendaDef);
 
         AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        agendaItemBuilder1.setRuleId(createRuleDefinition1(contextDefinition, nameSpace).getId());
+        RuleDefinition ruleDefinition = createRuleDefinition1(contextDefinition, nameSpace);
+        agendaItemBuilder1.setRuleId(ruleDefinition.getId());
+//        agendaItemBuilder1.setRule(RuleDefinition.Builder.create(ruleDefinition));
 
         AgendaItemDefinition agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
 
@@ -313,7 +316,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String nameSpace) {
         // Rule 1
         RuleDefinition.Builder ruleDefBuilder1 =
-            RuleDefinition.Builder.create(null, "Rule1", nameSpace, createKrmsCampusTypeDefinition(nameSpace).getId(), null);
+            RuleDefinition.Builder.create(null, "Rule1", nameSpace, null, null);
         RuleDefinition ruleDef1 = ruleBoService.createRule(ruleDefBuilder1.build());
 
 
@@ -518,8 +521,15 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, createTermDefinition1(contextDefinition).getId(),
                 PropositionParameterType.TERM.getCode(), 1)
         );
+        propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, "BL",
+                PropositionParameterType.CONSTANT.getCode(), 1)
+        );
+        propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, ComparisonOperator.EQUALS.getCode(),
+                PropositionParameterType.OPERATOR.getCode(), 1)
+        );
+
         PropositionDefinition.Builder propositionDefBuilder1 =
-            PropositionDefinition.Builder.create(null, PropositionType.COMPOUND.getCode(), ruleDef1.getId(), null /* type code is only for custom props */, propositionParameterBuilderList);
+            PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), ruleDef1.getId(), null /* type code is only for custom props */, propositionParameterBuilderList);
         propositionDefBuilder1.setDescription("propositionDefBuilder1 Description");
 
         // PropositionParams for rule 1

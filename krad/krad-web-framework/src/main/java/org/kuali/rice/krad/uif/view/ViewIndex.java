@@ -118,11 +118,11 @@ public class ViewIndex implements Serializable {
     /**
      * Retrieves a <code>DataField</code> instance from the index
      *
-     * @param attributePath - full path of the attribute (from the form)
+     * @param propertyPath - full path of the data field (from the form)
      * @return DataField instance for the path or Null if not found
      */
-    public DataField getDataFieldByPath(String attributePath) {
-        return dataFieldIndex.get(attributePath);
+    public DataField getDataFieldByPath(String propertyPath) {
+        return dataFieldIndex.get(propertyPath);
     }
 
     /**

@@ -24,7 +24,7 @@
 
   <!-- Base Headers -->
 
-  <bean id="Uif-HeaderFieldBase" parent="Uif-HeaderFieldBase-parentBean"/>
+  <bean id="Uif-HeaderFieldBase" abstract="true" parent="Uif-HeaderFieldBase-parentBean"/>
   <bean id="Uif-HeaderFieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.HeaderField"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/headerField.jsp"/>
@@ -134,7 +134,7 @@
 
   <!-- Base Footer -->
 
-  <bean id="Uif-FooterBase" parent="Uif-FooterBase-parentBean"/>
+  <bean id="Uif-FooterBase" abstract="true" parent="Uif-FooterBase-parentBean"/>
   <bean id="Uif-FooterBase-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup" scope="prototype">
     <property name="styleClasses" value="uif-footer"/>
   </bean>

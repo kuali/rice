@@ -24,7 +24,7 @@
 
   <!-- Base Groups -->
 
-  <bean id="Uif-GroupBase" parent="Uif-GroupBase-parentBean"/>
+  <bean id="Uif-GroupBase" abstract="true" parent="Uif-GroupBase-parentBean"/>
   <bean id="Uif-GroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
     <property name="styleClasses">
@@ -291,7 +291,7 @@
 
   <!--Navigation groups -->
 
-  <bean id="Uif-NavigationGroupBase" parent="Uif-NavigationGroupBase-parentBean"/>
+  <bean id="Uif-NavigationGroupBase" abstract="true" parent="Uif-NavigationGroupBase-parentBean"/>
   <bean id="Uif-NavigationGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.NavigationGroup"
         scope="prototype">
@@ -439,7 +439,7 @@
 
   <!--Collection groups and sections -->
 
-  <bean id="Uif-CollectionGroupBase" parent="Uif-CollectionGroupBase-parentBean"/>
+  <bean id="Uif-CollectionGroupBase" abstract="true" parent="Uif-CollectionGroupBase-parentBean"/>
   <bean id="Uif-CollectionGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Uif-GroupBase">

@@ -24,7 +24,7 @@
 
   <!-- Controls -->
 
-  <bean id="Uif-ControlBase" parent="Uif-ControlBase-parentBean"/>
+  <bean id="Uif-ControlBase" abstract="true" parent="Uif-ControlBase-parentBean"/>
   <bean id="Uif-ControlBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.ControlBase">
     <property name="styleClasses">
       <list>

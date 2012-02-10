@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
@@ -31,8 +32,10 @@ public interface ViewValidationService {
      * Validates the view based on the model passed in, this will correctly use previousView by default
      * as it automatically contains the generated data the validation requires.
      * @param model
+     * @return DictionaryValidationResult that contains any errors/messages if any, messages will have already
+     * been added to the MessageMap
      */
-    public void validateView(ViewModel model);
+    public DictionaryValidationResult validateView(ViewModel model);
 
     /**
      * Additional validation method when you want to explicitly define the View being validated.  Note
@@ -40,7 +43,9 @@ public interface ViewValidationService {
      * its lifecycle for this method to be used correctly.
      * @param view
      * @param model
+     * @return DictionaryValidationResult that contains any errors/messages if any,, messages will have already
+     * been added to the MessageMap
      */
-    public void validateView(View view, ViewModel model);
+    public DictionaryValidationResult validateView(View view, ViewModel model);
 
 }

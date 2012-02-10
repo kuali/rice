@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader;
+import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ViewValidationService;
@@ -34,13 +35,13 @@ public class ViewValidationServiceImpl implements ViewValidationService {
     protected DictionaryValidationService dictionaryValidationService;
 
     @Override
-    public void validateView(ViewModel model) {
-        validateView(model.getPreviousView(), model);
+    public DictionaryValidationResult validateView(ViewModel model) {
+        return validateView(model.getPreviousView(), model);
     }
 
     @Override
-    public void validateView(View view, ViewModel model) {
-        getDictionaryValidationService().validate(new ViewAttributeValueReader(view, model), true);
+    public DictionaryValidationResult validateView(View view, ViewModel model) {
+        return getDictionaryValidationService().validate(new ViewAttributeValueReader(view, model), true);
     }
 
     public DictionaryValidationService getDictionaryValidationService() {

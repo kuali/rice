@@ -16,9 +16,9 @@
 package org.kuali.rice.core;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.ThreadLocalTimer;
 import org.springframework.web.filter.AbstractRequestLoggingFilter;
 
-import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
@@ -30,7 +30,6 @@ import java.util.List;
 public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     private static final Logger LOG = Logger.getLogger(RequestLoggingFilter.class);
-    private long startTime;
     private List<String> extensionsToIgnore = Arrays.asList(".js"   + DEFAULT_AFTER_MESSAGE_SUFFIX,
                                                             ".css"  + DEFAULT_AFTER_MESSAGE_SUFFIX,
                                                             ".png"  + DEFAULT_AFTER_MESSAGE_SUFFIX,
@@ -41,19 +40,25 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
     @Override
     protected void beforeRequest(HttpServletRequest httpServletRequest, String s) {
         if (loggableExtensions(s)) {
-            startTime = new Date().getTime();
+            ThreadLocalTimer.setStartTime(new Date().getTime());
         }
     }
 
     @Override
     protected void afterRequest(HttpServletRequest httpServletRequest, String s) {
         if (loggableExtensions(s)) {
-            long endTime = new Date().getTime();
-            long elapsedTime = endTime - startTime;
-            StringBuffer sb = new StringBuffer(s);
-            sb.append(" ").append(elapsedTime).append(" ms.");
-            LOG.info(sb.toString());
+            long startTime = ThreadLocalTimer.getStartTime();
+            logElapsedTime(s, startTime);
+            ThreadLocalTimer.unset();
         }
+    }
+
+    private void logElapsedTime(String s, long startTime) {
+        long endTime = new Date().getTime();
+        long elapsedTime = endTime - startTime;
+        StringBuffer sb = new StringBuffer(s);
+        sb.append(" ").append(elapsedTime).append(" ms.");
+        LOG.info(sb.toString());
     }
 
     private boolean loggableExtensions(String s) {

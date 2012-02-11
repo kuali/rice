@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -291,7 +292,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 //        return true;
 //    }
 
-    public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
+    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         XPath xpath = XPathHelper.newXPath(docContent.getDocument());
         WorkflowFunctionResolver resolver = XPathHelper.extractFunctionResolver(xpath);
         resolver.setRuleExtensions(ruleExtensions);
@@ -320,7 +321,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
      * Extracts the xPath expressions that should be evaluated in order to determine whether or not the rule matches.  THis should take
      * into account the value of evaluateForMissingExtensions.
      */
-    protected List<String> extractExpressionsToEvaluate(XPath xpath, DocumentContent docContent, List ruleExtensions) {
+    protected List<String> extractExpressionsToEvaluate(XPath xpath, DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         List<String> expressionsToEvaluate = new ArrayList<String>(ruleExtensions.size() + 1);
         Element configXml = getConfigXML();
         String findFieldExpressions = "//routingConfig/" + FIELD_DEF_E + "/fieldEvaluation/xpathexpression";
@@ -337,11 +338,10 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                     }
                     String fieldName = fieldAttribute.getNodeValue();
                     boolean foundExtension = false;
-                    outer:for (Iterator iterator = ruleExtensions.iterator(); iterator.hasNext();) {
-                        RuleExtensionBo ruleExtension = (RuleExtensionBo) iterator.next();
+                    outer:for (RuleExtension ruleExtension : ruleExtensions) {
                         if (ruleExtension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(extensionDefinition.getName())) {
-                            for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
-                                if (fieldName.equals(ruleExtensionValue.getKey())) {
+                            for (String ruleExtensionValueKey : ruleExtension.getExtensionValuesMap().keySet()) {
+                                if (fieldName.equals(ruleExtensionValueKey)) {
                                     foundExtension = true;
                                     break outer;
                                 }

@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -53,7 +54,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 	private DocumentContent docContent;
 	private StandardGenericXMLRuleAttribute attribute;
-	private List extensions;
+	private List<RuleExtension> extensions;
 
 	public void setUp() throws Exception {
         super.setUp();
@@ -281,8 +282,12 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
+        ruleAttribute.setType("RuleAttribute");
+        ruleAttribute.setResourceDescriptor("noClass");
 
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId1");
+        ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 		RuleExtensionBo extension2 = new RuleExtensionBo();
 
@@ -307,13 +312,17 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		RuleAttribute ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
+        ruleAttribute2.setType("RuleAttribute");
+        ruleAttribute2.setResourceDescriptor("noClass");
 
 		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
 		extensions = new ArrayList();
-		extensions.add(extension);
-		extensions.add(extension2);
+		extensions.add(RuleExtensionBo.to(extension));
+		extensions.add(RuleExtensionBo.to(extension2));
 
 		assertTrue("Givenname did not match Dave, gender did not match female, or color did not match green", attribute.isMatch(docContent, extensions));
 
@@ -339,8 +348,13 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
+        ruleAttribute.setType("RuleAttribute");
+        ruleAttribute.setResourceDescriptor("noClass");
+
 
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId");
+        ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
 
@@ -355,13 +369,18 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
+        ruleAttribute2.setType("RuleAttribute");
+        ruleAttribute2.setResourceDescriptor("noClass");
+
 
 		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
 		extensions = new ArrayList();
-		extensions.add(extension);
-		extensions.add(extension2);
+		extensions.add(RuleExtensionBo.to(extension));
+		extensions.add(RuleExtensionBo.to(extension2));
 		assertFalse("Gender female != male.", attribute.isMatch(docContent, extensions));
 
 		///////
@@ -384,7 +403,12 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		ruleTemplateAttribute = new RuleTemplateAttributeBo();
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
+        ruleAttribute.setType("RuleAttribute");
+        ruleAttribute.setResourceDescriptor("noClass");
+
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId");
+        ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
 		values2 = new ArrayList();
@@ -399,13 +423,18 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
+        ruleAttribute2.setType("RuleAttribute");
+        ruleAttribute2.setResourceDescriptor("noClass");
+
 
 		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
 		extensions = new ArrayList();
-		extensions.add(extension);
-		extensions.add(extension2);
+		extensions.add(RuleExtensionBo.to(extension));
+		extensions.add(RuleExtensionBo.to(extension2));
 		assertTrue("Total dollar is greater than the max or less than the min.", attribute.isMatch(docContent, extensions));
 	}
 

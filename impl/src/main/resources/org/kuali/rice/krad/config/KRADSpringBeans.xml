@@ -274,8 +274,6 @@
 
   <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
-  <bean id="documentHelperService" class="org.kuali.rice.krad.service.impl.DocumentHelperServiceImpl"/>
-
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">
     <property name="documentDao">
       <ref bean="documentDao"/>

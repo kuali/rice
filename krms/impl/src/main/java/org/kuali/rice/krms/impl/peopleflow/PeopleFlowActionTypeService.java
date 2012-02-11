@@ -214,8 +214,12 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         Map<String, String> lookup = new HashMap<String, String>();
         lookup.put(ATTRIBUTE_FIELD_NAME, "id");
         quickFinderBuilder.setLookupParameters(lookup);
+        
+        Map<String,String> fieldConversions = new HashMap<String, String>();
+        fieldConversions.put("id", ATTRIBUTE_FIELD_NAME);
+        fieldConversions.put("name", NAME_ATTRIBUTE_FIELD);
 
-        quickFinderBuilder.setFieldConversions(Collections.singletonMap("id", ATTRIBUTE_FIELD_NAME));
+        quickFinderBuilder.setFieldConversions(fieldConversions);
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));
@@ -250,26 +254,11 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
 
-        RemotableQuickFinder.Builder quickFinderBuilder =
-                RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
-        Map<String, String> lookup = new HashMap<String, String>();
-        lookup.put(NAME_ATTRIBUTE_FIELD, "name");
-        quickFinderBuilder.setLookupParameters(lookup);
-
-        quickFinderBuilder.setFieldConversions(Collections.singletonMap("name", NAME_ATTRIBUTE_FIELD));
-
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));
         controlBuilder.setWatermark("PeopleFlow Name");
 
-        RemotableAttributeLookupSettings.Builder lookupSettingsBuilder = RemotableAttributeLookupSettings.Builder.create();
-        lookupSettingsBuilder.setCaseSensitive(Boolean.TRUE);
-        lookupSettingsBuilder.setInCriteria(true);
-        lookupSettingsBuilder.setInResults(true);
-        lookupSettingsBuilder.setRanged(false);
-
         RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(NAME_ATTRIBUTE_FIELD);
-        builder.setAttributeLookupSettings(lookupSettingsBuilder);
         builder.setRequired(true);
         builder.setDataType(DataType.STRING);
         builder.setControl(controlBuilder);
@@ -278,7 +267,6 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         builder.setMinLength(Integer.valueOf(1));
         builder.setMaxLength(Integer.valueOf(40));
         builder.setConstraintText("size 40");
-        builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
         return builder.build();
     }

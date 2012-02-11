@@ -649,14 +649,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         for (int i = 0; i < currentOrder.length - 1; i++) {
                             newOrder[i + 1] = currentOrder[i];
                         }
-                        // rejoins items with comma separator...
-                        String newSearchOrder = "";
-                        for (String aNewOrder : newOrder) {
-                            if (!"".equals(newSearchOrder)) {
-                                newSearchOrder += ",";
-                            }
-                            newSearchOrder += aNewOrder;
-                        }
+
+                        String newSearchOrder = rejoinWithCommas(newOrder);
                         // save the search string under the searchName (which used to be the last name in the list)
                         userOptionsService.save(principalId, searchName, savedSearchString);
                         userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
@@ -679,13 +673,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         for (int i = 0; i < currentOrder.length; i++) {
                             newOrder[i + 1] = currentOrder[i];
                         }
-                        String newSearchOrder = "";
-                        for (String aNewOrder : newOrder) {
-                            if (!"".equals(newSearchOrder)) {
-                                newSearchOrder += ",";
-                            }
-                            newSearchOrder += aNewOrder;
-                        }
+
+                        String newSearchOrder = rejoinWithCommas(newOrder);
+                        // save the search string under the searchName (which used to be the last name in the list)
                         userOptionsService.save(principalId, searchName, savedSearchString);
                         userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
                     }
@@ -698,7 +688,23 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
     }
 
-	public ConfigurationService getKualiConfigurationService() {
+    /**
+     * Returns a String result of the String array joined with commas
+     * @param newOrder array to join with commas
+     * @return String of the newOrder array joined with commas
+     */
+    private String rejoinWithCommas(String[] newOrder) {
+        StringBuilder newSearchOrder = new StringBuilder("");
+        for (String aNewOrder : newOrder) {
+            if (newSearchOrder.length() != 0) {
+                newSearchOrder.append(",");
+            }
+            newSearchOrder.append(aNewOrder);
+        }
+        return newSearchOrder.toString();
+    }
+
+    public ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
 		}

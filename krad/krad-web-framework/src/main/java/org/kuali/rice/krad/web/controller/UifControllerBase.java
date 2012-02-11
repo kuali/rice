@@ -357,6 +357,19 @@ public abstract class UifControllerBase {
         return getUIFModelAndView(form, pageId);
     }
 
+    /**
+     *  handles an ajax refresh
+     *
+     *  <p>The query form plugin  activates this request via a form post, where on the JS side,
+     *  {@code org.kuali.rice.krad.uif.UifParameters#RENDER_FULL_VIEW} is set to false</p>
+     *
+     * @param form  -  Holds properties necessary to determine the <code>View</code> instance that will be used to render the UI
+     * @param result  -   represents binding results
+     * @param request  - http servlet request data
+     * @param response   - http servlet response object
+     * @return  the  ModelAndView object
+     * @throws Exception
+     */
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -388,7 +401,11 @@ public abstract class UifControllerBase {
                     form, lookupCollectionName, selectedLineValues);
         }
 
-        form.setRenderFullView(true);
+        if (request.getParameterMap().containsKey(UifParameters.RENDER_FULL_VIEW)) {
+            form.setRenderFullView(Boolean.parseBoolean(request.getParameter(UifParameters.RENDER_FULL_VIEW)));
+        } else {
+            form.setRenderFullView(true);
+        }
 
         return getUIFModelAndView(form);
     }

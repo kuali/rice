@@ -224,4 +224,16 @@
     </property>
   </bean>
 
+  <bean id="rice.kew.extensionRepositoryService.exporter" parent="kewServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="rice.kew.extensionRepositoryService"/>
+        </property>
+        <property name="localServiceName" value="extensionRepositoryService"/>
+        <property name="busSecurity" value="${rice.kew.extensionRepositoryService.secure}"/>
+      </bean>
+    </property>
+  </bean>
+
 </beans>

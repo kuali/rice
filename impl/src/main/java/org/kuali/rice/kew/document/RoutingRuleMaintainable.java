@@ -190,9 +190,6 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		super.setNewCollectionLineDefaultValues(collectionName, addLine);
 		if (KEWPropertyConstants.RESP_SECTION_NAME_SET.contains(collectionName)) {
 			RuleTemplateBo ruleTemplate = getThisRule().getRuleTemplate();
-            //if (ruleTemplate == null && getThisRule().getRuleTemplateId() != null) {
-            //    ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(getThisRule().getRuleTemplateId());
-            //}
 			if(ruleTemplate.getDefaultActionRequestValue() != null && ruleTemplate.getDefaultActionRequestValue().getValue() != null){
 				((RuleResponsibilityBo) addLine).setActionRequestedCd(ruleTemplate.getDefaultActionRequestValue().getValue());
 	        }

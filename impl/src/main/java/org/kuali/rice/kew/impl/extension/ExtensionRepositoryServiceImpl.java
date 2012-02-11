@@ -57,11 +57,7 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
     @XmlElement(name = Elements.RULE_ATTRIBUTE_SERVICE, required = true)
     private RuleAttributeService ruleAttributeService;
 
-    /**
-	 * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given id.
-	 * @param id the id to search by.
-     * @return the extension definition found for the matching rule attribute service
-	 */
+
     @Override
     public ExtensionDefinition getExtensionById(String id) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(id)) {
@@ -71,11 +67,7 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
         return translateFromRuleAttribute(ruleAttribute);
     }
 
-    /**
-	 * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given name.
-	 * @param name the name to search by.
-     * @return the extension definition found for the matching rule attribute service
-	 */
+
     @Override
     public ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(name)) {

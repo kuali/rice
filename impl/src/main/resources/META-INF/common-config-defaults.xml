@@ -506,6 +506,7 @@
   <param name="rice.kew.responsibilityChangeQueue.secure" override="false">true</param>
   <param name="rice.kew.kewTypeRepositoryService.secure" override="false">true</param>
   <param name="rice.kew.peopleFlowService.secure" override="false">true</param>
+  <param name="rice.kew.extensionRepositoryService.secure" override="false">true</param>
   <param name="rice.kew.immediateEmailReminderQueue.secure" override="false">true</param>
   <param name="rice.kew.actionRequestDerivedRoleTypeService.secure" override="false">true</param>
   <param name="rice.kew.adhocReviewPermissionTypeService.secure" override="false">true</param>

@@ -16,6 +16,12 @@
 package org.kuali.rice.kew.api.extension;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  * A service which is used for retrieving information about extensions to various
@@ -23,10 +29,27 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "extensionRepositoryService", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ExtensionRepositoryService {
-
+    /**
+     * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given id.
+     * @param id the id to search by.
+     * @return the extension definition found for the matching rule attribute service
+     * @throws RiceIllegalArgumentException if id is null or blank
+     */
+    @WebMethod(operationName = "getExtensionById")
+    @WebResult(name = "extensionDefinition")
     ExtensionDefinition getExtensionById(String id) throws RiceIllegalArgumentException;
 
+    /**
+     * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given name.
+     * @param name the name to search by.
+     * @return the extension definition found for the matching rule attribute service
+     * @throws RiceIllegalArgumentException if name is null or blank
+     */
+    @WebMethod(operationName = "getExtensionByName")
+    @WebResult(name = "extensionDefinition")
     ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException;
 
 }

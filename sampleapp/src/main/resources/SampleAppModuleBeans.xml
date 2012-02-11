@@ -205,15 +205,12 @@
   <bean id="sampleAppPeopleFlowTypeService"
         class="org.kuali.rice.krad.workflow.DataDictionaryPeopleFlowTypeServiceImpl"/>
 
-  <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
-            p:service-ref="sampleAppPeopleFlowTypeService"
-            p:localServiceName="sampleAppPeopleFlowTypeService"
-            p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
-    </property>
-  </bean>
+  <bean id="sampleAppPeopleFlowTypeService.exporter"
+        class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
+        p:serviceBus-ref="rice.ksb.serviceBus"
+        p:callbackService-ref="sampleAppPeopleFlowTypeService"
+        p:localServiceName="sampleAppPeopleFlowTypeService"
+        p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
 
 </beans>
 

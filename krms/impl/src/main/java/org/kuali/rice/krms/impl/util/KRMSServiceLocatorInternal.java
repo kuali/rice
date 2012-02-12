@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krms.impl.util;
 
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+
+import javax.xml.namespace.QName;
 
 /**
  * Like {@link org.kuali.rice.krms.api.KrmsApiServiceLocator} only for non-remotable.
@@ -44,9 +44,12 @@ public class KRMSServiceLocatorInternal {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(
-				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KRMS_RUN_MODE_PROPERTY)))) ?
-						new QName(KRMS_MODULE_NAMESPACE, serviceName) : new QName(serviceName) );
+        QName name = new QName(serviceName);
+        RunMode krmsRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KRMS_RUN_MODE_PROPERTY));
+        if (krmsRunMode == RunMode.REMOTE || krmsRunMode == RunMode.THIN) {
+            name = new QName(KRMS_MODULE_NAMESPACE, serviceName);
+        }
+		return GlobalResourceLoader.getResourceLoader().getService(name);
 	}
 	
 //    public static BusinessObjectService getBusinessObjectService() {

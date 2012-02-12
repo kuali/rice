@@ -36,7 +36,7 @@ public class KIMConfigurer extends ModuleConfigurer {
 
     public KIMConfigurer() {
         super(KimApiConstants.Namespaces.MODULE_NAME);
-        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
+        setValidRunModes(Arrays.asList(RunMode.THIN, RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
     }
 
     @Override
@@ -47,7 +47,9 @@ public class KIMConfigurer extends ModuleConfigurer {
     @Override
 	public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
-        if (RunMode.REMOTE == getRunMode()) {
+        if (RunMode.THIN == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KimThinSpringBeans.xml");
+        } else if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KimRemoteSpringBeans.xml");
         } else if (RunMode.EMBEDDED == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KimEmbeddedSpringBeans.xml");

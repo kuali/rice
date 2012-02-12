@@ -275,4 +275,16 @@
     <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="883" ATTR_VAL="KRMS_TEST"
         KIM_ATTR_DEFN_ID="4" KIM_TYP_ID="67"
         OBJ_ID="B7DBFABEFD2C8CBFE0402E0AA9D757C9" PERM_ID="843" VER_NBR="1"/>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="884"
+        ATTR_VAL="TermMaintenanceDocument" KIM_ATTR_DEFN_ID="13"
+        KIM_TYP_ID="56" OBJ_ID="aa1d1400-6155-4819-8bad-e5dd81f9871b"
+        PERM_ID="844" VER_NBR="1"/>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="885"
+        ATTR_VAL="ContextMaintenanceDocument" KIM_ATTR_DEFN_ID="13"
+        KIM_TYP_ID="56" OBJ_ID="c43bc7f5-949e-4a85-b173-6a53d81f2762"
+        PERM_ID="845" VER_NBR="1"/>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="886"
+        ATTR_VAL="TermSpecificationMaintenanceDocument"
+        KIM_ATTR_DEFN_ID="13" KIM_TYP_ID="56"
+        OBJ_ID="d3e373ca-296b-4834-bd66-ba159ebe733a" PERM_ID="846" VER_NBR="1"/>
 </dataset>

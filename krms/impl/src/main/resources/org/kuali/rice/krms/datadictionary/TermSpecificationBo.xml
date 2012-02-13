@@ -154,6 +154,8 @@
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
     <property name="propertyName" value="categories" />
     <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="collectionLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+    <property name="collectionLookup.fieldConversions" value="id:id,name:name,namespace:namespace"/>
     <property name="items">
       <list>
 
@@ -200,6 +202,8 @@
     <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo" />
     <property name="propertyName" value="contexts" />
     <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="collectionLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+    <property name="collectionLookup.fieldConversions" value="id:id,name:name,namespace:namespace,description:description"/>
     <property name="items">
       <list>
 

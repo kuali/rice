@@ -136,6 +136,14 @@ public interface ViewHelperService {
 	public void performFinalize(View view, Object model);
 
     /**
+     * Invoked after the view has been rendered to clear out objects that are not necessary to keep around for
+     * the post, this helps reduce the view size and overall cost to store the form in session
+     *
+     * @param view - view instance to be cleaned
+     */
+    public void cleanViewAfterRender(View view);
+
+    /**
      * Performs the complete component lifecycle on the component passed in for use during a refresh process
      *
      * <p>

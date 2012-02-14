@@ -91,5 +91,7 @@
   </bean>
 
   <bean id="Uif-ConditionalCollectionFilter" class="org.kuali.rice.krad.uif.container.ELCollectionFilter" scope="prototype"/>
+  
+  <bean id="Uif-ViewTheme" class="org.kuali.rice.krad.uif.view.ViewTheme" scope="prototype"/>
 
 </beans>

@@ -248,20 +248,21 @@ public class View extends ContainerBase {
         if (component == null) {
             return;
         }
+        
+        Integer currentSequenceVal = idSequence;
 
-        // assign IDs if necessary
+        // assign ID if necessary
         if (StringUtils.isBlank(component.getId())) {
-            component.setId(getNextId());
+            component.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
+        }
 
-        }
-        if (StringUtils.isBlank(component.getFactoryId())) {
-            component.setFactoryId(component.getId());
-        }
+        // capture current sequence value for component refreshes
+        getViewIndex().addSequenceValueToSnapshot(component.getId(), currentSequenceVal);
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
             if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(getNextId());
+                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
             }
         }
 
@@ -451,6 +452,24 @@ public class View extends ContainerBase {
      */
     public void setApplicationFooter(Group applicationFooter) {
         this.applicationFooter = applicationFooter;
+    }
+
+    /**
+     * Current sequence value for id assignment
+     *
+     * @return int id sequence
+     */
+    public int getIdSequence() {
+        return idSequence;
+    }
+
+    /**
+     * Setter for the current id sequence value
+     *
+     * @param idSequence
+     */
+    public void setIdSequence(int idSequence) {
+        this.idSequence = idSequence;
     }
 
     /**

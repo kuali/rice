@@ -22,7 +22,6 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.service.SessionDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -104,7 +103,10 @@ public abstract class UifControllerBase {
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isNotBlank(formKeyParam)) {
             form = uifFormManager.getForm(formKeyParam);
-        } else {
+        } 
+
+        // if form not in manager, create a new form
+        if (form == null) {
             form = createInitialForm(request);
         }
 
@@ -177,7 +179,7 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        View view = uifForm.getPreviousView();
+        View view = uifForm.getPostedView();
         view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
 
         return updateComponent(uifForm, result, request, response);
@@ -208,7 +210,7 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        View view = uifForm.getPreviousView();
+        View view = uifForm.getPostedView();
         view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
                 selectedLineIndex);
 
@@ -240,15 +242,15 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Show inactive records flag not found in request");
         }
 
-        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(uifForm.getView(),
-                collectionGroupId);
+        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(
+                uifForm.getPostedView(), collectionGroupId);
 
         // update inactive flag on group
         collectionGroup.setShowInactive(showInactive);
 
         // run lifecycle and update in view
-        uifForm.getView().getViewHelperService().performComponentLifecycle(uifForm.getView(), uifForm, collectionGroup,
-                collectionGroupId);
+        uifForm.getPostedView().getViewHelperService().performComponentLifecycle(uifForm.getPostedView(), uifForm,
+                collectionGroup, collectionGroupId);
 
         return UifWebUtils.getComponentModelAndView(collectionGroup, uifForm);
     }
@@ -280,6 +282,9 @@ public abstract class UifControllerBase {
         if (StringUtils.isBlank(returnUrl)) {
             returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
         }
+
+        // clear current form from session
+        GlobalVariables.getUifFormManager().removeForm(form);
 
         return performRedirect(form, returnUrl, props);
     }
@@ -340,6 +345,9 @@ public abstract class UifControllerBase {
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
 
+        // clear current form from session
+        GlobalVariables.getUifFormManager().removeForm(form);
+
         return performRedirect(form, histUrl, props);
     }
 
@@ -397,7 +405,7 @@ public abstract class UifControllerBase {
             }
 
             // invoked view helper to populate the collection from lookup results
-            form.getPreviousView().getViewHelperService().processMultipleValueLookupResults(form.getPreviousView(),
+            form.getPostedView().getViewHelperService().processMultipleValueLookupResults(form.getPostedView(),
                     form, lookupCollectionName, selectedLineValues);
         }
 
@@ -425,16 +433,18 @@ public abstract class UifControllerBase {
         }
 
         // get a new instance of the component
-        Component comp = ComponentFactory.getNewInstanceForRefresh(form.getView(), requestedComponentId);
+        Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), requestedComponentId);
+        
+        View postedView = form.getPostedView();
 
         // run lifecycle and update in view
-        form.getView().getViewHelperService().performComponentLifecycle(form.getView(), form, comp,
+        postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp,
                 requestedComponentId);
 
         //Regenerate server message content for page
-        form.getView().getCurrentPage().getErrorsField().setDisplayNestedMessages(true);
-        form.getView().getCurrentPage().getErrorsField().generateMessages(false, form.getView(),
-                form,form.getView().getCurrentPage());
+        postedView.getCurrentPage().getErrorsField().setDisplayNestedMessages(true);
+        postedView.getCurrentPage().getErrorsField().generateMessages(false, postedView, form,
+                postedView.getCurrentPage());
 
         return UifWebUtils.getComponentModelAndView(comp, form);
     }
@@ -548,7 +558,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldSuggestQuery(
-                form.getView(), queryFieldId, queryTerm, queryParameters);
+                form.getPostedView(), queryFieldId, queryTerm, queryParameters);
 
         return queryResult;
     }
@@ -586,7 +596,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldQuery(
-                form.getView(), queryFieldId, queryParameters);
+                form.getPostedView(), queryFieldId, queryParameters);
 
         return queryResult;
     }
@@ -603,7 +613,7 @@ public abstract class UifControllerBase {
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
         // since we are redirecting and will not be rendering the view, we need to reset the view from the previous
-        form.setView(form.getPreviousView());
+        form.setView(form.getPostedView());
 
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
@@ -645,10 +655,6 @@ public abstract class UifControllerBase {
 
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
-    }
-
-    public SessionDocumentService getSessionDocumentService() {
-        return KRADServiceLocatorWeb.getSessionDocumentService();
     }
 
 }

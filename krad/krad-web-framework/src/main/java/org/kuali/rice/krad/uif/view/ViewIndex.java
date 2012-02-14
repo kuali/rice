@@ -19,11 +19,17 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
 
+import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Holds field indexes of a <code>View</code> instance for retrieval
@@ -39,6 +45,10 @@ public class ViewIndex implements Serializable {
 
     private Map<String, Component> initialComponentStates;
 
+    private Map<String, PropertyEditor> fieldPropertyEditors;
+    private Map<String, PropertyEditor> secureFieldPropertyEditors;
+    private Map<String, Integer> idSequenceSnapshot;
+
     /**
      * Constructs new instance
      */
@@ -47,6 +57,9 @@ public class ViewIndex implements Serializable {
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
+        fieldPropertyEditors = new HashMap<String, PropertyEditor>();
+        secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
+        idSequenceSnapshot = new HashMap<String, Integer>();
     }
 
     /**
@@ -69,6 +82,8 @@ public class ViewIndex implements Serializable {
         index = new HashMap<String, Component>();
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
+        fieldPropertyEditors = new HashMap<String, PropertyEditor>();
+        secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
 
         indexComponent(view);
     }
@@ -83,6 +98,11 @@ public class ViewIndex implements Serializable {
      * If the component is already contained in the indexes, it will be replaced
      * </p>
      *
+     * <p>
+     * Special processing is done for DataField instances to register their property editor which will
+     * be used for form binding
+     * </p>
+     *
      * @param component - component instance to index
      */
     public void indexComponent(Component component) {
@@ -95,6 +115,15 @@ public class ViewIndex implements Serializable {
         if (component instanceof DataField) {
             DataField field = (DataField) component;
             dataFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
+
+            // pull out information we will need to support the form post
+            if (component.isRender()) {
+                if (field.hasSecureValue()) {
+                    secureFieldPropertyEditors.put(field.getBindingInfo().getBindingPath(), field.getPropertyEditor());
+                } else {
+                    fieldPropertyEditors.put(field.getBindingInfo().getBindingPath(), field.getPropertyEditor());
+                }
+            }
         } else if (component instanceof CollectionGroup) {
             CollectionGroup collectionGroup = (CollectionGroup) component;
             collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
@@ -103,6 +132,60 @@ public class ViewIndex implements Serializable {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             indexComponent(nestedComponent);
         }
+    }
+
+    /**
+     * Invoked after the view lifecycle or component refresh has run to clear indexes that are not
+     * needed for the post
+     */
+    public void clearIndexesAfterRender() {
+        // build list of factory ids for components whose initial state needs to be keep
+        Set<String> holdIds = new HashSet<String>();
+        Set<String> holdFactoryIds = new HashSet<String>();
+        for (Component component : index.values()) {
+            if (component != null) {
+                // if component has a refresh condition we need to keep it
+                if (StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
+                        component.getConditionalRefresh()) || StringUtils.isNotBlank(
+                        component.getRefreshWhenChanged()) || component.isRefreshedByAction()) {
+                    holdFactoryIds.add(component.getFactoryId());
+                    holdIds.add(component.getId());
+                }
+                // if component is a collection we need to keep it
+                else if (component instanceof CollectionGroup) {
+                    ViewCleaner.cleanCollectionGroup((CollectionGroup) component);
+                    holdFactoryIds.add(component.getFactoryId());
+                    holdIds.add(component.getId());
+                }
+                // if component is input field and has a query we need to keep the final state
+                else if ((component instanceof InputField)) {
+                    InputField inputField = (InputField) component;
+                    if ((inputField.getFieldAttributeQuery() != null) || inputField.getFieldSuggest().isRender()) {
+                        holdIds.add(component.getId());
+                    }
+                }
+            }
+        }
+
+        // remove initial states for components we don't need for post
+        Map<String, Component> holdInitialComponentStates = new HashMap<String, Component>();
+        for (String factoryId : initialComponentStates.keySet()) {
+            if (holdFactoryIds.contains(factoryId)) {
+                holdInitialComponentStates.put(factoryId, initialComponentStates.get(factoryId));
+            }
+        }
+        initialComponentStates = holdInitialComponentStates;
+
+        // remove final states for components we don't need for post
+        Map<String, Component> holdComponentStates = new HashMap<String, Component>();
+        for (String id : index.keySet()) {
+            if (holdIds.contains(id)) {
+                holdComponentStates.put(id, index.get(id));
+            }
+        }
+        index = holdComponentStates;
+
+        dataFieldIndex = new HashMap<String, DataField>();
     }
 
     /**
@@ -201,13 +284,20 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Adds a copy of the given component instance to the map of initial component states keyed by the component
-     * factory id
+     * Adds a copy of the given component instance to the map of initial component states keyed
+     *
+     * <p>
+     * Component is only added if its factory id is not set yet (which would happen if it had a spring bean id
+     * and we can get the state from Spring). Once added the factory id will be set to the component id
+     * </p>
      *
      * @param component - component instance to add
      */
-    public void addInitialComponentState(Component component) {
-        initialComponentStates.put(component.getFactoryId(), ComponentUtils.copy(component));
+    public void addInitialComponentStateIfNeeded(Component component) {
+        if (StringUtils.isBlank(component.getFactoryId())) {
+            component.setFactoryId(component.getId());
+            initialComponentStates.put(component.getFactoryId(), ComponentUtils.copy(component));
+        }
     }
 
     /**
@@ -217,5 +307,67 @@ public class ViewIndex implements Serializable {
      */
     public void setInitialComponentStates(Map<String, Component> initialComponentStates) {
         this.initialComponentStates = initialComponentStates;
+    }
+
+    /**
+     * Maintains configuration of properties that have been configured for the view (if render was set to
+     * true) and there corresponding PropertyEdtior (if configured)
+     *
+     * <p>
+     * Information is pulled out of the View during the lifecycle so it can be used when a form post is done
+     * from the View. Note if a field is secure, it will be placed in the {@link #getSecureFieldPropertyEditors()} map
+     * instead
+     * </p>
+     *
+     * @return Map<String, PropertyEditor> map of property path (full) to PropertyEditor
+     */
+    public Map<String, PropertyEditor> getFieldPropertyEditors() {
+        return fieldPropertyEditors;
+    }
+
+    /**
+     * Setter for the Map that holds view property paths to configured Property Editors (non secure fields only)
+     *
+     * @param fieldPropertyEditors
+     */
+    public void setFieldPropertyEditors(Map<String, PropertyEditor> fieldPropertyEditors) {
+        this.fieldPropertyEditors = fieldPropertyEditors;
+    }
+
+    /**
+     * Maintains configuration of secure properties that have been configured for the view (if render was set to
+     * true) and there corresponding PropertyEdtior (if configured)
+     *
+     * <p>
+     * Information is pulled out of the View during the lifecycle so it can be used when a form post is done
+     * from the View. Note if a field is non-secure, it will be placed in the {@link #getFieldPropertyEditors()} map
+     * instead
+     * </p>
+     *
+     * @return Map<String, PropertyEditor> map of property path (full) to PropertyEditor
+     */
+    public Map<String, PropertyEditor> getSecureFieldPropertyEditors() {
+        return secureFieldPropertyEditors;
+    }
+
+    /**
+     * Setter for the Map that holds view property paths to configured Property Editors (secure fields only)
+     *
+     * @param secureFieldPropertyEditors
+     */
+    public void setSecureFieldPropertyEditors(Map<String, PropertyEditor> secureFieldPropertyEditors) {
+        this.secureFieldPropertyEditors = secureFieldPropertyEditors;
+    }
+
+    public Map<String, Integer> getIdSequenceSnapshot() {
+        return idSequenceSnapshot;
+    }
+
+    public void setIdSequenceSnapshot(Map<String, Integer> idSequenceSnapshot) {
+        this.idSequenceSnapshot = idSequenceSnapshot;
+    }
+    
+    public void addSequenceValueToSnapshot(String componentId, int sequenceVal) {
+        idSequenceSnapshot.put(componentId, sequenceVal);
     }
 }

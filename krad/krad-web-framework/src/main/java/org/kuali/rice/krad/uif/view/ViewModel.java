@@ -107,14 +107,14 @@ public interface ViewModel extends Serializable {
      *
      * @return View instance
      */
-    public View getPreviousView();
+    public View getPostedView();
 
     /**
      * Setter for the previous view instance
      *
      * @param previousView
      */
-    public void setPreviousView(View previousView);
+    public void setPostedView(View previousView);
 
     /**
      * Id for the current page being displayed within the view

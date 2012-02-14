@@ -769,8 +769,7 @@ public class CollectionGroupBuilder implements Serializable {
             String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + newCollectionLineKey + "']";
             collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 
-            // if there is not an instance available or we need to clear create
-            // a new instance
+            // if there is not an instance available or we need to clear create a new instance
             if (!newCollectionLines.containsKey(newCollectionLineKey)
                     || (newCollectionLines.get(newCollectionLineKey) == null) || clearExistingLine) {
                 // create new instance of the collection type for the add line

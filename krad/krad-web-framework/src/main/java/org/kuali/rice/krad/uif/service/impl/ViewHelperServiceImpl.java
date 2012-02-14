@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -188,12 +189,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     public void performComponentLifecycle(View view, Object model, Component component, String origId) {
         Component origComponent = view.getViewIndex().getComponentById(origId);
+        
+        // run through and assign any ids starting with the id for the refreshed component (this might be
+        // necessary if we are getting a new component instance from the bean factory)
+        Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
+        view.setIdSequence(startingSequenceVal);
+
+        view.assignComponentIds(component);
 
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());
 
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getFactoryId(), "");
+
         // remove attribute suffix since that gets added in lifecycle
         if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
             suffix = StringUtils.removeEnd(suffix, UifConstants.IdSuffixes.ATTRIBUTE);
@@ -215,6 +224,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     ((CollectionGroup) origComponent).getSubCollectionSuffix());
         }
 
+        if (origComponent.isRefreshedByAction()) {
+            component.setRefreshedByAction(true);
+        }
+
         // reset data if needed
         if (component.isResetDataOnRefresh()) {
             // TODO: this should handle groups as well, going through nested data fields
@@ -228,7 +241,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         performComponentInitialization(view, model, component);
+        view.getViewIndex().indexComponent(component);
+
         performComponentApplyModel(view, component, model);
+        view.getViewIndex().indexComponent(component);
 
         // make sure id, binding, and label settings stay the same as initial
         if (component instanceof Group || component instanceof FieldGroup) {
@@ -257,6 +273,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                                 ((Field) origNestedComponent).isLabelFieldRendered());
                     }
 
+                    if (origNestedComponent.isRefreshedByAction()) {
+                        nestedComponent.setRefreshedByAction(true);
+                    }
+
                     // update id
                     ComponentUtils.updateIdWithSuffix(nestedComponent, suffix);
                 }
@@ -275,7 +295,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
         component.setOnLoadScript(clientStateScript);
 
-        // update index for component
         view.getViewIndex().indexComponent(component);
     }
 
@@ -310,13 +329,18 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
-        if (StringUtils.isBlank(component.getId()) || StringUtils.isBlank(component.getFactoryId())) {
-            throw new RiceRuntimeException("Ids are not set, this should happen unless a component is misconfigured");
+        if (StringUtils.isBlank(component.getId())) {
+            throw new RiceRuntimeException("Id is not set, this should not happen unless a component is misconfigured");
         }
 
         // TODO: duplicate ID check
 
         LOG.debug("Initializing component: " + component.getId() + " with type: " + component.getClass());
+
+        // add initial state to the view index for component refreshes
+        if (!(component instanceof View)) {
+            view.getViewIndex().addInitialComponentStateIfNeeded(component);
+        }
 
         // invoke component to initialize itself after properties have been set
         component.performInitialization(view, model);
@@ -325,9 +349,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (component instanceof DataField) {
             initializeDataFieldFromDataDictionary(view, (DataField) component);
         }
-
-        // add initial state to the view index for component refreshes
-        view.getViewIndex().addInitialComponentState(component);
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -606,7 +627,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
         context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+        // TODO: this needs to be here somehow but can't find a way to invoke static methods on vars, see KULRICE-6639
         context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
+        context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
 
         return context;
     }
@@ -989,6 +1012,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     + "','"
                     + kradImageLocation
                     + "');";
+
+            String kradURL = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("krad.url");
+            clientStateScript += "setConfigParam('"
+                    + UifConstants.ClientSideVariables.KRAD_URL
+                    + "','"
+                    + kradURL
+                    + "');";
         }
 
         return clientStateScript;
@@ -1195,6 +1225,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             LOG.error("Error invoking rendering method for component: " + component.getId(), e);
             throw new RuntimeException("Error invoking rendering method for component: " + component.getId(), e);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#cleanViewAfterRender(org.kuali.rice.krad.uif.view.View)
+     */
+    @Override
+    public void cleanViewAfterRender(View view) {
+        ViewCleaner.cleanView(view);
     }
 
     /**

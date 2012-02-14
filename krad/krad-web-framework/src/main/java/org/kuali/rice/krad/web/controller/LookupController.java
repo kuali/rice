@@ -110,6 +110,9 @@ public class LookupController extends UifControllerBase {
                 Properties redirectUrlProps = new Properties();
                 redirectUrlProps.put(UifParameters.REDIRECTED_LOOKUP, "true");
 
+                // clear current form from session
+                GlobalVariables.getUifFormManager().removeForm(form);
+
                 return performRedirect(form, lookupUrl, redirectUrlProps);
             }
         }
@@ -135,6 +138,9 @@ public class LookupController extends UifControllerBase {
         if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
             props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
         }
+
+        // clear current form from session
+        GlobalVariables.getUifFormManager().removeForm(form);
 
         return performRedirect(lookupForm, lookupForm.getReturnLocation(), props);
     }
@@ -230,7 +236,7 @@ public class LookupController extends UifControllerBase {
 
         parameters.put(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
 
-        // clear lookup form from session
+        // clear current form from session
         GlobalVariables.getUifFormManager().removeForm(lookupForm);
 
         return performRedirect(lookupForm, lookupForm.getReturnLocation(), parameters);

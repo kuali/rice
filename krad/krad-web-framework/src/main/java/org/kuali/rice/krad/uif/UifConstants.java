@@ -24,8 +24,17 @@ public class UifConstants {
     public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
     public static final String DEFAULT_VIEW_NAME = "default";
+    public static final String COMPONENT_ID_PREFIX = "u";
     public static final String SPRING_VIEW_ID = "ScreenMediaView";
     public static final String SPRING_REDIRECT_ID = "redirectURL";
+
+    public static final String EL_PLACEHOLDER_PREFIX = "@{";
+    public static final String EL_PLACEHOLDER_SUFFIX = "}";
+    public static final String NO_BIND_ADJUST_PREFIX = "#form.";
+    public static final String DEFAULT_PATH_BIND_ADJUST_PREFIX = "#dp.";
+    public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
+    public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
+    public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
 
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
@@ -111,14 +120,6 @@ public class UifConstants {
         public static final String FINAL = "F";
     }
 
-    public static final String EL_PLACEHOLDER_PREFIX = "@{";
-    public static final String EL_PLACEHOLDER_SUFFIX = "}";
-    public static final String NO_BIND_ADJUST_PREFIX = "#form.";
-    public static final String DEFAULT_PATH_BIND_ADJUST_PREFIX = "#dp.";
-    public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
-    public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
-    public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
-
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";
         public static final String CONFIG_PROPERTIES = "ConfigProperties";
@@ -133,6 +134,7 @@ public class UifConstants {
         public static final String NODE = "node";
         public static final String NODE_PATH = "nodePath";
         public static final String PARENT = "parent";
+        public static final String UIF_CONSTANTS = "UifConstants";
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";
     }
@@ -199,6 +201,7 @@ public class UifConstants {
 
     public static class ClientSideVariables {
         public static final String KRAD_IMAGE_LOCATION = "kradImageLocation";
+        public static final String KRAD_URL = "kradUrl";
     }
 
     public static class RefreshCallerTypes {

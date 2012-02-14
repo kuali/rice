@@ -142,10 +142,15 @@ public class ComponentFactory {
 
         if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getFactoryId())) {
             component = view.getViewIndex().getInitialComponentStates().get(origComponent.getFactoryId());
-            component = ComponentUtils.copyObject(component);
+        } else {
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                    origComponent.getFactoryId());
         }
 
-        component.setId(origComponent.getFactoryId());
+        if (component != null) {
+            component = ComponentUtils.copyObject(component);
+            component.setId(origComponent.getFactoryId());
+        }
 
         return component;
     }

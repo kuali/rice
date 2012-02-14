@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.bind;
 
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
@@ -68,55 +69,45 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             LOG.debug("Attempting to find property editor for property '" + propertyName + "'");
         }
 
-        PropertyEditor propertyEditor = null;
-
-        // viewId should be determined in UifAnnotationMethodHandlerAdapter so
-        // nothing we can do without one here
-        if (model.getView() == null) {
-            return;
-        }
-
         // check if we already processed this property for this BeanWrapper instance
         if (processedProperties.contains(propertyName)) {
             return;
         }
 
-        DataField dataField = null;
-        if (model.getView().getViewIndex() != null) {
-            dataField = model.getView().getViewIndex().getDataFieldByPath(propertyName);
+        // when rendering the page, we will use the view that was just built, for post
+        // we need to use the posted view (not the newly initialized view)
+        ViewIndex viewIndex = null;
+        if (model.getView() != null) {
+            viewIndex = model.getView().getViewIndex();
+        } else if (model.getPostedView() != null) {
+            viewIndex = model.getPostedView().getViewIndex();
         }
 
-        if ((dataField == null) && (model.getPreviousView() != null) && (model.getPreviousView().getViewIndex()
-                != null)) {
-            dataField = model.getPreviousView().getViewIndex().getDataFieldByPath(propertyName);
+        // if view index instance not established we cannot determine property editors
+        if (viewIndex == null) {
+            return;
         }
 
-        // determine if the field value should be secured
+        PropertyEditor propertyEditor = null;
         boolean requiresEncryption = false;
-        if (dataField != null) {
-            if (dataField.hasSecureValue()) {
-                requiresEncryption = true;
-            }
 
-            propertyEditor = dataField.getPropertyEditor();
+        if (viewIndex.getFieldPropertyEditors().containsKey(propertyName)) {
+            propertyEditor = viewIndex.getFieldPropertyEditors().get(propertyName);
+        } else if (viewIndex.getSecureFieldPropertyEditors().containsKey(propertyName)) {
+            propertyEditor = viewIndex.getSecureFieldPropertyEditors().get(propertyName);
+            requiresEncryption = true;
         }
 
         if (propertyEditor != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Registering custom editor for property path '"
-                        + propertyName
-                        + "' and property editor class '"
-                        + propertyEditor.getClass().getName()
-                        + "'");
+                LOG.debug("Registering custom editor for property path '" + propertyName
+                        + "' and property editor class '" + propertyEditor.getClass().getName() + "'");
             }
 
             if (requiresEncryption) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Enabling encryption for custom editor '"
-                            + propertyName
-                            + "' and property editor class '"
-                            + propertyEditor.getClass().getName()
-                            + "'");
+                    LOG.debug("Enabling encryption for custom editor '" + propertyName +
+                            "' and property editor class '" + propertyEditor.getClass().getName() + "'");
                 }
                 this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(propertyEditor));
             } else {
@@ -124,8 +115,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             }
         } else if (requiresEncryption) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("No custom formatter for property path '"
-                        + propertyName
+                LOG.debug("No custom formatter for property path '" + propertyName
                         + "' but property does require encryption");
             }
 

@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Configurable;
@@ -61,7 +60,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     private static final Log LOG = LogFactory.getLog(UifBeanFactoryPostProcessor.class);
 
     /**
-     * Iterates through all beans in the factory and invokes processing for expressions
+     * Iterates through all beans in the factory and invokes processing
      *
      * @param beanFactory - bean factory instance to process
      * @throws BeansException
@@ -121,6 +120,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 beanFactory, processedBeanNames);
         boolean parentExpressionsExist = !parentPropertyExpressions.isEmpty();
 
+        // process expressions on property values
         PropertyValue[] pvArray = pvs.getPropertyValues();
         for (PropertyValue pv : pvArray) {
             if (hasExpression(pv.getValue())) {
@@ -327,16 +327,18 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         // process nested bean definitions
         if ((propertyValue instanceof BeanDefinition) || (propertyValue instanceof BeanDefinitionHolder)) {
+            String beanName = null;
             BeanDefinition beanDefinition;
             if (propertyValue instanceof BeanDefinition) {
                 beanDefinition = (BeanDefinition) propertyValue;
             } else {
                 beanDefinition = ((BeanDefinitionHolder) propertyValue).getBeanDefinition();
+                beanName = ((BeanDefinitionHolder) propertyValue).getBeanName();
             }
 
             // since overriding the entire bean, clear any expressions from parent that start with the bean property
             removeExpressionsByPrefix(propertyName, parentPropertyExpressions);
-            processBeanDefinition(null, beanDefinition, beanFactory, processedBeanNames);
+            processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
 
             return propertyValue;
         }

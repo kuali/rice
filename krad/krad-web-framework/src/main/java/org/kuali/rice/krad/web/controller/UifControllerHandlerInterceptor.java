@@ -17,12 +17,13 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.SessionDocumentService;
-import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.util.UifFormManager;
 import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,49 +32,30 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Spring controller intercepter for KRAD controllers
- * 
+ *
  * <p>
  * Provides infrastructure for preparing the form and view before and after the controller is invoked.
  * Included in this is form session management and preparation of the view for rendering
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     private static final Logger LOG = Logger.getLogger(UifControllerHandlerInterceptor.class);
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-            throws Exception {
-        // do nothing
-    }
-
-    /**
-     * After the controller logic is executed, the form is placed into session
-     * and the corresponding view is prepared for rendering
-     * 
-     * @see org.springframework.web.servlet.HandlerInterceptor#postHandle(javax.servlet.http.HttpServletRequest,
-     *      javax.servlet.http.HttpServletResponse, java.lang.Object,
-     *      org.springframework.web.servlet.ModelAndView)
-     */
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
-        UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
-    }
-
     /**
      * Before the controller executes the user session is set on GlobalVariables
      * and messages are cleared
-     * 
+     *
      * TODO: do we need to clear the messages before this so that formatting and
      * validation errors done during the binding are not cleared out?
-     * 
+     *
      * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest,
      *      javax.servlet.http.HttpServletResponse, java.lang.Object)
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+            Object handler) throws Exception {
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
 
         if (session == null) {
@@ -86,12 +68,50 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         return true;
     }
 
-	public SessionDocumentService getSessionDocumentService() {
-		return KRADServiceLocatorWeb.getSessionDocumentService();
-	}    
-	
-    protected ViewService getViewService() {
-        return KRADServiceLocatorWeb.getViewService();
+    /**
+     * After the controller logic is executed, the form is placed into session
+     * and the corresponding view is prepared for rendering
+     *
+     * @see org.springframework.web.servlet.HandlerInterceptor#postHandle(javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+     *      org.springframework.web.servlet.ModelAndView)
+     */
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) throws Exception {
+        UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
+    }
+
+    /**
+     * After the view is rendered we can do some cleaning to reduce the size of the form storage in memory
+     *
+     * @see org.springframework.web.servlet.HandlerInterceptor#afterCompletion(javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+            Exception ex) throws Exception {
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+
+        UifFormBase uifForm = uifFormManager.getCurrentForm();
+        if (uifForm != null) {
+            if (uifForm.isSkipViewInit()) {
+                // partial refresh or query
+                View postedView = uifForm.getPostedView();
+                if (postedView != null) {
+                    postedView.getViewHelperService().cleanViewAfterRender(postedView);
+                }
+            } else {
+                // full view render
+                View view = uifForm.getView();
+                if (view != null) {
+                    view.getViewHelperService().cleanViewAfterRender(view);
+                }
+
+                uifForm.setPostedView(view);
+                uifForm.setView(null);
+            }
+        }
     }
 
 }

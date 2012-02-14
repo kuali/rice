@@ -24,7 +24,7 @@
   <!-- View Themes -->
 
   <bean id="Uif-BaseTheme" abstract="true" parent="Uif-BaseTheme-parentBean"/>
-  <bean id="Uif-BaseTheme-parentBean" abstract="true" class="org.kuali.rice.krad.uif.view.ViewTheme">
+  <bean id="Uif-BaseTheme-parentBean" abstract="true" parent="Uif-ViewTheme">
     <property name="stylesheets">
       <list>
         <!-- TODO: Test this -->

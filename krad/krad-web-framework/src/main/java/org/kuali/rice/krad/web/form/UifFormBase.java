@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,9 +65,10 @@ public class UifFormBase implements ViewModel {
     protected String formPostUrl;
 
     protected boolean defaultsApplied;
+    protected boolean skipViewInit;
 
     protected View view;
-    protected View previousView;
+    protected View postedView;
 
     protected Map<String, String> viewRequestParameters;
     protected List<String> readOnlyFieldsList;
@@ -91,6 +93,7 @@ public class UifFormBase implements ViewModel {
         formKey = generateFormKey();
         renderFullView = true;
         defaultsApplied = false;
+        skipViewInit = false;
 
         formHistory = new History();
 
@@ -142,6 +145,11 @@ public class UifFormBase implements ViewModel {
         if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
+        }
+
+        // reset skip view init parameter if not passed
+        if (!request.getParameterMap().containsKey(UifParameters.SKIP_VIEW_INIT)) {
+            skipViewInit = false;
         }
     }
 
@@ -411,6 +419,24 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Indicates whether a new view is being initialized or the call is refresh (or query) call
+     *
+     * @return boolean true if view initialization was skipped, false if new view is being created
+     */
+    public boolean isSkipViewInit() {
+        return skipViewInit;
+    }
+
+    /**
+     * Setter for the skip view initialization flag
+     *
+     * @param skipViewInit
+     */
+    public void setSkipViewInit(boolean skipViewInit) {
+        this.skipViewInit = skipViewInit;
+    }
+
+    /**
      * Holder for files that are attached through the view
      *
      * @return MultipartFile representing the attachment
@@ -457,17 +483,17 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getPreviousView()
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getPostedView()
      */
-    public View getPreviousView() {
-        return this.previousView;
+    public View getPostedView() {
+        return this.postedView;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setPreviousView(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setPostedView(org.kuali.rice.krad.uif.view.View)
      */
-    public void setPreviousView(View previousView) {
-        this.previousView = previousView;
+    public void setPostedView(View postedView) {
+        this.postedView = postedView;
     }
 
     /**

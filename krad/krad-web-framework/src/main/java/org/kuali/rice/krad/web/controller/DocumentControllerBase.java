@@ -447,7 +447,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         // Get the note add line
         String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
-        CollectionGroup collectionGroup = uifForm.getPreviousView().getViewIndex().getCollectionGroupByPath(
+        CollectionGroup collectionGroup = uifForm.getPostedView().getViewIndex().getCollectionGroupByPath(
                 selectedCollectionPath);
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(uifForm, addLinePath);

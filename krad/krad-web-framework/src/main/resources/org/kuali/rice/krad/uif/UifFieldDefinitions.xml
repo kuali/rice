@@ -54,6 +54,26 @@
     </property>
   </bean>
 
+  <bean id="Uif-DataField-LabelTop" parent="Uif-DataField-LabelTop-parentBean"/>
+  <bean id="Uif-DataField-LabelTop-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="TOP"
+        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="RIGHT">
+    <property name="labelField.styleClasses">
+      <list merge="true">
+        <value>uif-labelTop</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DataField-LabelRight" parent="Uif-DataField-LabelRight-parentBean"/>
+  <bean id="Uif-DataField-LabelRight-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="RIGHT"
+        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="LEFT">
+    <property name="labelField.styleClasses">
+      <list merge="true">
+        <value>uif-labelRight</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-DataField-withoutLabel" abstract="true" parent="Uif-DataField-withoutLabel-parentBean"/>
   <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
         parent="Uif-DataField">
@@ -92,6 +112,36 @@
     </property>
   </bean>
 
+  <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
+  <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
+        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="RIGHT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-inputField-labelTop</value>
+      </list>
+    </property>
+    <property name="labelField.styleClasses">
+      <list merge="true">
+        <value>uif-labelTop</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-InputField-LabelRight" parent="Uif-InputField-LabelRight-parentBean"/>
+  <bean id="Uif-InputField-LabelRight-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="RIGHT"
+        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="LEFT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-inputField-labelRight</value>
+      </list>
+    </property>
+    <property name="labelField.styleClasses">
+      <list merge="true">
+        <value>uif-labelRight</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
   <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
         p:messageType="INSTRUCTIONAL">
@@ -118,21 +168,6 @@
     <property name="styleClasses">
       <list merge="true">
         <value>uif-requiredMessage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
-  <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
-        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="RIGHT">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-inputField-labelTop</value>
-      </list>
-    </property>
-    <property name="labelField.styleClasses">
-      <list merge="true">
-        <value>uif-labelTop</value>
       </list>
     </property>
   </bean>

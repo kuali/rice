@@ -108,7 +108,7 @@
     </property>
   </bean>
 
-  <bean id="Term-MainSection" parent="Uif-MaintenanceSection">
+  <bean id="Term-MainSection" parent="Uif-MaintenanceVerticalBoxSection">
     <property name="title" value="Term" />
     <property name="items">
       <list>

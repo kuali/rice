@@ -51,6 +51,14 @@
     </property>
   </bean>
 
+  <bean id="Uif-MaintenanceGridGroup" abstract="true" parent="Uif-MaintenanceGridGroup-parentBean"/>
+  <bean id="Uif-MaintenanceGridGroup-parentBean" parent="Uif-GridGroup"/>
+
+  <bean id="Uif-MaintenanceHorizontalBoxGroup" abstract="true" parent="Uif-MaintenanceHorizontalBoxGroup-parentBean"/>
+  <bean id="Uif-MaintenanceHorizontalBoxGroup-parentBean" parent="Uif-HorizontalBoxGroup"/>
+
+  <bean id="Uif-MaintenanceVerticalBoxGroup" abstract="true" parent="Uif-MaintenanceVerticalBoxGroup-parentBean"/>
+  <bean id="Uif-MaintenanceVerticalBoxGroup-parentBean" parent="Uif-VerticalBoxGroup"/>
 
   <bean id="Uif-MaintenanceGridSection" abstract="true" parent="Uif-MaintenanceGridSection-parentBean"/>
   <bean id="Uif-MaintenanceGridSection-parentBean" parent="Uif-Disclosure-GridSection">
@@ -63,8 +71,20 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceSection" abstract="true" parent="Uif-MaintenanceSection-parentBean"/>
-  <bean id="Uif-MaintenanceSection-parentBean" parent="Uif-Disclosure-VerticalBoxSection"/>
+  <bean id="Uif-MaintenanceGridSubSection" abstract="true" parent="Uif-MaintenanceGridSubSection-parentBean"/>
+  <bean id="Uif-MaintenanceGridSubSection-parentBean" parent="Uif-Disclosure-GridSubSection"/>
+
+  <bean id="Uif-MaintenanceHorizontalBoxSection" abstract="true" parent="Uif-MaintenanceHorizontalBoxSection-parentBean"/>
+  <bean id="Uif-MaintenanceHorizontalBoxSection-parentBean" parent="Uif-Disclosure-HorizontalBoxSection"/>
+
+  <bean id="Uif-MaintenanceVerticalBoxSection" abstract="true" parent="Uif-MaintenanceVerticalBoxSection-parentBean"/>
+  <bean id="Uif-MaintenanceVerticalBoxSection-parentBean" parent="Uif-Disclosure-VerticalBoxSection"/>
+
+  <bean id="Uif-MaintenanceHorizontalBoxSubSection" abstract="true" parent="Uif-MaintenanceHorizontalBoxSubSection-parentBean"/>
+  <bean id="Uif-MaintenanceHorizontalBoxSubSection-parentBean" parent="Uif-Disclosure-HorizontalBoxSubSection"/>
+
+  <bean id="Uif-MaintenanceVerticalBoxSubSection" abstract="true" parent="Uif-MaintenanceVerticalBoxSubSection-parentBean"/>
+  <bean id="Uif-MaintenanceVerticalBoxSubSection-parentBean" parent="Uif-Disclosure-VerticalBoxSubSection"/>
 
   <bean id="Uif-MaintenanceStackedCollectionSection" abstract="true" parent="Uif-MaintenanceStackedCollectionSection-parentBean"/>
   <bean id="Uif-MaintenanceStackedCollectionSection-parentBean" parent="Uif-Disclosure-StackedCollectionSection">
@@ -86,7 +106,7 @@
   </bean>
 
   <bean id="Uif-MaintenanceStackedSubCollection-WithinSection" abstract="true" parent="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean"/>
-  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean" parent="Uif-StackedSubCollection-WithinSection">
+  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean" parent="Uif-Disclosure-StackedSubCollection-WithinSection">
     <property name="layoutManager.lineGroupPrototype">
       <bean parent="Uif-CollectionGridItem">
         <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
@@ -113,7 +133,7 @@
   </bean>
 
   <bean id="Uif-MaintenanceTableSubCollection-withinSection" abstract="true" parent="Uif-MaintenanceTableSubCollection-withinSection-parentBean"/>
-  <bean id="Uif-MaintenanceTableSubCollection-withinSection-parentBean" parent="Uif-TableSubCollection-WithinSection">
+  <bean id="Uif-MaintenanceTableSubCollection-withinSection-parentBean" parent="Uif-Disclosure-TableSubCollection-WithinSection">
     <property name="activeCollectionFilter">
       <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
             p:oldBindingObjectPath="document.oldMaintainableObject.dataObject"/>

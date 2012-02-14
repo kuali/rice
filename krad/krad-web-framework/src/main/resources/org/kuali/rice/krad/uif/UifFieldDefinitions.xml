@@ -25,7 +25,8 @@
   <!-- Base Fields -->
 
   <bean id="Uif-FieldBase" abstract="true" parent="Uif-FieldBase-parentBean"/>
-  <bean id="Uif-FieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase">
+  <bean id="Uif-FieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase"
+        parent="Uif-ComponentBase">
     <property name="styleClasses">
       <list>
         <value>uif-field</value>

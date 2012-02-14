@@ -26,7 +26,7 @@
 
   <bean id="Uif-HeaderFieldBase" abstract="true" parent="Uif-HeaderFieldBase-parentBean"/>
   <bean id="Uif-HeaderFieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.HeaderField"
-        scope="prototype">
+        scope="prototype" parent="Uif-ComponentBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/headerField.jsp"/>
     <property name="styleClasses">
       <list>

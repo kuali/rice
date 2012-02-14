@@ -20,6 +20,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <!-- ComponentBase -->
+
+  <bean id="Uif-ComponentBase" parent="Uif-ComponentBase-parentBean" abstract="true"/>
+  <bean id="Uif-ComponentBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.component.ComponentBase"
+        scope="prototype"/>
+
+  <!-- History -->
+
   <bean id="Uif-HistoryEntry" parent="Uif-HistoryEntry-parentBean"/>
   <bean id="Uif-HistoryEntry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.view.HistoryEntry"
         scope="prototype"/>

@@ -109,7 +109,7 @@
 
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean"/>
   <bean id="Uif-View-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.View" scope="prototype">
+        class="org.kuali.rice.krad.uif.view.View" scope="prototype" parent="Uif-ComponentBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/view/view.jsp"/>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>

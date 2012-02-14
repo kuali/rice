@@ -65,7 +65,7 @@
     <property name="shortLabel" value="Campus Codez"/>
     <property name="maxLength" value="2"/>
     <property name="validationPattern">
-      <bean parent="NumericValidationPattern"/>
+      <bean parent="AlphaNumericValidationPattern"/>
     </property>
     <property name="required" value="true"/>
     <property name="control">

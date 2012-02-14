@@ -146,7 +146,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isRadio()) {
             controlMap.set("radio", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass());
+            if (control.getValuesFinderClass() != null) {
+                controlMap.set("valuesFinder", control.getValuesFinderClass());
+            }
             if (control.getBusinessObjectClass() != null) {
                 controlMap.set("businessObject", control.getBusinessObjectClass());
             }
@@ -183,7 +185,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isMultiselect()) {
             controlMap.set("multiselect", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass());
+            if (control.getValuesFinderClass() != null) {
+                controlMap.set("valuesFinder", control.getValuesFinderClass());
+            }
             if (control.getBusinessObjectClass() != null) {
                 controlMap.set("businessObject", control.getBusinessObjectClass());
             }

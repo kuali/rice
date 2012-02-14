@@ -31,12 +31,12 @@
     <param-value>${bootstrap.spring.file}</param-value>
   </context-param>
 
-  ${monitoring.filter}
-
   <filter>
     <filter-name>HttpRequestLogger</filter-name>
     <filter-class>org.kuali.rice.core.RequestLoggingFilter</filter-class>
   </filter>
+
+  ${monitoring.filter}
 
   <filter>
     <filter-name>HideWebInfFilter</filter-name>

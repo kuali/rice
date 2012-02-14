@@ -27,6 +27,7 @@ import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
@@ -401,12 +402,17 @@ abstract class RoleServiceBase {
         return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
     }
 
-	protected boolean doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
-		if(CollectionUtils.isNotEmpty(getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier))) {
-			return true;
+	protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
+		List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);
+        List<RoleMember> roleMembers = new ArrayList<RoleMember>();
+        if(CollectionUtils.isNotEmpty(roleMemberBos)) {
+            for (RoleMemberBo bo : roleMemberBos) {
+                roleMembers.add(RoleMemberBo.to(bo));
+            }
+			return roleMembers;
 		}
 
-		return false;
+		return Collections.emptyList();
 	}
 	
 	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
@@ -439,13 +445,14 @@ abstract class RoleServiceBase {
 		return rms;
 	}
     
-    protected boolean doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
+    //return roleMemberId of match or null if no match
+    protected RoleMember doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
             if (doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
-                return true;
+                return RoleMemberBo.to(rm);
             }
         }
-        return false;
+        return null;
     }
 
     protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, Map<String, String> qualifier) {

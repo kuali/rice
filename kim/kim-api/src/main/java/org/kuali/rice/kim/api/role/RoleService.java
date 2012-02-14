@@ -544,7 +544,6 @@ public interface RoleService {
      * @param qualifications the qualifications for the principalId to be assigned to the role
      * @return newly created/assigned RoleMember.
      * @throws RiceIllegalArgumentException if princialId, namespaceCode or roleName is null or blank.
-     * @throws RiceIllegalStateException if principalId is already assigned to the role.
 	 */
     @WebMethod(operationName = "assignPrincipalToRole")
     @WebResult(name = "roleMember")
@@ -557,7 +556,7 @@ public interface RoleService {
                 @WebParam(name="qualifications")
                 @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                 Map<String, String> qualifications)
-            throws RiceIllegalArgumentException, RiceIllegalStateException;
+            throws RiceIllegalArgumentException;
 
 	/**
 	 * Assigns the group with the given id to the role with the specified
@@ -569,7 +568,6 @@ public interface RoleService {
      * @param qualifications the qualifications for the principalId to be assigned to the role
      * @return newly created/assigned RoleMember.
      * @throws RiceIllegalArgumentException if groupId, namespaceCode or roleName is null or blank.
-     * @throws RiceIllegalStateException if groupId is already assigned to the role.
 	 */
     @WebMethod(operationName = "assignGroupToRole")
     @WebResult(name = "roleMember")
@@ -578,7 +576,7 @@ public interface RoleService {
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications)
-            throws RiceIllegalArgumentException, RiceIllegalStateException;
+            throws RiceIllegalArgumentException;
 
 	/**
 	 * Assigns the role with the given id to the role with the specified
@@ -590,7 +588,6 @@ public interface RoleService {
      * @param qualifications the qualifications for the principalId to be assigned to the role
      * @return newly created/assigned RoleMember.
      * @throws RiceIllegalArgumentException if princiapId, namespaceCode or roleName is null or blank.
-     * @throws RiceIllegalStateException if principalId is already assigned to the role.
 	 */
     @WebMethod(operationName = "assignRoleToRole")
     @WebResult(name = "roleMember")
@@ -599,7 +596,7 @@ public interface RoleService {
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications)
-            throws RiceIllegalArgumentException, RiceIllegalStateException;
+            throws RiceIllegalArgumentException;
 
 	/**
 	 * Creates a new RoleMember.  Needs to be passed a valid RoleMember object that does not currently exist.

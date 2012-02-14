@@ -155,7 +155,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public Set<String> getRoleTypeRoleMemberIds(String roleId) throws RiceIllegalStateException  {
+    public Set<String> getRoleTypeRoleMemberIds(String roleId) throws RiceIllegalArgumentException  {
         incomingParamCheck(roleId, "roleId");
 
         Set<String> results = new HashSet<String>();
@@ -1396,7 +1396,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @Override
     public RoleMember assignPrincipalToRole(String principalId,
             String namespaceCode, String roleName, Map<String, String> qualifier) 
-            throws RiceIllegalArgumentException, RiceIllegalStateException {
+            throws RiceIllegalArgumentException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1407,10 +1407,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         role.refreshReferenceObject("members");
 
         // check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier) ||
-    			doAnyMemberRecordsMatch( role.getMembers(), principalId, MemberType.PRINCIPAL.getCode(), qualifier ) ) {
-    		throw new RiceIllegalStateException("Principal is already assigned to role.");
-    	}
+        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( role.getMembers(), principalId, MemberType.PRINCIPAL.getCode(), qualifier );
+        if (null != anyMemberMatch) {
+            return anyMemberMatch;
+        }
+        List<RoleMember> membersMatchByExactQualifiers = doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier);
+        if (CollectionUtils.isNotEmpty(membersMatchByExactQualifiers)) {
+            return membersMatchByExactQualifiers.get(0);
+        }
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
 
@@ -1428,7 +1432,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public RoleMember assignGroupToRole(String groupId, String namespaceCode,
-            String roleName, Map<String, String> qualifier) throws RiceIllegalStateException, RiceIllegalStateException {
+            String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
         incomingParamCheck(groupId, "groupId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1436,11 +1440,16 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
+
         // check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier) ||
-    			doAnyMemberRecordsMatch( role.getMembers(), groupId, MemberType.GROUP.getCode(), qualifier ) ) {
-            throw new RiceIllegalStateException("Group is already assigned to role.");
-    	}
+        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( role.getMembers(), groupId, MemberType.GROUP.getCode(), qualifier );
+        if (null != anyMemberMatch) {
+            return anyMemberMatch;
+        }
+        List<RoleMember> membersMatchByExactQualifiers = doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier);
+        if (CollectionUtils.isNotEmpty(membersMatchByExactQualifiers)) {
+            return membersMatchByExactQualifiers.get(0);
+        }
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
         newRoleMember.setRoleId(role.getId());
@@ -1457,7 +1466,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @Override
     public RoleMember assignRoleToRole(String roleId,
             String namespaceCode, String roleName, Map<String, String> qualifier) 
-            throws RiceIllegalStateException, RiceIllegalStateException {
+            throws RiceIllegalStateException {
         incomingParamCheck(roleId, "roleId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1466,10 +1475,16 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier) ||
-    			doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, MemberType.ROLE.getCode(), qualifier ) ) {
-            throw new RiceIllegalStateException("Role is already assigned to role.");
-    	}
+        
+        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, MemberType.ROLE.getCode(), qualifier);
+        if (null != anyMemberMatch) {
+            return anyMemberMatch;
+        }
+        List<RoleMember> membersMatchByExactQualifiers = doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier);
+        if (CollectionUtils.isNotEmpty(membersMatchByExactQualifiers)) {
+            return membersMatchByExactQualifiers.get(0);
+        }
+        
         // Check to make sure this doesn't create a circular membership
         if (!checkForCircularRoleMembership(roleId, roleBo)) {
             throw new IllegalArgumentException("Circular roleBo reference.");
@@ -1538,7 +1553,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateType createDelegateType(DelegateType delegateType) throws RiceIllegalStateException {
+    public DelegateType createDelegateType(DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(delegateType, "delegateType");
 
         if (StringUtils.isNotBlank(delegateType.getDelegationId())
@@ -1592,7 +1607,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateType updateDelegateType(DelegateType delegateType) throws RiceIllegalStateException {
+    public DelegateType updateDelegateType(DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(delegateType, "delegateType");
 
         if (StringUtils.isBlank(delegateType.getDelegationId())
@@ -1627,7 +1642,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public void removePrincipalFromRole(String principalId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
+            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null");
         }
@@ -1658,7 +1673,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public void removeGroupFromRole(String groupId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
+            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(groupId)) {
             throw new RiceIllegalArgumentException("groupId is null");
         }
@@ -1688,7 +1703,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public void removeRoleFromRole(String roleId,
-            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalStateException {
+            String namespaceCode, String roleName, Map<String, String> qualifier) throws RiceIllegalArgumentException {
         incomingParamCheck(roleId, "roleId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
@@ -1707,7 +1722,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void assignPermissionToRole(String permissionId, String roleId) throws RiceIllegalStateException {
+    public void assignPermissionToRole(String permissionId, String roleId) throws RiceIllegalArgumentException {
         incomingParamCheck(permissionId, "permissionId");
         incomingParamCheck(roleId, "roleId");
 
@@ -1729,7 +1744,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public void revokePermissionFromRole(String permissionId, String roleId) throws RiceIllegalStateException {
+    public void revokePermissionFromRole(String permissionId, String roleId) throws RiceIllegalArgumentException {
         incomingParamCheck(permissionId, "permissionId");
         incomingParamCheck(roleId, "roleId");
 

@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//Submits the form through an ajax submit, the response is the new page html
-//runs all hidden scripts passed back (this is to get around a bug with pre mature
-//script evaluation)
+/**
+ * Submits the form through an ajax submit, the response is the new page html
+ * runs all hidden scripts passed back (this is to get around a bug with premature script evaluation)
+ *
+ * If a form has the properties enctype or encoding set to multipart/form-data, an iframe is created to hold the response
+ * If the returned response contains scripts that are meant to be run on page load,
+ * they will be executed within the iframe since the jquery ready event is triggered
+ *
+ * For the above reason, the renderFullView below is set to false so that the script content between <head></head> is left out
+ */
 
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock){
 	var data;
@@ -134,7 +141,10 @@ function validateAndSubmit(methodToCall, successCallback){
 function saveForm(){
 	validateAndSubmit("save", replacePage);
 }
-
+/**
+ * Submits a form via ajax using the jquery form plugin
+ * The methodToCall parameter is used to determine the controller method to invoke
+ */
 function submitForm(){
 	var methodToCall = jq("input[name='methodToCall']").val();
 	ajaxSubmitForm(methodToCall, replacePage, null, null);

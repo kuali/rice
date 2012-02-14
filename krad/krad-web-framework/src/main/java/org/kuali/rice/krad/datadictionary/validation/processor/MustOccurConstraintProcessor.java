@@ -38,8 +38,8 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
 	private static final String CONSTRAINT_NAME = "must occur constraint";
 	
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Constrainable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
-	 */
+	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result,
 			Object value, MustOccurConstraint constraint, AttributeValueReader attributeValueReader)
@@ -53,10 +53,11 @@ public class MustOccurConstraintProcessor extends BasePrerequisiteConstraintProc
         constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
         constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
 
+        // If the processing of this constraint is not successful then it's an error
 		if (!processMustOccurConstraint(constraintValidationResult, constraint, attributeValueReader)) {
-			// If the processing of this constraint was not successful then it's an error
+			// if attributeName is null, use the entry name since we are processing a must occur constraint that may be referencing multiple attributes
 		    if (attributeValueReader.getAttributeName() == null){
-		        constraintValidationResult.setAttributeName(attributeValueReader.getPath());
+		        constraintValidationResult.setAttributeName(attributeValueReader.getEntryName());
 		    } else{
 		        constraintValidationResult.setAttributeName(attributeValueReader.getAttributeName());
 		        constraintValidationResult.setAttributePath(attributeValueReader.getPath());

@@ -3708,3 +3708,18 @@ values ('1007',
         (select perm_id from krim_perm_t where nm = 'Create TermSpecification Maintenance Document' and nmspc_cd = 'KR-NS'),
         'Y', 1, '83a270a0-1cdb-4440-ab8b-41cd8afc41d9');
 
+
+--
+-- mysql-2012-02-14.sql
+--
+
+--
+-- KULRICE-6710: Drop krms_cntxt_vld_rule_t, krms_cntxt_vld_actn_t and krms_cntxt_vld_agenda_t tables
+--
+
+drop table krms_cntxt_vld_actn_t;
+drop table krms_cntxt_vld_actn_s;
+drop table krms_cntxt_vld_agenda_t;
+drop table krms_cntxt_vld_agenda_s;
+drop table krms_cntxt_vld_rule_t;
+drop table krms_cntxt_vld_rule_s;

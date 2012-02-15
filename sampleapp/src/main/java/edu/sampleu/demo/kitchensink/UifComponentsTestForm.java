@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -171,6 +172,8 @@ public class UifComponentsTestForm extends UifFormBase {
     private String mField1 = "SecretInfo555";
     private String mField2 = "SecretInfo111";
     private String mField3 = "SecretInfo222";
+
+    private MultipartFile fileUpload;
 
     private UITestObject uiTestObject;
 
@@ -2073,5 +2076,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setField131(Integer field131) {
         this.field131 = field131;
+    }
+
+    public MultipartFile getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(MultipartFile fileUpload) {
+        this.fileUpload = fileUpload;
     }
 }

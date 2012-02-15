@@ -1407,14 +1407,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         role.refreshReferenceObject("members");
 
         // check that identical member does not already exist
-        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( role.getMembers(), principalId, MemberType.PRINCIPAL.getCode(), qualifier );
-        if (null != anyMemberMatch) {
-            return anyMemberMatch;
-        }
         List<RoleMember> membersMatchByExactQualifiers = doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier);
         if (CollectionUtils.isNotEmpty(membersMatchByExactQualifiers)) {
             return membersMatchByExactQualifiers.get(0);
         }
+        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( role.getMembers(), principalId, MemberType.PRINCIPAL.getCode(), qualifier );
+        if (null != anyMemberMatch) {
+            return anyMemberMatch;
+        }
+
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
 
@@ -1442,14 +1443,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
 
         // check that identical member does not already exist
-        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( role.getMembers(), groupId, MemberType.GROUP.getCode(), qualifier );
-        if (null != anyMemberMatch) {
-            return anyMemberMatch;
-        }
         List<RoleMember> membersMatchByExactQualifiers = doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier);
         if (CollectionUtils.isNotEmpty(membersMatchByExactQualifiers)) {
             return membersMatchByExactQualifiers.get(0);
         }
+        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( role.getMembers(), groupId, MemberType.GROUP.getCode(), qualifier );
+        if (null != anyMemberMatch) {
+            return anyMemberMatch;
+        }
+
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
         newRoleMember.setRoleId(role.getId());
@@ -1474,16 +1476,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
+
         // check that identical member does not already exist
-        
-        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, MemberType.ROLE.getCode(), qualifier);
-        if (null != anyMemberMatch) {
-            return anyMemberMatch;
-        }
         List<RoleMember> membersMatchByExactQualifiers = doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier);
         if (CollectionUtils.isNotEmpty(membersMatchByExactQualifiers)) {
             return membersMatchByExactQualifiers.get(0);
         }
+        RoleMember anyMemberMatch = doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, MemberType.ROLE.getCode(), qualifier);
+        if (null != anyMemberMatch) {
+            return anyMemberMatch;
+        }
+
         
         // Check to make sure this doesn't create a circular membership
         if (!checkForCircularRoleMembership(roleId, roleBo)) {

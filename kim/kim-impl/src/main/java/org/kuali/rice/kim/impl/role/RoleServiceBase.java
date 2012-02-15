@@ -448,7 +448,7 @@ abstract class RoleServiceBase {
     //return roleMemberId of match or null if no match
     protected RoleMember doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
-            if (doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
+            if (rm.isActive() && doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
                 return RoleMemberBo.to(rm);
             }
         }

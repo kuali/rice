@@ -178,7 +178,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
-        return hasResp(principalId, namespaceCode, responsibilities, qualification);
+        return hasResp(principalId, namespaceCode, responsibilities, qualification, null);
     }
 
     @Override
@@ -194,14 +194,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
-        return hasResp(principalId, namespaceCode, responsibilities, qualification);
+        return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
     private boolean hasResp(final String principalId, final String namespaceCode,
-            final List<Responsibility> responsibilities, final Map<String, String> qualification) throws RiceIllegalArgumentException {
+            final List<Responsibility> responsibilities,
+            final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
         // now, filter the full list by the detail passed
         final List<String> ids = new ArrayList<String>();
-        for (Responsibility r : getMatchingResponsibilities(responsibilities, null)) {
+        for (Responsibility r : getMatchingResponsibilities(responsibilities, responsibilityDetails)) {
             ids.add(r.getId());
         }
         final List<String> roleIds = getRoleIdsForResponsibilities(ids);
@@ -217,7 +219,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
-        return getRespActions(namespaceCode, responsibilities, qualification);
+        return getRespActions(namespaceCode, responsibilities, qualification, null);
     }
 
     @Override
@@ -230,12 +232,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
-        return getRespActions(namespaceCode, responsibilities, qualification);
+        return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
-    private List<ResponsibilityAction> getRespActions(final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification) {
+    private List<ResponsibilityAction> getRespActions(final String namespaceCode,
+            final List<Responsibility> responsibilities,
+            final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) {
         // now, filter the full list by the detail passed
-        List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, null);
+        List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, responsibilityDetails);
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
         for (Responsibility r : applicableResponsibilities) {
             List<String> roleIds = getRoleIdsForResponsibility(r.getId());

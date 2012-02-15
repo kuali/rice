@@ -964,6 +964,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         if (value != null) {
                             AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(
                                     value, childEntry.getFullClassName(), childEntry, attributeValueReader.getPath());
+                            nestedAttributeValueReader.setAttributeName(attributeValueReader.getAttributeName());
                             //Validate nested object, however skip attribute definition porcessing on
                             //nested object entry, since they have already been processed above.
                             validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false);

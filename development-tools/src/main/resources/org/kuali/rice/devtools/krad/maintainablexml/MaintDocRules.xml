@@ -18,22 +18,31 @@
 -->
 <rules>
 
+    <!-- Rules for changes to packages-->
     <rule name="maint_doc_moved_packages">
+      <!--<pattern>-->
+        <!--<match></match>-->
+        <!--<replacement></replacement>-->
+      <!--</pattern>-->
     </rule>	
 
-    <rule name="maint_doc_moved_classes" alsoRenameClass="true">
+    <!-- Rules for any changes to the fully qualified class name  -->
+    <rule name="maint_doc_classname_changes" alsoRenameClass="true">
         <pattern>
             <match>org\.kuali\.rice\.kns\.bo\.CampusImpl</match>
             <replacement>org.kuali.rice.location.impl.campus.CampusBo</replacement>			
         </pattern>
     </rule> 
-        
-    <rule name="maint_doc_changed_properties" >
+
+    <!-- Rules specifying any change in class properties.
+          Empty replacement tag will remove that property from the class.
+    -->
+    <rule name="maint_doc_changed_class_properties" >
         <pattern>
             <class>org.kuali.rice.location.impl.campus.CampusBo</class>
             <pattern>
                 <match>campusName</match>
-                <replacement>name</replacement>	
+                <replacement>name22</replacement>
             </pattern>
             <pattern>
                 <match>campusCode</match>
@@ -55,8 +64,9 @@
                 <replacement></replacement>	
             </pattern>             
         </pattern>        
-    </rule>        
+    </rule>
 
+  <!-- Rules specifying the Maintainable Impl class for a specific maintainable class  -->
     <rule name="maint_doc_impl_classes" >
         <pattern>
             <maintainable>org.kuali.rice.location.impl.campus.CampusBo</maintainable>

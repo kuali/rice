@@ -74,5 +74,16 @@
       <groupId>no.geosoft</groupId>
       <artifactId>filemonitor</artifactId>
     </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>${mysql.jdbc.artifactId}</artifactId>
+      <version>${mysql.jdbc.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>${oracle.jdbc.artifactId}</artifactId>
+      <version>${oracle.jdbc.version}</version>
+    </dependency>
   </dependencies>
 </project>

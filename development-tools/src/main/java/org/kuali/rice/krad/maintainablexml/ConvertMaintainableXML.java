@@ -39,7 +39,7 @@ public class ConvertMaintainableXML {
     public static void main(String[] args) {
         //  prompt the user to enter settings file
         String settingsFile = readInput("Enter settings file location relative to Kuali main user directory "
-                + "(ie. prd/sample-app-config.xml OR dev/trnapp-config.xml) : ", null);
+                + "(ie. dev/sample-app-config.xml OR dev/trnapp-config.xml) : ", null);
 
         String filePath = System.getProperty("user.home") + "/kuali/main/" + settingsFile;
         File file = new File(filePath);
@@ -56,12 +56,12 @@ public class ConvertMaintainableXML {
 
         try {
             HashMap map = getSettings(filePath);
-            System.out.println("Using settings : " + map);
-
+            System.out.println("Using the following settings : " + map);
             FileConverter fileConverter = new FileConverter();
-            fileConverter.runFileConversion(map);
+            fileConverter.runFileConversion(map, runMode);
         } catch (Exception e) {
             System.out.println("Error executing conversion : " + e.getMessage());
+            e.printStackTrace();
         }
 
     }

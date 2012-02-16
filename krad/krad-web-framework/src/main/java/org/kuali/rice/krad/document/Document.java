@@ -171,7 +171,6 @@ public interface Document extends PersistableBusinessObject {
     /**
      * Sends document off to the rules engine to verify business rules.
      * 
-     * @param document - document to validate
      * @param event - indicates which document event was requested
      * @throws ValidationException - containing the MessageMap from the validation session.
      */

@@ -99,8 +99,11 @@
     <property name="fieldLookup">
       <bean parent="Uif-QuickFinder"/>
     </property>
+    <property name="directInquiryRender" value="@{!#parent.readOnly}"/>
     <property name="fieldDirectInquiry">
-      <bean parent="Uif-DirectInquiry"/>
+      <bean parent="Uif-DirectInquiry">
+        <property name="render" value="@{#parent.directInquiryRender}"/>
+      </bean>
     </property>
     <property name="fieldSuggest">
       <bean parent="Uif-Suggest" p:render="false"/>

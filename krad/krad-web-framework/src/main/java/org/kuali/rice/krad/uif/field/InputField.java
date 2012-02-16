@@ -108,6 +108,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private QuickFinder fieldLookup;
     private DirectInquiry fieldDirectInquiry;
     private Suggest fieldSuggest;
+    private Boolean directInquiryRender = true;
 
     public InputField() {
         super();
@@ -800,6 +801,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setMinLength(Integer minLength) {
         simpleConstraint.setMinLength(minLength);
+    }
+    
+    public Boolean getDirectInquiryRender() {
+        return this.directInquiryRender;
+    }
+    
+    public void setDirectInquiryRender(Boolean directInquiryRender) {
+        this.directInquiryRender = directInquiryRender;
     }
 
     /**

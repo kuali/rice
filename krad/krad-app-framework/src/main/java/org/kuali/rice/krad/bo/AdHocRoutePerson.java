@@ -61,7 +61,7 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
         super.setId(id);
 
         if (StringUtils.isNotBlank(id)) {
-            person = KimApiServiceLocator.getPersonService().getPerson(id);
+            person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(id);
             setPerson(person);
         }
     }
@@ -72,14 +72,14 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
         if (StringUtils.isNotBlank(name) && getId() != null &&
                 ((person != null) && !StringUtils.equals(person.getName(), name))) {
-            person = KimApiServiceLocator.getPersonService().getPerson(getId());
+            person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(getId());
             setPerson(person);
         }
     }
 
     public Person getPerson() {
-        if ((person == null) || !StringUtils.equals(person.getPrincipalId(), getId())) {
-            person = KimApiServiceLocator.getPersonService().getPerson(getId());
+        if ((person == null) || !StringUtils.equals(person.getPrincipalName(), getId())) {
+            person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(getId());
 
             if (person == null) {
                 try {
@@ -96,8 +96,8 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     public void setPerson(Person person) {
         this.person = person;
-        this.id = person.getPrincipalId();
-        this.name = person.getPrincipalName();
+        this.id = person.getPrincipalName();
+        this.name = person.getName();
     }
 }
 

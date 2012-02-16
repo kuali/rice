@@ -29,9 +29,6 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/creating_rice_enabled_application.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/coding_templates.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/framework_annotations.xml"/>
-  <!-- Commenting out to rehabilitate docbook generation
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/developer_setup.xml"/>
-  -->
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/unit_testing_framework.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../CDG/writing_unit_tests.xml"/>
 

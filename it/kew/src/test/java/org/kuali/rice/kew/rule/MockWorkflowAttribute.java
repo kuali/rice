@@ -17,6 +17,7 @@ package org.kuali.rice.kew.rule;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
@@ -87,10 +88,10 @@ public class MockWorkflowAttribute implements WorkflowRuleAttribute {
     
     public void setRequired(boolean required) {
     }
-    public List validateRoutingData(Map paramMap) {
+    public List<RemotableAttributeError> validateRoutingData(Map paramMap) {
         return null;
     }
-    public List validateRuleData(Map paramMap) {
+    public List<RemotableAttributeError> validateRuleData(Map paramMap) {
         return null;
     }
     

@@ -20,6 +20,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -452,7 +453,7 @@ public final class WebRuleUtils {
 			Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
 						
 			// validate rule data populates the rule extension values for us
-			List<WorkflowServiceError> attValidationErrors = workflowAttribute.validateRuleData(parameterMap);
+			List<RemotableAttributeError> attValidationErrors = workflowAttribute.validateRuleData(parameterMap);
 
 			// because validation should be handled by business rules now, if we encounter a validation error at this point in
 			// time, let's throw an exception

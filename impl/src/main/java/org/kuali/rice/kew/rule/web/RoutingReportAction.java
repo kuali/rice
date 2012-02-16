@@ -20,6 +20,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
@@ -113,7 +114,7 @@ public class RoutingReportAction extends KewKualiAction {
 		RoutingReportForm routingForm = (RoutingReportForm) form;
 
         // this is never actually used??
-		List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
+		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
 		if (getDocumentTypeService().findByName(routingForm.getDocumentType()) == null) {
 		    GlobalVariables.getMessageMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
@@ -188,7 +189,7 @@ public class RoutingReportAction extends KewKualiAction {
                     if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                         ((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
                     }
-                    List attValidationErrors = workflowAttribute.validateRoutingData(routingForm.getFields());
+                    List<RemotableAttributeError> attValidationErrors = workflowAttribute.validateRoutingData(routingForm.getFields());
                     if (attValidationErrors != null && !attValidationErrors.isEmpty()) {
                         errors.addAll(attValidationErrors);
                     }

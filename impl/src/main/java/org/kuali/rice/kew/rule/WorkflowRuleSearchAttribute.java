@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-import java.util.Map;
-
-import org.kuali.rice.kew.exception.WorkflowServiceError;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * An interface which can be implemented by a {@link WorkflowRuleAttribute} implementation which allows
@@ -44,6 +44,6 @@ public interface WorkflowRuleSearchAttribute extends WorkflowRuleAttribute{
      * @param paramMap
      * @return
      */
-    List<WorkflowServiceError> validateSearchData(Map<String, String> paramMap);
+    List<RemotableAttributeError> validateSearchData(Map<String, String> paramMap);
     
 }

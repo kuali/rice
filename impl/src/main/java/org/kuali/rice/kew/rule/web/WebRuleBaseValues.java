@@ -19,6 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.rule.RoleName;
@@ -472,7 +473,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		return new Timestamp(date.getTime());
 	}
 
-	private void populateRuleExtensionValues(List<WorkflowServiceError> errorList) {
+	private void populateRuleExtensionValues(List<RemotableAttributeError> errorList) {
 		RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 		setRuleTemplate(ruleTemplate);
 
@@ -490,7 +491,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 
-			List<WorkflowServiceError> attValidationErrors = workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));
+			List<RemotableAttributeError> attValidationErrors = workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));
 			if (attValidationErrors != null && !attValidationErrors.isEmpty()) {
 				errorList.addAll(attValidationErrors);
 			} else {

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -180,7 +182,7 @@ public interface WorkflowRuleAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the routing data for this Attribute
      */
-    List<WorkflowServiceError> validateRoutingData(Map<String, String> paramMap);
+    List<RemotableAttributeError> validateRoutingData(Map<String, String> paramMap);
     
     /**
      * Validates ruleExtension values in the incoming map.  Called by the UI during rule creation.
@@ -191,7 +193,7 @@ public interface WorkflowRuleAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the rule extensions for this Attribute
      */
-    List<WorkflowServiceError> validateRuleData(Map<String, String> paramMap);
+    List<RemotableAttributeError> validateRuleData(Map<String, String> paramMap);
     
     /**
      * Sets the required flag for this Attribute to true.  If required is true, the extensionValues for

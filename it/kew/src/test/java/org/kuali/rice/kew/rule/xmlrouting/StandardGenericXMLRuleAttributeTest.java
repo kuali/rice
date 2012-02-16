@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.rule.xmlrouting;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
@@ -167,7 +168,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
 	@Test public void testValidateRoutingData(){
-		Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "Dave");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -177,7 +178,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
 	@Test public void testValidateRuleData(){
-		Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "Dave");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -185,7 +186,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		assertTrue("Errors found", attribute.validateRuleData(paramMap).isEmpty());
 
-		paramMap = new HashMap();
+		paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "4444");
 		paramMap.put("gender", "crap");
 		paramMap.put("color", "green");
@@ -193,7 +194,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
         assertFalse("Error list should contain at least one error.", attribute.validateRuleData(paramMap).isEmpty());
 
-		paramMap = new HashMap();
+		paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -203,7 +204,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
     @Test public void testRuleDataAttributeErrorTypesAreConformant() {
-        Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "4444");
 		paramMap.put("gender", "crap");
 		paramMap.put("color", "green");
@@ -217,16 +218,16 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
     }
 
     @Test public void testRoutingDataAttributeErrorTypesAreConformant(){
-        Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("givenname", "4444");
         paramMap.put("gender", "crap");
         paramMap.put("color", "green");
         paramMap.put("totalDollar", "500");
 
-        List<WorkflowServiceError> errors = attribute.validateRoutingData(paramMap);
+        List<RemotableAttributeError> errors = attribute.validateRoutingData(paramMap);
         assertFalse("Error list should contain at least one error.", errors.isEmpty());
         for (Object e: errors) {
-            assertTrue(WorkflowServiceError.class.isAssignableFrom(e.getClass()));
+            assertTrue(RemotableAttributeError.class.isAssignableFrom(e.getClass()));
         }
     }
 
@@ -498,7 +499,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 	@Test public void testGetDocContent() {
 		//test the standard doc content...
-		Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "Dave");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -590,7 +591,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		        "</xmlDocumentContent>"+
             "</routingConfig>";
 		try {
-			paramMap = new HashMap();
+			paramMap = new HashMap<String, String>();
 			paramMap.put("myname", "jack");
 			paramMap.put("theGender", "male");
 			paramMap.put("myFavoriteColor", "blue");

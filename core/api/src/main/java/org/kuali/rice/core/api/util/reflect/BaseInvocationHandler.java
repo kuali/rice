@@ -42,6 +42,7 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 	    }
     }
 
+    @Override
 	public Object invoke(Object proxy, Method method, Object[] arguments) throws Throwable {
 		Class declaringClass = method.getDeclaringClass();
 		if (declaringClass == Object.class) {
@@ -71,7 +72,7 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 	}
 
     protected String proxyToString(Object proxy) {
-        return proxy.toString();
+        return toString();
     }
 
 }

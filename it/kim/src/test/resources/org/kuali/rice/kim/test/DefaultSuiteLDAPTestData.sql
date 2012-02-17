@@ -14,11 +14,11 @@
 -- limitations under the License.
 --
 insert into KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD)
-values ('KR-SYS','Config','KIM_TO_LDAP_FIELD_MAPPINGS',sys_guid(),1,'CONFG','entityId=uid;principalId=uid;principalName=uid;givenName=sn;principals.principalName=uid;principals.principalId=uid;principals.active=eduPersonAffiliation;lastName=sn;firstName=givenName;employmentInformation.employeeStatus=uid.*;employmentInformation.employeeId=uid;names.lastName=sn;names.firstName=givenName;','Valid values for the organization rule attribute.','A')
+values ('KR-SYS','Config','KIM_TO_LDAP_FIELD_MAPPINGS','672e0c94-597e-11e1-8f11-1b8e78ae00f5',1,'CONFG','entityId=uid;principalId=uid;principalName=uid;givenName=sn;principals.principalName=uid;principals.principalId=uid;principals.active=eduPersonAffiliation;lastName=sn;firstName=givenName;employmentInformation.employeeStatus=uid.*;employmentInformation.employeeId=uid;names.lastName=sn;names.firstName=givenName;','Valid values for the organization rule attribute.','A')
 /
 insert into KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD)
-values ('KR-SYS','Config','KIM_TO_LDAP_VALUE_MAPPINGS',sys_guid(),1,'CONFG','principals.active.Y=staff,faculty,employee,student;principals.active.N=alum,affiliate;','Valid values for the organization rule attribute.','A')
+values ('KR-SYS','Config','KIM_TO_LDAP_VALUE_MAPPINGS','76dbb10a-597e-11e1-8f11-1b8e78ae00f5',1,'CONFG','principals.active.Y=staff,faculty,employee,student;principals.active.N=alum,affiliate;','Valid values for the organization rule attribute.','A')
 /
 insert into KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD)
-values ('KR-SYS','Config','KIM_TO_LDAP_UNMAPPED_FIELDS',sys_guid(),1,'CONFG',null,'Valid values for the organization rule attribute.','A')
+values ('KR-SYS','Config','KIM_TO_LDAP_UNMAPPED_FIELDS','877cc9a4-597e-11e1-8f11-1b8e78ae00f5',1,'CONFG',null,'Valid values for the organization rule attribute.','A')
 /

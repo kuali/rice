@@ -95,7 +95,7 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
             KimTypeAttribute attr = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
             if (attr != null && StringUtils.isNotBlank(it.getValue())) {
                 try {
-                    T newDetail = (T)KimAttributeDataBo.class.newInstance();
+                    T newDetail = type.newInstance();
                     newDetail.setKimAttributeId(attr.getKimAttribute().getId());
                     newDetail.setKimAttribute(KimAttributeBo.from(attr.getKimAttribute()));
                     newDetail.setKimTypeId(kimTypeId);

@@ -151,4 +151,24 @@ public class UITestController extends UifControllerBase {
 		return getUIFModelAndView(uiTestForm, "page1");
 	}
 
+    /**
+     * The bogus method generates a NPE.  It is used to test incident reporting
+     * @param uiTestForm
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=foo")
+    public ModelAndView foo(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String bogus = null;
+        // intentially generate a null pointer error
+        bogus.charAt(3);
+
+        // should never get here
+        return getUIFModelAndView(uiTestForm, "page1");
+    }
+
 }

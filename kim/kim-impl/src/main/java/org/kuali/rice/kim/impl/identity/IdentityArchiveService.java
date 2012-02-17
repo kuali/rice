@@ -103,5 +103,16 @@ public interface IdentityArchiveService {
      */
     //TODO: this should probably return some kind of Future<EntityDefault> if we can find a way to remote that
 	void saveEntityDefaultToArchive(EntityDefault entityDefault) throws IllegalArgumentException;
+
+    /**
+     * Flushes {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} to the archive.
+     *
+     * <p>
+     *   This method flushes the "saved" entities to the database
+     * </p>
+     *
+     * @return void
+     */
+    void flushToArchive() throws IllegalArgumentException;
 	
 }

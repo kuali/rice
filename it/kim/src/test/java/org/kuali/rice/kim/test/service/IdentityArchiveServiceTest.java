@@ -31,6 +31,8 @@ import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,6 +76,17 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 	public void testArchiveFlushesWhenQueueIsFull() throws Exception {
 		final int maxWriteQueueSize =
 			Integer.valueOf(ConfigContext.getCurrentContextConfig().getProperty("kim.identityArchiveServiceImpl.maxWriteQueueSize"));
+
+
+        //flush the archive service before trying this to make sure no records are sitting waiting for flush
+        identityArchiveService.flushToArchive();
+        // give it a second or 2 to flush
+        log.info("Sleeping, waiting for the flush!");
+        for (int j=2; j >= 0; j--) {
+            Thread.sleep(1000);
+            log.info(String.valueOf(j));
+        }
+        log.info("Done sleeping!");
 
 		List<EntityDefault> added = new ArrayList<EntityDefault>();
 

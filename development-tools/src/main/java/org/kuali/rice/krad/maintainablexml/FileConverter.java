@@ -61,6 +61,7 @@ import org.xml.sax.InputSource;
 public class FileConverter {
 
     private HashMap<String, String> classNameRuleMap;
+    private HashMap<String, String> packageNameRuleMap;
     private HashMap<String, String> maintImplRuleMap;
     private HashMap<String, HashMap<String, String>> classPropertyRuleMap;
     private ArrayList<ArrayList<String>> newMaintDocXml = new ArrayList();
@@ -177,6 +178,11 @@ public class FileConverter {
             oldXML = oldXML.replaceAll(key, classNameRuleMap.get(key));
         }
 
+        // Replace package names
+        for (String key : packageNameRuleMap.keySet()) {
+            oldXML = oldXML.replaceAll(key, packageNameRuleMap.get(key));
+        }
+
         // Upgrade Bo notes
         oldXML = upgradeBONotes(oldXML);
 
@@ -266,6 +272,7 @@ public class FileConverter {
      */
     public void setRuleMaps() {
         classNameRuleMap = new HashMap();
+        packageNameRuleMap = new HashMap();
         classPropertyRuleMap = new HashMap();
         maintImplRuleMap = new HashMap();
         try {
@@ -273,7 +280,7 @@ public class FileConverter {
             DocumentBuilder db = dbf.newDocumentBuilder();
 
             Document doc = db.parse(getClass().getResourceAsStream(
-                    "/org/kuali/rice/devtools/krad/maintainablexml/MaintDocRules.xml"));
+                    "/org/kuali/rice/devtools/krad/maintainablexml/MaintainableXMLUpgradeRules.xml"));
             doc.getDocumentElement().normalize();
             XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -285,6 +292,16 @@ public class FileConverter {
                 String matchText = xpath.evaluate("match/text()", classNamesList.item(s));
                 String replaceText = xpath.evaluate("replacement/text()", classNamesList.item(s));
                 classNameRuleMap.put(matchText, replaceText);
+            }
+
+            // Get the package change rules
+
+            XPathExpression exprPackageNames = xpath.compile("//*[@name='maint_doc_moved_packages']/pattern");
+            NodeList packageNamesList = (NodeList) exprClassNames.evaluate(doc, XPathConstants.NODESET);
+            for (int s = 0; s < classNamesList.getLength(); s++) {
+                String matchText = xpath.evaluate("match/text()", classNamesList.item(s));
+                String replaceText = xpath.evaluate("replacement/text()", classNamesList.item(s));
+                packageNameRuleMap.put(matchText, replaceText);
             }
 
             // Get the property changed rules

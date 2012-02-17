@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
@@ -57,7 +59,9 @@ public class LDAPIdentityServiceImplTest extends KIMTestCase {
     private static int PORT = 10389;
     private IdentityService identityService;
 
-    public void setUp() throws Exception {
+
+    @BeforeClass
+    public static void startLDAPServer() throws Exception {
         LdapTestUtils.startApacheDirectoryServer(PORT, baseName.toString(), "test", PRINCIPAL, CREDENTIALS, null);
         LdapContextSource contextSource = new LdapContextSource();
         contextSource.setUrl("ldap://127.0.0.1:" + PORT);
@@ -71,18 +75,22 @@ public class LDAPIdentityServiceImplTest extends KIMTestCase {
 
         // Clear out any old data - and load the test data
         LdapTestUtils.cleanAndSetup(template.getContextSource(), baseName, new ClassPathResource("ldap/testdata.ldif"));
-        System.out.println("____________Started_________");
+        System.out.println("____________Started LDAP_________");
+    }
 
+    @AfterClass
+    public static void shutdownLDAP() throws Exception {
+        LdapTestUtils.destroyApacheDirectoryServer(PRINCIPAL, CREDENTIALS);
+         System.out.println("____________Shutdown LDAP_________");
+    }
+
+
+    public void setUp() throws Exception {
         super.setUp();
-
         identityService = (IdentityService) KIMServiceLocatorInternal.getBean("kimLDAPIdentityDelegateService");
 
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
-        LdapTestUtils.destroyApacheDirectoryServer(PRINCIPAL, CREDENTIALS);
-    }
 
     @Test
     public void testGetEntity() {

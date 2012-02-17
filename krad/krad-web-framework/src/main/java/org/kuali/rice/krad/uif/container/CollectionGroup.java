@@ -255,6 +255,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         components.add(addLineLabelField);
         components.add(collectionLookup);
+        components.addAll(addLineFields);
 
         // remove the containers items because we don't want them as children
         // (they will become children of the layout manager as the rows are

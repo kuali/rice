@@ -63,8 +63,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     private Mailer mailer;
     
     /**
-     * The injected Mailer.
-     * @param mailService the mailService to set
+     * Sets the Mailer mail service.
+     * @param mailer the mail service the mailService to set
      */
     public final void setMailer(Mailer mailer) {
         this.mailer = mailer;
@@ -76,8 +76,11 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     private MailMessage messageTemplate;
 
     /**
-     * This mails the report using the mail service from the mail template.
-     * 
+     * Mails the report using the mail service from the mail template.
+     *
+     * @param subject the subject text of the email
+     * @param message the body text of the email
+     * @throws IllegalStateException if the Mailer is not set up.
      * @see org.kuali.rice.krad.service.KualiExceptionIncidentService#emailReport(java.lang.String, java.lang.String)
      */
     @Override
@@ -105,13 +108,14 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     }
 
     /**
-     * This method create an instance of MailMessage from the inputs using the given
+     * Creates an instance of MailMessage from the inputs using the given
      * template.
      * 
-     * @param subject
-     * @param message
-     * @return
-     * @exception
+     * @param subject the subject line text
+     * @param message the body of the email message
+     * @return MailMessage
+     * @throws IllegalStateException if the <codeREPORT_MAIL_LIST</code> is not set
+     * or messageTemplate does not have ToAddresses already set.
      */
     @SuppressWarnings("unchecked")
     private MailMessage createMailMessage(String subject, String message)
@@ -132,7 +136,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         // Copy input message reference for creating an instance of mail message
         MailMessage msg=new MailMessage();
         
-        Person actualUser = GlobalVariables.getUserSession().getPerson();
+        Person actualUser = GlobalVariables.getUserSession().getActualPerson();
         String fromEmail = actualUser.getEmailAddress();
         if ((fromEmail != null) && (fromEmail != "")) {
         	msg.setFromAddress(fromEmail);
@@ -230,6 +234,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     }
 
     /**
+     * Returns the messageTemplate for the report email
      * @return the messageTemplate
      */
     public final MailMessage getMessageTemplate() {
@@ -237,6 +242,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     }
 
     /**
+     * Sets the messageTemplate
      * @param messageTemplate the messageTemplate to set
      */
     public final void setMessageTemplate(MailMessage messageTemplate) {
@@ -295,6 +301,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     }
     
 	/**
+     * Returns the incident report mailing list.
 	 * @return the incidentMailingList
 	 */
 	public String getIncidentMailingList() {
@@ -302,6 +309,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
 	}
 
 	/**
+     * Sets the incident report mailing list.
 	 * @param incidentMailingList the incidentMailingList to set
 	 */
 	public void setIncidentMailingList(String incidentMailingList) {

@@ -967,7 +967,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         if (attribute instanceof GenericXMLRuleAttribute) {
             Map<String, String> attributePropMap = new HashMap<String, String>();
             GenericXMLRuleAttribute xmlAttribute = (GenericXMLRuleAttribute)attribute;
-            xmlAttribute.setExtensionDefinition(RuleAttribute.to(attributeDefinition.getRuleAttribute()));
+            xmlAttribute.setExtensionDefinition(attributeDefinition.getExtensionDefinition());
             for (PropertyDefinition propertyDefinition : definition.getPropertyDefinitions()) {
                 attributePropMap.put(propertyDefinition.getName(), propertyDefinition.getValue());
             }

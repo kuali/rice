@@ -31,11 +31,6 @@
     <param-value>${bootstrap.spring.file}</param-value>
   </context-param>
 
-  <filter>
-    <filter-name>HttpRequestLogger</filter-name>
-    <filter-class>org.kuali.rice.core.RequestLoggingFilter</filter-class>
-  </filter>
-
   ${monitoring.filter}
 
   <filter>
@@ -64,11 +59,6 @@
   </filter>
 
   ${monitoring.mapping}
-
-  <filter-mapping>
-    <filter-name>HttpRequestLogger</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
 
   <filter-mapping>
     <filter-name>HideWebInfFilter</filter-name>

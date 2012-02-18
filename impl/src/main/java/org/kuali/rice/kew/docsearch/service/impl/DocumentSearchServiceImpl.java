@@ -213,10 +213,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         Map<String, List<DocumentAttribute.AbstractBuilder<?>>> customizedAttributeMap =
                 new LinkedHashMap<String, List<DocumentAttribute.AbstractBuilder<?>>>();
         for (DocumentAttribute customizedAttribute : value.getDocumentAttributes()) {
-            List<DocumentAttribute.AbstractBuilder<?>> attributesForName = customizedAttributeMap.get(value.getDocumentId());
+            List<DocumentAttribute.AbstractBuilder<?>> attributesForName = customizedAttributeMap.get(customizedAttribute.getName());
             if (attributesForName == null) {
                 attributesForName = new ArrayList<DocumentAttribute.AbstractBuilder<?>>();
-                customizedAttributeMap.put(value.getDocumentId(), attributesForName);
+                customizedAttributeMap.put(customizedAttribute.getName(), attributesForName);
             }
             attributesForName.add(DocumentAttributeFactory.loadContractIntoBuilder(customizedAttribute));
         }
@@ -225,11 +225,16 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<DocumentAttribute.AbstractBuilder<?>> newDocumentAttributes = new ArrayList<DocumentAttribute.AbstractBuilder<?>>();
         for (DocumentAttribute.AbstractBuilder<?> documentAttribute : result.getDocumentAttributes()) {
             String name = documentAttribute.getName();
-            if (!documentAttributeNamesCustomized.contains(name) && customizedAttributeMap.containsKey(name)) {
-                documentAttributeNamesCustomized.add(name);
-                newDocumentAttributes.addAll(customizedAttributeMap.get(name));
+            if (customizedAttributeMap.containsKey(name)) {
+                if (!documentAttributeNamesCustomized.contains(name)) {
+                    documentAttributeNamesCustomized.add(name);
+                    newDocumentAttributes.addAll(customizedAttributeMap.get(name));
+                }
+            } else {
+                newDocumentAttributes.add(documentAttribute);
             }
         }
+        result.setDocumentAttributes(newDocumentAttributes);
     }
 
 

@@ -146,7 +146,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
                 }
             }
         }
-        return documentSearchCriteria;
+        return null;
     }
 
     @Override

@@ -143,13 +143,13 @@ public class UifComponentsTestForm extends UifFormBase {
     private String field111;
     private String field112;
     private String field113;
-    private String field114;
-    private String field115;
-    private String field116;
+    private List<String> field114;
+    private List<String> field115;
+    private List<String> field116;
     private String field117;
     private String field118;
     private String field119;
-    private String field120;
+    private List<String> field120;
     private String field121;
     private String field122;
     private String field123;
@@ -1898,27 +1898,27 @@ public class UifComponentsTestForm extends UifFormBase {
         this.field113 = field113;
     }
 
-    public String getField114() {
+    public List<String> getField114() {
         return field114;
     }
 
-    public void setField114(String field114) {
+    public void setField114(List<String> field114) {
         this.field114 = field114;
     }
 
-    public String getField115() {
+    public List<String> getField115() {
         return field115;
     }
 
-    public void setField115(String field115) {
+    public void setField115(List<String> field115) {
         this.field115 = field115;
     }
 
-    public String getField116() {
+    public List<String> getField116() {
         return field116;
     }
 
-    public void setField116(String field116) {
+    public void setField116(List<String> field116) {
         this.field116 = field116;
     }
 
@@ -1974,11 +1974,11 @@ public class UifComponentsTestForm extends UifFormBase {
         this.field119 = field119;
     }
 
-    public String getField120() {
+    public List<String> getField120() {
         return field120;
     }
 
-    public void setField120(String field120) {
+    public void setField120(List<String> field120) {
         this.field120 = field120;
     }
 

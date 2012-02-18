@@ -523,7 +523,6 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     @Test
     public void testValidateUserSearchInputsNoCast() {
     	StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
-    	final RuleAttributeService ruleAttributeService = KEWServiceLocator.getRuleAttributeService();
         ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName("SearchableAttributeVisible");
 
         DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();

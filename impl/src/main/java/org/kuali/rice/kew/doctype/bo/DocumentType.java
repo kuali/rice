@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -60,6 +61,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import javax.jnlp.ExtendedService;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -474,15 +476,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         for (DocumentTypeAttributeBo documentTypeAttribute : searchableAttributes) {
             RuleAttribute ruleAttribute = documentTypeAttribute.getRuleAttribute();
             try {
-                Object attributeService = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute, getApplicationId());
-                if (attributeService == null) {
-                    throw new WorkflowRuntimeException("Failed to locate searchable attribute, attribute did not exist: " + ruleAttribute);
-                }
-                if (!(attributeService instanceof SearchableAttribute)) {
-                    throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
-                }
                 ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(ruleAttribute.getId());
-                loadedAttributes.add(new ExtensionHolder<SearchableAttribute>(ruleAttribute, extensionDefinition, (SearchableAttribute)attributeService));
+                SearchableAttribute attributeService = ExtensionUtils.loadExtension(extensionDefinition, getApplicationId());
+                loadedAttributes.add(new ExtensionHolder<SearchableAttribute>(extensionDefinition, attributeService));
             } catch (RiceRemoteServiceConnectionException e) {
                 LOG.warn("Unable to connect to load searchable attribute for " + ruleAttribute, e);
             }
@@ -492,19 +488,19 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public static final class ExtensionHolder<T> {
 
-        private final RuleAttribute ruleAttribute;
+        //private final RuleAttribute ruleAttribute;
         private final ExtensionDefinition extensionDefinition;
         private final T extension;
 
-        public ExtensionHolder(RuleAttribute ruleAttribute, ExtensionDefinition extensionDefinition, T extension) {
-            this.ruleAttribute = ruleAttribute;
+        public ExtensionHolder(ExtensionDefinition extensionDefinition, T extension) {
+            //this.ruleAttribute = ruleAttribute;
             this.extensionDefinition = extensionDefinition;
             this.extension = extension;
         }
 
-        public RuleAttribute getRuleAttribute() {
+        /*public RuleAttribute getRuleAttribute() {
             return ruleAttribute;
-        }
+        }*/
 
         public ExtensionDefinition getExtensionDefinition() {
             return extensionDefinition;

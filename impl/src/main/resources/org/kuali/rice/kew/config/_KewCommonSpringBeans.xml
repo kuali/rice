@@ -60,13 +60,6 @@
         abstract="true"
         p:serviceBus-ref="rice.kew.import.serviceBus"/>
 
-  <bean id="kewKimTypeServiceExporter"
-        class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
-        abstract="true"
-        p:serviceBus-ref="rice.kew.import.serviceBus"
-        p:serviceNameSpaceURI-ref="rice.kew.serviceNamespace"
-        p:servicePath="#{ T(org.kuali.rice.kew.api.KewApiConstants).SERVICE_PATH_SOAP }"/>
-
   <bean id="kewService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true"
     p:serviceNameSpaceURI-ref="rice.kew.serviceNamespace"
     p:jaxWsService="true"

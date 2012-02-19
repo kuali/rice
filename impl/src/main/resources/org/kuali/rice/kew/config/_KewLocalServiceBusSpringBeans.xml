@@ -171,29 +171,4 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.actionRequestDerivedRoleTypeService.exporter" parent="kewKimTypeServiceExporter"
-        p:callbackService-ref="actionRequestDerivedRoleTypeService"
-        p:localServiceName="actionRequestDerivedRoleTypeService"
-        p:busSecurity="${rice.kew.actionRequestDerivedRoleTypeService.secure}"/>
-
-  <bean id="rice.kew.adhocReviewPermissionTypeService.exporter" parent="kewKimTypeServiceExporter"
-        p:callbackService-ref="adhocReviewPermissionTypeService"
-        p:localServiceName="adhocReviewPermissionTypeService"
-        p:busSecurity="${rice.kew.adhocReviewPermissionTypeService.secure}"/>
-
-  <bean id="rice.kew.documentTypeResponsibilityTypeService.exporter" parent="kewKimTypeServiceExporter"
-        p:callbackService-ref="documentTypeResponsibilityTypeService"
-        p:localServiceName="documentTypeResponsibilityTypeService"
-        p:busSecurity="${rice.kew.documentTypeResponsibilityTypeService.secure}"/>
-
-  <bean id="rice.kew.reviewResponsibilityTypeService.exporter" parent="kewKimTypeServiceExporter"
-        p:callbackService-ref="reviewResponsibilityTypeService"
-        p:localServiceName="reviewResponsibilityTypeService"
-        p:busSecurity="${rice.kew.reviewResponsibilityTypeService.secure}"/>
-
-  <bean id="rice.kew.routeLogDerivedRoleTypeService.exporter" parent="kewKimTypeServiceExporter"
-        p:callbackService-ref="routeLogDerivedRoleTypeService"
-        p:localServiceName="routeLogDerivedRoleTypeService"
-        p:busSecurity="${rice.kew.routeLogDerivedRoleTypeService.secure}"/>
-  
 </beans>

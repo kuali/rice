@@ -131,9 +131,6 @@
 	  <!-- Tells the KualiInitializeListener to look in another location for the Rice configuration. Comma separated list -->
 	  <param name="additional.config.locations" override="false"></param>
 
-    <!-- A comma separated list of additional spring files for the RiceConfigurer -->
-    <param name="rice.additionalSpringFiles" override="false"></param>
-
   	<!-- Portal display parameters -->
 	  <!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.
 	     This is helpful for client apps using the rice portal, because both client and rice config params

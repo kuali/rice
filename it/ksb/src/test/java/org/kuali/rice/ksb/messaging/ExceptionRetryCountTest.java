@@ -33,7 +33,7 @@ import static org.junit.Assert.fail;
 
 
 /**
- * This is a description of what this class does - rkirkend don't forget to fill this in.
+ * Tests exception retries in KSB messaging.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

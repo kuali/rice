@@ -98,11 +98,6 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     }
 
     @Test public void testLockRouteHeader() throws Exception {
-	//fail("TestLockRouteHeader needs to be fixed.  It is currently deadlocking the tests!!!!");
-    	if (ConfigContext.getCurrentContextConfig().getProperty("datasource.ojb.platform").equals("Mckoi")) {
-    		return;
-    	}
-
     	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
     	document.saveDocumentData();
     	final String documentId = document.getDocumentId();

@@ -293,7 +293,7 @@
               </bean>
               <bean parent="AgendaEditorView-TreeExpandCollapse" />
               <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
-              <bean id="AgendaEditorView-Tree" parent="AgendaEditorView-Tree-parent" />
+              <bean id="AgendaEditorView-Tree" parent="AgendaEditorView-Tree-parent" p:persistInSession="true" />
             </list>
           </property>
         </bean>

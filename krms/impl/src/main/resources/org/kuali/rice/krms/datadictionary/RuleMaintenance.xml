@@ -204,10 +204,10 @@
                 <property name="items">
                   <list>
                     <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
-                    <bean id="RuleEditorView-PropositionSummary" parent="RuleEditorView-PropositionSummary-parent"/>
+                    <bean id="RuleEditorView-PropositionSummary" parent="RuleEditorView-PropositionSummary-parent" p:persistInSession="true"/>
                     <bean parent="RuleEditorView-TreeExpandCollapse" />
                     <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
-                    <bean id="RuleEditorView-Tree" parent="RuleEditorView-Tree-parent" />
+                    <bean id="RuleEditorView-Tree" parent="RuleEditorView-Tree-parent" p:persistInSession="true"/>
                   </list>
                 </property>
               </bean>

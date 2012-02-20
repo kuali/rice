@@ -375,7 +375,7 @@
                p:required="true" />
          <bean parent="Uif-InputField" p:label="Add line field 3" p:propertyName="field3"
                p:required="true" />
-         <bean parent="Uif-InputField" p:label="Add line field 4" p:propertyName="field3"
+         <bean parent="Uif-InputField" p:label="Add line field 4" p:propertyName="field4"
                p:required="true" />
        </list>
      </property>

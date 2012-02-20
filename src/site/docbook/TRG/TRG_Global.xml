@@ -1567,4 +1567,101 @@ config.parseConfig();             </programlisting>
             </sect3>
         </sect2>
     </sect1>
+    <sect1>
+        <title>Version Compatibility</title>
+        <sect2>
+            <title>Commitment to Compatibility in Kuali Rice</title>
+            <para>From version 2.0 of Kuali Rice up to at least version 3.0, the project is
+                committed to providing what it refers to as "middleware" or "client-server" service
+                compatibility.  This essentially means that an application which is a client of the
+                Kuali Rice Standalone Server (either it's services or it's database) should be able
+                to continue to function properly even if the Rice Standalone Server or it's database
+                is upgraded to a newer version.</para>
+            <para>More information on the scope of version compatibility in Kuali Rice can be found
+                in the <link xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version
+                    Compatibility Statement</link>.</para>
+        </sect2>
+        <sect2>
+            <title>Keeping Your Client Application Compatible</title>
+            <para>There are a few rules that a client application using the Kuali Rice apis must
+                following in order to ensure the client application remains compatible once the
+                Kuali Rice Standalone Server is updated.  These rules only apply in situations where
+                there is a standalone instance of Kuali Rice which is being integrated with.  In the
+                case that an application is running Kuali Rice "bundled", then compatibility is not
+                a concern since that application forms a single software bundle with Kuali Rice
+                included.</para>
+            <para>First, client-server compatibility only pertains to the components of Rice which
+                have client-server interaction, that includes the following components and their sub-modules:<itemizedlist>
+                    <listitem>
+                        <para>Core Service</para>
+                    </listitem>
+                    <listitem>
+                        <para>KSB</para>
+                    </listitem>
+                    <listitem>
+                        <para>KEW</para>
+                    </listitem>
+                    <listitem>
+                        <para>KIM</para>
+                    </listitem>
+                    <listitem>
+                        <para>KEN</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRMS</para>
+                    </listitem>
+                    <listitem>
+                        <para>Location</para>
+                    </listitem>
+                </itemizedlist>There are some components of Rice which are "framework-only" and
+                don't contain any client-server remoting components.  These include:<itemizedlist>
+                    <listitem>
+                        <para>Core</para>
+                    </listitem>
+                    <listitem>
+                        <para>KNS</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD</para>
+                    </listitem>
+                </itemizedlist>There are, additionally, some modules of Rice which only run as part
+                of the standalone server (or in bundled mode) and those include eDocLite and the
+                various "web" modules of Rice.</para>
+            <para>Only the first set of "client-server" Rice components are presently under the
+                constraints of version compatibility.</para>
+            <para>A summary of the rules a client application needs to follow in order to ensure
+                they remain version compatible is as follows:<itemizedlist>
+                    <listitem>
+                        <para>If integrated with a standlone Kuali Rice server, do not configure any
+                            of the Kuali Rice components with a run mode of
+                                <emphasis>LOCAL</emphasis>.  The <emphasis>LOCAL</emphasis> run mode
+                            is only for a fully bundled configuration of Kuali Rice as it interacts
+                            directly with all of the Kuali Rice database tables instead of using
+                            remotely accessible services.</para>
+                    </listitem>
+                    <listitem>
+                        <para>In application code, only use classes in the api or framework modules
+                            of the "client-server" components. This should be evident from the
+                            package names for the module as they should have "api" or "framework" in
+                            the package name (i.e. <code>org.kuali.rice.kew.api.*</code> and
+                                <code>org.kuali.rice.kim.framework.*</code>).</para>
+                    </listitem>
+                    <listitem>
+                        <para>Do not write custom code which interacts directly with the Kuali Rice
+                            database tables which are part of any of the previously mentioned
+                            "client-server" components.</para>
+                    </listitem>
+                    <listitem>
+                        <para>When writing code against the Rice apis or frameworks, be sure to read
+                            the javadocs and be sure to conform to the contracts specified
+                            therein.</para>
+                    </listitem>
+                    <listitem>
+                        <para>When implementing "callback" services, ensure that you are using the
+                                <code>CallbackServiceExporter</code> properly as specified in <xref
+                                linkend="callback_service_exporter"/></para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+    </sect1>
 </chapter>

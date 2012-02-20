@@ -627,7 +627,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Map<String, String> properties = KRADServiceLocator.getKualiConfigurationService().getAllProperties();
         context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
-        // TODO: this needs to be here somehow but can't find a way to invoke static methods on vars, see KULRICE-6639
         context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
         context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
 

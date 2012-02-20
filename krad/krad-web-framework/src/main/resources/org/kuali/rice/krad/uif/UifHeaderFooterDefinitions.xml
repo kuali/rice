@@ -144,7 +144,7 @@
   <bean id="Uif-FormFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-NavigationActionButton" p:clientSideJs="saveForm();" p:actionLabel="Save"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save" p:clientSideValidate="true"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
         <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"/>
       </list>

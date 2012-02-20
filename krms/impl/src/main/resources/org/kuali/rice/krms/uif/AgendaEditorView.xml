@@ -69,10 +69,6 @@
     </property>
     <property name="singlePageView" value="false"/>
     <property name="entryPageId" value="AgendaEditorView-Agenda-Page"/>
-    <!-- Since we want different footers for each page we override the footer section with an empty footer -->
-    <property name="footer">
-      <bean parent="Uif-FooterBase" />
-    </property>
   </bean>
 
   <bean id="AgendaEditorView-Agenda-Page-Parent" parent="Uif-Page">
@@ -80,9 +76,6 @@
       <list>
         <bean parent="AgendaEditorView-AgendaSection" />
       </list>
-    </property>
-    <property name="footer">
-      <bean parent="Uif-DocumentFooter" />
     </property>
   </bean>
 

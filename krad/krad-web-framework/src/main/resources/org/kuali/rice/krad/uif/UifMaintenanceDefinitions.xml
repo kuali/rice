@@ -43,7 +43,7 @@
   </bean>
 
   <bean id="Uif-MaintenancePage" abstract="true" parent="Uif-MaintenancePage-parentBean"/>
-  <bean id="Uif-MaintenancePage-parentBean" parent="Uif-Disclosure-Page">
+  <bean id="Uif-MaintenancePage-parentBean" parent="Uif-DocumentPage">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-maintenancePage</value>

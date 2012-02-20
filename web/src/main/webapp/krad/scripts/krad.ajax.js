@@ -137,10 +137,14 @@ function validateAndSubmit(methodToCall, successCallback){
 	}
 }
 
-//saves the current form by first validating client side and then attempting an ajax submit
-function saveForm(){
-	validateAndSubmit("save", replacePage);
+/**
+ * Validate form.  When no validation errors exists the form is submitted with the methodToCall of the form.
+ * The page is then replaced with the result of the ajax call.
+ */
+function validateAndSubmitUsingFormMethodToCall(){
+    validateAndSubmit(null, replacePage);
 }
+
 /**
  * Submits a form via ajax using the jquery form plugin
  * The methodToCall parameter is used to determine the controller method to invoke

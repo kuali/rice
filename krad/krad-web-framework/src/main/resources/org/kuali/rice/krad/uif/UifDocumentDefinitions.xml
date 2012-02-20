@@ -44,7 +44,7 @@
       <bean parent="Uif-DocumentPage"/>
     </property>
     <property name="footer">
-      <bean parent="Uif-DocumentFooter"/>
+      <bean parent="Uif-FooterBase"/>
     </property>
     <property name="itemOrderingSequence" value="11"/>
     <property name="items">
@@ -265,40 +265,6 @@
       </bean>
     </property>
   </bean>
-
-  <bean id="Uif-DocumentFooter" parent="Uif-FooterBase">
-    <property name="items">
-      <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="route report"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="send adhoc"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="submit"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="save"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="reload" p:actionLabel="reload"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="blanketApprove" p:actionLabel="blanket approve"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="approve" p:actionLabel="approve"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="disapprove" p:actionLabel="disapprove"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="fyi" p:actionLabel="fyi"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_FYI]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="acknowledge" p:actionLabel="acknowledge"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE]}"/>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="close"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]}"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="cancel"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="copy"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
-      </list>
-    </property>
-  </bean>
-
 
   <bean id="Uif-DocumentNumber" parent="Uif-InputField" p:propertyName="documentNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">

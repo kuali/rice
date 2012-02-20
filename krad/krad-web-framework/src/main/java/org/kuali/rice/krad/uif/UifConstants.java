@@ -25,7 +25,7 @@ public class UifConstants {
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
-    public static final String SPRING_VIEW_ID = "ScreenMediaView";
+    public static final String SPRING_VIEW_ID = "Application";
     public static final String SPRING_REDIRECT_ID = "redirectURL";
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";

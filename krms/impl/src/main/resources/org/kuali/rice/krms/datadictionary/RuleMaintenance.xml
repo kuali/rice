@@ -440,7 +440,8 @@
     </property>
   </bean>
         
-  <bean id="RuleEditorView-Tree-parent" parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="RuleEditorView-Tree-parent" parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false"
+        p:style="float:left; margin-left: 2em;" p:persistInSession="true">
     <property name="propertyName" value="agendaItemLine.rule.propositionTree"/>
     <property name="errorsField.displayMessages" value="true" />
     <property name="errorsField.displayFieldLabelWithMessages" value="false" />

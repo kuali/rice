@@ -151,6 +151,11 @@ public class ViewIndex implements Serializable {
                     holdFactoryIds.add(component.getFactoryId());
                     holdIds.add(component.getId());
                 }
+                // if component is marked as persist in session we need to keep it
+                else if (component.isPersistInSession()) {
+                    holdFactoryIds.add(component.getFactoryId());
+                    holdIds.add(component.getId());
+                }
                 // if component is a collection we need to keep it
                 else if (component instanceof CollectionGroup) {
                     ViewCleaner.cleanCollectionGroup((CollectionGroup) component);

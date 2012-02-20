@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.TypedStringValue;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
@@ -43,7 +44,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Post processes the bean factory to handle UIF property expressions
+ * Post processes the bean factory to handle UIF property expressions and IDs on inner beans
  *
  * <p>
  * Conditional logic can be implemented with the UIF dictionary by means of property expressions. These are
@@ -52,6 +53,11 @@ import java.util.Set;
  * converted), we need to move those expressions to a Map for processing, and then remove the original property
  * configuration containing the expression. The expressions are then evaluated during the view apply model phase and
  * the result is set as the value for the corresponding property.
+ * </p>
+ *
+ * <p>
+ * Spring will not register inner beans with IDs so that the bean definition can be retrieved through the factory,
+ * therefore this post processor adds them as top level registered beans
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -157,6 +163,13 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             mergedPropertyExpressions.putAll(propertyExpressions);
 
             pvs.addPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS, mergedPropertyExpressions);
+        }
+
+        // if bean name is given and factory does not have it registered we need to add it (inner beans that
+        // were given an id)
+        if (StringUtils.isNotBlank(beanName) && !StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName,
+                "#") && !beanFactory.containsBean(beanName)) {
+            ((BeanDefinitionRegistry) beanFactory).registerBeanDefinition(beanName, beanDefinition);
         }
 
         if (StringUtils.isNotBlank(beanName)) {

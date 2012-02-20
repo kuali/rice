@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 @charset "UTF-8";
+
 body {
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:0.85em;
-
-
+    margin-right: 0px;
 }
 
 table {
- 
     margin-bottom:0px;
 }
 

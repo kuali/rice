@@ -987,7 +987,7 @@ div.uif-collectionAddItem, span.uif-collectionAddItem {
 	/* [disabled]margin-left:50px; */
 }
 
-.kr-info {
+.uif-informationalMessage {
 	font-size:0.813em;
 	
     font-weight:normal;
@@ -995,10 +995,6 @@ div.uif-collectionAddItem, span.uif-collectionAddItem {
 	margin-bottom: 5px;
 	display: block;
 }
-
-
-
-
 
 .paginate_disabled_previous {
 	background: url(../../plugins/rice/datatables/images/back_disabled.jpg);

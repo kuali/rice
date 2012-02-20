@@ -29,6 +29,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -367,12 +368,14 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         return RequestedActions.create(completeRequested, approveRequested, acknowledgeRequested, fyiRequested);
     }
 
+    @Override
     public DocumentDetail executeSimulation(RoutingReportCriteria reportCriteria) {
         incomingParamCheck(reportCriteria, "reportCriteria");
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Executing routing report [docId=" + reportCriteria.getDocumentId() + ", docTypeName=" + reportCriteria.getDocumentTypeName() + "]");
         }
         SimulationCriteria criteria = SimulationCriteria.from(reportCriteria);
+
         return DTOConverter.convertDocumentDetailNew(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 

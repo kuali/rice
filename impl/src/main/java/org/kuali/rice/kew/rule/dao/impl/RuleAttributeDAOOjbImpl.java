@@ -68,10 +68,10 @@ public class RuleAttributeDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 		return (RuleAttribute) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleAttribute.class, crit));
 	}
 
-	public RuleAttribute findByClassName(String classname) {
+	public List<RuleAttribute> findByClassName(String classname) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("resourceDescriptor", classname);
-		return (RuleAttribute) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleAttribute.class, crit));
+		return (List<RuleAttribute>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleAttribute.class, crit));
 	}
 
 }

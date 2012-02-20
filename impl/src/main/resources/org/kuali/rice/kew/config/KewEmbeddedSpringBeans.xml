@@ -49,6 +49,10 @@
     <property name="documentTypeDAO" ref="enDocumentTypeDAO"/>
   </bean>
 
+  <!--  Routing Report Service -->
+  <bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"
+        lazy-init="true"/>
+
   <!--  RouteHeaderService -->
   <bean id="enDocumentRouteHeaderService"
         class="org.kuali.rice.kew.routeheader.service.impl.RouteHeaderServiceImpl"
@@ -348,6 +352,8 @@
         <idref local="enDocumentTypePermissionService"/>
         <idref local="enActionTakenService"/>
         <idref local="enActionRequestService"/>
+        <idref local="enDocumentTypeService"/>
+        <idref local="enRoutingReportService"/>
         <idref local="enNotificationService"/>
         <idref local="enRouteModuleService"/>
         <idref local="enWorkflowDocumentService"/>

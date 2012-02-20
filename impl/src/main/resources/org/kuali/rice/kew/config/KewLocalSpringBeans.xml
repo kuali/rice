@@ -136,10 +136,6 @@
     </property>
   </bean>
 
-  <!--  Routing Report Service -->
-  <bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"
-        lazy-init="true"/>
-
   <!--  DocumentSearchService -->
   <bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl">
     <property name="documentSearchDAO" ref="enDocumentSearchDAO"/>
@@ -274,10 +270,8 @@
         <idref local="enRuleTemplateService"/>
         <idref local="enRuleServiceInternal"/>
         <idref local="enDocumentSearchService"/>
-        <idref local="enDocumentTypeService"/>
         <idref local="enResponsibilityIdService"/>
         <idref local="enRuleDelegationService"/>
-        <idref local="enRoutingReportService"/>
         <idref local="enStatsService"/>
         <idref local="enNoteService"/>
         <idref local="rice.kew.groupMembershipChangeQueue"/>

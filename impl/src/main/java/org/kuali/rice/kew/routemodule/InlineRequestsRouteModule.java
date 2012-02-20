@@ -24,6 +24,8 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -99,7 +101,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
             attributes.add(getRuleAttributeByName(attributeName));
         }
         for (String attributeClassName : ruleAttributeClassNames) {
-            attributes.add(getRuleAttributeByClassName(attributeClassName));
+            attributes.addAll(getRuleAttributeByClassName(attributeClassName));
         }
         
         // at this point if we have no xpath expressions or attributes we cannot match
@@ -160,23 +162,30 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
     }
 
     private WorkflowRuleAttribute getRuleAttributeByName(String ruleAttributeName) {
-        return materializeRuleAttribute(KEWServiceLocator.getRuleAttributeService().findByName(ruleAttributeName));
+        return materializeRuleAttribute(KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(
+                ruleAttributeName));
     }
     
-    private WorkflowRuleAttribute getRuleAttributeByClassName(String ruleAttributeClassName) {
-        return materializeRuleAttribute(KEWServiceLocator.getRuleAttributeService().findByClassName(ruleAttributeClassName));
+    private List<WorkflowRuleAttribute> getRuleAttributeByClassName(String ruleAttributeClassName) {
+        List<ExtensionDefinition> extensionDefinitions = 
+                KewApiServiceLocator.getExtensionRepositoryService().getExtensionsByResourceDescriptor(ruleAttributeClassName);
+        List<WorkflowRuleAttribute> workflowRuleAttributes = new ArrayList<WorkflowRuleAttribute>();
+        for (ExtensionDefinition extension : extensionDefinitions) {
+            workflowRuleAttributes.add(materializeRuleAttribute(extension));
+        }
+        return workflowRuleAttributes;
     }
     
-    private WorkflowRuleAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
-        if (ruleAttribute != null) {
-            if (KewApiConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
+    private WorkflowRuleAttribute materializeRuleAttribute(ExtensionDefinition extensionDefinition) {
+        if (extensionDefinition != null) {
+            if (KewApiConstants.RULE_ATTRIBUTE_TYPE.equals(extensionDefinition.getType())) {
+                ObjectDefinition objDef = new ObjectDefinition(extensionDefinition.getResourceDescriptor(), extensionDefinition.getApplicationId());
                 return (WorkflowRuleAttribute) GlobalResourceLoader.getObject(objDef);
-            } else if (KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
+            } else if (KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType())) {
+                ObjectDefinition objDef = new ObjectDefinition(extensionDefinition.getResourceDescriptor(), extensionDefinition.getApplicationId());
                 WorkflowRuleAttribute workflowAttribute = (WorkflowRuleAttribute) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct custom columns
-                ((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+                ((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(extensionDefinition);
                 return workflowAttribute;
             }
         }

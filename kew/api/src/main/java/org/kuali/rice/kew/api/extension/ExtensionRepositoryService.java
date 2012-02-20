@@ -22,6 +22,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
 /**
  * A service which is used for retrieving information about extensions to various
@@ -51,5 +52,15 @@ public interface ExtensionRepositoryService {
     @WebMethod(operationName = "getExtensionByName")
     @WebResult(name = "extensionDefinition")
     ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException;
+
+    /**
+     * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given resourceDescriptor.
+     * @param resourceDescriptor the resourceDescriptor to search by.
+     * @return the extension definition found for the matching rule attribute service
+     * @throws RiceIllegalArgumentException if resourceDescriptor is null or blank
+     */
+    @WebMethod(operationName = "getExtensionByResourceDescriptor")
+    @WebResult(name = "extensionDefinitions")
+    List<ExtensionDefinition> getExtensionsByResourceDescriptor(String resourceDescriptor) throws RiceIllegalArgumentException;
 
 }

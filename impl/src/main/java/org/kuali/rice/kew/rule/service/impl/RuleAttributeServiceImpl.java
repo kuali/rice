@@ -156,7 +156,7 @@ public class RuleAttributeServiceImpl implements RuleAttributeService {
 		return true;
 	}
 
-	public RuleAttribute findByClassName(String className) {
+	public List<RuleAttribute> findByClassName(String className) {
 		return this.ruleAttributeDAO.findByClassName(className);
 	}
 }

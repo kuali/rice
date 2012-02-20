@@ -147,6 +147,6 @@ public class PreferencesServiceTest extends KEWTestCase {
        preferencesService.savePreferences(principal.getPrincipalId(), preferences);
        updatedOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should not be empty", !updatedOptions.isEmpty());
-
+       t1.stop();
     }
 }

@@ -22,8 +22,11 @@ import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.routemodule.RouteModule;
@@ -169,14 +172,14 @@ public class RoleRouteModule implements RouteModule {
 		}
 		QualifierResolver resolver = null;
 		if (!StringUtils.isBlank(qualifierResolverName)) {
-			RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(qualifierResolverName);
-			if (ruleAttribute == null) {
-				throw new RiceRuntimeException("Failed to locate QualifierResolver for attribute name: " + qualifierResolverName);
+			//RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(qualifierResolverName);
+            ExtensionDefinition extDef = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(qualifierResolverName);
+			if (extDef == null) {
+				throw new RiceRuntimeException("Failed to locate QualifierResolver for name: " + qualifierResolverName);
 			}
-			ObjectDefinition definition = getAttributeObjectDefinition(ruleAttribute);
-			resolver = (QualifierResolver)GlobalResourceLoader.getObject(definition);
+            resolver = ExtensionUtils.loadExtension(extDef, extDef.getApplicationId());
 			if (resolver instanceof XmlConfiguredAttribute) {
-				((XmlConfiguredAttribute)resolver).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+				((XmlConfiguredAttribute)resolver).setExtensionDefinition(extDef);
 			}
 		}
 		if (resolver == null && !StringUtils.isBlank(qualifierResolverClassName)) {

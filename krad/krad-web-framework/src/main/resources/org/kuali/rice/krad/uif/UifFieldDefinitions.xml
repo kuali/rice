@@ -106,7 +106,7 @@
       </bean>
     </property>
     <property name="fieldSuggest">
-      <bean parent="Uif-Suggest" p:render="false"/>
+      <bean parent="Uif-Suggest"/>
     </property>
     <property name="instructionalMessageField">
       <bean parent="Uif-InstructionalMessage"/>

@@ -307,15 +307,33 @@ mysql> </programlisting>
             </section>
             <section>
                 <title>Install the JDBC Driver</title>
-                <para>Kuali Rice uses the standard Oracle JDBC driver as the native JDBC driver. Please
-                    download this driver from the location specified in the <link
-                        linkend="database_software_locations">Locations for Database Software</link>
-                    section of this Guide.</para>
-                <para>Once you have downloaded the JDBC driver that corresponds to your version of
-                    Oracle, copy it to <emphasis role="bold">/java/drivers</emphasis>. <emphasis
-                        role="bold">/java/drivers</emphasis> is a hard coded directory that the Rice
-                    scripts use as a default directory in which to search for drivers when the
-                    installation scripts are running.</para>
+                <para>Kuali Rice uses the standard Oracle JDBC driver as the native JDBC driver. <orderedlist>
+                        <listitem>
+                            <para>Please download this driver from the location specified in the
+                                    <link linkend="database_software_locations">Locations for
+                                    Database Software</link> section of this Guide.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Once you have downloaded the JDBC driver that corresponds to your
+                                version of Oracle, copy it to <emphasis role="bold"
+                                    >/java/drivers</emphasis>. <emphasis role="bold"
+                                    >/java/drivers</emphasis> is a hard coded directory that the
+                                Rice scripts use as a default directory in which to search for
+                                drivers when the installation scripts are running.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Use the <link
+                                    xlink:href="http://maven.apache.org/plugins/maven-install-plugin"
+                                    >maven-install-plugin</link> to copy ojdbc14.jar into your local
+                                maven repository.</para>
+                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=ojdbc14.jar</programlisting>
+                        </listitem>
+                        <listitem>
+                            <para>You should see output similar to this if the jar gets installed
+                                correctly. </para>
+                            <programlisting>[INFO] Installing ojdbc14.jar to /.m2/repository/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar</programlisting>
+                        </listitem>
+                    </orderedlist></para>
             </section>
         </section>
         <section>
@@ -389,18 +407,17 @@ Database changed</programlisting>
                     <para>Maven 3</para>
                 </listitem>
             </itemizedlist></para>
+        </section>
+        <section xml:id="environment_variables">
+            <title>Environment Variables</title>
             <para>First, some environment variables need to be configured.</para>
-            <section xml:id="environment_variables">
-                <title>Environment Variables</title>
                 <section>
                     <title>Mac OS X</title>
                     <para>Environment variables in Mac OS X can be set in a number of ways, but here we will
                         show how to modify or create the .profile files in your user home directory. On OS X
                         your user home directory is typically located at /Users/&lt;username>,</para>
                     <para>An example .profile can be found below:</para>
-                    <programlisting>ANT_HOME=/usr/local/ant
-ANT_OPTS="-Xmx512m -XX:MaxPermSize=192m"
-M2_HOME=/usr/local/maven
+                    <programlisting>M2_HOME=/usr/local/maven
 MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"
 GROOVY_HOME=/usr/local/groovy
 JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
@@ -435,9 +452,9 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
                                 <para>Click on the "Environment Variables" button.</para>
                             </listitem>
                             <listitem>
-                                <para>You will see the screen below where you can edit existing environment
-                                    variables or define new ones:</para>
-                                <para>&lt;TODO: Insert screen shot here></para>
+                                <para>You will see the screen where you can edit existing
+                                environment variables or define new ones.</para>
+<!--                                <para>&lt;TODO: Insert screen shot here></para>     -->
                             </listitem>
                         </orderedlist></para>
                 </section>
@@ -462,97 +479,96 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
                                     button.</para>
                             </listitem>
                             <listitem>
-                                <para>You will see the screen below where you can edit existing environment
-                                    variables or define new ones:</para>
-                                <para>&lt;TODO: Insert screen shot here></para>
+                                <para>You will see the screen where you can edit existing environment
+                                    variables or define new ones.</para>
+<!--                                <para>&lt;TODO: Insert screen shot here></para> -->
                             </listitem>
                         </orderedlist></para>
                 </section>
+        </section> 
+       <section>
+            <title>Java SDK</title>
+            <section>
+                <title>Installation</title>
+                <para>You should download and install the latest version of JDK 6. If you are on
+                    Windows, you can download it from the following URL: <link
+                        xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
+                        >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>.</para>
+                <para>If you are on a Mac, then Java 6 should alredy be installed if you are up to date
+                    with the latest updates from Apple.</para>
             </section>
             <section>
-                <title>Java SDK</title>
-                <section>
-                    <title>Installation</title>
-                    <para>You should download and install the latest version of JDK 6. If you are on
-                        Windows, you can download it from the following URL: <link
-                            xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-                            >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>.</para>
-                    <para>If you are on a Mac, then Java 6 should alredy be installed if you are up to date
-                        with the latest updates from Apple.</para>
-                </section>
-                <section>
-                    <title>Configuration</title>
-                    <para>You will also want to set up your <emphasis role="bold">JAVA_HOME</emphasis>
-                        environment variable to point to the installation directory of your JDK. In both
-                        Windows and Mac environments, the <emphasis role="bold">java</emphasis> executable
-                        program should already be on your path. But if it is not, you will want to include
-                        <emphasis role="bold">JAVA_HOME/bin</emphasis> in your <emphasis role="bold"
-                            >PATH</emphasis> environment variable.</para>
-                    <para>If you do not know how to do this, see the <command
-                        linkend="environment_variables">Environment Variables</command> section above
-                        for your platform.</para>
-                </section>
-                <section>
-                    <title>Verification</title>
-                    <para>In order to verify that your JDK has been installed successfully, open a command
-                        prompt and type the following:</para>
-                    <programlisting>java -version</programlisting>
-                    <para>You should see output similar to the following:</para>
-                    <programlisting>java version "1.6.0_26"
-    Java(TM) SE Runtime Environment (build 1.6.0_26-b03-383-11A511)
-    Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisting>
-                    <para>If you receive an error indicating that the "java" command could not be found,
-                        please ensure that the java command is on your machine's <emphasis role="bold"
-                            >PATH</emphasis> environment variable.</para>
-                </section>
+                <title>Configuration</title>
+                <para>You will also want to set up your <emphasis role="bold">JAVA_HOME</emphasis>
+                    environment variable to point to the installation directory of your JDK. In both
+                    Windows and Mac environments, the <emphasis role="bold">java</emphasis> executable
+                    program should already be on your path. But if it is not, you will want to include
+                    <emphasis role="bold">JAVA_HOME/bin</emphasis> in your <emphasis role="bold"
+                        >PATH</emphasis> environment variable.</para>
+                <para>If you do not know how to do this, see the <command
+                    linkend="environment_variables">Environment Variables</command> section above
+                    for your platform.</para>
             </section>
-            <!-- TODO: Determine if we need to add a section for ant or if we're done here -->
             <section>
-                <title>Maven</title>
-                <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
-                    project object model (POM) that defines various standards and conventions surrounding
-                    the organization of a project. This faciliates a set of standard build goals and
-                    lifecycle phases (such as compile, test, package, etc.)</para>
-                <section>
-                    <title>Installation</title>
-                    <para>To download version 3 of Maven, use the following link: <link
-                        xlink:href="http://maven.apache.org/download.html"
-                        >http://maven.apache.org/download.html</link></para>
-                    <para>Once you have downloaded the zip file, unzip it to a location of your
-                        choosing.</para>
-                </section>
-                <section>
-                    <title>Configuration</title>
-                    <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environement
-                        variable to point to the location where you unzipped Maven. You will additionally
-                        want to include <emphasis role="bold">M2_HOME/bin</emphasis> in your <emphasis
-                            role="bold">PATH</emphasis> environment variable so that maven can be executed
-                        from the command line without having to specify the full path.</para>
-                    <para>Finally, to prevent potential out of memory errors when compiling Rice with Maven,
-                        you should set your <emphasis role="bold">MAVEN_OPTS</emphasis> environment to a
-                        value like the following:</para>
-                    <programlisting>MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"</programlisting>
-                    <para>If you do not know how to do this, see the <link
-                        linkend="environment_variables">Environment Variables</link> section above
-                        for your platform.</para>
-                </section>
-                <section>
-                    <title>Verification</title>
-                    <para>In order to verify that Maven has been installed successfully and is available on
-                        the path, open a command prompt and type the following:</para>
-                    <programlisting>mvn -version</programlisting>
-                    <para>You should see output like the following:</para>
-                    <programlisting>Apache Maven 3.0.3 (r1075438; 2011-02-28 10:31:09-0700)
-    Maven home: /usr/local/maven
-    Java version: 1.6.0_26, vendor: Apple Inc.
-    Java home: /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
-    Default locale: en_US, platform encoding: MacRoman
-    OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programlisting>
-                    <para>If you receive an error indicating hat the "mvn" command could not be found,
-                        please ensure that the directory that includes the mvn executable (<emphasis
-                            role="bold">M2_HOME/bin</emphasis>) is on your machine's <emphasis role="bold"
-                                >PATH</emphasis> environment variable.</para>
-                </section>
+                <title>Verification</title>
+                <para>In order to verify that your JDK has been installed successfully, open a command
+                    prompt and type the following:</para>
+                <programlisting>java -version</programlisting>
+                <para>You should see output similar to the following:</para>
+                <programlisting>java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-383-11A511)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisting>
+                <para>If you receive an error indicating that the "java" command could not be found,
+                    please ensure that the java command is on your machine's <emphasis role="bold"
+                        >PATH</emphasis> environment variable.</para>
+            </section>
+        </section>
+        <!-- TODO: Determine if we need to add a section for ant or if we're done here -->
+        <section>
+            <title>Maven</title>
+            <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
+                project object model (POM) that defines various standards and conventions surrounding
+                the organization of a project. This faciliates a set of standard build goals and
+                lifecycle phases (such as compile, test, package, etc.)</para>
+            <section>
+                <title>Installation</title>
+                <para>To download version 3 of Maven, use the following link: <link
+                    xlink:href="http://maven.apache.org/download.html"
+                    >http://maven.apache.org/download.html</link></para>
+                <para>Once you have downloaded the zip file, unzip it to a location of your
+                    choosing.</para>
+            </section>    
+            <section>
+                <title>Configuration</title>
+                <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environement
+                    variable to point to the location where you unzipped Maven. You will additionally
+                    want to include <emphasis role="bold">M2_HOME/bin</emphasis> in your <emphasis
+                        role="bold">PATH</emphasis> environment variable so that maven can be executed
+                    from the command line without having to specify the full path.</para>
+                <para>Finally, to prevent potential out of memory errors when compiling Rice with Maven,
+                    you should set your <emphasis role="bold">MAVEN_OPTS</emphasis> environment to a
+                    value like the following:</para>
+                <programlisting>MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"</programlisting>
+                <para>If you do not know how to do this, see the <link
+                    linkend="environment_variables">Environment Variables</link> section above
+                    for your platform.</para>
+            </section>
+            <section>
+                <title>Verification</title>
+                <para>In order to verify that Maven has been installed successfully and is available on
+                    the path, open a command prompt and type the following:</para>
+                <programlisting>mvn -version</programlisting>
+                <para>You should see output like the following:</para>
+                <programlisting>Apache Maven 3.0.3 (r1075438; 2011-02-28 10:31:09-0700)
+Maven home: /usr/local/maven
+Java version: 1.6.0_26, vendor: Apple Inc.
+Java home: /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+Default locale: en_US, platform encoding: MacRoman
+OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programlisting>
+                <para>If you receive an error indicating hat the "mvn" command could not be found,
+                    please ensure that the directory that includes the mvn executable (<emphasis
+                        role="bold">M2_HOME/bin</emphasis>) is on your machine's <emphasis role="bold"
+                            >PATH</emphasis> environment variable.</para>
             </section>
         </section>
         <section>
@@ -573,175 +589,83 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
         <section>
             <title>Install Rice software from distribution</title>
             <para>The quickest way to get Rice installed on a standalone server is to download the
-                <emphasis role="bold">Standalone Server</emphasis> distribution from the <link
+                    <emphasis role="bold">Standalone Server</emphasis> distribution from the <link
                     xlink:href="http://kuali.org/rice/download">kuali.org download site</link>. Once
-                downloaded, uncompress the software.</para>
+                downloaded, decompress the software.</para>
         </section>
-    </section>
+    </section>    
     <section>
         <title>Building the Rice Database</title>
         <section>
-            <title>Overview</title>
-            <para>The ImpEx tool is a Kuali-developed application which is based on <link
-                xlink:href="http://db.apache.org/torque">Apache Torque</link>. It reads in
-                database structure and data from XML files in a platform independent way and
-                then creates the resulting database in either Oracle or MySQL.</para>
-        </section>
-        
-        <section>
-            <title>Obtaining the ImpEx Tool</title>
-            <para>The ImpEx tool is included in the Rice binary and server distributions. It is
-                located in the <emphasis role="bold">database/database-impex</emphasis> directory of
-                the relevant archive. If you are building Rice from source, the ImpEx tool can be
-                acquired from Subversion:</para>
-            <programlisting>svn co https://test.kuali.org/svn/kul-cfg-dbs/trunk</programlisting>
-        </section>
-        <section>
-            <title>Oracle ImpEx Preconfiguration Setup</title>
-            <para>For Oracle users, you must run two scripts on your Oracle database before
-                continuing on to the ImpEx development database ingestion process. Please contact
-                your DBA and have him or her run these two setup scripts as the <emphasis
-                    role="bold">Oracle SYS user</emphasis>. These scripts will be in the <emphasis
-                        role="bold">database/database-impex</emphasis> distribution (or the impex
-                subdirectory if you checked out the tool from svn). These are the commands, and they
-                must be run in this order:<orderedlist>
-                    <listitem>
-                        <para><emphasis role="bold">create_kul_developer.sql</emphasis> (Creates the
-                            <emphasis role="bold">KUL_DEVELOPER</emphasis> role and applies
-                            grants)</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">system_grants.sql</emphasis> (Creates the
-                            <emphasis role="bold">KULUSERMAINT</emphasis> user for Rice Oracle
-                            system maintenance)</para>
-                    </listitem>
-                </orderedlist></para>
-            <note><para>Please inform your DBA that the above scripts must be run under the Oracle SYS account.</para></note>
-            <para>After your DBA runs the above scripts, you must run two more scripts as the kulusermaint:<orderedlist>
+            <title>Load Impex Data with Maven</title>
+            <orderedlist>
                 <listitem>
-                    <para><emphasis role="bold">create_admin_user.sql</emphasis> (Creates the
-                        <emphasis role="bold">kuluser_admin</emphasis> user)</para>
+                    <para>Change to the directory <emphasis role="bold">db/demo</emphasis> located
+                        where you decompressed the software.</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">kuluser_maint_pk.sql</emphasis> (Creates the
-                        package containing the functions that the Rice system uses to do Oracle
-                        system maintenance)</para>
+                    <para>Verify that Maven can connect to your database instance.</para>
+                    <para><emphasis role="bold">Running Locally:</emphasis><itemizedlist>
+                            <listitem>
+                                <para>MySQL</para>
+                                <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.password=[dbapassword]</programlisting>
+                                <note><para>If the 'root' user does not have a password (which is the default on a new MySQL install),
+                                        drop the '-Dimpex.dba.password' parameter from all MySQL
+                                        commands or use 'NONE' for the password: </para>
+                                    <para><programlisting>mvn validate -Pdb,mysql</programlisting>or 
+                                        <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.password=NONE</programlisting></para></note>
+                            </listitem>
+                            <listitem>
+                                <para>Oracle</para>
+                                <programlisting>mvn validate -Pdb,oracle -Dimpex.dba.password=[dbapassword]</programlisting>
+                            </listitem>
+                        </itemizedlist></para>
+                    <para><emphasis role="bold">Connecting to a remote database:</emphasis><itemizedlist>
+                        <listitem>
+                            <para>MySQL</para>
+                            <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.url=jdbc:mysql://[your-mysql-instance]/ -Dimpex.dba.password=[dbapassword]</programlisting>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle</para>
+                            <programlisting>mvn validate -Pdb,oracle -Dimpex.url=jdbc:oracle:thin:@[your-oracle-server]:1521:XE -Dimpex.dba.password=[dbapassword]</programlisting>
+                        </listitem>
+                    </itemizedlist></para>
                 </listitem>
-            </orderedlist></para>
-        </section>
-        <section>
-            <title>ImpEx Configuration Overview</title>
-            <para>The Rice team released four different sets of data with Rice 1.0.3. The server
-                distribution contains only the first two listed, whereas the binary distribution
-                contains all four. You can find these datasets in the /database directory of the
-                relevant archive:<orderedlist>
-                    <listitem>
-                        <para><emphasis role="bold">bootstrap-server-dataset</emphasis> – This is
-                            the core dataset. The Rice standalone server cannot function properly
-                            without this data.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">demo-server-dataset </emphasis>– This is a
-                            superset of the bootstrap-server-dataset which, in addition to necessary
-                            bootstrap data, includes sample security groups and workflow
-                            documents.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">bootstrap-client-dataset</emphasis> – This
-                            dataset is necessary for creating a Rice client application </para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">demo-client-dataset </emphasis>– This is a
-                            superset of the data in the bootstrap-client-dataset. In addition to
-                            necessary bootstrap data, it includes tables used by some of the Rice
-                            sample client applications.</para>
-                    </listitem>
-                </orderedlist></para>
-            <para>This guide does not deal with developing a client application; for more information on creating a Rice client application and the use of the client datasets, see the Global Technical Reference Guide.</para>
-        </section>
-        <section>
-            <title>impex-build.properties Reference</title>
-            <para>After you have uncompressed the distribution (Binary or Server) you will use for
-                Rice, login as the user that you use to run the Tomcat server:<orderedlist>
-                    <listitem>
-                        <para>1. Go to the sub-directory, <emphasis role="bold">&lt;directory where
-                            uncompressed>/database/database-impex</emphasis>. This directory is
-                            the same for each of the distributions.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Copy the <emphasis role="bold"
-                            >impex-build.properties.sample</emphasis> file to your home
-                            directory, renaming the file to <emphasis role="bold"
-                                >impex-build.properties</emphasis>.</para>
-                    </listitem>
-                </orderedlist></para>
-        </section>
-        <section>
-            <title>Specific impex-build.properties database parameter setup</title>
-            <section>
-                <title>For MySQL Users</title>
-                <orderedlist>
-                    <listitem>
-                        <para>Configure the <emphasis role="bold">drivers.directory</emphasis>, the
-                            directory where the MySQL and Oracle JDBC drivers are located.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Configure <emphasis role="bold">import.torque.database.*</emphasis>.
-                            Set the user and password to the user under which you want to run the
-                            Rice software.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Configure <emphasis role="bold">import.admin.user</emphasis> and
-                            <emphasis role="bold">import.admin.password</emphasis>.</para>
-                    </listitem>
-                </orderedlist>
-            </section>
-            <section>
-                <title>For Local MySQL Server</title>
-                <para>Set import.admin.url as follows:</para>
-                <para><programlisting>import.admin.url=jdbc:mysql://localMySQLServerComputerName:MySQL-port-number/</programlisting></para>
-                <para>Example: <emphasis role="bold"
-                    >import.admin.url=jdbc:mysql://localhost:3306/</emphasis></para>
-            </section>
-            <section>
-                <title>For Remote MySQL Server</title>
-                <para>Set import.admin.url as follows:</para>
-                <para><programlisting>import.admin.url=jdbc:mysql://remoteMySQLServerComputerName:MySQL-port-number/</programlisting></para>
-                <para>Example: <emphasis role="bold"
-                    >import.admin.url=jdbc:mysql://192.168.25.22:3306/</emphasis></para>
-                <para>To setup the database from one of the distributions, change directories to
-                    /database/database-impex and use these commands:</para>
-                <para><programlisting>ant create-schema 
-ant import</programlisting></para>
-            </section>
-            <section>
-                <title>For Oracle users</title>
-                <orderedlist>
-                    <listitem>
-                        <para>Configure the <emphasis role="bold">drivers.directory</emphasis>, the
-                            directory where the MySQL and Oracle JDBC drivers are located.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Configure <emphasis role="bold">import.torque.database.*</emphasis>
-                            for the Oracle setup. Set the user and password to the user under which
-                            you want to run the Rice software.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Configure <emphasis role="bold">import.admin.user</emphasis> and
-                            <emphasis role="bold">import.admin.password</emphasis>.</para>
-                        <para><programlisting>import.admin.url= ${import.torque.database.url}</programlisting></para>
-                    </listitem>
-                    <listitem>
-                        <para>Configure <emphasis role="bold">oracle.usermaint.*</emphasis></para>
-                    </listitem>
-                    <listitem>
-                        <para>To setup the database from one of the distributions, use these Ant
-                            commands:</para>
-                        <para><programlisting>ant create-schema 
-ant import </programlisting></para>
-                    </listitem>
-                </orderedlist>
-            </section>
+                <listitem>
+                    <para>Load the data set. </para>
+                    <para><emphasis role="bold">Running Locally:</emphasis><itemizedlist>
+                        <listitem>
+                            <para>MySQL</para>
+                            <programlisting>mvn clean install -Pdb,mysql -Dimpex.dba.password=[dbapassword] </programlisting>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle</para>
+                            <programlisting>mvn clean install -Pdb,oracle -Dimpex.dba.password=[dbapassword] </programlisting>
+                        </listitem>
+                    </itemizedlist></para>
+                    <para><emphasis role="bold">Connecting to a remote database:</emphasis><itemizedlist>
+                        <listitem>
+                            <para>MySQL</para>
+                            <programlisting>mvn clean install -Pdb,mysql  -Dimpex.dba.url=jdbc:mysql://[your-mysql-instance]/ -Dimpex.dba.password=[dbapassword] </programlisting>
+                        </listitem>
+                        <listitem>
+                            <para>Oracle</para>
+                            <programlisting>mvn clean install -Pdb,oracle -Dimpex.url=jdbc:oracle:thin:@[your-oracle-server]:1521:XE  -Dimpex.dba.password=[dbapassword] </programlisting>
+                        </listitem>
+                    </itemizedlist></para>
+                </listitem>
+                <listitem>
+                    <para>Wait for the maven process to build your database (it may take a little
+                        while, especially if this is the first time you've done it and maven has to
+                        download impex and other plugins).</para>
+                </listitem>
+                <listitem>
+                    <para>You should get the following message at the end of the process.</para>
+                    <programlisting>[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------ </programlisting>
+                </listitem>
+            </orderedlist>
         </section>
         <section>
             <title>Verifying your Database Installation</title>

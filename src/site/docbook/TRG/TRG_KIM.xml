@@ -539,528 +539,145 @@ KimRoleInfo info = rmSvc.getRoleByName(namespaceCode, roleName);             </p
         </sect2>
     </sect1>
     <sect1>
-        <title>KIM Types</title>
+        <title>KimTypeService Callbacks</title>
         <sect2>
             <title>Implementing Custom KIM Types</title>
-            <para>KIM uses types to add additional attributes to objects (currently, groups and
-                roles) and to affect their behavior.</para>
-            <sect3>
-                <title>Basic Service Requirements</title>
-                <para>All custom type services must implement a sub-interface of <emphasis
-                        role="bold">org.kuali.rice.kim.service.support.KimTypeService</emphasis>
-                    based on the type of custom type being created.</para>
-                <para>Your custom type service class should extend the appropriate subclass of
-                        <emphasis role="bold"
-                        >org.kuali.rice.kim.service.support.impl.KimTypeServiceBase</emphasis> and
-                    only override the methods necessary to implement your custom behavior. Use the
-                    methods in these classes as the basis for your custom code.</para>
-                <programlisting>public class MyTypeService extends KimTypeServiceBase
- implements KimTypeService {
-    // Do something
+            <para>KIM uses the concept of "types" to define additional attributes for it's various
+                objects (such as groups, roles, permissions, etc.) and to affect their
+                behavior.</para>
+            <para>All custom type services must implement a sub-interface of
+                    <code>org.kuali.rice.kim.framework.type.KimTypeService</code> based on the kind
+                of custom type being created and the KIM objects it will be related to. The current
+                type services supported by KIM are as follows:<itemizedlist>
+                    <listitem>
+                        <para><code>GroupTypeService</code></para>
+                    </listitem>
+                    <listitem>
+                        <para><code>RoleTypeService</code></para>
+                    </listitem>
+                    <listitem>
+                        <para><code>PermissionTypeService</code></para>
+                    </listitem>
+                    <listitem>
+                        <para><code>ResponsibilityTypeService</code></para>
+                    </listitem>
+                    <listitem>
+                        <para><code>DelegationTypeService</code></para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>In addition to the interfaces provided above, KIM provides a standard set of
+                implementations of each of these which can be extended by your application in order
+                to inherit standard default behavior (including integration with the KNS Data
+                Dictionary for reading and defining custom attributes). More detailed information
+                about these base classes can be found in the KIM javadocs. Your custom type service
+                class should extend the appropriate subclass and only override the methods necessary
+                to implement your custom behavior. Use the methods in these classes as the basis for
+                your custom code.</para>
+            <para>For example, you might define a custom <code>PermissionTypeService</code> by
+                extending <code>org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase</code>
+                as follows:</para>
+            <programlisting>import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
+public class MyPermissionTypeService extends PermissionTypeServiceBase {
+
+    @Override
+    protected boolean performMatch(Map&lt;String, String> inputMap, Map&lt;String, String> storedMap) {
+        if (some_condition_is_true) {
+            // perform custom matching logic
+            ...
+        } else {
+            return super.performMatch(inputMap, storedMap); // execute the default logic from base class
+        }
+    }
 
 }
-</programlisting>                
-            </sect3>
-            <sect3>
-                <title>Method getAttributeDefinitions</title>
-                <para>This method retrieves the map of attribute definitions related to a type. The
-                    map is keyed on the sort code of the attribute definition.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">kimTypeId</emphasis> – The ID of the KIM
-                                type</para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Method getUniqueAttributes</title>
-                <para>This method retrieves the list of attribute names related to a type that
-                    uniquely defines the principal. For any given principal, there should be only
-                    one assignment (for example, a role assignment or type assignment) that contains
-                    the particular set of values for these attributes.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">kimTypeId</emphasis> – The ID of the KIM
-                                type</para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Method getWorkflowDocumentTypeName</title>
-                <para>This method returns the name of the workflow document type that will be used
-                    for the role qualifiers when you route objects with this type. If no special
-                    document type is needed, this method must return null.</para>
-                <para>Parameters: None</para>
-            </sect3>
-            <sect3>
-                <title>Method getWorkflowRoutingAttributes</title>
-                <para>This method returns the names of attributes that need to be passed to workflow
-                    for route processing.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">routeLevel</emphasis> – The routing
-                                level</para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Method validateAttributes</title>
-                <para>This method performs validation on the attributes of an object. The default
-                    implementation ensures that the values fit within type and length constraints
-                    and, if there is a look-up table for the values, that the value exists and is
-                    active. If null is returned or the map is empty, no validation errors were
-                    detected.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">kimTypeId</emphasis> – The ID of the KIM
-                                type </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">attributes</emphasis> – The attributes on
-                                the object </para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Method validateAttributesAgainstExisting</title>
-                <para>This method performs validation on the attributes of an object. The default
-                    implementation does not do any checking but simply returns an empty map. If null
-                    is returned or the map is empty, no validation errors were detected.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">kimTypeId</emphasis> – The ID of the KIM
-                                type </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">newAttributes</emphasis> – The new
-                                attributes on the object </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">oldAttributes</emphasis> – The old
-                                attributes on the object </para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Method validateUniqueAttributes</title>
-                <para>This method performs validation on the unique attributes of an object. The
-                    default implementation ensures that the principal does not have another
-                    assignment that duplicates the new values. If null is returned or the map is
-                    empty, no validation errors were detected.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">kimTypeId</emphasis> – The ID of the KIM
-                                type </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">newAttributes</emphasis> – The new
-                                attributes on the object </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">oldAttributes</emphasis> – The old
-                                attributes on the object </para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
-            <sect3>
-                <title>Method validateUnmodifiableAttributes</title>
-                <para>This method performs validation on the unique attributes of an object. The
-                    default implementation ensures that these values are not being changed. If null
-                    is returned or the map is empty, no validation errors were detected.</para>
-                <para>Parameters:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">kimTypeId</emphasis> – The ID of the KIM
-                                type </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">newAttributes</emphasis> – The new
-                                attributes on the object </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">oldAttributes</emphasis> – The old
-                                attributes on the object </para>
-                        </listitem>
-                    </itemizedlist></para>
-            </sect3>
+                </programlisting>
+            <para>Detailed documentation on the specific methods which can be implemented on
+                    <code>KimTypeService</code> and it's various sub-interfaces can be found in the
+                KIM javadocs.</para>
         </sect2>
         <sect2>
-            <title>KIM Group Type Service</title>
-            <para>Classes that customize the handling of group qualifiers must implement <emphasis
-                    role="bold">org.kuali.rice.kim.framework.group.GroupTypeService</emphasis>.
-                This document contains a brief description of the methods specific to group types.
-                Please refer to the Implementing Custom KIM Types document for information on
-                methods common to all custom type services. Please also refer to the API javadocs
-                for more details on the methods described here.</para>
-            <sect3>
-                <title>Java Class Information</title>
-                <para>Your custom type service class should extend
-                    org.kuali.rice.kns.kim.group.GroupTypeServiceBase and only
-                    override the methods necessary to implement your custom behavior. Use the
-                    methods in this class as the basis for your custom code.</para>
-                <programlisting>public class MyGroupTypeService extends KimGroupTypeServiceBase
- implements KimGroupTypeService {
-
-    // Do something
-}
-</programlisting>
-            </sect3>
-            <sect3>
-                <title>Methods Specific to Group Types</title>
-                <para>There are no methods specific to group types.</para>
-            </sect3>
+            <title>Configuring Custom KIM Types</title>
+            <para>Groups, Roles, Permissions, Responsibilities, and Delegations can all have custom
+                types in KIM. These custom types can be mapped back to the KIM type services that
+                you create. In order to do this, there are a few things you must do:<itemizedlist>
+                    <listitem>
+                        <para>Register the KIM Type which points to your custom type service</para>
+                    </listitem>
+                    <listitem>
+                        <para>Update any of the "typed" KIM objects that you want to point to your
+                            new KIM type</para>
+                    </listitem>
+                    <listitem>
+                        <para>Publish your KIM type service so that it is available on the Kuali
+                            Service Bus and the Rice resource loader framework</para>
+                    </listitem>
+                </itemizedlist>Currently, there is no way to register a new KIM Type without
+                updating the KIM database using SQL. Fortunately, this is a fairly simple thing to
+                do. The database table storing KIM Types is named <code>KRIM_TYP_T</code>. An
+                example of how to insert a new KIM Type into this table in Oracle is
+                below:<programlisting>INSERT INTO KRIM_TYP_T (
+    KIM_TYP_ID,
+    NMSPC_CD,
+    NM,
+    SRVC_NM,
+    OBJ_ID)
+VALUES (
+    KRIM_TYP_ID_S.NEXTVAL,
+    'MyNamespace',
+    'MyPermissionType',
+    '{http://myapp.myu.edu}myPermissionTypeService',
+    SYS_GUID()) </programlisting></para>
+            <para>One of the most important things to note about this is the service name (SRVC_NM)
+                column. As we can see in the example above, for this KIM type we are linking it to
+                a service named <code>{http://myapp.myu.edu}myPermissionTypeService</code>. This is
+                how KIM will look up your custom type service whenever it needs to load and invoke it.<footnote>
+                    <para>While the service name here is a single string value, it will be parsed
+                        into a <code>javax.xml.namespace.QName</code> object using that classes
+                            <code>valueOf(...)</code> method.  This means that, for our example of
+                            <code>{http://myapp.myu.edu}myPermissionTypeService</code>, it will get
+                        parsed into a QName which is equivalent to <code>new
+                            QName("http://myapp.myu.edu", "myPermissionTypeService")</code>.</para>
+                </footnote> It does this through the Rice resource loading framework which includes
+                locally available services defined in Spring as well as services published on the
+                Kuali Service Bus. For KIM type services, it's generally required to deploy them
+                onto the KSB because the user interface components of KIM will use these when
+                determining which custom attributes may need to be displayed and collected on it's
+                various screens.</para>
+            <para>More information on how to publish these services can be found in the next
+                section.</para>
+            <para>Once the KIM type has been registered, it will be assigned an ID, this is the
+                value of the <code>KIM_TYP_ID</code> column after the record has been inserted. This
+                ID can then be used to associate the type with the appropriate and desired data
+                elements in KIM.</para>
+            <para>For example, to associate the custom <code>PermissionTypeService</code> you
+                created earlier with one of your permission templates, you can execute the following
+                SQL (assuming the ID of your new KIM type is
+                10000):<programlisting>UPDATE KRIM_PERM_TMPL_T SET KIM_TYP_ID = '10000'
+WHERE NMSPC_CD = 'MyNamespace' AND NM = 'MyPermissionTemplate'</programlisting></para>
+            <para>Once this is complete, any existing or new permissions you create with this
+                template will use your custom KIM type and it's associated type service.</para>
         </sect2>
         <sect2>
-            <title>KIM Permission Type Service</title>
-            <para>Classes that customize the handling of permission qualifiers and implement custom
-                permission checks must implement
-                org.kuali.rice.kim.api.permission.KimPermissionTypeService. This document contains
-                a brief description of the methods specific to permission types. Please refer to the
-                Implementing Custom KIM Types document for information on methods common to all
-                custom type services. Please also refer to the API javadocs for more details on the
-                methods described here.</para>
-            <sect3>
-                <title>Java Class Information</title>
-                <para>Your custom permission type service class should extend <emphasis role="bold"
-                        >org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase</emphasis>
-                    and only override the methods necessary to implement your custom behavior. Use
-                    the methods in this class as the basis for your custom code.</para>
-                <programlisting>public class MyPermissionionTypeService extends KimPermissionTypeServiceBase
- implements KimPermissionTypeService {
-    // Do something
-}</programlisting>
-            </sect3>
-            <sect3>
-                <title>Methods Specific to Permission Types</title>
-                <sect4>
-                    <title>Method getMatchingPermissions</title>
-                    <para>This method is called to find the permission assignments that are
-                        applicable for the request. The implementation of this method must not
-                        modify the parameters in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">requestedDetails</emphasis> – The
-                                    details in the request </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">permissionsList</emphasis> – The list of
-                                    permissions to check </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method performPermissionMatches</title>
-                    <para>This method is called by <emphasis role="bold"
-                            >getMatchingPermissions</emphasis> to find the matching permissions. You
-                        can override this method to customize the way that matches are made without
-                        replicating the rest of the <emphasis role="bold"
-                            >getMatchingPermissions</emphasis> method. The implementation of this
-                        method must not modify the parameters in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">requestedDetails</emphasis> – The
-                                    details in the request </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">permissionsList</emphasis> – The list of
-                                    permissions to check </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-            </sect3>
-        </sect2>
-        <sect2>
-            <title>KIM Responsibility Type Service</title>
-            <para>Classes that customize the handling of responsibility qualifiers and implement
-                custom responsibility checks must implement <emphasis role="bold"
-                    >org.kuali.rice.kim.service.support.KimResponsibilityTypeService</emphasis>.
-                This document contains a brief description of the methods specific to responsibility
-                types. Please refer to the Implementing Custom KIM Types document for information on
-                methods common to all custom type services. Please also refer to the API javadocs
-                for more details on the methods described here.</para>
-            <sect3>
-                <title>Java Class Information</title>
-                <para>Your custom permission type service class should extend <emphasis role="bold"
-                        >org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase</emphasis>
-                    and only override the methods necessary to implement your custom behavior. Use
-                    the methods in this class as the basis for your custom code.</para>
-                <programlisting>public class MyResponsibilityTypeService extends KimResponsibilityTypeServiceBase
- implements KimResponsibilityTypeService {
-
-    // Do something
-}
-</programlisting>
-            </sect3>
-            <sect3>
-                <title>Methods Specific to Responsibility Types</title>
-                <sect4>
-                    <title>Method getMatchingResponsibilities</title>
-                    <para>This method is called to find the responsibility assignments that are
-                        applicable for the request. The implementation of this method must not
-                        modify the parameters in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">requestedDetails</emphasis> – The
-                                    details in the request </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">responsibilitiesList</emphasis> – The
-                                    list of responsibilities to check </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method performResponsibilityMatches</title>
-                    <para>This method is called by <emphasis role="bold"
-                            >getMatchingResponsibilities</emphasis> to find the matching
-                        responsibilities. This method can be overridden to customize the way that
-                        matches are made without replicating the rest of the <emphasis role="bold"
-                            >getMatchingResponsibilities</emphasis> method. The implementation of
-                        this method must not modify the parameters in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">requestedDetails</emphasis> – The
-                                    details in the request </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">responsibilitiesList</emphasis> – The
-                                    list of responsibilities to check </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-            </sect3>
-        </sect2>
-        <sect2>
-            <title>KIM Role Type Service</title>
-            <para>Classes that customize the handling of role qualifiers and implement custom role
-                membership must implement <emphasis role="bold"
-                    >org.kuali.rice.kim.service.support.KimRoleTypeService</emphasis>. This document
-                contains a brief description of the methods specific to role types. Please refer to
-                the Implementing Custom KIM Types document for information on methods common to all
-                custom type services. Please also refer to the KIM API documentation for more
-                details on the methods described here.</para>
-            <sect3>
-                <title>Java Class Information</title>
-                <para>Your custom type service class should extend one of the following classes (all
-                    in the package <emphasis role="bold"
-                        >org.kuali.rice.kim.service.support.impl</emphasis>):<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">KimDerivedRoleTypeServiceBase</emphasis> –
-                                Roles with derived membership </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold"
-                                    >PrincipalDerivedRoleTypeServiceImpl</emphasis> – Derived roles
-                                with only principals as members </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">KimRoleTypeServiceBase</emphasis> – Basic
-                                role implementation </para>
-                        </listitem>
-                    </itemizedlist></para>
-                <para>Only override the methods necessary to implement your custom behavior. Use the
-                    methods in these classes as the basis for your custom code.</para>
-                <programlisting>public class MyRoleTypeService extends KimPrincipalDerivedRoleTypeServiceImpl
- implements KimRoleTypeService {
-    // Do something
-
-
-}</programlisting>
-            </sect3>
-            <sect3>
-                <title>Methods Specific to Role Types</title>
-                <sect4>
-                    <title>Method convertQualificationAttributesToRequired</title>
-                    <para>This method converts qualifier attributes based on the needs of the role.
-                        For example, a role that is based on campus might convert the
-                        organization-based attributes <emphasis role="bold"
-                            >“chart=BL,org=PSY”</emphasis> into the attribute <emphasis role="bold"
-                            >“campus=BLOOMINGTON”</emphasis>. The implementation of this method must
-                        not modify the parameter in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">qualificationAttributes</emphasis> – The
-                                    qualifier attributes to convert</para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method convertQualificationForMemberRoles</title>
-                    <para>This method converts qualifier attributes for use by roles that are a
-                        member of the role. The implementation of this method must not modify the
-                        parameters in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">namespaceCode</emphasis> – The name
-                                    space code for this role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleName</emphasis> – The name for this
-                                    role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">memberRoleNamespaceCode</emphasis> – The
-                                    name space code for the member role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">memberRoleName</emphasis> – The name for
-                                    the member role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">qualification</emphasis> – The
-                                    qualifiers applied to the role assignment </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method doesRoleQualifierMatchQualification</title>
-                    <para>This method returns <emphasis role="italic">true</emphasis> if the
-                        qualifications applied to a role assignment match the qualifiers applied to
-                        a role, <emphasis role="italic">false</emphasis> if they don’t match. The
-                        implementation of this method must not modify the parameters in any
-                        way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">qualification</emphasis> – The
-                                    qualifiers applied to the role assignment </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleQualifier</emphasis> – The
-                                    qualifiers applied to the role </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method doRoleQualifiersMatchQualification</title>
-                    <para>This method finds the subset of member roles where the qualifications
-                        applied to a role assignment match the qualifiers applied to a role. The
-                        implementation of this method must not modify the parameters in any way. </para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">qualification</emphasis> – The
-                                    qualifiers applied to the role assignment </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleMemberList</emphasis> – The role
-                                    members to check </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method getRoleMembersFromApplicationRole</title>
-                    <para>This method returns the list of role members based on an application role.
-                        The implementation of this method must not modify the parameters in any
-                        way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">namespaceCode</emphasis> – The name
-                                    space code for the application role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleName</emphasis> – The name for the
-                                    application role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">qualification</emphasis> – The
-                                    qualifiers applied to the search </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method hasApplicationRole</title>
-                    <para>This method returns <emphasis role="italic">true</emphasis> if the given
-                        principal has this application role, <emphasis role="italic"
-                            >false</emphasis> if not. The implementation of this method must not
-                        modify the parameters in any way.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">principalId</emphasis> – The ID of the
-                                    principal </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">groupIds</emphasis> – The complete list
-                                    of groups in which the principal belongs </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">namespaceCode</emphasis> – The name
-                                    space code for the application role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleName</emphasis> – The name for the
-                                    application role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">qualification</emphasis> – The
-                                    qualifiers applied to the search </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method isApplicationRoleType</title>
-                    <para>This method returns <emphasis role="italic">true</emphasis> if the role as
-                        an application role, <emphasis role="italic">false</emphasis> if not. This
-                        means that the application defines the members of the role, not KIM.</para>
-                    <para>Parameters: None</para>
-                </sect4>
-                <sect4>
-                    <title>Method principalInactivated</title>
-                    <para>The Role Service calls this method when a principal is inactivated. This
-                        allows an application role to perform any necessary clean up.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">principalId</emphasis> – The ID of the
-                                    principal </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">namespaceCode</emphasis> – The name
-                                    space code for the application role </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleName</emphasis> – The name for the
-                                    application role </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method sortRoleMembers</title>
-                    <para>This method sorts a list of roles being returned by <emphasis role="bold"
-                            >RoleService.getRoleMembers</emphasis>. The list passed as a parameter
-                        may be modified and returned rather than generating a new list. If the order
-                        of the members is not meaningful, the parameter may simply be
-                        returned.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">roleMembers</emphasis> – The list of
-                                    role members to sort</para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-                <sect4>
-                    <title>Method shouldCacheRoleMembershipResults</title>
-                    <para><emphasis role="bold">RoleManagementService</emphasis> caches information
-                        about role membership, based on the assumption that most roles are fairly
-                        stable in terms of membership. Returning true from this method allows
-                            <emphasis role="bold">RoleManagementService</emphasis> to cache the
-                        results of membership calls (specifically <emphasis role="bold"
-                            >principalHasRole</emphasis> and <emphasis role="bold"
-                            >getRoleMembers</emphasis>). Returning false prevents caching. Roles
-                        with highly volatile membership sets should return false from this method,
-                        so that all membership changes are taken into consideration during
-                        permission and responsibility calls.</para>
-                    <para>Parameters:<itemizedlist>
-                            <listitem>
-                                <para><emphasis role="bold">namespaceCode</emphasis> – The namespace
-                                    code of the role which is being tested for allowing of
-                                    membership information caching. </para>
-                            </listitem>
-                            <listitem>
-                                <para><emphasis role="bold">roleName</emphasis> – The name of the
-                                    role which is being tested for allowing of membership
-                                    information caching. </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </sect4>
-            </sect3>
+            <title>Publishing Custom KIM Types to the Kuali Service Bus</title>
+            <para>As mentioned previously, KIM type services should be published onto the Kuali
+                Service Bus in order to allow the KIM user interface functionality (which is
+                typically deployed on the Rice Standalone Server) to access the services remotely.
+                Since KIM type services are considered "callback" services because of the fact that
+                the standalone server makes callbacks to them, the
+                    <code>org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter</code> should
+                be used.</para>
+            <para>Information on how to export and publish a callback service can be found in <xref
+                    linkend="callback_service_exporter"/>.</para>
+            <para>Assuming you have already wired up your custom PermissionTypeService
+                implementation in your Spring file under a bean id of "myPermissionTypeService", an
+                example Spring configuration which will publish the service would look like the
+                following:<programlisting>&lt;bean id="myPermissionTypeService.exporter"
+      class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
+      p:callbackService-ref="myPermissionTypeService"
+      p:serviceNameSpaceURI="http://myapp.myu.edu"
+      p:localServiceName="myPermissionTypeService"
+      p:serviceInterface="org.kuali.rice.kim.framework.permission.PermissionTypeService"/></programlisting></para>
         </sect2>
     </sect1>
     <sect1>

@@ -19,8 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -48,6 +50,32 @@ public class LookupInputField extends InputField {
 
         treatWildcardsAndOperatorsAsLiteral = false;
         addAllOption = false;
+    }
+
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>Add all option if enabled and control is multi-value</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        // add all option
+        if (addAllOption && (getControl() != null) && getControl() instanceof MultiValueControl) {
+            MultiValueControl multiValueControl = (MultiValueControl) getControl();
+            if (multiValueControl.getOptions() != null) {
+                List<KeyValue> fieldOptions = multiValueControl.getOptions();
+                fieldOptions.add(0, new ConcreteKeyValue("", "All"));
+
+                multiValueControl.setOptions(fieldOptions);
+            }
+        }
     }
 
     /**

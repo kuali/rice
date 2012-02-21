@@ -20,7 +20,10 @@
 <%-- render component only --%>
 <html>
 	<s:nestedPath path="KualiForm">
+    <%-- render errors field for page so they can be pulled and updated on the view --%>
     <krad:template component="${KualiForm.postedView.currentPage.errorsField}"/>
+
+    <%-- now render the updated component wrapped in an update span --%>
 		<span id="${Component.id}_update">
 			<krad:template component="${Component}"/>
 		</span>

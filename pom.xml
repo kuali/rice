@@ -142,9 +142,9 @@
     <xstream.version>1.2.2</xstream.version>
 
     <!-- database drivers location -->
-    <jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
-    <mysql-connector-java.jar.location>${jdbc.drivers.location}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar</mysql-connector-java.jar.location>
-    <ojdbc14.jar.location>${jdbc.drivers.location}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar</ojdbc14.jar.location>
+    <jdbc.drivers.location>${env.M2_REPO}</jdbc.drivers.location>
+    <mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql/${mysql.jdbc.artifactId}/${mysql.jdbc.version}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar</mysql-connector-java.jar.location>
+    <ojdbc14.jar.location>${jdbc.drivers.location}/com/oracle/${oracle.jdbc.artifactId}/${oracle.jdbc.version}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar</ojdbc14.jar.location>
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <surefire.plugin.version>2.9</surefire.plugin.version>

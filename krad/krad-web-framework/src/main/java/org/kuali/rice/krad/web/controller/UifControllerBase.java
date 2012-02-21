@@ -653,6 +653,8 @@ public abstract class UifControllerBase {
         return UifWebUtils.getUIFModelAndView(form, pageId);
     }
 
+    // TODO: add getUIFModelAndView that takes in a view id and can perform view switching
+
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }

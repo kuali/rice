@@ -728,6 +728,10 @@
               <remote.public.url>http://localhost:8080/kr-dev/</remote.public.url>
             </systemPropertyVariables>
             <skip>${maven.failsafe.skip}</skip>
+            <additionalClasspathElements>
+              <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
+              <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
+            </additionalClasspathElements>
             <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
             <useFile>false</useFile>
             <failIfNoTests>false</failIfNoTests>
@@ -742,11 +746,6 @@
               -XX:+CMSClassUnloadingEnabled</argLine>
           </configuration>
           <dependencies>
-            <dependency>
-              <groupId>com.oracle</groupId>
-              <artifactId>${oracle.jdbc.artifactId}</artifactId>
-              <version>${oracle.jdbc.version}</version>
-            </dependency>
             <dependency>
               <groupId>mysql</groupId>
               <artifactId>${mysql.jdbc.artifactId}</artifactId>

@@ -64,7 +64,8 @@ public class FileConverter {
     private HashMap<String, String> packageNameRuleMap;
     private HashMap<String, String> maintImplRuleMap;
     private HashMap<String, HashMap<String, String>> classPropertyRuleMap;
-    private ArrayList<ArrayList<String>> newMaintDocXml = new ArrayList();
+    private JdbcTemplate jdbcTemplate;
+    private int totalDocs = 0;
 
     /**
      * Selects all the encrypted xml documents from krns_maint_doc_t, decrypts them, runs the rules to upgrade them,
@@ -73,36 +74,40 @@ public class FileConverter {
      * @param settingsMap - the settings
      * @throws Exception
      */
-    public void runFileConversion(HashMap settingsMap, final String runMode) throws Exception {
+    public void runFileConversion(HashMap settingsMap, final String runMode, final String fromRange,
+            final String toRange, final boolean hasRangeParameters) throws Exception {
 
         final EncryptionService encryptService = new EncryptionService((String) settingsMap.get("encryption.key"));
 
         if (classNameRuleMap == null) {
             setRuleMaps();
         }
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource(settingsMap));
-        jdbcTemplate.query("SELECT DOC_HDR_ID, DOC_CNTNT FROM krns_maint_doc_t ", new RowCallbackHandler() {
+
+        String docSQL = "SELECT DOC_HDR_ID, DOC_CNTNT FROM krns_maint_doc_t ";
+
+        // If user entered range add the sql parameters and filter results because DOC_HDR_ID is a varchar field.
+        if (hasRangeParameters) {
+            docSQL = docSQL.concat(" WHERE DOC_HDR_ID >= '" + fromRange + "' AND DOC_HDR_ID <= '" + toRange + "'");
+        }
+
+        jdbcTemplate = new JdbcTemplate(getDataSource(settingsMap));
+        jdbcTemplate.query(docSQL, new RowCallbackHandler() {
 
             public void processRow(ResultSet rs) throws SQLException {
-                processDocumentRow(rs.getString(1), rs.getString(2), encryptService, runMode);
+                // Check that all docId's is in range
+                if (hasRangeParameters) {
+                    int docId = Integer.parseInt(rs.getString(1));
+                    if (docId >= Integer.parseInt(fromRange) && docId <= Integer.parseInt(toRange)) {
+                        processDocumentRow(rs.getString(1), rs.getString(2), encryptService, runMode);
+                    }
+                } else {
+                    processDocumentRow(rs.getString(1), rs.getString(2), encryptService, runMode);
+                }
             }
         });
 
-        if ("1".equals(runMode)) {
-            int[] updateCounts = jdbcTemplate.batchUpdate(
-                    "update krns_maint_doc_t set DOC_CNTNT = ? where DOC_HDR_ID = ?",
-                    new BatchPreparedStatementSetter() {
-                        public void setValues(PreparedStatement ps, int i) throws SQLException {
-                            ps.setString(1, newMaintDocXml.get(i).get(1));
-                            ps.setString(2, newMaintDocXml.get(i).get(0));
-                        }
+        System.out.println(totalDocs + " maintenance documents upgraded.");
 
-                        public int getBatchSize() {
-                            return newMaintDocXml.size();
-                        }
-                    });
-            System.out.println(updateCounts.length + " maintenance documents upgraded.");
-        }
     }
 
     /**
@@ -130,8 +135,8 @@ public class FileConverter {
     }
 
     /**
-     * Called for each row in the processRow method of the spring query. Upgrades the xml and add the new xml
-     * and the document number to the upgrade map.
+     * Called for each row in the processRow method of the spring query. Upgrades the xml and update the
+     * krns_maint_doc_t table.
      *
      * @param docId - the document id string
      * @param docCntnt - the old xml string
@@ -146,16 +151,17 @@ public class FileConverter {
                 System.out.println(oldXml);
                 System.out.println("--------------------------------");
             }
-            oldXml = upgradeXML(oldXml);
+            String newXML = upgradeXML(oldXml);
             if ("2".equals(runMode)) {
                 System.out.println("******* UPGRADED DOC XML ********");
-                System.out.println(oldXml);
-                System.out.println("*********************************");
+                System.out.println(newXML);
+                System.out.println("*********************************\n");
             }
-            ArrayList<String> rowData = new ArrayList();
-            rowData.add(docId);
-            rowData.add(encryptServ.encrypt(oldXml));
-            newMaintDocXml.add(rowData);
+            if ("1".equals(runMode)) {
+                jdbcTemplate.update("update krns_maint_doc_t set DOC_CNTNT = ? where DOC_HDR_ID = ?",
+                        new Object[]{encryptServ.encrypt(newXML), docId});
+            }
+            totalDocs++;
         } catch (Exception ex) {
             Logger.getLogger(FileConverter.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(1);
@@ -186,7 +192,7 @@ public class FileConverter {
         // Upgrade Bo notes
         oldXML = upgradeBONotes(oldXML);
 
-        // Replace and remove the property names of the classes
+        // Replace or remove the property names of the classes
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(oldXML));

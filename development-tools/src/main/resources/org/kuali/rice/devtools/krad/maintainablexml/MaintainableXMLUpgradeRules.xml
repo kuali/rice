@@ -47,7 +47,7 @@
       <class>org.kuali.rice.location.impl.campus.CampusBo</class>
       <pattern>
         <match>campusName</match>
-        <replacement>name22</replacement>
+        <replacement>name</replacement>
       </pattern>
       <pattern>
         <match>campusCode</match>

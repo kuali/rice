@@ -117,7 +117,6 @@ public class EncryptionService {
 
                 // Decrypt the ciphertext
                 byte[] cleartext1 = cipher2.doFinal(encryptedData);
-                System.out.println("-------- OLD ENCRYPT ------------");
                 return new String(cleartext1, CHARSET);
             } catch (UnsupportedEncodingException ex) {
                 throw new RuntimeException(e);

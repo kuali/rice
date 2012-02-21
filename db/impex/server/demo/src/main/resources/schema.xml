@@ -3845,7 +3845,7 @@
     <sequence name="KRIM_RSP_RQRD_ATTR_ID_S" nextval="10000"/>
     <sequence name="KRIM_RSP_TMPL_ID_S" nextval="10000"/>
     <sequence name="KRIM_TYP_ATTR_ID_S" nextval="10000"/>
-    <sequence name="KRIM_TYP_ID_S" nextval="10000"/>
+    <sequence name="KRIM_TYP_ID_S" nextval="10002"/>
     <sequence name="KRMS_ACTN_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_ACTN_S" nextval="10000"/>
     <sequence name="KRMS_AGENDA_ATTR_S" nextval="10000"/>

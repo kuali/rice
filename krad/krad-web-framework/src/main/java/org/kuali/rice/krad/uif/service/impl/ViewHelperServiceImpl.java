@@ -192,10 +192,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         
         // run through and assign any ids starting with the id for the refreshed component (this might be
         // necessary if we are getting a new component instance from the bean factory)
+        Integer currentSequenceVal = view.getIdSequence();
         Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
         view.setIdSequence(startingSequenceVal);
 
         view.assignComponentIds(component);
+
+        // now set back from the ending view sequence so IDs for any dynamically created (newly) will not stomp
+        // on existing components
+        view.setIdSequence(currentSequenceVal);
 
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());

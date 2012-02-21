@@ -478,7 +478,8 @@ public class View extends ContainerBase {
      * @return String next id available
      */
     public String getNextId() {
-        return Integer.toString(idSequence++);
+        idSequence += 1;
+        return Integer.toString(idSequence);
     }
 
     /**

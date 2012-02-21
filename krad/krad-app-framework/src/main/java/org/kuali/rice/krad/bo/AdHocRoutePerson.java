@@ -96,8 +96,10 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
     public void setPerson(Person person) {
         this.person = person;
-        this.id = person.getPrincipalName();
-        this.name = person.getName();
+        if (person != null) {
+            this.id = person.getPrincipalName();
+            this.name = person.getName();
+        }
     }
 }
 

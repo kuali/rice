@@ -31,6 +31,15 @@ import org.kuali.rice.core.api.uif.RemotableSelect;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kns.datadictionary.control.CheckboxControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.HiddenControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.MultiselectControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.RadioControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.SelectControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.TextareaControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -148,6 +157,30 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 final RemotableTextarea.Builder b = RemotableTextarea.Builder.create();
                 b.setCols(((TextAreaControl) control).getCols());
                 b.setRows(((TextAreaControl) control).getRows());
+                return b;
+            }   /* starting kns control checking!!! these be deprecated! */
+              else if (control instanceof CheckboxControlDefinition) {
+                return RemotableCheckbox.Builder.create();
+            } else if (control instanceof HiddenControlDefinition) {
+                return RemotableHiddenInput.Builder.create();
+            } else if (control instanceof SelectControlDefinition) {
+                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
+                b.setMultiple(((SelectControlDefinition) control).isMultiselect());
+                b.setSize(((SelectControlDefinition) control).getSize());
+            } else if (control instanceof MultiselectControlDefinition) {
+                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
+                b.setMultiple(((SelectControlDefinition) control).isMultiselect());
+                b.setSize(((SelectControlDefinition) control).getSize());
+            } else if (control instanceof RadioControlDefinition) {
+                return RemotableRadioButtonGroup.Builder.create(getValues(attr));
+            } else if (control instanceof TextControlDefinition) {
+                final RemotableTextInput.Builder b = RemotableTextInput.Builder.create();
+                b.setSize(((TextControlDefinition) control).getSize());
+                return b;
+            } else if (control instanceof TextareaControlDefinition) {
+                final RemotableTextarea.Builder b = RemotableTextarea.Builder.create();
+                b.setCols(((TextareaControlDefinition) control).getCols());
+                b.setRows(((TextareaControlDefinition) control).getRows());
                 return b;
             }
         }

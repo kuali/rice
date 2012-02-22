@@ -124,6 +124,7 @@ function selectedPropCheck() {
 }
 
 jq(document).ready(function() {
+    alert("document.ready - EGHM");
     if (ENABLED) {
         disableTreeButtons();
         enableAddButton();

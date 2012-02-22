@@ -23,13 +23,15 @@ var bodyHeight;
  * @returns a string that has been escaped for use in jQuery selectors
  */
 function escapeName(name){
-    name = name.replace(/\\'/g, "'");
-    name = name.replace(/'/g, "\\'");
-    name = name.replace(/\\"/g, "\"");
-    name = name.replace(/"/g, "\\\"");
-    name = name.replace(/\./g, "\\.");
-    name = name.replace(/\[/g, "\\[");
-    name = name.replace(/\]/g, "\\]");
+    if(name != undefined && name != null && name != ""){
+        name = name.replace(/\\'/g, "'");
+        name = name.replace(/'/g, "\\'");
+        name = name.replace(/\\"/g, "\"");
+        name = name.replace(/"/g, "\\\"");
+        name = name.replace(/\./g, "\\.");
+        name = name.replace(/\[/g, "\\[");
+        name = name.replace(/\]/g, "\\]");
+    }
     return name;
 }
 

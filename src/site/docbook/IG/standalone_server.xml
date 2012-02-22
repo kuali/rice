@@ -221,8 +221,8 @@ innodb_locks_unsafe_for_binlog=1
                 <para>This will start the MySQL server.</para>
                 <para>To verify that you can actually connect to the server, execute the following
                     at the command line:</para>
-                <programlisting>mysql -uroot</programlisting>
-                <para>This should bring yu to a command line client interface for the MySQL server.
+                <programlisting>mysql -u root -p</programlisting>
+                <para>This should bring you to a command line client interface for the MySQL server.
                     Type "show databases;" and press return. You should see output similar to the
                     following.</para>
                 <programlisting>Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -382,6 +382,8 @@ Database changed</programlisting>
                 </section>
                 <section>
                     <title>With Oracle</title>
+                    <para>Connecting to an Oracle database would have a JDBC url like the following:
+                        <emphasis role="bold">jdbc:oracle:thin:@localhost:1521:XE</emphasis>.</para>
                     <para>The Rice SQL files use slash ‘/‘ as the statement delimiter. You may have to
                         configure your SQL client appropriately so it can run the Rice SQL. In SQuirreL, you
                         do this in Session->Session Properties->SQL->Statement Separator.</para>
@@ -469,6 +471,9 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
                                 <para>On the resulting screen, right click on "Computer".</para>
                             </listitem>
                             <listitem>
+                              <para>In the context menu, click on "Properties".</para>
+                            </listitem>
+                            <listitem>
                                 <para>This will open up the Control Panel "System" dialog.</para>
                             </listitem>
                             <listitem>
@@ -484,6 +489,8 @@ export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_
 <!--                                <para>&lt;TODO: Insert screen shot here></para> -->
                             </listitem>
                         </orderedlist></para>
+                    <note><para>The windows command line console must be closed and reopened in order for environment
+                       variable changes to be effective.</para></note>
                 </section>
         </section> 
        <section>
@@ -689,18 +696,18 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                     </listitem>
                     <listitem>
                         <para>Copy the database-specific JDBC driver to the
-                        [Tomcat-root-directory]/common/lib. Examples:</para>
+                        [Tomcat-root-directory]/lib. Examples:</para>
                         <itemizedlist>
                             <listitem>
                                 <para>MySQL</para>
                                 <para>
-                                    <programlisting>cp -p /java/drivers/mysql-connector-java-5.1.5-bin.jar /usr/local/tomcat/common/lib</programlisting>
+                                    <programlisting>cp -p /java/drivers/mysql-connector-java-5.1.5-bin.jar /usr/local/tomcat/lib</programlisting>
                                 </para>
                             </listitem>
                             <listitem>
                                 <para>Oracle</para>
                                 <para>
-                                    <programlisting>cp -p /java/drivers/ojdbc14.jar /usr/local/tomcat/common/lib</programlisting>
+                                    <programlisting>cp -p /java/drivers/ojdbc14.jar /usr/local/tomcat/lib</programlisting>
                                 </para>
                             </listitem>
                         </itemizedlist>
@@ -736,7 +743,7 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                     </orderedlist></para>
                 <para>An example <emphasis role="bold">rice-config.xml</emphasis> file is included
                             in the server distribution under <emphasis role="bold"
-                                >web/src/main/config/example-config</emphasis>.</para>  
+                                >config/web/src/main/config/example-config</emphasis>.</para>
                 <para>For MySQL, just modify the following database parameters in the <emphasis
                                 role="bold">rice-config.xml</emphasis> file. The values should
                             conform to the values you will use with the ImpEx tool via the <emphasis

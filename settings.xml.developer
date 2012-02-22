@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <!--
-    This is the recommended Maven settings.xml file to use when building the Rice source code.
-    Make use of this file via the "settings" command line argument OR copy it to ~/.m2/repository/settings.xml
-    where Maven will find it automatically
+    This is the recommended Maven settings.xml file for Kuali developers to use when building the 
+    Rice source code.
 
     The private developer repository contains artifacts that are not licensed for public 
     redistribution.  (Oracle's JDBC drivers, for example).  Kuali developers with a 

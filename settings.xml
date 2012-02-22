@@ -8,7 +8,12 @@
   where Maven will find it automatically
   -->
 
-  <!-- Create a mirror for "*" so Maven will download all artifacts via Kuali's Nexus cluster -->
+  <!-- 
+   Create a mirror for "*" so Maven will download all artifacts via Kuali's Nexus cluster
+   
+   Kuali's Nexus proxies Maven Central and also provides access to a handful of artifacts
+   Maven Central does not have
+   -->
   <mirrors>
     <mirror>
       <id>kuali.public</id>

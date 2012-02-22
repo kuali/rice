@@ -13,6 +13,13 @@
     settings.xml used by the automated build servers and will insulate you from any issues
     related to downloading Oracle jdbc drivers.
    -->  
+
+  <!-- 
+   Create a mirror for "*" so Maven will download all artifacts via Kuali's Nexus cluster
+   
+   Kuali's Nexus proxies Maven Central and also provides access to a handful of artifacts
+   Maven Central does not have
+   -->
   <mirrors>
     <mirror>
       <id>kuali.private</id>

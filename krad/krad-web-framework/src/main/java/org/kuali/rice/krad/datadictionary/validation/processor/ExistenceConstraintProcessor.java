@@ -68,7 +68,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		if (constraint.isRequired().booleanValue() && !skipConstraint(attributeValueReader)) {
 			// If this attribute is required and the value is null then 
 			if (ValidationUtils.isNullOrEmpty(value)) 
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED);
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED_NO_LABEL);
 			
 			return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
 		}

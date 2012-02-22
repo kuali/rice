@@ -2198,7 +2198,7 @@ ALTER TABLE KREW_DOC_TYP_APP_DOC_STAT_T RENAME TO O_KREW_DOC_TYP_APP_DOC_STAT_T
 CREATE TABLE KREW_DOC_TYP_APP_DOC_STAT_T
 (
       DOC_TYP_ID VARCHAR2(40)
-        , DOC_STAT_NM VARCHAR2(20)
+        , DOC_STAT_NM VARCHAR2(64)
         , VER_NBR NUMBER(8) default 0
         , OBJ_ID VARCHAR2(36) NOT NULL
     , CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0 UNIQUE (OBJ_ID)
@@ -7670,4 +7670,14 @@ drop sequence krms_cntxt_vld_agenda_s
 drop table krms_cntxt_vld_rule_t
 /
 drop sequence krms_cntxt_vld_rule_s
+/
+
+--
+-- KULRICE-6799: At one point (2.0-RC4 and before), the DOC_STAT_NM column was incorrectly set to 20 characters
+--               the original script (2011-06-17.sql, and the "final" script) has been corrected, but this script has
+--               been created in case that script had already been run.  Mysql scripts are unaffected by this, so there is no
+--               equivalent mysql script.
+--
+
+alter table KREW_DOC_TYP_APP_DOC_STAT_T modify (DOC_STAT_NM varchar2(64))
 /

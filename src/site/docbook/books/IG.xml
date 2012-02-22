@@ -32,6 +32,7 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/standalone_server.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/tuning_rice.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/additional_configurations.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/client_application.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/appendix_server_configs.xml"/>
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../common/glossary.xml"/>

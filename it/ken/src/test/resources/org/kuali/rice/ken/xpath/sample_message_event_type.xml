@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+    Copyright 2005-2012 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-
 <!-- xmlns:nreq="ns:notification/NotificationRequest"  -->
 <notification xmlns="ns:notification/NotificationRequest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:notification/NotificationRequest resource:notification/NotificationRequest">
 	<!-- this is the name of the notification channel -->

@@ -1,5 +1,5 @@
 --
--- Copyright 2005-2011 The Kuali Foundation
+-- Copyright 2005-2012 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
+
 insert into KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD)
 values ('KR-SYS','Config','KIM_TO_LDAP_FIELD_MAPPINGS','672e0c94-597e-11e1-8f11-1b8e78ae00f5',1,'CONFG','entityId=uid;principalId=uid;principalName=uid;givenName=sn;principals.principalName=uid;principals.principalId=uid;principals.active=eduPersonAffiliation;lastName=sn;firstName=givenName;employmentInformation.employeeStatus=uid.*;employmentInformation.employeeId=uid;names.lastName=sn;names.firstName=givenName;','Valid values for the organization rule attribute.','A')
 /

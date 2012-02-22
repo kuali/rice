@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+    Copyright 2005-2012 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-
 <!-- The workflow engine Spring configuration is bifurcated into data source and bean configuration
      to allow independent replacement of the data source configuration (for example for unit tests) -->
 <beans xmlns="http://www.springframework.org/schema/beans"

@@ -42,47 +42,47 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
 
     @Id
     @Column(name = "NMSPC_CD")
-    def String namespaceCode
+    String namespaceCode
 
     @Id
     @Column(name = "CMPNT_CD")
-    def String componentCode
+    String componentCode
 
     @Id
     @Column(name = "PARM_NM")
-    def String name
+    String name
 
     @Id
     @Column(name = "APPL_ID")
-    def String applicationId
+    String applicationId
 
     @Column(name = "VAL")
-    def String value
+    String value
 
     @Column(name = "PARM_DESC_TXT", length = 2048)
-    def String description
+    String description
 
     @Column(name = "PARM_TYP_CD")
-    def String parameterTypeCode
+    String parameterTypeCode
 
     @Column(name = "EVAL_OPRTR_CD")
-    def String evaluationOperatorCode
+    String evaluationOperatorCode
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "NMSPC_CD", insertable = false, updatable = false)
-    def NamespaceBo namespace
+    NamespaceBo namespace
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
-    def ParameterTypeBo parameterType
+    ParameterTypeBo parameterType
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
-    def ComponentBo component
+    ComponentBo component
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
-    def DerivedComponentBo derivedComponent
+    DerivedComponentBo derivedComponent
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -127,7 +127,7 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
 
     @Override
     ParameterTypeBo getParameterType() {
-        return parameterType
+        return this.parameterType
     }
 	
 	@Override

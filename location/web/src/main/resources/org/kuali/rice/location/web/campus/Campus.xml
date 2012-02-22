@@ -62,7 +62,7 @@
 
   <bean id="Campus-code-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="true"/>
-    <property name="shortLabel" value="Campus Codez"/>
+    <property name="shortLabel" value="Campus Code"/>
     <property name="maxLength" value="2"/>
     <property name="validationPattern">
       <bean parent="AlphaNumericValidationPattern"/>
@@ -76,7 +76,7 @@
     </property>      
     <property name="summary" value="Campus Code"/>
     <property name="name" value="code"/>
-    <property name="label" value="Campus Codez"/>
+    <property name="label" value="Campus Code"/>
     <property name="description" value="The code uniquely identifying a particular campus."/>
   </bean>
   <bean id="Campus-name" parent="Campus-name-parentBean"/>

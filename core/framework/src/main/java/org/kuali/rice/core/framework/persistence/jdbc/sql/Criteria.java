@@ -202,7 +202,8 @@ public class Criteria {
 		String fixedValue = fixValue(value, propertyType);
 
 		if(allowWildcards){
-			fixedValue = fixWildcards(stripFunctions(fixedValue));
+            fixedValue = fixWildcards(fixedValue, getAttributeValueStartIndex(fixedValue), getAttributeValueEndIndex(
+                    fixedValue));
 		}
 
 		if (attribute.contains("__JPA_ALIAS__")) {
@@ -216,7 +217,7 @@ public class Criteria {
 		String fixedValue = fixValue(value, propertyType);
 
 		if(allowWildcards){
-			fixedValue = fixWildcards(stripFunctions(fixedValue));
+			fixedValue = fixWildcards(fixedValue, getAttributeValueStartIndex(fixedValue), getAttributeValueEndIndex(fixedValue));
 		}
 
 		if (attribute.contains("__JPA_ALIAS__")) {
@@ -231,7 +232,8 @@ public class Criteria {
 		String fixedValue = fixValue(value, propertyType);
 
 		if(allowWildcards){
-			fixedValue = fixWildcards(stripFunctions(fixedValue));
+            fixedValue = fixWildcards(fixedValue, getAttributeValueStartIndex(fixedValue), getAttributeValueEndIndex(
+                    fixedValue));
 		}
 
 		if (attribute.contains("__JPA_ALIAS__")) {
@@ -242,9 +244,13 @@ public class Criteria {
 		//tokens.add(alias + "." + attribute + " NOT LIKE " + stripFunctions(fixedValue).replaceAll("\\*", "%") + " ");
 	}
 
-	private static String fixWildcards(String sIn){
-		String sRet = sIn.replaceAll("\\*", "%");
-		return sRet.replaceAll("\\?", "_");
+	private static String fixWildcards(String sIn, int startIndex, int endIndex){
+        String attribute = startIndex == -1 ? sIn : sIn.substring(startIndex+1, endIndex);
+        attribute = attribute.replaceAll("\\*", "%");
+		attribute = attribute.replaceAll("\\?", "_");
+        
+        return startIndex == -1 ? attribute :
+                (new StringBuilder(sIn.substring(0, startIndex+1)).append(attribute).append(sIn.substring(endIndex -1)).toString());
 	}
 
 	public void lt(String attribute, Object value, Class propertyType) {
@@ -528,6 +534,17 @@ public class Criteria {
 
 	    return attribute;
 	}
+
+    //indexes to strip off sql functions
+    private int getAttributeValueStartIndex(String attribute) {
+        return attribute.lastIndexOf('(');
+    }
+
+    private int getAttributeValueEndIndex(String attribute) {
+        return attribute.lastIndexOf(')');
+    }
+    
+    
 	public String getAlias(){
 		return this.alias;
 	}

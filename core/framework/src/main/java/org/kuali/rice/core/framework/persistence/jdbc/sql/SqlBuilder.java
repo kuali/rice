@@ -209,7 +209,7 @@ public class SqlBuilder {
 	public boolean isValidDate(String dateString){
 		//FIXME: wtf - weird!
 		try {
-			this.createCriteria("date", dateString.trim(), "validation", "test", Date.class);
+			this.createCriteria("date", dateString.trim(), "validation", "test", Date.class, false, false);
 			return true;
 		} catch (Exception ex) {
 			return false;

@@ -243,4 +243,19 @@
         class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl"
         factory-method="getInstance"/>
 
+  <bean id="notificationPeopleFlowActionTypeService"
+        parent="rice.krms.remote.import"
+        p:serviceName="notificationPeopleFlowActionTypeService"
+        p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
+
+  <bean id="approvalPeopleFlowActionTypeService"
+        parent="rice.krms.remote.import"
+        p:serviceName="approvalPeopleFlowActionTypeService"
+        p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
+
+  <bean id="comparisonOperatorService"
+        parent="rice.krms.remote.import"
+        p:serviceName="comparisonOperatorService"
+        p:objectType="org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService"/>
+
 </beans>

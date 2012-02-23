@@ -748,6 +748,12 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                             <para>The current working directory</para>
                         </listitem>
                     </orderedlist></para>
+                <para>On Windows it also checks the following location:<orderedlist>
+                        <listitem>
+                            <para>%USERPROFILE%\kuali\main\dev</para>
+                        </listitem>
+                    </orderedlist>
+                </para>
                 <para>An example <emphasis role="bold">rice-config.xml</emphasis> file is included
                             in the server distribution under <emphasis role="bold"
                                 >config/web/src/main/config/example-config</emphasis>.</para>

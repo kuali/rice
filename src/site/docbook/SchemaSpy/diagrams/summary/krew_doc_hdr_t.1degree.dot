@@ -1,0 +1,48 @@
+// dot 2.28.0 on Mac OS X 10.7.2
+// SchemaSpy rev 590
+digraph "krew_doc_hdr_t" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "krew_doc_hdr_t" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">krew_doc_hdr_t</TD></TR>
+      <TR><TD PORT="DOC_HDR_ID" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">DOC_HDR_ID</TD></TR>
+      <TR><TD PORT="DOC_TYP_ID" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">DOC_TYP_ID</TD></TR>
+      <TR><TD PORT="DOC_HDR_STAT_CD" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">DOC_HDR_STAT_CD</TD></TR>
+      <TR><TD PORT="RTE_LVL" COLSPAN="3" ALIGN="LEFT">RTE_LVL</TD></TR>
+      <TR><TD PORT="STAT_MDFN_DT" COLSPAN="3" ALIGN="LEFT">STAT_MDFN_DT</TD></TR>
+      <TR><TD PORT="CRTE_DT" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">CRTE_DT</TD></TR>
+      <TR><TD PORT="APRV_DT" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">APRV_DT</TD></TR>
+      <TR><TD PORT="FNL_DT" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">FNL_DT</TD></TR>
+      <TR><TD PORT="RTE_STAT_MDFN_DT" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">RTE_STAT_MDFN_DT</TD></TR>
+      <TR><TD PORT="TTL" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">TTL</TD></TR>
+      <TR><TD PORT="APP_DOC_ID" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">APP_DOC_ID</TD></TR>
+      <TR><TD PORT="DOC_VER_NBR" COLSPAN="3" ALIGN="LEFT">DOC_VER_NBR</TD></TR>
+      <TR><TD PORT="INITR_PRNCPL_ID" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">INITR_PRNCPL_ID</TD></TR>
+      <TR><TD PORT="VER_NBR" COLSPAN="3" ALIGN="LEFT">VER_NBR</TD></TR>
+      <TR><TD PORT="RTE_PRNCPL_ID" COLSPAN="3" ALIGN="LEFT">RTE_PRNCPL_ID</TD></TR>
+      <TR><TD PORT="DTYPE" COLSPAN="3" ALIGN="LEFT">DTYPE</TD></TR>
+      <TR><TD PORT="OBJ_ID" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">OBJ_ID</TD></TR>
+      <TR><TD PORT="APP_DOC_STAT" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">APP_DOC_STAT</TD></TR>
+      <TR><TD PORT="APP_DOC_STAT_MDFN_DT" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">APP_DOC_STAT_MDFN_DT</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">109 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/krew_doc_hdr_t.html"
+    tooltip="krew_doc_hdr_t"
+  ];
+}

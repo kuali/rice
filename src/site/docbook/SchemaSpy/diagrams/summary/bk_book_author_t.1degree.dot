@@ -1,0 +1,31 @@
+// dot 2.28.0 on Mac OS X 10.7.2
+// SchemaSpy rev 590
+digraph "bk_book_author_t" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "bk_book_author_t" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">bk_book_author_t</TD></TR>
+      <TR><TD PORT="BOOK_ID" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">BOOK_ID</TD></TR>
+      <TR><TD PORT="AUTHOR_ID" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">AUTHOR_ID</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">3 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/bk_book_author_t.html"
+    tooltip="bk_book_author_t"
+  ];
+}

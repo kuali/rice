@@ -1,0 +1,39 @@
+// dot 2.28.0 on Mac OS X 10.7.2
+// SchemaSpy rev 590
+digraph "krew_rule_rsp_t" {
+  graph [
+    rankdir="RL"
+    bgcolor="#f7f7f7"
+    nodesep="0.18"
+    ranksep="0.46"
+    fontname="Helvetica"
+    fontsize="11"
+  ];
+  node [
+    fontname="Helvetica"
+    fontsize="11"
+    shape="plaintext"
+  ];
+  edge [
+    arrowsize="0.8"
+  ];
+  "krew_rule_rsp_t" [
+    label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3" BGCOLOR="#9bab96" ALIGN="CENTER">krew_rule_rsp_t</TD></TR>
+      <TR><TD PORT="RULE_RSP_ID" COLSPAN="3" BGCOLOR="#bed1b8" ALIGN="LEFT">RULE_RSP_ID</TD></TR>
+      <TR><TD PORT="RSP_ID" COLSPAN="3" ALIGN="LEFT">RSP_ID</TD></TR>
+      <TR><TD PORT="RULE_ID" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">RULE_ID</TD></TR>
+      <TR><TD PORT="PRIO" COLSPAN="3" ALIGN="LEFT">PRIO</TD></TR>
+      <TR><TD PORT="ACTN_RQST_CD" COLSPAN="3" ALIGN="LEFT">ACTN_RQST_CD</TD></TR>
+      <TR><TD PORT="NM" COLSPAN="3" ALIGN="LEFT">NM</TD></TR>
+      <TR><TD PORT="TYP" COLSPAN="3" ALIGN="LEFT">TYP</TD></TR>
+      <TR><TD PORT="APPR_PLCY" COLSPAN="3" ALIGN="LEFT">APPR_PLCY</TD></TR>
+      <TR><TD PORT="VER_NBR" COLSPAN="3" ALIGN="LEFT">VER_NBR</TD></TR>
+      <TR><TD PORT="OBJ_ID" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">OBJ_ID</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#f7f7f7">  </TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">9 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#f7f7f7">  </TD></TR>
+    </TABLE>>
+    URL="tables/krew_rule_rsp_t.html"
+    tooltip="krew_rule_rsp_t"
+  ];
+}

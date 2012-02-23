@@ -250,7 +250,7 @@ public class Criteria {
 		attribute = attribute.replaceAll("\\?", "_");
         
         return startIndex == -1 ? attribute :
-                (new StringBuilder(sIn.substring(0, startIndex+1)).append(attribute).append(sIn.substring(endIndex -1)).toString());
+                (new StringBuilder(sIn.substring(0, startIndex+1)).append(attribute).append(sIn.substring(endIndex)).toString());
 	}
 
 	public void lt(String attribute, Object value, Class propertyType) {

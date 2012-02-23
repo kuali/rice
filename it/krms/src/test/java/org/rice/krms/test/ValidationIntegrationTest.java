@@ -522,10 +522,10 @@ public class ValidationIntegrationTest extends AbstractBoTest {
                 PropositionParameterType.TERM.getCode(), 1)
         );
         propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, "BL",
-                PropositionParameterType.CONSTANT.getCode(), 1)
+                PropositionParameterType.CONSTANT.getCode(), 2)
         );
         propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, ComparisonOperator.EQUALS.getCode(),
-                PropositionParameterType.OPERATOR.getCode(), 1)
+                PropositionParameterType.OPERATOR.getCode(), 3)
         );
 
         PropositionDefinition.Builder propositionDefBuilder1 =

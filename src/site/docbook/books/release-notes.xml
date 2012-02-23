@@ -1191,10 +1191,38 @@ Done.</programlisting></para>
                 <section>
                     <title>Maintainable XML</title>
                     <para>There was work done in Rice 2.0 which might invalidate legacy KNS
-                        maintenance framework XML.  This data is stored in the
-                            <code>KRNS_MAINT_DOC_T</code> table in the <code>DOC_CNTNT</code>
-                        column.</para>
-                    <para>TODO...</para>
+                        maintenance framework XML causing exceptions to occur when attempting to
+                        load this XML (which is generated using the XStream library) back into an
+                        instance of the business object class being maintained.  This data is stored
+                        in the <code>KRNS_MAINT_DOC_T</code> table in the <code>DOC_CNTNT</code>
+                        column.  In order to address this, a program was written that can be
+                        executed to perform the needed maintainable XML conversion.  This program is
+                        included in the <code>rice-development-tools</code> module of Kuali Rice.
+                        Instructions on how to set up the tool and run it can be found in it's
+                        javadocs located here:</para>
+                    <para><link
+                            xlink:href="http://site.kuali.org/rice/2.0.0/apidocs/org/kuali/rice/krad/maintainablexml/ConvertMaintainableXML.html"
+                            >http://site.kuali.org/rice/2.0.0/apidocs/org/kuali/rice/krad/maintainablexml/ConvertMaintainableXML.html</link></para>
+                    <para>
+                        <caution><para>While this utility is available, it was difficult for the Kuali Rice team to be able to test this tool with a lot of different
+                        maintenance document scenarios.  We suggest that this conversion be tested thoroughly by those using the conversion utility prior to performing
+                        the upgrade in production.  This means performing the conversion and then verifying the ability to open and route to completion maintenance
+                        documents which were ENROUTE at the point-in-time of upgrade.</para></caution>
+                    </para>
+                </section>
+                <section>
+                    <title>XML Ingestion</title>
+                    <para>There is currently no (easy) way to perform XML ingestion with the Kuali
+                        Rice Standalone server offline.  However, there are some XML files which
+                        should be ingested as part of the Rice 2.0 upgrade.  These files are located
+                        in the <code>scripts/upgrades/1.0.3 to 2.0.0/xml-ingest-updates</code>
+                        directory of the standalone server distribution.</para>
+                    <para>Once the database has been upgraded and you have successfully started your
+                        version 2.0 Kuali Rice Standalone Server, you can use the XML Ingester
+                        screen in order to ingest these files.  Most of these files are related to
+                        setting up KEW configuration for the new KRMS module.  So if you are not
+                        planning to take advantage of this new module immediately, you do not need
+                        to do this ingestion right away.</para>
                 </section>
             </section>
             <section>
@@ -1299,6 +1327,9 @@ Done.</programlisting></para>
                                 <listitem>
                                     <para>conversion from java serialization to SOAP-based
                                         services</para>
+                                </listitem>
+                                <listitem>
+                                    <para>don't use code in client-contrib module!</para>
                                 </listitem>
                             </itemizedlist>
                         </para>

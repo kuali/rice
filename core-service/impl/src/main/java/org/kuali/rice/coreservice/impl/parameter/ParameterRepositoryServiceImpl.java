@@ -83,10 +83,17 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
 
     @Override
     public Parameter getParameter(ParameterKey key) {
+        return ParameterBo.to(getParameterBo(key));
+    }
+
+    /**
+     * A private method for fetching the ParameterBo.  This method exists and is used elsewhere because of an OJB
+     * bug highlighted in this jira issue: https://jira.kuali.org/browse/KULRICE-6800
+     */
+    private ParameterBo getParameterBo(ParameterKey key) {
         if (key == null) {
             throw new RiceIllegalArgumentException("key is null");
         }
-
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", key.getName());
         map.put("applicationId", key.getApplicationId());
@@ -98,19 +105,18 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
             map.put("applicationId", KRADConstants.DEFAULT_PARAMETER_APPLICATION_ID);
             bo = businessObjectService.findByPrimaryKey(ParameterBo.class, Collections.unmodifiableMap(map));
         }
-
-        return ParameterBo.to(bo);
+        return bo;
     }
 
     @Override
     public String getParameterValueAsString(ParameterKey key) {
-        final Parameter p =  getParameter(key);
+        final ParameterBo p =  getParameterBo(key);
         return p != null ? p.getValue() : null;
     }
 
     @Override
     public Boolean getParameterValueAsBoolean(ParameterKey key) {
-        final Parameter p =  getParameter(key);
+        final ParameterBo p =  getParameterBo(key);
         final String value =  p != null ? p.getValue() : null;
         return Truth.strToBooleanIgnoreCase(value);
     }

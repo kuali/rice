@@ -60,8 +60,8 @@ TEMPLATE_BINDING = [
 			"\${APP_NAMESPACE}":projectNameUpper,
 			"\${RICE_VERSION}":riceVersion,
 			"\${USER_HOME}":System.getProperty('user.home'),
-			"\${bootstrap.spring.file}":"classpath:SpringBeans.xml", 
-			"\${monitoring.spring.import}":"", 			
+			"\${bootstrap.spring.file}":"classpath:SpringBeans.xml",
+			"\${monitoring.spring.import}":"",
 			"\${monitoring.filter}":"",
 			"\${monitoring.listener}":"",
 			"\${monitoring.mapping}":"",
@@ -111,18 +111,18 @@ if (SAMPLEAPP) {
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources', includes:'META-INF/*,edu/sampleu/**/*,OJB-repository-sampleapp.xml')
 	}
-	
+
 	// Remove if Sample app not required on Homepage
 	ant.copy(todir:PROJECT_PATH + '/src/main/webapp/WEB-INF/jsp') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/webapp/WEB-INF/jsp')
 	}
-	
-	
+
+
 	// copy main channels from sampleapp to new project
 	ant.copy(todir:PROJECT_PATH + '/src/main/webapp/WEB-INF/tags/rice-portal/channel/main') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/channel/main')
 	}
-	
+
 	//Copy tag to new project to enable sample-app channel
 	ant.copy(todir:PROJECT_PATH + '/src/main/webapp/WEB-INF/tags/rice-portal/') {
 		fileset(file:RICE_DIR + '/sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/mainTab.tag')
@@ -154,13 +154,13 @@ if (SAMPLEAPP) {
 	/*ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
 	 fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'KR-ApplicationResources.properties')
 	 }*/
-	
+
 	//copies meta-inf folder to empty rice project skeleton
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources/META-INF') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources/META-INF')
 	}
-	
-	
+
+
 	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SpringBeans.template.xml')
 }
 
@@ -169,8 +169,10 @@ if (SAMPLEAPP) {
 ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml",
 		tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceJTASpringBeans.xml")
 if (STANDALONE) {
-	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceStandaloneClientSpringBeans.xml.template'))
-	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/web/src/main/resources/org/kuali/rice/config/RiceStandaloneClientSpringBeans.xml.template'))
+//	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceStandaloneClientSpringBeans.xml.template'))
+//	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/web/src/main/resources/org/kuali/rice/config/RiceStandaloneClientSpringBeans.xml.template'))
+	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.RiceDataSourceSpringBeans.template.xml'))
+	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.RiceSpringBeans.template.xml'))
 } else {
 	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml'))
 	/*ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
@@ -255,8 +257,14 @@ if (SAMPLEAPP) {
 	config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml")
 	config << configtext
 } else {
-	//Rename config file and replace module name from config file  
-	new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml") << templateReplace(new File(RICE_DIR + '/sampleapp/src/main/resources/META-INF/sample-app-config.xml'))
+	
+	if(STANDALONE){
+		//Rename config file and replace config location
+		new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml") << templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.meta-inf.config.template.xml'))
+	} else {
+		//Rename config file and replace module name from config file
+		new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml") << templateReplace(new File(RICE_DIR + '/sampleapp/src/main/resources/META-INF/sample-app-config.xml'))
+	}
 }
 
 // fix the links in index.jsp
@@ -433,7 +441,7 @@ def instructionstext() {
 6. Start the application using the eclipse launch configuration.
    In the eclipse Run menu, choose 'Run...' and select the
    configuration named 'Launch Web App'
-7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.jsp
+7. Open a brower to http://localhost:8080/${PROJECT_NAME}/portal.do
 
    
    These instructions can also be found in the instructions.txt file

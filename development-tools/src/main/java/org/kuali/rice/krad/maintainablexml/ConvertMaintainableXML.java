@@ -30,28 +30,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * This is a command line utility class which upgrades the maintenance document xml stored in
- * krns_maint_doc_t.doc_cntnt
+ * This is a command line utility class which upgrades the maintenance document xml stored in krns_maint_doc_t.doc_cntnt
  * to be able to still open and use any maintenance documents that were enroute at the time of an upgrade to Rice 2.0.
  *
- * Instructions :
- * 1. Backup database.
- *
- * 2. Add the conversion rules to the rules xml file -
- * ..\rice\development-tools\src\main\resources\org\kuali\rice\devtools\krad\maintainablexml\MaintainableXMLUpgradeRules.xml
- * See comments in the xml file to setup the rules.
- *
- * 3. Run this class.
- *
- * 4. Enter the rice config file location that has the database connection properties. Only enter the location relative
- * to user.dir/kuali/main.
- *
- * 5. Select Run mode. Mode 1 will do the xml upgrade and update the krns_maint_doc_t table with the new xml. Cannot
- * roll
- * back after this has been done. Mode 2 will only print out the old xml and the new xml - this can be used to test
- * the rules xml setup.
- *
- * 6. Select the range of document numbers to upgrade. Enter % on from range prompt to upgrade all.
+ * <p>Instructions:</p>
+ * <ol>
+ *   <li>Backup database.</li>
+ *   <li>Add the conversion rules to the rules xml file -
+ *       ..\rice\development-tools\src\main\resources\org\kuali\rice\devtools\krad\maintainablexml\MaintainableXMLUpgradeRules.xml
+ *       See comments in the xml file to setup the rules.</li>
+ *   <li>Run this class.</li>
+ *   <li>Enter the rice config file location that has the database connection properties. Only enter the location relative
+ *       to user.dir/kuali/main.</li>
+ *   <li>Select Run mode. Mode 1 will do the xml upgrade and update the krns_maint_doc_t table with the new xml. Cannot
+ *       roll back after this has been done. Mode 2 will only print out the old xml and the new xml - this can be used
+ *       to test the rules xml setup.</li>
+ *   <li>Select the range of document numbers to upgrade. Enter % on from range prompt to upgrade all.</li>
+ * </ol>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

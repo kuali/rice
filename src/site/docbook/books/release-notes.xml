@@ -1501,7 +1501,11 @@ Done.</programlisting></para>
                             </row>
                         </thead>
                         <tbody>
-                            <row><entry>asm-2.2.3.jar</entry><entry>asm-3.3.1.jar</entry><entry></entry></row>
+                            <row><entry>asm-2.2.3.jar</entry><entry>asm-3.3.1.jar</entry>
+                                    <entry>It's very important that you verify that you do not have
+                                        asm-1.5.3.jar on your classpath.  This will cause Apache CXF
+                                        to function improperly when making SOAP service
+                                        calls.</entry></row>
                             <row><entry>bcprov-jdk15-1.45.jar</entry><entry>bcprov-jdk16-1.46.jar</entry><entry>The Bouncy Castle Crypto package is used for cryptographic algorithms.</entry></row>
                             <row><entry>carol-2.0.5.jar</entry><entry>carol-3.0.6.jar</entry><entry></entry></row>
                             <row><entry>cas-client-core-3.1.6.jar</entry><entry>cas-client-core-3.2.1.jar</entry><entry></entry></row>
@@ -1571,6 +1575,13 @@ Done.</programlisting></para>
                         </tbody>
                     </tgroup>
                 </informaltable>
+                    <caution>
+                        <title>asm</title>
+                        <para>This is mentioned in the table above, but just to reiterate, it is
+                            very important that you verify that you do <emphasis>not</emphasis> have
+                                <code>asm-1.5.3.jar</code> on your classpath.  This will cause
+                            Apache CXF to function improperly when making SOAP service calls.</para>
+                    </caution>
                 <para>
                     <caution><title>spring-webmvc-struts.jar</title>
                         <para>Note: As of Spring 2.5, Spring Web MVC is no longer part of the 'spring.jar' file. Spring MVC can be found in 'spring-webmvc.jar' and 'spring-webmvc-portlet.jar' in the lib/modules directory of the distribution. Furthermore, the Struts 1.x support has been factored out into 'spring-webmvc-struts.jar'.
@@ -1667,199 +1678,24 @@ Done.</programlisting></para>
                 </tgroup>
             </informaltable>
         </section>
-        <section>
-            <title>blah</title>
-            <para>
-                <itemizedlist>
-                    <listitem>
-                        <para>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>asm 1.5.3 does not work!!! must make sure you are using
-                                        asm 3.3.1</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>client application updates by module</para>
-                    </listitem>
-                    <listitem>
-                        <para>core/global <itemizedlist>
-                                <listitem>
-                                    <para>RiceConfigurer no longer exists</para>
-                                </listitem>
-                                <listitem>
-                                    <para>show example of configuring Rice (configurers default to
-                                        REMOTE on most modules, just list out the defaults)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>changes to configuration parameters -
-                                        application.id?</para>
-                                </listitem>
-                                <listitem>
-                                    <para>general modularity and packaging approach in Rice
-                                        2.0</para>
-                                </listitem>
-                                <listitem>
-                                    <para>conversion from java serialization to SOAP-based
-                                        services</para>
-                                </listitem>
-                                <listitem>
-                                    <para>don't use code in client-contrib module!</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>KSB <itemizedlist>
-                                <listitem>
-                                    <para>changed architecture, web service integration</para>
-                                </listitem>
-                                <listitem>
-                                    <para>configuration parameter changes</para>
-                                </listitem>
-                                <listitem>
-                                    <para>changes needed in web.xml for KSBDispatcherServlet or
-                                        other</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>KIM <itemizedlist>
-                                <listitem>
-                                    <para>no more IdentityManagementService or
-                                        RoleManagementService</para>
-                                </listitem>
-                                <listitem>
-                                    <para>service locator</para>
-                                </listitem>
-                                <listitem>
-                                    <para>changes needed in web.xml (are there any for this
-                                        module?)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>changes to configuration parameters for caching (see
-                                        separate section on caching)</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>KEW <itemizedlist>
-                                <listitem>
-                                    <para>change to KEW apis, show an example of how to use the new
-                                        api, also a general descripton of things which
-                                        changed</para>
-                                </listitem>
-                                <listitem>
-                                    <para>no more checked WorkflowExceptions</para>
-                                </listitem>
-                                <listitem>
-                                    <para>service locator</para>
-                                </listitem>
-                                <listitem>
-                                    <para>changes needed in web.xml (are there any for this
-                                        module?)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>new Thin client mode</para>
-                                </listitem>
-                                <listitem>
-                                    <para>document search framework changes and how to upgrade (need
-                                        to write this!)</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>KNS/KRAD <itemizedlist>
-                                <listitem>
-                                    <para>web content - safest thing would be to re-copy everything,
-                                        but if you have local customizations, the files which have
-                                        been changed can be found in an Appendix (link to the table
-                                        from Shannon's doc here)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>the impact that the new KRAD stuff will have, can't load
-                                        just KNS, can either load KRAD without KNS or KNS+KRAD
-                                        (share a common codebase)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>show example of how to configure rice now and how to use
-                                        configfactorybean</para>
-                                </listitem>
-                                <listitem>
-                                    <para>changes needed in web.xml</para>
-                                </listitem>
-                                <listitem>
-                                    <para>general repackaging of code into KNS and KRAD
-                                        packages</para>
-                                </listitem>
-                                <listitem>
-                                    <para>notes api changes and PBO</para>
-                                </listitem>
-                                <listitem>
-                                    <para>GlobalVariables</para>
-                                </listitem>
-                                <listitem>
-                                    <para>removal of KualiWorkflowDocument and
-                                        KualiWorkflowInfo</para>
-                                </listitem>
-                                <listitem>
-                                    <para>DateTimeService - formats controlled by config parameter
-                                        instead of system parameter now</para>
-                                </listitem>
-                                <listitem>
-                                    <para>how to publish JSTLConstants using spring</para>
-                                    <para>component publishing</para>
-                                </listitem>
-                                <listitem>
-                                    <para>rice.struts.message.resources?</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>KEN/KCB <itemizedlist>
-                                <listitem>
-                                    <para>KCB notification service no longer enabled by
-                                        default</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </para>
-        </section>
+            </section>
+            <section>
+                <title>Web Content Changes</title>
+                <para>TODO</para>
+            </section>
+            <section/>
+    </section>
         <section>
             <title>Data Warehouse and Reporting</title>
-            <para>data warehouse and reporting <itemizedlist>
-                    <listitem>
-                        <para>highlight the major database changes (longs to strings, table name
-                            changes, etc.)</para>
-                    </listitem>
-                </itemizedlist></para>
+            <para>highlight the major database changes (longs to strings, table name changes,
+                etc.)</para>
         </section>
         <section>
-            <title>Functional Impact and Testing</title>
-            <para>TODO</para>
-        </section>
-        <section xml:id="Troubleshooting">
             <title>Troubleshooting</title>
-            <para>Troubleshooting <itemizedlist>
-                    <listitem>
-                        <para>see what Shannon put together in Rice upgrade notes</para>
-                    </listitem>
-                    <listitem>
-                        <para>general questions to rice.collab@kuali.org</para>
-                    </listitem>
-                </itemizedlist></para>
+            <para>see what Shannon put together in Rice upgrade notes, general questions to
+                rice.collab@kuali.org </para>
         </section>
-    </section>
             </section>
-        </section>
                 <section xml:id="items_addressed_in_rice_2.0">
         <title>Items Addressed in Rice 2.0</title>
 <section><title>Bug Fix</title>

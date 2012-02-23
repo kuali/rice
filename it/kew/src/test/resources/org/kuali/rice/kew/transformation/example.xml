@@ -1,7 +1,7 @@
 <?xml-stylesheet type="text/xsl" href="example.xsl"?>
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+    Copyright 2005-2011 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
     limitations under the License.
 
 -->
+
 <sms id="m101">
  <title>Hot Languages</title>
  <mesg>Some like it Hot. While <tm>Java</tm> may be cool, <like>Ruby</like>

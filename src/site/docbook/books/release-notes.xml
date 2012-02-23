@@ -888,6 +888,9 @@
                         <para>Re-apply local customizations</para>
                     </listitem>
                     <listitem>
+                        <para>Upgrade Workflow Plugins</para>
+                    </listitem>
+                    <listitem>
                         <para>Upgrade the Database</para>
                     </listitem>
                     <listitem>
@@ -897,13 +900,6 @@
                         <para>Deploy</para>
                     </listitem>
                 </orderedlist><itemizedlist>
-                    <listitem>
-                        <para>customizing environment code in web.xml or via tomcat startup
-                            script</para>
-                    </listitem>
-                    <listitem>
-                        <para>running the automatic database upgrade</para>
-                    </listitem>
                     <listitem>
                         <para>any manual steps of the db upgrade? <itemizedlist>
                                 <listitem>
@@ -1001,6 +997,16 @@
                     suggested that you port over any code or file customizations one class at a time
                     to ensure they get rewritten if needed to link and compile properly with the 2.0
                     libraries.</para>
+            </section>
+            <section>
+                <title>Upgrade Workflow Plugins</title>
+                <para>If your Rice server is loading any KEW plugins, then these will need to be
+                    upgraded as well.  At the very least, this will likely involve recompilation and
+                    repackaging to link with the Rice 2.0 apis.  Depending on how much code is in
+                    the plugin and which Rice frameworks it utilizes, it's likely that plugin code
+                    will need to be upgraded in a similar fashion to client application code in
+                    order for it to work properly within the Rice plugin framework.  See the Client
+                    Application portion of the upgrade guide for more information on this.</para>
             </section>
             <section>
                 <title>Upgrade the Database</title>
@@ -1227,51 +1233,23 @@ Done.</programlisting></para>
             </section>
             <section>
                 <title>Update Configuration</title>
-                <para>additional spring files..., environment init-param</para>
+                <para>The available configuration parameters have not changed a whole lot between
+                    Rice 1.0.x and 2.0.  However there are a few changes which are important to
+                    note.</para>
+                <para>First of all, in Rice 1.0.x there was a configuration parameter named
+                        <code>rice.additionalSpringFiles</code>.  This was used to load a custom
+                    Spring file into the standalone server (or a client application) which could be
+                    used to override internal Kuali Rice services for the purposes of customization.
+                    In Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
+                    parameter.  Instead there is one per module of Rice as follows:<itemizedlist>
+                        <listitem>
+                            <para>TODO</para>
+                        </listitem>
+                    </itemizedlist></para>
             </section>
             <section>
                 <title>Deploy</title>
-                <para>TODO</para>
-            </section>
-            <section>
-                <title>Upgrading the Standalone Server Database</title>
-            <para>The scripts to upgrade from a 1.0.3.3 version of Kuali Rice to version
-                ${project.version} can be found in the following directory inside of the source
-                distribution:</para>        
-            <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
-            <para>Within this directory, are the following sub-directories:<itemizedlist>
-                    <listitem>
-                        <para><emphasis role="bold">db-updates</emphasis> - contains the SQL needed
-                            to upgrade from a Kuali Rice 1.0.3.3 standalone server service database
-                            to ${project.version}. Each of these scripts is dated and that indicates
-                            the order in which they should be run. SQL scripts for MySql are
-                            prefixed by "mysql". Scripts for oracle have no prefix on their
-                            name.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">db-updates-client</emphasis> - contains the SQL
-                            needed to upgrade a Kuali Rice client application's Rice-related tables
-                            to ${project.version}. At this point in time, the only update required
-                            is to the KRNS_SESN_DOC_T table.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">demo-data</emphasis> - this directory contains
-                            updates to the various pieces of Kuali Rice demo data. Chances are that
-                            most people performing an upgrade will not have demo data in their local
-                            database and will, therefore, not need to execute the scripts located
-                            within this directory.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">support</emphasis> - this directory contains a
-                            groovy script which helps deal with the fact that unique constraints
-                            were added to the database for the combination of namespace code and
-                            name in both the KIM permission and responsibility tables</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
-                            that needs to be ingested after the database upgrade is completed</para>
-                    </listitem>
-            </itemizedlist></para>
+                <para>TODO plugins</para>
             </section>
         </section>
         <section>

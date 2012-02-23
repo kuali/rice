@@ -26,7 +26,6 @@ public final class RiceKeyConstants {
     public static final String ERROR_DUPLICATE_ELEMENT="error.duplicate.element";
     public static final String ERROR_INVALIDNEGATIVEAMOUNT = "error.invalidNegativeAmount";
     public static final String ERROR_REQUIRED = "error.required";
-    public static final String ERROR_REQUIRED_NO_LABEL = "error.required.noLabel";
     public static final String ERROR_REQUIRED_FOR_US = "error.requiredForUs";
     public static final String ERROR_DATE = "error.invalidDate";
     public static final String ERROR_DATE_TIME = "error.invalidDateTime";

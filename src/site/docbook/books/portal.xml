@@ -97,9 +97,6 @@
                     <itemizedlist>
                         <para>* When using Internet Explorer, we recommend viewing the PDF files
                             since the size of the diagrams may be illegible in IE.</para>
-	                    <listitem>
-	                        <para><link xlink:show="new" xlink:href="../SchemaSpy/index.html">SchemaSpy</link></para>
-	                    </listitem>
                         <listitem>
                             <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
                         </listitem>

@@ -843,8 +843,11 @@
         <title>Upgrade Guide</title>
         <section>
             <title>Upgrade Considerations</title>
+            <para>This section outlines the process of upgrading from Rice 1.0.3.3 to Rice 2.0.0.
+                If you are curently running an older version of the 1.0.x code, you will need to
+                perform the steps to upgrade to 1.0.3.3 first.</para>
             <para>In terms of upgrading to Kuali Rice 2.0, there are two main types of upgrades
-                which one will likely need to perform:<itemizedlist>
+                which will typically need to be performed:<itemizedlist>
                     <listitem>
                         <para>Kuali Rice Standalone Server</para>
                     </listitem>
@@ -854,15 +857,15 @@
                 </itemizedlist>Since Rice 2.0 is not backward compatible with 1.0.x, upgrades to
                 both the standalone server and any client applications who are using the Rice APIs
                 will need to be coordinated to occur at the same time.</para>
-            <para>Since Rice 2.0 is not backward compatible with 1.0.x versions, it is likely that
-                an institution which has built multiple custom Kuali Rice applications will need to
-                perform both of these steps and coordinate the upgrade appropriately within their
-                enterprise.  For the other Kuali applications within the Kuali Foundation, each of
-                the projects are planning forthcoming releases which will support Rice 2.0.  So it
-                would be advisable to wait until those upgraded versions are available before taking
-                on an enterprise-wide upgrade of Kuali Rice infrastructure to avoid needing to
-                manually convert these applications yourself.  Please consult the timelines of the
-                other Kuali projects for details on their planned upgrade to Rice 2.0.</para>
+            <para>It is likely that an institution which has built multiple custom Kuali Rice
+                applications will need to perform both of these steps and coordinate the upgrade
+                appropriately within their enterprise.  For the other Kuali applications within the
+                Kuali Foundation, each of the projects are planning forthcoming releases which will
+                support Rice 2.0.  So it would be advisable to wait until those upgraded versions
+                are available before taking on an enterprise-wide upgrade of Kuali Rice
+                infrastructure to avoid needing to manually convert these applications yourself.
+                Please consult the timelines of the other Kuali projects for details on their
+                planned upgrade to Rice 2.0.</para>
             <para>For those applications which are running Kuali Rice in "Bundled" mode (which means
                 the application is not dependant on a seperate Kuali Rice Standalone Server
                 instance) then both types of upgrades will need to be performed on the same
@@ -894,15 +897,6 @@
                         <para>Deploy</para>
                     </listitem>
                 </orderedlist><itemizedlist>
-                    <listitem>
-                        <para>reapplying customizations <itemizedlist>
-                                <listitem>
-                                    <para>talk about different approaches for doing customizations,
-                                        code and web content</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
                     <listitem>
                         <para>customizing environment code in web.xml or via tomcat startup
                             script</para>
@@ -965,19 +959,251 @@
                 </itemizedlist></para>
             <section>
                 <title>Re-apply Local Customizations</title>
-                <para/>
+                <para>Many who have implemented Kuali Rice have performed local customizations to
+                    the software.  This might include patching bugs, adding additional features, or
+                    overriding reference service implementations (especially in the case of Kuali
+                    Identity Management).  Additionally, customization may have been done to some of
+                    the web content that's included as part of the KNS framework.</para>
+                <para>It is, of course, important that these local customizations be reapplied to
+                    your Kuali Rice 2.0 implementation as part of your upgrade process.  You may be
+                    accomplishing this in many different ways, the most common approaches include
+                    the following:<itemizedlist>
+                        <listitem>
+                            <para>Using Maven WAR overlays to construct a custom Rice Standalone
+                                WAR.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Using a build tool like Apache Ant to manually assemble a custom
+                                WAR file.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Using a custom Ant build, the Maven shade plugin, or a similar
+                                tool to patch Rice code.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Extending delivered Kuali Rice code or reference service
+                                implementations and loading them via the
+                                    <code>rice.additionalSpringFiles</code> configuration parameter
+                                to perform service overrides.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Customing web content by modifying the delivered Kuali Rice JSP
+                                and tag libraries.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Modification to the web.xml file to include additional web
+                                application configuration or modify supplied configuration (i.e. the
+                                "environment" init-param in the packaged web.xml).</para>
+                        </listitem>
+                    </itemizedlist>Regardless of the approach or approaches you are utilizing, it's
+                    important to ensure your customizations are transfered properly.  The code base
+                    of Kuali Rice has changed significantly during the 2.0 work.  As a result, it's
+                    suggested that you port over any code or file customizations one class at a time
+                    to ensure they get rewritten if needed to link and compile properly with the 2.0
+                    libraries.</para>
             </section>
             <section>
                 <title>Upgrade the Database</title>
-                <para/>
+                <para>The Rice Standalone Server download will be packaged with database upgrade
+                    scripts included.  These are located in the following directory:</para>
+                <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
+                <para>Within this directory, are the following relevant sub-directories:<itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">final</emphasis> - contains the SQL needed
+                                to perform a full database upgrade from a Kuali Rice 1.0.3.3
+                                standalone server database to ${project.version}. There are scripts
+                                here for both the client database upgrade (which will be discussed
+                                in more detail in a later section) as well as the standalone server
+                                database.  There are oracle an mysql versions of each of
+                                these.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">demo-data</emphasis> - this directory
+                                contains updates to the various pieces of Kuali Rice demo data.
+                                Typically when performing an upgrade it will be against a database
+                                that does not have demo data.  But these scripts are provided just
+                                in case it is useful.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">support</emphasis> - this directory contains
+                                a groovy script which helps deal with the fact that unique
+                                constraints were added to the database for the combination of
+                                namespace code and name in both the KIM permission and
+                                responsibility tables.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
+                                that needs to be ingested after the database upgrade is
+                                completed</para>
+                        </listitem>
+                    </itemizedlist>The steps to perform the standalone server database upgrade will
+                    be as follows:<orderedlist>
+                        <listitem>
+                            <para>Generate upgrade script for KIM Permission and Responsibility name
+                                uniqueness scripts, execute these scripts.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Execute the "final" standalone server database upgrade
+                                scripts.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Perform maintainable XML conversion</para>
+                        </listitem>
+                        <listitem>
+                            <para>Perform manual XML ingestion after standalone server
+                                startup</para>
+                        </listitem>
+                    </orderedlist></para>
+                <section>
+                    <title>KIM Permission and Responsibility Uniqueness</title>
+                    <para>As part of Rice 2.0 development, a new constraint was put in place which
+                        requires that the combination of namespace code and name on Permission and
+                        Responsibility records in KIM must be globally unique.  This means that the
+                        combination of the <code>NMSPC_CD</code> and <code>NM</code> columns in the
+                            <code>KRIM_PERM_T</code> and <code>KRIM_RSP_T</code> tables must be
+                        unique within each one of these tables.</para>
+                    <para>The "final" upgrade scripts that are provided with the upgrade add the
+                        constraints to these tables.  Therefore, in order to prevent this portion of
+                        the upgrade from failing, it's important to ensure the data in these tables
+                        conforms to the new uniqueness constraints before they are applied to the
+                        tables.</para>
+                    <para>Preferably, for any potentially duplicate records you have in this table,
+                        you will examine each and come up with a reasonably describe and unique name
+                        for each permission and responsibility record.  However, if this is not
+                        feasible or too time consuming, a set of scripts come with the standalone
+                        server download which will generate <code>UPDATE</code> SQL for you.  In
+                        order to use these scripts you must first have <link
+                            xlink:href="http://groovy.codehaus.org">Groovy 1.8</link> installed on
+                        the machine from which you will run the scripts.  You must also know the
+                        details to connect up to the Rice database for which you want to generate
+                        upgrade SQL.</para>
+                    <para>It's important to note that these scripts will <emphasis>not</emphasis>
+                        update any data in your database, they will just read the data located
+                        therein and produce output to the terminal window.</para>
+                    <para>In order to run the script, follow these steps:<orderedlist>
+                            <listitem>
+                                <para>Download the Rice Standalone Server distribution if you have
+                                    not done so already and unzip it.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Open a command-line window and change directory to the
+                                        <code>scripts/upgrades/1.0.3 to 2.0.0/support</code>
+                                    directory.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Execute a command similar to the following (enter on a single
+                                    line in the terminal):</para>
+                                <para><emphasis>If using
+                                    MySQL:</emphasis><programlisting>groovy -cp /java/drivers/mysql-connector-java-5.1.17-bin.jar DbUpdateTool.groovy
+    jdbc:mysql://localhost:3306/myricedb db-username db-password PermissionsNamespaceNameUniquifier</programlisting></para>
+                                <para><emphasis>If using
+                                    Oracle:</emphasis><programlisting>groovy -cp /java/drivers/ojdbc6.jar DbUpdateTool.groovy
+    jdbc:oracle:thin:@localhost:1521:ORACLE db-username db-password PermissionsNamespaceNameUniquifier</programlisting></para>
+                            </listitem>
+                            <listitem>
+                                <para>In the examples above, be sure to change the "-cp" argument to
+                                    point to the MySQL jdbc driver if you are using MySQL or the
+                                    Oracle jdbc driver if you are using Oracle.  If you don't have
+                                    the appropriate driver you will need to download it to a
+                                    location of your choosing.  You will also need to pass the
+                                    appropriate database connection arguments as well.</para>
+                            </listitem>
+                            <listitem>
+                                <para>This command will read the KIM permission data in your
+                                    database and determine which records violate the new uniqueness
+                                    constraints and then generate appropriate SQL that can be used
+                                    to update the records to make them unique.  The output might
+                                    look similar to the
+                                    following:<programlisting>$ groovy -cp /java/drivers/ojdbc6.jar DbUpdateTool.groovy
+    jdbc:oracle:thin:@localhost:1521:ORACLE db-username db-password PermissionsNamespaceNameUniquifier
+Loading command PermissionsNamespaceNameUniquifier
+Loading command ResponsibilityNamespaceNameUniquifier
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+Excluding: [PERM_ID:[140, 141, 142, 143, ...]]
+Executing: 
+        select * from KRIM_PERM_T where (NMSPC_CD,NM) in (
+            select NMSPC_CD,NM from KRIM_PERM_T group by NMSPC_CD,NM having count(*) > 1
+        )
+         and PERM_ID not in (140,141,142,143, ...)
+
+Generating transformation SQL:
+
+update KRIM_PERM_T set NM='Modify Accounting Lines 199' where PERM_ID='199';
+update KRIM_PERM_T set NM='Modify Accounting Lines 200' where PERM_ID='200';
+update KRIM_PERM_T set NM='Initiate Document 202' where PERM_ID='202';
+update KRIM_PERM_T set NM='Administer Routing for Document 203' where PERM_ID='203';
+update KRIM_PERM_T set NM='Administer Routing for Document 204' where PERM_ID='204';
+update KRIM_PERM_T set NM='Use Transactional Document 206' where PERM_ID='206';
+...
+
+Done.</programlisting></para>
+                            </listitem>
+                            <listitem>
+                                <para>Execute the same command as above but pass
+                                    "ResponsibilityNamespaceNameUniquifier" as the last argument to
+                                    generate the update SQL for KIM responsibilities.</para>
+                            </listitem>
+                            <listitem>
+                                <para>At this point you can copy the output between "Generating
+                                    transformation SQL" and "Done" for both permissions and
+                                    responsibilities and create an SQL script to run as the first
+                                    step of your database upgrade.</para>
+                            </listitem>
+                        </orderedlist>From the example above, you can see that the script just
+                        generates the unique name based on the id of the permission or
+                        responsibility.  If you want different behavior you can modify the Groovy
+                        scripts or update the data manually using a strategy of your choosing for
+                        making the data unique.</para>
+                </section>
+                <section>
+                    <title>Execute Final Upgrade Script</title>
+                    <para>Once you have a script to update your permission and responsibility tables
+                        in KIM for name uniqueness, you are ready to execute the final upgrade
+                        script.</para>
+                    <para>There is SQL available for this for both MySQL and Oracle in the
+                        scripts/upgrades/1.0.3 to 2.0.0/final directory in the standalone server
+                        download.  You will want to execute one of the following depending on
+                        whether the database you are upgrading is MySQL or Oracle:<itemizedlist>
+                            <listitem>
+                                <para>MySQL - update_final_mysql.sql</para>
+                            </listitem>
+                            <listitem>
+                                <para>Oracle - update_final_oracle.sql</para>
+                            </listitem>
+                        </itemizedlist>Be sure to prepend the SQL generated for KIM data updates to
+                        your upgrade scripts and then run the full script against your database to
+                        perform the upgrade using an SQL tool of your choice.</para>
+                    <para>
+                        <caution>
+                            <title>Test!</title>
+                            <para>It is recommended that you test the database upgrade against a
+                                    <emphasis>copy</emphasis> of your production database before
+                                performing it against your actual production database. In
+                                particular, if your database is at all sizable, then it could take a
+                                long time for certain portions of the script to execute since they
+                                have to rebuild some of the tables in the Rice database.  It is also
+                                recommended that you <emphasis>back up</emphasis> your production
+                                database before performing the upgrade in case there is a problem
+                                during the conversion process and you need to roll back.</para>
+                        </caution>
+                    </para>
+                </section>
+                <section>
+                    <title>Maintainable XML</title>
+                    <para>There was work done in Rice 2.0 which might invalidate legacy KNS
+                        maintenance framework XML.  This data is stored in the
+                            <code>KRNS_MAINT_DOC_T</code> table in the <code>DOC_CNTNT</code>
+                        column.</para>
+                    <para>TODO...</para>
+                </section>
             </section>
             <section>
                 <title>Update Configuration</title>
-                <para/>
+                <para>additional spring files..., environment init-param</para>
             </section>
             <section>
                 <title>Deploy</title>
-                <para/>
+                <para>TODO</para>
             </section>
             <section>
                 <title>Upgrading the Standalone Server Database</title>
@@ -1205,23 +1431,7 @@
         </section>
         <section>
             <title>Functional Impact and Testing</title>
-        </section>
-        <section>
-            <title>Optimization</title>
-            <para>Optimization <itemizedlist>
-                    <listitem>
-                        <para>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>customizing cache settings</para>
-                                </listitem>
-                                <listitem>
-                                    <para>anything else?</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                </itemizedlist></para>
+            <para>TODO</para>
         </section>
         <section>
             <title>Troubleshooting</title>

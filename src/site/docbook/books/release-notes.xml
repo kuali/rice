@@ -1185,9 +1185,9 @@ Done.</programlisting></para>
         <section>
             <title>Upgrading a Client Application</title>
             <para>Upgrading a Kuali Rice client application is a bit more involved than upgrading
-                the Kuali Rice standalone server.  This is because there is no easy "automatic"
+                the Kuali Rice standalone server. This is because there is no easy "automatic"
                 upgrade path and there will likely be a significant amount of manual work which will
-                need to be done in your application code in order to perform the upgrade.  This is
+                need to be done in your application code in order to perform the upgrade. This is
                 because of a few different reasons:<orderedlist>
                     <listitem>
                         <para>Many of the service APIs were redesigned in support of version
@@ -1207,7 +1207,9 @@ Done.</programlisting></para>
                 </orderedlist>In addition to this, you will want to ensure that your application is
                 only using the allowed API and framework classes from the Kuali Rice libraries in
                 order to ensure that your application will remain compatible across releases of
-                Kuali Rice.  See the <link xlink:show="new" xlink:href="TRG.html#version_compatibility">version compatibility documentation</link> for more details.</para>
+                Kuali Rice. See the <link xlink:show="new"
+                    xlink:href="TRG.html#version_compatibility">version compatibility
+                    documentation</link> for more details.</para>
             <para>The next few sections will take you through the process of upgrading a client
                 application as well as providing additional resources to help you with the
                 process.</para>
@@ -1261,23 +1263,29 @@ Done.</programlisting></para>
                     Repository under the <code>org.kuali.rice</code> group id: <link
                         xlink:href="http://search.maven.org/#search|ga|1|g%3A%22org.kuali.rice%22"
                         >http://search.maven.org/#search|ga|1|g%3A%22org.kuali.rice%22</link></para>
-                <para>Details on the library changes will be outlined in the next few sections.  You
+                <para>Details on the library changes will be outlined in the next few sections. You
                     will need to update the libraries associated with your existing project as
                     necessary in order to react to this.  What follows are tables detailing
-                    libraries added, removed, and changed from Rice 1.0.3.3 to Rice 2.0.<caution><title>Be
-                        Careful!</title><para>Even if you may not need one of the libraries listed below as a Rice
-                        dependency, your application may be using it for something else. So be sure
-                        to verify whether or not you are using a particular library in your
-                        application independently of Rice before you remove it from your
-                        project.</para></caution></para>
+                    libraries added, removed, and changed from Rice 1.0.3.3 to Rice 2.0.  In
+                    addition to this information, detailed dependency analysis can be found on the
+                    Maven-generated site for Kuali Rice <link
+                        xlink:href="http://site.kuali.org/rice/${project.version}/index.html"
+                        >http://site.kuali.org/rice/${project.version}/index.html</link><caution>
+                        <title>Be Careful!</title>
+                        <para>Even if you may not need one of the libraries listed below as a Rice
+                            dependency, your application may be using it for something else. So be
+                            sure to verify whether or not you are using a particular library in your
+                            application independently of Rice before you remove it from your
+                            project.</para>
+                    </caution></para>
                 <section>
                     <title>Kuali Rice Libraries</title>
                     <para>In Rice 1.0.x, there were only two main jars, <code>rice-api</code> and
-                            <code>rice-impl</code>.  With the modularity work there are more api
-                        jars corresponding to service apis and framework components.  Additionally,
-                        the implementation module has been split (though there is still a shared
+                            <code>rice-impl</code>. With the modularity work there are more api jars
+                        corresponding to service apis and framework components. Additionally, the
+                        implementation module has been split (though there is still a shared
                         implementation module as not all components of the Rice implementation have
-                        been fully modularized as of the Rice 2.0.0 release).  This work was done
+                        been fully modularized as of the Rice 2.0.0 release). This work was done
                         according to the design outlined at the following page: <link
                             xlink:href="	https://wiki.kuali.org/x/SoD8E">Modularity
                         Design</link></para>
@@ -1424,17 +1432,248 @@ Done.</programlisting></para>
                         </tgroup>
                     </informaltable>
                 </section>
+            <section>
+                <title>Libraries Added between 1.0.3.3 and 2.0.0</title>
+                <informaltable frame="all" pgwide="1">
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Library Added</entry>
+                                <entry>Notes</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row><entry>aspectjrt-1.6.8.jar</entry><entry></entry></row>
+                            <row><entry>aspectjweaver-1.6.8.jar</entry><entry></entry></row>
+                            <row><entry>avalon-framework-4.1.5.jar</entry><entry></entry></row>
+                            <row><entry>btm-2.1.2.jar</entry><entry>Only needed if using Bitronix for your connection pooling </entry></row>
+                            <row><entry>carol-interceptors-1.0.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-chain-1.2.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-transports-common-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>ehcache-core-2.5.0.jar</entry><entry></entry></row>
+                            <row><entry>guava-11.0.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-core-3.6.9.Final.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-jpa-2.0-api-1.0.1.Final.jar</entry><entry></entry></row>
+                            <row><entry>hsqldb-1.8.0.1.jar</entry><entry></entry></row>
+                            <row><entry>irmi-1.1.2.jar</entry><entry></entry></row>
+                            <row><entry>jackson-core-asl-1.8.7.jar</entry><entry></entry></row>
+                            <row><entry>jackson-mapper-asl-1.8.7.jar</entry><entry></entry></row>
+                            <row><entry>jacorb-2.2.3-jonas-patch-20071018.jar</entry><entry></entry></row>
+                            <row><entry>jacorb-idl-2.2.3-jonas-patch-20071018.jar</entry><entry></entry></row>
+                            <row><entry>jcl-over-slf4j-1.6.4.jar</entry><entry>Needed only if you use JCL.</entry></row>
+                            <row><entry>joda-time-2.0.jar</entry><entry></entry></row>
+                            <row><entry>logkit-1.2.jar</entry><entry></entry></row>
+                            <row><entry>serializer-2.7.1.jar</entry><entry></entry></row>
+                            <row><entry>slf4j-api-1.6.4.jar</entry><entry></entry></row>
+                            <row><entry>slf4j-log4j12-1.6.4.jar</entry><entry></entry></row>
+                            <row><entry>spring-asm-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-tx-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-expression-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-security-cas-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-security-core-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-security-web-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>stax2-api-3.1.1.jar</entry><entry></entry></row>
+                            <row><entry>struts-extras-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>struts-taglib-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>tiles-api-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-core-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-jsp-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-servlet-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-template-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>woodstox-core-asl-4.1.1.jar</entry><entry></entry></row> 
+                        </tbody>
+                    </tgroup>
+                </informaltable>
             </section>
+            <section>
+                <title>Library Version Changes between 1.0.3.3 and 2.0.0</title>
+                <informaltable frame="all" pgwide="1">
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Old Library</entry>
+                                <entry>New Library</entry>
+                                <entry>Notes</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row><entry>asm-2.2.3.jar</entry><entry>asm-3.3.1.jar</entry><entry></entry></row>
+                            <row><entry>bcprov-jdk15-1.45.jar</entry><entry>bcprov-jdk16-1.46.jar</entry><entry>The Bouncy Castle Crypto package is used for cryptographic algorithms.</entry></row>
+                            <row><entry>carol-2.0.5.jar</entry><entry>carol-3.0.6.jar</entry><entry></entry></row>
+                            <row><entry>cas-client-core-3.1.6.jar</entry><entry>cas-client-core-3.2.1.jar</entry><entry></entry></row>
+                            <row><entry>cglib-nodep-2.1_3.jar</entry><entry>cglib-nodep-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>commons-beanutils-1.7.0.jar</entry><entry>commons-beanutils-1.8.3-kuali.jar</entry><entry></entry></row>
+                            <row><entry>commons-codec-1.3.jar</entry><entry>commons-codec-1.6.jar</entry><entry></entry></row>
+                            <row><entry>commons-collections-3.2.jar</entry><entry>commons-collections-3.2.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-dbcp-1.2.1.jar</entry><entry>commons-dbcp-1.4.jar</entry><entry></entry></row>
+                            <row><entry>commons-digester-1.6.jar</entry><entry>commons-digester-2.0.jar</entry><entry></entry></row>
+                            <row><entry>commons-fileupload-1.2.1.jar</entry><entry>commons-fileupload-1.2.2.jar</entry><entry>Struts dependency</entry></row>
+                            <row><entry>commons-httpclient-3.0.1.jar</entry><entry>commons-httpclient-3.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-io-1.4.jar</entry><entry>commons-io-2.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-lang-2.3.jar</entry><entry>commons-lang-2.6.jar</entry><entry></entry></row>
+                            <row><entry>commons-pool-1.2.jar</entry><entry>commons-pool-1.5.7.jar</entry><entry>Used by OJB (and others)</entry></row>
+                            <row><entry>commons-validator-1.1.4.jar</entry><entry>commons-validator-1.3.1.jar</entry><entry>Struts dependency</entry></row>
+                            <row><entry>cxf-api-2.2.9.jar</entry><entry>cxf-api-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-common-schemas-2.2.9.jar</entry><entry>cxf-common-schemas-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-common-utilities-2.2.9.jar</entry><entry>cxf-common-utilities-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-bindings-soap-2.2.9.jar</entry><entry>cxf-rt-bindings-soap-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-bindings-xml-2.2.9.jar</entry><entry>cxf-rt-bindings-xml-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-core-2.2.9.jar</entry><entry>cxf-rt-core-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-databinding-aegis-2.2.9.jar</entry><entry>cxf-rt-databinding-aegis-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-databinding-jaxb-2.2.9.jar</entry><entry>cxf-rt-databinding-jaxb-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-frontend-jaxrs-2.2.9.jar</entry><entry>cxf-rt-frontend-jaxrs-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-frontend-jaxws-2.2.9.jar</entry><entry>cxf-rt-frontend-jaxws-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-frontend-simple-2.2.9.jar</entry><entry>cxf-rt-frontend-simple-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-transports-http-2.2.9.jar</entry><entry>cxf-rt-transports-http-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-ws-addr-2.1.5.jar</entry><entry>cxf-rt-ws-addr-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-ws-security-2.1.5.jar</entry><entry>cxf-rt-ws-security-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-tools-common-2.1.5.jar</entry><entry>cxf-tools-common-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>db-ojb-1.0.4-patch4.jar</entry><entry>db-ojb-1.0.4-patch8.jar</entry><entry></entry></row>
+                            <row><entry>displaytag-1.1.jar</entry><entry>displaytag-1.2.jar</entry><entry></entry></row>
+                            <row><entry>dwr-1.1.3.jar</entry><entry>dwr-3.0.RC2.jar</entry><entry>In DWR 3.0 all logging is done through the commons-logging API.  Please see the following website for more information: <link xlink:href="http://directwebremoting.org/dwr/documentation/server/configuration/servlet/index.html">http://directwebremoting.org/dwr/documentation/server/configuration/servlet/index.html</link></entry></row>
+                            <row><entry>groovy-all-minimal-1.5.4.jar</entry><entry>groovy-all-1.8.5.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-commons-annotations-3.0.0.ga.jar</entry><entry>hibernate-commons-annotations-3.2.0.Final.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-entitymanager-3.3.1.ga.jar</entry><entry>hibernate-entitymanager-3.6.9.Final.jar</entry><entry></entry></row>
+                            <row><entry>howl-logger-0.1.11.jar</entry><entry>howl-1.0.1-1.jar</entry><entry></entry></row>
+                            <row><entry>javassist-3.3.ga.jar</entry><entry>javassist-3.15.0-GA.jar</entry><entry></entry></row>
+                            <row><entry>jaxb-impl-2.1.9.jar</entry><entry>jaxb-impl-2.1.13.jar</entry><entry></entry></row>
+                            <row><entry>jaxb-xjc-2.1.9.jar</entry><entry>jaxb-xjc-2.1.13.jar</entry><entry></entry></row>
+                            <row><entry>jdom-1.0.jar</entry><entry>jdom-1.1.jar</entry><entry></entry></row>
+                            <row><entry>jettison-1.2.jar</entry><entry>jettison-1.3.jar</entry><entry></entry></row>
+                            <row><entry>jotm-2.0.10.jar</entry><entry>jotm-core-2.1.10.jar</entry><entry></entry></row>
+                            <row><entry>jsr311-api-1.0.jar</entry><entry>jsr311-api-1.1.1.jar</entry><entry></entry></row>
+                            <row><entry>jstl-1.1.2.jar</entry><entry>jstl-1.2.jar</entry><entry></entry></row>
+                            <row><entry>jta-1.0.1B.jar</entry><entry>jta-1.1.jar</entry><entry></entry></row>
+                            <row><entry>log4j-1.2.14.jar</entry><entry>log4j-1.2.16.jar</entry><entry></entry></row>
+                            <row><entry>mail-1.4.jar</entry><entry>mail-1.4.4.jar</entry><entry></entry></row>
+                            <row><entry>neethi-2.0.4.jar</entry><entry>neethi-2.0.5.jar</entry><entry></entry></row>
+                            <row><entry>spring-2.5.6.jar</entry><entry>spring-3.1.0.RELEASE.jar</entry><entry>spring-3.1.0.RC1.jar can be included either as a single jar or the multiple jars listed below</entry></row>
+                            <row><entry>spring-aop-2.5.6.jar</entry><entry>spring-aop-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-beans-2.5.6.jar</entry><entry>spring-beans-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-context-2.5.6.jar</entry><entry>spring-context-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-context-support-2.5.6.jar</entry><entry>spring-context-support-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-core-2.5.6.jar</entry><entry>spring-core-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-jdbc-2.5.6.jar</entry><entry>spring-jdbc-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-orm-2.5.6.jar</entry><entry>spring-orm-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-tx-2.5.6.jar</entry><entry>spring-tx-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-webmvc-2.5.6.jar</entry><entry>spring-webmvc-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-web-2.5.6.jar</entry><entry>spring-web-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>struts-1.2.9.jar</entry><entry>struts-core-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>struts-el-1.2.9.jar</entry><entry>struts-el-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>xalan-2.7.0.jar</entry><entry>xalan-2.7.1.jar</entry><entry></entry></row>
+                            <row><entry>XmlSchema-1.4.5.jar</entry><entry>XmlSchema-1.4.7.jar</entry><entry></entry></row>
+                            <row><entry>xmlsec-1.4.3.jar</entry><entry>xmlsec-1.4.4.jar</entry><entry></entry></row>
+                            <row><entry>wss4j-1.5.8.jar</entry><entry>wss4j-1.5.11.jar</entry><entry></entry></row> 
+                        </tbody>
+                    </tgroup>
+                </informaltable>
+                <para>
+                    <caution><title>spring-webmvc-struts.jar</title>
+                        <para>Note: As of Spring 2.5, Spring Web MVC is no longer part of the 'spring.jar' file. Spring MVC can be found in 'spring-webmvc.jar' and 'spring-webmvc-portlet.jar' in the lib/modules directory of the distribution. Furthermore, the Struts 1.x support has been factored out into 'spring-webmvc-struts.jar'.
+                            Rice itself does not use spring-webmvc-struts.jar, but if you were including the spring-2.0.4.jar and using the spring web mvc struts functionality, spring-webmvc-struts.jar will now have to be included separately.</para></caution>
+                </para>
+            </section>
+        <section>
+            <title>Libraries Removed between 1.0.3.3 and 2.0.0</title>
+            <informaltable frame="all" pgwide="1">
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Old Library</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row><entry>abdera-core-1.0.jar</entry></row>
+                        <row><entry>abdera-extensions-json-1.0.jar</entry></row>
+                        <row><entry>abdera-extensions-main-1.0.jar</entry></row>
+                        <row><entry>abdera-i18n-1.0.jar</entry></row>
+                        <row><entry>abdera-parser-1.0.jar</entry></row>
+                        <row><entry>acegi-security-1.0.6.jar</entry></row>
+                        <row><entry>acegi-security-cas-1.0.6.jar</entry></row>
+                        <row><entry>activation-1.1.jar</entry></row>
+                        <row><entry>antlr-2.7.6.jar</entry></row>
+                        <row><entry>asm-attrs-1.5.3.jar</entry></row>
+                        <row><entry>axiom-api-1.2.5.jar</entry></row>
+                        <row><entry>axiom-impl-1.2.5.jar</entry></row>
+                        <row><entry>bcel-5.1.jar</entry></row>
+                        <row><entry>bsf-2.4.0.jar</entry></row>
+                        <row><entry>casclient-2.1.1.jar</entry></row>
+                        <row><entry>cas-server-3.0.4.jar</entry></row>
+                        <row><entry>concurrent-1.3.4.jar</entry></row>
+                        <row><entry>derby-10.2.2.0.jar</entry></row>
+                        <row><entry>geronimo-activation_1.1_spec-1.0.2.jar</entry></row>
+                        <row><entry>geronimo-annotation_1.0_spec-1.1.1.jar</entry></row>
+                        <row><entry>geronimo-javamail_1.4_spec-1.3.jar</entry></row>
+                        <row><entry>geronimo-jaxws_2.1_spec-1.0.jar</entry></row>
+                        <row><entry>geronimo-stax-api_1.0_spec-1.0.1.jar</entry></row>
+                        <row><entry>geronimo-ws-metadata_2.0_spec-1.1.2.jar</entry></row>
+                        <row><entry>hibernate-3.2.6.ga.jar</entry></row>
+                        <row><entry>hibernate-annotations-3.3.0.ga.jar</entry></row>
+                        <row><entry>hibernate-validator-3.0.0.ga.jar</entry></row>
+                        <row><entry>jaxb-api-2.1.jar</entry></row>
+                        <row><entry>jaxb-xjc-2.1.13.jar</entry></row>
+                        <row><entry>jaxen-1.1.3.jar</entry></row>
+                        <row><entry>jboss-common-core-2.0.4.GA.jar</entry></row>
+                        <row><entry>jotm_jrmp_stubs-2.0.10.jar</entry></row>
+                        <row><entry>js-1.6R5.jar</entry></row>
+                        <row><entry>nekohtml-0.9.5.jar</entry></row>
+                        <row><entry>oscache-2.3.2.jar</entry></row>
+                        <row><entry>persistence-api-1.0.jar</entry></row>
+                        <row><entry>saaj-api-1.3.jar</entry></row>
+                        <row><entry>saaj-impl-1.3.2.jar</entry></row>
+                        <row><entry>spring-test-2.5.6.jar</entry></row>
+                        <row><entry>standard-1.1.2.jar</entry></row>
+                        <row><entry>wstx-asl-3.2.9.jar</entry></row>
+                        <row><entry>xml-apis-1.0.b2.jar</entry></row>
+                        <row><entry>xmlbeans-2.4.0.jar</entry></row>
+                        <row><entry>xom-1.1.jar</entry></row>
+                    </tbody>
+                </tgroup>
+            </informaltable>
+        </section>
+        <section>
+            <title>Unchanged Libraries</title>
+            <informaltable frame="all" pgwide="1">
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Library</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row><entry>aopalliance-1.0</entry></row>
+                        <row><entry>commons-logging-1.1</entry></row>
+                        <row><entry>commons-transaction-1.1</entry></row>
+                        <row><entry>connector-api-1.5</entry></row>
+                        <row><entry>dom4j-1.6.1</entry></row>
+                        <row><entry>itext-1.3</entry></row>
+                        <row><entry>jaxb-impl-2.1.13</entry></row>
+                        <row><entry>oro-2.0.8</entry></row>
+                        <row><entry>spring-modules-ojb-0.8a</entry></row>
+                        <row><entry>wsdl4j-1.6.2</entry></row>
+                        <row><entry>xercesImpl-2.9.1</entry></row>
+                        <row><entry>xml-resolver-1.2</entry></row>
+                        <row><entry>xpp3_min-1.1.3.4.O</entry></row>
+                        <row><entry>xstream-1.2.2</entry></row>
+                    </tbody>
+                </tgroup>
+            </informaltable>
+        </section>
+        <section>
+            <title>blah</title>
             <para>
                 <itemizedlist>
                     <listitem>
-                        <para>library upgrades (see the list that Shannon put together) <itemizedlist>
-                                <listitem>
-                                    <para>maven vs. binary integration</para>
-                                </listitem>
-                                <listitem>
-                                    <para>link to dependency information on rice maven site</para>
-                                </listitem>
+                        <para>
+                            <itemizedlist>
                                 <listitem>
                                     <para>asm 1.5.3 does not work!!! must make sure you are using
                                         asm 3.3.1</para>
@@ -1619,7 +1858,9 @@ Done.</programlisting></para>
                 </itemizedlist></para>
         </section>
     </section>
-    <section xml:id="items_addressed_in_rice_2.0">
+            </section>
+        </section>
+                <section xml:id="items_addressed_in_rice_2.0">
         <title>Items Addressed in Rice 2.0</title>
 <section><title>Bug Fix</title>
 <itemizedlist>

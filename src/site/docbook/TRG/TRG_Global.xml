@@ -1567,7 +1567,7 @@ config.parseConfig();             </programlisting>
             </sect3>
         </sect2>
     </sect1>
-    <sect1>
+    <sect1 xml:id="version_compatibility">
         <title>Version Compatibility</title>
         <sect2>
             <title>Commitment to Compatibility in Kuali Rice</title>

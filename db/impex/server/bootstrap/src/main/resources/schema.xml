@@ -783,7 +783,7 @@
     </table>
     <table name="KREW_DOC_TYP_APP_DOC_STAT_T">
         <column name="DOC_TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="DOC_STAT_NM" primaryKey="true" size="20" type="VARCHAR"/>
+        <column name="DOC_STAT_NM" primaryKey="true" size="64" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KREW_DOC_TYP_APP_DOC_STAT_TC0">

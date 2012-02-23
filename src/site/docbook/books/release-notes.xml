@@ -1258,11 +1258,11 @@ Done.</programlisting></para>
                 <title>Library Upgrades</title>
                 <para>As <link linkend="library_changes_and_additions">mentioned previously</link>,
                     there have been numerous 3rd-party dependency updates in this version of Rice.
-                    Additionally, modularity work done during this release that results in a more
-                    granular set of Rice libraries. All of these library dependencies are included
-                    with the binary distribution of Kuali Rice. Additionally, if an application is
-                    using Maven, all of the Rice dependencies are available in the Maven Central
-                    Repository under the <code>org.kuali.rice</code> group id: <link
+                    Additionally, modularity work that was done during this release has resulted in
+                    a more granular set of Rice libraries. All of these library dependencies are
+                    included with the binary distribution of Kuali Rice. Additionally, if an
+                    application is using Maven, all of the Rice dependencies are available in the
+                    Maven Central Repository under the <code>org.kuali.rice</code> group id: <link
                         xlink:href="http://search.maven.org/#search|ga|1|g%3A%22org.kuali.rice%22"
                         >http://search.maven.org/#search|ga|1|g%3A%22org.kuali.rice%22</link></para>
                 <para>Details on the library changes will be outlined in the next few sections. You
@@ -1694,8 +1694,8 @@ Done.</programlisting></para>
                     any customizations they have made.  In order to aid in this process, information
                     on which web content files have changed can be found here:</para>
                 <para><link
-                        xlink:href="https://wiki.kuali.org/x/8RW1Eg#KualiRice2.0UpgradeNotes-IndianaUniversity-WebContentUpdates"
-                        >https://wiki.kuali.org/x/8RW1Eg#KualiRice2.0UpgradeNotes-IndianaUniversity-WebContentUpdates</link></para>
+                        xlink:href="https://wiki.kuali.org/display/KULRICE/Kuali+Rice+2.0+Upgrade+Notes+-+Indiana+University#KualiRice2.0UpgradeNotes-IndianaUniversity-WebContentUpdates"
+                        >Indiana University Notes on Web Content Updates</link></para>
             </section>
             <section>
                 <title>Rice Configurer Changes</title>
@@ -1774,11 +1774,11 @@ Done.</programlisting></para>
 
 &lt;/beans></programlisting></para>
                 <para>For the example above, most all of these modules would be running in the
-                    REMOTE run mode.  That is the default with the exception of CoreConfigurer and
-                    KRADConfigurer which always run in LOCAL module and don't have a REMOTE run
-                    mode.  It's important in these cases to load the Rice
-                        <code>common-config-defaults.xml</code> file into your configuration context
-                    so that the appropriate defaults can be applied.</para>
+                    REMOTE run mode. That is the default with the exception of
+                        <code>CoreConfigurer</code> and <code>KRADConfigurer</code> which always run
+                    in LOCAL module and don't have a REMOTE run mode. It's important in these cases
+                    to load the Rice <code>common-config-defaults.xml</code> file into your
+                    configuration context so that the appropriate defaults can be applied.</para>
                 <para>The following example shows doing this as well as switching the KIM and KEW
                     run modes to "embedded"
                     mode:<programlisting>&lt;config>
@@ -1797,7 +1797,7 @@ Done.</programlisting></para>
                 <title>API Changes</title>
                 <para>More information on some of the specific API changes which were made for the
                     various Rice modules can be found <link
-                        xlink:href="https://wiki.kuali.org/x/8RW1Eg#KualiRice2.0UpgradeNotes-IndianaUniversity-ImpactingChanges"
+                        xlink:href="https://wiki.kuali.org/display/KULRICE/Kuali+Rice+2.0+Upgrade+Notes+-+Indiana+University#KualiRice2.0UpgradeNotes-IndianaUniversity-ImpactingChanges"
                         >in the Indiana University upgrade notes on impacting changes</link>.</para>
             </section>
     </section>

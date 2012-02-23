@@ -882,8 +882,8 @@
         <section>
             <title>Upgrading a Kuali Rice Standalone Server</title>
             <para>The Kuali Rice Standalone Server is made available as a WAR and deployed to a
-                servlet container (typically Tomcat).  The general process for upgrading a
-                standalone server from version 1.0.3.3 to version 2.0 will be as follows:<orderedlist>
+                servlet container (typically Tomcat). The general process for upgrading a standalone
+                server from version 1.0.3.3 to version 2.0 will be as follows:<orderedlist>
                     <listitem>
                         <para>Re-apply local customizations</para>
                     </listitem>
@@ -899,60 +899,7 @@
                     <listitem>
                         <para>Deploy</para>
                     </listitem>
-                </orderedlist><itemizedlist>
-                    <listitem>
-                        <para>any manual steps of the db upgrade? <itemizedlist>
-                                <listitem>
-                                    <para>KIM permission and responsibility names (pre upgrade
-                                        script!)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>conversion of maintainable XML content</para>
-                                </listitem>
-                                <listitem>
-                                    <para>eDocLite conversion</para>
-                                </listitem>
-                                <listitem>
-                                    <para>XML ingestion?!?</para>
-                                </listitem>
-                                <listitem>
-                                    <para>custom doc search stuff?</para>
-                                </listitem>
-                                <listitem>
-                                    <para>plugins?</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>preparing for WAR deployment <itemizedlist>
-                                <listitem>
-                                    <para>recommend use of Tomcat 7</para>
-                                </listitem>
-                                <listitem>
-                                    <para>ensure that tomcat lib directory has up to date libraries
-                                        (should put appropriate version of jdbc driver in
-                                        there)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>important configuration file updates</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>preparing for client application integration <itemizedlist>
-                                <listitem>
-                                    <para>keystores (anything changed?)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>proxy accounts to database with grants to specific
-                                        tables</para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </listitem>
-                </itemizedlist></para>
+                </orderedlist></para>
             <section>
                 <title>Re-apply Local Customizations</title>
                 <para>Many who have implemented Kuali Rice have performed local customizations to
@@ -1218,9 +1165,9 @@ Done.</programlisting></para>
                 </section>
                 <section>
                     <title>XML Ingestion</title>
-                    <para>There is currently no (easy) way to perform XML ingestion with the Kuali
-                        Rice Standalone server offline.  However, there are some XML files which
-                        should be ingested as part of the Rice 2.0 upgrade.  These files are located
+                    <para>There is currently no (easy) way to perform XML ingestion while the Kuali
+                        Rice Standalone server is offline. However, there are some XML files which
+                        should be ingested as part of the Rice 2.0 upgrade. These files are located
                         in the <code>scripts/upgrades/1.0.3 to 2.0.0/xml-ingest-updates</code>
                         directory of the standalone server distribution.</para>
                     <para>Once the database has been upgraded and you have successfully started your
@@ -1233,23 +1180,48 @@ Done.</programlisting></para>
             </section>
             <section>
                 <title>Update Configuration</title>
-                <para>The available configuration parameters have not changed a whole lot between
-                    Rice 1.0.x and 2.0.  However there are a few changes which are important to
-                    note.</para>
+                <para>The most frequently customized configuration parameters which are used by the
+                    standalone server have not changed a whole lot between Rice 1.0.x and 2.0.
+                    However there are a few changes which are important to note.</para>
                 <para>First of all, in Rice 1.0.x there was a configuration parameter named
-                        <code>rice.additionalSpringFiles</code>.  This was used to load a custom
-                    Spring file into the standalone server (or a client application) which could be
+                        <code>rice.additionalSpringFiles</code>.  This was used to load custom
+                    Spring files into the standalone server (or a client application) which could be
                     used to override internal Kuali Rice services for the purposes of customization.
                     In Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
-                    parameter.  Instead there is one per module of Rice as follows:<itemizedlist>
-                        <listitem>
-                            <para>TODO</para>
-                        </listitem>
-                    </itemizedlist></para>
+                    parameter.  Instead there is one per module of Rice such as
+                        <code>rice.kew.additionalSpringFiles</code>,
+                        <code>rice.ksb.additionalSpringFiles</code>,
+                        <code>rice.kim.additionalSpringFiles</code>, etc.  When re-applying and
+                    loading customizations, this needs to be taken into account.  Additionally, you
+                    will need to ensure you are overriding the server in the appropriate module or
+                    else the service override will not take effect.</para>
+                <para>Additionally, the caching implementation for Rice has been reworked to use the
+                    Ehcache library.  As a result, the various kim.cache.* configuration parameters
+                    are no longer available.  Instead, when needing to customize how caching for KIM
+                    (or any other module of Rice) is configured, a custom ehcache configuration file
+                    can be loaded through configuration parameters like
+                        <code>kim.ehcache.config.location</code>,
+                        <code>kew.ehcache.config.location</code>, etc.</para>
+                <para>Generally speaking, for configuration parameters which you are using and
+                    overriding as part of your standalone server setup, it's best to look at the
+                    value in the configuration defaults for Rice to determine if or how it has
+                    changed in Rice 2.0.  The source for that configuration default file can be
+                    found here:</para>
+                <para><link
+                        xlink:href="http://svn.kuali.org/repos/rice/tags/rice-2.0.0/impl/src/main/resources/META-INF/common-config-defaults.xml"
+                        >http://svn.kuali.org/repos/rice/tags/rice-2.0.0/impl/src/main/resources/META-INF/common-config-defaults.xml</link></para>
             </section>
             <section>
                 <title>Deploy</title>
-                <para>TODO plugins</para>
+                <para>Once you have completed updating your standalone server's configuration, you
+                    are ready to do deploy it. This process still works largely the same as it did
+                    in Rice 1.0.x. However, in Rice 2.0, Tomcat 6 or Tomcat 7 is recommended. It is
+                    not recommended to run the Kuali Rice Standalone Server in Tomcat 5.5.x as was
+                    the case with Rice 1.0.x.</para>
+                <para>As part of this, you should ensure that the "lib" directory of your Tomcat
+                    instance has the appropriate JDBC driver for the database you are using.</para>
+                <para>If you have any trouble with this step, please consult <xref
+                        linkend="Troubleshooting"/>.</para>
             </section>
         </section>
         <section>
@@ -1414,6 +1386,10 @@ Done.</programlisting></para>
                                 </listitem>
                                 <listitem>
                                     <para>how to publish JSTLConstants using spring</para>
+                                    <para>component publishing</para>
+                                </listitem>
+                                <listitem>
+                                    <para>rice.struts.message.resources?</para>
                                 </listitem>
                             </itemizedlist>
                         </para>
@@ -1442,7 +1418,7 @@ Done.</programlisting></para>
             <title>Functional Impact and Testing</title>
             <para>TODO</para>
         </section>
-        <section>
+        <section xml:id="Troubleshooting">
             <title>Troubleshooting</title>
             <para>Troubleshooting <itemizedlist>
                     <listitem>

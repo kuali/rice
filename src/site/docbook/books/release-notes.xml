@@ -1490,9 +1490,10 @@ Done.</programlisting></para>
             <section>
                 <title>Library Version Changes between 1.0.3.3 and 2.0.0</title>
                 <informaltable frame="all" pgwide="1">
-                    <tgroup cols="2">
+                    <tgroup cols="3">
                         <colspec colname="c1" colnum="1" colwidth="1.0*"/>
                         <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
                         <thead>
                             <row>
                                 <entry>Old Library</entry>
@@ -1591,9 +1592,8 @@ Done.</programlisting></para>
         <section>
             <title>Libraries Removed between 1.0.3.3 and 2.0.0</title>
             <informaltable frame="all" pgwide="1">
-                <tgroup cols="2">
+                <tgroup cols="1">
                     <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
                     <thead>
                         <row>
                             <entry>Old Library</entry>
@@ -1681,9 +1681,116 @@ Done.</programlisting></para>
             </section>
             <section>
                 <title>Web Content Changes</title>
-                <para>TODO</para>
+                <para>For applications which are using the KNS, some of the web content has changed.
+                    This web content includes images, javascript, css, jsp, and tag library files.
+                    When using the KNS these are typically copied into the application.  Therefore
+                    when performing an upgrade, the original KNS web content should be deleted from
+                    the project and the new web content from Rice 2.0.0 should be copied into it's
+                    place.</para>
+                <para><emphasis>However</emphasis>, if the client application has made
+                    customizations to any of these resources then they will need to manually reapply
+                    any customizations they have made.  In order to aid in this process, information
+                    on which web content files have changed can be found here:</para>
+                <para><link
+                        xlink:href="https://wiki.kuali.org/x/8RW1Eg#KualiRice2.0UpgradeNotes-IndianaUniversity-WebContentUpdates"
+                        >https://wiki.kuali.org/x/8RW1Eg#KualiRice2.0UpgradeNotes-IndianaUniversity-WebContentUpdates</link></para>
             </section>
-            <section/>
+            <section>
+                <title>Rice Configurer Changes</title>
+                <para>Previously, all module configuration was done via a class wired in Spring
+                    called the <code>RiceConfigurer</code>. This has been replaced by a modular
+                    configuration design, with the rice core being configured in a new
+                        <code>CoreConfigurer</code>. Each module has it's own configurer as well
+                        (<code>KEWConfigurer</code>, <code>KIMConfigurer</code>, etc..). Run modes
+                    are set independently for each module and additional spring files are now
+                    defined on a per-module basis as discussed in the standalone server upgrade
+                    portion of this document.</para>
+                <para>An example Spring configuration which would load all of the available Rice
+                    modules into a client app would look like the
+                    following:<programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  &lt;bean id="config"
+        class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean"
+        p:initialize="true">
+    &lt;property name="configLocations">
+      &lt;list>
+        &lt;value>classpath:config.xml&lt;/value>
+      &lt;/list>
+    &lt;/property>
+  &lt;/bean>
+
+  &lt;bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:properties="#{config.getProperties()}"/>
+
+  &lt;bean id="jtaTransactionManager"
+        class="org.springframework.transaction.jta.JotmFactoryBean">
+        p:defaultTimeout="3600"/>
+    
+  &lt;bean id="riceDataSource"
+        class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource"
+        p:transactionManager-ref="jtaTransactionManager"
+        p:driverClassName="${datasource.driver.name}"
+        p:url="${datasource.url}"
+        p:maxSize="${datasource.pool.maxSize}"
+        p:minSize="${datasource.pool.minSize}"
+        p:maxWait="${datasource.pool.maxWait}"
+        p:validationQuery="${datasource.pool.validationQuery}"
+        p:username="${datasource.username}"
+        p:password="${datasource.password}"/>
+
+  &lt;bean id="riceNonTransactionalDataSource"
+        class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="${datasource.driver.name}"
+        p:url="${datasource.url}"
+        p:maxActive="${datasource.pool.maxActive}"
+        p:minIdle="${datasource.minIdle}"
+        p:initialSize="${datasource.initialSize}"
+        p:validationQuery="${datasource.pool.validationQuery}"
+        p:username="${datasource.username}"
+        p:password="${datasource.password}"
+        p:accessToUnderlyingConnectionAllowed="${datasource.accessToUnderlyingConnectionAllowed}"/>
+
+  &lt;bean id="coreConfigurer"
+        class="org.kuali.rice.core.impl.config.module.CoreConfigurer"
+        depends-on="config"
+        p:transactionManager-ref="jtaTransactionManager"
+        p:userTransaction-ref="jtaTransactionManager"
+        p:dataSource-ref="/>
+
+  &lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"/>
+  &lt;bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer"/>
+  &lt;bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
+  &lt;bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
+  &lt;bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
+  &lt;bean id="krmsConfigurer" class="org.kuali.rice.krms.config.KRMSConfigurer"/>
+  &lt;bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
+
+&lt;/beans></programlisting></para>
+                <para>For the example above, most all of these modules would be running in the
+                    REMOTE run mode.  That is the default with the exception of CoreConfigurer and
+                    KRADConfigurer which always run in LOCAL module and don't have a REMOTE run
+                    mode.  It's important in these cases to load the Rice
+                        <code>common-config-defaults.xml</code> file into your configuration context
+                    so that the appropriate defaults can be applied.</para>
+                <para>The following example shows doing this as well as switching the KIM and KEW
+                    run modes to "embedded"
+                    mode:<programlisting>&lt;config>
+  &lt;param name="config.location">classpath:META-INF/common-config-defaults.xml&lt;/param>
+  ...
+  &lt;param name="kew.mode">EMBEDDED&lt;/param>
+  &lt;param name="kim.mode">EMBEDDED&lt;/param>
+  ...
+&lt;/config></programlisting>Note
+                    that if you were in fact configuring KEW and KIM for embedded mode you would
+                    also need to inject a <emphasis>serverDataSource</emphasis> into the
+                        <code>CoreConfigurer</code> which would point to your Kuali Rice Standalone
+                    Server database.</para>
+            </section>
     </section>
         <section>
             <title>Data Warehouse and Reporting</title>

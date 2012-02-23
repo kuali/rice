@@ -7681,3 +7681,14 @@ drop sequence krms_cntxt_vld_rule_s
 
 alter table KREW_DOC_TYP_APP_DOC_STAT_T modify (DOC_STAT_NM varchar2(64))
 /
+
+--
+-- 2012-02-23.sql
+--
+
+--
+-- KULRICE-6811: Conversion of WorkflowFunctions to EDLFunctions in eDocLite stylesheets
+--
+
+UPDATE KRCR_STYLE_T set XML=replace(XML,'org.kuali.rice.kew.edl.WorkflowFunctions','org.kuali.rice.edl.framework.util.EDLFunctions')
+/

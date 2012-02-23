@@ -3741,3 +3741,13 @@ drop table krms_cntxt_vld_agenda_t;
 drop table krms_cntxt_vld_agenda_s;
 drop table krms_cntxt_vld_rule_t;
 drop table krms_cntxt_vld_rule_s;
+
+--
+-- mysql-2012-02-23.sql
+--
+
+--
+-- KULRICE-6811: Conversion of WorkflowFunctions to EDLFunctions in eDocLite stylesheets
+--
+
+UPDATE KRCR_STYLE_T set XML=replace(XML,'org.kuali.rice.kew.edl.WorkflowFunctions','org.kuali.rice.edl.framework.util.EDLFunctions');

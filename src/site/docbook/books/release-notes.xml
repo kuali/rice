@@ -1179,7 +1179,7 @@ Done.</programlisting></para>
                     the case with Rice 1.0.x.</para>
                 <para>As part of this, you should ensure that the "lib" directory of your Tomcat
                     instance has the appropriate JDBC driver for the database you are using.</para>
-                <para>If you have any trouble with this step, please consult <xref linkend="Troubleshooting"/>.</para>
+                <para>If you have any trouble with this step, please consult <xref linkend="troubleshooting"/>.</para>
             </section>
         </section>
         <section>
@@ -1794,13 +1794,103 @@ Done.</programlisting></para>
     </section>
         <section>
             <title>Data Warehouse and Reporting</title>
-            <para>highlight the major database changes (longs to strings, table name changes,
-                etc.)</para>
+            <para>If you have written any reports against your Kuali Rice database tables, they may
+                need to be updated to reflect changes to the database tables in version 2.0.
+                Generally speaking, the changes to database tables is not extensive, but here is a
+                summary of some of the significant changes that have been made:<orderedlist>
+                    <listitem>
+                        <para>The <code>DOC_HDR_ID</code> and other numeric identifiers in the
+                                <code>KREW_*</code> tables have been changed to <code>VARCHAR</code>
+                            datatypes.  This facilitates more flexibility in the kind of data which
+                            can be stored in these tables and brings the KEW tables in line with
+                            other tables in Kuali Rice.</para>
+                    </listitem>
+                    <listitem>
+                        <para>The following tables were renamed:<table frame="all">
+                                <title>Renamed Tables</title>
+                                <tgroup cols="2">
+                                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                                    <thead>
+                                        <row>
+                                            <entry>Old Table Name</entry>
+                                            <entry>New Table Name</entry>
+                                        </row>
+                                    </thead>
+                                    <tbody>
+                                        <row>
+                                            <entry>KRNS_NMSPC_T</entry>
+                                            <entry>KRCR_NMSPC_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_PARM_TYP_T</entry>
+                                            <entry>KRCR_PARM_TYP_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_PARM_DTL_TYP_T</entry>
+                                            <entry>KRCR_CMPNT_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_PARM_T</entry>
+                                            <entry>KRCR_PARM_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_CAMPUS_T</entry>
+                                            <entry>KRLC_CMP_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_CMP_TYP_T</entry>
+                                            <entry>KRLC_CMP_TYP_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_COUNTRY_T</entry>
+                                            <entry>KRLC_CNTRY_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_STATE_T</entry>
+                                            <entry>KRLC_ST_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_POSTAL_CODE_T</entry>
+                                            <entry>KRLC_PSTL_CD_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_COUNTY_T</entry>
+                                            <entry>KRLC_CNTY_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KREW_STYLE_T</entry>
+                                            <entry>KRCR_STYLE_T</entry>
+                                        </row>
+                                    </tbody>
+                                </tgroup>
+                            </table></para>
+                    </listitem>
+                    <listitem>
+                        <para>Additional changes which might affect reporting can be found in the
+                            final upgrade SQL scripts.</para>
+                    </listitem>
+                </orderedlist></para>
         </section>
-        <section>
+        <section xml:id="troubleshooting">
             <title>Troubleshooting</title>
-            <para>see what Shannon put together in Rice upgrade notes, general questions to
-                rice.collab@kuali.org </para>
+            <para>The amount of work done in Kuali Rice version 2.0 was fairly significant,
+                therefore it is likely that there are some gaps this upgrade guide. If you encounter
+                problems when attempting your upgrade, please do the following:<orderedlist>
+                    <listitem>
+                        <para>Check the <link xlink:href="https://wiki.kuali.org/x/JGu1Eg">Kuali
+                                Rice 2.0 - Upgrade Troubleshooting</link> page in the Kuali Rice
+                            wiki.  This page will contain some FAQ's and any neccessary addendums to
+                            this upgrade guide.</para>
+                    </listitem>
+                    <listitem>
+                        <para>If you don't find your answer there, join the
+                                <email>rice.collab@kuali.org</email> mailing list and post your
+                            questions there.  You can join this mailing list through the Kuali
+                            Information System at <link xlink:href="http://kuali.org/kis"
+                                >http://kuali.org/kis</link></para>
+                    </listitem>
+                </orderedlist></para>
         </section>
             </section>
                 <section xml:id="items_addressed_in_rice_2.0">

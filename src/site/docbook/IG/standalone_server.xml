@@ -528,6 +528,13 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisti
                 <para>If you receive an error indicating that the "java" command could not be found,
                     please ensure that the java command is on your machine's <emphasis role="bold"
                         >PATH</emphasis> environment variable.</para>
+              <para>To prevent potential out of memory errors when running Rice,
+                you should set your <emphasis role="bold">JAVA_OPTS</emphasis> environment to a
+                value like the following:</para>
+              <programlisting>JAVA_OPTS="-Xmx1024m -XX:MaxPermSize=768m"</programlisting>
+              <para>If you do not know how to do this, see the <link
+                      linkend="environment_variables">Environment Variables</link> section above
+                for your platform.</para>
             </section>
         </section>
         <!-- TODO: Determine if we need to add a section for ant or if we're done here -->

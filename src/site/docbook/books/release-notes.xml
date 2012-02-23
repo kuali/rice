@@ -464,9 +464,7 @@
                                     <code>KualiWorkflowInfo</code>, code was changed to call one of
                                 the new KEW services that was added in Rice 2.0.</para>
                         </listitem>
-                    </itemizedlist>Some rough notes with more details on the work that was done in
-                    KEW can be found here: <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/fwuREg"
-                        >https://wiki.kuali.org/x/fwuREg</link></para>
+                    </itemizedlist></para>
             </section>
             <section>
                 <title>Document Search</title>
@@ -543,11 +541,7 @@
                     search framework to the new document search framework is forthcoming. For the
                     time-being, the best resource is to look at the javadocs for the
                         <code>org.kuali.rice.kew.framework.document.search</code> package. All of
-                    the framework apis should have fairly thorough javadocs. Additional, some rough
-                    notes on the document search work and architectural service approach for the
-                    customization handler service can be found near the bottom of this page: <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/fwuREg"
-                        >https://wiki.kuali.org/x/fwuREg</link></para>
+                    the framework apis should have fairly thorough javadocs. </para>
             </section>
             <section>
                 <title>Caching Architecture</title>
@@ -583,9 +577,8 @@
                 in order help reach version compatibility goals for the release.</para>
             <para>Primarily, this included the creation of numerous "api" and "framework" modules
                 and the partitioning of Kuali Rice into various sub-project modules. This structure
-                can be seen when looking at the source code for Rice 2.0. The overall vision for
-                modularity in Kuali Rice as well as some notes on specific changes that were made in
-                pursuit of it can be found at the following links:</para>
+                can be seen when looking at the source code for Rice 2.0. The design and vision for
+                modularity in Kuali Rice can be found at the following links:</para>
             <itemizedlist>
                 <listitem>
                     <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/x/fYD8E">Modularity Use Case
@@ -594,16 +587,6 @@
                 <listitem>
                     <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/x/SoD8E">Modularity
                         Design</link></para>
-                </listitem>
-                <listitem>
-                    <para>the running <link
-                            xlink:show="new" xlink:href="https://docs.google.com/a/kuali.org/document/pub?id=1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw"
-                            >list of modularity changes</link>.</para>
-                </listitem>
-                <listitem>
-                    <para><link
-                            xlink:show="new" xlink:href="https://docs.google.com/document/pub?id=1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8"
-                            >KEW Refactoring Notes</link></para>
                 </listitem>
             </itemizedlist>
         </section>
@@ -718,8 +701,8 @@
         <section>
             <title>Library Changes and Additions</title>
             <para>There were many changes made to the various direct and transitive dependencies for
-                Kuali Rice. Additional documentation is forthcoming on what these specific changes
-                were, but the following is a summary of some of the highlights:<itemizedlist>
+                Kuali Rice. Additional documentation can be found in the upgrade guide about what
+                the specific changes were, but the following is a summary of some of the highlights:<itemizedlist>
                     <listitem>
                         <para>Spring 3.1</para>
                     </listitem>
@@ -772,8 +755,7 @@
             <title>Other Changes</title>
             <para>There were many other changes made in Kuali Rice 2.0 which are not included in the
                 previous section. The following list is a highlight of some of these. For a
-                comprehensive list of changes that were performed, the Jira issues are the best
-                place to look.</para>
+                comprehensive list of changes that were performed, see <xref linkend="items_addressed_in_rice_2.0"/></para>
             <para>
                 <itemizedlist>
                     <listitem>
@@ -860,10 +842,148 @@
     <section xml:id="upgrade-guide" xreflabel="Upgrade Guide">
         <title>Upgrade Guide</title>
         <section>
-            <title>Database Changes</title>
+            <title>Upgrade Considerations</title>
+            <para>In terms of upgrading to Kuali Rice 2.0, there are two main types of upgrades
+                which one will likely need to perform:<itemizedlist>
+                    <listitem>
+                        <para>Kuali Rice Standalone Server</para>
+                    </listitem>
+                    <listitem>
+                        <para>Client Applications</para>
+                    </listitem>
+                </itemizedlist>Since Rice 2.0 is not backward compatible with 1.0.x, upgrades to
+                both the standalone server and any client applications who are using the Rice APIs
+                will need to be coordinated to occur at the same time.</para>
+            <para>Since Rice 2.0 is not backward compatible with 1.0.x versions, it is likely that
+                an institution which has built multiple custom Kuali Rice applications will need to
+                perform both of these steps and coordinate the upgrade appropriately within their
+                enterprise.  For the other Kuali applications within the Kuali Foundation, each of
+                the projects are planning forthcoming releases which will support Rice 2.0.  So it
+                would be advisable to wait until those upgraded versions are available before taking
+                on an enterprise-wide upgrade of Kuali Rice infrastructure to avoid needing to
+                manually convert these applications yourself.  Please consult the timelines of the
+                other Kuali projects for details on their planned upgrade to Rice 2.0.</para>
+            <para>For those applications which are running Kuali Rice in "Bundled" mode (which means
+                the application is not dependant on a seperate Kuali Rice Standalone Server
+                instance) then both types of upgrades will need to be performed on the same
+                application.</para>
+            <para>In addition to upgrading the Rice standalone server and any integrated client
+                applications, any use of the Kuali Rice data in downstream systems (such as a Data
+                Warehouse or reporting environment) needs to be considered.  There have been
+                impacting changes to the Rice database tables as part of development on version 2.0.
+                Therefore, existing reports may not work as desired and should be updated and tested
+                appropriately.</para>
+            <para>In the following sections, we will describe the upgrade process for each of the
+                different areas in detail.</para>
+        </section>
+        <section>
+            <title>Upgrading a Kuali Rice Standalone Server</title>
+            <para>The Kuali Rice Standalone Server is made available as a WAR and deployed to a
+                servlet container (typically Tomcat).  The general process for upgrading a
+                standalone server from version 1.0.3.3 to version 2.0 will be as follows:<orderedlist>
+                    <listitem>
+                        <para>Re-apply local customizations</para>
+                    </listitem>
+                    <listitem>
+                        <para>Upgrade the Database</para>
+                    </listitem>
+                    <listitem>
+                        <para>Update Configuration</para>
+                    </listitem>
+                    <listitem>
+                        <para>Deploy</para>
+                    </listitem>
+                </orderedlist><itemizedlist>
+                    <listitem>
+                        <para>reapplying customizations <itemizedlist>
+                                <listitem>
+                                    <para>talk about different approaches for doing customizations,
+                                        code and web content</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>customizing environment code in web.xml or via tomcat startup
+                            script</para>
+                    </listitem>
+                    <listitem>
+                        <para>running the automatic database upgrade</para>
+                    </listitem>
+                    <listitem>
+                        <para>any manual steps of the db upgrade? <itemizedlist>
+                                <listitem>
+                                    <para>KIM permission and responsibility names (pre upgrade
+                                        script!)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>conversion of maintainable XML content</para>
+                                </listitem>
+                                <listitem>
+                                    <para>eDocLite conversion</para>
+                                </listitem>
+                                <listitem>
+                                    <para>XML ingestion?!?</para>
+                                </listitem>
+                                <listitem>
+                                    <para>custom doc search stuff?</para>
+                                </listitem>
+                                <listitem>
+                                    <para>plugins?</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>preparing for WAR deployment <itemizedlist>
+                                <listitem>
+                                    <para>recommend use of Tomcat 7</para>
+                                </listitem>
+                                <listitem>
+                                    <para>ensure that tomcat lib directory has up to date libraries
+                                        (should put appropriate version of jdbc driver in
+                                        there)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>important configuration file updates</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>preparing for client application integration <itemizedlist>
+                                <listitem>
+                                    <para>keystores (anything changed?)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>proxy accounts to database with grants to specific
+                                        tables</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                </itemizedlist></para>
+            <section>
+                <title>Re-apply Local Customizations</title>
+                <para/>
+            </section>
+            <section>
+                <title>Upgrade the Database</title>
+                <para/>
+            </section>
+            <section>
+                <title>Update Configuration</title>
+                <para/>
+            </section>
+            <section>
+                <title>Deploy</title>
+                <para/>
+            </section>
+            <section>
+                <title>Upgrading the Standalone Server Database</title>
             <para>The scripts to upgrade from a 1.0.3.3 version of Kuali Rice to version
                 ${project.version} can be found in the following directory inside of the source
-                distribution:</para>
+                distribution:</para>        
             <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
             <para>Within this directory, are the following sub-directories:<itemizedlist>
                     <listitem>
@@ -897,10 +1017,225 @@
                         <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
                             that needs to be ingested after the database upgrade is completed</para>
                     </listitem>
+            </itemizedlist></para>
+            </section>
+        </section>
+        <section>
+            <title>Upgrading a Client Application</title>
+            <para>client application upgrade <itemizedlist>
+                    <listitem>
+                        <para>ensuring that your client application remains compatible (link to
+                            document in Rice documentation)</para>
+                    </listitem>
+                    <listitem>
+                        <para>client database upgrade</para>
+                    </listitem>
+                    <listitem>
+                        <para>conversion of maintainable XML content</para>
+                    </listitem>
+                    <listitem>
+                        <para>any other manual scripts to run?</para>
+                    </listitem>
+                    <listitem>
+                        <para>library upgrades (see the list that Shannon put together) <itemizedlist>
+                                <listitem>
+                                    <para>maven vs. binary integration</para>
+                                </listitem>
+                                <listitem>
+                                    <para>link to dependency information on rice maven site</para>
+                                </listitem>
+                                <listitem>
+                                    <para>asm 1.5.3 does not work!!! must make sure you are using
+                                        asm 3.3.1</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>client application updates by module</para>
+                    </listitem>
+                    <listitem>
+                        <para>core/global <itemizedlist>
+                                <listitem>
+                                    <para>RiceConfigurer no longer exists</para>
+                                </listitem>
+                                <listitem>
+                                    <para>show example of configuring Rice (configurers default to
+                                        REMOTE on most modules, just list out the defaults)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>changes to configuration parameters</para>
+                                </listitem>
+                                <listitem>
+                                    <para>general modularity and packaging approach in Rice
+                                        2.0</para>
+                                </listitem>
+                                <listitem>
+                                    <para>conversion from java serialization to SOAP-based
+                                        services</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>KSB <itemizedlist>
+                                <listitem>
+                                    <para>changed architecture, web service integration</para>
+                                </listitem>
+                                <listitem>
+                                    <para>configuration parameter changes</para>
+                                </listitem>
+                                <listitem>
+                                    <para>changes needed in web.xml for KSBDispatcherServlet or
+                                        other</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>KIM <itemizedlist>
+                                <listitem>
+                                    <para>no more IdentityManagementService or
+                                        RoleManagementService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>service locator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>changes needed in web.xml (are there any for this
+                                        module?)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>changes to configuration parameters for caching (see
+                                        separate section on caching)</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>KEW <itemizedlist>
+                                <listitem>
+                                    <para>change to KEW apis, show an example of how to use the new
+                                        api, also a general descripton of things which
+                                        changed</para>
+                                </listitem>
+                                <listitem>
+                                    <para>no more checked WorkflowExceptions</para>
+                                </listitem>
+                                <listitem>
+                                    <para>service locator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>changes needed in web.xml (are there any for this
+                                        module?)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>new Thin client mode</para>
+                                </listitem>
+                                <listitem>
+                                    <para>document search framework changes and how to upgrade (need
+                                        to write this!)</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>KNS/KRAD <itemizedlist>
+                                <listitem>
+                                    <para>web content - safest thing would be to re-copy everything,
+                                        but if you have local customizations, the files which have
+                                        been changed can be found in an Appendix (link to the table
+                                        from Shannon's doc here)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>the impact that the new KRAD stuff will have, can't load
+                                        just KNS, can either load KRAD without KNS or KNS+KRAD
+                                        (share a common codebase)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>show example of how to configure rice now and how to use
+                                        configfactorybean</para>
+                                </listitem>
+                                <listitem>
+                                    <para>changes needed in web.xml</para>
+                                </listitem>
+                                <listitem>
+                                    <para>general repackaging of code into KNS and KRAD
+                                        packages</para>
+                                </listitem>
+                                <listitem>
+                                    <para>notes api changes and PBO</para>
+                                </listitem>
+                                <listitem>
+                                    <para>GlobalVariables</para>
+                                </listitem>
+                                <listitem>
+                                    <para>removal of KualiWorkflowDocument and
+                                        KualiWorkflowInfo</para>
+                                </listitem>
+                                <listitem>
+                                    <para>DateTimeService - formats controlled by config parameter
+                                        instead of system parameter now</para>
+                                </listitem>
+                                <listitem>
+                                    <para>how to publish JSTLConstants using spring</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>KEN/KCB <itemizedlist>
+                                <listitem>
+                                    <para>KCB notification service no longer enabled by
+                                        default</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                </itemizedlist></para>
+        </section>
+        <section>
+            <title>Data Warehouse and Reporting</title>
+            <para>data warehouse and reporting <itemizedlist>
+                    <listitem>
+                        <para>highlight the major database changes (longs to strings, table name
+                            changes, etc.)</para>
+                    </listitem>
+                </itemizedlist></para>
+        </section>
+        <section>
+            <title>Functional Impact and Testing</title>
+        </section>
+        <section>
+            <title>Optimization</title>
+            <para>Optimization <itemizedlist>
+                    <listitem>
+                        <para>
+                            <itemizedlist>
+                                <listitem>
+                                    <para>customizing cache settings</para>
+                                </listitem>
+                                <listitem>
+                                    <para>anything else?</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                </itemizedlist></para>
+        </section>
+        <section>
+            <title>Troubleshooting</title>
+            <para>Troubleshooting <itemizedlist>
+                    <listitem>
+                        <para>see what Shannon put together in Rice upgrade notes</para>
+                    </listitem>
+                    <listitem>
+                        <para>general questions to rice.collab@kuali.org</para>
+                    </listitem>
                 </itemizedlist></para>
         </section>
     </section>
-    <section>
+    <section xml:id="items_addressed_in_rice_2.0">
         <title>Items Addressed in Rice 2.0</title>
 <section><title>Bug Fix</title>
 <itemizedlist>

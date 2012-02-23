@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.DataType;
@@ -30,12 +31,14 @@ import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
 import org.kuali.rice.core.api.uif.RemotableSelect;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
+import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kns.datadictionary.control.CheckboxControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.HiddenControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.MultiselectControlDefinition;
+import org.kuali.rice.kns.datadictionary.control.MultivalueControlDefinitionBase;
 import org.kuali.rice.kns.datadictionary.control.RadioControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.SelectControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
@@ -43,6 +46,9 @@ import org.kuali.rice.kns.datadictionary.control.TextareaControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
+import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
@@ -74,7 +80,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemoteFieldService {
-
+    private static final Logger LOG = Logger.getLogger(DataDictionaryRemoteFieldServiceImpl.class);
+    
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryRemoteFieldService#buildRemotableFieldFromAttributeDefinition(java.lang.String,
      *      java.lang.String)
@@ -205,6 +212,7 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
      */
     protected Map<String, String> getValues(AttributeDefinition attr) {
         Control control = attr.getControlField();
+        ControlDefinition controlDef = attr.getControl();
 
         if ((control instanceof MultiValueControl)
                 && (((MultiValueControl) control).getOptions() != null)
@@ -215,6 +223,24 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 options.put(keyValue.getKey(), keyValue.getValue());
             }
             return options;
+        } else if (controlDef instanceof MultivalueControlDefinitionBase) {
+            String keyFinderClassName = controlDef.getValuesFinderClass();
+            if (StringUtils.isNotBlank(keyFinderClassName)) {
+                try {
+                    final Class<KeyValuesFinder> clazz = (Class<KeyValuesFinder>) Class.forName(keyFinderClassName);
+                    final KeyValuesFinder finder = clazz.newInstance();
+                    final Map<String, String> values = finder.getKeyLabelMap();
+                    if ((values != null) && !values.isEmpty()) {
+                        return values;
+                    }
+                } catch (ClassNotFoundException e) {
+                    LOG.warn("Values Finder Class not found with name: " + keyFinderClassName);
+                } catch (InstantiationException e) {
+                    LOG.warn("Unable to instantiate Values Finder Class with name: " + keyFinderClassName);
+                } catch (IllegalAccessException e) {
+                    LOG.warn("Unable to access Values Finder Class with name: " + keyFinderClassName);
+                }
+            }
         } else if (attr.getOptionsFinder() != null) {
             return attr.getOptionsFinder().getKeyLabelMap();
         }

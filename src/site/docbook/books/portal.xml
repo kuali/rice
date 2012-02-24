@@ -48,9 +48,10 @@
         <para>
             <orderedlist>
                 <listitem>
-                    <para><emphasis role="bold">Release Notes</emphasis> (<link
-                            xlink:show="new" xlink:href="release-notes.html">HTML</link> / <link
-                            xlink:show="new" xlink:href="../pdf/release-notes.pdf">PDF</link> )</para>
+                    <para><emphasis role="bold">Release Notes</emphasis> (<link xlink:show="new"
+                            xlink:href="release-notes.html">HTML</link> / <link xlink:show="new"
+                            xlink:href="../pdf/release-notes.pdf">PDF</link> ) - list of changes and
+                        also includes upgrade guide</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Installation Guide</emphasis> (<link
@@ -97,9 +98,11 @@
                     <itemizedlist>
                         <para>* When using Internet Explorer, we recommend viewing the PDF files
                             since the size of the diagrams may be illegible in IE.</para>
+<!-- TODO: regenerate and add back in
                         <listitem>
                             <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>
                         </listitem>
+-->
                         <listitem>
                             <para>Rice KREN (KEN): <link xlink:show="new" xlink:href="../db_diagrams/rice-kren.png"
                                     >png*</link> / <link xlink:show="new" xlink:href="../db_diagrams/rice-kren.pdf"

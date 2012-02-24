@@ -16,7 +16,611 @@
     limitations under the License.
 
 -->
-<chapter xml:id="client_application" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+<chapter xml:id="client_application" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>Creating a Client Application</title>
-    <para>TODO</para>
+    <para>Developing a Rice application is essentially no different than other J2EE applications.
+        Any tool that can be used for creating J2EE apps can be used for a Rice app. Essentially
+        Rice is a set of libraries that are used with your project (like many other libraries a J2EE
+        app includes) and configured for your needs.</para>
+    
+    <para>The essential tools for developing a project are documented in the next section.</para>
+    
+    <section>
+        <title>Development Tools</title>
+
+        <section>
+            <title>IDE (Integrated Development Environment)</title>
+            <para>This is the tool you will use to developer the source code and resources for your
+                project. It can be a simple text editor if you want, however it is recommended to
+                use one of the Java IDE tools available. Of these Eclipse, Intellij, and NetBeans
+                are the most popular in today’s market. Any of these will be fine for developing a
+                Rice project. However, as we will learn about next, Rice provides its own tooling to
+                help getting started with Eclipse. Eclipse is chosen due to its high use and that it
+                is a free open source tool. The latest release is ‘Indigo’ and can be downloaded
+                here: </para>
+
+            <para>
+                <link
+                    xlink:href="http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/indigosr1"
+                    >http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/indigosr1</link>
+            </para>
+        </section>
+
+        <section>
+            <title>Database</title>
+            <para>Rice applications can use a MySql or Oracle database for persisting
+                application data. Rice itself will use the database for supporting the various Rice modules
+                (workflow, identity management, and so on). With each Rice distribution datasets are
+                provided that can be used to create the initial database schema. You can choose to load the
+                ‘bootstrap’ dataset, which provides the baseline data needed to run Rice, or the ‘demo’
+                dataset which adds additional demo data (such as example KIM data and workflow doc types). 
+                Although it is possible to provide a shared database for development, it is recommended for
+                productivity reasons for each developer to have a local database installed. Both MySql and
+                Oracle provide freely available databases for development. Currently Rice has been tested
+                with the following versions:</para>
+            
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Oracle</emphasis>
+                            <itemizedlist>
+                                <listitem>
+                                    <para>Oracle Database 10g</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Oracle Database 11g</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Oracle Express Edition (XE)</para>
+                                </listitem>
+                            </itemizedlist></para>
+                        <para>Use the Oracle JDBC Driver to connect to these databases.</para>
+                        <para>Ensure that the Oracle database you intend to use encodes character data in a UTF
+                            variant by default. For Oracle XE, this entails downloading the "Universal" flavor
+                            of the binary, which uses AL32UTF8.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">MySQL</emphasis><itemizedlist>
+                            <listitem>
+                                <para>MySQL 5.1.+</para>
+                            </listitem>
+                        </itemizedlist></para>
+                        <para>Use the MySQL Connector/J (5.1.+) to connect to MySQL databases.</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            
+            <para>Note for our chosen database we must also download the corresponding database driver. This
+                is a jar file we will need to make available to our web container for connecting to the
+                database.</para>
+            
+            <para>These supported databases can be downloaded with the following URLs.</para>
+            
+            <para>
+                <table frame="none">
+                    <title>Locations for Database Software</title>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="4.11*"/>
+                        <thead>
+                            <row>
+                                <entry>Software</entry>
+                                <entry>Download Location</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Oracle Standard and Enterprise Editions </entry>
+                                <entry><link
+                                    xlink:href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html"
+                                    >http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html</link></entry>
+                            </row>
+                            <row>
+                                <entry>Oracle Express Edition</entry>
+                                <entry><link
+                                    xlink:href="http://www.oracle.com/technetwork/database/express-edition/downloads/index.html"
+                                    >http://www.oracle.com/technetwork/database/express-edition/downloads/index.html</link></entry>
+                            </row>
+                            <row>
+                                <entry>Oracle JDBC DB Driver</entry>
+                                <entry><link
+                                    xlink:href="http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html"
+                                    >http://www.oracle.com/technetwork/database/features/jdbc/index-091264.html</link></entry>
+                            </row>
+                            <row>
+                                <entry>MySQL </entry>
+                                <entry><link xlink:href="http://www.mysql.com/downloads/"
+                                    >http://www.mysql.com/downloads/</link></entry>
+                            </row>
+                            <row>
+                                <entry>MySQL Connector/J JDBC Driver</entry>
+                                <entry><link xlink:href="http://www.mysql.com/products/connector/j/"
+                                    >http://www.mysql.com/products/connector/j/</link></entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>      
+            </para>
+            
+            <para>Note for working with a MySql database the MySql Workbench (available for free
+                download) is very useful and can save time for those new to MySql.  
+            </para>
+            
+            <para>Once the database provider is installed, we can then load one of the provided datasets using the
+                Kuali ImpEx tool. The ImpEx tool is a Kuali-developed application which is based on Apache
+                Torque. It reads in database structure and data from XML files in a platform independent way
+                and then creates the resulting database in either Oracle or MySQL. To use this tool we
+                simply provide configuration about the location of the source dataset, along with
+                connectivity information for our target database. This is done by creating a properties file
+                named ‘impex-build.properties’ in the user home directory. Once the configuration is
+                complete, we can invoke the tool using ant or maven and our database will be
+                created.</para>
+        </section>
+        
+        <section>
+            <title>JDK</title>
+            <para>In order to support compilation of the application source
+                code a JDK must be installed (Note this must be the JDK and not a Java Runtime Environment –
+                JRE). Rice requires a JDK version of 1.6.x. Additionally, Rice has only been tested with the
+                Sun JDK implementation. Therefore use of other implementations such as OpenJDK may have
+                problems.</para>
+            
+            <para>For machines running Windows, JDK 6 can be downloaded at the
+                following URL:</para>
+            
+            <para>
+                <link
+                    xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
+                    >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>
+            </para>
+            
+            <para>If you are on a Mac, then Java 6 should already be installed if you are up to date with
+            the latest updates from Apple.</para>
+            
+            <para>You will also want to set up your JAVA_HOME environment variable to point to the
+                installation directory of your JDK. In both Windows and Mac environments, the java
+                executable program should already be on your path. But if it is not, you will want to
+                include JAVA_HOME/bin in your PATH environment variable.</para>
+            
+            <para>In order to verify that your JDK has been installed successfully, open a command prompt
+            and type the following: </para>
+            
+            <programlisting>java -version</programlisting>
+            <para>You should see output similar to the following:</para>
+            <programlisting>java version "1.6.0_26"
+Java(TM) SE Runtime Environment (build 1.6.0_26-b03-383-11A511)
+Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisting>
+            <para>If you receive an error indicating that the "java" command could not be found,
+                please ensure that the java command is on your machine's <emphasis role="bold"
+                    >PATH</emphasis> environment variable.</para>
+        </section> 
+        
+        <section>
+            <title>Maven</title>
+            <para>Maven is the primary build tool used by the Kuali Rice project. Maven is
+                based on a project object model (POM) that defines various standards and conventions
+                surrounding the organization of a project. This facilitates a set of standard build
+                goals and lifecycle phases (such as compile, test, package, etc.). Maven is
+                particularly helpful in terms of dependency management. When building a Rice
+                application using Maven, all of the dependent libraries will be pulled in
+                automatically.</para>
+            
+            <para>It is not a required for Rice enabled applications to be Maven projects. Again, Rice
+                is essentially a set of jars that can be used with an application. However using Maven
+                simplifies the setup process greatly. For example applications not using Rice must pull
+                in and manage all of the third party libraries that are needed by Rice. That has an impact
+                not only on initial project setup, but also each time that application is upgraded to
+                a new Rice version.</para>
+            
+            <para>To download version 3 of Maven, use the following link:</para>
+            
+            <para><link xlink:href="http://maven.apache.org/download.html"
+                >http://maven.apache.org/download.html</link></para>
+            
+            <para>You will want to set your M2_HOME environment variable to point to the location
+                where you unzipped Maven. You will additionally want to include M2_HOME/bin in your
+                PATH environment variable so that maven can be executed from the command line without having
+                to specify the full path.</para>
+            
+            <para>In order to verify that Maven has been installed successfully and is available on
+                the path, open a command prompt and type the following:</para>
+            <programlisting>mvn -version</programlisting>
+            <para>You should see output like the following:</para>
+            <programlisting>Apache Maven 3.0.3 (r1075438; 2011-02-28 10:31:09-0700)
+Maven home: /usr/local/maven
+Java version: 1.6.0_26, vendor: Apple Inc.
+Java home: /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+Default locale: en_US, platform encoding: MacRoman
+OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programlisting>
+            <para>If you receive an error indicating hat the "mvn" command could not be found,
+                please ensure that the directory that includes the mvn executable (<emphasis
+                    role="bold">M2_HOME/bin</emphasis>) is on your machine's <emphasis role="bold"
+                        >PATH</emphasis> environment variable.</para>
+            
+        </section>    
+        
+        <section>
+            <title>Servlet Container</title>
+            
+            <para>In order to run our Rice application we need have a servlet
+                container. The servlet container serves the web requests for a J2EE application. There
+                are many containers available for use, but Tomcat is most commonly used. Kuali Rice
+                2.0 supports the following Tomcat version:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Tomcat 6 (Servlet API 2.5, JSP 2.1) </para>
+                </listitem>
+                <listitem>
+                    <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>For downloading and install instructions visit the Apache Tomcat site:</para>
+            <para><link xlink:href="http://tomcat.apache.org/">http://tomcat.apache.org/</link></para>
+            
+            <para>For development purposes you can also choose to use an embedded application
+                container such as Jetty. The Rice project provides a sample Jetty Server that can be used
+                for your project. The next section will cover this in more detail.</para>
+            
+        </section>
+    </section> 
+    
+    <section><title>New Project Setup</title>
+        
+         <para>Now let’s look at creating a new Rice enabled
+            project. To do this, we will use a tool from the Rice project that performs most of the
+            initial bootstrapping. The tool is included within the Rice project therefore we need to
+            start by downloading the Rice 2.0 release. The Rice distribution can be downloaded
+            at:</para>
+        <para>
+            <link xlink:href="http://kuali.org/download"> http://kuali.org/download </link>
+        </para>
+        
+        <para>Or the project may be checked out through Subversion with the following repository
+        location:</para>
+        
+        <para>
+            <link xlink:href="https://svn.kuali.org/repos/rice">
+                https://svn.kuali.org/repos/rice</link>
+        </para>
+        
+        <para>Note the full project must be checked out, not just the tool. The tool creates the initial artifacts
+            by copying from the Rice working copy.</para>
+        
+        <para>The Rice project contents should be
+            placed into a folder in the local file system. A standard practice is to create a top
+            level directory named ‘java’, followed by a ‘projects’ directory, and then a directory
+            named ‘rice’ that contains the actual project (‘/java/projects/rice’).</para>
+        
+        <para>The particular tool we will be using was written in Groovy, therefore we need to download
+        the Groovy runtime. This can be downloaded at the following URL:</para>
+        
+        <para>
+            <link xlink:href="http://groovy.codehaus.org/Download">
+                http://groovy.codehaus.org/Download </link>
+        </para> 
+        
+        <para>Install instructions are also available on the above site. For users of
+            Windows, a Windows-Installer can be downloaded which will install Groovy and perform any
+            necessary configuration (including add groovy to your path).</para>
+        
+        <para>Once groovy is installed we are ready to run the create project script. Start up a console (on Windows
+            can use the PowerShell) and change into the directory that contains the Rice project (eg
+            ‘/java/projects/rice’). From the root project folder, change into the scripts folder.
+            This folder should contain a file named ‘createproject.groovy’.</para>
+        
+        <para>There are a few options supported by the create project script, but let’s start with the most basic
+            way of running. The command we will give is:</para>
+        
+        <programlisting>groovy createproject.groovy -name PROJECT_NAME</programlisting>
+        
+        <para>First we are invoking the groovy executable (this assumes
+            groovy is on your path, if not the full path to the groovy executable needs to be
+            specified). Groovy then expects the name of the script we want to run, which is
+            ‘creatproject.groovy’. Next we specify the one required argument for the create project
+            script which is the name for the project we want to create. Assuming we want to create a
+            new project named ‘MyRiceApp’, the command would be the following:</para>
+        
+        <programlisting>groovy createproject.groovy -name MyRiceApp</programlisting>
+        
+        <para>After typing the command hit enter to
+        start the script. You should then see a prompt as follows:\</para>
+        
+        <programlisting> ================================================================== 
+                                    WARNING 
+         ================================================================== 
+        This program will delete the following directory and replace it 
+         with a new project: 
+           /java/projects/MyRiceApp 
+        It will also create or replace the
+            following files in USER_HOME: 
+            1) C:\Users\jkneal.ADS/kuali/main/dev/MyRiceApp-config.xml 
+             2) C:\Users\jkneal.ADS/kuali/main/dev/rice.keystore   
+         If this is not what you want, please supply more information: 
+             usage: groovy createproject -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir
+            RICE_DIR] [-mdir MAVEN_HOME]    
+                Do you want to continue (yes/no)? </programlisting>
+        
+        <para>Type ‘yes’ and then enter to resume the program. You will then see logging output from
+            the script about various files being created, the maven build, and finally should see
+            printed instructions and how to complete the project setup. </para>
+       
+        <para>Notice we did not tell the script where to put our new project nor where to find the
+            Rice project. This is because the script defaults to the project location of
+            ‘/java/projects’. If we want our project to be generated in a different location, we can
+            do so by passing the directory path with the ‘-pdir’ argument:</para>
+            
+        <programlisting>groovy createproject.groovy -name MyRiceApp –pdir /home/myapps</programlisting>
+        
+        <para>The project directory given will be the parent for the project folder. The script will
+        create another folder within this with the same name as the given project name.</para>
+        
+        <para>Similarly if our source Rice project is in another directory, we can specify that
+        using the ‘-rdir’ argument:</para>
+        
+        <programlisting>groovy createproject.groovy -name MyRiceApp –rdir /home/myapps/rice</programlisting>
+            
+        <para>Unlike this project directory argument, this does specify the full path to the
+        project (nothing will be appended).</para>
+        
+        <para>Finally the create project script gives us a couple more options for the project
+            generation. We can include the Rice sampleapp in our project by passing the –sampleapp
+            flag:</para>
+        
+        <programlisting>groovy createproject.groovy -name MyRiceApp –sampleapp</programlisting>
+        
+        <para>Having the various examples of the sampleapp can be very useful in particular if doing
+        development with the KRAD framework.</para>
+        
+        <para>Lastly, we can have a project generated that is setup to go against a standalone Rice
+        instance. To do this we pass the –standalone flag:</para>
+        
+        <programlisting>groovy createproject.groovy -name MyRiceApp –standalone</programlisting>
+    </section>
+    
+    <section>
+        <title>Project Structure and Configuration Files</title>
+        <para>The result of running the create project script is a new maven based Rice client
+            project. This includes the directory structures for building out your application, along
+            with the necessary configuration files. Let’s start by looking the directories that were
+            created. </para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>Project Root (eg ‘/java/projects/myapp’) – This is the root folder that was created to
+                    hold all the project contents. Within this folder you will find three sub-folders, a
+                    ‘.classpath’, ‘.project’, ‘instructions.txt’, and ‘pom.xml’ file.</para>
+            </listitem>
+            <listitem>
+                <para>.settings – This folder contains settings configuration for the Eclipse IDE</para>
+            </listitem>
+            <listitem>
+                <para>src – This folder is for the application source files and resources. Within this
+                    folder is the standard maven directory breakdown:
+                    
+                  <itemizedlist>
+                      <listitem>src/main/java – Contains Java source code</listitem>
+                      <listitem>src/main/resources – Contains resource files (XML and other resources)</listitem>
+                      <listitem>src/main/webapp – Contains the application web content (JSP, tags, images,
+                          CSS, Script)</listitem>
+                  </itemizedlist>
+                </para>
+            </listitem>
+            <listitem>target – This folder holds the build output such as generated classes and wars.</listitem>
+        </itemizedlist>
+        
+        <para>Along with the directories several files are created. These are as follows:</para>
+        
+        <table frame="none">
+            <title>Generated Files</title>
+            <tgroup cols="3">
+                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c2" colnum="2" colwidth="1.56*"/>
+                <thead>
+                    <row>
+                        <entry>File</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>.classpath</entry>
+                        <entry>Eclipse file for managing the application classpath</entry>
+                    </row>
+                    <row>
+                        <entry>.project</entry>
+                        <entry>Eclipse project file</entry>
+                    </row>
+                    <row>
+                        <entry>pom.xml</entry>
+                        <entry>Maven Project File</entry>
+                    </row>
+                    <row>
+                        <entry>{project}-RiceDataSourceSpringBeans.xml*</entry>
+                        <entry>Spring XML file containing Rice datasource configurations</entry>
+                    </row>
+                    <row>
+                        <entry>{project}-RiceJTASpringBeans.xml*</entry>
+                        <entry>Spring XML file containing JTA transaction configuration</entry>
+                    </row>
+                    <row>
+                        <entry>{project}-RiceSpringBeans.xml*</entry>
+                        <entry>Spring XML file containing the Rice module Configurers</entry>
+                    </row>
+                    <row>
+                        <entry>SpringBeans.xml*</entry>
+                        <entry>Spring XML file for Application beans</entry>
+                    </row>
+                    <row>
+                        <entry>{project}-SampleAppModuleBeans.xml*</entry>
+                        <entry>Spring XML file for Sample App beans (only created if –sampleapp option was given)</entry>
+                    </row>
+                    <row>
+                        <entry>OJB-repository-sampleapp.xml*</entry>
+                        <entry>OJB configuration file for the Sample App (only created if –sampleapp option was given)</entry>
+                    </row>
+                    <row>
+                        <entry>META-INF/{project}-config.xml*</entry>
+                        <entry>Default Rice configuration properties</entry>
+                    </row>
+                    <row>
+                        <entry>src/main/webapp/WEB-INF/web.xml</entry>
+                        <entry>Standard web deployment descriptor for J2EE applications</entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        
+        <note><para>All of these files are located within the src/main/resources directory </para></note>
+        <para>In addition to the files created within the project, two files are created in the
+            ‘{user home}/kuali/main/dev’ folder. These include:</para>
+        
+        <itemizedlist>
+            <listitem>{project}-config.xml – Configuration file for application. This is where the settings
+                for the database and other configurations are given.</listitem>
+            <listitem>rice.keystore – Provides a secure key for consuming secured services running on a Rice
+                server</listitem>
+        </itemizedlist>  
+              
+    </section>
+    
+    <section>
+        <title>Configuring Your Rice Application</title>
+        <para>Next we need to provide some configuration for our application that is custom to our
+            environment (for example database connectivity). We can do this by modifying the
+            properties available in {project}-config.xml (located in the /kuali/main/dev folder in
+            user home).</para>
+        <para>Although there are many configuration properties available for customization, the
+        following are required for getting started:</para>
+        
+        <table frame="none">
+            <title>Configuration Parameters</title>
+            <tgroup cols="3">
+                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                <colspec colname="c2" colnum="2" colwidth="1.56*"/>
+                <thead>
+                    <row>
+                        <entry>Parameter</entry>
+                        <entry>Description</entry>
+                        <entry>Example</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>datasource.url</entry>
+                        <entry>JDBC URL of database to connect to</entry>
+                        <entry>jdbc:oracle:thin:@localhost:1521:XE
+                            jdbc:mysql://localhost:3306/kuldemo
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>datasource.username</entry>
+                        <entry>User name for connecting to the server database</entry>
+                        <entry>rice
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>datasource.password</entry>
+                        <entry>Password for connecting to the server database</entry>
+                        <entry></entry>
+                    </row>
+                    <row>
+                        <entry>datasource.ojb.platform</entry>
+                        <entry>Name of OJB platform to use for the database</entry>
+                        <entry>Oracle9i or MySQL
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>datasource.platform</entry>
+                        <entry>Rice platform implementation for the database</entry>
+                        <entry>org.kuali.rice.core.database.platform.OraclePlatform
+                            org.kuali.rice.core.database.platform.MySQLPlatform                           
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>datasource.driver.name</entry>
+                        <entry>JDBC driver for the database</entry>
+                        <entry>oracle.jdbc.driver.OracleDriver
+                            com.mysql.jdbc.Driver                       
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+               
+    </section>
+    
+    <section>
+        <title>Importing into Eclipse</title>
+        
+        <para>Now we have our project setup and are ready to begin development. Note at this point
+            the application is completely runnable. We could do a maven deploy, copy the generated
+            war to our tomcat server, and start up the application. However we are going to first
+            import our project to Eclipse so that we will be ready to develop further application
+            code.</para>
+        
+        <para>Navigate to the Eclipse installation directory. There you should find an executable
+            named ‘eclipse.exe’. Once this file is found double click to start the IDE. When Eclipse
+            starts up for the first time it will ask you to choose a workspace. This is a directory
+            that Eclipse place newly created projects and will also read current projects from. A
+            standard within the community is to use ‘/java/projects’ for your working space. Note
+            you can select the checkbox to use the directory as your default and Eclipse will not
+            prompt on the next startup.</para>
+        
+        <para><emphasis role="bold">Eclipse Memory:</emphasis> It is generally needed and
+            recommended to allocate additional JVM memory for the Eclipse runtime. This can be done
+            by opening up the file named ‘eclipse.ini’ that exists in the root installation
+            directory. At the end of the file you specify VM arguments as follows:</para>
+        <programlisting>-vmargs
+-Xms128m
+-Xmx1024m
+-XX:MaxPermSize=512m</programlisting>
+       
+        <para>The amount of memory allocated depends on the host machine. The above settings are for
+            a machine with 4g of memory.</para>
+     
+     
+        <para>When working with Eclipse for the first time, there are additional plugins you
+                will likely want to get. None of these are required by Rice and depend on your
+                institutional development environment and how you plan to create your project.
+                However, most projects today use SVN or GIT for source code control. Therefore an
+                additional Eclipse plugin is needed for communicating with the repository. Also if
+                you have chosen to use Maven (or used the create project script) the Eclipse Maven
+                plugin will be very useful as well.</para>
+    
+         <para>To bring a new project into eclipse, select the File-Import menu
+         option. This should bring up a dialog as show in next figure.</para>
+        
+        <figure>
+            <title>Eclipse Import</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata
+                        fileref="../images/eclipse_import_existing_projects.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+            
+         <para>For the import source select ‘Existing Projects info Workspace’. This should
+         bring up a dialog that looks like the following figure. </para>
+        
+        <figure>
+            <title>Eclipse Import Project Directory</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata
+                        fileref="../images/eclipse_import_projects_directory.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        
+        <para>Here click the ‘Browse’ button to locate the directory for the project. After
+            selecting the project location click the ‘Finish’ button. Eclipse will then import the
+            project contents and you are ready to begin coding!</para>
+        
+    
+    </section>
+
 </chapter>

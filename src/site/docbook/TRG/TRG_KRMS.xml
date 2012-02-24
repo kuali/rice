@@ -23,11 +23,9 @@
         <sect2>
             <title>What is a Rule Management System, in general?</title>
             <para>Wikipedia defines a business rule management system, in general, as follows: "a
-                    <link xlink:href="http://en.wikipedia.org/wiki/Computer_software"
-                    >software</link> system used to define, deploy, execute, monitor and maintain
+                    <link xlink:href="http://en.wikipedia.org/wiki/Computer_software">software</link> system used to define, deploy, execute, monitor and maintain
                 the variety and complexity of decision logic that is used by operational systems
-                within an organization or enterprise. This logic, also referred to as <link
-                    xlink:href="http://en.wikipedia.org/wiki/Business_rule">business rules</link>,
+                within an organization or enterprise. This logic, also referred to as <link xlink:href="http://en.wikipedia.org/wiki/Business_rule">business rules</link>,
                 includes policies, requirements, and conditional statements that are used to
                 determine the tactical actions that take place in applications and systems." </para>
             <para>A key aspect of a rules management system is that it enables rules to be defined
@@ -58,16 +56,19 @@
                 to call and use this logic from any application, without having to re-write and
                 manage all the rules' logic within the application.  </para>
             <para>Integration with organizational hierarchies and structures can be accomplished
-                today using KEW for routing and approval.  But before KRMS, other business logic
-                such as "route to this set of people if the dollar amount is less than x, or to this
-                other set if the dollar amount is over that" was the responsibility of the
-                applications themselves.  KRMS now offers a way to manage this type of business
-                logic independently and once, using the logic across applications.</para>
-            <para>Because KRMS is a general-purpose business rules engine, you can use it for many
-                things, for example, you can define a rule to specify that when an account is
-                closed, a continuation account must be specified.  You can also define rules to
-                manage your organizational hierarchies and internal structures.  You can define
-                compound rule logic, for example, "Must meet":  <itemizedlist>
+                today using KEW for routing and approval, and KEW also has a legacy rule system of
+                its own that can be used to make routing decisions.  But before KRMS, managing
+                general customizable business logic such as "if the transaction date is in the
+                future OR the transaction date is less than the account activation date then flag
+                the transaction for review" was the responsibility of the applications themselves.
+                KRMS now offers a way to manage this type of logic externally in a repository that
+                allows for business analysts to change it without having to modify application
+                code.</para>
+            <para>Because KRMS is a general-purpose business rules management system, you can use it
+                for many things, for example, you can define a rule to specify that when an account
+                is closed, a continuation account must be specified. You can also define rules to
+                manage your organizational hierarchies and internal structures. You can define
+                compound propositional logic, for example, "Must meet": <itemizedlist>
                     <listitem>
                         <para>P1 - 12 credits of FirstYearScience (CLU set)</para>
                         <para> AND</para>
@@ -79,46 +80,46 @@
                     <listitem>
                         <para>p3 - Average of B+ on last 12 credits</para>
                     </listitem>
-                </itemizedlist>Before KRMS, and using only KEW, these types of business rules were
-                the responsibility of each application to manage.</para>
+                </itemizedlist></para>
             <para> </para>
         </sect2>
         <sect2>
             <title>What problems or functions does KRMS solve?</title>
-            <para>(Work in progress - Consider adding a scenario for using KRMS in addition to KEW,
-                scenario for using KRMS without KEW. When to use KEW without KRMS, when to embed
-                logic in your applications instead of using a rules engine, etc.)</para>
-            <para>KRMS enables you to define and execute many different types of rules across
-                applications (not embedded in each application), for example:</para>
+            <para/>
+            <para>KRMS gives business applications a powerful tool to externalize logic in places
+                where customization will often be needed.  This lowers the costs of adopting and
+                administering the application by reducing the need for changes to the software
+                itself, and allows the application to more fluidly reflect the institution's desired
+                business processes.  </para>
+            <para>There are a wide variety of actions that KRMS rules can be used to govern:</para>
             <para>
                 <itemizedlist>
                     <listitem>
-                        <para>Workflow Action rules (for example, route an approval request)</para>
+                        <para>Workflow Action rules  -  e.g. route an approval request</para>
                     </listitem>
                     <listitem>
-                        <para>Notification rules</para>
+                        <para>Notification rules  -  e.g. send a notification to these people</para>
                     </listitem>
                     <listitem>
-                        <para>Validation rules</para>
+                        <para>Validation rules  -  e.g. display this validation error message</para>
                     </listitem>
                     <listitem>
-                        <para>Questionnaire rules</para>
+                        <para>Questionnaire rules  -  e.g. administer this questionaire</para>
                     </listitem>
                     <listitem>
-                        <para>Custom-developed rules</para>
+                        <para>Custom-developed actions</para>
                     </listitem>
                 </itemizedlist>
             </para>
-            <para>/For example, calling a KRMS set of rules (an agenda) from your application can
-                result in a call to a full-blown KEW workflow or to a lighter-weight PeopleFlow,
-                which is a new feature in KEW in Rice 2.0, or to any other action you define in
-                KRMS. PeopleFlow gives you a new type of request activation strategy called
-                "priority-parallel" to activate requests generated from a PeopleFlow in the
-                appropriate order. Essentially, it's like a mini people-based workflow that doesn't
-                require you to specify a KEW node in the document type for each individual who might
-                need to approve or be notified. You can define "Stops" in a PeopleFlow, where
-                everything in the same stop proceeds in parallel, but all must be done within the
-                stop before proceeding to the next stop. </para>
+            <para>For example, calling a KRMS set of rules (an agenda) from your application can
+                result in routing a document to a PeopleFlow*, which is a new feature in KEW in Rice
+                2.0, or to any other action you define in KRMS. </para>
+            <!-- Commenting out for now, this is too much PeopleFlow info which is a KEW feature.   
+                PeopleFlow gives you a new type of
+                request activation strategy called "priority-parallel" to activate requests
+                generated from a PeopleFlow in the appropriate order.  You can define "Stops" in a
+                PeopleFlow, where everything in the same stop proceeds in parallel, but all must be
+                done within the stop before proceeding to the next stop. </para>
             <para>A single PeopleFlow that defines a routing order among a set of persons, groups or
                 roles can be called by KRMS rules, with the KRMS rules defining which type of action
                 request to pass to the PeopleFlow (for example, an "approval" or a "notification"
@@ -135,46 +136,61 @@
                 essentially it's like a mini people-based workflow that doesn't require you to
                 specify a KEW node in the document type for each individual who might need to
                 approve.</para>
+                -->
+            <para>* Essentially, it's like a mini people-based workflow that doesn't require you to
+                specify a KEW node in the document type for each role, group or individual who might
+                need to approve or be notified.</para>
             <para> </para>
         </sect2>
         <sect2>
             <title>What problems does KRMS not address?</title>
-            <para>(Work in progress)</para>
+            <para>Some rule engines are built upon special algorithms that allow for <link
+                    xlink:href="http://en.wikipedia.org/wiki/Forward_chaining">forward</link> or
+                    <link xlink:href="http://en.wikipedia.org/wiki/Backward_chaining">backward
+                    chaining</link> (one example is <link
+                    xlink:href="http://en.wikipedia.org/wiki/Rete_algorithm">Rete</link>) that make
+                them suitable for efficiently evaluating highly complex systems of what are known
+                asproduction rules.  The default engine implementation for KRMS is not designed upon
+                such an algorithm, and it does not support either forward or backward
+                chaining.</para>
             
         </sect2>
         <sect2>
             <title>With which types of applications can KRMS integrate?</title>
-            <para>(Work in progress) Include integration with KEW and KIM at a high level (&amp;
-                with KEN &amp; KOM?) And clarify how any application can include KRMS.  (High level
-                only - lower level under the developer tasks section later in this document)</para>
+            <para>Any Rice-based application can use KRMS.  </para>
             
         </sect2>
         <sect2>
-            <title>Can I use KRMS without building an entire application?</title>
-            <para>Work in progress) </para>
+            <title>Can I use KRMS without building a Rice application?</title>
+            <para>The project has aspirations to increase Rice's modularity, and some strides have
+                been made, but at the time of this writing the answer is no.</para>
             
         </sect2>
     </sect1>
     <sect1>
-        <title>KRMS Constructs</title>
+        <title>KRMS Concepts</title>
         <sect2>
             <title>Namespaces, Contexts, Agendas, Rules and Propositions</title>
-            <para>Business rules in KRMS are placed into ordered sets called "agendas". The order of
-                the rules in an agenda determines the sequencing, which rule gets evaluated first,
-                second and so on, and the agenda also enables you to include conditional branching
-                logic. In turn, agendas are placed into "contexts". </para>
-            <para>You can set up contexts ro represent any categories that are relevant within your
-                institution, for example they could be document types or business processes or any
-                other categories. In some university environments, the following might be relevant
-                contexts: Awards, Proposals, IRB reviews, Course co-requisites, Course
-                pre-requisites, Student plan evaluations, and so on.</para>
-            <para>Each defined context contains its own agendas, and each agenda contains its own
-                rules. Rules aren't shared across agendas (though you can copy/paste, they become
-                unique rule instances), and agendas aren't shared across contexts. There is no
-                context hierarchy, that is, agendas and rules can't be inherited across contexts
-                within any sort of hierarchy. </para>
-            <para>(Add information about and example namespace usage.)</para>
-            <para><inlinemediaobject>
+            <para>Namespaces are the top level container in KRMS. They contain Contexts, KRMS Types,
+                and all things related to Terms.</para>
+            <para xmlns:xi="http://www.w3.org/2001/XInclude">Rules in KRMS are placed into ordered
+                sets called Agendas. The order of the Rules in an Agenda determines the sequencing:
+                which rule gets evaluated first, second and so on. The Agenda also enables you to
+                include conditional branching logic between Rules. </para>
+            <para xmlns:xi="http://www.w3.org/2001/XInclude">In turn, Agendas are are created in
+                Contexts, which may represent any categories that are relevant within your
+                institution. For example, they could correspond to document types or business
+                processes or any other categories. In some university environments, the following
+                might be relevant contexts: Awards, Proposals, IRB reviews, Course co-requisites,
+                Course pre-requisites, Student plan evaluations, and so on. </para>
+            <para xmlns:xi="http://www.w3.org/2001/XInclude">Each Context contains its own agendas,
+                and each Agenda contains its own rules. Rules aren't shared across agendas (though
+                you can copy/paste, they become unique Rule instances), and Agendas aren't shared
+                across Contexts. There is no Context hierarchy, that is, Agendas and Rules can't be
+                inherited across contexts within any sort of hierarchy. </para>
+            <!-- para>(Add information about and example namespace usage.)</para -->
+            <para>The following diagram outlines the hierarchy of entities in KRMS
+                <inlinemediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRMS_conceptual_hierarchy.png" scalefit="1"/>
                     </imageobject>
@@ -194,10 +210,9 @@
                             of the simple propositions</para>
                     </listitem>
                     <listitem>
-                        <para>Parameterized Propositions - a proposition which is parameterized by
-                            some set of values, evaluation logic is implemented "by hand" and
-                            returns true or false.  Both simple and compound propositions can be
-                            parameterized.</para>
+                        <para>Custom Propositions - a proposition which can optionally be
+                            parameterized by some set of values.  Evaluation logic is implemented
+                            "by hand" and returns true or false.</para>
                     </listitem>
                 </orderedlist>
                 <para>The data model is designed in such a way to support each of these.</para>
@@ -324,8 +339,7 @@
                         </listitem>
                     </orderedlist>
                     <para>To that end, the proposition parameter list should be modeled as a list in
-                            <link xlink:href="http://en.wikipedia.org/wiki/Reverse_Polish_notation"
-                            >Reverse Polish Notation</link> (RPN). This allows for arbitrary nesting
+                            <link xlink:href="http://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</link> (RPN). This allows for arbitrary nesting
                         of parameters, which may have parameters of their own. However, this
                         requires that each function explicitly define the number of arguments that
                         it expects. This will be specified when the function is defined, so the
@@ -341,8 +355,7 @@
                                     to</emphasis> campusCode="BL"</para>
                         </listitem>
                         <listitem>
-                            <para>[totalDollarAmount, availableAmount, &gt;] <emphasis role="italic"
-                                    >equivalent to</emphasis> totalDollarAmount &gt;
+                            <para>[totalDollarAmount, availableAmount, &gt;] <emphasis role="italic">equivalent to</emphasis> totalDollarAmount &gt;
                                 availableAmount</para>
                         </listitem>
                         <listitem>
@@ -440,11 +453,12 @@
                 </sect4>
             </sect3>
         </sect2>
+        <!-- Commenting out until content is added
         <sect2>
             <title>Types, Terms, Term resolvers, Term specifications, Term Parameters, and
                 Categories </title>
             <para>(add information here)</para>
-        </sect2>
+        </sect2> -->
     </sect1>
     <sect1>
         <title>KRMS Administration Guide</title>
@@ -552,24 +566,21 @@
                         Main menu page, under KRMS Rules, select the Context Lookup. </para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png" scalefit="1"/>
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>You can search for existing Contexts or create a new one. To create a new
                         one, select "Create New" at the top right on the context lookup page:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-Context-lookup-page.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-Context-lookup-page.png" scalefit="1"/>
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>The resulting Context Maintenance screen enables you to define a new
                         Context. The Context ID must be unique:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-Context-maintenance-page.png" scalefit="1"/>
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>After creating your Context(s), you must 1) set "CampusAgendaType" as
@@ -581,20 +592,17 @@
                         <itemizedlist>
                             <listitem>
                                 <para>insert into krms_cntxt_vld_agenda_t (cntxt_vld_agenda_id,
-                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis
-                                        role="italic">'agendaid', 'contextid', 'agendatypeid',
+                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis role="italic">'agendaid', 'contextid', 'agendatypeid',
                                         version#</emphasis>);</para>
                             </listitem>
                             <listitem>
                                 <para>insert into krms_cntxt_vld_actn_t (cntxt_vld_actn_id,
-                                    cntxt_id, actn_typ_id, ver_nbr) values (<emphasis role="italic"
-                                        >'agendaid', 'contextid', 'agendatypeid',
+                                    cntxt_id, actn_typ_id, ver_nbr) values (<emphasis role="italic">'agendaid', 'contextid', 'agendatypeid',
                                         version#</emphasis>);</para>
                             </listitem>
                             <listitem>
                                 <para>insert into krms_cntxt_vld_agenda_t (cntxt_vld_agenda_id,
-                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis
-                                        role="italic">''agendaid', 'contextid', 'agendatypeid',
+                                    cntxt_id, agenda_typ_id, ver_nbr) values (<emphasis role="italic">''agendaid', 'contextid', 'agendatypeid',
                                         version#</emphasis>);    </para>
                             </listitem>
                         </itemizedlist>
@@ -642,8 +650,7 @@
                         Specification Lookup and, after completing that, select the Term Lookup. </para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-rules-section-in-portal.png" scalefit="1"/>
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>You can search for existing Term Specifications and Terms or create new
@@ -652,9 +659,7 @@
                         example Term Specification Lookup screen below:</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata
-                                    fileref="../images/KRMS-term-specification-lookup-screen.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-specification-lookup-screen.png" scalefit="1"/>
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>If you copy an existing term specification, be sure to give it a new and
@@ -663,9 +668,7 @@
                         with it.</para>
                     <para><inlinemediaobject>
                             <imageobject>
-                                <imagedata
-                                    fileref="../images/KRMS-term-specification-creation-screen.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png" scalefit="1"/>
                             </imageobject>
                         </inlinemediaobject></para>
                     <para>After creating your term specifications (your categories of terms), you
@@ -676,8 +679,7 @@
                             <title>Term Lookup screen example</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/KRMS-term-lookup-screen.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-lookup-screen.png" scalefit="1"/>
                             </imageobject>
                     </mediaobject>
                     </figure>
@@ -691,14 +693,13 @@
                         <title>Term specification screen example</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata
-                                    fileref="../images/KRMS-term-specification-creation-screen.png"
-                                    scalefit="1"/>
+                                <imagedata fileref="../images/KRMS-term-specification-creation-screen.png" scalefit="1"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
                     </para>
                 </sect4>
+                <!-- Commenting out until content is added
                 <sect4>
                     <title>Create Term Resolvers</title>
                     <para>(Need to document this)</para>
@@ -708,7 +709,9 @@
                     <title>Create Parameterized Terms</title>
                     <para>(Need to document this)</para>
                 </sect4>
+                -->
             </sect3>
+            <!-- Commenting out, there is inaccurate info that needs to be corrected in here
             <sect3>
                 <title>Do I have to define permissions or approval processes so that people can
                     create and maintain KRMS agendas and rules?</title>
@@ -725,9 +728,7 @@
                                 KRMS Agenda' and select the appropriate namespace.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata
-                                            fileref="../images/KRMS-exmpl---Identity-permission-creation-screen.png"
-                                            scalefit="1"/>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -Identity-permission-creation-screen.png" scalefit="1"/>
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -743,9 +744,7 @@
                                 rules.</para>
                             <para><inlinemediaobject>
                                     <imageobject>
-                                        <imagedata
-                                            fileref="../images/KRMS-exmpl---role-maintenance-edit-screen.png"
-                                            scalefit="1"/>
+                                        <imagedata fileref="../images/KRMS-exmpl- - -role-maintenance-edit-screen.png" scalefit="1"/>
                                     </imageobject>
                                 </inlinemediaobject></para>
                         </listitem>
@@ -764,13 +763,16 @@
                         </listitem>
                     </itemizedlist>
                 </para>
-            </sect3>
+            </sect3> -->
+            <!--
             <sect3>
                 <title>(Other? Anything we have to do to setup integration/interaction with KEW?
                     KIM? KEN? KOM? PeopleFlow? with other service bus?)</title>
                 <para/>
             </sect3>
+            -->
         </sect2>
+        <!--
         <sect2>
             <title>Ongoing Maintenance tasks</title>
             <para>(add information here)</para>
@@ -784,7 +786,9 @@
             <para>Content TBD.  For example, would logging alternatives affect performance?  Are
                 there selectable levels of KRMS execution logging?  Etc., etc..</para>
         </sect2>
+        -->
     </sect1>
+    <!--
     <sect1>
         <title>KRMS Developer tasks</title>
         <para>(work in progress - content tdb. I've put in some placeholder content-topics for a TOC
@@ -861,9 +865,9 @@
         <sect2>
             <title>Debugging &amp; deployment - FAQs</title>
             <para/>
-        </sect2>
-    </sect1>
-
+        </sect2> 
+    </sect1> -->
+<!--
     <sect1>
         <title>KRMS reference information</title>
         <para/>
@@ -935,9 +939,7 @@
                 architecture:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata
-                            fileref="../images/krms-architecture.png"
-                            scalefit="1" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/krms-architecture.png" scalefit="1" width="" contentwidth="640"/>
                     </imageobject>
                 </inlinemediaobject></para>
         </sect2>
@@ -951,8 +953,7 @@
                 used?)</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png"
-                            scalefit="1"/>
+                        <imagedata fileref="../images/KRMS_Execution_Log_Class_Diagram.png" scalefit="1"/>
                     </imageobject>
                 </inlinemediaobject></para>
         </sect2>
@@ -960,5 +961,5 @@
             <title>(Other?)</title>
             <para/>
         </sect2>
-    </sect1>
+    </sect1> -->
 </chapter>

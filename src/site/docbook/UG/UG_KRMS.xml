@@ -25,48 +25,140 @@
             <para xmlns:xlink="http://www.w3.org/1999/xlink">Kuali's Rule Management System (KRMS)
                 supports the creation, maintenance, storage and retrieval of business rules and
                 agendas (ordered sets of business rules) within business contexts (e.g., for a
-                particular department or for a particular university-wide process). </para>
+                particular department or for a particular university-wide process). It allows
+                applications to externalize business logic that commonly needs customization, and
+                empowers business analysts to modify them to reflect changes in policy. </para>
             <para xmlns:xlink="http://www.w3.org/1999/xlink">KRMS enables you to define a set of
                 rules within a particular business unit or for a particular set of applications.
-                These business rules test for certain conditions and define the set of actions that
-                result when conditions are met. KRMS enables you to call and use this logic from any
-                application, without having to re-write and manage all the rules' logic within the
-                application. </para>
-            <para>KRMS takes advantage of several of the capabilities that KRAD makes available to
-                all application developers.</para>
-            <para>For additional information on KRMS see the KRMS Technical Guide (TRG).</para>
+                These business rules define logical conditions and the set of actions that result
+                when those conditions are met. KRMS enables you to call and use this logic from any
+                application, without having to re-write and manage all the rules' maintenance logic
+                within the application. </para>
+        </sect2>
+        <sect2>
+            <title>KRMS Concepts</title>
+            <variablelist>
+                <varlistentry>
+                    <term>Rule</term>
+                    <listitem>
+                        <para>There are two parts to a Rule: A logical Proposition ("condition" or
+                            "statement" may be more natural) and an Action.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>Action</term>
+                    <listitem>
+                        <para>something you do if a Rule's logical Proposition is true, e.g. <itemizedlist>
+                                <listitem>
+                                    <para>route to a PeopleFlow</para>
+                                </listitem>
+                                <listitem>
+                                    <para>present a questionnaire</para>
+                                </listitem>
+                                <listitem>
+                                    <para>display a validation error</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>Proposition</term>
+                    <listitem>
+                        <para>the expression of some business logic, e.g. <itemizedlist>
+                                <listitem>
+                                    <para>activity != reasearch AND sponsor = NASA</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>Term</term>
+                    <listitem>
+                        <para>defines a piece of business data usable in Rules, e.g. <itemizedlist>
+                                <listitem>
+                                    <para>in the example Proposition (see above), activity and
+                                        sponsor are Terms.</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>Fact</term>
+                    <listitem>
+                        <para>the actual value for a Term when an Agenda of Rules execute against
+                            some set of data</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>Agenda</term>
+                    <listitem>
+                        <para>An execution plan for some number of rules. KRMS agendas support
+                            conditional logic, e.g. <itemizedlist>
+                                <listitem>
+                                    <para>rule 1: is initiator admin?</para>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>When FALSE:</para>
+                                            <itemizedlist>
+                                                <listitem>
+                                                  <para>rule 2: initiator has special
+                                                  permission?</para>
+                                                </listitem>
+                                                <listitem>
+                                                  <para>rule 3: exceeds dollar amount
+                                                  threshold?</para>
+                                                </listitem>
+                                            </itemizedlist>
+                                        </listitem>
+                                    </itemizedlist>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
         </sect2>
     </sect1>
     <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>The KRMS User Interface</title>
         <sect2>
             <title>KRMS Agenda Editor</title>
-            <para>Business rules in KRMS are placed into ordered sets called "agendas". The order of
-                the rules in an agenda determines the sequencing, which rule gets evaluated first,
-                second and so on, and the agenda also enables you to include conditional branching
-                logic. </para>
-            <para>In turn, agendas are placed into "contexts". You can set up contexts ro represent
-                any categories that are relevant within your institution, for example they could be
+            <para>Rules in KRMS are placed into ordered sets called Agendas. The order of the Rules
+                in an Agenda determines the sequencing: which rule gets evaluated first, second and
+                so on. The Agenda also enables you to include conditional branching logic between
+                Rules. </para>
+            <para>In turn, Agendas are are created in Contexts, which may represent any categories
+                that are relevant within your institution. For example, they could correspond to
                 document types or business processes or any other categories. In some university
                 environments, the following might be relevant contexts: Awards, Proposals, IRB
                 reviews, Course co-requisites, Course pre-requisites, Student plan evaluations, and
-                so on.   </para>
-            <para>Each defined context contains its own agendas, and each agenda contains its own
-                rules. Rules aren't shared across agendas (though you can copy/paste, they become
-                unique rule instances), and agendas aren't shared across contexts. There is no
-                context hierarchy, that is, agendas and rules can't be inherited across contexts
-                within any sort of hierarchy. </para>
+                so on. </para>
+            <para>Each Context contains its own agendas, and each Agenda contains its own rules.
+                Rules aren't shared across agendas (though you can copy/paste, they become unique
+                Rule instances), and Agendas aren't shared across Contexts. There is no Context
+                hierarchy, that is, Agendas and Rules can't be inherited across contexts within any
+                sort of hierarchy. </para>
             <para>See below for a view of the Agenda Editor in KRMS.</para>
             <para>
                 <figure>
                     <title>KRMS Agenda Editor</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRMS-AgendaEditor.png" align="left" scalefit="1" contentwidth="640"/>
-                    </imageobject>
-                </mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRMS-Agenda.png" align="left" scalefit="1"
+                                contentwidth="640"/>
+                        </imageobject>
+                    </mediaobject>
                 </figure>
             </para>
+            <para>Rules in the Agenda can be selected by clicking on them. The order and conditional
+                logic within the agenda can be manipulated by selecting rules and clicking the
+                buttons on the toolbar above the Rules. Clicking on the "Add Rule" button on the
+                Agenda Editor screen will take you to the Rule Editor with a new blank Rule, and
+                selecting a Rule and clicking on the "Edit Rule" button will open that existing Rule
+                in the Rule Editor.</para>
+            <!-- Commenting out, we haven't introduced agenda types and attributes yet.
             <para>And see below for an example of how attributes can be progressively rendered in
                 KRMS. In this example, the selected context, "Context 1", requires the selection of
                 a type, and the selected type, "CampusAgendaType", requires some additional
@@ -75,49 +167,48 @@
             <para>
                 <figure>
                     <title>KRMS Agenda Editor with additional attributes displayed</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRMS-AgendaEditorWithAttributes.png" scalefit="1" contentwidth="640"/>
-                    </imageobject>
-                </mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRMS-AgendaEditorWithAttributes.png"
+                                scalefit="1" contentwidth="640"/>
+                        </imageobject>
+                    </mediaobject>
                 </figure>
-            </para>
+            </para> -->
         </sect2>
         <sect2>
-            <title>KRMS Rules Editor</title>
-            <para>Each defined agenda in KRMS contains its own rules. Rules aren't shared across
-                agendas (though you can copy/paste, they become unique rule instances), and agendas
-                aren't shared across contexts. There is no context hierarchy, that is, agendas and
-                rules can't be inherited across contexts within any sort of hierarchy. </para>
-            <para>See below for a view of the Rules Editor in KRMS.</para>
+            <title>KRMS Rule Editor</title>
+            <para>See below for views of editing a Rule from an Agenda in KRMS.</para>
             <para>
                 <figure>
                     <title>KRMS Rules Editor</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRMS-RulesEditor1.png" scalefit="1" contentwidth="640"/>
-                    </imageobject>
-                </mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRMS-Rule1.png" scalefit="1"
+                                contentwidth="640"/>
+                        </imageobject>
+                    </mediaobject>
                 </figure>
             </para>
-            <para>And below is a simple proposition with the action type expanded to show how you
-                can associate an action with the rule you are creating.  In this example, when the
-                conditions for this rule are satisfied (when they are true), the rule will call a
-                PeopleFlow to route a request to it.</para>
+            <para>And below is the same Rule but scrolled down further on the page to show the
+                Action configuration as well.  In this example, when the logical proposition for
+                this rule is satisfied (when it is true), the rule will call a PeopleFlow to route a
+                request to it.</para>
             <para>
                 <figure>
-                <title>KRMS proposition and PeopleFlow Action</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRMS-proposition-and-PeopleFlow-action.png"
-                            scalefit="1" contentwidth="640"/>
-                    </imageobject>
-                </mediaobject>
+                    <title>KRMS proposition and PeopleFlow Action</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRMS-Rule2.png" scalefit="1"
+                                contentwidth="640"/>
+                        </imageobject>
+                    </mediaobject>
                 </figure>
             </para>
-                <para>You can create a rule based on simple and compound propositions
-                and add parameters to the propositions.  See the KRMS Technical Reference Guide (TRG) for
-                additional information about these constructs.</para>
+            <para>You can add Simple Propositions via "add", or Compound Propositions via "add
+                parent".  Simple Propositions are configured with a Term and a user-supplied value
+                to compare it with.</para>
+            <para>For additional information on KRMS see the KRMS Technical Guide (TRG).</para>
         </sect2>
     </sect1>
 </chapter>

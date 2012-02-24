@@ -29,7 +29,7 @@
 						<b>Add Permission ID:</b>
 						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.id}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.permission.UberPermissionBo" fieldConversions=
-	                	"id:permission.permissionId,template.name:permission.permission.template.name,name:permission.permission.name,namespaceCode:permission.permission.namespaceCode" anchor="${tabKey}" />
+	                	"id:permission.permissionId" anchor="${tabKey}" />
 						<html:hidden property="permission.name" />
 						<html:hidden property="permission.namespaceCode" />
 						${KualiForm.permission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.name}&nbsp;

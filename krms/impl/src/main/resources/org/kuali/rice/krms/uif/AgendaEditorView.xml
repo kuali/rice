@@ -284,9 +284,21 @@
                   </list>
                 </property>
               </bean>
-              <bean parent="AgendaEditorView-TreeExpandCollapse" />
-              <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
-              <bean id="AgendaEditorView-Tree" parent="AgendaEditorView-Tree-parent" p:persistInSession="true" />
+              <!-- also, the bogus refreshWhenChanged is important because it puts a AgendaEditorView-TreeGroup_refreshWrapper around the group that
+                   is needed for the javascript hack that is refreshing the tree when a parameterized term specification is selected from the
+                   dropdown, like how proposition summary is done in RuleMaintance.xml -->
+              <bean id="AgendaEditorView-TreeGroup" parent="Uif-VerticalBoxGroup" p:style="margin-bottom: 5pt; margin-top: 0em;" p:refreshWhenChanged="this.is.a.hack">
+                <property name="layoutManager.orientation" value="VERTICAL"/>
+                <property name="items">
+                  <list>
+                    <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
+                    <bean id="RuleEditorView-RuleEditorMessage" parent="RuleEditorView-RuleEditorMessage-parent" p:persistInSession="true"/>
+                    <bean parent="AgendaEditorView-TreeExpandCollapse" />
+                    <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
+                    <bean id="AgendaEditorView-Tree" parent="AgendaEditorView-Tree-parent" p:persistInSession="true" />
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>
@@ -466,7 +478,7 @@
 
         <bean parent="Uif-MessageField" p:messageText="Move: [" p:style="display: inline;"/>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Left">
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
@@ -474,7 +486,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveRight', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveRight', 'AgendaEditorView-TreeGroup');"
           p:actionLabel="Right" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
@@ -482,7 +494,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveUp', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveUp', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Up">
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
@@ -490,7 +502,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveDown', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveDown', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Down">
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
@@ -500,7 +512,7 @@
 
         <bean parent="Uif-MessageField" p:messageText="]" p:style="display: inline;"/>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
@@ -510,7 +522,7 @@
 
         <!-- Add a conditional disable once KRAD supports this.  Disable if cut buffer is empty, something like this:
             p:conditionalDisable="document.newMaintainableObject.dataObject.agendaItemCutPaste == null -->
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxPaste', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxPaste', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Paste">
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
@@ -518,7 +530,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxDelete', 'AgendaEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxDelete', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
@@ -544,7 +556,9 @@
 
   <bean id="AgendaEditorView-Tree-parent" parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="propertyName" value="agendaRuleTree"/>
+
     <property name="tree">
+
       <bean parent="AgendaTreeWidget">
         <property name="componentOptions">
           <map>
@@ -609,6 +623,16 @@
           </bean>
         </entry>
       </map>
+    </property>
+  </bean>
+
+  <bean id="RuleEditorView-RuleEditorMessage-parent" parent="Uif-HorizontalBoxGroup" p:renderHeader="false">
+    <property name="disclosure.render" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="Uif-MessageField" p:label="Rule Editor Summary" p:showLabel="true" p:labelPlacement="TOP"
+              p:labelField.styleClasses="labelTop" p:messageText="@{#dp.ruleEditorMessage}" />
+      </list>
     </property>
   </bean>
 

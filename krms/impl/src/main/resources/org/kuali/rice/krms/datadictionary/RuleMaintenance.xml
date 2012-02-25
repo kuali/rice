@@ -197,8 +197,7 @@
               </bean>
               <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
               <!-- also, the bogus refreshWhenChanged is important because it puts a RuleEditorView-TreeGroup_refreshWrapper around the group that
-                   is needed for the javascript hack that is refreshing the tree when a parameterized term specification is selected from the
-                   term dropdown -->
+                   is needed for the javascript hack that is refreshing -->
               <bean id="RuleEditorView-TreeGroup" parent="Uif-VerticalBoxGroup" p:style="margin-bottom: 5pt; margin-top: 0em;" p:refreshWhenChanged="this.is.a.hack">
                 <property name="layoutManager.orientation" value="VERTICAL"/>
                 <property name="items">

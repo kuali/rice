@@ -114,29 +114,6 @@
             <para>For example, calling a KRMS set of rules (an agenda) from your application can
                 result in routing a document to a PeopleFlow*, which is a new feature in KEW in Rice
                 2.0, or to any other action you define in KRMS. </para>
-            <!-- Commenting out for now, this is too much PeopleFlow info which is a KEW feature.   
-                PeopleFlow gives you a new type of
-                request activation strategy called "priority-parallel" to activate requests
-                generated from a PeopleFlow in the appropriate order.  You can define "Stops" in a
-                PeopleFlow, where everything in the same stop proceeds in parallel, but all must be
-                done within the stop before proceeding to the next stop. </para>
-            <para>A single PeopleFlow that defines a routing order among a set of persons, groups or
-                roles can be called by KRMS rules, with the KRMS rules defining which type of action
-                request to pass to the PeopleFlow (for example, an "approval" or a "notification"
-                action). </para>
-            <para>You can define a PeopleFlow (simple workflow) via a simple maintenance document.
-                You can call/execute a PeopleFlow from a KEW workflow node directly, or you can
-                invoke the KRMS rule engine from an application and any PeopleFlows that get
-                selected during rule execution will be called. In this way, you can integrate
-                business rules across your applications and workflows. </para>
-            <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept in Coeus. For all
-                intents and purposes it's a prioritized list of people to send action requests to.
-                You can use a new type of request activitation strategy called "priority-parallel"
-                to activate requests generated from a PeopleFlow in the appropriate order, so
-                essentially it's like a mini people-based workflow that doesn't require you to
-                specify a KEW node in the document type for each individual who might need to
-                approve.</para>
-                -->
             <para>* Essentially, it's like a mini people-based workflow that doesn't require you to
                 specify a KEW node in the document type for each role, group or individual who might
                 need to approve or be notified.</para>
@@ -149,8 +126,8 @@
                     <link xlink:href="http://en.wikipedia.org/wiki/Backward_chaining">backward
                     chaining</link> (one example is <link
                     xlink:href="http://en.wikipedia.org/wiki/Rete_algorithm">Rete</link>) that make
-                them suitable for efficiently evaluating highly complex systems of what are known
-                asproduction rules.  The default engine implementation for KRMS is not designed upon
+                them suitable for efficiently evaluating highly complex systems of what are known as
+                production rules. The default engine implementation for KRMS is not designed upon
                 such an algorithm, and it does not support either forward or backward
                 chaining.</para>
             
@@ -172,29 +149,55 @@
         <sect2>
             <title>Namespaces, Contexts, Agendas, Rules and Propositions</title>
             <para>Namespaces are the top level container in KRMS. They contain Contexts, KRMS Types,
-                and all things related to Terms.</para>
+                and all things related to Terms.  There isn't a namespace entity in the KRMS schema,
+                they are specified via namespace code fields on the applicable child
+                entities.</para>
             <para xmlns:xi="http://www.w3.org/2001/XInclude">Rules in KRMS are placed into ordered
                 sets called Agendas. The order of the Rules in an Agenda determines the sequencing:
                 which rule gets evaluated first, second and so on. The Agenda also enables you to
                 include conditional branching logic between Rules. </para>
             <para xmlns:xi="http://www.w3.org/2001/XInclude">In turn, Agendas are are created in
-                Contexts, which may represent any categories that are relevant within your
-                institution. For example, they could correspond to document types or business
-                processes or any other categories. In some university environments, the following
-                might be relevant contexts: Awards, Proposals, IRB reviews, Course co-requisites,
-                Course pre-requisites, Student plan evaluations, and so on. </para>
+                Contexts, which may represent any categories of rules that are relevant within your
+                institution. For example, they will frequently correspond to document types, but
+                they could be more finely grained to encompass only a certain kind of rule that you
+                might run, e.g. you might have a context called "Proposal Validations".  In some
+                university environments, the following might be relevant contexts: Awards,
+                Proposals, IRB reviews, Course co-requisites, Course pre-requisites, Student plan
+                evaluations, and so on. </para>
             <para xmlns:xi="http://www.w3.org/2001/XInclude">Each Context contains its own agendas,
                 and each Agenda contains its own rules. Rules aren't shared across agendas (though
                 you can copy/paste, they become unique Rule instances), and Agendas aren't shared
                 across Contexts. There is no Context hierarchy, that is, Agendas and Rules can't be
                 inherited across contexts within any sort of hierarchy. </para>
-            <!-- para>(Add information about and example namespace usage.)</para -->
-            <para>The following diagram outlines the hierarchy of entities in KRMS
-                <inlinemediaobject>
+            <para>The following diagram outlines the hierarchy of entities in KRMS (note that some
+                entities are omitted) <inlinemediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRMS_conceptual_hierarchy.png" scalefit="1"/>
                     </imageobject>
                 </inlinemediaobject></para>
+            <para>You'll also note that many of the entities in the above diagram are KRMS Types.
+                In most cases (the notable exception is Context) what that means is that you can
+                develop and integrate custom implementations of the engine objects associated with
+                those entities.  These include:</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Agendas with custom selection and execution code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Actions with custom execution code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Rules with custom evaluation and Action triggering code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Propositions with custom evaluation code</para>
+                    </listitem>
+                    <listitem>
+                        <para>Term Resolvers with custom value resolution code</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
             <sect3>
                 <title>Propositions</title>
                 <para>Rules consist of propositions, and KRMS supports the following three main

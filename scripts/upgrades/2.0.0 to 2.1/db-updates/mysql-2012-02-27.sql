@@ -16,8 +16,9 @@
 
 
 --
--- KULRICE-6842: Don't allow requests for null principals
+-- KULRICE-6842: Don't allow requests for null principals or null groups
 --
 
-ALTER TABLE `krim_grp_mbr_t` MODIFY COLUMN `MBR_ID`
-VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;
+ALTER TABLE `krim_grp_mbr_t`
+MODIFY COLUMN `GRP_ID` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+MODIFY COLUMN `MBR_ID` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;

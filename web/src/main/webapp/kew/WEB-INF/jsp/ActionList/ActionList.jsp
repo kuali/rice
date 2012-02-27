@@ -419,7 +419,7 @@
 						<display:column title="${outboxActionItemDelete}"
 							class="infocell">
 							<html-el:checkbox property="outboxItems"
-								value="${result.actionItemId}" />
+								value="${result.id}" />
 						</display:column>
 					</c:if>
 

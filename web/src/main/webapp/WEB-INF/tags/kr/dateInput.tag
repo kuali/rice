@@ -18,6 +18,7 @@
 
 <%@ attribute name="attributeEntry" required="true" type="java.util.Map" description="A Map of data dictionary information about the property which is having its input rendered." %>
 <%@ attribute name="property" required="true" description="The property associated that should have a date input rendered for it." %>
+<%@ attribute name="tabindexOverride" required="false" description="If set, this will be used as the text index on the control." %>
 <%@ attribute name="accessibilityHint" required="false"
         description="Use this to attach further information to the title attribute of a field
         if present"%>
@@ -31,15 +32,24 @@
 
 <kul:checkErrors keyMatch="${property}"/>
 
-
+ <c:choose>
+  <c:when test="${!empty tabindexOverride}">
+    <c:set var="tabindex" value="${tabindexOverride}"/>
+  </c:when>
+  <c:otherwise>
+   <c:set var="tabindex" value="${KualiForm.currentTabIndex}"/>
+    <c:set var="dummyIncrementVar" value="${kfunc:incrementTabIndex(KualiForm, tabKey)}" />
+  </c:otherwise>
+</c:choose>
 <c:if test="${attributeEntry.control.text != true}">
   <font color="red">The given attributeEntry does not specify a text control</font>
 </c:if>
 <c:if test="${attributeEntry.control.text == true}">
-    <html:text property="${property}" styleId="${property}" title="${accessibleTitle}" size="${attributeEntry.control.size}" maxlength="${attributeEntry.maxLength}" style="${textStyle}"/>
+    <html:text property="${property}" styleId="${property}" title="${accessibleTitle}" tabindex="${tabindex}" size="${attributeEntry.control.size}" maxlength="${attributeEntry.maxLength}" style="${textStyle} "/>
     <c:if test="${hasErrors==true}">
   		<kul:fieldShowErrorIcon />
 	</c:if>
+
 	<img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;" alt="Date selector" title="Date selector" onmouseover="this.style.background='red';" onmouseout="this.style.background='';" />    
     <script type="text/javascript">
       Calendar.setup(

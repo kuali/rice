@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.0.31</version>
+    <version>1.0.33</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -215,11 +215,6 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>strip-bom-plugin</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-          </plugin>
-          <plugin>
             <groupId>com.mycila.maven-license-plugin</groupId>
             <artifactId>maven-license-plugin</artifactId>
             <configuration>
@@ -254,6 +249,7 @@
                 <exclude>**/ChangeLog</exclude>
                 <exclude>**/org.apache.cxf.Logger</exclude>
                 <exclude>**/jquery*.js</exclude>
+                <exclude>**/*.developer</exclude>
               </excludes>
             </configuration>
           </plugin>

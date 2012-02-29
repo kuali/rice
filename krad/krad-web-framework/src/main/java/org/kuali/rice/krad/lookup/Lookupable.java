@@ -59,8 +59,6 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param form - lookup form instance containing the lookup data
      * @param searchCriteria - map of criteria where key is search property name and value is
      * search value (which can include wildcards)
-     * @param boolean true if validation was successful, false if there were errors and the search
-     * should not be performed
      */
     public boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria);
 
@@ -130,5 +128,17 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      */
     public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall);
 
+    /**
+     * Set the value for the input field control to contain the field conversion values for the line
+     *
+     * <p>
+     * Creates and populate the value of the input field control.  This value is build according to
+     * {@link LookupForm#getFieldConversions} and allows for client side population of the returned fields without
+     * having to do an additional server call.
+     * </p>
+     *
+     * @param selectField - the InputField used to mark the lookup row as selected
+     * @param model - lookup form containing the data
+     */
     public void setMultiValueLookupSelect(InputField selectField, Object model);
 }

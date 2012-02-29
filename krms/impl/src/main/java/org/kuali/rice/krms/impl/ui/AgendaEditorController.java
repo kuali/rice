@@ -655,34 +655,34 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
         AgendaItemBo parentsOlderCousin = (parent == null) ? null : getNextOldestOfSameGeneration(firstItem, parent);
 
+        StringBuilder ruleEditorMessage = new StringBuilder();
         AgendaItemChildAccessor childAccessor = getOldestChildAccessor(node, parent);
         if (childAccessor != null) { // node is first child in sibling group
             if (childAccessor == AgendaItemChildAccessor.whenFalse) {
                 // move node to last position in When TRUE group
-                agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " to last position in When TRUE group of " + parent.getRule().getName());
                 AgendaItemInstanceChildAccessor youngestWhenTrueSiblingInsertionPoint =
                         getLastChildsAlwaysAccessor(new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.whenTrue, parent));
                 youngestWhenTrueSiblingInsertionPoint.setChild(node);
                 AgendaItemChildAccessor.whenFalse.setChild(parent, node.getAlways());
                 AgendaItemChildAccessor.always.setChild(node, null);
 
+                ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" up ");
+                ruleEditorMessage.append("to last position in When TRUE group of ").append(parent.getRule().getName());
             } else if (parentsOlderCousin != null) {
                 // find youngest child of parentsOlderCousin and put node after it
-//                agendaEditor.setRuleEditorMessage("Find youngest child of parents older cousin and put rule, " + node.getRule().getName() + ", after it");
-                agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " to When FALSE group of " + parentsOlderCousin.getRule().getName());
                 AgendaItemInstanceChildAccessor youngestWhenFalseSiblingInsertionPoint =
                         getLastChildsAlwaysAccessor(new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.whenFalse, parentsOlderCousin));
                 youngestWhenFalseSiblingInsertionPoint.setChild(node);
                 AgendaItemChildAccessor.whenTrue.setChild(parent, node.getAlways());
                 AgendaItemChildAccessor.always.setChild(node, null);
+                ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" up ");
+                ruleEditorMessage.append("to When FALSE group of ").append(parentsOlderCousin.getRule().getName());
             }
         } else if (!selectedItemId.equals(firstItem.getId())) { // conditional to miss special case of first node
 
-            agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " up within its sibling group");
             AgendaItemBo bogusRootNode = null;
             if (parent == null) {
                 // special case, this is a top level sibling. rig up special parent node
-                agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " up within its sibling group.  Special case, this is a top level sibling. rig up special parent node");
                 bogusRootNode = new AgendaItemBo();
                 AgendaItemChildAccessor.whenTrue.setChild(bogusRootNode, firstItem);
                 parent = bogusRootNode;
@@ -701,6 +701,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 // clean up special case with bogus root node
                 agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenTrueId());
             }
+            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" up ");
+            ruleEditorMessage.append(" within its sibling group.");
+            agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         }
     }
 
@@ -758,35 +761,37 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo parent = getParent(firstItem, selectedItemId);
         AgendaItemBo parentsYoungerCousin = (parent == null) ? null : getNextYoungestOfSameGeneration(firstItem, parent);
 
+        StringBuilder ruleEditorMessage = new StringBuilder();
         if (node.getAlways() == null && parent != null) { // node is last child in sibling group
             // set link to selected node to null
             if (parent.getWhenTrue() != null && isSiblings(parent.getWhenTrue(), node)) { // node is in When TRUE group
                 // move node to first child under When FALSE
-                agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " to first child under When FALSE group of " + parent.getRule().getName());
-
                 AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
                 accessorToSelectedNode.setChild(null);
 
                 AgendaItemBo parentsFirstChild = parent.getWhenFalse();
                 AgendaItemChildAccessor.whenFalse.setChild(parent, node);
                 AgendaItemChildAccessor.always.setChild(node, parentsFirstChild);
+
+                ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" down ");
+                ruleEditorMessage.append("to first child under When FALSE group of ").append(parent.getRule().getName());
             } else if (parentsYoungerCousin != null) { // node is in the When FALSE group
                 // move to first child of parentsYoungerCousin under When TRUE
-                agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " to first child under When TRUE group of " + parentsYoungerCousin.getRule().getName());
-
                 AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
                 accessorToSelectedNode.setChild(null);
 
                 AgendaItemBo parentsYoungerCousinsFirstChild = parentsYoungerCousin.getWhenTrue();
                 AgendaItemChildAccessor.whenTrue.setChild(parentsYoungerCousin, node);
                 AgendaItemChildAccessor.always.setChild(node, parentsYoungerCousinsFirstChild);
+
+                ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" down ");
+                ruleEditorMessage.append("to first child under When TRUE group of ").append(parentsYoungerCousin.getRule().getName());
             }
         } else if (node.getAlways() != null) { // move node down within its sibling group
 
             AgendaItemBo bogusRootNode = null;
             if (parent == null) {
                 // special case, this is a top level sibling. rig up special parent node
-                agendaEditor.setRuleEditorMessage("Special case, this is a top level sibling. rig up special parent node");
 
                 bogusRootNode = new AgendaItemBo();
                 AgendaItemChildAccessor.whenFalse.setChild(bogusRootNode, firstItem);
@@ -796,7 +801,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             // move node down within its sibling group
             AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
             AgendaItemBo youngerSibling = node.getAlways();
-            agendaEditor.setRuleEditorMessage("Moved " + node.getRule().getName() + " down within its sibling group to " + youngerSibling.getRule().getName());
             accessorToSelectedNode.setChild(youngerSibling);
             AgendaItemChildAccessor.always.setChild(node, youngerSibling.getAlways());
             AgendaItemChildAccessor.always.setChild(youngerSibling, node);
@@ -805,7 +809,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 // clean up special case with bogus root node
                 agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
             }
-        }
+            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" down ");
+            ruleEditorMessage.append(" within its sibling group below ").append(youngerSibling.getRule().getName());
+        } // falls through if already bottom-most
+        agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }
 
     @RequestMapping(params = "methodToCall=" + "moveLeft")
@@ -850,11 +857,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (parent != null) {
             AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
             accessorToSelectedNode.setChild(node.getAlways());
-
-            agendaEditor.setRuleEditorMessage("Promoted " + node.getRule().getName() + " to be a younger sibling of its parent " + parent.getRule().getName());
-
             AgendaItemChildAccessor.always.setChild(node, parent.getAlways());
             AgendaItemChildAccessor.always.setChild(parent, node);
+
+            StringBuilder ruleEditorMessage = new StringBuilder();
+            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" left to be a sibling of its parent ").append(parent.getRule().getName());
+            agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         }
     }
 
@@ -894,7 +902,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
          */
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
-        agendaEditor.setRuleEditorMessage("Move right prefers moving to bottom of upper sibling's When FALSE branch... otherwise ...moves to top of lower sibling's When TRUE branch");
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
 
@@ -905,7 +912,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo bogusRootNode = null;
         if (parent == null) {
             // special case, this is a top level sibling. rig up special parent node
-            agendaEditor.setRuleEditorMessage("Move right prefers moving to bottom of upper sibling's When FALSE branch... otherwise ...moves to top of lower sibling's When TRUE branch.  Special case, this is a top level sibling. rig up special parent node");
             bogusRootNode = new AgendaItemBo();
             AgendaItemChildAccessor.whenFalse.setChild(bogusRootNode, firstItem);
             parent = bogusRootNode;
@@ -914,23 +920,31 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemInstanceChildAccessor accessorToSelectedNode = getInstanceAccessorToChild(parent, node.getId());
         AgendaItemBo olderSibling = (accessorToSelectedNode.getInstance() == parent) ? null : accessorToSelectedNode.getInstance();
 
+        StringBuilder ruleEditorMessage = new StringBuilder();
         if (olderSibling != null) {
             accessorToSelectedNode.setChild(node.getAlways());
             AgendaItemInstanceChildAccessor yougestWhenFalseSiblingInsertionPoint =
                     getLastChildsAlwaysAccessor(new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.whenFalse, olderSibling));
             yougestWhenFalseSiblingInsertionPoint.setChild(node);
             AgendaItemChildAccessor.always.setChild(node, null);
+
+            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" right to ");
+            ruleEditorMessage.append(yougestWhenFalseSiblingInsertionPoint.getChild().getRule().getName()).append(" When FALSE group.");
         } else if (node.getAlways() != null) { // has younger sibling
             accessorToSelectedNode.setChild(node.getAlways());
             AgendaItemBo childsWhenTrue = node.getAlways().getWhenTrue();
             AgendaItemChildAccessor.whenTrue.setChild(node.getAlways(), node);
             AgendaItemChildAccessor.always.setChild(node, childsWhenTrue);
-        }
+
+            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" right to ");
+            ruleEditorMessage.append(node.getRule().getName()).append(" When TRUE group");
+        } // falls through if node is already the rightmost.
 
         if (bogusRootNode != null) {
             // clean up special case with bogus root node
             agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
         }
+        agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }
 
     /**
@@ -1185,10 +1199,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     private void deleteSelectedSubtree(UifFormBase form) {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
-        String agendaItemSelected = agendaEditor.getSelectedAgendaItemId();
-        AgendaItemBo selectedItem = getAgendaItemById(firstItem, agendaItemSelected);
 
         if (firstItem != null) {
+            String agendaItemSelected = agendaEditor.getSelectedAgendaItemId();
+            AgendaItemBo selectedItem = getAgendaItemById(firstItem, agendaItemSelected);
+
             // need to handle the first item here, our recursive method won't handle it.
             if (agendaItemSelected.equals(firstItem.getId())) {
                 agendaEditor.getAgenda().setFirstItemId(firstItem.getAlwaysId());
@@ -1196,14 +1211,19 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 deleteAgendaItem(firstItem, agendaItemSelected);
             }
 
+            StringBuilder ruleEditorMessage = new StringBuilder();
+            ruleEditorMessage.append("Deleted ").append(selectedItem.getRule().getName());
             // remove agenda item and its whenTrue & whenFalse children from the list of agendaItems of the agenda
             if (selectedItem.getWhenTrue() != null) {
                 removeAgendaItem(agendaEditor.getAgenda().getItems(), selectedItem.getWhenTrue());
+                ruleEditorMessage.append(" and its When TRUE ").append(selectedItem.getWhenTrue().getRule().getName());
             }
             if (selectedItem.getWhenFalse() != null) {
                 removeAgendaItem(agendaEditor.getAgenda().getItems(), selectedItem.getWhenFalse());
+                ruleEditorMessage.append(" and its When FALSE ").append(selectedItem.getWhenFalse().getRule().getName());
             }
             agendaEditor.getAgenda().getItems().remove(selectedItem);
+            agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         }
     }
 
@@ -1257,8 +1277,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
 
+        AgendaItemBo selectedAgendaItem = getAgendaItemById(firstItem, selectedItemId);
         setCutAgendaItemId(form, selectedItemId);
 
+        StringBuilder ruleEditorMessage = new StringBuilder();
+        ruleEditorMessage.append("Marked ").append(selectedAgendaItem.getRule().getName()).append(" for cutting.");
+        agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
     }
@@ -1273,14 +1297,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
 
         String agendaItemId = getCutAgendaItemId(form);
-
         if (StringUtils.isNotBlank(selectedItemId) && StringUtils.isNotBlank(agendaItemId)) {
+            StringBuilder ruleEditorMessage = new StringBuilder();
             AgendaItemBo node = getAgendaItemById(firstItem, agendaItemId);
             AgendaItemBo orgRefNode = getReferringNode(firstItem, agendaItemId);
             AgendaItemBo newRefNode = getAgendaItemById(firstItem, selectedItemId);
 
             if (isSameOrChildNode(node, newRefNode)) {
-                // do nothing; can't paste to itself
+                // note if the cut agenda item is not cleared, then the javascript on the AgendaEditorView will need to be
+                // updated to deal with a paste that doesn't paste.  As the ui disables the paste button after it is clicked
+                ruleEditorMessage.append("Cannot paste ").append(node.getRule().getName()).append(" to itself.");
             } else {
                 // remove node
                 if (orgRefNode == null) {
@@ -1305,10 +1331,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 node.setAlways(newRefNode.getAlways());
                 newRefNode.setAlwaysId(node.getId());
                 newRefNode.setAlways(node);
+
+                ruleEditorMessage.append(" Pasted ").append(node.getRule().getName());
+                ruleEditorMessage.append(" to ").append(newRefNode.getRule().getName());
+                agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
+
             }
+            setCutAgendaItemId(form, null);
         }
 
-        setCutAgendaItemId(form, null);
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);
@@ -1368,6 +1399,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
     private boolean isSameOrChildNodeHelper(AgendaItemBo node, AgendaItemBo newParent, AgendaItemChildAccessor[] childAccessors) {
         boolean result = false;
+        if (newParent == null || node == null) {
+            return false;
+        }
         if (StringUtils.equals(node.getId(), newParent.getId())) {
             result = true;
         } else {

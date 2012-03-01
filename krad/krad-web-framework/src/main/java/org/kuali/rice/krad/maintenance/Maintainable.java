@@ -246,7 +246,7 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      * (Please see VendorMaintainableImpl.java)
      *
      * @param document - maintenance document instance this maintainable belong to
-     * @param requestParameters - map of request parameters sent for the request
+     * @param parameters - map of request parameters sent for the request
      */
     public void setupNewFromExisting(MaintenanceDocument document, Map<String, String[]> parameters);
 

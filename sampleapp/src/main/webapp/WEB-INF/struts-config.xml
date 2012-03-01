@@ -46,6 +46,7 @@
         <forward name="cancel" path="/portal.jsp" redirect="true" />
         <forward name="close" path="/portal.jsp" redirect="true" />
         <forward name="portal" path="/portal.jsp" redirect="true" />
+        <forward name="invalid_backdoor_portal" path="/portal.jsp?invalidUser=true" redirect="true" />
         <forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp"/>
         <forward name="updateTextArea" path="/kr/WEB-INF/jsp/TextArea.jsp" />
         <forward name="exceptionIncidentHandler" path="/kr/kualiExceptionIncidentReport.do" />

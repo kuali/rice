@@ -18,6 +18,7 @@ package org.kuali.rice.kew.web;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
@@ -163,17 +164,21 @@ public class UserLoginFilter implements Filter {
 	/** establishes the backdoor user on the established user id if backdoor capabilities are valid. */
 	private void establishBackdoorUser(HttpServletRequest request) {
 		final String backdoor = request.getParameter(KRADConstants.BACKDOOR_PARAMETER);
-		
-		if ( StringUtils.isNotBlank(backdoor) ) {
+        if ( StringUtils.isNotBlank(backdoor) ) {
 			if ( !getKualiConfigurationService().getPropertyValueAsString(KRADConstants.PROD_ENVIRONMENT_CODE_KEY)
                 .equalsIgnoreCase(
                         getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ENVIRONMENT_KEY)) ) {
 				if ( getParameterService().getParameterValueAsBoolean(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KewApiConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
-					KRADUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
+                    try{
+                   	    KRADUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
+                    }catch(RiceRuntimeException re){
+                     //Ignore so BackdoorAction can redirect to invalid_backdoor_portal
+                    }
 				}
 			}
 		}
-	}
+
+      }
 	
 	private void addToMDC(HttpServletRequest request) {
 		MDC.put(MDC_USER, KRADUtils.getUserSessionFromRequest(request).getPrincipalName());

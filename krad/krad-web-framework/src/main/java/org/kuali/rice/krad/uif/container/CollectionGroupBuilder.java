@@ -258,7 +258,8 @@ public class CollectionGroupBuilder implements Serializable {
 
             // set focus on after the add line submit to first field of add line
             for (ActionField action : actions) {
-                if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE)) {
+                if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
+                        .size() > 0)) {
                     action.setFocusOnAfterSubmit(lineFields.get(0).getId());
                 }
             }

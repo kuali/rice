@@ -19,6 +19,10 @@
 -- KULRICE-6710: Drop krms_cntxt_vld_rule_t, krms_cntxt_vld_actn_t and krms_cntxt_vld_agenda_t tables
 --
 
+-- NOTE that these tables should have been renamed in the master db, but mysteriously still were present.
+-- deleting here.  If you get errors that these tables and sequences don't exist, you can omit these statements
+-- without concern.
+
 drop table krms_cntxt_vld_actn_t;
 drop table krms_cntxt_vld_actn_s;
 drop table krms_cntxt_vld_agenda_t;

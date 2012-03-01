@@ -18,7 +18,7 @@
 
 <%@ attribute name="attributeEntry" required="true" type="java.util.Map" description="A Map of data dictionary information about the property which is having its input rendered." %>
 <%@ attribute name="property" required="true" description="The property associated that should have a date input rendered for it." %>
-<%@ attribute name="tabindexOverride" required="false" description="If set, this will be used as the text index on the control." %>
+<%@ attribute name="tabindexOverride" required="false" description="If set, this will be used as the tab index on the control." %>
 <%@ attribute name="accessibilityHint" required="false"
         description="Use this to attach further information to the title attribute of a field
         if present"%>

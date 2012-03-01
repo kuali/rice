@@ -401,14 +401,14 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                     folder is the standard maven directory breakdown:
                     
                   <itemizedlist>
-                      <listitem>src/main/java – Contains Java source code</listitem>
-                      <listitem>src/main/resources – Contains resource files (XML and other resources)</listitem>
-                      <listitem>src/main/webapp – Contains the application web content (JSP, tags, images,
-                          CSS, Script)</listitem>
+                      <listitem><para>src/main/java – Contains Java source code</para></listitem>
+                      <listitem><para>src/main/resources – Contains resource files (XML and other resources)</para></listitem>
+                      <listitem><para>src/main/webapp – Contains the application web content (JSP, tags, images,
+                          CSS, Script)</para></listitem>
                   </itemizedlist>
                 </para>
             </listitem>
-            <listitem>target – This folder holds the build output such as generated classes and wars.</listitem>
+            <listitem><para>target – This folder holds the build output such as generated classes and wars.</para></listitem>
         </itemizedlist>
         
         <para>Along with the directories several files are created. These are as follows:</para>
@@ -478,10 +478,10 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
             ‘{user home}/kuali/main/dev’ folder. These include:</para>
         
         <itemizedlist>
-            <listitem>{project}-config.xml – Configuration file for application. This is where the settings
-                for the database and other configurations are given.</listitem>
-            <listitem>rice.keystore – Provides a secure key for consuming secured services running on a Rice
-                server</listitem>
+            <listitem><para>{project}-config.xml – Configuration file for application. This is where the settings
+                for the database and other configurations are given.</para></listitem>
+            <listitem><para>rice.keystore – Provides a secure key for consuming secured services running on a Rice
+                server</para></listitem>
         </itemizedlist>  
               
     </section>

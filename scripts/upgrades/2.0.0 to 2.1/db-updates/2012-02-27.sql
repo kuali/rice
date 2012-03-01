@@ -16,8 +16,8 @@
 
 
 --
--- KULRICE-6842: Don't allow requests for null principals or null groups
--- Don't allow requests for null principal or null roles
+-- KULRICE-6842: Don't allow requests for null principals or null groups or null principal types
+-- or null roles.
 --
 
 ALTER TABLE
@@ -25,7 +25,8 @@ ALTER TABLE
 MODIFY
    (
     MBR_ID VARCHAR2(40) NOT NULL,
-    GRP_ID VARCHAR2(40) NOT NULL
+    GRP_ID VARCHAR2(40) NOT NULL,
+    MBR_TYP_CD CHAR(1) NOT NULL
    )
 /
 
@@ -34,6 +35,7 @@ ALTER TABLE
 MODIFY
    (
     MBR_ID VARCHAR2(40) NOT NULL,
-    ROLE_ID VARCHAR2(40) NOT NULL
+    ROLE_ID VARCHAR2(40) NOT NULL,
+    MBR_TYP_CD CHAR(1) NOT NULL
    )
 /

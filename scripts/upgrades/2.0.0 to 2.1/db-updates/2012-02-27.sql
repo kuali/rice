@@ -17,13 +17,23 @@
 
 --
 -- KULRICE-6842: Don't allow requests for null principals or null groups
+-- Don't allow requests for null principal or null roles
 --
 
 ALTER TABLE
-   krim_grp_mbr_t
+  KRIM_GRP_MBR_T
 MODIFY
    (
-    MBR_ID VARCHAR(40) NOT NULL,
-    GRP_ID VARCHAR(40) NOT NULL
+    MBR_ID VARCHAR2(40) NOT NULL,
+    GRP_ID VARCHAR2(40) NOT NULL
    )
-;
+/
+
+ALTER TABLE
+   KRIM_ROLE_MBR_T
+MODIFY
+   (
+    MBR_ID VARCHAR2(40) NOT NULL,
+    ROLE_ID VARCHAR2(40) NOT NULL
+   )
+/

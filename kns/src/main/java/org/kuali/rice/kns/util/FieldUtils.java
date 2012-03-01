@@ -96,6 +96,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1256,7 +1257,7 @@ public final class FieldUtils {
         return false;
     }
 
-    public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public static List<Field> createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
         List<Field> fields = new ArrayList<Field>();
         BusinessObjectEntry boe = (BusinessObjectEntry) getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
 
@@ -1579,7 +1580,7 @@ public final class FieldUtils {
     private static RemotableAbstractControl.Builder constructControl(String type, List<KeyValue> options) {
 
         RemotableAbstractControl.Builder control = null;
-        Map<String, String> optionMap = new HashMap<String, String>();
+        Map<String, String> optionMap = new LinkedHashMap<String, String>();
         if (options != null) {
             for (KeyValue option : options) {
                 optionMap.put(option.getKey(), option.getValue());
@@ -1592,12 +1593,16 @@ public final class FieldUtils {
 		} else if (Field.DROPDOWN.equals(type)) {
             control = RemotableSelect.Builder.create(optionMap);
         } else if (Field.CHECKBOX.equals(type)) {
-            control = RemotableCheckboxGroup.Builder.create(optionMap);
+            control = RemotableCheckbox.Builder.create();
 		} else if (Field.RADIO.equals(type)) {
             control = RemotableRadioButtonGroup.Builder.create(optionMap);
 		} else if (Field.HIDDEN.equals(type)) {
             control = RemotableHiddenInput.Builder.create();
 		} else if (Field.MULTIBOX.equals(type)) {
+            RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
+            builder.setMultiple(true);
+            control = builder;
+        } else if (Field.MULTISELECT.equals(type)) {
             RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
             builder.setMultiple(true);
             control = builder;

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -87,7 +87,7 @@ public final class RemotableCheckboxGroup extends RemotableAbstractControl imple
                 throw new IllegalArgumentException("keyLabels must be non-null & non-empty");
             }
 
-            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
+            this.keyLabels = Collections.unmodifiableMap(new LinkedHashMap<String, String>(keyLabels));
         }
 
         @Override

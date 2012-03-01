@@ -85,8 +85,6 @@ import java.util.regex.Pattern;
  */
 public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookupableHelperServiceImpl {
 
-    private static final String DOCUMENT_ATTRIBUTE_PROPERTY_NAME_PREFIX = "documentAttribute.";
-
     static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
     static final String DOCUMENT_TYPE_NAME_PARAM = "documentTypeName";
 

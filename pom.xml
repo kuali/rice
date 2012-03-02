@@ -153,6 +153,8 @@
     <failsafe.plugin.version>2.9</failsafe.plugin.version>
     <source.plugin.version>2.1.2</source.plugin.version>
     <assembly.plugin.version>2.2.1</assembly.plugin.version>
+
+    <javax.inject.version>1</javax.inject.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
 
     <!-- Connect documentation generation to site generation -->
@@ -1934,6 +1936,13 @@
         <artifactId>xmlunit</artifactId>
         <version>${xmlunit.version}</version>
         <scope>test</scope>
+      </dependency>
+
+      <!-- Added dependency to improve spring bean loading e.g KualiDefaultListableBeanFactory in rice-core-framework -->
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>${javax.inject.version}</version>
       </dependency>
 
     </dependencies>

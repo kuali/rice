@@ -35,7 +35,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -60,7 +60,7 @@ import java.util.TreeMap;
  */
 public class DataDictionary  {
 
-	protected DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
+	protected KualiDefaultListableBeanFactory ddBeans = new KualiDefaultListableBeanFactory();
     protected XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
 
 	// logger

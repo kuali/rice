@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -35,7 +36,7 @@ public class ImageField extends FieldBase {
     private boolean captionHeaderAboveImage;
 
     private String captionHeaderText;
-    private HeaderField captionHeader;
+    private Header captionHeader;
 
     private String cutlineText;
     private MessageField cutline;
@@ -96,11 +97,11 @@ public class ImageField extends FieldBase {
         this.captionHeaderText = captionHeaderText;
     }
 
-    public HeaderField getCaptionHeader() {
+    public Header getCaptionHeader() {
         return captionHeader;
     }
 
-    public void setCaptionHeader(HeaderField captionHeader) {
+    public void setCaptionHeader(Header captionHeader) {
         this.captionHeader = captionHeader;
     }
 

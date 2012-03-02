@@ -55,6 +55,7 @@ import org.kuali.rice.krad.uif.control.SizedControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -62,7 +63,6 @@ import org.kuali.rice.krad.uif.field.BlankField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
-import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.IframeField;
 import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.LabelField;
@@ -600,8 +600,8 @@ public class ComponentFactory {
         return (CollectionGroup) getNewComponentInstance(LIST_GROUP);
     }
 
-    public static HeaderField getHeader() {
-        return (HeaderField) getNewComponentInstance(HEADER);
+    public static Header getHeader() {
+        return (Header) getNewComponentInstance(HEADER);
     }
 
     public static Group getFooter() {

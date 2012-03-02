@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.element.ContentElementBase;
 
 /**
  * Base class for all <code>Control</code> implementations
@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.component.ComponentBase;
  * 
  * @see org.kuali.rice.krad.uif.control.Control
  */
-public abstract class ControlBase extends ComponentBase implements Control {
+public abstract class ControlBase extends ContentElementBase implements Control {
 	private static final long serialVersionUID = -7898244978136312663L;
 	
 	private int tabIndex;

@@ -24,95 +24,101 @@
 
   <!-- Base Headers -->
 
-  <bean id="Uif-HeaderFieldBase" parent="Uif-HeaderFieldBase-parentBean"/>
-  <bean id="Uif-HeaderFieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.HeaderField"
-        scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/headerField.jsp"/>
+  <bean id="Uif-HeaderBase" parent="Uif-HeaderBase-parentBean"/>
+  <bean id="Uif-HeaderBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Header" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/element/header.jsp"/>
     <property name="styleClasses">
-      <list>
-        <value>uif-headerField</value>
+      <list merge="true">
+        <value>uif-header</value>
       </list>
     </property>
-    <property name="headerStyleClasses" value="uif-header"/>
-    <property name="group">
+    <property name="headerStyleClasses">
+      <list merge="true">
+        <value>uif-headerText</value>
+      </list>
+    </property>
+    <property name="headerGroup">
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="styleClasses">
           <list merge="true">
-            <value>uif-headerFieldGroup</value>
+            <value>uif-headerGroup</value>
           </list>
         </property>
       </bean>
     </property>
   </bean>
 
-  <bean id="Uif-HeaderField-One" parent="Uif-HeaderField-One-parentBean"/>
-  <bean id="Uif-HeaderField-One-parentBean" abstract="true" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-HeaderOne" parent="Uif-HeaderOne-parentBean"/>
+  <bean id="Uif-HeaderOne-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h1"/>
   </bean>
 
-  <bean id="Uif-HeaderField-Two" parent="Uif-HeaderField-Two-parentBean"/>
-  <bean id="Uif-HeaderField-Two-parentBean" abstract="true" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-HeaderTwo" parent="Uif-HeaderTwo-parentBean"/>
+  <bean id="Uif-HeaderTwo-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h2"/>
   </bean>
 
-  <bean id="Uif-HeaderField-Three" parent="Uif-HeaderField-Three-parentBean"/>
-  <bean id="Uif-HeaderField-Three-parentBean" abstract="true" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-HeaderThree" parent="Uif-HeaderThree-parentBean"/>
+  <bean id="Uif-HeaderThree-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h3"/>
   </bean>
 
-  <bean id="Uif-HeaderField-Four" parent="Uif-HeaderField-Four-parentBean"/>
-  <bean id="Uif-HeaderField-Four-parentBean" abstract="true" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-HeaderFour" parent="Uif-HeaderFour-parentBean"/>
+  <bean id="Uif-HeaderFour-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h4"/>
   </bean>
 
-  <bean id="Uif-HeaderField-Five" parent="Uif-HeaderField-Five-parentBean"/>
-  <bean id="Uif-HeaderField-Five-parentBean" abstract="true" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-HeaderFive" parent="Uif-HeaderFive-parentBean"/>
+  <bean id="Uif-HeaderFive-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h5"/>
   </bean>
 
-  <bean id="Uif-HeaderField-Six" parent="Uif-HeaderField-Six-parentBean"/>
-  <bean id="Uif-HeaderField-Six-parentBean" abstract="true" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-HeaderSix" parent="Uif-HeaderSix-parentBean"/>
+  <bean id="Uif-HeaderSix-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h6"/>
   </bean>
 
-  <bean id="Uif-ViewHeaderField" parent="Uif-ViewHeaderField-parentBean"/>
-  <bean id="Uif-ViewHeaderField-parentBean" abstract="true" parent="Uif-HeaderField-One">
+  <bean id="Uif-ViewHeader" parent="Uif-ViewHeader-parentBean"/>
+  <bean id="Uif-ViewHeader-parentBean" abstract="true" parent="Uif-HeaderOne">
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-viewHeaderField</value>
+        <value>uif-viewHeader</value>
       </list>
     </property>
   </bean>
 
-  <bean id="Uif-PageHeaderField" parent="Uif-PageHeaderField-parentBean"/>
-  <bean id="Uif-PageHeaderField-parentBean" abstract="true" parent="Uif-HeaderField-Two">
+  <bean id="Uif-PageHeader" parent="Uif-PageHeader-parentBean"/>
+  <bean id="Uif-PageHeader-parentBean" abstract="true" parent="Uif-HeaderTwo">
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-pageHeaderField</value>
+        <value>uif-pageHeader</value>
       </list>
     </property>
   </bean>
 
-  <bean id="Uif-SectionHeaderField" parent="Uif-HeaderField-Three">
+  <bean id="Uif-SectionHeader" parent="Uif-SectionHeader-parentBean"/>
+  <bean id="Uif-SectionHeader-parentBean" abstract="true" parent="Uif-HeaderThree">
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-sectionHeaderField</value>
+        <value>uif-sectionHeader</value>
       </list>
     </property>
   </bean>
 
-  <bean id="Uif-SubSectionHeaderField" parent="Uif-HeaderField-Four">
+  <bean id="Uif-SubSectionHeader" parent="Uif-SubSectionHeader-parentBean"/>
+  <bean id="Uif-SubSectionHeader-parentBean" abstract="true" parent="Uif-HeaderFour">
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-subSectionHeaderField</value>
+        <value>uif-subSectionHeader</value>
       </list>
     </property>
   </bean>
 
-  <bean id="Uif-SubCollectionHeaderField" parent="Uif-HeaderFieldBase">
+  <bean id="Uif-SubCollectionHeader" parent="Uif-SubCollectionHeader-parentBean"/>
+  <bean id="Uif-SubCollectionHeader-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-subCollectionHeaderField</value>
+        <value>uif-subCollectionHeader</value>
       </list>
     </property>
     <property name="headerLevel" value="label"/>
@@ -120,14 +126,16 @@
 
   <!-- Common Headers -->
 
-  <bean id="Uif-EditablePageHeaderField" parent="Uif-PageHeaderField">
-    <property name="group">
+  <bean id="Uif-EditablePageHeader" parent="Uif-EditablePageHeader-parentBean"/>
+  <bean id="Uif-EditablePageHeader-parentBean" abstract="true" parent="Uif-PageHeader">
+    <property name="headerGroup">
       <bean parent="Uif-DisclosureActions-ReqMessageGroup"/>
     </property>
   </bean>
 
-  <bean id="Uif-ReadOnlyPageHeaderField" parent="Uif-PageHeaderField">
-    <property name="group">
+  <bean id="Uif-ReadOnlyPageHeader" parent="Uif-ReadOnlyPageHeader-parentBean"/>
+  <bean id="Uif-ReadOnlyPageHeader-parentBean" abstract="true" parent="Uif-PageHeader">
+    <property name="headerGroup">
       <bean parent="Uif-DisclosureActionsGroup"/>
     </property>
   </bean>

@@ -43,8 +43,7 @@ public class FieldGroup extends FieldBase {
 	 * The following initialization is performed:
      *
 	 * <ul>
-	 * <li>Set the align on group if empty and the align has been set on the
-	 * field</li>
+	 * <li>Set the align on group if empty and the align has been set on the field</li>
 	 * </ul>
 	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)

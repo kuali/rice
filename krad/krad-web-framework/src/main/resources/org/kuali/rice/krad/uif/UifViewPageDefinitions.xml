@@ -135,7 +135,7 @@
       <bean parent="Uif-Growls"/>
     </property>
     <property name="header">
-      <bean parent="Uif-ViewHeaderField"/>
+      <bean parent="Uif-ViewHeader"/>
     </property>
     <property name="footer">
       <bean parent="Uif-FooterBase"/>
@@ -178,7 +178,7 @@
       <bean parent="Uif-PageValidationMessages"/>
     </property>
     <property name="header">
-      <bean parent="Uif-PageHeaderField"/>
+      <bean parent="Uif-PageHeader"/>
     </property>
     <property name="disclosure">
       <bean parent="Uif-Disclosure"/>
@@ -202,7 +202,7 @@
       </list>
     </property>
     <property name="header">
-      <ref bean="Uif-EditablePageHeaderField"/>
+      <ref bean="Uif-EditablePageHeader"/>
     </property>
   </bean>
 

@@ -81,7 +81,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -93,7 +93,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 
@@ -143,7 +143,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -155,7 +155,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 
@@ -210,7 +210,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -222,7 +222,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 
@@ -273,7 +273,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -285,7 +285,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 
@@ -364,7 +364,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -377,7 +377,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 
@@ -406,7 +406,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -498,17 +498,17 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Four"/>
+      <bean parent="Uif-HeaderFour"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Four"/>
+      <bean parent="Uif-HeaderFour"/>
     </property>
   </bean>
 
@@ -520,17 +520,17 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubSectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
     </property>
   </bean>
 
@@ -542,17 +542,17 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Five"/>
+      <bean parent="Uif-HeaderFive"/>
     </property>
   </bean>
 
@@ -564,17 +564,17 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-HeaderField-Six"/>
+      <bean parent="Uif-HeaderSix"/>
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
-      <bean parent="Uif-HeaderField-Six"/>
+      <bean parent="Uif-HeaderSix"/>
     </property>
   </bean>
 
@@ -646,14 +646,14 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -665,14 +665,14 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubSectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 
@@ -684,14 +684,14 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SubCollectionHeaderField"/>
+      <bean parent="Uif-SubCollectionHeader"/>
     </property>
   </bean>
 
@@ -703,14 +703,14 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubCollectionHeaderField">
-        <property name="group">
+      <bean parent="Uif-SubCollectionHeader">
+        <property name="headerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
     </property>
     <property name="layoutManager.addLineGroup.header">
-      <bean parent="Uif-SubCollectionHeaderField"/>
+      <bean parent="Uif-SubCollectionHeader"/>
     </property>
   </bean>
 
@@ -783,7 +783,7 @@
         <property name="lineGroupPrototype">
           <bean parent="Uif-VerticalBoxSection">
             <property name="header">
-              <bean parent="Uif-HeaderField-Four"/>
+              <bean parent="Uif-HeaderFour"/>
             </property>
             <property name="disclosure.renderImage" value="false"/>
             <property name="disclosure.defaultOpen" value="true"/>
@@ -804,7 +804,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SectionHeaderField"/>
+      <bean parent="Uif-SectionHeader"/>
     </property>
   </bean>
 
@@ -816,7 +816,7 @@
       </list>
     </property>
     <property name="header">
-      <bean parent="Uif-SubSectionHeaderField"/>
+      <bean parent="Uif-SubSectionHeader"/>
     </property>
   </bean>
 

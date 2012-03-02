@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
-import org.kuali.rice.krad.uif.field.HeaderField;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -81,7 +81,7 @@ public class View extends ContainerBase {
     private int idSequence;
 
     // application
-    private HeaderField applicationHeader;
+    private Header applicationHeader;
     private Group applicationFooter;
 
     // Breadcrumbs
@@ -416,7 +416,7 @@ public class View extends ContainerBase {
      *
      * @return HeaderField application header
      */
-    public HeaderField getApplicationHeader() {
+    public Header getApplicationHeader() {
         return applicationHeader;
     }
 
@@ -425,7 +425,7 @@ public class View extends ContainerBase {
      *
      * @param applicationHeader
      */
-    public void setApplicationHeader(HeaderField applicationHeader) {
+    public void setApplicationHeader(Header applicationHeader) {
         this.applicationHeader = applicationHeader;
     }
 

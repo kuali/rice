@@ -18,9 +18,9 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
-import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -53,7 +53,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private Help help;
 	private LayoutManager layoutManager;
 
-	private HeaderField header;
+	private Header header;
 	private Group footer;
 
 	private String instructionalText;
@@ -296,15 +296,15 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getHeader()
 	 */
 	@Override
-	public HeaderField getHeader() {
+	public Header getHeader() {
 		return this.header;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setHeader(org.kuali.rice.krad.uif.field.HeaderField)
+	 * @see org.kuali.rice.krad.uif.container.Container#setHeader(org.kuali.rice.krad.uif.element.Header)
 	 */
 	@Override
-	public void setHeader(HeaderField header) {
+	public void setHeader(Header header) {
 		this.header = header;
 	}
 

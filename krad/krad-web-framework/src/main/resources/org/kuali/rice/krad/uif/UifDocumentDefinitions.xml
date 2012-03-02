@@ -38,7 +38,7 @@
               value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl"/>
     <property name="singlePageView" value="true"/>
     <property name="header">
-      <bean parent="Uif-DocumentViewHeaderField"/>
+      <bean parent="Uif-DocumentViewHeader"/>
     </property>
     <property name="page">
       <bean parent="Uif-DocumentPage"/>
@@ -254,8 +254,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-DocumentViewHeaderField" abstract="true" parent="Uif-ViewHeaderField">
-    <property name="group">
+  <bean id="Uif-DocumentViewHeader" abstract="true" parent="Uif-ViewHeader">
+    <property name="headerGroup">
       <bean parent="Uif-DocumentInfoGroup">
         <property name="styleClasses">
           <list merge="true">

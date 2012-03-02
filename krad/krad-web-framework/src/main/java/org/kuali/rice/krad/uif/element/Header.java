@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Field that contains a header element and optionally a <code>Group</code> to
+ * Content element that renders a header element and optionally a <code>Group</code> to
  * present along with the header text
  *
  * <p>
@@ -29,25 +34,28 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HeaderField extends FieldGroup {
+public class Header extends ContentElementBase {
     private static final long serialVersionUID = -6950408292923393244L;
 
     private String headerText;
     private String headerLevel;
-    private String headerStyleClasses;
-    private String headerStyle;
-    private String headerDivStyleClasses;
-    private String headerDivStyle;
 
-    public HeaderField() {
+    private List<String> headerStyleClasses;
+    private String headerStyle;
+
+    private Group headerGroup;
+
+    public Header() {
         super();
+
+        headerStyleClasses = new ArrayList<String>();
     }
 
     /**
      * The following finalization is performed:
      *
      * <ul>
-     * <li>Set render on group to false if no items are configured</li>
+     * <li>Set render on header group to false if no items are configured</li>
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
@@ -58,9 +66,21 @@ public class HeaderField extends FieldGroup {
         super.performFinalize(view, model, parent);
 
         // don't render header group if no items were configured
-        if ((getGroup() != null) && (getGroup().getItems().isEmpty())) {
-            getGroup().setRender(false);
+        if ((getHeaderGroup() != null) && (getHeaderGroup().getItems().isEmpty())) {
+            getHeaderGroup().setRender(false);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(headerGroup);
+
+        return components;
     }
 
     /**
@@ -100,7 +120,7 @@ public class HeaderField extends FieldGroup {
     }
 
     /**
-     * Style class that should be applied to the header text (h tag)
+     * Style classes that should be applied to the header text (h tag)
      *
      * <p>
      * Note the style class given here applies to only the header text. The
@@ -109,41 +129,55 @@ public class HeaderField extends FieldGroup {
      * include a nested <code>Group</code>)
      * </p>
      *
-     * @return String style class
-     * @see org.kuali.rice.krad.uif.Component.getStyleClasses()
+     * @return List<String> list of style classes
+     * @see org.kuali.rice.krad.uif.component.Component#getStyleClasses()
      */
-    public String getHeaderStyleClasses() {
+    public List<String> getHeaderStyleClasses() {
         return this.headerStyleClasses;
     }
 
     /**
-     * Setter for the header style class
+     * Setter for the list of classes to apply to the header h tag
      *
      * @param headerStyleClasses
      */
-    public void setHeaderStyleClasses(String headerStyleClasses) {
+    public void setHeaderStyleClasses(List<String> headerStyleClasses) {
         this.headerStyleClasses = headerStyleClasses;
     }
 
     /**
-     * Style that should be applied to the header text
+     * Builds the HTML class attribute string by combining the headerStyleClasses list
+     * with a space delimiter
+     *
+     * @return String class attribute string
+     */
+    public String getHeaderStyleClassesAsString() {
+        if (headerStyleClasses != null) {
+            return StringUtils.join(headerStyleClasses, " ");
+        }
+
+        return "";
+    }
+
+    /**
+     * Style that should be applied to the header h tag
      *
      * <p>
      * Note the style given here applies to only the header text. The style
      * property inherited from the <code>Component</code> interface can be used
-     * to set the style for the whole field div (which could include a nested
+     * to set the style for the whole header div (which could include a nested
      * <code>Group</code>)
      * </p>
      *
      * @return String header style
-     * @see org.kuali.rice.krad.uif.Component.getStyle()
+     * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
     public String getHeaderStyle() {
         return this.headerStyle;
     }
 
     /**
-     * Setter for the header style
+     * Setter for the header h tag style
      *
      * @param headerStyle
      */
@@ -152,48 +186,59 @@ public class HeaderField extends FieldGroup {
     }
 
     /**
-     * Style class that should be applied to the header div
+     * Nested group instance that can be used to render contents in the header area
      *
      * <p>
-     * Note the style class given here applies to the div surrounding the header tag only
+     * The header group is useful for adding content such as links or actions that is presented with the header(for
+     * example to the right of the header text).
      * </p>
      *
-     * @return String style class
-     * @see org.kuali.rice.krad.uif.Component.getStyleClasses()
+     * @return Group instance
      */
-    public String getHeaderDivStyleClasses() {
-        return headerDivStyleClasses;
+    public Group getHeaderGroup() {
+        return headerGroup;
     }
 
     /**
-     * Setter for the header div class
+     * Setter for the header group instance
      *
-     * @param headerStyleClasses
+     * @param headerGroup
      */
-    public void setHeaderDivStyleClasses(String headerDivStyleClasses) {
-        this.headerDivStyleClasses = headerDivStyleClasses;
+    public void setHeaderGroup(Group headerGroup) {
+        this.headerGroup = headerGroup;
     }
 
     /**
-     * Style that should be applied to the header div
+     * List of <code>Component</code> instances contained in the nested group
      *
      * <p>
-     * Note the style given here applies to the div surrounding the header tag only
+     * Convenience method for configuration to get the items List from the
+     * header's nested group
      * </p>
      *
-     * @return String header style
-     * @see org.kuali.rice.krad.uif.Component.getStyle()
+     * @return List<? extends Component> items
      */
-    public String getHeaderDivStyle() {
-        return headerDivStyle;
+    public List<? extends Component> getItems() {
+        if (headerGroup != null) {
+            return headerGroup.getItems();
+        }
+
+        return null;
     }
 
     /**
-     * Setter for the header div
+     * Setter for the header's nested group items
      *
-     * @param headerStyle
+     * <p>
+     * Convenience method for configuration to set the items List for the
+     * header's nested group
+     * </p>
+     *
+     * @param items
      */
-    public void setHeaderDivStyle(String headerDivStyle) {
-        this.headerDivStyle = headerDivStyle;
+    public void setItems(List<? extends Component> items) {
+        if (headerGroup != null) {
+            headerGroup.setItems(items);
+        }
     }
 }

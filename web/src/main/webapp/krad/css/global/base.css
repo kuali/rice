@@ -73,12 +73,12 @@ th, td {
 
 /* headers */
 
-.uif-header{
+.uif-headerText{
    clear:both;
    text-align: left;
 }
 
-.uif-subCollectionHeaderField{
+.uif-subCollectionHeader{
     text-align: left;
 }
 
@@ -89,7 +89,7 @@ h2.kr-page-action {				/* was h2.page-action */ /* renamed in xml and/or jsp */
 	font-weight:normal;
 	margin:0;
 }
-h3.uif-header {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
+h3.uif-headerText {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
 	font-weight: bold;
 	margin-top: 5px;
     margin-bottom: 10px;

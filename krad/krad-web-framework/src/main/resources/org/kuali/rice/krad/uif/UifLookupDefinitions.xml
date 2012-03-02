@@ -115,7 +115,7 @@
     </property>
     <property name="renderFooter" value="false"/>
     <property name="header">
-      <ref bean="Uif-LookupPageHeaderField"/>
+      <ref bean="Uif-LookupPageHeader"/>
     </property>
   </bean>
 
@@ -139,7 +139,7 @@
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="true"/>
     <property name="renderSelectField" value="@{#view.multipleValuesSelect}"/>
-    <property name="header.group">
+    <property name="header.headerGroup">
       <bean parent="Uif-VerticalBoxGroup"/>
     </property>
     <property name="footer">
@@ -148,13 +148,13 @@
     </property>
   </bean>
 
-  <bean id="Uif-LookupPageHeaderField" parent="Uif-PageHeaderField">
-    <property name="group">
-      <bean parent="Uif-LookupPageHeaderField-Group"/>
+  <bean id="Uif-LookupPageHeader" parent="Uif-PageHeader">
+    <property name="headerGroup">
+      <bean parent="Uif-LookupPageHeaderGroup"/>
     </property>
   </bean>
 
-  <bean id="Uif-LookupPageHeaderField-Group" parent="Uif-ActionsGroup">
+  <bean id="Uif-LookupPageHeaderGroup" parent="Uif-ActionsGroup">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-rightAligned-headerFieldGroup</value>

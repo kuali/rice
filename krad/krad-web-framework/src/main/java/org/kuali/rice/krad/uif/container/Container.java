@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.ErrorsField;
-import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.widget.Help;
@@ -118,14 +118,14 @@ public interface Container extends Component {
 	 * 
 	 * @return HeaderField instance or Null
 	 */
-	public HeaderField getHeader();
+	public Header getHeader();
 
 	/**
 	 * Setter for the containers header field
 	 * 
 	 * @param header
 	 */
-	public void setHeader(HeaderField header);
+	public void setHeader(Header header);
 
 	/**
 	 * Footer <code>Group</code> associated with the container

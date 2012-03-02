@@ -140,14 +140,14 @@ h7 {
 	list-style: none;
 	width: auto;
 }
-.uif-headerField h2.uif-header {
+.uif-header h2.uif-headerText {
 	font-family:Arial, Helvetica, sans-serif;
 	border-bottom: 1px solid #000;
 	padding-bottom: 0.3em;
 	font-weight: normal;
 }
 
-.uif-pageHeaderField h2.uif-header {
+.uif-pageHeader h2.uif-headerText {
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:1.2em;
     border: none;
@@ -158,7 +158,7 @@ h3.kr-header-page-action {
 	font-family:Georgia, 'Times New Roman', Times, serif;
 	font-weight: normal;
 }
-.uif-headerField h3.uif-header {
+.uif-header h3.uif-headerText{
 	color: #FFF;
 	background: #666;
 	font-family: Verdana, Geneva, sans-serif;
@@ -167,13 +167,13 @@ h3.kr-header-page-action {
 	/* [disabled]-webkit-border-radius: 5px; */
 	padding: 5px;
 }
-.uif-headerField h4.uif-header {
+.uif-header h4.uif-headerText {
 	font-family:Arial, Helvetica, sans-serif;
 	/* [disabled]border-bottom: 1px dotted #000; */
 	/* [disabled]padding-bottom: 0.3em; */
 	font-weight: bold;
 }
-.uif-headerField h5.uif-header {
+.uif-header h5.uif-headerText {
 	font-family:Arial, Helvetica, sans-serif;
 	font-weight: bold;
 }
@@ -200,7 +200,7 @@ div.doc_view_header .left {
 	padding-right: 0;
 	padding-left: 15px;
 }
-.uif-viewHeaderField h1.uif-header {
+.uif-viewHeader h1.uif-headerText {
 	font-family: "Arial Narrow";
 	font-weight: bold;
 	font-size: 1.6em;
@@ -1030,13 +1030,13 @@ input[alt="Search Field"] {
 
 ul.basic-navigation li.basic-element a { margin-top:0px;}
 
-div.uif-collectionItem.uif-tableCollectionItem.uif-collectionAddItem h3.uif-header { background:#cccccc; color:#000000}
+div.uif-collectionItem.uif-tableCollectionItem.uif-collectionAddItem h3.uif-headerText { background:#cccccc; color:#000000}
 
 div.uif-collectionItem.uif-tableCollectionItem.uif-collectionAddItem { margin-bottom:20px;}
 
 table.uif-tableCollectionLayout { width:100%}
 
-table.uif-tableCollectionLayout .uif-headerField h3.uif-header {
+table.uif-tableCollectionLayout .uif-header h3.uif-headerText {
 	
 	background:#ffffff;
 	color:#000;
@@ -1115,7 +1115,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', end
 	border: 1px solid #CCC;
 	}
     
-div.uif-headerField.uif-sectionHeaderField	a:hover {
+div.uif-header.uif-sectionHeader	a:hover {
 	text-decoration:none;
 }
 
@@ -1140,7 +1140,7 @@ span.uif-breadcrumbs span.kr-current { font-weight:bold}
 
 
 
-h3.uif-header {	
+h3.uif-headerText {
 	font-weight: bold;
 	margin-top: 10px;
     margin-bottom: 0px;
@@ -1150,13 +1150,13 @@ h3.uif-header {
 
 
 
-div.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div.uif-headerField {
+div.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div.uif-headerText {
 	padding:5px;
 	background-color: #CCC;
 }
 
 
-div.uif-headerField.uif-subSectionHeaderField h4.uif-header {padding:5px;}
+div.uif-header.uif-subSectionHeader h4.uif-headerText {padding:5px;}
 
 
 

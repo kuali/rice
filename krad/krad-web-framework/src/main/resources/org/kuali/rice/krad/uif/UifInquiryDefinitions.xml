@@ -64,7 +64,7 @@
       </list>
     </property>
     <property name="header">
-      <ref bean="Uif-ReadOnlyPageHeaderField"/>
+      <ref bean="Uif-ReadOnlyPageHeader"/>
     </property>
   </bean>
 

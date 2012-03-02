@@ -396,7 +396,7 @@ perform page navigation-->
     </property>
     <property name="captionHeaderAboveImage" value="true"/>
     <property name="captionHeader">
-      <bean parent="Uif-HeaderField-Four"/>
+      <bean parent="Uif-HeaderFour"/>
     </property>
     <property name="cutline">
       <bean parent="Uif-MessageField" p:messageType="CUTLINE" p:styleClasses="kr-cutline"/>

@@ -57,7 +57,7 @@
   <bean id="Uif-MaintenanceCompare-Modifier" parent="Uif-MaintenanceCompare-Modifier-parentBean"/>
   <bean id="Uif-MaintenanceCompare-Modifier-parentBean" abstract="true" parent="Uif-CompareFieldCreate-Modifier">
     <property name="headerFieldPrototype">
-      <bean parent="Uif-HeaderField-Four" p:colSpan="2"/>
+      <bean parent="Uif-HeaderFour" p:colSpan="2"/>
     </property>
     <property name="comparables">
       <list>

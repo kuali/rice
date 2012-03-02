@@ -121,7 +121,7 @@
             </list>
           </property>
           <property name="header">
-            <bean parent="Uif-EditablePageHeaderField"/>
+            <bean parent="Uif-EditablePageHeader"/>
           </property>
         </bean>
 
@@ -190,7 +190,7 @@
   <bean id="UifCompView-Menu" parent="Uif-MenuNavigationGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-HeaderField-Two" p:headerText="Navigation"/>
+        <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page1"
               p:actionLabel="Input Fields"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page2"

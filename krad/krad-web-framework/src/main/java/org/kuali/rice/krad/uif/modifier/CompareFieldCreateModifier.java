@@ -21,10 +21,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -58,7 +58,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     private int defaultOrderSequence;
     private boolean generateCompareHeaders;
 
-    private HeaderField headerFieldPrototype;
+    private Header headerFieldPrototype;
     private List<ComparableInfo> comparables;
 
     public CompareFieldCreateModifier() {
@@ -132,7 +132,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         // generate compare header
         if (isGenerateCompareHeaders()) {
             for (ComparableInfo comparable : groupComparables) {
-                HeaderField compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
+                Header compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
                 compareHeaderField.setHeaderText(comparable.getHeaderText());
 
                 comparisonItems.add(compareHeaderField);
@@ -331,7 +331,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return HeaderField header field prototype
      */
-    public HeaderField getHeaderFieldPrototype() {
+    public Header getHeaderFieldPrototype() {
         return this.headerFieldPrototype;
     }
 
@@ -340,7 +340,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @param headerFieldPrototype
      */
-    public void setHeaderFieldPrototype(HeaderField headerFieldPrototype) {
+    public void setHeaderFieldPrototype(Header headerFieldPrototype) {
         this.headerFieldPrototype = headerFieldPrototype;
     }
 

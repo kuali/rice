@@ -197,7 +197,12 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             if (contract.getAttributes() != null) {
                 builder.getAttributes().putAll(contract.getAttributes());
             }
-            builder.setTypeId(contract.getTypeId());
+            if (StringUtils.isEmpty(contract.getTypeId())) {
+                // type_id is a foreign key, it needs to be either null or a real value, not empty String to avoid SQL Exception
+                builder.setTypeId(null);
+            } else {
+                builder.setTypeId(contract.getTypeId());
+            }
             builder.setDescription(contract.getDescription());
             if (contract.getMembers() != null) {
                 for (PeopleFlowMemberContract member : contract.getMembers()) {

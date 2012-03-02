@@ -85,9 +85,6 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
 
         // we need to translate attributes over, this is a bit more work, first let's do some validation
         if (peopleFlow.getTypeId() == null) {
-            if (!peopleFlow.getAttributes().isEmpty()) {
-                throw new RiceIllegalArgumentException("Given PeopleFlow definition does not have a type, but does have attribute values");
-            }
             if (kewTypeDefinition != null) {
                 throw new RiceIllegalArgumentException("PeopleFlow has no type id, but a KewTypeDefinition was supplied when it should not have been.");
             }
@@ -103,13 +100,15 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
 
         // now we need to effectively do a diff with the given attributes, first let's add new entries and update existing ones
         result.attributeBos = new ArrayList<PeopleFlowAttributeBo>();
-        peopleFlow.getAttributes().each { key, value ->
-            KewAttributeDefinition attributeDefinition = kewTypeDefinition.getAttributeDefinitionByName(key);
-            if (attributeDefinition == null) {
-                throw new RiceIllegalArgumentException("There is no attribute definition for the given attribute name '" + key + "'");
+        if (peopleFlow.getTypeId() != null ) { // if type is null drop attributes
+            peopleFlow.getAttributes().each { key, value ->
+                KewAttributeDefinition attributeDefinition = kewTypeDefinition.getAttributeDefinitionByName(key);
+                if (attributeDefinition == null) {
+                    throw new RiceIllegalArgumentException("There is no attribute definition for the given attribute name '" + key + "'");
+                }
+                // they have no way to pass us the id of the attribute from the given contract
+                result.attributeBos.add(PeopleFlowAttributeBo.from(attributeDefinition, null, peopleFlow.getId(), value));
             }
-            // they have no way to pass us the id of the attribute from the given contract
-            result.attributeBos.add(PeopleFlowAttributeBo.from(attributeDefinition, null, peopleFlow.getId(), value));
         }
 
         handleMembersUpdate(result, peopleFlow);

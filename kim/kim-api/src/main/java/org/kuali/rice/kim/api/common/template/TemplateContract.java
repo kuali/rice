@@ -19,6 +19,16 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+/**
+ *
+ * This is a contract for a Template. A template represents some course-grained information that is used to
+ * create a permission or responsibility which then contains more specific
+ * information in permission details or responsibility details.
+ * Eg: of a template would be Use Screen,Maintain records etc.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 
 public interface TemplateContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
     /**

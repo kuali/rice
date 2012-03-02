@@ -33,6 +33,24 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+/**
+ *
+ * This service provides operations for checking group membership, querying for group data,
+ * creating and updating groups.
+ *
+ * <p>A group is a collection of principals.  It's membership consists of direct principal
+ * assignment and/or nested group membership.  All groups are uniquely identified by a namespace
+ * code plus a name.
+ *
+ * <p>As mentioned previously, groups support nested group membership.  A principal or group is
+ * considered to be a "member" of a group if it is either directly assigned to the group or
+ * indirectly assigned (via a nested group membership).  A principal or group is said to be a
+ * "direct" member of another group only if it is directly assigned as a member of the group,
+ * and not via a nested group assignment.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 
 @WebService(name = "groupService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)

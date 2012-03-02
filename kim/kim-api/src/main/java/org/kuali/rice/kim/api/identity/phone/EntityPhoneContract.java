@@ -21,6 +21,12 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
+/**
+ * This is a contract for EntityPhone and represents the
+ * phone information of an Entity.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 
 public interface EntityPhoneContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
 

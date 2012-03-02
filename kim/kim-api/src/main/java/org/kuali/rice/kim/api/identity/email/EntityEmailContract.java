@@ -21,7 +21,11 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
-
+ /**
+  * This contract represents the email information  associated with an Entity.
+  *
+  * @author Kuali Rice Team (rice.collab@kuali.org)
+  */
 public interface EntityEmailContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
        /**
      * Gets this id of the parent identity object.

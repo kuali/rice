@@ -21,7 +21,16 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
-
+/**
+ *
+ * This is a contact for a GroupMember
+ *
+ * A principal or group is considered to be a "member" of a group if it is either directly assigned to the group or
+ * indirectly assigned (via a nested group membership).
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public interface GroupMemberContract extends Versioned, GloballyUnique, InactivatableFromTo, Identifiable {
 
     /**

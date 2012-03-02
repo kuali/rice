@@ -20,7 +20,12 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-
+/**
+ * This contract represents the affiliation for an Entity.
+ * Each person must have at least one affiliation associated with it.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface EntityAffiliationContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
 
     /**

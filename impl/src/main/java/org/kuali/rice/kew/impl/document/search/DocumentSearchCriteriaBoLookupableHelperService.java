@@ -482,8 +482,12 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
+        // KULRICE-6822 Route log link target parameter always causing pop-up
         if (isRouteLogPopup()) {
             link.setTarget("_blank");
+        }
+        else {
+            link.setTarget("_self");
         }
         link.setDisplayText("Route Log for document " + documentId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/" +

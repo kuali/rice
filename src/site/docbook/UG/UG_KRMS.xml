@@ -36,8 +36,64 @@
                 within the application. </para>
         </sect2>
         <sect2>
-            <title>KRMS Concepts</title>
-            <variablelist>
+            <title>Example Rule</title>
+            <para>Previously if a newly hired employee met a set of criteria, they would need to have an 
+                eVerify check ran in addition to the standard I-9 process. The initial requirement stated that
+                if the original hire date of an employee is greater that August 1, 2006, the grant is of a 
+                Government type, the grant amount is greater than $5,000, the grant is longer than 2 months, 
+                and the employee has not previously completed an eVerify check then their hire document needs 
+                to be routed to the special HR eVerify workgroup.</para>
+            <para>...or put another way</para>
+            <para><code>
+                IF hr.hire_date > "08/01/2006) and
+                cg.grant_type = "GOV" and
+                cg.grant_amount > "$5,000" and
+                cg.grant_duration > 60 and
+                hr.eVerify_comp = "N"
+                THEN ...
+            </code></para>
+        </sect2>
+        <sect2>
+            <title>KRMS Terms and Concepts</title>
+            <itemizedlist>
+                <listitem><para><emphasis role="bold">Agenda</emphasis> - a collection of rules in a defined plan.</para></listitem>
+                <listitem><para><emphasis role="bold">Rule</emphasis> - the logical expression in an Agenda. It consists of
+                        two parts, a proposition that returns a true of false value and an action or
+                        set of actions. The entire example presented above is a rule.</para></listitem>
+                <listitem><para><emphasis role="bold">Proposition</emphasis> - the logic that makes up a rule. A proposition
+                        is a single expression of logic that returns true or false. Propositions can
+                        be compounded, created using AND, OR, or both to create more complex logic.
+                        The entire IF statement in the example above comprises a compound
+                        proposition.</para></listitem>
+                <listitem><para><emphasis role="bold">Action</emphasis> - the steps to perform in the event that the rule,
+                        after being evaluated against the propositions, returns TRUE. In the example
+                        stated above this would involve routing the document to the HR eVerify
+                        workgroup and presenting a warning on the document. Other examples of
+                        actions include:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>Route to a <link linkend="peopleflow_ug_kew">PeopleFlow</link></para>
+                        </listitem>
+                        <listitem>
+                            <para>Present a questionnaire</para>
+                        </listitem>
+                        <listitem>
+                            <para>Display a validation error</para>
+                        </listitem>
+                    </itemizedlist></listitem>
+                <listitem><para><emphasis role="bold">Term</emphasis> - the definition of data that is evaluated in a
+                        proposition. hr.hire_date, cg.grant_type, etc. are examples of Terms in the
+                        working example.</para></listitem>
+                <listitem><para><emphasis role="bold">Term Specification</emphasis> - </para></listitem>
+                <listitem><para><emphasis role="bold">Fact</emphasis> - the actual data for the term being evaluated in a
+                        proposition, the data being passed in for evaluation. In the example above,
+                        if the grant in question had an amount of $10,000, then $10,000 would be the
+                        fact.</para></listitem>
+                <listitem><para><emphasis role="bold">Context</emphasis> - a collection of agendas, rules, terms, term
+                        specifications. In our example a context of "HReVerify" would be established
+                        for easy identification of the items related to these business rules.</para></listitem>
+            </itemizedlist>
+            <!--<variablelist>
                 <varlistentry>
                     <term>Rule</term>
                     <listitem>
@@ -50,7 +106,7 @@
                     <listitem>
                         <para>something you do if a Rule's logical Proposition is true, e.g. <itemizedlist>
                                 <listitem>
-                                    <para>route to a PeopleFlow</para>
+                                    <para>route to a <link linkend="peopleflow_ug_kew">PeopleFlow</link></para>
                                 </listitem>
                                 <listitem>
                                     <para>present a questionnaire</para>
@@ -118,8 +174,12 @@
                             </itemizedlist></para>
                     </listitem>
                 </varlistentry>
-            </variablelist>
+            </variablelist>-->
         </sect2>
+    </sect1>
+    <sect1>
+        <title>When to use KRMS?</title>
+        <para>A big question is, when should you use KRMS rules verses logic directly coded in an application or document?</para>
     </sect1>
     <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>The KRMS User Interface</title>
@@ -146,7 +206,7 @@
                     <title>KRMS Agenda Editor</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRMS-Agenda.png" align="left" scalefit="1"
+                            <imagedata fileref="../images/KRMS-Agenda.png" scalefit="1"
                                 contentwidth="640"/>
                         </imageobject>
                     </mediaobject>
@@ -192,7 +252,7 @@
             </para>
             <para>And below is the same Rule but scrolled down further on the page to show the
                 Action configuration as well.  In this example, when the logical proposition for
-                this rule is satisfied (when it is true), the rule will call a PeopleFlow to route a
+                this rule is satisfied (when it is true), the rule will call a <link linkend="peopleflow_ug_kew">PeopleFlow</link> to route a
                 request to it.</para>
             <para>
                 <figure>
@@ -208,7 +268,7 @@
             <para>You can add Simple Propositions via "add", or Compound Propositions via "add
                 parent".  Simple Propositions are configured with a Term and a user-supplied value
                 to compare it with.</para>
-            <para>For additional information on KRMS see the KRMS Technical Guide (TRG).</para>
+            <para>For additional information on KRMS see the KRMS section in the TRG.</para>
         </sect2>
     </sect1>
 </chapter>

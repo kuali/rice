@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.krad.dao.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -34,11 +23,18 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.OjbCollectionAware;
 import org.springframework.dao.DataAccessException;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is the OJB implementation of the BusinessObjectDao interface and should be used for generic business object unit
@@ -342,34 +338,8 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
     
     private Criteria buildCriteria(Object primaryKey) {
-    	Map<String, Object> fieldValues = new HashMap<String, Object>();
-        //create map of values
-    	for (Field field : primaryKey.getClass().getDeclaredFields()) {
-    		Object fieldValue;
-			try {
-                for (Annotation an : field.getAnnotations()) {
-                    //look for class' Id fields.  This is a bit of a hack because this relies on JPA
-                    //annotations existing, but removes any extra generated fields from the criteria.
-                    if (an.annotationType().getName().equals("javax.persistence.Id")) {
-                        fieldValue = primaryKey.getClass().getMethod("get" + StringUtils.capitalize(field.getName())).invoke(primaryKey);
-                        fieldValues.put(field.getName(), fieldValue);
-                        break;
-                    }
-                }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-    	}
+        Map<String, ?> fieldValues = KRADServiceLocatorWeb.getDataObjectMetaDataService().getPrimaryKeyFieldValues(primaryKey);
         
-        //profit
         return this.buildCriteria(fieldValues);
     }
     

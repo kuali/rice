@@ -348,6 +348,7 @@ function closeLightbox() {
 function createDatePicker(controlId, options) {
     jq(function() {
         jq("#" + controlId).datepicker(options);
+        jq("#" + controlId).datepicker('option','onSelect', function(){jq(this).trigger("focusout");});
     });
 
     // in order to compensate for jQuery's "Today" functionality (which does not actually return the date to the input box), alter the functionality

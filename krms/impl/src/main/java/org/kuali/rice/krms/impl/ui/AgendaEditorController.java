@@ -929,7 +929,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             AgendaItemChildAccessor.always.setChild(node, null);
 
             ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" right to ");
-            ruleEditorMessage.append(yougestWhenFalseSiblingInsertionPoint.getChild().getRule().getName()).append(" When FALSE group.");
+            ruleEditorMessage.append(olderSibling.getRule().getName()).append(" When FALSE group.");
         } else if (node.getAlways() != null) { // has younger sibling
             accessorToSelectedNode.setChild(node.getAlways());
             AgendaItemBo childsWhenTrue = node.getAlways().getWhenTrue();
@@ -937,7 +937,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             AgendaItemChildAccessor.always.setChild(node, childsWhenTrue);
 
             ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" right to ");
-            ruleEditorMessage.append(node.getRule().getName()).append(" When TRUE group");
+            ruleEditorMessage.append(childsWhenTrue.getRule().getName()).append(" When TRUE group");
         } // falls through if node is already the rightmost.
 
         if (bogusRootNode != null) {

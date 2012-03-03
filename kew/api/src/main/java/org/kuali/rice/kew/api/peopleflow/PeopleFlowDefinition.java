@@ -190,6 +190,17 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         }
 
         public static Builder create(PeopleFlowContract contract) {
+            Builder builder = createCopy(contract);
+            builder.setVersionNumber(contract.getVersionNumber());
+            if (contract.getMembers() != null) {
+                for (PeopleFlowMemberContract member : contract.getMembers()) {
+                    builder.getMembers().add(PeopleFlowMember.Builder.create(member));
+                }
+            }
+            return builder;
+        }
+
+        private static Builder createCopy(PeopleFlowContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -204,14 +215,18 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
                 builder.setTypeId(contract.getTypeId());
             }
             builder.setDescription(contract.getDescription());
-            if (contract.getMembers() != null) {
-                for (PeopleFlowMemberContract member : contract.getMembers()) {
-                    builder.getMembers().add(PeopleFlowMember.Builder.create(member));
-                }
-            }
             builder.setId(contract.getId());
             builder.setActive(contract.isActive());
-            builder.setVersionNumber(contract.getVersionNumber());
+            return builder;
+        }
+
+        public static Builder createMaintenanceCopy(PeopleFlowContract contract) {
+            Builder builder = createCopy(contract);
+            if (contract.getMembers() != null) {
+                for (PeopleFlowMemberContract member : contract.getMembers()) {
+                    builder.getMembers().add(PeopleFlowMember.Builder.createCopy(member));
+                }
+            }
             return builder;
         }
 

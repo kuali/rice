@@ -137,6 +137,14 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         }
     }
 
+    public static PeopleFlowDefinition maintenanceCopy(PeopleFlowBo peopleFlowBo) {
+        if (peopleFlowBo == null) {
+            return null;
+        }
+        PeopleFlowDefinition.Builder builder = PeopleFlowDefinition.Builder.createMaintenanceCopy(peopleFlowBo);
+        return builder.build();
+    }
+
     public static PeopleFlowDefinition to(PeopleFlowBo peopleFlowBo) {
         if (peopleFlowBo == null) {
             return null;

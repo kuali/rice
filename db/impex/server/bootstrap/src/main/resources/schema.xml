@@ -1980,9 +1980,9 @@
         <column name="GRP_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column name="GRP_ID" size="40" type="VARCHAR"/>
-        <column name="MBR_ID" size="40" type="VARCHAR"/>
-        <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
+        <column name="GRP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="P" name="MBR_TYP_CD" required="true" size="1" type="CHAR"/>
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
@@ -2443,9 +2443,9 @@
         <column name="ROLE_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column name="ROLE_ID" size="40" type="VARCHAR"/>
-        <column name="MBR_ID" size="40" type="VARCHAR"/>
-        <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
+        <column name="ROLE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="P" name="MBR_TYP_CD" required="true" size="1" type="CHAR"/>
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>

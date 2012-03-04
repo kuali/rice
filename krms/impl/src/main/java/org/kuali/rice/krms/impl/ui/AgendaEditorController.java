@@ -697,14 +697,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             accessorToSelectedNode.setChild(node.getAlways());
             AgendaItemChildAccessor.always.setChild(node, olderSibling);
 
+            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" up ");
+
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
                 agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenTrueId());
+                ruleEditorMessage.append(" to ").append(getFirstAgendaItem(agendaEditor.getAgenda()).getRule().getName()).append(" When TRUE group");
+            } else {
+                ruleEditorMessage.append(" within its sibling group, above " + olderSibling.getRule().getName());
             }
-            ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" up ");
-            ruleEditorMessage.append(" within its sibling group.");
-            agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         }
+        agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }
 
     @RequestMapping(params = "methodToCall=" + "moveDown")
@@ -810,7 +813,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
             }
             ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" down ");
-            ruleEditorMessage.append(" within its sibling group below ").append(youngerSibling.getRule().getName());
+            ruleEditorMessage.append(" within its sibling group, below ").append(youngerSibling.getRule().getName());
         } // falls through if already bottom-most
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }

@@ -937,12 +937,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             AgendaItemChildAccessor.always.setChild(node, childsWhenTrue);
 
             ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" right to ");
-            ruleEditorMessage.append(childsWhenTrue.getRule().getName()).append(" When TRUE group");
+            if (childsWhenTrue != null) { // childsWhenTrue is null if the topmost rule is moved right see bogusRootNode below
+                ruleEditorMessage.append(childsWhenTrue.getRule().getName()).append(" When TRUE group");
+            }
         } // falls through if node is already the rightmost.
 
         if (bogusRootNode != null) {
             // clean up special case with bogus root node
             agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
+            ruleEditorMessage.append(getFirstAgendaItem(agendaEditor.getAgenda()).getRule().getName()).append(" When TRUE group");
         }
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }

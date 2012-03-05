@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
+
 
 /**
- * Field that encloses an iframe element
+ * Content element that encloses an iframe
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IframeField extends FieldBase {
+public class Iframe extends ContentElementBase {
 	private static final long serialVersionUID = 5797473302619055088L;
 
 	private String source;
 	private String height;
 	private String frameborder;
-	private String hspace;
-	private String vspace;
 
-	public IframeField() {
+	public Iframe() {
 		super();
 	}
 
@@ -55,22 +54,6 @@ public class IframeField extends FieldBase {
 
 	public void setFrameborder(String frameborder) {
 		this.frameborder = frameborder;
-	}
-
-	public String getHspace() {
-		return this.hspace;
-	}
-
-	public void setHspace(String hspace) {
-		this.hspace = hspace;
-	}
-
-	public String getVspace() {
-		return this.vspace;
-	}
-
-	public void setVspace(String vspace) {
-		this.vspace = vspace;
 	}
 
 	/**

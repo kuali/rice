@@ -21,5 +21,21 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <bean id="Uif-ContentElementBase" abstract="true" parent="Uif-ContentElementBase-parentBean"/>
+  <bean id="Uif-ContentElementBase-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.ContentElementBase">
+    <property name="readOnly" value="@{#parent.readOnly}"/>
+  </bean>
+
+  <bean id="Uif-Iframe" parent="Uif-Iframe-parentBean"/>
+  <bean id="Uif-Iframe-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Iframe"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/element/iframe.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-iFrame</value>
+      </list>
+    </property>
+  </bean>
 
 </beans>

@@ -352,8 +352,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-IframeField" p:label="IframeField" p:width="800px" p:height="550px"
-              p:source="http://www.kuali.org"/>
+        <bean parent="Uif-Iframe" p:width="800px" p:height="550px" p:source="http://www.kuali.org"/>
       </list>
     </property>
   </bean>

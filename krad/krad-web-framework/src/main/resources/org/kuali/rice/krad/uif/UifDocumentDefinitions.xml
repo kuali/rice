@@ -244,7 +244,7 @@
     <property name="title" value="Route Log"/>
     <property name="items">
       <list>
-        <bean parent="Uif-IframeField" p:height="500" p:width="95%" p:vspace="0" p:hspace="0" p:frameborder="0">
+        <bean parent="Uif-Iframe" p:height="500" p:width="95%" p:vspace="0" p:hspace="0" p:frameborder="0">
           <property name="id" value="routeLogIFrame"/>
           <property name="source"
                     value="@{#ConfigProperties['workflow.url']}/RouteLog.do?documentId=@{workflowDocument.documentId}"/>

@@ -374,17 +374,6 @@ perform page navigation-->
     </property>
   </bean>
 
-  <bean id="Uif-IframeField" parent="Uif-IframeField-parentBean"/>
-  <bean id="Uif-IframeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.IframeField"
-        parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/iframeField.jsp"/>
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-iFrameField</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="Uif-ImageField" parent="Uif-ImageField-parentBean"/>
   <bean id="Uif-ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">

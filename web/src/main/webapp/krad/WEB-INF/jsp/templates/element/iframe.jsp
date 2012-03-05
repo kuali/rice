@@ -17,14 +17,13 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.IframeField"/>
+<tiles:useAttribute name="element" classname="org.kuali.rice.krad.uif.element.Iframe"/>
 
 <%--
     Standard HTML Iframe element
     
  --%>
 
-<iframe id="${field.id}" src="${field.source}" 
-        width="${field.width}" height="${field.height}" hspace="${field.hspace}" vspace="${field.vspace}" 
-        frameborder="${field.frameborder}" title="${field.title}">
+<iframe id="${element.id}" src="${element.source}" width="${element.width}" height="${element.height}"
+        frameborder="${element.frameborder}" title="${element.title}">
 </iframe>

@@ -67,6 +67,7 @@
               p:bindingObjectPath="document.newMaintainableObject.dataObject"/>
       </list>
     </property>
+    <property name="generateCompareHeaders" value="true"/>
   </bean>
 
   <!-- Other -->

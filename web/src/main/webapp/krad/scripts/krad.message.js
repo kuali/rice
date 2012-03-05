@@ -280,11 +280,29 @@ function showChangeIcon(fieldId) {
  * @param headerFieldId - id for the header field the icon should be added to
  */
 function showChangeIconOnHeader(headerFieldId) {
-    var headerSpan = jq("#" + headerFieldId + "_header");
-    var headerIcon = jq("#" + headerFieldId + "_changeIcon");
+    showChangeIconOnElement(headerFieldId, "_div");
+}
 
-    if (headerSpan.length > 0 && headerIcon.length == 0) {
-        headerSpan.append("<img id='" + headerFieldId + "_changeIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
+/**
+ * Add icon to a group header that indicates the data for the group has changed
+ *
+ * @param headerFieldId - id for the header field the icon should be added to
+ */
+function showChangeIconOnDisclosure(headerFieldId) {
+    showChangeIconOnElement(headerFieldId, "_toggle");
+}
+
+/**
+ * Add icon to a group header element (disclosure/header) that indicates the data for the group has changed
+ *
+ * @param fieldId - id for the header field the icon should be added to
+ */
+function showChangeIconOnElement(fieldId, idSuffix) {
+    var targetElement = jq("#" + fieldId + idSuffix).find("[class~=uif-header]");
+    var headerIcon = jq("#" + fieldId + "_changeIcon");
+
+    if (targetElement.length > 0 && headerIcon.length == 0) {
+        targetElement.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
     }
 }
 

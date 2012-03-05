@@ -99,6 +99,13 @@
       <type>test-jar</type>
     </dependency>
 
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-sampleapp</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <!-- HACK!! this dependency should not be here -->
     <dependency>
       <groupId>${project.groupId}</groupId>

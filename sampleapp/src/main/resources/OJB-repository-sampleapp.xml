@@ -23,7 +23,7 @@
 <descriptor-repository version="1.0">
 
 	<jdbc-connection-descriptor
-		jcd-alias="dataSource"
+		jcd-alias="dataSource-samplepp"
 		default-connection="false"
 		jdbc-level="3.0"
 		eager-release="false"
@@ -72,7 +72,7 @@
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 
-		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
+		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer" auto-delete="object" auto-retrieve="true" auto-update="none" proxy="false">
 			<foreignkey field-ref="foId" />
 		</reference-descriptor>
 
@@ -84,6 +84,8 @@
 	<class-descriptor class="edu.sampleu.travel.bo.TravelAccountExtension" table="TRV_ACCT_EXT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="accountTypeCode" column="acct_type" jdbc-type="VARCHAR" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
 		<reference-descriptor name="accountType" class-ref="edu.sampleu.travel.bo.TravelAccountType" auto-delete="none" auto-retrieve="true" auto-update="none" proxy="true">
 			<foreignkey field-ref="accountTypeCode" />
 		</reference-descriptor>

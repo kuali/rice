@@ -209,10 +209,19 @@ function getLabel(id){
 		return "";
 	}
 }
-
-function runHiddenScripts(id){
+/**
+ * runs hidden scripts. The hidden scripts are contained in hidden input elements
+ *
+ * @param id - the tag id or selector expression to use. If empty, run all hidden scripts
+ * @param isSelector - when present and true, the value given for the id used as jquery selector expression
+ */
+function runHiddenScripts(id, isSelector){
 	if(id){
-		jq("#" + id).find("input[name='script']").each(function(){
+        var selector = "#" + id;
+        if (isSelector && isSelector == true) {
+            selector = id;
+        }
+		jq(selector).find("input[name='script']").each(function(){
 			eval(jq(this).val());
             jq(this).attr("script", "first_run");
 			jq(this).removeAttr("name");

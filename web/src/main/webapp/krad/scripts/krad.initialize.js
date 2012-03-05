@@ -27,7 +27,7 @@ var pageValidatorReady = false;
 //sets up the validator with the necessary default settings and methods
 //note the use of onClick and onFocusout for on the fly validation client side
 function setupValidator(){
-	jq('#kualiForm').dirty_form({changedClass: 'dirty'});
+	jq('#kualiForm').dirty_form({changedClass: 'dirty', includeHidden: true});
 
 	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){

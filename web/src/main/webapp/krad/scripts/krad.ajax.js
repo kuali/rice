@@ -138,14 +138,16 @@ function submitForm(){
 function replacePage(contentDiv){
 	var page = jq("#viewpage_div", contentDiv);
     page.hide();
-	jq("#viewpage_div").replaceWith(page);
+    // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
+    var pageInLayout = "#viewlayout_div > #viewpage_div";
+	jq(pageInLayout).replaceWith(page);
 
 	setPageBreadcrumb();
 
 	pageValidatorReady = false;
-	runHiddenScripts("viewpage_div");
+	runHiddenScripts(pageInLayout, true);
 
-    jq("#viewpage_div").show();
+    jq(pageInLayout).show();
 }
 
 /**

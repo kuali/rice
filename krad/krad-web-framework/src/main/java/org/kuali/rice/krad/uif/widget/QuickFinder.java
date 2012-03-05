@@ -312,10 +312,21 @@ public class QuickFinder extends WidgetBase {
         this.dataObjectClassName = dataObjectClassName;
     }
 
+    /**
+     * View name for the lookup view that should be invoked with the quickfinder is selected, necessary if there are
+     * multiple lookup views for the same data object class
+     *
+     * @return String configured view name for the lookup
+     */
     public String getViewName() {
         return this.viewName;
     }
 
+    /**
+     * Setter for the view name configured on the lookup view that should be invoked by the quickfinder widget
+     *
+     * @param viewName
+     */
     public void setViewName(String viewName) {
         this.viewName = viewName;
     }

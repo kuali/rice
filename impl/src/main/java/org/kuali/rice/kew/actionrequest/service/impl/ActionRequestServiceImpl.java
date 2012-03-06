@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -60,6 +61,7 @@ import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+
 
 /**
  * Default implementation of the {@link ActionRequestService}.
@@ -299,10 +301,32 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     private List<ActionItem> createActionItemsForPrincipals(ActionRequestValue actionRequest, List<String> principalIds) {
         List<ActionItem> actionItems = new ArrayList<ActionItem>();
         for (String principalId: principalIds) {
+
             ActionItem actionItem = getActionListService().createActionItemForActionRequest(actionRequest);
             actionItem.setPrincipalId(principalId);
             actionItem.setRoleName(actionRequest.getQualifiedRoleName());
-            actionItems.add(actionItem);
+
+            //KULRICE-3307 Prevent workflow from attempting to activate requests for null principals
+            String ignoreUnknownPrincipalIdsValue = ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.WORKFLOW_ACTION_IGNORE_UNKOWN_PRINCIPAL_IDS);
+            boolean ignoreUnknownPrincipalIds = Boolean.parseBoolean(ignoreUnknownPrincipalIdsValue);
+
+            if(principalId==null && ignoreUnknownPrincipalIds)
+            {
+                LOG.warn("Ignoring action items with null principalId");
+            }
+            else
+            {
+                if(principalId==null)
+                {
+                    NullPointerException e = new NullPointerException("Exception thrown when trying to add action item with null principalId");
+                    LOG.error(e);
+                    throw e;
+                }
+                else
+                {
+                    actionItems.add(actionItem);
+                }
+            }
         }
         return actionItems;
     }

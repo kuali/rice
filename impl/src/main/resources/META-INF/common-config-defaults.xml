@@ -421,6 +421,7 @@
   <param name="ken.soapExposedService.jaxws.security" override="false">true</param>
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
+  <param name="rice.kew.ignoreUnknownPrincipalIds" override="false">false</param>
 
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>

@@ -837,7 +837,7 @@
         <column default="0" name="DOC_TYP_VER_NBR" size="10" type="DECIMAL"/>
         <column name="ACTV_IND" size="1" type="DECIMAL"/>
         <column name="CUR_IND" size="1" type="DECIMAL"/>
-        <column name="LBL" size="128" type="VARCHAR"/>
+        <column name="LBL" required="true" size="128" type="VARCHAR"/>
         <column name="PREV_DOC_TYP_VER_NBR" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_DESC" size="4000" type="VARCHAR"/>
         <column name="DOC_HDLR_URL" size="255" type="VARCHAR"/>

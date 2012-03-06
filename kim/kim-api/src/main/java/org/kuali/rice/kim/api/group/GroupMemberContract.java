@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 /**
  *
- * This is a contact for a GroupMember
+ * This is a contract for a GroupMember
  *
  * A principal or group is considered to be a "member" of a group if it is either directly assigned to the group or
  * indirectly assigned (via a nested group membership).

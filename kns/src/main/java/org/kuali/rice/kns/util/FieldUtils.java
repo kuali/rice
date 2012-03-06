@@ -1542,7 +1542,7 @@ public final class FieldUtils {
 
         List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
         builder.setDataType(DataType.valueOf(field.getFieldDataType().toUpperCase()));
-
+        
         builder.setShortLabel(field.getFieldLabel());
         builder.setLongLabel(field.getMainFieldLabel());
         builder.setHelpSummary(field.getFieldHelpSummary());
@@ -1557,7 +1557,7 @@ public final class FieldUtils {
         //builder.setRegexContraintMsg();
         builder.setRequired(field.isFieldRequired());
         builder.setDefaultValues(Collections.singletonList(field.getDefaultValue()));
-        builder.setControl(FieldUtils.constructControl(field.getFieldType(), field.getFieldValidValues()));
+        builder.setControl(FieldUtils.constructControl(field, field.getFieldValidValues()));
         if (field.getHasLookupable()) {
             builder.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create());
             RemotableQuickFinder.Builder quickfinder =
@@ -1577,39 +1577,44 @@ public final class FieldUtils {
         return builder.build();
     }
 
-    private static RemotableAbstractControl.Builder constructControl(String type, List<KeyValue> options) {
+    private static RemotableAbstractControl.Builder constructControl(Field field, List<KeyValue> options) {
 
-        RemotableAbstractControl.Builder control = null;
+        //RemotableAbstractControl.Builder control = null;
         Map<String, String> optionMap = new LinkedHashMap<String, String>();
         if (options != null) {
             for (KeyValue option : options) {
                 optionMap.put(option.getKey(), option.getValue());
             }
         }
+        String type = field.getFieldType();
         if (Field.TEXT.equals(type) || Field.DATEPICKER.equals(type)) {
-			control = RemotableTextInput.Builder.create();
+            RemotableTextInput.Builder control = RemotableTextInput.Builder.create();
+            control.setSize(field.getSize());
+            return control;
         } else if (Field.TEXT_AREA.equals(type)) {
-            control = RemotableTextarea.Builder.create();
+            RemotableTextarea.Builder control = RemotableTextarea.Builder.create();
+            control.setCols(field.getCols());
+            control.setRows(field.getRows());
+            return control;
 		} else if (Field.DROPDOWN.equals(type)) {
-            control = RemotableSelect.Builder.create(optionMap);
+            return RemotableSelect.Builder.create(optionMap);
         } else if (Field.CHECKBOX.equals(type)) {
-            control = RemotableCheckbox.Builder.create();
+            return RemotableCheckbox.Builder.create();
 		} else if (Field.RADIO.equals(type)) {
-            control = RemotableRadioButtonGroup.Builder.create(optionMap);
+            return RemotableRadioButtonGroup.Builder.create(optionMap);
 		} else if (Field.HIDDEN.equals(type)) {
-            control = RemotableHiddenInput.Builder.create();
+            return RemotableHiddenInput.Builder.create();
 		} else if (Field.MULTIBOX.equals(type)) {
-            RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
-            builder.setMultiple(true);
-            control = builder;
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setMultiple(true);
+            return control;
         } else if (Field.MULTISELECT.equals(type)) {
-            RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
-            builder.setMultiple(true);
-            control = builder;
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setMultiple(true);
+            return control;
         } else {
 		    throw new IllegalArgumentException("Illegal field type found: " + type);
         }
-        return control;
 
     }
 
@@ -1622,6 +1627,7 @@ public final class FieldUtils {
         }
         if (control == null || control instanceof RemotableTextInput) {
             fieldType = Field.TEXT;
+            field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
         } else if (control instanceof RemotableCheckboxGroup) {
             RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
             fieldType = Field.CHECKBOX;
@@ -1647,6 +1653,8 @@ public final class FieldUtils {
             }
         } else if (control instanceof RemotableTextarea) {
             fieldType = Field.TEXT_AREA;
+            field.setCols(((RemotableTextarea)remotableField.getControl()).getCols().intValue());
+            field.setSize(((RemotableTextarea)remotableField.getControl()).getRows().intValue());
         } else {
             throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
         }

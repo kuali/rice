@@ -38,7 +38,6 @@ public class RouteLogForm extends KualiForm {
     private List rootRequests = new ArrayList();
     private int pendingActionRequestCount;
     private List<ActionRequestValue> futureRootRequests = new ArrayList<ActionRequestValue>();
-    private List<String> links = new ArrayList<String>();
     private int futureActionRequestCount;
     private boolean showFuture;
     private String showFutureError;
@@ -157,16 +156,8 @@ public class RouteLogForm extends KualiForm {
 	public void setEnableLogAction(boolean enableLogAction) {
 		this.enableLogAction = enableLogAction;
 	}
-
-    public List<String> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<String> links) {
-        this.links = links;
-    }
-
-    public String getHeaderMenuBar() {
+	
+	public String getHeaderMenuBar() {
 		Properties parameters = new Properties();
         parameters.put("showFuture", isShowFuture());
         parameters.put("showNotes", isShowNotes());

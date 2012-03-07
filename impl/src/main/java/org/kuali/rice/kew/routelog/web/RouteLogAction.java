@@ -103,43 +103,6 @@ public class RouteLogAction extends KewKualiAction {
         }
         request.setAttribute("routeHeader", routeHeader);
         
-//        //
-//        // Populate links
-//        //
-//
-//        RouteNodeService routeNodeService = KEWServiceLocator.getRouteNodeService();
-//        List<RouteNodeInstance> initialNodeInstances = routeNodeService.getInitialNodeInstances(routeHeader.getDocumentId());
-//        if (initialNodeInstances != null && initialNodeInstances.size() == 1) {
-//            RouteNodeInstance routeNodeInstance = initialNodeInstances.get(0);
-//
-//            // need helper method to get action request for the RNI
-//            ActionRequestValue parentRequest = getParentRequest(routeNodeInstance, rlForm.getRootRequests());
-//            ActionTakenValue parentTaken = getActionTaken(parentRequest);
-//
-//            String parentKey;
-//            if (parentTaken != null) {
-//                parentKey = "at" + parentTaken.getActionTakenId();
-//            } else {
-//                parentKey = "ar" + parentRequest.getActionRequestId();
-//            }
-//
-//            List<RouteNodeInstance> nextNodeInstances = routeNodeInstance.getNextNodeInstances();
-//            if (nextNodeInstances != null) for (RouteNodeInstance child : nextNodeInstances) {
-//                ActionRequestValue childRequest = getParentRequest(child, rlForm.getRootRequests());
-//                ActionTakenValue childTaken = getActionTaken(childRequest);
-//
-//                String childKey;
-//                if (childTaken != null) {
-//                    childKey = "at" + childTaken.getActionTakenId();
-//                } else {
-//                    childKey = "ar" + childRequest.getActionRequestId();
-//                }
-//
-//                // source:"at2344", target:"ar2372"
-//                rlForm.getLinks().add("source:\"" + parentKey + "\", target:\"" + childKey + "\"");
-//            }
-//        }
-        
 		// check whether action message logging should be enabled, user must
 		// have KIM permission for doc type 
         boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
@@ -151,28 +114,6 @@ public class RouteLogAction extends KewKualiAction {
 		}
         
         return super.execute(mapping, rlForm, request, response);
-    }
-
-    private ActionTakenValue getActionTaken(ActionRequestValue request) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    private ActionRequestValue getParentRequest(RouteNodeInstance routeNodeInstance, List rootRequests) {
-        ActionRequestValue rootRequest = null;
-        List<ActionRequestValue> actionRequestValues = getActionRequestValues(routeNodeInstance, rootRequests);
-        for (ActionRequestValue actionRequestValue : actionRequestValues) {
-            if (actionRequestValue.getParentActionRequestId() == null) {
-                rootRequest = actionRequestValue;
-                break;
-            }
-        }
-        return  rootRequest;
-    }
-
-    private List<ActionRequestValue> getActionRequestValues(RouteNodeInstance routeNodeInstance, List requests) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
     }
 
     @SuppressWarnings("unchecked")

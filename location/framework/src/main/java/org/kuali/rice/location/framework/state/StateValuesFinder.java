@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.location.framework.state;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.services.LocationApiServiceLocator;
 import org.kuali.rice.location.api.state.State;
 
@@ -28,11 +30,17 @@ import java.util.List;
 
 public class StateValuesFinder extends KeyValuesBase {
 
-    private String countryCode = "US";
+    private String countryCode = "";
 
     @Override
 	public List<KeyValue> getKeyValues() {
     	List<KeyValue> labels = new ArrayList<KeyValue>();
+        if (StringUtils.isEmpty(this.countryCode)) {
+            Country defaultCountry = LocationApiServiceLocator.getCountryService().getDefaultCountry();
+            if (defaultCountry != null) {
+                countryCode = defaultCountry.getCode();
+            }
+        }
         List<State> baseCodes = LocationApiServiceLocator.getStateService().findAllStatesInCountry(countryCode);
         List<State> codes = new ArrayList<State>( baseCodes );
         Collections.sort(codes, new Comparator<State> () {

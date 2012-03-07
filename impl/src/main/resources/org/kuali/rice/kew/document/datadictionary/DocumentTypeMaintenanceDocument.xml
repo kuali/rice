@@ -21,6 +21,7 @@
   <bean id="DocumentTypeMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
     <property name="maintainableClass" value="org.kuali.rice.kew.document.DocumentTypeMaintainable"/>
+    <property name="businessRulesClass" value="org.kuali.rice.kew.document.DocumentTypeMaintainableBusRule"/>
     <property name="maintainableSections">
       <list>
         <ref bean="DocumentTypeMaintenanceDocument-EditDocumentType"/>

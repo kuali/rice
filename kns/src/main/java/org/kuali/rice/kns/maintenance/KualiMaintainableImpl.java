@@ -290,6 +290,11 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return sections;
 	}
 
+
+    @Override
+    public void saveDataObject(){
+        saveBusinessObject();
+    }
     /**
 	 * 
 	 * @see Maintainable#saveBusinessObject()

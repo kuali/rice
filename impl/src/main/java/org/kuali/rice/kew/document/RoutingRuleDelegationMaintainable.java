@@ -101,6 +101,18 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
     	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation(), true);
     }
 
+    /**
+     * A complete override of the implementation for saving a Rule
+     */
+    @Override
+    public void saveDataObject() {
+    	WebRuleUtils.clearKeysForSave(getThisRuleDelegation());
+    	WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
+    	WebRuleUtils.translateFieldValuesForSave(getThisRule());
+    	WebRuleUtils.processRuleForDelegationSave(getThisRuleDelegation());
+    	KEWServiceLocator.getRuleService().makeCurrent(getThisRuleDelegation(), true);
+    }
+    
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
     	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));

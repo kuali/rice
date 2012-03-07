@@ -291,15 +291,10 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	}
 
 
-    /**
-     * delegate this call to KNS' {@link org.kuali.rice.kns.maintenance.Maintainable#saveBusinessObject()} in order
-     * to support KNS maintainables.
-     */
     @Override
-    public void saveDataObject() {
+    public void saveDataObject(){
         saveBusinessObject();
     }
-
     /**
 	 * 
 	 * @see Maintainable#saveBusinessObject()

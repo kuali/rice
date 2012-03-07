@@ -426,14 +426,12 @@ public class ModuleServiceBase implements ModuleService {
         if (getModuleConfiguration() == null) {
             throw new IllegalStateException("Module configuration has not been initialized for the module service.");
         }
-        int classModifiers = externalizableBusinessObjectInterface.getModifiers();
         Map<Class, Class> ebos = getModuleConfiguration().getExternalizableBusinessObjectImplementations();
-
+        if (ebos == null) {
+            return null;
+        }
         if (ebos.containsValue(externalizableBusinessObjectInterface)) {
             return externalizableBusinessObjectInterface;
-        }
-        if (getModuleConfiguration().getExternalizableBusinessObjectImplementations() == null) {
-            return null;
         } else {
             Class<E> implementationClass = ebos.get(externalizableBusinessObjectInterface);
             int implClassModifiers = implementationClass.getModifiers();

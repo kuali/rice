@@ -1627,7 +1627,9 @@ public final class FieldUtils {
         }
         if (control == null || control instanceof RemotableTextInput) {
             fieldType = Field.TEXT;
-            field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
+                field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            }
         } else if (control instanceof RemotableCheckboxGroup) {
             RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
             fieldType = Field.CHECKBOX;
@@ -1653,8 +1655,11 @@ public final class FieldUtils {
             }
         } else if (control instanceof RemotableTextarea) {
             fieldType = Field.TEXT_AREA;
-            field.setCols(((RemotableTextarea)remotableField.getControl()).getCols().intValue());
-            field.setSize(((RemotableTextarea)remotableField.getControl()).getRows().intValue());
+            if (((RemotableTextarea)remotableField.getControl()).getCols() != null
+                    && ((RemotableTextarea)remotableField.getControl()).getRows() != null) {
+                field.setCols(((RemotableTextarea)remotableField.getControl()).getCols().intValue());
+                field.setSize(((RemotableTextarea)remotableField.getControl()).getRows().intValue());
+            }
         } else {
             throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
         }

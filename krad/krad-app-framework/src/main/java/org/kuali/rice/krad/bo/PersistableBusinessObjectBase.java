@@ -236,7 +236,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
      * @see org.apache.ojb.broker.PersistenceBrokerAware#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
      */
     public final void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	prePersist();
+        setObjectId(UUID.randomUUID().toString());
     }
     
     /**
@@ -275,7 +275,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     protected void preUpdate() {
     	generateAndSetObjectIdIfNeeded();
     }
-        
+
     /**
      * If this PersistableBusinessObject does not already have a unique objectId, this method will generate
      * one and set it's value on this object.

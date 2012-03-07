@@ -331,10 +331,32 @@ public class QuickFinder extends WidgetBase {
         this.viewName = viewName;
     }
 
+    /**
+     * List of property names on the model that should be refreshed when the lookup returns
+     *
+     * <p>
+     * Note this is only relevant when the return by script option is not enabled (meaning the server will be invoked
+     * on the lookup return call)
+     * </p>
+     *
+     * <p>
+     * When a lookup return call is made (to return a result value) the controller refresh method will be invoked. If
+     * refresh properties are configured, a call to refresh those references from the database will be made. This is
+     * useful if the lookup returns a foreign key field and the related record is needed.
+     * </p>
+     *
+     * @return String list of property names to refresh
+     * TODO: refactor this to be a List type
+     */
     public String getReferencesToRefresh() {
         return this.referencesToRefresh;
     }
 
+    /**
+     * Setter for the list of property names that should be refreshed when the lookup returns
+     *
+     * @param referencesToRefresh
+     */
     public void setReferencesToRefresh(String referencesToRefresh) {
         this.referencesToRefresh = referencesToRefresh;
     }

@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -154,9 +155,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
         // generate the compare items from the configured group
         Group group = (Group) component;
+        boolean changeIconShowedOnHeader = false;
         for (Component item : group.getItems()) {
             int defaultSuffix = 0;
-            boolean changeIconShowedOnHeader = false;
             for (ComparableInfo comparable : groupComparables) {
                 String idSuffix = comparable.getIdSuffix();
                 if (StringUtils.isBlank(idSuffix)) {
@@ -178,13 +179,19 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 if (performValueChangeComparison && comparable.isHighlightValueChange() && !comparable
                         .isCompareToForValueChange()) {
                     boolean valueChanged = performValueComparison(group, compareItem, model, compareValueObjectBindingPath);
-                    if (valueChanged && !changeIconShowedOnHeader && isGenerateCompareHeaders()
-                            && group.getComponentModifiers().contains(this)) {
-                        // add icon to group header if not done so yet
-                        if (group.getDisclosure().isRender()) {
-                            group.getDisclosure().setOnDocumentReadyScript("showChangeIconOnDisclosure('" + group.getId() + "');");
-                        } else if (group.getHeader() != null){
-                            group.getHeader().setOnDocumentReadyScript("showChangeIconOnHeader('" + group.getHeader().getId() + "');");
+                    // add icon to group header if not done so yet
+                    if (valueChanged && !changeIconShowedOnHeader && isGenerateCompareHeaders()) {
+                        Group groupToSetHeader = null;
+                        if (group.getDisclosure() != null && group.getDisclosure().isRender()) {
+                            groupToSetHeader = group;
+                        } else if (group.getContext().get(UifConstants.ContextVariableNames.PARENT) != null) {
+                            // use the parent group to set the notification if available
+                            groupToSetHeader = (Group) group.getContext().get(UifConstants.ContextVariableNames.PARENT);
+                        }
+                        if (groupToSetHeader.getDisclosure().isRender()) {
+                            groupToSetHeader.getDisclosure().setOnDocumentReadyScript("showChangeIconOnDisclosure('" + groupToSetHeader.getId() + "');");
+                        } else if (groupToSetHeader.getHeader() != null){
+                            groupToSetHeader.getHeader().setOnDocumentReadyScript("showChangeIconOnHeader('" + groupToSetHeader.getHeader().getId() + "');");
                         }
                         changeIconShowedOnHeader = true;
                     }

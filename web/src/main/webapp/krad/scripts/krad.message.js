@@ -298,7 +298,7 @@ function showChangeIconOnDisclosure(headerFieldId) {
  * @param fieldId - id for the header field the icon should be added to
  */
 function showChangeIconOnElement(fieldId, idSuffix) {
-    var targetElement = jq("#" + fieldId + idSuffix).find("[class~=uif-header]");
+    var targetElement = jq("#" + fieldId + idSuffix).find("[class~=uif-headerText]");
     var headerIcon = jq("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {

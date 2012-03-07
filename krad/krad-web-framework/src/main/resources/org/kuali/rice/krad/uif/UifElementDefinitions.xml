@@ -38,4 +38,22 @@
     </property>
   </bean>
 
+  <bean id="Uif-Image" parent="Uif-Image-parentBean"/>
+  <bean id="Uif-Image-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Image"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/element/image.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-image</value>
+      </list>
+    </property>
+    <property name="captionHeaderAboveImage" value="true"/>
+    <property name="captionHeader">
+      <bean parent="Uif-HeaderFour"/>
+    </property>
+    <property name="cutline">
+      <bean parent="Uif-MessageField" p:messageType="CUTLINE" p:styleClasses="kr-cutline"/>
+    </property>
+  </bean>
+
 </beans>

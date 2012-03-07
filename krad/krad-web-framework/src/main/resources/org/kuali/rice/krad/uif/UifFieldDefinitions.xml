@@ -383,12 +383,8 @@ perform page navigation-->
         <value>uif-imageField</value>
       </list>
     </property>
-    <property name="captionHeaderAboveImage" value="true"/>
-    <property name="captionHeader">
-      <bean parent="Uif-HeaderFour"/>
-    </property>
-    <property name="cutline">
-      <bean parent="Uif-MessageField" p:messageType="CUTLINE" p:styleClasses="kr-cutline"/>
+    <property name="image">
+      <bean parent="Uif-Image"/>
     </property>
   </bean>
 

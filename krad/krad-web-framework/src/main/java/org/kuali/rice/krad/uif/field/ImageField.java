@@ -15,120 +15,115 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.element.Image;
+
+import java.util.List;
 
 /**
- * Field that encloses an image element
+ * Field that wraps an image content element
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ImageField extends FieldBase {
     private static final long serialVersionUID = -7994212503770623408L;
 
-    private String source;
-    private String altText;
-    private String height;
-    private String width;
-
-    private boolean captionHeaderAboveImage;
-
-    private String captionHeaderText;
-    private Header captionHeader;
-
-    private String cutlineText;
-    private MessageField cutline;
+    private Image image;
 
     public ImageField() {
         super();
     }
 
-    public void performFinalize(View view, Object model, Component parent) {
-        super.performFinalize(view, model, parent);
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
-        if (StringUtils.isNotBlank(captionHeaderText)) {
-            captionHeader.setHeaderText(captionHeaderText);
-        }
+        components.add(image);
 
-        if (StringUtils.isNotBlank(cutlineText)) {
-            cutline.setMessageText(cutlineText);
-        }
+        return components;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public String getSource() {
-        return this.source;
+        return image.getSource();
     }
 
     public void setSource(String source) {
-        this.source = source;
+        image.setSource(source);
     }
 
     public String getAltText() {
-        return this.altText;
+        return image.getAltText();
     }
 
     public void setAltText(String altText) {
-        this.altText = altText;
+        image.setAltText(altText);
     }
 
     public String getHeight() {
-        return this.height;
+        return image.getHeight();
     }
 
     public void setHeight(String height) {
-        this.height = height;
+        image.setHeight(height);
     }
 
     public void setWidth(String width) {
-        this.width = width;
+        image.setWidth(width);
     }
 
     public String getWidth() {
-        return width;
+        return image.getWidth();
     }
 
     public String getCaptionHeaderText() {
-        return captionHeaderText;
+        return image.getCaptionHeaderText();
     }
 
     public void setCaptionHeaderText(String captionHeaderText) {
-        this.captionHeaderText = captionHeaderText;
+        image.setCaptionHeaderText(captionHeaderText);
     }
 
     public Header getCaptionHeader() {
-        return captionHeader;
+        return image.getCaptionHeader();
     }
 
     public void setCaptionHeader(Header captionHeader) {
-        this.captionHeader = captionHeader;
+        image.setCaptionHeader(captionHeader);
     }
 
     public String getCutlineText() {
-        return cutlineText;
+        return image.getCutlineText();
     }
 
     public void setCutlineText(String cutlineText) {
-        this.cutlineText = cutlineText;
+        image.setCutlineText(cutlineText);
     }
 
     public MessageField getCutline() {
-        return cutline;
+        return image.getCutline();
     }
 
-    /**
-     * A cutline is the text describing the image in detail (this is also often confusingly called a caption).
-     */
     public void setCutline(MessageField cutline) {
-        this.cutline = cutline;
+        image.setCutline(cutline);
     }
 
     public boolean isCaptionHeaderAboveImage() {
-        return captionHeaderAboveImage;
+        return image.isCaptionHeaderAboveImage();
     }
 
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
-        this.captionHeaderAboveImage = captionHeaderAboveImage;
+        image.setCaptionHeaderAboveImage(captionHeaderAboveImage);
     }
 }

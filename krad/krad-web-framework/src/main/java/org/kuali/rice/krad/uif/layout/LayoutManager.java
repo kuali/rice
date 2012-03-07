@@ -236,14 +236,14 @@ public interface LayoutManager extends Configurable, Serializable {
 	/**
 	 * Setter for the layout manager div style class
 	 * 
-	 * @param styleClass
+	 * @param styleClasses
 	 */
 	public void setStyleClasses(List<String> styleClasses);
 
 	/**
 	 * This method adds a single style class to the list of css style classes on this component
 	 * 
-	 * @param style
+	 * @param styleClass
 	 */
 	public void addStyleClass(String styleClass);
 

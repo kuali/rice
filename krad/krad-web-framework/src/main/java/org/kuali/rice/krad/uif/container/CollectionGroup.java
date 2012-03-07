@@ -26,11 +26,10 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.DataFieldSecurity;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -66,7 +65,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderAddLine;
     private String addLinePropertyName;
     private BindingInfo addLineBindingInfo;
-    private LabelField addLineLabelField;
+    private Label addLineLabel;
     private List<? extends Component> addLineFields;
     private List<ActionField> addLineActionFields;
 
@@ -253,7 +252,7 @@ public class CollectionGroup extends Group implements DataBinding {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(addLineLabelField);
+        components.add(addLineLabel);
         components.add(collectionLookup);
 
         // remove the containers items because we don't want them as children
@@ -398,7 +397,8 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Convenience getter for the add line label field text. The text is used to
      * label the add line when rendered and its placement depends on the
-     * <code>LayoutManager</code>.
+     * <code>LayoutManager</code>
+     *
      * <p>
      * For the <code>TableLayoutManager</code> the label appears in the sequence
      * column to the left of the add line fields. For the
@@ -408,9 +408,9 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return String add line label
      */
-    public String getAddLineLabel() {
-        if (getAddLineLabelField() != null) {
-            return getAddLineLabelField().getLabelText();
+    public String getAddLabel() {
+        if (getAddLineLabel() != null) {
+            return getAddLineLabel().getLabelText();
         }
 
         return null;
@@ -419,32 +419,32 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Setter for the add line label text
      *
-     * @param addLineLabel
+     * @param addLabelText
      */
-    public void setAddLineLabel(String addLineLabel) {
-        if (getAddLineLabelField() != null) {
-            getAddLineLabelField().setLabelText(addLineLabel);
+    public void setAddLabel(String addLabelText) {
+        if (getAddLineLabel() != null) {
+            getAddLineLabel().setLabelText(addLabelText);
         }
     }
 
     /**
-     * <code>LabelField</code> instance for the add line label
+     * <code>Label</code> instance for the add line label
      *
-     * @return LabelField add line label field
-     * @see #getAddLineLabel()
+     * @return Label add line label field
+     * @see #getAddLabel
      */
-    public LabelField getAddLineLabelField() {
-        return this.addLineLabelField;
+    public Label getAddLineLabel() {
+        return this.addLineLabel;
     }
 
     /**
-     * Setter for the <code>LabelField</code> instance for the add line label
+     * Setter for the <code>Label</code> instance for the add line label
      *
-     * @param addLineLabelField
-     * @see #getAddLineLabel()
+     * @param addLineLabel
+     * @see #getAddLabel
      */
-    public void setAddLineLabelField(LabelField addLineLabelField) {
-        this.addLineLabelField = addLineLabelField;
+    public void setAddLineLabel(Label addLineLabel) {
+        this.addLineLabel = addLineLabel;
     }
 
     /**
@@ -471,7 +471,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * <code>BindingInfo</code> instance for the add line property used to
      * determine the full binding path. If add line name given
-     * {@link #getAddLineLabel()} then it is set as the binding name on the
+     * {@link #getAddLabel} then it is set as the binding name on the
      * binding info. Add line label and binding info are not required, in which
      * case the framework will manage the new add line instances through a
      * generic map (model must extend UifFormBase)

@@ -22,7 +22,6 @@ import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;

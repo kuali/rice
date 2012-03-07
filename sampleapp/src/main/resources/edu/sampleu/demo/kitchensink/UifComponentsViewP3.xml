@@ -57,12 +57,12 @@
 			<list>
 				<bean parent="GenericTextField" p:required="true"
 					p:propertyName="field2" />
-				<bean parent="GenericTextArea" p:required="true" p:labelField.requiredMessageField.messageText="Required"
+				<bean parent="GenericTextArea" p:required="true" p:fieldLabel.requiredMessageField.messageText="Required"
               p:instructionalText="different text for required indicator"
 					p:propertyName="field3" />
 				<bean parent="GenericRadio" p:required="true" p:propertyName="field4"
 					p:instructionalText="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal" />
-				<bean parent="GenericSelection" p:required="true" p:instructionalText="different required indicator location" p:labelField.requiredMessagePlacement="RIGHT"
+				<bean parent="GenericSelection" p:required="true" p:instructionalText="different required indicator location" p:fieldLabel.requiredMessagePlacement="RIGHT"
 					p:propertyName="field5" />
 			</list>
 		</property>

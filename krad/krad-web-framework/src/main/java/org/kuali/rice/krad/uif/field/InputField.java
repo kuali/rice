@@ -19,41 +19,28 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
-import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.bo.DataObjectRelationship;
-import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.DirectInquiry;
-import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
-import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +54,7 @@ import java.util.List;
  * for the screen. Through these fields the model can be displayed and updated.
  * For data input, the field contains a <code>Control</code> instance will
  * render an HTML control element(s). The attribute field also contains a
- * <code>LabelField</code>, summary, and widgets such as a quickfinder (for
+ * <code>Label</code>, summary, and widgets such as a quickfinder (for
  * looking up values) and inquiry (for getting more information on the value).
  * <code>InputField</code> instances can have associated messages (errors)
  * due to invalid input or business rule failures. Security can also be
@@ -272,7 +259,7 @@ public class InputField extends DataField {
         }
 
         setNestedComponentIdAndSuffix(getErrorsField(), UifConstants.IdSuffixes.ERRORS);
-        setNestedComponentIdAndSuffix(getLabelField(), UifConstants.IdSuffixes.LABEL);
+        setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
         setNestedComponentIdAndSuffix(getInstructionalMessageField(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);

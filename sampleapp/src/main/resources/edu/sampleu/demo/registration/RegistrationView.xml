@@ -142,7 +142,7 @@
         <property name="propertyName" value="sections"/>
         <property name="items">
           <list>
-            <bean parent="GenericFieldGroup" p:labelField.render="false" p:style="width: 10px;">
+            <bean parent="GenericFieldGroup" p:fieldLabel.render="false" p:style="width: 10px;">
               <property name="items">
                 <list>
                   <bean parent="Uif-ImageField"
@@ -150,7 +150,7 @@
                 </list>
               </property>
             </bean>
-            <bean parent="GenericFieldGroup" p:labelField.render="false">
+            <bean parent="GenericFieldGroup" p:fieldLabel.render="false">
               <property name="items">
                 <list>
                   <bean parent="GenericTextFieldMedium" p:propertyName="registrationId" p:label=""/>
@@ -160,19 +160,19 @@
                 </list>
               </property>
             </bean>
-            <bean parent="GenericFieldGroup" p:labelField.render="false">
+            <bean parent="GenericFieldGroup" p:fieldLabel.render="false">
               <property name="items">
                 <list>
-                  <bean parent="Uif-MessageField" p:label="Seats Left" p:labelField.render="true"
+                  <bean parent="Uif-MessageField" p:label="Seats Left" p:fieldLabel.render="true"
                         p:messageText="@{#line.registeredNumber} (of @{#line.totalMaxEnrollment}) &lt;span class='kr-highlight-red'&gt;@{#line.waitlistNumber} on waitlist&lt;/span&gt;"
-                        p:labelField.styleClasses="labelLeft" p:labelField.renderColon="false"/>
+                        p:fieldLabel.styleClasses="labelLeft" p:fieldLabel.renderColon="false"/>
                   <bean parent="GenericTextFieldMedium" p:propertyName="instructor" p:label="Instructor"
-                        p:labelField.styleClasses="labelLeft" p:labelPlacement="LEFT"/>
-                  <bean parent="Uif-MessageField" p:label="Location" p:labelField.render="true"
+                        p:fieldLabel.styleClasses="labelLeft" p:labelPlacement="LEFT"/>
+                  <bean parent="Uif-MessageField" p:label="Location" p:fieldLabel.render="true"
                         p:messageText="&lt;span class='kr-highlight-blue'&gt;@{#line.location}&lt;/span&gt;"
-                        p:labelField.styleClasses="labelLeft" p:labelField.renderColon="false"/>
+                        p:fieldLabel.styleClasses="labelLeft" p:fieldLabel.renderColon="false"/>
                   <bean parent="Uif-Link" p:label="Syllabus" p:linkLabel="Download" p:target="foo"
-                        p:labelField.styleClasses="labelLeft" p:labelField.renderColon="false"/>
+                        p:fieldLabel.styleClasses="labelLeft" p:fieldLabel.renderColon="false"/>
                 </list>
               </property>
             </bean>

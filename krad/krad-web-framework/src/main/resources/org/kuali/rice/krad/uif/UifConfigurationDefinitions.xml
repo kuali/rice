@@ -30,9 +30,9 @@
   <bean id="Uif-CompareFieldCreate-Modifier-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.modifier.CompareFieldCreateModifier" scope="prototype"/>
 
-  <bean id="Uif-LabelFieldSeparator-Modifier" parent="Uif-LabelFieldSeparator-Modifier-parentBean"/>
-  <bean id="Uif-LabelFieldSeparator-Modifier-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.modifier.LabelFieldSeparateModifier" scope="prototype"/>
+  <bean id="Uif-LabelSeparator-Modifier" parent="Uif-LabelSeparator-Modifier-parentBean"/>
+  <bean id="Uif-LabelSeparator-Modifier-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.modifier.LabelSeparateModifier" scope="prototype"/>
 
   <bean id="Uif-ComponentConverter-Modifier" parent="Uif-ComponentConverter-Modifier-parentBean"/>
   <bean id="Uif-ComponentConverter-Modifier-parentBean" abstract="true"

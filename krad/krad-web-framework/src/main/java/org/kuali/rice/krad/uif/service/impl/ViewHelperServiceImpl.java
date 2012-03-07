@@ -209,7 +209,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // copy properties that are set by parent components in the full view lifecycle
         if (component instanceof Field) {
-            ((Field) component).setLabelFieldRendered(((Field) origComponent).isLabelFieldRendered());
+            ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
         } else if (component instanceof CollectionGroup) {
             ((CollectionGroup) component).setSubCollectionSuffix(
                     ((CollectionGroup) origComponent).getSubCollectionSuffix());
@@ -253,8 +253,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                     // update label rendered flag
                     if (nestedComponent instanceof Field) {
-                        ((Field) nestedComponent).setLabelFieldRendered(
-                                ((Field) origNestedComponent).isLabelFieldRendered());
+                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent).isLabelRendered());
                     }
 
                     // update id

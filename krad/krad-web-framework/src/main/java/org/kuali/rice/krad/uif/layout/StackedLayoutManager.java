@@ -154,7 +154,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         // build header text for group
         String headerText = "";
         if (isAddLine) {
-            headerText = collectionGroup.getAddLineLabel();
+            headerText = collectionGroup.getAddLabel();
         } else {
             // get the collection for this group from the model
             List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,

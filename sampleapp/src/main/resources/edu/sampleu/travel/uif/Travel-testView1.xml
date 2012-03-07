@@ -255,7 +255,7 @@
         <bean parent="Uif-InputField" p:propertyName="foId" p:defaultValue="1"/>
       </list>
     </property>
-    <property name="addLineLabel" value="New @{#component.title}"/>
+    <property name="addLabel" value="New @{#component.title}"/>
     <property name="layoutManager.summaryTitle" value="Account"/>
     <property name="layoutManager.summaryFields">
       <list>
@@ -278,7 +278,7 @@
         <bean parent="Uif-InputField" p:propertyName="foId"/>
       </list>
     </property>
-    <property name="addLineLabel" value="New Account"/>
+    <property name="addLabel" value="New Account"/>
     <property name="layoutManager.summaryTitle" value="Account"/>
     <property name="layoutManager.summaryFields">
       <list>
@@ -355,28 +355,28 @@
           <property name="defaultValue" value="Def VAL"/>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field14" p:label="Bank Route Number" p:colSpan="2"
-              p:labelField.colSpan="2" p:maxLength="29">
+              p:fieldLabel.colSpan="2" p:maxLength="29">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:watermarkText="XXXXYYYYC"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field15" p:label="Bank Address" p:colSpan="3"
-              p:labelField.colSpan="1" p:maxLength="69">
+              p:fieldLabel.colSpan="1" p:maxLength="69">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="70"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field16" p:label="Bank Zip" p:colSpan="2"
-              p:labelField.colSpan="2" p:maxLength="4">
+              p:fieldLabel.colSpan="2" p:maxLength="4">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextControl" p:size="5" p:watermarkText="00000"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field17" p:label="Bank Description" p:rowSpan="2"
-              p:labelField.rowSpan="2">
+              p:fieldLabel.rowSpan="2">
           <property name="bindingInfo.bindToForm" value="true"/>
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Key in bank description here..."/>
@@ -428,7 +428,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="number" p:labelPlacement="TOP"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="informationalDisplayPropertyNames" value="name,subAccountName"/>
           <property name="fieldAttributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
@@ -436,7 +436,7 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="name" p:labelPlacement="TOP"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
+              p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false"/>
       </list>
     </property>
     <property name="instructionalText" value="Section without nested group, labels top"/>
@@ -459,7 +459,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">
+        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 1" p:width="40%" p:fieldLabel.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field20" p:label="Field 11" p:maxLength="4"
@@ -491,7 +491,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-VerticalFieldGroup" p:label="Currency Type" p:width="40%" p:labelField.width="10%">
+        <bean parent="Uif-VerticalFieldGroup" p:label="Currency Type" p:width="40%" p:fieldLabel.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field24" p:label="Checks" p:labelPlacement="RIGHT">
@@ -515,7 +515,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%"
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 3" p:width="40%" p:fieldLabel.width="10%"
               p:render="@{field28 eq 'joe'}">
           <property name="items">
             <list>
@@ -536,7 +536,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group 4" p:width="40%" p:fieldLabel.width="10%">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field29" p:label="Field 8" p:labelPlacement="RIGHT">

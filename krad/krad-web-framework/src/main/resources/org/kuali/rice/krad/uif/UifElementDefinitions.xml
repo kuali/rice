@@ -56,4 +56,18 @@
     </property>
   </bean>
 
+  <bean id="Uif-Label" parent="Uif-Label-parentBean"/>
+  <bean id="Uif-Label-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Label"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/element/label.jsp"/>
+    <property name="styleClasses">
+      <list>
+        <value>uif-label</value>
+      </list>
+    </property>
+    <property name="requiredMessageField">
+      <bean parent="Uif-RequiredMessage"/>
+    </property>
+  </bean>
+
 </beans>

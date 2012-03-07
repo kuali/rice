@@ -107,7 +107,7 @@
   <bean id="TextAreaTestField" parent="Uif-InputField"
         abstract="true" p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
-        p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+        p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false"
         p:required="true">
     <property name="control">
       <bean parent="Uif-TextAreaControl" p:textExpand="true" p:rows="5"
@@ -516,13 +516,13 @@
   <!--<bean parent="TextTestField" p:propertyName="field34"/>-->
   <!--<bean parent="TextAreaTestField" p:propertyName="field35"/>-->
   <!--<bean parent="TextTestField" p:instructionalText="Colspan 2"-->
-  <!--p:propertyName="field36" p:colSpan="2" p:labelField.colSpan="2"/>-->
+  <!--p:propertyName="field36" p:colSpan="2" p:fieldLabel.colSpan="2"/>-->
   <!--<bean parent="TextAreaTestField" p:instructionalText="Colspan 3"-->
-  <!--p:propertyName="field37" p:colSpan="3" p:labelField.colSpan="1"/>-->
+  <!--p:propertyName="field37" p:colSpan="3" p:fieldLabel.colSpan="1"/>-->
   <!--<bean parent="TextTestField" p:instructionalText="Colspan 2"-->
-  <!--p:propertyName="field38" p:colSpan="2" p:labelField.colSpan="2"/>-->
+  <!--p:propertyName="field38" p:colSpan="2" p:fieldLabel.colSpan="2"/>-->
   <!--<bean parent="TextAreaTestField" p:instructionalText="Rowspan 2"-->
-  <!--p:propertyName="field39" p:rowSpan="2" p:labelField.rowSpan="2"/>-->
+  <!--p:propertyName="field39" p:rowSpan="2" p:fieldLabel.rowSpan="2"/>-->
   <!--<bean parent="TextTestField" p:propertyName="field40"/>-->
   <!--<bean parent="TextTestField" p:propertyName="field41"/>-->
   <!--</list>-->

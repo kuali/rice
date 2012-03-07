@@ -132,9 +132,9 @@
           <property name="items">
             <list>
               <bean parent="GenericTextField" p:propertyName="section" p:label="Section" p:readOnly="true"
-                    p:labelPlacement="LEFT" p:labelField.styleClasses="labelLeft" p:styleClasses="font-light"/>
+                    p:labelPlacement="LEFT" p:fieldLabel.styleClasses="labelLeft" p:styleClasses="font-light"/>
               <bean parent="GenericTextField" p:propertyName="registrationId" p:label="Registration ID"
-                    p:readOnly="true" p:labelField.styleClasses="labelLeft" p:labelPlacement="LEFT"
+                    p:readOnly="true" p:fieldLabel.styleClasses="labelLeft" p:labelPlacement="LEFT"
                     p:styleClasses="font-light"/>
             </list>
           </property>

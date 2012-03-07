@@ -266,23 +266,23 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field Label" p:labelPlacement="TOP"
-              p:instructionalText="Label top, no colon" p:labelField.styleClasses="labelTop"
-              p:labelField.renderColon="false">
+              p:instructionalText="Label top, no colon" p:fieldLabel.styleClasses="labelTop"
+              p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"
-              p:instructionalText="Label top, with colon" p:labelField.styleClasses="labelTop"
-              p:labelField.renderColon="true">
+              p:instructionalText="Label top, with colon" p:fieldLabel.styleClasses="labelTop"
+              p:fieldLabel.renderColon="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field101" p:label="Field Label" p:defaultValue="val"
-              p:instructionalText="Label left, with colon" p:labelField.renderColon="true">
+              p:instructionalText="Label left, with colon" p:fieldLabel.renderColon="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -309,20 +309,20 @@
 
         <bean parent="Uif-InputField" p:propertyName="field103" p:label="Field Label" p:labelPlacement="TOP"
               p:instructionalText="With constraintText text" p:constraintText="Constraint text"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field104" p:labelPlacement="TOP" p:instructionalText="No label"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field105" p:labelField.renderColon="false">
+        <bean parent="Uif-InputField" p:propertyName="field105" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -341,28 +341,28 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="With watermark text, and size=&quot;30&quot;">
+              p:fieldLabel.renderColon="false" p:instructionalText="With watermark text, and size=&quot;30&quot;">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:watermarkText="It's watermarked"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field107" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="Size=&quot;60&quot;">
+              p:fieldLabel.renderColon="false" p:instructionalText="Size=&quot;60&quot;">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="60"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field108" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="Text expand option">
+              p:fieldLabel.renderColon="false" p:instructionalText="Text expand option">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:textExpand="true"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field109" p:label="Field Label" p:labelPlacement="TOP"
-              p:labelField.renderColon="false" p:instructionalText="Disabled">
+              p:fieldLabel.renderColon="false" p:instructionalText="Disabled">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:disabled="true"/>
           </property>
@@ -384,14 +384,14 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="field110" p:label="Field Label" p:labelPlacement="TOP"
               p:instructionalText="With watermark, rows=&quot;5&quot;, cols=&quot;40&quot;"
-              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+              p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Watermark..."/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field111" p:label="Field Label"
-              p:labelPlacement="TOP" p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+              p:labelPlacement="TOP" p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false"
               p:instructionalText="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="10" p:cols="50" p:textExpand="true"/>

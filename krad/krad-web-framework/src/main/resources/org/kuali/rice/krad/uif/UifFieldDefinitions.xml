@@ -36,7 +36,7 @@
 
   <bean id="Uif-FieldBase-withLabel" abstract="true" parent="Uif-FieldBase-withLabel-parentBean"/>
   <bean id="Uif-FieldBase-withLabel-parentBean" abstract="true" parent="Uif-FieldBase">
-    <property name="labelField">
+    <property name="fieldLabel">
       <bean parent="Uif-Label"/>
     </property>
   </bean>
@@ -57,7 +57,7 @@
   <bean id="Uif-DataField-withoutLabel" abstract="true" parent="Uif-DataField-withoutLabel-parentBean"/>
   <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
         parent="Uif-DataField">
-    <property name="labelField">
+    <property name="fieldLabel">
       <null/>
     </property>
   </bean>
@@ -124,13 +124,13 @@
 
   <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
   <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
-        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="RIGHT">
+        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-inputField-labelTop</value>
       </list>
     </property>
-    <property name="labelField.styleClasses">
+    <property name="fieldLabel.styleClasses">
       <list merge="true">
         <value>uif-labelTop</value>
       </list>
@@ -146,19 +146,6 @@
       </list>
     </property>
     <property name="bindingInfo.bindToMap" value="true"/>
-  </bean>
-
-  <bean id="Uif-Label" parent="Uif-Label-parentBean"/>
-  <bean id="Uif-Label-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LabelField" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
-    <property name="styleClasses">
-      <list>
-        <value>uif-label</value>
-      </list>
-    </property>
-    <property name="requiredMessageField">
-      <bean parent="Uif-RequiredMessage"/>
-    </property>
   </bean>
 
   <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>

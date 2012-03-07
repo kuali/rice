@@ -55,13 +55,13 @@
           <property name="group.instructionalText" value="Field group with horizontal layout and no field labels"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field122" p:labelField.render="false">
+              <bean parent="Uif-InputField" p:propertyName="field122" p:fieldLabel.render="false">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="field123" p:labelField.render="false">
+              <bean parent="Uif-InputField" p:propertyName="field123" p:fieldLabel.render="false">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="21"/>
                 </property>
@@ -74,7 +74,7 @@
           <property name="group.instructionalText" value="Field group with input and action field"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field124" p:labelField.render="false">
+              <bean parent="Uif-InputField" p:propertyName="field124" p:fieldLabel.render="false">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
@@ -151,7 +151,7 @@
       <list>
         <bean parent="Uif-ImageField" p:label="Image field with alt text" p:altText="pdf image"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png"/>
-        <bean parent="Uif-ImageField" p:labelField.render="false" p:altText="computer programming"
+        <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
               p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
       </list>
@@ -311,16 +311,16 @@
                           <list>
                             <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 1"
-                                  p:labelField.styleClasses="labelTop"/>
+                                  p:fieldLabel.styleClasses="labelTop"/>
                             <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 2"
-                                  p:labelField.styleClasses="labelTop"/>
+                                  p:fieldLabel.styleClasses="labelTop"/>
                             <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 3"
-                                  p:labelField.styleClasses="labelTop"/>
+                                  p:fieldLabel.styleClasses="labelTop"/>
                             <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 4"
-                                  p:labelField.styleClasses="labelTop"/>
+                                  p:fieldLabel.styleClasses="labelTop"/>
                           </list>
                         </property>
                       </bean>

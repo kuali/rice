@@ -197,7 +197,7 @@
     </property>
     <property name="componentModifiers">
       <list>
-        <bean parent="Uif-LabelFieldSeparator-Modifier" p:runPhase="FINALIZE"/>
+        <bean parent="Uif-LabelSeparator-Modifier" p:runPhase="FINALIZE"/>
       </list>
     </property>
   </bean>
@@ -455,7 +455,7 @@
     <property name="addLineBindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
-    <property name="addLineLabelField">
+    <property name="addLineLabel">
       <bean parent="Uif-Label" p:labelText="add" p:requiredMessageField.render="false"/>
     </property>
     <property name="addLineActionFields">
@@ -790,7 +790,7 @@
           </bean>
         </property>
         <property name="subCollectionFieldGroupPrototype">
-          <bean parent="Uif-VerticalFieldGroup" p:labelField.render="false"/>
+          <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"/>
         </property>
       </bean>
     </property>

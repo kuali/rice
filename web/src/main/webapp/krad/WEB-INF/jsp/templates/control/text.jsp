@@ -41,5 +41,5 @@ credit - http://rayaspnet.blogspot.com/2011/03/how-to-handle-apostrophe-in-javas
 <krad:template component="${control.datePicker}" componentId="${control.id}"/>
 
 <c:if test="${control.textExpand}">
-	<krad:script value="setupTextPopout('${control.id}', '${field.labelField.labelText}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
+	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
 </c:if>

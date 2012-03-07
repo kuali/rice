@@ -87,7 +87,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-DocumentDescription" p:required="true" p:label="Description"/>
-        <bean parent="Uif-DocumentExplaination" p:rowSpan="2" p:labelField.rowSpan="2"/>
+        <bean parent="Uif-DocumentExplaination" p:rowSpan="2" p:fieldLabel.rowSpan="2"/>
         <bean parent="Uif-OrganizationDocumentNumber"/>
       </list>
     </property>
@@ -113,7 +113,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="attachmentFile"
-                    p:bindingInfo.bindingPath="attachmentFile" p:labelField.render="false">
+                    p:bindingInfo.bindingPath="attachmentFile" p:fieldLabel.render="false">
                 <property name="control">
                   <bean parent="Uif-FileControl" p:size="15"/>
                 </property>

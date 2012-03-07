@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.field.FieldBase;
+import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.List;
 
 /**
- * Contains a label for another <code>Field</code> instance
+ * Content element that renders a label
  *
  * <p>
- * The <code>LabelField</code> exists so that the label can be placed separate
- * from the component in a layout manager such as the
- * <code>GridLayoutManager</code>. It addition it can be used to style the label
- * (from the inherited styleClass and style properties)
+ * Contains options for adding a colon to the label along with a required message
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabelField extends FieldBase {
+public class Label extends ContentElementBase {
     private static final long serialVersionUID = -6491546893195180114L;
 
     private String labelText;
@@ -45,7 +44,7 @@ public class LabelField extends FieldBase {
     private Position requiredMessagePlacement;
     private MessageField requiredMessageField;
 
-    public LabelField() {
+    public Label() {
         renderColon = true;
 
         requiredMessagePlacement = Position.LEFT;

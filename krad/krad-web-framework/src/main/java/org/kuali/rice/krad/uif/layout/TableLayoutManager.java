@@ -21,14 +21,13 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -59,7 +58,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 	private boolean useShortLabels;
 	private boolean repeatHeader;
-	private LabelField headerFieldPrototype;
+	private Label headerLabelPrototype;
 
 	private boolean renderSequenceField;
 	private boolean generateAutoSequence;
@@ -75,8 +74,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	// internal counter for the data columns (not including sequence, action)
 	private int numberOfDataColumns;
 
-	private List<LabelField> headerFields;
-	private List<Field> dataFields;
+	private List<Label> headerLabels;
+	private List<Component> dataFields;
 
 	private RichTable richTable;
 	private boolean headerAdded = false;
@@ -85,14 +84,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private Set<String> sortableColumns;
 
 	public TableLayoutManager() {
-		useShortLabels = true;
+		useShortLabels = false;
 		repeatHeader = false;
 		renderSequenceField = true;
 		generateAutoSequence = false;
         separateAddLine = false;
 
-		headerFields = new ArrayList<LabelField>();
-		dataFields = new ArrayList<Field>();
+		headerLabels = new ArrayList<Label>();
+		dataFields = new ArrayList<Component>();
 	}
 	
 	/**
@@ -115,7 +114,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             view.assignComponentIds(sequenceFieldPrototype);
         }
 
-		view.getViewHelperService().performComponentInitialization(view, model, headerFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, model, headerLabelPrototype);
 		view.getViewHelperService().performComponentInitialization(view, model, sequenceFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, model, actionFieldPrototype);
 		view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
@@ -190,7 +189,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (isAddLine && separateAddLine) {
             if (StringUtils.isBlank(addLineGroup.getTitle()) && StringUtils.isBlank(
                     addLineGroup.getHeader().getHeaderText())) {
-               addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLineLabel());
+               addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLabel());
             }
 
             addLineGroup.setItems(lineFields);
@@ -213,19 +212,19 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		// TODO: implement repeat header
 		if (!headerAdded) {
-			headerFields = new ArrayList<LabelField>();
-			dataFields = new ArrayList<Field>();
+			headerLabels = new ArrayList<Label>();
+			dataFields = new ArrayList<Component>();
 
 			buildTableHeaderRows(collectionGroup, lineFields);
-			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.LINE, currentLine);
-			ComponentUtils.pushObjectToContext(headerFields, UifConstants.ContextVariableNames.INDEX, new Integer(
+			ComponentUtils.pushObjectToContext(headerLabels, UifConstants.ContextVariableNames.LINE, currentLine);
+			ComponentUtils.pushObjectToContext(headerLabels, UifConstants.ContextVariableNames.INDEX, new Integer(
 					lineIndex));
 			headerAdded = true;
 		}
 
 		// set label field rendered to true on line fields
 		for (Field field : lineFields) {
-			field.setLabelFieldRendered(true);
+			field.setLabelRendered(true);
 
 			// don't display summary message
 			// TODO: remove once we have modifier
@@ -237,7 +236,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		// sequence field is always first and should span all rows for the line
 		if (renderSequenceField) {
-			Field sequenceField = null;
+			Component sequenceField = null;
             if (!isAddLine) {
                 sequenceField = ComponentUtils.copy(sequenceFieldPrototype, idSuffix);
 
@@ -246,7 +245,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
 			else {
-				sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabelField(), idSuffix);
+				sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
 			}
 			sequenceField.setRowSpan(rowSpan);
 
@@ -297,11 +296,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	}
 
 	/**
-	 * Create the <code>LabelField</code> instances that will be used to render
+	 * Create the <code>Label</code> instances that will be used to render
 	 * the table header
 	 * 
 	 * <p>
-	 * For each column, a copy of headerFieldPrototype is made that determines
+	 * For each column, a copy of headerLabelPrototype is made that determines
 	 * the label configuration. The actual label text comes from the field for
 	 * which the header applies to. The first column is always the sequence (if
 	 * enabled) and the last column contains the actions. Both the sequence and
@@ -309,7 +308,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * </p>
 	 * 
 	 * <p>
-	 * The headerFields list will contain the final list of header fields built
+	 * The headerLabels list will contain the final list of header fields built
 	 * </p>
 	 * 
 	 * @param collectionGroup
@@ -323,14 +322,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		// first column is sequence label
 		if (renderSequenceField) {
-			sequenceFieldPrototype.setLabelFieldRendered(true);
+			sequenceFieldPrototype.setLabelRendered(true);
 			sequenceFieldPrototype.setRowSpan(rowCount);
 			addHeaderField(sequenceFieldPrototype, 1);
 		}
 
         // next is select field
         if (collectionGroup.isRenderSelectField()) {
-            selectFieldPrototype.setLabelFieldRendered(true);
+            selectFieldPrototype.setLabelRendered(true);
             selectFieldPrototype.setRowSpan(rowCount);
             addHeaderField(selectFieldPrototype, 1);
         }
@@ -348,7 +347,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			// add action header as last column in row
 			if ((cellPosition == getNumberOfDataColumns()) && collectionGroup.isRenderLineActions()
 					&& !collectionGroup.isReadOnly()) {
-				actionFieldPrototype.setLabelFieldRendered(true);
+				actionFieldPrototype.setLabelRendered(true);
 				actionFieldPrototype.setRowSpan(rowCount);
 				addHeaderField(actionFieldPrototype, cellPosition);
 			}
@@ -367,25 +366,25 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 *            - column number for the header, used for setting the id
 	 */
 	protected void addHeaderField(Field field, int column) {
-		LabelField headerField = ComponentUtils.copy(headerFieldPrototype, "_c" + column);
+		Label headerLabel = ComponentUtils.copy(headerLabelPrototype, "_c" + column);
 		if (useShortLabels) {
-			headerField.setLabelText(field.getLabel());
+			headerLabel.setLabelText(field.getShortLabel());
 		}
 		else {
-			headerField.setLabelText(field.getLabel());
+			headerLabel.setLabelText(field.getLabel());
 		}
 
-		headerField.setRowSpan(field.getRowSpan());
-		headerField.setColSpan(field.getColSpan());
+		headerLabel.setRowSpan(field.getRowSpan());
+		headerLabel.setColSpan(field.getColSpan());
 
 		if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
-			headerField.getRequiredMessageField().setRender(true);
+			headerLabel.getRequiredMessageField().setRender(true);
 		}
 		else {
-			headerField.getRequiredMessageField().setRender(false);
+			headerLabel.getRequiredMessageField().setRender(false);
 		}
 
-		headerFields.add(headerField);
+		headerLabels.add(headerLabel);
 	}
 
 	/**
@@ -434,7 +433,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		components.add(richTable);
         components.add(addLineGroup);
-		components.addAll(headerFields);
+		components.addAll(headerLabels);
 		components.addAll(dataFields);
 
 		return components;
@@ -447,7 +446,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.add(headerFieldPrototype);
+        components.add(headerLabelPrototype);
         components.add(sequenceFieldPrototype);
         components.add(actionFieldPrototype);
         components.add(subCollectionFieldGroupPrototype);
@@ -497,33 +496,33 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	}
 
 	/**
-	 * <code>LabelField</code> instance to use as a prototype for creating the
+	 * <code>Label</code> instance to use as a prototype for creating the
 	 * tables header fields. For each header field the prototype will be copied
 	 * and adjusted as necessary
 	 * 
-	 * @return LabelField instance to serve as prototype
+	 * @return Label instance to serve as prototype
 	 */
-	public LabelField getHeaderFieldPrototype() {
-		return this.headerFieldPrototype;
+	public Label getHeaderLabelPrototype() {
+		return this.headerLabelPrototype;
 	}
 
 	/**
 	 * Setter for the header field prototype
 	 * 
-	 * @param headerFieldPrototype
+	 * @param headerLabelPrototype
 	 */
-	public void setHeaderFieldPrototype(LabelField headerFieldPrototype) {
-		this.headerFieldPrototype = headerFieldPrototype;
+	public void setHeaderLabelPrototype(Label headerLabelPrototype) {
+		this.headerLabelPrototype = headerLabelPrototype;
 	}
 
 	/**
-	 * List of <code>LabelField</code> instances that should be rendered to make
+	 * List of <code>Label</code> instances that should be rendered to make
 	 * up the tables header
 	 * 
 	 * @return List of label field instances
 	 */
-	public List<LabelField> getHeaderFields() {
-		return this.headerFields;
+	public List<Label> getHeaderLabels() {
+		return this.headerLabels;
 	}
 
 	/**
@@ -691,7 +690,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * When separate add line is enabled, the fields for the add line will be placed in the {@link #getAddLineGroup()}.
      * This group can be used to configure the add line presentation. In addition to the fields, the header on the
      * group (unless already set) will be set to
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineLabel()} and the add line actions will
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()} and the add line actions will
      * be placed into the group's footer.
      * </p>
      *
@@ -717,7 +716,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * This group can be used to configure how the add line will be rendered. For example the layout manager configured
      * on the group will be used to rendered the add line fields. If the header (title) is not set on the group, it
      * will be set from
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineLabel()}. In addition,
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()}. In addition,
      * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActionFields()} will be added to the group
      * footer items.
      * </p>
@@ -738,12 +737,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-	 * List of <code>Field</code> instances that make up the tables body. Pulled
+	 * List of <code>Component</code> instances that make up the tables body. Pulled
 	 * by the layout manager template to send through the Grid layout
 	 * 
-	 * @return List<Field> table body fields
+	 * @return List<Component> table body fields
 	 */
-	public List<Field> getDataFields() {
+	public List<Component> getDataFields() {
 		return this.dataFields;
 	}
 

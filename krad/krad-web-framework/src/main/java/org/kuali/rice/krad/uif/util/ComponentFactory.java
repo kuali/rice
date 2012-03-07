@@ -57,6 +57,7 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Iframe;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -65,7 +66,6 @@ import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
-import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
@@ -536,8 +536,8 @@ public class ComponentFactory {
         return (GenericField) getNewComponentInstance(GENERIC_FIELD);
     }
 
-    public static LabelField getLabelField() {
-        return (LabelField) getNewComponentInstance(LABEL_FIELD);
+    public static Label getLabelField() {
+        return (Label) getNewComponentInstance(LABEL_FIELD);
     }
 
     public static MessageField getMessageField() {

@@ -27,15 +27,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Pulls <code>LabelField</code> instances out of a contained field so they will
+ * Pulls <code>Label</code> instances out of a contained field so they will
  * be placed separately in the <code>LayoutManager</code>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabelFieldSeparateModifier extends ComponentModifierBase {
+public class LabelSeparateModifier extends ComponentModifierBase {
 	private static final long serialVersionUID = -4304947796868636298L;
 
-	public LabelFieldSeparateModifier() {
+	public LabelSeparateModifier() {
 		super();
 	}
 
@@ -68,25 +68,25 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 				Field field = (Field) item;
 
 				// pull out label field
-				if (field.getLabelField() != null && field.getLabelField().isRender()) {
-				    field.getLabelField().addStyleClass("displayWith-" + field.getId());
+				if (field.getFieldLabel() != null && field.getFieldLabel().isRender()) {
+				    field.getFieldLabel().addStyleClass("displayWith-" + field.getId());
                     if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
-                       field.getLabelField().setRender(false);
+                       field.getFieldLabel().setRender(false);
                     }
                     else if(!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())){
-                       field.getLabelField().setRender(true);
+                       field.getFieldLabel().setRender(true);
                        String prefixStyle = "";
-                       if(StringUtils.isNotBlank(field.getLabelField().getStyle())){
-                           prefixStyle = field.getLabelField().getStyle();
+                       if(StringUtils.isNotBlank(field.getFieldLabel().getStyle())){
+                           prefixStyle = field.getFieldLabel().getStyle();
                        }
-                       field.getLabelField().setStyle(prefixStyle + ";" + "display: none;");
+                       field.getFieldLabel().setStyle(prefixStyle + ";" + "display: none;");
                     }
 
-					groupFields.add(field.getLabelField());
+					groupFields.add(field.getFieldLabel());
 
 					// set boolean to indicate label field should not be
 					// rendered with the attribute
-					field.setLabelFieldRendered(true);
+					field.setLabelRendered(true);
 				}
 			}
 

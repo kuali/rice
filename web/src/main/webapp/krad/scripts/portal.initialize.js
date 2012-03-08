@@ -21,7 +21,7 @@ jQuery(document).ready(function() {
     // handle portal links that require to be opened in a lightbox. Such a link has the the class portal_lightbox in the class attribute
 
     jQuery("a[class~=portal_lightbox]").each(function() {
-        createLightBoxLink(jQuery(this).attr("id"),
-                {autoScale:true,centerOnScroll:true,transitionIn:"fade",transitionOut:"fade",speedIn:200,speedOut:200,hideOnOverlayClick:false,type:"iframe",width:"75%",height:"95%"});
+        options = {autoScale:true,centerOnScroll:true,transitionIn:"fade",transitionOut:"fade",speedIn:200,speedOut:200,hideOnOverlayClick:false,type:"iframe",width:"75%",height:"95%"};
+        jQuery(this).fancybox(options);
     })
 });

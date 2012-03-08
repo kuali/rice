@@ -7231,9 +7231,9 @@ EDL EDoclite Example
 <emphasis role="bold">CURRENT_USER.e</emphasis>
  - the current user employee id</para>
                       </listitem>
+                    </itemizedlist>                        
                       <para>Example:</para>
                       <programlisting>http://yourlocalip:8080/DocumentSearch.do?documentTypeName=KualiNotification&amp;initiatorPrincipalName=CURRENT_USER</programlisting>
-                    </itemizedlist>
                 </sect4>
                 <sect4>
                     <title>Passing in Searchable Attribute Values</title>

@@ -25,7 +25,8 @@
   <!-- Base Fields -->
 
   <bean id="Uif-FieldBase" abstract="true" parent="Uif-FieldBase-parentBean"/>
-  <bean id="Uif-FieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase">
+  <bean id="Uif-FieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase"
+        parent="Uif-ComponentBase">
     <property name="styleClasses">
       <list>
         <value>uif-field</value>
@@ -54,6 +55,26 @@
     </property>
   </bean>
 
+  <bean id="Uif-DataField-LabelTop" parent="Uif-DataField-LabelTop-parentBean"/>
+  <bean id="Uif-DataField-LabelTop-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="TOP"
+        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
+    <property name="fieldLabel.styleClasses">
+      <list merge="true">
+        <value>uif-labelTop</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DataField-LabelRight" parent="Uif-DataField-LabelRight-parentBean"/>
+  <bean id="Uif-DataField-LabelRight-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="RIGHT"
+        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="LEFT">
+    <property name="fieldLabel.styleClasses">
+      <list merge="true">
+        <value>uif-labelRight</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-DataField-withoutLabel" abstract="true" parent="Uif-DataField-withoutLabel-parentBean"/>
   <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
         parent="Uif-DataField">
@@ -78,17 +99,50 @@
     <property name="fieldLookup">
       <bean parent="Uif-QuickFinder"/>
     </property>
+    <property name="directInquiryRender" value="@{!#parent.readOnly}"/>
     <property name="fieldDirectInquiry">
-      <bean parent="Uif-DirectInquiry"/>
+      <bean parent="Uif-DirectInquiry">
+        <property name="render" value="@{#parent.directInquiryRender}"/>
+      </bean>
     </property>
     <property name="fieldSuggest">
-      <bean parent="Uif-Suggest" p:render="false"/>
+      <bean parent="Uif-Suggest"/>
     </property>
     <property name="instructionalMessageField">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
     <property name="constraintMessageField">
       <bean parent="Uif-ConstraintMessage"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
+  <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
+        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-inputField-labelTop</value>
+      </list>
+    </property>
+    <property name="fieldLabel.styleClasses">
+      <list merge="true">
+        <value>uif-labelTop</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-InputField-LabelRight" parent="Uif-InputField-LabelRight-parentBean"/>
+  <bean id="Uif-InputField-LabelRight-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="RIGHT"
+        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="LEFT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-inputField-labelRight</value>
+      </list>
+    </property>
+    <property name="fieldLabel.styleClasses">
+      <list merge="true">
+        <value>uif-labelRight</value>
+      </list>
     </property>
   </bean>
 
@@ -118,21 +172,6 @@
     <property name="styleClasses">
       <list merge="true">
         <value>uif-requiredMessage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
-  <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
-        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-inputField-labelTop</value>
-      </list>
-    </property>
-    <property name="fieldLabel.styleClasses">
-      <list merge="true">
-        <value>uif-labelTop</value>
       </list>
     </property>
   </bean>

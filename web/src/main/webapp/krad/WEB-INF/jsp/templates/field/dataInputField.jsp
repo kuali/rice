@@ -95,7 +95,7 @@
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'[','-lbrak-')}"/>
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,']','-rbrak-')}"/>
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'\\\'','-quot-')}"/>
-     <span id="${field.id}_info_${infoPropertyId}" class="kr-info">
+     <span id="${field.id}_info_${infoPropertyId}" class="uif-informationalMessage">
         <s:bind path="${infoPropertyPath}">${status.value}</s:bind>
      </span>
   </c:forEach>
@@ -114,7 +114,7 @@
   </c:forEach>
 </krad:span>
 
-<%-- Transform all text on attribute field to uppercase--%>
+<%-- transform all text on attribute field to uppercase --%>
 <c:if test="${!readOnly && field.performUppercase}">
   <krad:script value="jq('#${field.control.id}').css('text-transform', 'uppercase');"/>
 </c:if>

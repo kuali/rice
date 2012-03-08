@@ -108,6 +108,11 @@ public class LookupView extends FormView {
         }
         super.performInitialization(view, model);
 
+        // if this is a multi-value lookup, don't show return column
+        if (multipleValuesSelect) {
+            hideReturnLinks = true;
+        }
+
         getAbstractTypeClasses().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
             getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());

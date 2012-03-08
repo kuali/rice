@@ -24,7 +24,7 @@
 
   <!-- Box Layout Managers -->
 
-  <bean id="Uif-BoxLayoutBase" parent="Uif-BoxLayoutBase-parentBean"/>
+  <bean id="Uif-BoxLayoutBase" abstract="true" parent="Uif-BoxLayoutBase-parentBean"/>
   <bean id="Uif-BoxLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
         scope="prototype">
     <property name="styleClasses">
@@ -57,7 +57,7 @@
 
   <!--Grid Layout Managers-->
 
-  <bean id="Uif-GridLayoutBase" parent="Uif-GridLayoutBase-parentBean"/>
+  <bean id="Uif-GridLayoutBase" abstract="true" parent="Uif-GridLayoutBase-parentBean"/>
   <bean id="Uif-GridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
@@ -131,7 +131,7 @@
 
   <!--Stacked Collection Layout Managers-->
 
-  <bean id="Uif-StackedCollectionLayoutBase" parent="Uif-StackedCollectionLayoutBase-parentBean"/>
+  <bean id="Uif-StackedCollectionLayoutBase" abstract="true" parent="Uif-StackedCollectionLayoutBase-parentBean"/>
   <bean id="Uif-StackedCollectionLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>

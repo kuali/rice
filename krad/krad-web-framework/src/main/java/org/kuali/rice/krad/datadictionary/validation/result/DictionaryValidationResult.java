@@ -92,6 +92,14 @@ public class DictionaryValidationResult {
 		numberOfErrors++;
 		return constraintValidationResult;
 	}
+
+    public ConstraintValidationResult addError(String constraintLabelKey, AttributeValueReader attributeValueReader, String constraintName,  String errorKey, String... errorParameters) {
+        ConstraintValidationResult constraintValidationResult = getConstraintValidationResult(attributeValueReader.getEntryName(), attributeValueReader.getAttributeName(), attributeValueReader.getPath(), constraintName);
+        constraintValidationResult.setError(errorKey, errorParameters);
+        constraintValidationResult.setConstraintLabelKey(constraintLabelKey);
+        numberOfErrors++;
+        return constraintValidationResult;
+    }
 	
 	public ConstraintValidationResult addWarning(AttributeValueReader attributeValueReader, String constraintName, String errorKey, String... errorParameters) {
 		if (errorLevel.getLevel() > ErrorLevel.WARN.getLevel())

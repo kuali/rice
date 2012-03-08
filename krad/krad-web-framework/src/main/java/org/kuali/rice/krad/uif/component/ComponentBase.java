@@ -97,6 +97,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private boolean selfRendered;
     private String renderOutput;
 
+    private boolean persistInSession;
+
     private ComponentSecurity componentSecurity;
 
     private String onLoadScript;
@@ -141,6 +143,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         progressiveRenderAndRefresh = false;
         refreshedByAction = false;
         resetDataOnRefresh = false;
+        persistInSession = false;
 
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
@@ -641,6 +644,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setRenderOutput(String renderOutput) {
         this.renderOutput = renderOutput;
+    }
+
+    /**
+     * @see Component#isPersistInSession()
+     */
+    public boolean isPersistInSession() {
+        return persistInSession;
+    }
+
+    /**
+     * @see Component#setPersistInSession(boolean)
+     */
+    public void setPersistInSession(boolean persistInSession) {
+        this.persistInSession = persistInSession;
     }
 
     /**

@@ -131,12 +131,12 @@ public class ValidationUtils {
 				result = true;
 			}
 
-			if (("not_equal".equalsIgnoreCase (operator)
+			if (("not_equal".equalsIgnoreCase (operator) || "not_equals".equalsIgnoreCase (operator)
      || "greater_than".equalsIgnoreCase(operator)) && compareResult >= 1) {
 				result = true;
 			}
 
-			if (("not_equal".equalsIgnoreCase (operator)
+			if (("not_equal".equalsIgnoreCase (operator) || "not_equals".equalsIgnoreCase (operator)
      || "less_than".equalsIgnoreCase(operator)) && compareResult <= -1) {
 				result = true;
 			}

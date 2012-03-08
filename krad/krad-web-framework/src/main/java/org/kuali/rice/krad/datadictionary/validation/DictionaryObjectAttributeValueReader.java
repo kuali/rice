@@ -50,7 +50,6 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 
 		if (object != null){
 			beanWrapper = new BeanWrapperImpl(object);
-            beanWrapper.setAutoGrowNestedPaths(true);
 		}
 	}
 	
@@ -174,8 +173,9 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 	public boolean isNestedAttribute(){
 	    return (attributePath != null || attributeName.contains("."));
 	}
-	
-	public DictionaryObjectAttributeValueReader clone(){
+
+    @Override
+	public AttributeValueReader clone(){
 	    DictionaryObjectAttributeValueReader readerClone = 
 	        new DictionaryObjectAttributeValueReader(this.object, this.entryName, this.entry, this.attributePath);
 	    readerClone.setAttributeName(this.attributeName);

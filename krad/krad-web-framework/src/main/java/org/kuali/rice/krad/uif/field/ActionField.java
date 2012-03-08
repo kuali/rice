@@ -42,6 +42,7 @@ public class ActionField extends FieldBase {
     private String methodToCall;
     private String navigateToPageId;
 
+    private boolean clientSideValidate;
     private String clientSideJs;
 
     private String jumpToIdAfterSubmit;
@@ -197,11 +198,15 @@ public class ActionField extends FieldBase {
                 writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToName' , '" + jumpToNameAfterSubmit
                         + "'); ";
             }
-
+            
             String postScript = "";
             if (StringUtils.isNotBlank(clientSideJs)) {
                 postScript = clientSideJs;
-            } else {
+            }
+            if (isClientSideValidate()) {
+                postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
+            }
+            if (StringUtils.isBlank(postScript)) {
                 postScript = "writeHiddenToForm('renderFullView' , 'true'); jq('#kualiForm').submit();";
             }
 
@@ -548,6 +553,23 @@ public class ActionField extends FieldBase {
      */
     public void setFocusOnAfterSubmit(String focusOnAfterSubmit) {
         this.focusOnAfterSubmit = focusOnAfterSubmit;
+    }
+
+    /**
+     * Indicates whether the form data should be validated on the client side
+     *
+     * return true if validation should occur, false otherwise
+     */
+    public boolean isClientSideValidate() {
+        return this.clientSideValidate;
+    }
+
+    /**
+     * Setter for the client side validation flag
+     * @param clientSideValidate
+     */
+    public void setClientSideValidate(boolean clientSideValidate) {
+        this.clientSideValidate = clientSideValidate;
     }
 
     /**

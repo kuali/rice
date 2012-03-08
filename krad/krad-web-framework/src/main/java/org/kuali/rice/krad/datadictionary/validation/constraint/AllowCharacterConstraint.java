@@ -495,22 +495,22 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
             regexString.append("#");
         }
         if (allowLessThan || allowAll) {
-            regexString.append("\\074");
+            regexString.append("\\0074");
         }
         if (allowGreaterThan || allowAll) {
-            regexString.append("\\076");
+            regexString.append("\\0076");
         }
         if (allowAmpersand || allowAll) {
-            regexString.append("\\046");
+            regexString.append("\\0046");
         }
         if (allowBackslash || allowAll) {
-            regexString.append("\\134");
+            regexString.append("\\0134");
         }
         if (allowCurlyBraces || allowAll) {
-            regexString.append("\\173\\175");
+            regexString.append("\\0173\\0175");
         }
         if (allowBrackets || allowAll) {
-            regexString.append("\\133\\135");
+            regexString.append("\\0133\\0135");
         }
         return regexString.toString();
     }

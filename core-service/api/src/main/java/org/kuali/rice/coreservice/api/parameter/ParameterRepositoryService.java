@@ -118,7 +118,7 @@ public interface ParameterRepositoryService {
      * @return a string value or null
      * @throws IllegalArgumentException if the key is null
      */
-    @WebMethod(operationName="getPropertyValueAsString")
+    @WebMethod(operationName="getParameterValueAsString")
     @WebResult(name = "value")
     @Cacheable(value= Parameter.Cache.NAME, key="'{getParameterValueAsString}' + 'key=' + #p0.getCacheKey()")
     String getParameterValueAsString(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;

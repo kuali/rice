@@ -115,5 +115,12 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 		
 		return null;
 	}
+    
+    @Override
+    public AttributeValueReader clone(){
+        SingleAttributeValueReader clone = new SingleAttributeValueReader(this.value, this.entryName, this.attributeName, this.definition);
+        clone.setAttributeName(this.attributeName);
+        return clone;
+    }
 
 }

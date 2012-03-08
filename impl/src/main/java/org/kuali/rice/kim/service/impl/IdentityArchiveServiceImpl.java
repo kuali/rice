@@ -160,6 +160,12 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     	}
     }
 
+    @Override
+    public void flushToArchive() {
+        writer.call();
+    }
+
+
 	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
 		this.businessObjectService = businessObjectService;
 	}

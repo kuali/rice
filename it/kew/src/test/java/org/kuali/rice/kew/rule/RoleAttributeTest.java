@@ -49,10 +49,15 @@ public class RoleAttributeTest extends KEWTestCase {
 		loadXmlFile("BadWorkgroupRoleAttributeTestConfig.xml");
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "BadWorkgroupRoleAttributeDocument");
 
+
         ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ALLOW_SYNC_EXCEPTION_ROUTING, "false");
 		try {
 			document.route("");
 			fail("Should have thrown an error because we had some bad ids.");
-		} catch (Exception e) {}
+		} catch (Exception e) {
+        } finally {
+            // be sure to change it back afterward!
+            ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ALLOW_SYNC_EXCEPTION_ROUTING, "true");
+        }
 	}
 }

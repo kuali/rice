@@ -92,13 +92,6 @@ public interface MaintenanceDocumentDictionaryService {
      */
     public Class getDataObjectClass(String docTypeName);
 
-    /**
-     * Retrieves the configured business rule class for the maintenance document
-     *
-     * @param document - maintenance document instance to retrieve rule class for
-     * @return businessRulesClass associated with the given document's type
-     */
-    public Class<? extends BusinessRule> getBusinessRulesClass(MaintenanceDocument document);
 
     /**
      * Returns whether or not this document's data dictionary file has flagged it to allow document copies

@@ -463,8 +463,9 @@ public final class ActionItem
         }
 
         public void setDocHandlerURL(String docHandlerURL) {
-            if (StringUtils.isBlank(docHandlerURL)) {
-                throw new IllegalArgumentException("docHandlerURL is blank");
+            // can be empty, but not null
+            if (docHandlerURL == null) {
+                throw new IllegalArgumentException("docHandlerURL is null");
             }
             this.docHandlerURL = docHandlerURL;
         }

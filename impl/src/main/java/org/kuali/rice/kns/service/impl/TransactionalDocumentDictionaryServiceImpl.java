@@ -90,21 +90,6 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
         return label;
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getBusinessRulesClass(org.kuali.bo.TransactionalDocument)
-     */
-    public Class<? extends BusinessRule> getBusinessRulesClass(TransactionalDocument document) {
-        Class<? extends BusinessRule> businessRulesClass = null;
-
-        //TransactionalDocumentEntry entry = getTransactionalDocumentEntry(document);
-        String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-        TransactionalDocumentEntry entry = getTransactionalDocumentEntryBydocumentTypeName(docTypeName);
-        if (entry != null) {
-            businessRulesClass = entry.getBusinessRulesClass();
-        }
-
-        return businessRulesClass;
-    }
 
     /**
      * Sets the data dictionary instance.

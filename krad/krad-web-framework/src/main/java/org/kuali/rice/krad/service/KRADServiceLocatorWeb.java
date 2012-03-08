@@ -33,12 +33,14 @@ public class KRADServiceLocatorWeb {
 
     public static final class Namespaces {
         public static final String MODULE_NAME = "krad";
-        public static final String KRAD_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
+        public static final String KRAD_NAMESPACE_PREFIX =
+                CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
 
         /**
          * Namespace for the krad module which is compatible with Kuali Rice 2.0.x.
          */
-        public static final String KRAD_NAMESPACE_2_0 = KRAD_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
+        public static final String KRAD_NAMESPACE_2_0 =
+                KRAD_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
 
     }
 
@@ -64,6 +66,7 @@ public class KRADServiceLocatorWeb {
     public static final String EXPRESSION_EVALUATOR_SERVICE = "expressionEvaluatorService";
     public static final String VIEW_SERVICE = "viewService";
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
+    public static final String VIEW_VALIDATION_SERVICE = "viewValidationService";
     public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
 
     public static <T extends Object> T getService(String serviceName) {
@@ -71,11 +74,11 @@ public class KRADServiceLocatorWeb {
     }
 
     public static DocumentDictionaryService getDocumentDictionaryService() {
-        return  getService(DOCUMENT_DICTIONARY_SERVICE);
+        return getService(DOCUMENT_DICTIONARY_SERVICE);
     }
 
     public static SessionDocumentService getSessionDocumentService() {
-        return  getService(SESSION_DOCUMENT_SERVICE);
+        return getService(SESSION_DOCUMENT_SERVICE);
     }
 
     public static DataObjectAuthorizationService getDataObjectAuthorizationService() {
@@ -131,32 +134,36 @@ public class KRADServiceLocatorWeb {
     }
 
     public static LookupService getLookupService() {
-	return (LookupService) getService(LOOKUP_SERVICE);
+        return (LookupService) getService(LOOKUP_SERVICE);
     }
 
     public static DictionaryValidationService getDictionaryValidationService() {
-	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
+        return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
     }
 
     public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
         return (InactivationBlockingDetectionService) getService(serviceName);
     }
 
-	public static DataObjectMetaDataService getDataObjectMetaDataService() {
-		return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
-	}
+    public static DataObjectMetaDataService getDataObjectMetaDataService() {
+        return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);
+    }
 
-	public static ExpressionEvaluatorService getExpressionEvaluatorService() {
-		return (ExpressionEvaluatorService) getService(EXPRESSION_EVALUATOR_SERVICE);
-	}
+    public static ExpressionEvaluatorService getExpressionEvaluatorService() {
+        return (ExpressionEvaluatorService) getService(EXPRESSION_EVALUATOR_SERVICE);
+    }
 
-	public static ViewService getViewService() {
-		return (ViewService) getService(VIEW_SERVICE);
-	}
+    public static ViewService getViewService() {
+        return (ViewService) getService(VIEW_SERVICE);
+    }
 
-	public static ViewDictionaryService getViewDictionaryService() {
-		return (ViewDictionaryService) getService(VIEW_DICTIONARY_SERVICE);
-	}
+    public static ViewDictionaryService getViewDictionaryService() {
+        return (ViewDictionaryService) getService(VIEW_DICTIONARY_SERVICE);
+    }
+
+    public static ViewValidationService getViewValidationService() {
+        return (ViewValidationService) getService(VIEW_VALIDATION_SERVICE);
+    }
 
     public static AttributeQueryService getAttributeQueryService() {
         return (AttributeQueryService) getService(ATTRIBUTE_QUERY_SERVICE);

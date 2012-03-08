@@ -151,12 +151,18 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         }
 
         public static Builder create(PeopleFlowMemberContract contract) {
+            Builder builder = createCopy(contract);
+
+            builder.setResponsibilityId(contract.getResponsibilityId());
+            return builder;
+        }
+
+        public static Builder createCopy(PeopleFlowMemberContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create(contract.getMemberId(), contract.getMemberType());
             builder.setActionRequestPolicy(contract.getActionRequestPolicy());
-            builder.setResponsibilityId(contract.getResponsibilityId());
             builder.setPriority(contract.getPriority());
             if (CollectionUtils.isNotEmpty(contract.getDelegates())) {
                 for (PeopleFlowDelegateContract delegate : contract.getDelegates()) {

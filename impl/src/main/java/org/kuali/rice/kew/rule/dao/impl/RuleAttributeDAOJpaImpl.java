@@ -90,13 +90,12 @@ public class RuleAttributeDAOJpaImpl implements RuleAttributeDAO {
         return (RuleAttribute) entityManager.createNamedQuery("RuleAttribute.FindByName").setParameter("name", name).getSingleResult();
     }
 
-    public RuleAttribute findByClassName(String classname) {
+    public List<RuleAttribute> findByClassName(String classname) {
         LOG.debug("findByClassName classname=" + classname);
 
-        //FIXME: This query is returning multiple rows, which one should it return
         List<RuleAttribute> ruleAttributes = entityManager.createNamedQuery("RuleAttribute.FindByClassName").setParameter("resourceDescriptor", classname).getResultList();
 
-        return (ruleAttributes.size() > 0 ? ruleAttributes.get(0) : null); 
+        return ruleAttributes;
     }
 
 }

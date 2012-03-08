@@ -130,7 +130,7 @@ public class TextControl extends ControlBase implements SizedControl {
     /**
      * Setter for the min number of input characters
      *
-     * @param maxLength
+     * @param minLength
      */
     public void setMinLength(Integer minLength) {
         this.minLength = minLength;
@@ -152,6 +152,12 @@ public class TextControl extends ControlBase implements SizedControl {
 	}
 
 	/**
+     * Gets the watermark text for this TextControl.
+     * <p>
+     * A watermark typically appears as light gray text within the text input element whenever the
+     * element is empty and does not have focus. This provides a hint to the user as to what the input
+     * is used for, or the type of input that is required.
+     * </p>
 	 * @return the watermarkText
 	 */
 	public String getWatermarkText() {
@@ -159,6 +165,7 @@ public class TextControl extends ControlBase implements SizedControl {
 	}
 
 	/**
+     * Sets the watermark text for this TextControl
 	 * @param watermarkText the watermarkText to set
 	 */
 	public void setWatermarkText(String watermarkText) {
@@ -172,7 +179,7 @@ public class TextControl extends ControlBase implements SizedControl {
 
     /**
      * If set to true, this control will have a button which can be clicked to expand the text area through
-     * a popup window so the user has more space to type and see the data they are entering in this text field
+     * a popup window so the user has more space to type and see the data they are entering in this text field.
      *
      * @return the textExpand
      */
@@ -181,6 +188,7 @@ public class TextControl extends ControlBase implements SizedControl {
     }
 
     /**
+     * Sets whether this control will have a button to expand the text area through a popup window.
      * @param textExpand the textExpand to set
      */
     public void setTextExpand(boolean textExpand) {

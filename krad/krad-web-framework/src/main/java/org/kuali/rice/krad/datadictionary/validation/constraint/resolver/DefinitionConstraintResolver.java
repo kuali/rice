@@ -39,6 +39,9 @@ public class DefinitionConstraintResolver<T extends Constrainable> implements Co
 			C constraint = (C)definition;
 			return Collections.singletonList(constraint);
 		}
+/*        else if(definiton instanceof InputField){
+            C constraint = (C)definition.get
+        }*/
 		throw new ClassCastException("DefinitionConstraintResolver can only be used for a definition that implements both Constraint and Constrainable, or derives from a class that does.");
 	}
 	

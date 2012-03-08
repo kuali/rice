@@ -275,8 +275,6 @@
 
   <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
-  <bean id="documentHelperService" class="org.kuali.rice.krad.service.impl.DocumentHelperServiceImpl"/>
-
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">
     <property name="documentDao">
       <ref bean="documentDao"/>
@@ -443,6 +441,9 @@
   <bean id="dictionaryValidationCaseConstraintResolver"
         class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.CaseConstraintResolver"/>
 
+  <bean id="dictionaryValidationSimpleConstraintResolver"
+    		class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.SimpleConstraintResolver"/>
+
   <bean id="dictionaryValidationValidCharactersConstraintResolver"
         class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.ValidCharactersConstraintResolver"/>
 
@@ -460,6 +461,12 @@
     </property>
     <property name="dateTimeService">
       <ref bean="dateTimeService"/>
+    </property>
+  </bean>
+
+  <bean id="viewValidationService" class="org.kuali.rice.krad.service.impl.ViewValidationServiceImpl">
+    <property name="dictionaryValidationService">
+      <ref bean="dictionaryValidationService"/>
     </property>
   </bean>
 
@@ -485,10 +492,13 @@
         <bean class="org.kuali.rice.krad.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>
       </list>
     </property>
-    <!-- Element constraint processors are classes that determine if a passed value is valid for a specific constraint at the individual object or object attribute level -->
+    <!-- Element constraint processors are classes that determine if a passed value is valid for a specific constraint at the individual object or object attribute level
+     The order matters here because case adds additional constraints to the queue for other processors to pick up-->
     <property name="elementConstraintProcessors">
       <list>
         <bean class="org.kuali.rice.krad.datadictionary.validation.processor.CaseConstraintProcessor"
+              parent="mandatoryElementConstraintProcessor"/>
+        <bean class="org.kuali.rice.krad.datadictionary.validation.processor.SimpleConstraintProcessor"
               parent="mandatoryElementConstraintProcessor"/>
         <bean class="org.kuali.rice.krad.datadictionary.validation.processor.ExistenceConstraintProcessor"/>
         <bean class="org.kuali.rice.krad.datadictionary.validation.processor.DataTypeConstraintProcessor"
@@ -515,6 +525,9 @@
                       -->
           <property name="resolverMap">
             <map>
+              <entry key="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint">
+                <ref bean="dictionaryValidationSimpleConstraintResolver"/>
+              </entry>
               <entry key="org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint">
                 <ref bean="dictionaryValidationCaseConstraintResolver"/>
               </entry>

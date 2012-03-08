@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kns.datadictionary.validation.AttributeValidatingTypeServiceBase;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -45,18 +46,23 @@ import java.util.Map;
  * provisioning and validating the custom attributes of a krms type.  Is should probably be mentioned that the
  * default validation methods don't actually check anything, they just return empty error lists.
  */
-public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
+public abstract class KrmsTypeServiceBase extends AttributeValidatingTypeServiceBase implements RemotableAttributeOwner {
 
     /**
      * <p>get the {@link RemotableAttributeField}s for the custom attributes of this krms type.  This implementation
-     * will return any attributes mapped to the type via
+     * will (by default) return any attributes mapped to the type via
      * {@link org.kuali.rice.krms.impl.repository.KrmsTypeAttributeBo}. If there is is a component name defined on the
      * related {@link org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo} then that will be used to generate
-     * the {@link RemotableAttributeField}.  If not, then a simple text input will be produced. </p>
+     * the {@link RemotableAttributeField}.  If not, then a simple text input will be produced.</p>
      *
-     * <p>An extending class can also override the {@link #translateTypeAttribute(org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute, org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition)}
+     * <p>An extending class can also override the
+     * {@link #translateTypeAttribute(org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute,
+     * org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition)}
      * method which is called from here, and within it hand create the RemotableAttributeField for a certain attribute.
      * </p>
+     *
+     * <p>Also handy for extenders to know, this method delegates to {@link #getTypeAttributeDefinitions(String)} and
+     * then pulls out the {@link RemotableAttributeField}s from the returned {@link TypeAttributeDefinition}s</p>
      *
      * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
      * @return
@@ -64,12 +70,36 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
      */
     @Override
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) throws RiceIllegalArgumentException {
+        List<TypeAttributeDefinition> typeAttributeDefinitions = getTypeAttributeDefinitions(krmsTypeId);
+
+        if (CollectionUtils.isEmpty(typeAttributeDefinitions)) {
+            return Collections.emptyList();
+        } else {
+            List<RemotableAttributeField> fields =
+                    new ArrayList<RemotableAttributeField>(typeAttributeDefinitions.size());
+
+            for (TypeAttributeDefinition typeAttributeDefinition : typeAttributeDefinitions) {
+                fields.add(typeAttributeDefinition.getField());
+            }
+            return fields;
+        }
+    }
+
+    /**
+     * Gets an ordered List of {@link TypeAttributeDefinition}s for the attributes on the KRMS type specified by the
+     * given krmsTypeId.
+     * @param krmsTypeId the ID of the KRMS Type whose attributes we are getting.
+     * @return a List of type-agnostic {@link TypeAttributeDefinition}s
+     * @see AttributeValidatingTypeServiceBase
+     */
+    @Override
+    protected List<TypeAttributeDefinition> getTypeAttributeDefinitions(String krmsTypeId) {
 
         if (StringUtils.isBlank(krmsTypeId)) {
             throw new RiceIllegalArgumentException("krmsTypeId must be non-null and non-blank");
         }
 
-        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
+        List<TypeAttributeDefinition> results = new ArrayList<TypeAttributeDefinition>();
 
         // keep track of how to sort these
         final Map<String, Integer> sortCodeMap = new HashMap<String, Integer>();
@@ -102,7 +132,10 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
                         sortCodeMap.put(attributeField.getName(), typeAttribute.getSequenceNumber());
                     }
 
-                    results.add(attributeField);
+                    TypeAttributeDefinition typeAttributeDefinition =
+                            new TypeAttributeDefinition(attributeField, attributeDefinition.getName(), attributeDefinition.getComponentName(), attributeDefinition.getLabel(), null);
+
+                    results.add(typeAttributeDefinition);
                 }
             }
         }
@@ -112,11 +145,12 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
         return results;
     }
 
-    protected void sortFields(List<RemotableAttributeField> results,
+
+    protected void sortFields(List<TypeAttributeDefinition> results,
             final Map<String, Integer> sortCodeMap) {// sort the results
-        Collections.sort(results, new Comparator<RemotableAttributeField>() {
+        Collections.sort(results, new Comparator<TypeAttributeDefinition>() {
             @Override
-            public int compare(RemotableAttributeField o1, RemotableAttributeField o2) {
+            public int compare(TypeAttributeDefinition o1, TypeAttributeDefinition o2) {
                 if (o1 == o2 || o1.equals(o2))
                     return 0;
                 // we assume that each has a sort code based on our previous check
@@ -137,7 +171,7 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
     public List<RemotableAttributeError> validateAttributes(@WebParam(name = "krmsTypeId") String krmsTypeId,
             @WebParam(name = "attributes") @XmlJavaTypeAdapter(
                     value = MapStringStringAdapter.class) Map<String, String> attributes) throws RiceIllegalArgumentException {
-        return Collections.emptyList();
+        return super.validateAttributes(krmsTypeId, attributes);
     }
 
     @Override
@@ -186,5 +220,11 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
 
     public DataDictionaryRemoteFieldService getDataDictionaryRemoteFieldService() {
         return KRADServiceLocatorWeb.getDataDictionaryRemoteFieldService();
+    }
+
+    @Override
+    protected List<RemotableAttributeError> validateNonDataDictionaryAttribute(RemotableAttributeField attr, String key,
+            String value) {
+        return Collections.emptyList();
     }
 }

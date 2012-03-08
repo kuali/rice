@@ -31,6 +31,18 @@
     <version>2.2.0-SNAPSHOT</version>
   </parent>
   <artifactId>rice-development-tools</artifactId>
+  <profiles>
+    <profile>
+      <id>oracle</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>${oracle.jdbc.artifactId}</artifactId>
+          <version>${oracle.jdbc.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
   <properties>
     <generateReports>false</generateReports>
   </properties>
@@ -73,6 +85,11 @@
     <dependency>
       <groupId>no.geosoft</groupId>
       <artifactId>filemonitor</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>${mysql.jdbc.artifactId}</artifactId>
+      <version>${mysql.jdbc.version}</version>
     </dependency>
   </dependencies>
 </project>

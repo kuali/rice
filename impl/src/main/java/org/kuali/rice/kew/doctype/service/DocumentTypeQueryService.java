@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * A service for querying document type stuff for plugins without exposing the document type service.
@@ -28,12 +28,17 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
  */
 public interface DocumentTypeQueryService extends XmlLoader {
 
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}' + 'documentTypeId=' + #p0")
     public DocumentType findById(String documentTypeId);
-    
+
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}' + 'name=' + #p0")
     public DocumentType findByName(String name);
 
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME,
+            key="'{BO}' + 'documentTypeId=' + #p0.getId() + '|' + 'docGroupName=' + #p1 + '|' + 'climbHierarchy=' + #p2")
     public Collection<DocumentType> find(DocumentType documentType, String docGroupName, boolean climbHierarchy);
-    
+
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}{root}' + 'documentTypeId=' + #p0.getId()")
     public DocumentType findRootDocumentType(DocumentType docType);
     
     /**
@@ -41,6 +46,7 @@ public interface DocumentTypeQueryService extends XmlLoader {
      * 
      * @since 2.3
      */
+    @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}' + 'documentId=' + #p0")
     public DocumentType findByDocumentId(String documentId);
     
 }

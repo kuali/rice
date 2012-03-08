@@ -32,7 +32,7 @@ import org.kuali.rice.test.BaselineTestCase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class ExceptionRoutingServiceTest extends KEWTestCase {
 
 	/**

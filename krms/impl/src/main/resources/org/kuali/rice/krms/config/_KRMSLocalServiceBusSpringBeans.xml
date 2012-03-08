@@ -46,42 +46,4 @@
 		</property>
 	</bean>
 
-  <bean id="rice.krms.notificationPeopleFlowActionTypeService.exporter" parent="krmsServiceExporter">
-		<property name="serviceDefinition">
-			<bean parent="krmsService">
-				<property name="service">
-					<ref bean="notificationPeopleFlowActionTypeService" />
-				</property>
-				<property name="localServiceName" value="notificationPeopleFlowActionTypeService" />
-				<property name="busSecurity" value="${rice.krms.notificationPeopleFlowActionTypeService.secure}" />
-			</bean>
-		</property>
-	</bean>
-
-  <bean id="rice.krms.approvalPeopleFlowActionTypeService.exporter" parent="krmsServiceExporter">
-		<property name="serviceDefinition">
-			<bean parent="krmsService">
-				<property name="service">
-					<ref bean="approvalPeopleFlowActionTypeService" />
-				</property>
-				<property name="localServiceName" value="approvalPeopleFlowActionTypeService" />
-				<property name="busSecurity" value="${rice.krms.approvalPeopleFlowActionTypeService.secure}" />
-			</bean>
-		</property>
-	</bean>
-
-  <!--
-  <bean id="rice.krms.comparisonOperatorService.exporter" parent="krmsServiceExporter">
-    <property name="serviceDefinition">
-      <bean parent="krmsService">
-        <property name="service">
-          <ref bean="comparisonOperatorService" />
-        </property>
-        <property name="localServiceName" value="comparisonOperatorService" />
-        <property name="busSecurity" value="${rice.krms.comparisonOperatorService.secure}" />
-      </bean>
-    </property>
-  </bean>
-  -->
-
 </beans>

@@ -23,7 +23,12 @@ import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * This is a contract for RoleMember. Role members can be Principals, Groups, or other Roles.
+ * Each RoleMember has certain permissions and responsibilities assigned to it based on which role it belongs to.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface RoleMemberContract extends Versioned, GloballyUnique, InactivatableFromTo, Identifiable {
     /**
      * This is the member id for the Role Member.

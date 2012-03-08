@@ -16,6 +16,9 @@
 package org.kuali.rice.kew.api.action;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -89,6 +92,47 @@ public final class RequestedActions extends AbstractDataTransferObject {
 
 	public boolean isFyiRequested() {
 		return fyiRequested;
+    }
+
+    /**
+     * Returns a Set of {@link ActionRequestType}s which indicate the actions which have been requested.  This will
+     * essentially contain request types for any of the request-related methods on this class which return "true".  If
+     * no actions are requested, the empty set will be returned (this method will never return null).
+     *
+     * @return an unmodifiable Set of action request types which have been requested, or an empty set if no actions are
+     * requested
+     */
+    public Set<ActionRequestType> getRequestedActions() {
+        EnumSet<ActionRequestType> requestedActions = EnumSet.noneOf(ActionRequestType.class);
+        if (isCompleteRequested()) {
+            requestedActions.add(ActionRequestType.COMPLETE);
+        }
+        if (isApproveRequested()) {
+            requestedActions.add(ActionRequestType.APPROVE);
+        }
+        if (isAcknowledgeRequested()) {
+            requestedActions.add(ActionRequestType.ACKNOWLEDGE);
+        }
+        if (isFyiRequested()) {
+            requestedActions.add(ActionRequestType.FYI);
+        }
+        return Collections.unmodifiableSet(requestedActions);
+    }
+
+    /**
+     * Returns true if this set of requested actions contains the given action request type.
+     *
+     * @param actionRequestType the {@link ActionRequestType} to check for, can't be null
+     *
+     * @return true if the action is requested, false otherwise
+     *
+     * @throws IllegalArgumentException if actionRequestType is null
+     */
+    public boolean contains(ActionRequestType actionRequestType) {
+        if (actionRequestType == null) {
+            throw new IllegalArgumentException("actionRequestType was null");
+        }
+        return getRequestedActions().contains(actionRequestType);
     }
     
     /**

@@ -58,7 +58,7 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
      * @return true if the name-namespace pair is unique, false otherwise
      */
     private boolean validateDescriptionNamespace(TermBo term) {
-        if (StringUtils.isNotBlank(term.getDescription()) && StringUtils.isNotBlank(
+        if (term.getSpecification() != null && StringUtils.isNotBlank(term.getDescription()) && StringUtils.isNotBlank(
                 term.getSpecification().getNamespace())) {
 
             Map<String, String> criteria = new HashMap<String, String>();

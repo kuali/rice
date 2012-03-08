@@ -45,6 +45,7 @@ public class UserSession implements Serializable {
     private String kualiSessionId;
 
     /**
+     * Returns the session id. The session id is a unique identifier for the session.
      * @return the kualiSessionId
      */
     public String getKualiSessionId() {
@@ -52,6 +53,7 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Sets the session id.
      * @param kualiSessionId the kualiSessionId to set
      */
     public void setKualiSessionId(String kualiSessionId) {
@@ -59,6 +61,7 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Creates a user session for the principal specified in the parameter.
      * Take in a netid, and construct the user from that.
      *
      * @param principalName
@@ -82,6 +85,7 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Returns the id of the current user.
      * @return the principalId of the current user in the system, backdoor principalId if backdoor is set
      */
     public String getPrincipalId() {
@@ -92,6 +96,7 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Returns the name of the current user.
      * @return the principalName of the current user in the system, backdoor principalName if backdoor is set
      */
     public String getPrincipalName() {
@@ -102,9 +107,8 @@ public class UserSession implements Serializable {
     }
 
     /**
-     * This returns who is logged in. If the backdoor is in use, this will return the network id of the person that is
-     * standing in
-     * as the backdoor user.
+     * Returns who is logged in. If the backdoor is in use, this will return the network id of the person that is
+     * standing in as the backdoor user.
      *
      * @return String
      */
@@ -116,6 +120,7 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Returns a Person object for the current user.
      * @return the KualiUser which is the current user in the system, backdoor if backdoor is set
      */
     public Person getPerson() {
@@ -126,9 +131,16 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Returns the actual current user even if the backdoor is in use.
+     * @return the KualiUser which is the current user in the system
+     */
+    public Person getActualPerson() {
+        return person;
+    }
+
+    /**
      * override the current user in the system by setting the backdoor networkId, which is useful when dealing with
-     * routing or other
-     * reasons why you would need to assume an identity in the system
+     * routing or other reasons why you would need to assume an identity in the system
      *
      * @param principalName
      */

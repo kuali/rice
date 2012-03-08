@@ -27,7 +27,9 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.WorkflowDocument;
 
 /**
- * Interface for {@link DocumentHeaderBase} 
+ * Business Object representing a document header. The document header contains metadata about a document.
+ * This contains a reference to the template associated with the document.
+ * This also provides the access to the underlying {@link WorkflowDocument} associated with this document header.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -59,7 +61,8 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
-     * 
+     * Returns an instance of the the {@link WorkflowDocument} associated with this document header.
+     * The workflowDocument provides the core client interface for interacting with the KEW workflow module.
      * @return workflowDocument
      */
     public WorkflowDocument getWorkflowDocument() {
@@ -71,6 +74,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Returns whether this document header has a {@link WorkflowDocument} associated with it.
      * @return true if the workflowDocument is not null
      */
     public boolean hasWorkflowDocument() {
@@ -79,7 +83,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 
 
     /**
-     * 
+     * Associates a {@link WorkflowDocument} with this document header.
      * @param workflowDocument
      */
     public void setWorkflowDocument(WorkflowDocument workflowDocument) {
@@ -87,6 +91,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Returns the documentNumber (also known as the docuementHeaderId). This is a unique identifier for the document.
      * @return the documentNumber
      */
     public String getDocumentNumber() {
@@ -94,6 +99,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Sets the documentNumber for this document. It serves as a unique identifier for the document.
      * @param documentNumber the documentNumber to set
      */
     public void setDocumentNumber(String documentNumber) {
@@ -101,6 +107,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Returns the description text for this document.
      * @return the documentDescription
      */
     public String getDocumentDescription() {
@@ -108,6 +115,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Sets the description text for this document.
      * @param documentDescription the documentDescription to set
      */
     public void setDocumentDescription(String documentDescription) {
@@ -115,6 +123,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Returns the organizationDocumentNumber. This identifier is one that may be used by a client to refer to the document.
      * @return the organizationDocumentNumber
      */
     public String getOrganizationDocumentNumber() {
@@ -122,6 +131,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Sets the value of the organizationDocumentNumber
      * @param organizationDocumentNumber the organizationDocumentNumber to set
      */
     public void setOrganizationDocumentNumber(String organizationDocumentNumber) {
@@ -129,6 +139,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
+     * Returns the documentTemplateNumber. It identifies the document template associated with this document.
      * @return the documentTemplateNumber
      */
     public String getDocumentTemplateNumber() {
@@ -136,14 +147,15 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
     }
 
     /**
-     * @param documentTemplateNumber the documentTemplateNumber to set
+     * Associates this document with a document template.
+     * @param documentTemplateNumber the id of the documentTemplate associated with this document
      */
     public void setDocumentTemplateNumber(String documentTemplateNumber) {
         this.documentTemplateNumber = documentTemplateNumber;
     }
 
     /**
-     * Gets the explanation attribute. 
+     * Gets the explanation attribute. This text provides additional information about the purpose of the document.
      * @return Returns the explanation.
      */
     public String getExplanation() {
@@ -152,7 +164,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
 
     /**
      * Sets the explanation attribute value.
-     * @param explanation The explanation to set.
+     * @param explanation The explanation text string.
      */
     public void setExplanation(String explanation) {
         this.explanation = explanation;

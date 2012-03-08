@@ -60,11 +60,6 @@ public interface TransactionalDocumentDictionaryService {
 
 
     /**
-     * @param document
-     * @return businessRulesClass associated with the given document's type
-     */
-    public Class<? extends BusinessRule> getBusinessRulesClass(TransactionalDocument document);
-    /**
      * The collection of ReferenceDefinition objects defined as DefaultExistenceChecks for the MaintenanceDocument.
      * 
      * @param document

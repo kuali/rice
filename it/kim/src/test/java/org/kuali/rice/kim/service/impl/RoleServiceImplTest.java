@@ -19,7 +19,11 @@ import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.role.RoleServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -30,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -76,6 +81,35 @@ public class RoleServiceImplTest extends KIMTestCase {
 		roleIds.add("r2");
 		assertTrue( "p2 is assigned to g1 and g1 assigned to r2", roleService.principalHasRole("p2", roleIds,  Collections.<String, String>emptyMap() ));
 	}
+
+    @Test
+    public void testAddPrincipalToRoleAndRemove() {
+        /*Role r2 = roleService.getRole("r2");
+        roleService.assignPrincipalToRole("user4", r2.getNamespaceCode(), r2.getName(),
+                new HashMap<String, String>());
+
+        assertTrue("principal should be assigned to role", roleService.principalHasRole("user4", Collections.singletonList(
+                r2.getId()), new HashMap<String, String>()));
+        
+        roleService.removePrincipalFromRole("user4", r2.getNamespaceCode(), r2.getName(), new HashMap<String, String>());
+
+        assertFalse("principal should not be assigned to role", roleService.principalHasRole("user4", Collections.singletonList(
+                r2.getId()), new HashMap<String, String>()));*/
+
+        Role r2 = roleService.getRole("r2");
+        RoleMember rm1 = roleService.assignPrincipalToRole("user4", r2.getNamespaceCode(), r2.getName(),
+                new HashMap<String, String>());
+
+        assertTrue("principal should be assigned to role", roleService.principalHasRole("user4", Collections.singletonList(
+                r2.getId()), new HashMap<String, String>()));
+
+        roleService.removePrincipalFromRole("user4", r2.getNamespaceCode(), r2.getName(), new HashMap<String, String>());
+
+        RoleMember rm2 = roleService.assignPrincipalToRole("user4", r2.getNamespaceCode(), r2.getName(),
+                new HashMap<String, String>());
+
+        assertFalse(rm1.getId().equals(rm2.getId()));
+    }
 	
 	/**
 	 * Tests to ensure that a circular role membership cannot be created via the RoleService.

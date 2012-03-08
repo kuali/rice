@@ -290,6 +290,11 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		return sections;
 	}
 
+
+    @Override
+    public void saveDataObject(){
+        saveBusinessObject();
+    }
     /**
 	 * 
 	 * @see Maintainable#saveBusinessObject()
@@ -309,14 +314,19 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
     public void setupNewFromExisting(MaintenanceDocument document, Map<String, String[]> parameters) {
     }
 
-    /**
-	 * Retrieves the status of the boNotesEnabled
-	 */
 	public boolean isBoNotesEnabled() {
-	    return super.isNotesEnabled();
+        return getDataObjectMetaDataService().areNotesSupported(getDataObjectClass());
 	}
 
-	/**
+    /**
+     * Overriding to call old (KNS) name of the method
+     */
+    @Override
+    public boolean isNotesEnabled() {
+        return isBoNotesEnabled();
+    }
+
+    /**
 	 * @see Maintainable#refresh(java.lang.String,
 	 *      java.util.Map) Impls will be needed if custom action is needed on
 	 *      refresh.

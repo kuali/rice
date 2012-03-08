@@ -148,6 +148,16 @@ public class CollectionGroup extends Group implements DataBinding {
             }
         }
 
+        for (Component addLineField : addLineFields) {
+            if (addLineField instanceof DataField) {
+                DataField field = (DataField) addLineField;
+
+                if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
+                    field.setDictionaryObjectEntry(collectionObjectClass.getName());
+                }
+            }
+        }
+
         if ((addLineFields == null) || addLineFields.isEmpty()) {
             addLineFields = getItems();
         }
@@ -172,6 +182,11 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 
+        List<DataField> addLineCollectionFields = ComponentUtils.getComponentsOfTypeDeep(addLineFields, DataField.class);
+        for (DataField collectionField : addLineCollectionFields) {
+            collectionField.getBindingInfo().setCollectionPath(collectionPath);
+        }
+
         // add collection entry to abstract classes
         if (!view.getAbstractTypeClasses().containsKey(collectionPath)) {
             view.getAbstractTypeClasses().put(collectionPath, getCollectionObjectClass());
@@ -180,6 +195,11 @@ public class CollectionGroup extends Group implements DataBinding {
         // initialize container items and sub-collections (since they are not in
         // child list)
         for (Component item : getItems()) {
+            view.getViewHelperService().performComponentInitialization(view, model, item);
+        }
+
+        // initialize addLineFields
+        for (Component item : addLineFields) {
             view.getViewHelperService().performComponentInitialization(view, model, item);
         }
 
@@ -278,6 +298,7 @@ public class CollectionGroup extends Group implements DataBinding {
         components.addAll(addLineActionFields);
         components.addAll(getItems());
         components.addAll(getSubCollections());
+        components.addAll(addLineFields);
 
         return components;
     }

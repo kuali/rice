@@ -69,6 +69,8 @@ public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> 
         		attributeName = label;
         	
         	constraintValidationResult.setError(RiceKeyConstants.ERROR_REQUIRES_FIELD, attributeName);
+            constraintValidationResult.setConstraintLabelKey(constraint.getLabelKey());
+            constraintValidationResult.setErrorParameters(constraint.getValidationMessageParamsArray());
         } 
         
         return constraintValidationResult;

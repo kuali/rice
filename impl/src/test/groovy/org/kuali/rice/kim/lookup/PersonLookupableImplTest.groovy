@@ -32,6 +32,7 @@ import org.kuali.rice.krad.util.GlobalVariables
 import org.kuali.rice.krad.UserSession
 import org.kuali.rice.kim.api.identity.PersonService
 import org.kuali.rice.kim.impl.identity.PersonImpl
+import org.kuali.rice.kim.api.permission.PermissionService
 
 /**
  * Tests the PersonLookupableImpl
@@ -50,7 +51,8 @@ class PersonLookupableImplTest {
             getName: { -> new QName("Foo", "Bar") },
             getService: { QName name ->
                 def svc = [
-                    kimUiDocumentService: [ canModifyEntity: { a,b -> true } ] as UiDocumentService,
+                    //kimUiDocumentService: [ canModifyEntity: { a,b -> true } ] as UiDocumentService,
+                    kimPermissionService: [ isAuthorized: {a, b, c, d -> true} ] as PermissionService,
                     personService: [ getPersonByPrincipalName: { new PersonImpl() } ] as PersonService,
                     kualiConfigurationService: [ getPropertyValueAsString: { "KIM_BASE_PATH" } ] as ConfigurationService
                 ][name.getLocalPart()]

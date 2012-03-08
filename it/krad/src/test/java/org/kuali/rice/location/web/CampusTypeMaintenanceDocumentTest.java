@@ -22,7 +22,6 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.location.impl.campus.CampusTypeBo;
-import org.kuali.rice.location.impl.country.CountryBo;
 import org.kuali.test.BaseMaintenanceDocumentTest;
 
 /**
@@ -60,7 +59,7 @@ public class CampusTypeMaintenanceDocumentTest extends BaseMaintenanceDocumentTe
     /**
      * test that a validation error occurs when a business object is missing required fields
      */
-    public void test_RouteNewDoc() throws WorkflowException {
+    public void testRouteNewDoc() throws WorkflowException {
         setupNewAccountMaintDoc(getDocument());
         KRADServiceLocatorWeb.getDocumentService().routeDocument(getDocument(), "submit", null);
         Assert.assertTrue(getDocument().getDocumentHeader().getWorkflowDocument().isEnroute());

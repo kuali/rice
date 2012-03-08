@@ -90,12 +90,6 @@
 	</bean>
 
 	<bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
-		<property name="moduleName" value="CORE" />
-		<property name="validRunModes">
-			<list>
-				<value>LOCAL</value>
-			</list>
-		</property>
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="dataSource" />
 		<property name="properties">
@@ -109,12 +103,6 @@
   <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
 
 	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-		<property name="moduleName" value="KSB" />
-		<property name="validRunModes">
-			<list>
-				<value>LOCAL</value>
-			</list>
-		</property>
 		<property name="overrideServices">
 			<list>
 				<bean class="org.kuali.rice.ksb.messaging.config.ServiceHolder">

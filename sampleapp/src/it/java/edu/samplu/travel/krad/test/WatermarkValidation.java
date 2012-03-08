@@ -34,7 +34,7 @@ public class WatermarkValidation {
 
     @Before
     public void setUp() throws Exception {
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");//System.getProperty("remote.public.url")
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", System.getProperty("remote.public.url"));//was http://localhost:8080/
         selenium.start();
     }
 
@@ -44,7 +44,7 @@ public class WatermarkValidation {
      * the scripts will be working ok
      */
     public void testWatermarking() throws Exception {
-        selenium.open("/kr-dev/portal.do");
+        selenium.open(System.getProperty("remote.public.url"));
 		selenium.type("name=__login_user", "quickstart");
 		selenium.click("css=input[type=\"submit\"]");
 		selenium.waitForPageToLoad("100000");

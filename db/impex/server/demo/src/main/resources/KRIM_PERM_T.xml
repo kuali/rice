@@ -334,4 +334,19 @@
         NM="Maintain KRMS Agenda" NMSPC_CD="KR-RULE-TEST"
         OBJ_ID="B7DBFABEFD2B8CBFE0402E0AA9D757C9" PERM_ID="843"
         PERM_TMPL_ID="52" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows user to create a new Term maintainence document"
+        NM="Create Term Maintenance Document" NMSPC_CD="KR-NS"
+        OBJ_ID="0dbce939-4f22-4e9b-a4bb-1615c0f411a2" PERM_ID="844"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows user to create a new Context maintainence document"
+        NM="Create Context Maintenance Document" NMSPC_CD="KR-NS"
+        OBJ_ID="cefeed6d-b5e2-40aa-9034-137db317b532" PERM_ID="845"
+        PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Allows user to create a new TermSpecification maintainence document"
+        NM="Create TermSpecification Maintenance Document"
+        NMSPC_CD="KR-NS" OBJ_ID="02bd9acd-48d9-4fec-acbd-6a441c5ea8c2"
+        PERM_ID="846" PERM_TMPL_ID="42" VER_NBR="1"/>
 </dataset>

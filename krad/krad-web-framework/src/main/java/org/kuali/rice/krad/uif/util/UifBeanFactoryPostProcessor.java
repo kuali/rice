@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Configurable;
@@ -30,6 +29,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.TypedStringValue;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Post processes the bean factory to handle UIF property expressions
+ * Post processes the bean factory to handle UIF property expressions and IDs on inner beans
  *
  * <p>
  * Conditional logic can be implemented with the UIF dictionary by means of property expressions. These are
@@ -55,13 +55,18 @@ import java.util.Set;
  * the result is set as the value for the corresponding property.
  * </p>
  *
+ * <p>
+ * Spring will not register inner beans with IDs so that the bean definition can be retrieved through the factory,
+ * therefore this post processor adds them as top level registered beans
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     private static final Log LOG = LogFactory.getLog(UifBeanFactoryPostProcessor.class);
 
     /**
-     * Iterates through all beans in the factory and invokes processing for expressions
+     * Iterates through all beans in the factory and invokes processing
      *
      * @param beanFactory - bean factory instance to process
      * @throws BeansException
@@ -121,6 +126,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 beanFactory, processedBeanNames);
         boolean parentExpressionsExist = !parentPropertyExpressions.isEmpty();
 
+        // process expressions on property values
         PropertyValue[] pvArray = pvs.getPropertyValues();
         for (PropertyValue pv : pvArray) {
             if (hasExpression(pv.getValue())) {
@@ -157,6 +163,13 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             mergedPropertyExpressions.putAll(propertyExpressions);
 
             pvs.addPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS, mergedPropertyExpressions);
+        }
+
+        // if bean name is given and factory does not have it registered we need to add it (inner beans that
+        // were given an id)
+        if (StringUtils.isNotBlank(beanName) && !StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName,
+                "#") && !beanFactory.containsBean(beanName)) {
+            ((BeanDefinitionRegistry) beanFactory).registerBeanDefinition(beanName, beanDefinition);
         }
 
         if (StringUtils.isNotBlank(beanName)) {
@@ -327,16 +340,18 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         // process nested bean definitions
         if ((propertyValue instanceof BeanDefinition) || (propertyValue instanceof BeanDefinitionHolder)) {
+            String beanName = null;
             BeanDefinition beanDefinition;
             if (propertyValue instanceof BeanDefinition) {
                 beanDefinition = (BeanDefinition) propertyValue;
             } else {
                 beanDefinition = ((BeanDefinitionHolder) propertyValue).getBeanDefinition();
+                beanName = ((BeanDefinitionHolder) propertyValue).getBeanName();
             }
 
             // since overriding the entire bean, clear any expressions from parent that start with the bean property
             removeExpressionsByPrefix(propertyName, parentPropertyExpressions);
-            processBeanDefinition(null, beanDefinition, beanFactory, processedBeanNames);
+            processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
 
             return propertyValue;
         }

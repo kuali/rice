@@ -29,6 +29,7 @@ import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentLink;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
@@ -110,7 +111,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     @Override
-    public String getDocumentStatus(String documentId) {
+    public DocumentStatus getDocumentStatus(String documentId) {
         if (StringUtils.isEmpty(documentId)) {
             throw new RiceIllegalArgumentException("documentId was blank or null");
         }
@@ -118,7 +119,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (StringUtils.isEmpty(documentStatus)) {
             throw new RiceIllegalStateException("DocumentStatus not found for documentId: " + documentId);
         }
-        return documentStatus;
+        return DocumentStatus.fromCode(documentStatus);
     }
 
     @Override
@@ -236,20 +237,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return actionRequests;
     }
 	
-    public Map<String, String> getActionsRequested(String principalId, String documentId) {
-        if (StringUtils.isEmpty(documentId)) {
-            throw new RiceIllegalArgumentException("documentId is null or empty.");
-        }
-        if (StringUtils.isEmpty(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or empty.");
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("Fetching DocumentRouteHeaderValue [id="+documentId+", user="+principalId+"]");
-        }
-        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-        return KEWServiceLocator.getActionRequestService().getActionsRequested(document, principalId, true);
-    }
-
     protected boolean actionRequestMatches(ActionRequestValue actionRequest, String nodeName, String principalId) {
         boolean matchesUserId = true;  // assume a match in case user is empty
         boolean matchesNodeName = true;  // assume a match in case node name is empty

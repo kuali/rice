@@ -20,6 +20,12 @@ import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 
 import java.util.Date;
+/**
+ * This is a contract for EntityBioDemographics and represents the
+ * demographic information of an Entity.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 
 
 public interface EntityBioDemographicsContract extends Versioned, GloballyUnique {

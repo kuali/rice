@@ -182,12 +182,12 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (MemberType.PRINCIPAL.equals(getType())) {
             this.memberNamespaceCode = "";
         } else if (MemberType.GROUP.equals(getType())) {
-            Group groupInfo = getGroupService().getGroup(memberId);
+            Group groupInfo = KimApiServiceLocator.getGroupService().getGroup(memberId);
             if (groupInfo != null) {
                 this.memberNamespaceCode = groupInfo.getNamespaceCode();
             }
         } else if (MemberType.ROLE.equals(getType())) {
-            Role role = getRoleService().getRole(memberId);
+            Role role = KimApiServiceLocator.getRoleService().getRole(memberId);
             if (role != null) {
                 this.memberNamespaceCode = role.getNamespaceCode();
             }

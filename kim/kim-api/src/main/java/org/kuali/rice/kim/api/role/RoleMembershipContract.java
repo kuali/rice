@@ -21,6 +21,13 @@ import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
 import java.util.Map;
+/**
+ * This is a contract for RoleMembership. Role members can be Principals, Groups, or other Roles.
+ * Delegates can also be associated with a Role.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 
 public interface RoleMembershipContract extends Identifiable {
 

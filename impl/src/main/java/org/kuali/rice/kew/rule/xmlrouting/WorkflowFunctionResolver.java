@@ -15,21 +15,18 @@
  */
 package org.kuali.rice.kew.rule.xmlrouting;
 
-import java.util.Iterator;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.rule.RuleExtension;
+import org.kuali.rice.kew.xml.xstream.XStreamSafeSearchFunction;
+import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFunction;
 import javax.xml.xpath.XPathFunctionResolver;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.rule.RuleExtensionBo;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.xml.xstream.XStreamSafeSearchFunction;
-import org.w3c.dom.Node;
-
+import java.util.List;
+import java.util.Map;
 
 /**
  * A function resolver for XPath functions provided by KEW.
@@ -38,7 +35,7 @@ import org.w3c.dom.Node;
  */
 public class WorkflowFunctionResolver implements XPathFunctionResolver {
 	
-	private List<RuleExtensionBo> ruleExtensions;
+	private List<RuleExtension> ruleExtensions;
 	private Node rootNode;
 	private XPath xpath;
 
@@ -55,11 +52,10 @@ public class WorkflowFunctionResolver implements XPathFunctionResolver {
 				public Object evaluate(List args) {
 					if (args.size() == 1) {
 						String name = (String) args.get(0);
-						for (RuleExtensionBo ruleExtension : ruleExtensions) {
-						    for (Iterator iter = ruleExtension.getExtensionValues().iterator(); iter.hasNext();) {
-						        RuleExtensionValue value = (RuleExtensionValue) iter.next();
-						        if (value.getKey().equals(name)) {
-						            return value.getValue();
+						for (RuleExtension ruleExtension : ruleExtensions) {
+						    for (Map.Entry<String, String> entry : ruleExtension.getExtensionValuesMap().entrySet()) {
+						        if (entry.getKey().equals(name)) {
+						            return entry.getValue();
 						        }
 						    }
 						}
@@ -108,11 +104,11 @@ public class WorkflowFunctionResolver implements XPathFunctionResolver {
 	    return object == null;
 	}
 
-	public List<RuleExtensionBo> getRuleExtensions() {
+	public List<RuleExtension> getRuleExtensions() {
         return this.ruleExtensions;
     }
 
-    public void setRuleExtensions(List<RuleExtensionBo> ruleExtensions) {
+    public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
         this.ruleExtensions = ruleExtensions;
     }
 

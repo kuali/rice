@@ -29,6 +29,8 @@ public class UifPropertyPaths {
 	public static final String CONTEXT = "context";
 	public static final String CRITERIA_FIELDS = "criteriaFields";
     public static final String DOCUMENT_ID = "documentId";
+    public static final String ID = "id";
+    public static final String FACTORY_ID = "factoryId";
 	public static final String NEW_COLLECTION_LINES = "newCollectionLines";
     public static final String OBJECT_ID = "objectId";
 	public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";

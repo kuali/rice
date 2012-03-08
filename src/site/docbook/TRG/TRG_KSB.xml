@@ -433,8 +433,7 @@
                 current setup without introducing JTA into your stack. Normally, when a JTA
                 transaction is found, the message is not sent until the transaction commits. In this
                 case, the message is sent immediately.</para>
-            <para>Let's take a look at the <emphasis role="italic"
-                    >KSBTestHarnessNoJtaSpring.xml</emphasis> file. Instead of JTA, the following
+            <para>Let's take a look at the <emphasis role="italic">KSBTestHarnessNoJtaSpring.xml</emphasis> file. Instead of JTA, the following
                     transaction and DataSource configuration is declared:</para>
             <programlisting>&lt;bean id="ojbConfigurer" class="org.springmodules.orm.ojb.support.LocalOjbConfigurer" />
 
@@ -501,10 +500,8 @@
     &lt;servlet-name>remoting&lt;/servlet-name>
     &lt;url-pattern>/remoting/*&lt;/url-pattern>
 &lt;/servlet-mapping></programlisting>
-            <para>This allows bus-exposed services to be accessed at a URL like <emphasis
-                    role="bold">http://yourlocalip:8080/myapp/remoting/[KSB:service
-                name]</emphasis>. Notice how this URL corresponds to the configured <emphasis
-                    role="bold">serviceServletUrl</emphasis> property on the KSBConfigurer. </para>
+            <para>This allows bus-exposed services to be accessed at a URL like <emphasis role="bold">http://yourlocalip:8080/myapp/remoting/[KSB:service
+                name]</emphasis>. Notice how this URL corresponds to the configured <emphasis role="bold">serviceServletUrl</emphasis> property on the KSBConfigurer. </para>
         </sect2>
         <sect2>
             <title>Configuration Parameters</title>
@@ -663,8 +660,7 @@
                     the datastore. Otherwise, they will only be stored in memory. If message
                     persistence is not turned on and the server is shutdown while there are still
                     messages that need to be sent, those messages will be lost. For a production
-                    environment, it is recommended that you set message.persistence to <emphasis
-                        role="italic">true</emphasis>.</para>
+                    environment, it is recommended that you set message.persistence to <emphasis role="italic">true</emphasis>.</para>
             </sect3>
             <sect3>
                 <title>message.delivery</title>
@@ -673,11 +669,8 @@
                     synchronous, then messages that are sent in an asynchronous fashion using the
                     KSB API will instead be sent synchronously. This is useful in certain
                     development and unit testing scenarios. For a production environment, it is
-                    recommended that you set message delivery to <emphasis role="italic"
-                        >asynchronous</emphasis>.</para>
-                <note><para>It is strongly recommended that you set <emphasis role="bold"
-                        >message.delivery</emphasis> to <emphasis role="italic"
-                        >asynchronous</emphasis> for all cases except for when implementing
+                    recommended that you set message delivery to <emphasis role="italic">asynchronous</emphasis>.</para>
+                <note><para>It is strongly recommended that you set <emphasis role="bold">message.delivery</emphasis> to <emphasis role="italic">asynchronous</emphasis> for all cases except for when implementing
                     automated tests or short-lived programs that interact with the service
                     bus.</para></note>
             </sect3>
@@ -724,10 +717,8 @@
             <sect3>
                 <title>ksb.org.quartz.*</title>
                 <para>Can be used to pass Quartz properties to the embedded Quartz scheduler. See
-                    the configuration documentation on the <link
-                        xlink:href="http://www.quartz-scheduler.org/">Quartz site</link>.
-                    Essentially, any property prefixed with <emphasis role="italic"
-                        >ksb.org.quartz</emphasis>. will have the "ksb." portion stripped and will
+                    the configuration documentation on the <link xlink:href="http://www.quartz-scheduler.org/">Quartz site</link>.
+                    Essentially, any property prefixed with <emphasis role="italic">ksb.org.quartz</emphasis>. will have the "ksb." portion stripped and will
                     be sent as configuration parameters to the embedded Quartz scheduler.</para>
             </sect3>
             <sect3>
@@ -988,8 +979,7 @@
                         transaction, and then sent after the transaction is committed (technically,
                         they are sent <emphasis role="bold">when</emphasis> the transaction is
                         committed).</para>
-                    <para>In synchronous messaging, messages are processed <emphasis role="bold"
-                            >immediately</emphasis> when they are “sent”. This results in a
+                    <para>In synchronous messaging, messages are processed <emphasis role="bold">immediately</emphasis> when they are “sent”. This results in a
                         different ordering of execution when using these two different messaging
                         models.</para>
                 </sect4>
@@ -1200,8 +1190,7 @@ String result = echoService.echo(echoValue);</programlisting>
                                 <entry>true</entry>
                                 <entry><para>If <emphasis role="italic">true</emphasis>, the service
                                         will behave like a queue in that there is only one real
-                                        service call when a message is sent. </para><para>If <emphasis
-                                        role="italic">false</emphasis>, the service will behave like
+                                        service call when a message is sent. </para><para>If <emphasis role="italic">false</emphasis>, the service will behave like
                                     a topic. All beans bound to the service name will be sent a
                                     message when a message is sent to the service. </para><para>Use queues
                                         for operations you only want to happen once (for example, to
@@ -1296,8 +1285,7 @@ KEWSampleJavaService testJavaAsyncService = (KEWSampleJavaService) KSBServiceLoc
             <note><para>Typically, service providers give clients a JAR with this content or organizations
                 maintain a JAR with this content.</para></note>
             <para>To complete the example: Below is the Spring configuration used to expose this
-                service to the bus. This is taken from the file <emphasis role="italic"
-                    >TestClient1SpringBeans.xml</emphasis>:</para>
+                service to the bus. This is taken from the file <emphasis role="italic">TestClient1SpringBeans.xml</emphasis>:</para>
             <programlisting>&lt;!-- bean declaration -->
 &lt;bean id="sharedQueue" class=" org.kuali.rice.ksb.testclient1.ClientApp1SharedQueue" />
 
@@ -1313,8 +1301,7 @@ KEWSampleJavaService testJavaAsyncService = (KEWSampleJavaService) KSBServiceLoc
             <para>This is located in the Spring file of the application exposing the service (in
                 other words, the location in which the actual invocation will occur). The client
                 does not need a Spring configuration to invoke the service.</para>
-            <para>There are two messaging call paradigms, called <emphasis role="italic"
-                    >Topics</emphasis> and <emphasis role="italic">Queues</emphasis>. When any
+            <para>There are two messaging call paradigms, called <emphasis role="italic">Topics</emphasis> and <emphasis role="italic">Queues</emphasis>. When any
                 number of services is declared a Topic, then those services are invoked at least
                 once or multiple times. If any number of services is declared a Queue, then one and
                 only one service name will be invoked. </para>
@@ -1439,9 +1426,7 @@ testXmlAsyncService.invoke("message content");</programlisting>
             <programlisting>new MessageFetcher((Integer) null).run()</programlisting>
             <para>Unfortunately, the cast to Integer is required. The MessageFetcher also has a
                 constructor that takes a long variable as a parameter. This can be used to pull any
-                message in the message store and put it in memory for invocation. <emphasis
-                    role="italic">Integer</emphasis> is a fetch size; <emphasis role="italic"
-                    >null</emphasis> means all.</para>
+                message in the message store and put it in memory for invocation. <emphasis role="italic">Integer</emphasis> is a fetch size; <emphasis role="italic">null</emphasis> means all.</para>
         </sect2>
     </sect1>
     <sect1>
@@ -1559,6 +1544,96 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
 
 &lt;/bean></programlisting>
         </sect2>
+        <sect2 xml:id="callback_service_exporter">
+            <title>CallbackServiceExporter</title>            
+            <para>The term "Callback Service" refers to services that client applications write and
+                configure and which are used by various modules of Rice including KIM, KEW, and
+                KRMS. Because of the naming convention on these, they are often referred to as "Type
+                Services". These include:</para>
+              
+                <para><itemizedlist>
+                    <listitem>
+                        <para>KIM<itemizedlist>
+                                <listitem>
+                                    <para>RoleTypeService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>PermissionTypeService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>GroupTypeService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>etc.</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para>KRMS<itemizedlist>
+                                <listitem>
+                                    <para>ActionTypeService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>PropositionTypeService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>AgendaTypeService</para>
+                                </listitem>
+                                <listitem>
+                                    <para>etc.</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para>KEW<itemizedlist>
+                                <listitem>
+                                    <para>PeopleFlowTypeService</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                </itemizedlist>These are typically called back into from the Rice Standalone Server
+                when needing information for rendering of various components in the server-side user
+                interface. Additionally, in some cases they can also be used to provide custom
+                processing hooks for different components of the various Kuali Rice
+                frameworks.</para>
+                <sect3>
+                <title>Version Compatibility for Callback Services</title>
+                <para>Callback services (like all services in Rice) can be evolved over time and
+                    across versions. This means that new functionality might be added to them. Since
+                    the Rice Standalone Server interacts with these services remotely, it really
+                    needs to know what version of a particular callback service that the client
+                    application is running. They also must be published as the appropriate type of
+                    service endpoint that the standalone server knows how to talk to (i.e. SOAP
+                    instead of Java Serialization). Thankfully, the KSB service registry can store
+                    metadata about a service which includes the service version. However, in order
+                    to for this to work properly the client application must be sure they publish
+                    the service with a version that matches the version of Rice they are
+                    using.</para>
+                <para>In order to make this easier on client applications, a helper has been
+                    implemented which can be used for this purpose in Rice.</para>
+            </sect3>
+            <sect3>
+                <title>Callback Service Exporter Helper</title>
+                <para>There is a helper class which can be used by client applications to export
+                    these callback services onto the Kuali Service Bus. The class is
+                        <code>org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter</code>.
+                    This is a class which can be wired up inside of a Spring context in order to
+                    publish a callback service to the KSB with the appropriate Rice version. The
+                    version of Rice is packaged up into the Rice jars inside of a file called
+                        <emphasis>common-config-defaults.xml</emphasis> and it uses the version that
+                    matches the version of Rice in the POM when the jar was packaged.</para>
+                <para>Typical configuration might look like the
+                    following:<programlisting>&lt;bean id="sampleAppPeopleFlowTypeService.exporter"
+      class="org.kuali.rice.ksb.api.bus.support.CallbackServiceExporter"
+      p:serviceBus-ref="rice.ksb.serviceBus"
+      p:callbackService-ref="sampleAppPeopleFlowTypeService"
+      p:serviceNameSpaceURI="http://rice.kuali.org/sample-app"
+      p:localServiceName="sampleAppPeopleFlowTypeService"
+      p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/></programlisting></para>
+                <para>The javadocs for <code>CallbackServiceExporter</code> provide more detail on
+                    the options for publishing of callback services.</para>
+            </sect3>
+        </sect2>
         <sect2>
             <title>ServiceDefinition properties</title>
             <para>ServiceDefinitions define how the service is published to the KSB. Currently KSB
@@ -1597,8 +1672,7 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                                     <entry>serviceNameSpaceURI</entry>
                                     <entry>The "namespace" part of the service name; together with a
                                         local name forms a qualified name, or QName</entry>
-                                    <entry>Not required; if omitted, the <emphasis role="bold"
-                                            >Core.currentContextConfig().getMessageEntity()</emphasis>
+                                    <entry>Not required; if omitted, the <emphasis role="bold">Core.currentContextConfig().getMessageEntity()</emphasis>
                                         is used when exporting the service</entry>
                                 </row>
                                 <row>
@@ -1636,8 +1710,7 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                                 <row>
                                     <entry>busSecurity</entry>
                                     <entry>Whether to enable bus security for the service</entry>
-                                    <entry>Not required; defaults to <emphasis role="italic"
-                                            >ON</emphasis></entry>
+                                    <entry>Not required; defaults to <emphasis role="italic">ON</emphasis></entry>
                                 </row>
                             </tbody>
                         </tgroup>
@@ -1779,26 +1852,22 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                 asynchronously, and the service call run on the target server. However with call and
                 forward enabled, the caller thread does not block as long on the call, presumably
                 because the ForwardedCallHandler implementation is much simpler.</para></warning>
-            <para>When you enable store and forward, the <emphasis role="bold"
-                    >RemotedServiceRegistry</emphasis>, which is responsible for keeping a table of
+            <para>When you enable store and forward, the <emphasis role="bold">RemotedServiceRegistry</emphasis>, which is responsible for keeping a table of
                 services that the local node has deployed and/or published, will publish a special
                 "forwarding" service alongside each published Java service. This forwarding service
                 definition will be similar to the original service, except that the implementation
                 will be a <emphasis role="bold">ForwardedCallHandler</emphasis>, and it will simply
                 re-dispatch the persisted message.</para>
             <para>The <emphasis role="bold">MessageServiceInvoker</emphasis>, which is responsible
-                for executing service invocations, will first consult the <emphasis role="bold"
-                    >storeAndForward</emphasis> flag, and, if enabled, will attempt to obtain not
+                for executing service invocations, will first consult the <emphasis role="bold">storeAndForward</emphasis> flag, and, if enabled, will attempt to obtain not
                 the actual service, but instead the special "forwarding" version of the service. It
                 will then invoke that forwarding version of the service, instead of the actual
                 service.</para>
             <para>To avoid infinite recursion on forwarded service invocations (in other words, the
-                    <emphasis role="bold">MessageServiceInvoker</emphasis> called by the <emphasis
-                    role="bold">ForwardedCallHandler</emphasis> itself invoking the forwarded
+                    <emphasis role="bold">MessageServiceInvoker</emphasis> called by the <emphasis role="bold">ForwardedCallHandler</emphasis> itself invoking the forwarded
                 version of the service again), the ForwardedCallHandler sets a property on the
                 method call (<emphasis role="bold">isIgnoreStoreAndForward</emphasis>) that prevents
-                store-and-forward from being used again on the delivered message. The <emphasis
-                    role="bold">MessageServiceInvoker</emphasis> checks this flag on the call before
+                store-and-forward from being used again on the delivered message. The <emphasis role="bold">MessageServiceInvoker</emphasis> checks this flag on the call before
                 attempting to forward a message.</para>
         </sect2>
     </sect1>
@@ -1809,8 +1878,7 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
             <para>Rice is composed of a set of modules that provide distinct functionality and
                 expose various services. <itemizedlist>
                     <listitem>
-                        <para>Services in Rice are accessible by the <emphasis role="bold"
-                                >ResourceLoader</emphasis>, which can be thought of as analogous to
+                        <para>Services in Rice are accessible by the <emphasis role="bold">ResourceLoader</emphasis>, which can be thought of as analogous to
                             Spring's <emphasis role="italic">BeanFactory</emphasis> interface. (In
                             fact, Rice modules themselves back ResourceLoaders with Spring bean
                             factories.) </para>
@@ -1837,12 +1905,10 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                     </listitem>
                 </itemizedlist></para>
             <para>The <emphasis role="bold">GlobalResourceLoader</emphasis> is the top-level entry
-                point through which all application code should go to obtain services. The <emphasis
-                    role="bold">getService</emphasis> call will iterate through each registered
+                point through which all application code should go to obtain services. The <emphasis role="bold">getService</emphasis> call will iterate through each registered
                 ResourceLoader, looking for the service of the specified name. If the service is
                 found, it is returned, but if it is <emphasis role="italic">not</emphasis> found,
-                ultimately the call will reach the <emphasis role="bold"
-                    >RemoteResourceLoader</emphasis>. The Root ResourceLoader is registered by the
+                ultimately the call will reach the <emphasis role="bold">RemoteResourceLoader</emphasis>. The Root ResourceLoader is registered by the
                 KSB module that exposes services that have been registered on the bus.</para>
         </sect2>
         <sect2>
@@ -1850,19 +1916,16 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
             <sect3>
                 <title>ResourceLoaderFactoryBean</title>
                 <para>In addition to programmatically acquiring service references, you can also
-                    import Rice services into a Spring context with the help of the <emphasis
-                        role="bold">ResourceLoaderServiceFactoryBean</emphasis>:</para>
+                    import Rice services into a Spring context with the help of the <emphasis role="bold">ResourceLoaderServiceFactoryBean</emphasis>:</para>
                 <para>This bean is <emphasis role="italic">bean-name-aware</emphasis> and will
                     produce a bean of the same name obtained from Rice's resource loader stack. The
                     bean can then be wired in Spring like any other bean.</para>
             </sect3>
             <sect3>
                 <title>Using the RiceService annotation to inject Rice beans</title>
-                <para>As an alternative to the <emphasis role="bold"
-                        >ResourceLoaderServiceFactoryBean</emphasis> style of importing Rice beans,
+                <para>As an alternative to the <emphasis role="bold">ResourceLoaderServiceFactoryBean</emphasis> style of importing Rice beans,
                     you can use the <emphasis role="bold">@RiceService</emphasis> annotation in
-                    client application beans (in conjunction with the <emphasis role="bold"
-                        >GRLServiceInjectionPostProcessor</emphasis> bean factory post processor) to
+                    client application beans (in conjunction with the <emphasis role="bold">GRLServiceInjectionPostProcessor</emphasis> bean factory post processor) to
                     auto-wire Rice beans into client application services. This is essentially a
                     style of Spring autowiring </para>
                 <caution>
@@ -1874,11 +1937,9 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                 <para>
                     <orderedlist>
                         <listitem>
-                            <para>First, define the <emphasis role="bold"
-                                    >GRLServiceInjectionPostProcessor</emphasis> in your application
+                            <para>First, define the <emphasis role="bold">GRLServiceInjectionPostProcessor</emphasis> in your application
                                 Spring context. Spring will run this post-processor during bean
-                                initialization and it will look for <emphasis role="italic"
-                                    >@RiceService</emphasis> fields or methods to inject. </para>
+                                initialization and it will look for <emphasis role="italic">@RiceService</emphasis> fields or methods to inject. </para>
                             <programlisting>&lt;beans>
     &lt;bean class="org.kuali.rice.core.util.GRLServiceInjectionPostProcessor"/>
 
@@ -1890,10 +1951,8 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                                 not both, for the same property) that you wish to have injected with
                                 a RiceService. <itemizedlist>
                                     <listitem>
-                                        <para>You must specify the <emphasis role="bold"
-                                                >name</emphasis> of the service you want to
-                                            retrieve. To specify namespace, prefix with <emphasis
-                                                role="bold">{NAMESPACE}</emphasis>. For example,
+                                        <para>You must specify the <emphasis role="bold">name</emphasis> of the service you want to
+                                            retrieve. To specify namespace, prefix with <emphasis role="bold">{NAMESPACE}</emphasis>. For example,
                                             {KEW}actionListService. If a namespace is not specified,
                                             the current context namespace will be used. </para>
                                     </listitem>
@@ -1979,8 +2038,7 @@ protected WorkflowDocumentService workflowDocumentService;</programlisting>
                 <figure><title>Application Resources Properties Tree</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata
-                                fileref="../images/directory_tree_ApplicationResources_properties.png"/>
+                            <imagedata fileref="../images/directory_tree_ApplicationResources_properties.png"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -2144,7 +2202,7 @@ protected WorkflowDocumentService workflowDocumentService;</programlisting>
                     that Rice can verify the messages authenticity. This is why we must generate
                     these keys.</para>
                 <para>Generate your initial Rice keystore as follows:</para>
-                <programlisting></programlisting>
+                <programlisting/>
                 <caution>
                     <para>keypass and storepass should be the same.</para>
                     <para>r1c3pw is the password used for the provided example.</para>
@@ -2206,49 +2264,34 @@ protected WorkflowDocumentService workflowDocumentService;</programlisting>
     <sect1>
         <title>Queue and Topic invocation</title>
         <para>When you deploy a service, you can configure it for queue or for topic invocation
-            using the <emphasis role="bold">setQueue</emphasis> property on the <emphasis
-                role="bold">ServiceDefinition</emphasis>. The default is to register it as a
+            using the <emphasis role="bold">setQueue</emphasis> property on the <emphasis role="bold">ServiceDefinition</emphasis>. The default is to register it as a
             queue-style service. The distinction between queue and topic invocation occurs when
-            there is more than one service registered under the same <emphasis role="bold"
-                >QName</emphasis>.</para>
+            there is more than one service registered under the same <emphasis role="bold">QName</emphasis>.</para>
         <sect2>
             <title>Queue invocation</title>
-            <para>Remote service proxies obtained through the resource loader stack using <emphasis
-                    role="bold">getService(QName)</emphasis> (ultimately through the <emphasis
-                    role="bold">RemoteResourceServiceLocator</emphasis>) are inherently synchronous.
-                In the presence of multiple service registrations, the <emphasis role="bold"
-                    >RemoteResourceServiceLocator</emphasis> will choose one at random.</para>
-            <para>When invoking services asynchronously through the <emphasis role="bold"
-                    >MessageHelper</emphasis>, an asynchronous service call proxy will be
-                constructed with all available service definitions. The <emphasis role="bold"
-                    >MessageServiceInvoker</emphasis> is called to invoke each service. If the
-                service is defined as a queue service, then the <emphasis role="bold"
-                    >RemoteResourceServiceLocator</emphasis> will be consulted in a similar fashion
+            <para>Remote service proxies obtained through the resource loader stack using <emphasis role="bold">getService(QName)</emphasis> (ultimately through the <emphasis role="bold">RemoteResourceServiceLocator</emphasis>) are inherently synchronous.
+                In the presence of multiple service registrations, the <emphasis role="bold">RemoteResourceServiceLocator</emphasis> will choose one at random.</para>
+            <para>When invoking services asynchronously through the <emphasis role="bold">MessageHelper</emphasis>, an asynchronous service call proxy will be
+                constructed with all available service definitions. The <emphasis role="bold">MessageServiceInvoker</emphasis> is called to invoke each service. If the
+                service is defined as a queue service, then the <emphasis role="bold">RemoteResourceServiceLocator</emphasis> will be consulted in a similar fashion
                 to determine a single service to call. After the first queue service invocation the
                     <emphasis role="bold">MessageServiceInvoker</emphasis> will return.</para>
         </sect2>
         <sect2>
             <title>Topic invocation</title>
-            <para>The simplest way to invoke a topic service is using the <emphasis role="bold"
-                    >MessageHelper</emphasis> functions to invoke the service asynchronously. As
+            <para>The simplest way to invoke a topic service is using the <emphasis role="bold">MessageHelper</emphasis> functions to invoke the service asynchronously. As
                 described above for an asynchronous queue invocation, an asynchronous service call
                 proxy will be constructed with the list of all of the services registered as a topic
                 under the given name. Each of these services will be independently obtained and
                 invoked by the <emphasis role="bold">MessageServiceInvoker</emphasis>.</para>
             <para>Invoking a topic synchronously, however, requires use of a synchronous service
                 call proxy to aggregate all of the topic's services. This functionality is not
-                directly available via the <emphasis role="bold"
-                    >RemoteResourceServiceLocator</emphasis> API because the <emphasis role="bold"
-                    >RemoteResourceServiceLocator</emphasis> acts as a facade for direct service
+                directly available via the <emphasis role="bold">RemoteResourceServiceLocator</emphasis> API because the <emphasis role="bold">RemoteResourceServiceLocator</emphasis> acts as a facade for direct service
                 invocation.</para>
-            <para>To invoke a topic synchronously, you can construct a <emphasis role="bold"
-                    >SynchronousServiceCallProxy</emphasis> using <emphasis role="bold"
-                    >SynchronousServiceCallProxy.createInstance</emphasis>, passing the list of
-                    <emphasis role="bold">RemotedServiceHolder</emphasis> obtained using <emphasis
-                    role="bold">RemoteResourceServiceLocator.getAllServices(QName)</emphasis>. This
+            <para>To invoke a topic synchronously, you can construct a <emphasis role="bold">SynchronousServiceCallProxy</emphasis> using <emphasis role="bold">SynchronousServiceCallProxy.createInstance</emphasis>, passing the list of
+                    <emphasis role="bold">RemotedServiceHolder</emphasis> obtained using <emphasis role="bold">RemoteResourceServiceLocator.getAllServices(QName)</emphasis>. This
                 is done, for example, by <emphasis role="bold">MessageHelperImpl</emphasis> when the
-                bus has been forced into synchronous mode via the <emphasis role="bold"
-                    >message.delivery</emphasis> config param. </para>
+                bus has been forced into synchronous mode via the <emphasis role="bold">message.delivery</emphasis> config param. </para>
             <para>The synchronous service call proxy is the same as the asynchronous service call
                 proxy, except that it does not queue up the invocation, it will invoke it
                 blockingly. The same queue/topic distinctions described above apply when you invoke
@@ -2350,16 +2393,13 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                             <row>
                                 <entry>message.persistence</entry>
                                 <entry>If <emphasis role="italic">true</emphasis>, messages are
-                                    stored in the database until sent. If <emphasis role="italic"
-                                        >false</emphasis>, they are stored in memory.</entry>
+                                    stored in the database until sent. If <emphasis role="italic">false</emphasis>, they are stored in memory.</entry>
                                 <entry>true</entry>
                             </row>
                             <row>
                                 <entry>message.delivery</entry>
                                 <entry>Specifies whether messages are sent synchronously are
-                                    asynchronously. Valid values are <emphasis role="italic"
-                                        >synchronous</emphasis> or <emphasis role="italic"
-                                        >async</emphasis></entry>
+                                    asynchronously. Valid values are <emphasis role="italic">synchronous</emphasis> or <emphasis role="italic">async</emphasis></entry>
                                 <entry>async</entry>
                             </row>
                             <row>
@@ -2391,8 +2431,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                             </row>
                             <row>
                                 <entry>ksb.org.quartz.*</entry>
-                                <entry>Can define any property beginning with <emphasis
-                                        role="italic">ksb.org.quartz</emphasis> and it will be
+                                <entry>Can define any property beginning with <emphasis role="italic">ksb.org.quartz</emphasis> and it will be
                                     passed to the internal KSB quartz configuration as a property
                                     beginning with <emphasis role="italic">org.quartz</emphasis>
                                     (more details below)</entry>
@@ -2415,15 +2454,13 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                 <para>The URL that resolves to the KSB servlet that handles incoming requests from
                     the service bus. All services exported onto the service bus use this value to
                     construct their endpoint URLs when they are published to the service registry.
-                    See section below on configuring the <emphasis role="italic"
-                        >KSBDispatcherServlet</emphasis>. This parameter should point to the
+                    See section below on configuring the <emphasis role="italic">KSBDispatcherServlet</emphasis>. This parameter should point to the
                     absolute URL of where that servlet is mapped. It should include a trailing
                     slash.</para>
             </sect3>
             <sect3>
                 <title>service.namespace</title>
-                <para>An identifier that indicates the name of the <emphasis role="italic"
-                        >logical</emphasis> node on the service bus. If the application is running
+                <para>An identifier that indicates the name of the <emphasis role="italic">logical</emphasis> node on the service bus. If the application is running
                     in a cluster, this should be the same for each machine in the cluster. This is
                     used for namespacing of services, among other things. This can alternatively be
                     set using the <emphasis role="italic">serviceNamespace</emphasis> property on
@@ -2437,11 +2474,9 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
             </sect3>
             <sect3>
                 <title>ksb.mode</title>
-                <para>Mode in which to load the KSB module. Valid values are <emphasis role="italic"
-                        >local</emphasis> and <emphasis role="italic">embedded</emphasis>. There is
+                <para>Mode in which to load the KSB module. Valid values are <emphasis role="italic">local</emphasis> and <emphasis role="italic">embedded</emphasis>. There is
                     currently no difference in how the KSB module loads based on these settings. It
-                    will always try to load the KSB struts module if a <emphasis role="italic"
-                        >KualiActionServlet</emphasis> is configured.</para>
+                    will always try to load the KSB struts module if a <emphasis role="italic">KualiActionServlet</emphasis> is configured.</para>
             </sect3>
             <sect3>
                 <title>ksb.url</title>
@@ -2450,9 +2485,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
             <sect3>
                 <title>rice.ksb.struts.config.files</title>
                 <para>The file that defines the struts context for the KRice KSB struts module. The
-                    struts module is loaded automatically if a <emphasis role="italic"
-                        >KualiActionServlet</emphasis> is configured in the <emphasis role="italic"
-                        >web.xml</emphasis>.</para>
+                    struts module is loaded automatically if a <emphasis role="italic">KualiActionServlet</emphasis> is configured in the <emphasis role="italic">web.xml</emphasis>.</para>
             </sect3>
             <sect3>
                 <title>dev.mode</title>
@@ -2469,18 +2502,15 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                     the datastore. Otherwise, they will only be stored in memory. If message
                     persistence is not turned on and the server is shutdown while there are still
                     messages that need to be sent, those messages will be lost. For a production
-                    environment, it is recommended that message persistence be set to <emphasis
-                        role="italic">true</emphasis>.</para>
+                    environment, it is recommended that message persistence be set to <emphasis role="italic">true</emphasis>.</para>
             </sect3>
             <sect3>
                 <title>message.delivery</title>
                 <para>Can be set to either <emphasis role="italic">synchronous</emphasis> or
-                        <emphasis role="italic">async</emphasis>. If this is set to <emphasis
-                        role="italic">synchronous</emphasis>, then messages that are sent in an
+                        <emphasis role="italic">async</emphasis>. If this is set to <emphasis role="italic">synchronous</emphasis>, then messages that are sent in an
                     asynchronous fashion using the KSB API will instead be sent synchronously. This
                     is useful in certain development and unit testing scenarios. For a production
-                    environment, it is recommended that message delivery be set to <emphasis
-                        role="italic">async</emphasis>.</para>
+                    environment, it is recommended that message delivery be set to <emphasis role="italic">async</emphasis>.</para>
             </sect3>
             <sect3>
                 <title>message.off</title>
@@ -2499,8 +2529,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
             </sect3>
             <sect3>
                 <title>RouteQueue.timeIncrement</title>
-                <para>Sets the default time increment between retry attempts. As with <emphasis
-                        role="italic">RouteQueue.maxRetryAttempts</emphasis> this can also be
+                <para>Sets the default time increment between retry attempts. As with <emphasis role="italic">RouteQueue.maxRetryAttempts</emphasis> this can also be
                     configured at the service level.</para>
             </sect3>
             <sect3>
@@ -2514,8 +2543,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
             <sect3>
                 <title>Routing.ImmediateExceptionRouting</title>
                 <para>If set to <emphasis role="italic">true</emphasis>, then messages that fail to
-                    be sent will not be re-tried. Instead their <emphasis role="italic"
-                        >MessageExceptionHandler</emphasis> will be invoked immediately.</para>
+                    be sent will not be re-tried. Instead their <emphasis role="italic">MessageExceptionHandler</emphasis> will be invoked immediately.</para>
             </sect3>
             <sect3>
                 <title>useQuartzDatabase</title>
@@ -2558,8 +2586,7 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                 <para>Specifies the<emphasis role="bold"> javax.sql.DataSource</emphasis> to use for
                     reading and writing from the Service Registry. If not specified, this defaults
                     to the DataSource injected into the RiceConfigurer.</para>
-                <para>If this DataSource is injected, then the <emphasis role="bold"
-                        >messageDataSource</emphasis> must also be injected, and vice-versa.</para>
+                <para>If this DataSource is injected, then the <emphasis role="bold">messageDataSource</emphasis> must also be injected, and vice-versa.</para>
             </sect3>
             <sect3>
                 <title>overrideServices</title>
@@ -2574,11 +2601,8 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
     <sect1>
         <title>JAX-RS / RESTful services</title>
         <para>Rice now allows allows RESTful (JAX-RS) services to be exported and consumed on
-            the Kuali Service Bus (KSB). For some background on REST, see <link
-                xlink:href=" http://en.wikipedia.org/wiki/Representational_State_Transfer"
-                >http://en.wikipedia.org/wiki/Representational_State_Transfer</link>.</para>
-        <para>For details on JAX-RS, see <link xlink:href="http://jcp.org/en/jsr/detail?id=311"
-            >JSR-311</link>.</para>
+            the Kuali Service Bus (KSB). For some background on REST, see <link xlink:href=" http://en.wikipedia.org/wiki/Representational_State_Transfer">http://en.wikipedia.org/wiki/Representational_State_Transfer</link>.</para>
+        <para>For details on JAX-RS, see <link xlink:href="http://jcp.org/en/jsr/detail?id=311">JSR-311</link>.</para>
         <sect2>
             <title>Caveats</title>
             <para>
@@ -2732,10 +2756,8 @@ List&lt;BaseballCard> allMyMickeyMantles = baseballCardCollection.get("Mickey Ma
 
 &lt;/bean></programlisting>
             <para>As you can see in the bean definition above, the service name is kms, so the base
-                service url would by default (in a dev environment) be <emphasis role="bold"
-                    >http://localhost:8080/kr-dev/remoting/kms/</emphasis>. Acquiring a composite
-                service such as this one on the KSB will actually return you a <emphasis role="bold"
-                    >org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade</emphasis>, which
+                service url would by default (in a dev environment) be <emphasis role="bold">http://localhost:8080/kr-dev/remoting/kms/</emphasis>. Acquiring a composite
+                service such as this one on the KSB will actually return you a <emphasis role="bold">org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade</emphasis>, which
                 allows you to get the individual java services in a couple of ways, as shown in the
                 following simple example:</para>
             <programlisting>ResourceFacade kmsService =
@@ -2781,8 +2803,7 @@ MessageResource messageResource = kmsService.getResource(MessageResource.class);
                     representation of a resource. ExtensionMappings let you map certain file
                     extensions to specific media types for your RESTful service, so your URLs can
                     then optionally specify a media type directly. For example you could map the
-                        <emphasis role="bold">.xml</emphasis> extension to the media type <emphasis
-                        role="bold">text/xml</emphasis>, and then tag .xml on to the end of your
+                        <emphasis role="bold">.xml</emphasis> extension to the media type <emphasis role="bold">text/xml</emphasis>, and then tag .xml on to the end of your
                     resource URL to specify that representation.</para>
             </sect3>
             <sect3>

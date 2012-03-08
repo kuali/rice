@@ -45,6 +45,13 @@ public class ProcessorResult {
 		this.attributeValueReader = attributeValueReader;
 		this.constraints = Arrays.asList(constraints);
 	}
+    
+    public ProcessorResult(ConstraintValidationResult constraintValidationResult, Constrainable definition, AttributeValueReader attributeValueReader, List<Constraint> constraints) {
+        this.constraintValidationResults = Collections.singletonList(constraintValidationResult);
+        this.definition = definition;
+        this.attributeValueReader = attributeValueReader;
+        this.constraints = constraints;
+    }
 	
 	public ProcessorResult(List<ConstraintValidationResult> constraintValidationResults) {
 		this(constraintValidationResults, null, null);

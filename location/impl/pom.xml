@@ -25,7 +25,6 @@
   </parent>
   <artifactId>rice-location-impl</artifactId>
   <name>Rice Location Impl</name>
-
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -67,8 +66,12 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>

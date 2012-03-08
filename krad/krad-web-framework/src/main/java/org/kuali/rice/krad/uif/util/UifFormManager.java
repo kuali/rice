@@ -43,6 +43,7 @@ public class UifFormManager implements Serializable {
 
     public void setCurrentForm(UifFormBase currentForm) {
         this.currentForm = currentForm;
+        addForm(currentForm);
     }
 
     public void addForm(UifFormBase form) {
@@ -66,11 +67,15 @@ public class UifFormManager implements Serializable {
             return;
         }
 
-        if (uifForms.containsKey(form.getFormKey())) {
-            uifForms.remove(form.getFormKey());
+        removeFormByKey(form.getFormKey());
+    }
+
+    public void removeFormByKey(String formKey) {
+        if (uifForms.containsKey(formKey)) {
+            uifForms.remove(formKey);
         }
 
-        if ((currentForm != null) && StringUtils.equals(currentForm.getFormKey(), form.getFormKey())) {
+        if ((currentForm != null) && StringUtils.equals(currentForm.getFormKey(), formKey)) {
             currentForm = null;
         }
     }

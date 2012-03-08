@@ -140,12 +140,21 @@ public class ComponentFactory {
         Component component = null;
         Component origComponent = view.getViewIndex().getComponentById(id);
 
-        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getFactoryId())) {
-            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getFactoryId());
-            component = ComponentUtils.copyObject(component);
+        if (origComponent == null) {
+            throw new RuntimeException(id + " not found in view index try setting p:persistInSession=\"true\" in xml");
         }
 
-        component.setId(origComponent.getFactoryId());
+        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getFactoryId())) {
+            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getFactoryId());
+        } else {
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                    origComponent.getFactoryId());
+        }
+
+        if (component != null) {
+            component = ComponentUtils.copyObject(component);
+            component.setId(origComponent.getFactoryId());
+        }
 
         return component;
     }

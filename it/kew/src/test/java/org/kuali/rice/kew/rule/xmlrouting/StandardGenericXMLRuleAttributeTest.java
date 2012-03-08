@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.rule.xmlrouting;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -53,7 +55,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 	private DocumentContent docContent;
 	private StandardGenericXMLRuleAttribute attribute;
-	private List extensions;
+	private List<RuleExtension> extensions;
 
 	public void setUp() throws Exception {
         super.setUp();
@@ -166,7 +168,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
 	@Test public void testValidateRoutingData(){
-		Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "Dave");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -176,7 +178,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
 	@Test public void testValidateRuleData(){
-		Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "Dave");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -184,7 +186,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		assertTrue("Errors found", attribute.validateRuleData(paramMap).isEmpty());
 
-		paramMap = new HashMap();
+		paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "4444");
 		paramMap.put("gender", "crap");
 		paramMap.put("color", "green");
@@ -192,7 +194,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
         assertFalse("Error list should contain at least one error.", attribute.validateRuleData(paramMap).isEmpty());
 
-		paramMap = new HashMap();
+		paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -202,7 +204,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	}
 
     @Test public void testRuleDataAttributeErrorTypesAreConformant() {
-        Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "4444");
 		paramMap.put("gender", "crap");
 		paramMap.put("color", "green");
@@ -216,16 +218,16 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
     }
 
     @Test public void testRoutingDataAttributeErrorTypesAreConformant(){
-        Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("givenname", "4444");
         paramMap.put("gender", "crap");
         paramMap.put("color", "green");
         paramMap.put("totalDollar", "500");
 
-        List<WorkflowServiceError> errors = attribute.validateRoutingData(paramMap);
+        List<RemotableAttributeError> errors = attribute.validateRoutingData(paramMap);
         assertFalse("Error list should contain at least one error.", errors.isEmpty());
         for (Object e: errors) {
-            assertTrue(WorkflowServiceError.class.isAssignableFrom(e.getClass()));
+            assertTrue(RemotableAttributeError.class.isAssignableFrom(e.getClass()));
         }
     }
 
@@ -281,8 +283,12 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
+        ruleAttribute.setType("RuleAttribute");
+        ruleAttribute.setResourceDescriptor("noClass");
 
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId1");
+        ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 		RuleExtensionBo extension2 = new RuleExtensionBo();
 
@@ -307,13 +313,17 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		RuleAttribute ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
+        ruleAttribute2.setType("RuleAttribute");
+        ruleAttribute2.setResourceDescriptor("noClass");
 
 		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
 		extensions = new ArrayList();
-		extensions.add(extension);
-		extensions.add(extension2);
+		extensions.add(RuleExtensionBo.to(extension));
+		extensions.add(RuleExtensionBo.to(extension2));
 
 		assertTrue("Givenname did not match Dave, gender did not match female, or color did not match green", attribute.isMatch(docContent, extensions));
 
@@ -339,8 +349,13 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
+        ruleAttribute.setType("RuleAttribute");
+        ruleAttribute.setResourceDescriptor("noClass");
+
 
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId");
+        ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
 
@@ -355,13 +370,18 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
+        ruleAttribute2.setType("RuleAttribute");
+        ruleAttribute2.setResourceDescriptor("noClass");
+
 
 		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
 		extensions = new ArrayList();
-		extensions.add(extension);
-		extensions.add(extension2);
+		extensions.add(RuleExtensionBo.to(extension));
+		extensions.add(RuleExtensionBo.to(extension2));
 		assertFalse("Gender female != male.", attribute.isMatch(docContent, extensions));
 
 		///////
@@ -384,7 +404,12 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		ruleTemplateAttribute = new RuleTemplateAttributeBo();
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
+        ruleAttribute.setType("RuleAttribute");
+        ruleAttribute.setResourceDescriptor("noClass");
+
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId");
+        ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
 		values2 = new ArrayList();
@@ -399,13 +424,18 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleAttribute2 = new RuleAttribute();
 		ruleAttribute2.setName("MyUniqueRuleAttribute2");
+        ruleAttribute2.setType("RuleAttribute");
+        ruleAttribute2.setResourceDescriptor("noClass");
+
 
 		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
 		extensions = new ArrayList();
-		extensions.add(extension);
-		extensions.add(extension2);
+		extensions.add(RuleExtensionBo.to(extension));
+		extensions.add(RuleExtensionBo.to(extension2));
 		assertTrue("Total dollar is greater than the max or less than the min.", attribute.isMatch(docContent, extensions));
 	}
 
@@ -469,7 +499,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 	@Test public void testGetDocContent() {
 		//test the standard doc content...
-		Map paramMap = new HashMap();
+        Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("givenname", "Dave");
 		paramMap.put("gender", "female");
 		paramMap.put("color", "green");
@@ -561,7 +591,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		        "</xmlDocumentContent>"+
             "</routingConfig>";
 		try {
-			paramMap = new HashMap();
+			paramMap = new HashMap<String, String>();
 			paramMap.put("myname", "jack");
 			paramMap.put("theGender", "male");
 			paramMap.put("myFavoriteColor", "blue");

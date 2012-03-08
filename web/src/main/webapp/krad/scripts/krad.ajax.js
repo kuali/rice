@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//Submits the form through an ajax submit, the response is the new page html
-//runs all hidden scripts passed back (this is to get around a bug with pre mature
-//script evaluation)
+/**
+ * Submits the form through an ajax submit, the response is the new page html
+ * runs all hidden scripts passed back (this is to get around a bug with premature script evaluation)
+ *
+ * If a form has the properties enctype or encoding set to multipart/form-data, an iframe is created to hold the response
+ * If the returned response contains scripts that are meant to be run on page load,
+ * they will be executed within the iframe since the jquery ready event is triggered
+ *
+ * For the above reason, the renderFullView below is set to false so that the script content between <head></head> is left out
+ */
 
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock){
 	var data;
@@ -113,7 +120,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 function validateAndSubmit(methodToCall, successCallback){
 	jq.watermark.hideAll();
 
-	if(jq("#kualiForm").valid()){
+    var validForm = true;
+    if(validateClient){
+        validForm = jq("#kualiForm").valid();
+    }
+
+	if(validForm){
 		jq.watermark.showAll();
 		ajaxSubmitForm(methodToCall, successCallback, null, null);
 	}
@@ -125,11 +137,18 @@ function validateAndSubmit(methodToCall, successCallback){
 	}
 }
 
-//saves the current form by first validating client side and then attempting an ajax submit
-function saveForm(){
-	validateAndSubmit("save", replacePage);
+/**
+ * Validate form.  When no validation errors exists the form is submitted with the methodToCall of the form.
+ * The page is then replaced with the result of the ajax call.
+ */
+function validateAndSubmitUsingFormMethodToCall(){
+    validateAndSubmit(null, replacePage);
 }
 
+/**
+ * Submits a form via ajax using the jquery form plugin
+ * The methodToCall parameter is used to determine the controller method to invoke
+ */
 function submitForm(){
 	var methodToCall = jq("input[name='methodToCall']").val();
 	ajaxSubmitForm(methodToCall, replacePage, null, null);
@@ -281,7 +300,7 @@ function performCollectionAction(collectionGroupId){
 //called when a line is added to a collection
 function addLineToCollection(collectionGroupId, collectionBaseId){
 	if(collectionBaseId){
-		var addFields = jq("input." + collectionBaseId + "-addField:visible");
+		var addFields = jq("." + collectionBaseId + "-addField:visible");
 		jq.watermark.hideAll();
 
 		var valid = true;
@@ -420,4 +439,34 @@ function hiddenInputValidationToggle(id){
 			});
 		}
 	}
+}
+
+/**
+ * Makes an get request to the server so that the form for the page we are leaving will
+ * be cleared server side
+ */
+function clearServerSideForm() {
+    // make sure we are actually leaving the page and not submitting the form (in which case
+    // the methodToCall hidden will be set
+    var methodToCall = jq("[name='methodToCall']").val();
+    if (methodToCall == null) {
+        var queryData = {};
+
+        queryData.methodToCall = 'clearForm';
+        queryData.skipViewInit = 'true';
+        queryData.formKey = jq("input#formKey").val();
+
+        var postUrl = getConfigParam("kradUrl") + "/listener";
+
+        jq.ajax({
+            url:postUrl,
+            dataType:"json",
+            data:queryData,
+            async:false,
+            beforeSend:null,
+            complete:null,
+            error:null,
+            success:null
+        });
+    }
 }

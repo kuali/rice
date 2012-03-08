@@ -105,12 +105,6 @@
     </bean>
 
     <bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
-        <property name="moduleName" value="CORE"/>
-        <property name="validRunModes">
-            <list>
-                <value>LOCAL</value>
-            </list>
-        </property>
         <property name="properties">
             <props>
                 <prop key="application.id">KEW</prop>
@@ -127,12 +121,6 @@
     <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
 
     <bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-        <property name="moduleName" value="KSB"/>
-        <property name="validRunModes">
-            <list>
-                <value>LOCAL</value>
-            </list>
-        </property>
         <property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource"/>
         <property name="services">
             <list>

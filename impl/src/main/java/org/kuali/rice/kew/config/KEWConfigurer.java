@@ -65,13 +65,15 @@ public class KEWConfigurer extends ModuleConfigurer {
 
     public KEWConfigurer() {
         super(KewApiConstants.Namespaces.MODULE_NAME);
-        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
+        setValidRunModes(Arrays.asList(RunMode.THIN, RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
     }
 
 	@Override
 	public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
-        if (RunMode.REMOTE == getRunMode()) {
+        if (RunMode.THIN == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KewThinSpringBeans.xml");
+        } else if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewRemoteSpringBeans.xml");
         } else if (RunMode.EMBEDDED == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewEmbeddedSpringBeans.xml");

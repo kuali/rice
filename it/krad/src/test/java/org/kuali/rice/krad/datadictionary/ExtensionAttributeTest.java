@@ -26,7 +26,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
-import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -64,6 +64,8 @@ public class ExtensionAttributeTest extends KRADTestCase {
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
         //dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
         dd.addConfigFileLocation("file:" + getUserDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
@@ -168,10 +170,10 @@ public class ExtensionAttributeTest extends KRADTestCase {
 		"AccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
         document.getDocumentHeader().setDocumentDescription( getClass().getSimpleName() + "test" );
-        document.getOldMaintainableObject().setBusinessObject(null);
-        document.getOldMaintainableObject().setBoClass(ta.getClass());
-        document.getNewMaintainableObject().setBusinessObject(ta);
-        document.getNewMaintainableObject().setBoClass(ta.getClass());
+        document.getOldMaintainableObject().setDataObject(null);
+        document.getOldMaintainableObject().setDataObjectClass(ta.getClass());
+        document.getNewMaintainableObject().setDataObject(ta);
+        document.getNewMaintainableObject().setDataObjectClass(ta.getClass());
 
         boolean failedAsExpected = false;
         try {
@@ -183,8 +185,8 @@ public class ExtensionAttributeTest extends KRADTestCase {
         System.out.println( "document errors: " + GlobalVariables.getMessageMap() );
         assertTrue( "there should be errors", GlobalVariables.getMessageMap().getErrorCount() > 0 );
 	assertTrue("should be an error on the account type code", GlobalVariables.getMessageMap().doesPropertyHaveError(
-		"document.newMaintainableObject.extension.accountTypeCode"));
+		"document.newMaintainableObject.dataObject.extension.accountTypeCode"));
 	assertTrue("account type code should have an existence error", GlobalVariables.getMessageMap().fieldHasMessage(
-		"document.newMaintainableObject.extension.accountTypeCode", "error.existence"));
+		"document.newMaintainableObject.dataObject.extension.accountTypeCode", "error.existence"));
 	}
 }

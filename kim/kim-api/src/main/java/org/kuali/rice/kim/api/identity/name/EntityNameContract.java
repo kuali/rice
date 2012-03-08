@@ -24,7 +24,11 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 
 import java.util.Date;
-
+ /**
+  * This contract represents the name information  associated with an Entity.
+  *
+  * @author Kuali Rice Team (rice.collab@kuali.org)
+  */
 public interface EntityNameContract extends Versioned, GloballyUnique, Defaultable, Inactivatable, Identifiable {
     public static final String NAME_CHANGED_DATE_FORMAT = "yyyy-MM-dd";
 

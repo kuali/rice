@@ -29,6 +29,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.RoutingReportActionToTake;
 import org.kuali.rice.kew.api.action.RoutingReportCriteria;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
@@ -131,17 +132,20 @@ public class WorkflowUtilityTest extends KEWTestCase {
     @Test public void testGetActionsRequested() throws Exception {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.route("");
-        assertActionsRequested("ewestfal", document.getDocumentId());
-        assertActionsRequested("bmcgough", document.getDocumentId());
-        assertActionsRequested("rkirkend", document.getDocumentId());
+        assertActionsRequested("ewestfal", document.getDocumentId(), false);
+        assertActionsRequested("bmcgough", document.getDocumentId(), true);
+        assertActionsRequested("rkirkend", document.getDocumentId(), true);
     }
 
-    protected void assertActionsRequested(String principalName, String documentId) throws Exception {
-    	Map<String, String> attrSet = KewApiServiceLocator.getWorkflowDocumentService().getActionsRequested(
-                getPrincipalIdForName(principalName), documentId);
+    protected void assertActionsRequested(String principalName, String documentId, boolean shouldHaveRequest) throws Exception {
+    	RequestedActions attrSet = KewApiServiceLocator.getWorkflowDocumentActionsService().
+                determineRequestedActions(documentId, getPrincipalIdForName(principalName));
     	assertNotNull("Actions requested should be populated", attrSet);
-    	assertFalse("Actions requested should be populated with at least one entry", attrSet.isEmpty());
-    	assertEquals("Wrong number of actions requested", 4, attrSet.size());
+        if (shouldHaveRequest) {
+    	    assertTrue("Actions requested should be populated with at least one entry", !attrSet.getRequestedActions().isEmpty());
+        } else {
+            assertTrue("Principal should have no requests", attrSet.getRequestedActions().isEmpty());
+        }
     }
 
     @Test

@@ -29,9 +29,11 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
     
 	@Override
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) {
+        LOG.info("Invoking placeInExceptionRouting on TestExceptionRoutingServiceImpl");
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, persistedMessage, documentId, this);
 		ThreadMonitor.addThread(exceptionThreader);
 		exceptionThreader.start();
+        LOG.info("ExceptionThreader has been started");
 	}
 	
 	private static class ExceptionThreader extends Thread {
@@ -51,14 +53,16 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 
 		public void run() {
 		    try {
-			testExceptionService.callRealPlaceInExceptionRouting(throwable, message, documentId);
+			    testExceptionService.callRealPlaceInExceptionRouting(throwable, message, documentId);
 		    } catch (Exception e) {
-			LOG.error(e, e);
+			    LOG.error("Exception encountered when attempting to callRealPlaceInExceptionRouting", e);
 		    }
 		}
 	}
 	
 	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessageBO message, String documentId) throws Exception {
+        LOG.info("Invoking the real place in exception routing");
 		super.placeInExceptionRouting(throwable, message, documentId);
+        LOG.info("Document should now be in exception status");
 	}	
 }

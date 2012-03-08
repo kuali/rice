@@ -127,7 +127,7 @@ public class TextAreaControl extends ControlBase {
     /**
      * Setter for the min number of input characters
      *
-     * @param maxLength
+     * @param minLength
      */
     public void setMinLength(Integer minLength) {
         this.minLength = minLength;
@@ -163,6 +163,8 @@ public class TextAreaControl extends ControlBase {
     }
 
     /**
+     * Setter for the text expand flag
+     *
      * @param textExpand the textExpand to set
      */
     public void setTextExpand(boolean textExpand) {

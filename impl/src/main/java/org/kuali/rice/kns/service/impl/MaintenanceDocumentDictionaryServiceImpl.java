@@ -148,30 +148,6 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
         return sections;
     }
 
-    /**
-     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getBusinessRulesClass(MaintenanceDocument)
-     */
-    public Class<? extends BusinessRule> getBusinessRulesClass(MaintenanceDocument document) {
-        Maintainable maintainable = document.getOldMaintainableObject();
-        if (maintainable == null) {
-            throw new IllegalArgumentException("unable to determine documentType for maintenanceDocument with no oldMaintainableObject");
-        }
-
-        Class<? extends BusinessRule> businessRulesClass = null;
-
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(maintainable.getBoClass());
-        if (entry != null) {
-            businessRulesClass = entry.getBusinessRulesClass();
-        }
-
-        if (businessRulesClass == null) {
-            return MaintenanceDocumentRuleBase.class; // default to a generic rule that will enforce Required fields
-        }
-
-        LOG.info("return class: " + businessRulesClass.getName());
-
-        return businessRulesClass;
-    }
 
     /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getDefaultExistenceChecks(java.lang.Class)

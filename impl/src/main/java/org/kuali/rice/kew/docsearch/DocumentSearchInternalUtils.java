@@ -70,6 +70,7 @@ public class DocumentSearchInternalUtils {
             new ArrayList<SearchableAttributeConfiguration>();
     public static final List<Class<? extends SearchableAttributeValue>> SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST =
             new ArrayList<Class<? extends SearchableAttributeValue>>();
+
     static {
         SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeStringValue.class);
         SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.add(SearchableAttributeFloatValue.class);
@@ -101,6 +102,23 @@ public class DocumentSearchInternalUtils {
 
     }
 
+    // initialize-on-demand holder class idiom - see Effective Java item #71
+    /**
+     * KULRICE-6704 - cached ObjectMapper for improved performance
+     *
+     */
+    private static ObjectMapper getObjectMapper() { return ObjectMapperHolder.objectMapper; }
+
+    private static class ObjectMapperHolder {
+        static final ObjectMapper objectMapper = initializeObjectMapper();
+
+        private static ObjectMapper initializeObjectMapper() {
+            ObjectMapper jsonMapper = new ObjectMapper();
+            jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+            return jsonMapper;
+        }
+    }
+    
     public static boolean isLookupCaseSensitive(RemotableAttributeField remotableAttributeField) {
         if (remotableAttributeField == null) {
             throw new IllegalArgumentException("remotableAttributeField was null");
@@ -251,9 +269,7 @@ public class DocumentSearchInternalUtils {
      * @throws IOException
      */
     public static DocumentSearchCriteria unmarshalDocumentSearchCriteria(String string) throws IOException {
-        ObjectMapper jsonMapper = new ObjectMapper();
-        jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-        DocumentSearchCriteria.Builder builder = jsonMapper.readValue(string, DocumentSearchCriteria.Builder.class);
+        DocumentSearchCriteria.Builder builder = getObjectMapper().readValue(string, DocumentSearchCriteria.Builder.class);
         // fix up the Joda DateTimes
         builder.normalizeDateTimes();
         // build() it
@@ -267,15 +283,13 @@ public class DocumentSearchInternalUtils {
      * @throws IOException
      */
     public static String marshalDocumentSearchCriteria(DocumentSearchCriteria criteria) throws IOException {
-        ObjectMapper jsonMapper = new ObjectMapper();
-        jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         // Jackson XC support not included by Rice, so no auto-magic JAXB-compatibility
         // AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
         // // make deserializer use JAXB annotations (only)
         // mapper.getDeserializationConfig().setAnnotationIntrospector(introspector);
         // // make serializer use JAXB annotations (only)
         // mapper.getSerializationConfig().setAnnotationIntrospector(introspector);
-        return jsonMapper.writeValueAsString(criteria);
+        return getObjectMapper().writeValueAsString(criteria);
     }
 
     public static List<RemotableAttributeError> validateSearchFieldValues(String fieldName, SearchableAttributeValue attributeValue, List<String> searchValues, String errorMessagePrefix, List<String> resultingValues, Function<String, Collection<RemotableAttributeError>> customValidator) {

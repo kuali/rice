@@ -296,28 +296,55 @@ public class QuickFinder extends WidgetBase {
         return components;
     }
 
+    /**
+     * Returns the URL for the lookup for which parameters will be added
+     *
+     * <p>
+     * The base URL includes the domain, context, and controller mapping for the lookup invocation. Parameters are
+     * then added based on configuration to complete the URL. This is generally defaulted to the application URL and
+     * internal KRAD servlet mapping, but can be changed to invoke another application such as the Rice standalone
+     * server
+     * </p>
+     *
+     * @return String lookup base URL
+     */
     public String getBaseLookupUrl() {
         return this.baseLookupUrl;
     }
 
+    /**
+     * Setter for the lookup base url (comain, context, and controller)
+     *
+     * @param baseLookupUrl
+     */
     public void setBaseLookupUrl(String baseLookupUrl) {
         this.baseLookupUrl = baseLookupUrl;
     }
 
+    /**
+     * Full class name the lookup should be provided for
+     * 
+     * <p>
+     * This is passed on to the lookup request for the data object the lookup should be rendered for. This is then 
+     * used by the lookup framework to select the lookup view (if more than one lookup view exists for the same
+     * data object class name, the {@link #getViewName()} property should be specified to select the view to render).
+     * </p>
+     * 
+     * @return String lookup class name
+     */
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
 
+    /**
+     * Setter for the class name that lookup should be provided for
+     * 
+     * @param dataObjectClassName
+     */
     public void setDataObjectClassName(String dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
     }
 
-    /**
-     * View name for the lookup view that should be invoked with the quickfinder is selected, necessary if there are
-     * multiple lookup views for the same data object class
-     *
-     * @return String configured view name for the lookup
-     */
     public String getViewName() {
         return this.viewName;
     }

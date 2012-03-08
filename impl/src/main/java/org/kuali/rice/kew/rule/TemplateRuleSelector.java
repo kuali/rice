@@ -16,10 +16,17 @@
 package org.kuali.rice.kew.rule;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
+import org.kuali.rice.kew.api.rule.RuleTemplate;
+import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
+import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
@@ -56,18 +63,31 @@ class TemplateRuleSelector implements RuleSelector {
         final String ruleTemplateName = selectionCriterion;
 
         Set<MassRuleAttribute> massRules = new HashSet<MassRuleAttribute>();
-        RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
-        //RuleTemplate template = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateName);
+        RuleTemplate template = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateName);
         if (template == null) {
             throw new WorkflowRuntimeException("Could not locate the rule template with name " + ruleTemplateName + " on document " + routeHeader.getDocumentId());
         }
-        for (RuleTemplateAttributeBo templateAttribute : template.getActiveRuleTemplateAttributes()) {
-            if (!templateAttribute.isWorkflowAttribute()) {
-            continue;
+        for (RuleTemplateAttribute templateAttribute : template.getActiveRuleTemplateAttributes()) {
+            String ruleAttributeName = templateAttribute.getRuleAttribute().getName();
+            WorkflowRuleAttributeHandlerService wrahs = KewFrameworkServiceLocator.getWorkflowRuleAttributeHandlerService();
+            if (!wrahs.isWorkflowRuleAttribute(ruleAttributeName)) {
+                continue;
             }
-            WorkflowRuleAttribute attribute = templateAttribute.getWorkflowAttribute();
-            if (attribute instanceof MassRuleAttribute) {
-            massRules.add((MassRuleAttribute) attribute);
+            ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(ruleAttributeName);
+            Object attribute = ExtensionUtils.loadExtension(extensionDefinition);
+            if (attribute == null) {
+                throw new RiceIllegalArgumentException("Failed to load WorkflowRuleAttribute for: " + extensionDefinition);
+            }
+            if (!WorkflowRuleAttribute.class.isAssignableFrom(attribute.getClass())) {
+                throw new RiceIllegalArgumentException("Failed to locate a WorkflowRuleAttribute with the given name: " + ruleAttributeName);
+            }
+            if (attribute instanceof XmlConfiguredAttribute) {
+                ((XmlConfiguredAttribute)attribute).setExtensionDefinition(extensionDefinition);
+            }
+
+            WorkflowRuleAttribute ruleAttribute = (WorkflowRuleAttribute)attribute;
+            if (ruleAttribute instanceof MassRuleAttribute) {
+                massRules.add((MassRuleAttribute) attribute);
             }
 
         }

@@ -213,7 +213,7 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
                 if (hasErrors) {
                     tabAnchor.addClass("kr-clientError");
                     if (errorIcon.length == 0) {
-                        tabAnchor.append("<img id='" + tabId + "_errorIcon' alt='error' src='" + getConfigParam("kradImageLocation") + "'errormark.gif'>");
+                        tabAnchor.append("<img id='" + tabId + "_errorIcon' alt='error' src='" + getConfigParam("kradImageLocation") + "errormark.gif'>");
                     }
                 }
                 else if (!hasErrors) {

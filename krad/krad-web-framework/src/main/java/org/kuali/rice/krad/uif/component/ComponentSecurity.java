@@ -204,4 +204,17 @@ public class ComponentSecurity extends ConfigurableBase implements Serializable 
     public void setAdditionalRoleQualifiers(Map<String, String> additionalRoleQualifiers) {
         this.additionalRoleQualifiers = additionalRoleQualifiers;
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            idAttribute = null;
+            componentAttribute = null;
+            namespaceAttribute = null;
+            additionalRoleQualifiers = null;
+            additionalPermissionDetails = null;
+        } finally {
+            // don't call super.finalize() in attempt to avoid loop between maps.
+        }
+    }
 }

@@ -322,7 +322,7 @@ if (attributeEntry == null) {
         <c:set var="finderClass" value="${fn:replace(attributeEntry.control.valuesFinder,'.','|')}"/>
         <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 
-		<c:choose>
+		    <c:choose>
       		<c:when test="${not empty businessObjectClass}">
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
       	  	</c:when>
@@ -330,27 +330,37 @@ if (attributeEntry == null) {
               <c:choose>
                 <c:when test="${not empty finderClass}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
-                  <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+
                 </c:when>
                 <c:when test="${not empty attributeEntry.keyLabelMap}">
-                  <c:forEach var="opt" items="${attributeEntry.keyLabelMap}" varStatus="x">
-                    <html:option value="${opt.key}">${opt.value}</html:option>
-                  </c:forEach>
+                  <c:set var="methodAndParms" value=""/>
                 </c:when>
                 <c:otherwise>
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}"/>
-                  <html:optionsCollection property="${methodAndParms}" label="value" value="key"/>
+
                 </c:otherwise>
               </c:choose>
       	  	</c:otherwise>
    	    </c:choose>
 
-       	<logic:iterate name="KualiForm" property="${methodAndParms}" id="KeyValue">
-       		<c:set var="accessibleRadioTitle" value="${accessibleTitle} - ${KeyValue.value}"/>
-            <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
-            	value="key" idName="KeyValue" disabled="${disableField}" onclick="${onchange}"
-            	styleClass="${styleClass}"/>${KeyValue.value}
-        </logic:iterate>
+        <c:choose>
+          <c:when test="${not empty methodAndParms}">
+            <logic:iterate name="KualiForm" property="${methodAndParms}" id="KeyValue">
+              <c:set var="accessibleRadioTitle" value="${accessibleTitle} - ${KeyValue.value}"/>
+                <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
+                  value="key" idName="KeyValue" disabled="${disableField}" onclick="${onchange}"
+                  styleClass="${styleClass}"/>${KeyValue.value}
+            </logic:iterate>
+          </c:when>
+          <c:otherwise>
+            <c:forEach var="opt" items="${attributeEntry.keyLabelMap}" varStatus="x">
+              <c:set var="accessibleRadioTitle" value="${accessibleTitle} - ${opt.value}"/>
+              <html:radio property="${property}" style="${textStyle}" title="${accessibleRadioTitle}" tabindex="${tabindex}"
+                          value="key" idName="opt" disabled="${disableField}" onclick="${onchange}"
+                          styleClass="${styleClass}"/>${opt.value}
+            </c:forEach>
+          </c:otherwise>
+        </c:choose>
     </c:when>
 
     <%-- checkbox --%>

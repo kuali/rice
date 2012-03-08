@@ -92,7 +92,7 @@
       	</annotation>
       </element>
 
-      <element name="label" type="c:LongStringType" minOccurs="0">
+      <element name="label" type="c:MandatoryLongStringType" minOccurs="1">
       	<annotation>
       		<documentation>
       	 	 The label of the document type. This is intended to be the value displayed to end users when referring to the Document Type.

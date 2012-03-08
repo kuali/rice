@@ -26,23 +26,23 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public class AttributeDefinition {
 
-    private RuleAttribute ruleAttribute;
+    //private RuleAttribute ruleAttribute;
 	private ExtensionDefinition extensionDefinition;
 	private ObjectDefinition objectDefinition;
 
-	public AttributeDefinition(RuleAttribute ruleAttribute, ExtensionDefinition extensionDefinition, ObjectDefinition objectDefinition) {
-        this.ruleAttribute = ruleAttribute;
+	public AttributeDefinition(ExtensionDefinition extensionDefinition, ObjectDefinition objectDefinition) {
+        //this.ruleAttribute = ruleAttribute;
 		this.extensionDefinition = extensionDefinition;
 		this.objectDefinition = objectDefinition;
 	}
 
-    public RuleAttribute getRuleAttribute() {
+    /*public RuleAttribute getRuleAttribute() {
         return ruleAttribute;
     }
 
     public void setRuleAttribute(RuleAttribute ruleAttribute) {
         this.ruleAttribute = ruleAttribute;
-    }
+    }*/
 
     public ObjectDefinition getObjectDefinition() {
 		return objectDefinition;

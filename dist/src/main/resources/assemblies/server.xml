@@ -29,7 +29,7 @@
     <!-- 1. War -->
     <file>
       <destName>kr-dev.war</destName>
-      <source>${project.basedir}/../web/target/rice-web-${project.version}.war</source>
+      <source>${project.basedir}/../standalone/target/rice-standalone-${project.version}.war</source>
     </file>
   </files>
   <fileSets>

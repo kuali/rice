@@ -596,7 +596,7 @@
   <bean id="UifCompView-OtherControls" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field30" p:label="File Control">
+        <bean parent="Uif-InputField" p:propertyName="fileUpload" p:label="File Control">
           <property name="instructionalText" value="Use to upload files"/>
           <property name="control">
             <bean parent="Uif-FileControl" p:size="30"/>

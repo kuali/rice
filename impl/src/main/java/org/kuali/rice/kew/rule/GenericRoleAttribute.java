@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
@@ -63,7 +64,7 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
         super(uniqueName);
     }
 
-    public boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions) {
+    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         // FIXME: ok, this MUST return true, as it IS evaluated (don't know why)
         // maybe investigate only calling isMatch on rule attributes as it doesn't seem that
         // matching is relevant for role attributes...is it?

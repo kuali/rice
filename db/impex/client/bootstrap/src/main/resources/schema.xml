@@ -783,7 +783,7 @@
     </table>
     <table name="KREW_DOC_TYP_APP_DOC_STAT_T">
         <column name="DOC_TYP_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="DOC_STAT_NM" primaryKey="true" size="20" type="VARCHAR"/>
+        <column name="DOC_STAT_NM" primaryKey="true" size="64" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KREW_DOC_TYP_APP_DOC_STAT_TC0">
@@ -837,7 +837,7 @@
         <column default="0" name="DOC_TYP_VER_NBR" size="10" type="DECIMAL"/>
         <column name="ACTV_IND" size="1" type="DECIMAL"/>
         <column name="CUR_IND" size="1" type="DECIMAL"/>
-        <column name="LBL" size="128" type="VARCHAR"/>
+        <column name="LBL" required="true" size="128" type="VARCHAR"/>
         <column name="PREV_DOC_TYP_VER_NBR" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_DESC" size="4000" type="VARCHAR"/>
         <column name="DOC_HDLR_URL" size="255" type="VARCHAR"/>
@@ -1980,9 +1980,9 @@
         <column name="GRP_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column name="GRP_ID" size="40" type="VARCHAR"/>
-        <column name="MBR_ID" size="40" type="VARCHAR"/>
-        <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
+        <column name="GRP_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="P" name="MBR_TYP_CD" required="true" size="1" type="CHAR"/>
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
@@ -2443,9 +2443,9 @@
         <column name="ROLE_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column name="ROLE_ID" size="40" type="VARCHAR"/>
-        <column name="MBR_ID" size="40" type="VARCHAR"/>
-        <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
+        <column name="ROLE_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MBR_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="P" name="MBR_TYP_CD" required="true" size="1" type="CHAR"/>
         <column name="ACTV_FRM_DT" type="DATE"/>
         <column name="ACTV_TO_DT" type="DATE"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
@@ -2928,15 +2928,6 @@
             <unique-column name="NMSPC_CD"/>
         </unique>
     </table>
-    <table name="KRMS_CNTXT_VLD_ACTN_T">
-        <column name="CNTXT_VLD_ACTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="ACTN_TYP_ID" required="true" size="40" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <index name="KRMS_CNTXT_VLD_ACTN_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
-    </table>
     <table name="KRMS_CNTXT_VLD_ACTN_TYP_T">
         <column name="CNTXT_VLD_ACTN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
@@ -2946,15 +2937,6 @@
             <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
         </foreign-key>
         <index name="KRMS_CNTXT_VLD_ACTN_TYP_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
-    </table>
-    <table name="KRMS_CNTXT_VLD_AGENDA_T">
-        <column name="CNTXT_VLD_AGENDA_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="AGENDA_TYP_ID" required="true" size="40" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <index name="KRMS_CNTXT_VLD_AGENDA_TI1">
             <index-column name="CNTXT_ID"/>
         </index>
     </table>
@@ -2970,15 +2952,6 @@
             <index-column name="CNTXT_ID"/>
         </index>
     </table>
-    <table name="KRMS_CNTXT_VLD_EVENT_T">
-        <column name="CNTXT_VLD_EVENT_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="EVENT_NM" required="true" size="255" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <index name="KRMS_CNTXT_VLD_EVENT_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
-    </table>
     <table name="KRMS_CNTXT_VLD_FUNC_T">
         <column name="CNTXT_VLD_FUNC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
@@ -2988,15 +2961,6 @@
             <reference foreign="CNTXT_ID" local="CNTXT_ID"/>
         </foreign-key>
         <index name="KRMS_CNTXT_VLD_FUNC_TI1">
-            <index-column name="CNTXT_ID"/>
-        </index>
-    </table>
-    <table name="KRMS_CNTXT_VLD_RULE_T">
-        <column name="CNTXT_VLD_RULE_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="CNTXT_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="RULE_ID" required="true" size="40" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <index name="KRMS_CNTXT_VLD_RULE_TI1">
             <index-column name="CNTXT_ID"/>
         </index>
     </table>
@@ -3881,7 +3845,7 @@
     <sequence name="KRIM_RSP_RQRD_ATTR_ID_S" nextval="10000"/>
     <sequence name="KRIM_RSP_TMPL_ID_S" nextval="10000"/>
     <sequence name="KRIM_TYP_ATTR_ID_S" nextval="10000"/>
-    <sequence name="KRIM_TYP_ID_S" nextval="10000"/>
+    <sequence name="KRIM_TYP_ID_S" nextval="10002"/>
     <sequence name="KRMS_ACTN_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_ACTN_S" nextval="10000"/>
     <sequence name="KRMS_AGENDA_ATTR_S" nextval="10000"/>
@@ -3892,13 +3856,9 @@
     <sequence name="KRMS_CNTXT_ATTR_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_TERM_SPEC_PREREQ_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_ACTN_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_ACTN_TYP_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_AGENDA_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_AGENDA_TYP_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_EVENT_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_FUNC_S" nextval="10000"/>
-    <sequence name="KRMS_CNTXT_VLD_RULE_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_RULE_TYP_S" nextval="10000"/>
     <sequence name="KRMS_CNTXT_VLD_TERM_SPEC_S" nextval="10000"/>
     <sequence name="KRMS_CTGRY_S" nextval="1"/>

@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -74,8 +75,8 @@ public class TestRuleAttributeDuex implements WorkflowRuleAttribute, RoleAttribu
         return "";
     }
 
-    public List validateRuleData(Map paramMap) {
-    	return new ArrayList();
+    public List<RemotableAttributeError> validateRuleData(Map paramMap) {
+    	return new ArrayList<RemotableAttributeError>();
     }
 
     public void setRequired(boolean required) {

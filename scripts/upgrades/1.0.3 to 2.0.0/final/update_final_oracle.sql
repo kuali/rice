@@ -2198,7 +2198,7 @@ ALTER TABLE KREW_DOC_TYP_APP_DOC_STAT_T RENAME TO O_KREW_DOC_TYP_APP_DOC_STAT_T
 CREATE TABLE KREW_DOC_TYP_APP_DOC_STAT_T
 (
       DOC_TYP_ID VARCHAR2(40)
-        , DOC_STAT_NM VARCHAR2(20)
+        , DOC_STAT_NM VARCHAR2(64)
         , VER_NBR NUMBER(8) default 0
         , OBJ_ID VARCHAR2(36) NOT NULL
     , CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0 UNIQUE (OBJ_ID)
@@ -7576,3 +7576,119 @@ insert into krew_typ_attr_t values ('1', 1, '1', '1', 'Y', 1)
 insert into krew_typ_attr_t values ('2', 2, '1', '2', 'Y', 1)
 /
 
+
+--
+-- 2012-02-08.sql
+--
+
+-- create a KIM permission for the Creating a new Term, Context and TermSpecification
+
+insert into krim_perm_t
+(perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
+values ((select (max(to_number(perm_id)) + 1) from krim_perm_t where perm_id is not NULL and to_number(perm_id) < 10000),
+        (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'Create / Maintain Record(s)' and nmspc_cd = 'KR-NS'),
+        'KR-NS','Create Term Maintenance Document','Allows user to create a new Term maintainence document','Y',1,
+        '0dbce939-4f22-4e9b-a4bb-1615c0f411a2')
+/
+insert into krim_perm_attr_data_t
+(attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
+values ((select (max(to_number(attr_data_id)) + 1) from krim_perm_attr_data_t where attr_data_id is not NULL and to_number(attr_data_id) < 10000),
+        (select perm_id from krim_perm_t where nm = 'Create Term Maintenance Document' and nmspc_cd = 'KR-NS'),
+        (select kim_typ_id from krim_typ_t where nm = 'Document Type & Existing Records Only' and nmspc_cd = 'KR-NS'),
+        (select kim_attr_defn_id from krim_attr_defn_t where nm = 'documentTypeName'),
+        'TermMaintenanceDocument',1,'aa1d1400-6155-4819-8bad-e5dd81f9871b')
+/
+insert into krim_role_perm_t
+(role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
+values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where role_perm_id is not NULL and to_number(role_perm_id) < 10000),
+        (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
+        (select perm_id from krim_perm_t where nm = 'Create Term Maintenance Document' and nmspc_cd = 'KR-NS'),
+        'Y', 1, '45f8f55e-23d9-4278-ade8-ddfc870852e6')
+/
+insert into krim_perm_t
+(perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
+values ((select (max(to_number(perm_id)) + 1) from krim_perm_t where perm_id is not NULL and to_number(perm_id) < 10000),
+        (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'Create / Maintain Record(s)' and nmspc_cd = 'KR-NS'),
+        'KR-NS','Create Context Maintenance Document','Allows user to create a new Context maintainence document','Y',1,
+        'cefeed6d-b5e2-40aa-9034-137db317b532')
+/
+insert into krim_perm_attr_data_t
+(attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
+values ((select (max(to_number(attr_data_id)) + 1) from krim_perm_attr_data_t where attr_data_id is not NULL and to_number(attr_data_id) < 10000),
+        (select perm_id from krim_perm_t where nm = 'Create Context Maintenance Document' and nmspc_cd = 'KR-NS'),
+        (select kim_typ_id from krim_typ_t where nm = 'Document Type & Existing Records Only' and nmspc_cd = 'KR-NS'),
+        (select kim_attr_defn_id from krim_attr_defn_t where nm = 'documentTypeName'),
+        'ContextMaintenanceDocument',1,'c43bc7f5-949e-4a85-b173-6a53d81f2762')
+/
+insert into krim_role_perm_t
+(role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
+values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where role_perm_id is not NULL and to_number(role_perm_id) < 10000),
+        (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
+        (select perm_id from krim_perm_t where nm = 'Create Context Maintenance Document' and nmspc_cd = 'KR-NS'),
+        'Y', 1, 'cd7cbc67-c0b2-4785-afa8-8c8d073b78df')
+/
+insert into krim_perm_t
+(perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
+values ((select (max(to_number(perm_id)) + 1) from krim_perm_t where perm_id is not NULL and to_number(perm_id) < 10000),
+        (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'Create / Maintain Record(s)' and nmspc_cd = 'KR-NS'),
+        'KR-NS','Create TermSpecification Maintenance Document','Allows user to create a new TermSpecification maintainence document','Y',1,
+        '02bd9acd-48d9-4fec-acbd-6a441c5ea8c2')
+/
+insert into krim_perm_attr_data_t
+(attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
+values ((select (max(to_number(attr_data_id)) + 1) from krim_perm_attr_data_t where attr_data_id is not NULL and to_number(attr_data_id) < 10000),
+        (select perm_id from krim_perm_t where nm = 'Create TermSpecification Maintenance Document' and nmspc_cd = 'KR-NS'),
+        (select kim_typ_id from krim_typ_t where nm = 'Document Type & Existing Records Only' and nmspc_cd = 'KR-NS'),
+        (select kim_attr_defn_id from krim_attr_defn_t where nm = 'documentTypeName'),
+        'TermSpecificationMaintenanceDocument',1,'d3e373ca-296b-4834-bd66-ba159ebe733a')
+/
+insert into krim_role_perm_t
+(role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
+values ((select (max(to_number(role_perm_id)) + 1) from krim_role_perm_t where role_perm_id is not NULL and to_number(role_perm_id) < 10000),
+        (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
+        (select perm_id from krim_perm_t where nm = 'Create TermSpecification Maintenance Document' and nmspc_cd = 'KR-NS'),
+        'Y', 1, '83a270a0-1cdb-4440-ab8b-41cd8afc41d9')
+/
+
+
+--
+-- 2012-02-14.sql
+--
+
+--
+-- KULRICE-6710: Drop krms_cntxt_vld_rule_t, krms_cntxt_vld_actn_t and krms_cntxt_vld_agenda_t tables
+--
+
+drop table krms_cntxt_vld_actn_t
+/
+drop sequence krms_cntxt_vld_actn_s
+/
+drop table krms_cntxt_vld_agenda_t
+/
+drop sequence krms_cntxt_vld_agenda_s
+/
+drop table krms_cntxt_vld_rule_t
+/
+drop sequence krms_cntxt_vld_rule_s
+/
+
+--
+-- KULRICE-6799: At one point (2.0-RC4 and before), the DOC_STAT_NM column was incorrectly set to 20 characters
+--               the original script (2011-06-17.sql, and the "final" script) has been corrected, but this script has
+--               been created in case that script had already been run.  Mysql scripts are unaffected by this, so there is no
+--               equivalent mysql script.
+--
+
+alter table KREW_DOC_TYP_APP_DOC_STAT_T modify (DOC_STAT_NM varchar2(64))
+/
+
+--
+-- 2012-02-23.sql
+--
+
+--
+-- KULRICE-6811: Conversion of WorkflowFunctions to EDLFunctions in eDocLite stylesheets
+--
+
+UPDATE KRCR_STYLE_T set XML=replace(XML,'org.kuali.rice.kew.edl.WorkflowFunctions','org.kuali.rice.edl.framework.util.EDLFunctions')
+/

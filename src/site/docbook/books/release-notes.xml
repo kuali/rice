@@ -16,8 +16,7 @@
     limitations under the License.
 
 -->
-<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    version="5.0">
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <info>
         <title>Kuali Rice ${project.version} Release Notes</title>
         <edition>${project.version}</edition>
@@ -29,9 +28,6 @@
         <para>This is the first major release of the Kuali Rice software since version 1.0 which was
             released in August of 2009. This release brings many new and exciting features and
             improvements to the Kuali Rice middleware and application development platforms. </para>
-        <para>This release candidate version includes all functionality for Rice 2.0 and is ready for
-            development use. Continued documentation and testing is underway to ensure a quality release
-            of Rice 2.0 once we reach final version. </para>
         <para>The primary architectural goal for this release of Rice was to position the platform
             for cross-version service compatibility moving forward. With the increase in the number
             of applications (both internal and external to Kuali) that are integrating with the
@@ -113,8 +109,7 @@
                         Spring MVC instead of Struts.</simpara>
                 </listitem>
                 <listitem>
-                    <simpara>Ability to configure <link
-                            xlink:show="new" xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>
+                    <simpara>Ability to configure <link xlink:show="new" xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>
                         as a JTA alternative to JOTM and XAPool.</simpara>
                 </listitem>
                 <listitem>
@@ -125,23 +120,18 @@
         </section>
         <section>
             <title>Download</title>
-            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link
-                    xlink:show="new" xlink:href="http://kuali.org/rice/download/beta"
-                    >http://kuali.org/rice/download/beta</link>.</para>
+            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:show="new" xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
             <para>There are three different distributions of Rice available: source, binary and
                 server. Please read the Installation Guide for more details on each of these
                 distributions.</para>
         </section>
         <section>
             <title>Documentation</title>
-            <para>JavaDocs can be found at <link
-                    xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html"
-                    >http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
-            <para>Formal documentation can be found at <link
-                    xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html"
-                    >http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link>.
-                This documentation is still in the process of review and update for 2.0, so please
-                follow the notes in each document to report any outdated information.</para>
+            <para>API Documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
+            <para>Formal documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html">http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link>.
+                This documentation is still in the process of review and update for 2.0 which will
+                continue through subsequent releases, so please follow the notes in each document to
+                report any outdated information.</para>
         </section>
         <section>
             <title>Contact</title>
@@ -176,8 +166,7 @@
                 perspective of major, minor, and patch releases of Kuali Rice.</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width="100%"
-                            contentdepth="100%"/>
+                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </inlinemediaobject></para>
             <para>The type of compatibility being implemented for version 2.0 is in contrast to what
@@ -303,8 +292,7 @@
                         </listitem>
                     </orderedlist>As can be seen from the list above, much work was done to the
                     service bus for Kuali Rice version 2.0. For more details, read the following
-                    page <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/T3dyEg"
-                        >https://wiki.kuali.org/x/T3dyEg</link></para>
+                    page <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/T3dyEg">https://wiki.kuali.org/x/T3dyEg</link></para>
             </section>
             <section>
                 <title>Parameter Service, Namespace Service, and Component Service</title>
@@ -322,20 +310,17 @@
                     tables, instead using a service-oriented approach to interacting with these
                     different information sources. This resulted in the creation of the following services:<itemizedlist>
                         <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.core.api.parameter.ParameterRepositoryService</emphasis>
+                            <para><emphasis role="bold">org.kuali.rice.core.api.parameter.ParameterRepositoryService</emphasis>
                                 - remote service which provides operations related to system
                                 parameters</para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
+                            <para><emphasis role="bold">org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
                                 remote service which provides operations related to
                                 namespaces</para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.core.api.component.ComponentService</emphasis> -
+                            <para><emphasis role="bold">org.kuali.rice.core.api.component.ComponentService</emphasis> -
                                 remote service which provides operations related to components, as
                                 well as implementing a new model for publication of "derived"
                                 components</para>
@@ -353,9 +338,7 @@
                 <para>More information about these individual services and their available
                     operations can be found in the javadocs. Also see the following page for more
                     details on the work that was done with these services, including a description
-                    of the new model used for publication of derived components: <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/tg5yEg"
-                        >https://wiki.kuali.org/x/tg5yEg</link></para>
+                    of the new model used for publication of derived components: <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/tg5yEg">https://wiki.kuali.org/x/tg5yEg</link></para>
             </section>
             <section>
                 <title>RiceApplicationConfigurationService</title>
@@ -363,9 +346,7 @@
                     by all KNS applications which provided callbacks into the application from the
                     Kuali Rice standalone server. This service was removed in Rice 2.0 for various
                     reasons. The reasons for it's removal and information on it's effective
-                    replacements can be found on the following page: <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/vA6tEg"
-                        >https://wiki.kuali.org/x/vA6tEg</link></para>
+                    replacements can be found on the following page: <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/vA6tEg">https://wiki.kuali.org/x/vA6tEg</link></para>
             </section>
             <section>
                 <title>General Purpose Lookup APIs</title>
@@ -399,8 +380,7 @@
                     API that could be applied in a standard fashion across the various Rice services
                     which needed it. The following page describes more about the various
                     possibilities for implementing this as well as the solution which was chosen:
-                        <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/PR9yEg"
-                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
+                        <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/PR9yEg">https://wiki.kuali.org/x/PR9yEg</link>.</para>
                 <para>The implementation of this api can be found on the core-api module under the
                     package <code>org.kuali.rice.core.api.criteria</code>.</para>
             </section>
@@ -466,9 +446,7 @@
                                     <code>KualiWorkflowInfo</code>, code was changed to call one of
                                 the new KEW services that was added in Rice 2.0.</para>
                         </listitem>
-                    </itemizedlist>Some rough notes with more details on the work that was done in
-                    KEW can be found here: <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/fwuREg"
-                        >https://wiki.kuali.org/x/fwuREg</link></para>
+                    </itemizedlist></para>
             </section>
             <section>
                 <title>Document Search</title>
@@ -545,11 +523,7 @@
                     search framework to the new document search framework is forthcoming. For the
                     time-being, the best resource is to look at the javadocs for the
                         <code>org.kuali.rice.kew.framework.document.search</code> package. All of
-                    the framework apis should have fairly thorough javadocs. Additional, some rough
-                    notes on the document search work and architectural service approach for the
-                    customization handler service can be found near the bottom of this page: <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/fwuREg"
-                        >https://wiki.kuali.org/x/fwuREg</link></para>
+                    the framework apis should have fairly thorough javadocs. </para>
             </section>
             <section>
                 <title>Caching Architecture</title>
@@ -569,9 +543,7 @@
                     different applications in an enterprise architecture which has been integrated
                     with Kuali Rice.</para>
                 <para>More details on the specific work that was done to rearchitect the Kuali Rice
-                    caching infrastructure can be found here: <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/XgmWEg"
-                        >https://wiki.kuali.org/x/XgmWEg</link></para>
+                    caching infrastructure can be found here: <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/XgmWEg">https://wiki.kuali.org/x/XgmWEg</link></para>
             </section>
         </section>
         <section>
@@ -585,9 +557,8 @@
                 in order help reach version compatibility goals for the release.</para>
             <para>Primarily, this included the creation of numerous "api" and "framework" modules
                 and the partitioning of Kuali Rice into various sub-project modules. This structure
-                can be seen when looking at the source code for Rice 2.0. The overall vision for
-                modularity in Kuali Rice as well as some notes on specific changes that were made in
-                pursuit of it can be found at the following links:</para>
+                can be seen when looking at the source code for Rice 2.0. The design and vision for
+                modularity in Kuali Rice can be found at the following links:</para>
             <itemizedlist>
                 <listitem>
                     <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/x/fYD8E">Modularity Use Case
@@ -596,16 +567,6 @@
                 <listitem>
                     <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/x/SoD8E">Modularity
                         Design</link></para>
-                </listitem>
-                <listitem>
-                    <para>the running <link
-                            xlink:show="new" xlink:href="https://docs.google.com/a/kuali.org/document/pub?id=1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw"
-                            >list of modularity changes</link>.</para>
-                </listitem>
-                <listitem>
-                    <para><link
-                            xlink:show="new" xlink:href="https://docs.google.com/document/pub?id=1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8"
-                            >KEW Refactoring Notes</link></para>
                 </listitem>
             </itemizedlist>
         </section>
@@ -628,8 +589,7 @@
                     different priority values.</para>
                 <para>Further details on the implementation of PeopleFlows, their lineage in Coeus,
                     as well as some screenshots of the maintenance user interface can be found here:
-                        <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/3R6REg"
-                        >https://wiki.kuali.org/x/3R6REg</link></para>
+                        <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/3R6REg">https://wiki.kuali.org/x/3R6REg</link></para>
             </section>
             <section>
                 <title>PeopleFlow integration with KRMS</title>
@@ -638,9 +598,7 @@
                     of "Action". This action will allow a rule author to build a business rule and
                     then indicate that the action that should be executed if the rule succeeds would
                     be to route to the specified PeopleFlow.</para>
-                <para>Details on the way this integration is implemented can be found here: <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/3R6REg"
-                        >https://wiki.kuali.org/x/3R6REg</link></para>
+                <para>Details on the way this integration is implemented can be found here: <link xlink:show="new" xlink:href="https://wiki.kuali.org/x/3R6REg">https://wiki.kuali.org/x/3R6REg</link></para>
             </section>
         </section>
         <section>
@@ -657,35 +615,23 @@
                     on the ability to rapidly create user interfaces with XML while providing more
                     flexibility with layouts and user experience. In addition, KRAD allows for the
                     creation of modern, rich user interfaces using the jQuery and Fluid frameworks. </para>
-                <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf"
-                        >Benefits of KRAD</link>. </para>
+                <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link xlink:show="new" xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf">Benefits of KRAD</link>. </para>
                 <para>To learn more about KRAD, please visit the following pages:<itemizedlist>
                         <listitem>
-                            <para><link
-                                    xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell"
-                                    >KRAD in a nutshell</link></para>
+                            <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell">KRAD in a nutshell</link></para>
                         </listitem>
                         <listitem>
-                            <para><link
-                                    xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views"
-                                    >UIF Architecture</link></para>
+                            <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views">UIF Architecture</link></para>
                         </listitem>
                         <listitem>
-                            <para><link
-                                    xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases"
-                                    >View Tutorial</link></para>
+                            <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases">View Tutorial</link></para>
                         </listitem>
                         <listitem>
-                            <para><link
-                                    xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial"
-                                    >Creating a component</link></para>
+                            <para><link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial">Creating a component</link></para>
                         </listitem>
                     </itemizedlist></para>
                 <para>In addition, see various analysis pages here (Note: some of the information
-                    might be incomplete or out of date): <link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis"
-                        >KRAD Analysis</link>
+                    might be incomplete or out of date): <link xlink:show="new" xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis">KRAD Analysis</link>
                 </para>
             </section>
             <section>
@@ -700,8 +646,7 @@
                     enables invocation of the rule execution engine from within a workflow. Rules
                     can be configured with PeopleFlow actions that specify PeopleFlows to route to
                     or to notify.</para>
-                <para>View the following analysis page for some additional information on KRMS:<link
-                        xlink:show="new" xlink:href="https://wiki.kuali.org/x/egHuE">KRMS Analysis</link></para>
+                <para>View the following analysis page for some additional information on KRMS:<link xlink:show="new" xlink:href="https://wiki.kuali.org/x/egHuE">KRMS Analysis</link></para>
             </section>
         </section>
         <section>
@@ -716,16 +661,12 @@
                 </itemizedlist></para>
             <para>With this change, we have dropped support for Tomcat 5.5 (Servlet API 2.4, JSP
                 2.0). </para>
-            <!-- TODO: Document the following
-    - XAPool/Bitronix Configuration Changes (KRDOC-382 )
-    - New configuration Parameters related to component publishing (KRDOC-386)
-    - Changes to configurers and run modes (KRDOC-389)-->
         </section>
-        <section>
+        <section xml:id="library_changes_and_additions">
             <title>Library Changes and Additions</title>
             <para>There were many changes made to the various direct and transitive dependencies for
-                Kuali Rice. Additional documentation is forthcoming on what these specific changes
-                were, but the following is a summary of some of the highlights:<itemizedlist>
+                Kuali Rice. Additional documentation can be found in the upgrade guide about what
+                the specific changes were, but the following is a summary of some of the highlights:<itemizedlist>
                     <listitem>
                         <para>Spring 3.1</para>
                     </listitem>
@@ -778,8 +719,7 @@
             <title>Other Changes</title>
             <para>There were many other changes made in Kuali Rice 2.0 which are not included in the
                 previous section. The following list is a highlight of some of these. For a
-                comprehensive list of changes that were performed, the Jira issues are the best
-                place to look.</para>
+                comprehensive list of changes that were performed, see <xref linkend="items_addressed_in_rice_2.0"/></para>
             <para>
                 <itemizedlist>
                     <listitem>
@@ -863,74 +803,1107 @@
             </para>
         </section>
     </section>
-    <section>
-        <title>Work Remaining</title>
-        <section>
-            <title>Performance/Load Testing</title>
-            <para>Rice ${project.version} has not completed performance testing and while we
-                recommend starting on development with this version, those choosing to implement in
-                a production environment should be sure to perform local performance testing and
-                tuning or wait to implement until the final version when full performance testing
-                and tuning has been completed.</para>
-        </section>
-        <section>
-            <title>Documentation</title>
-            <para>Documentation reviews and updates are continuing in future releases. If you find a
-                problem, please <link xlink:show="new" xlink:href="UG.html#reporting_rice_jira">report in Jira</link>
-                and set the component to Documentation. Indicate the guide and section that has the
-                problem in the Jira. Thanks for your help in improving the documentation!</para>
-        </section>
-        <section>
-            <title>New Project Generation Script</title>
-            <para>The createproject.groovy script is in process of conversion to a maven archetype
-                and will be complete prior to final release.</para>
-        </section>
-    </section>
     <section xml:id="upgrade-guide" xreflabel="Upgrade Guide">
         <title>Upgrade Guide</title>
         <section>
-            <title>Database Changes</title>
-            <para>The scripts to upgrade from a 1.0.3.3 version of Kuali Rice to version
-                ${project.version} can be found in the following directory inside of the source
-                distribution:</para>
-            <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
-            <para>Within this directory, are the following sub-directories:<itemizedlist>
+            <title>Upgrade Considerations</title>
+            <para>This section outlines the process of upgrading from Rice 1.0.3.3 to Rice 2.0.0.
+                If you are curently running an older version of the 1.0.x code, you will need to
+                perform the steps to upgrade to 1.0.3.3 first.</para>
+            <para>In terms of upgrading to Kuali Rice 2.0, there are two main types of upgrades
+                which will typically need to be performed:<itemizedlist>
                     <listitem>
-                        <para><emphasis role="bold">db-updates</emphasis> - contains the SQL needed
-                            to upgrade from a Kuali Rice 1.0.3.3 standalone server service database
-                            to ${project.version}. Each of these scripts is dated and that indicates
-                            the order in which they should be run. SQL scripts for MySql are
-                            prefixed by "mysql". Scripts for oracle have no prefix on their
-                            name.</para>
+                        <para>Kuali Rice Standalone Server</para>
                     </listitem>
                     <listitem>
-                        <para><emphasis role="bold">db-updates-client</emphasis> - contains the SQL
-                            needed to upgrade a Kuali Rice client application's Rice-related tables
-                            to ${project.version}. At this point in time, the only update required
-                            is to the KRNS_SESN_DOC_T table.</para>
+                        <para>Client Applications</para>
                     </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">demo-data</emphasis> - this directory contains
-                            updates to the various pieces of Kuali Rice demo data. Chances are that
-                            most people performing an upgrade will not have demo data in their local
-                            database and will, therefore, not need to execute the scripts located
-                            within this directory.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">support</emphasis> - this directory contains a
-                            groovy script which helps deal with the fact that unique constraints
-                            were added to the database for the combination of namespace code and
-                            name in both the KIM permission and responsibility tables</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
-                            that needs to be ingested after the database upgrade is completed</para>
-                    </listitem>
-                </itemizedlist></para>
+                </itemizedlist>Since Rice 2.0 is not backward compatible with 1.0.x, upgrades to
+                both the standalone server and any client applications which are using the Rice APIs
+                will need to be coordinated to occur at the same time.</para>
+            <para>It is likely that an institution which has built multiple custom Kuali Rice
+                applications will need to perform both of these steps and coordinate the upgrade
+                appropriately within their enterprise. For the other Kuali applications within the
+                Kuali Foundation, each of the projects are planning forthcoming releases which will
+                support Rice 2.0. So it would be advisable to wait until those upgraded versions are
+                available before taking on an enterprise-wide upgrade of Kuali Rice infrastructure
+                to avoid needing to manually convert these applications yourself. Please consult the
+                time lines of the other Kuali projects for details on their planned migrations to
+                Rice 2.0.</para>
+            <para>For those applications which are running Kuali Rice in "Bundled" mode (which means
+                the application is not dependant on a separate Kuali Rice Standalone Server
+                instance) then both types of upgrades will need to be performed on the same
+                application.</para>
+            <para>In addition to upgrading the Rice standalone server and any integrated client
+                applications, any use of the Kuali Rice data in downstream systems (such as a Data
+                Warehouse or reporting environment) needs to be considered.  There have been
+                impacting changes to the Rice database tables as part of development on version 2.0.
+                Therefore, existing reports may not work as desired and should be updated and tested
+                appropriately.</para>
+            <para>In the following sections, we will describe the upgrade process for each of the
+                different areas in detail.</para>
         </section>
+        <section>
+            <title>Upgrading a Kuali Rice Standalone Server</title>
+            <para>The Kuali Rice Standalone Server is made available as a WAR and deployed to a
+                servlet container (typically Tomcat). The general process for upgrading a standalone
+                server from version 1.0.3.3 to version 2.0 will be as follows:<orderedlist>
+                    <listitem>
+                        <para>Re-apply local customizations</para>
+                    </listitem>
+                    <listitem>
+                        <para>Upgrade Workflow Plugins</para>
+                    </listitem>
+                    <listitem>
+                        <para>Upgrade the Database</para>
+                    </listitem>
+                    <listitem>
+                        <para>Update Configuration</para>
+                    </listitem>
+                    <listitem>
+                        <para>Deploy</para>
+                    </listitem>
+                </orderedlist></para>
+            <section>
+                <title>Re-apply Local Customizations</title>
+                <para>Many who have implemented Kuali Rice have performed local customizations to
+                    the software.  This might include patching bugs, adding additional features, or
+                    overriding reference service implementations (especially in the case of Kuali
+                    Identity Management).  Additionally, customization may have been done to some of
+                    the web content that's included as part of the KNS framework.</para>
+                <para>It is, of course, important that these local customizations be reapplied to
+                    your Kuali Rice 2.0 implementation as part of your upgrade process. You may be
+                    accomplishing this in many different ways currently, the most common approaches
+                    include the following:<itemizedlist>
+                        <listitem>
+                            <para>Using Maven WAR overlays to construct a custom Rice Standalone
+                                WAR.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Using a build tool like Apache Ant to manually assemble a custom
+                                WAR file.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Using a custom Ant build, the Maven shade plugin, or a similar
+                                tool to patch Rice code.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Extending delivered Kuali Rice code or reference service
+                                implementations and loading them via the
+                                    <code>rice.additionalSpringFiles</code> configuration parameter
+                                to perform service overrides.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Customizing web content by modifying the delivered Kuali Rice JSP
+                                and tag libraries.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Modifications to the web.xml file to include additional web
+                                application configuration or modify supplied configuration (i.e. the
+                                "environment" <code>init-param</code> in the packaged
+                                web.xml).</para>
+                        </listitem>
+                    </itemizedlist>Regardless of the approach or approaches you are utilizing, it's
+                    important to ensure your customizations are transfered properly. The code base
+                    of Kuali Rice has changed significantly during the 2.0 development cycle. As a
+                    result, it is suggested that you port over any code or file customizations one
+                    class at a time to ensure they get rewritten if needed to link and compile
+                    properly with the 2.0 libraries.</para>
+            </section>
+            <section>
+                <title>Upgrade Workflow Plugins</title>
+                <para>If your Rice server is loading any KEW plugins, then these will need to be
+                    upgraded as well.  At the very least, this will likely involve recompilation and
+                    repackaging to link with the Rice 2.0 apis.  Depending on how much code is in
+                    the plugin and which Rice frameworks it utilizes, it's likely that plugin code
+                    will need to be upgraded in a similar fashion to client application code in
+                    order for it to work properly within the Rice plugin framework.  See the Client
+                    Application portion of the upgrade guide for more information on this.</para>
+            </section>
+            <section>
+                <title>Upgrade the Database</title>
+                <para>The Rice Standalone Server download will be packaged with database upgrade
+                    scripts included.  These are located in the following directory:</para>
+                <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
+                <para>Within this directory, are the following relevant sub-directories:<itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">final</emphasis> - contains the SQL needed
+                                to perform a full database upgrade from a Kuali Rice 1.0.3.3
+                                standalone server database to ${project.version}. There are scripts
+                                here for both the client database upgrade (which will be discussed
+                                in more detail in a later section) as well as the standalone server
+                                database. There are Oracle and MySQL versions of each of
+                                these.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">demo-data</emphasis> - this directory
+                                contains updates to the various pieces of Kuali Rice demo data.
+                                Typically when performing an upgrade it will be against a database
+                                that does not have demo data. But these scripts are provided just in
+                                case they are needed.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">support</emphasis> - this directory contains
+                                a groovy script which helps deal with the fact that unique
+                                constraints were added to the database for the combination of
+                                namespace code and name in both the KIM permission and
+                                responsibility tables.</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
+                                that needs to be ingested after the database upgrade is
+                                completed</para>
+                        </listitem>
+                    </itemizedlist>The steps to perform the standalone server database upgrade will
+                    be as follows:<orderedlist>
+                        <listitem>
+                            <para>Generate upgrade script for KIM Permission and Responsibility name
+                                uniqueness, execute these scripts.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Execute the "final" standalone server database upgrade
+                                scripts.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Perform maintainable XML conversion</para>
+                        </listitem>
+                        <listitem>
+                            <para>Perform manual XML ingestion after standalone server
+                                startup</para>
+                        </listitem>
+                    </orderedlist></para>
+                <section>
+                    <title>KIM Permission and Responsibility Uniqueness</title>
+                    <para>As part of Rice 2.0 development, a new constraint was put in place which
+                        requires that the combination of namespace code and name on Permission and
+                        Responsibility records in KIM must be globally unique.  This means that the
+                        combination of the <code>NMSPC_CD</code> and <code>NM</code> columns in the
+                            <code>KRIM_PERM_T</code> and <code>KRIM_RSP_T</code> tables must be
+                        unique within each one of these tables.</para>
+                    <para>The "final" upgrade scripts that are provided with the upgrade add the
+                        constraints to these tables.  Therefore, in order to prevent this portion of
+                        the upgrade from failing, it's important to ensure the data in these tables
+                        conforms to the new uniqueness constraints before they are applied to the
+                        tables.</para>
+                    <para>Preferably, for any potentially duplicate records you have in this table,
+                        you will examine each and come up with a reasonably descriptive and unique
+                        name for each permission and responsibility record. However, if this is not
+                        feasible or too time consuming, a set of scripts come with the standalone
+                        server download which will generate <code>UPDATE</code> SQL for you. In
+                        order to use these scripts you must first have <link
+                            xlink:href="http://groovy.codehaus.org">Groovy 1.8</link> installed on
+                        the machine from which you will run the scripts. You must also know the
+                        details to connect up to the Rice database for which you want to generate
+                        upgrade SQL.</para>
+                    <para>It's important to note that these scripts will <emphasis>not</emphasis>
+                        update any data in your database, they will just read the data located
+                        therein and produce output to the terminal window.</para>
+                    <para>In order to run the script, follow these steps:<orderedlist>
+                            <listitem>
+                                <para>Download the Rice Standalone Server distribution if you have
+                                    not done so already and unzip it.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Open a command-line window and change directory to the
+                                        <code>scripts/upgrades/1.0.3 to 2.0.0/support</code>
+                                    directory.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Execute a command similar to the following (enter on a single
+                                    line in the terminal):</para>
+                                <para><emphasis>If using
+                                    MySQL:</emphasis><programlisting>groovy -cp /java/drivers/mysql-connector-java-5.1.17-bin.jar DbUpdateTool.groovy
+    jdbc:mysql://localhost:3306/myricedb db-username db-password PermissionsNamespaceNameUniquifier</programlisting></para>
+                                <para><emphasis>If using
+                                    Oracle:</emphasis><programlisting>groovy -cp /java/drivers/ojdbc6.jar DbUpdateTool.groovy
+    jdbc:oracle:thin:@localhost:1521:ORACLE db-username db-password PermissionsNamespaceNameUniquifier</programlisting></para>
+                            </listitem>
+                            <listitem>
+                                <para>In the examples above, be sure to change the "-cp" argument to
+                                    point to the MySQL jdbc driver if you are using MySQL or the
+                                    Oracle jdbc driver if you are using Oracle.  If you don't have
+                                    the appropriate driver you will need to download it to a
+                                    location of your choosing.  You will also need to pass the
+                                    appropriate database connection arguments as well.</para>
+                            </listitem>
+                            <listitem>
+                                <para>This command will read the KIM permission data in your
+                                    database and determine which records violate the new uniqueness
+                                    constraints and then generate appropriate SQL that can be used
+                                    to update the records to make them unique.  The output might
+                                    look similar to the
+                                    following:<programlisting>$ groovy -cp /java/drivers/ojdbc6.jar DbUpdateTool.groovy
+    jdbc:oracle:thin:@localhost:1521:ORACLE db-username db-password PermissionsNamespaceNameUniquifier
+Loading command PermissionsNamespaceNameUniquifier
+Loading command ResponsibilityNamespaceNameUniquifier
+java.lang.ClassNotFoundException: com.mysql.jdbc.Driver
+Excluding: [PERM_ID:[140, 141, 142, 143, ...]]
+Executing: 
+        select * from KRIM_PERM_T where (NMSPC_CD,NM) in (
+            select NMSPC_CD,NM from KRIM_PERM_T group by NMSPC_CD,NM having count(*) > 1
+        )
+         and PERM_ID not in (140,141,142,143, ...)
+
+Generating transformation SQL:
+
+update KRIM_PERM_T set NM='Modify Accounting Lines 199' where PERM_ID='199';
+update KRIM_PERM_T set NM='Modify Accounting Lines 200' where PERM_ID='200';
+update KRIM_PERM_T set NM='Initiate Document 202' where PERM_ID='202';
+update KRIM_PERM_T set NM='Administer Routing for Document 203' where PERM_ID='203';
+update KRIM_PERM_T set NM='Administer Routing for Document 204' where PERM_ID='204';
+update KRIM_PERM_T set NM='Use Transactional Document 206' where PERM_ID='206';
+...
+
+Done.</programlisting></para>
+                            </listitem>
+                            <listitem>
+                                <para>Execute the same command as above but pass
+                                    "ResponsibilityNamespaceNameUniquifier" as the last argument to
+                                    generate the update SQL for KIM responsibilities.</para>
+                            </listitem>
+                            <listitem>
+                                <para>At this point you can copy the output between "Generating
+                                    transformation SQL" and "Done" for both permissions and
+                                    responsibilities and create an SQL script to run as the first
+                                    step of your database upgrade.</para>
+                            </listitem>
+                        </orderedlist>From the example above, you can see that the script just
+                        generates the unique name based on the id of the permission or
+                        responsibility.  If you want different behavior you can modify the Groovy
+                        scripts or update the data manually using a strategy of your choosing for
+                        making the data unique.</para>
+                </section>
+                <section>
+                    <title>Execute Final Upgrade Script</title>
+                    <para>Once you have a script to update your permission and responsibility tables
+                        in KIM for name uniqueness, you are ready to execute the final upgrade
+                        script.</para>
+                    <para>There is SQL available for this for both MySQL and Oracle in the
+                            <code>scripts/upgrades/1.0.3 to 2.0.0/final</code> directory in the
+                        standalone server download. You will want to execute one of the following
+                        depending on whether the database you are upgrading is MySQL or Oracle:<itemizedlist>
+                            <listitem>
+                                <para>MySQL - update_final_mysql.sql</para>
+                            </listitem>
+                            <listitem>
+                                <para>Oracle - update_final_oracle.sql</para>
+                            </listitem>
+                        </itemizedlist>Be sure to prepend the SQL generated for KIM data updates to
+                        your upgrade scripts and then run the full script against your database to
+                        perform the upgrade using an SQL tool of your choice.</para>
+                    <para>
+                        <caution>
+                            <title>Test!</title>
+                            <para>It is recommended that you test the database upgrade against a
+                                    <emphasis>copy</emphasis> of your production database before
+                                performing it against your actual production database. In
+                                particular, if your database is at all sizable, then it could take a
+                                long time for certain portions of the script to execute since they
+                                have to rebuild some of the tables in the Rice database.  It is also
+                                recommended that you <emphasis>back up</emphasis> your production
+                                database before performing the upgrade in case there is a problem
+                                during the conversion process and you need to roll back.</para>
+                        </caution>
+                    </para>
+                </section>
+                <section xml:id="maintainable_xml">
+                    <title>Maintainable XML</title>
+                    <para>There was work done in Rice 2.0 which might invalidate legacy KNS
+                        maintenance framework XML causing exceptions to occur when attempting to
+                        load this XML (which is generated using the XStream library) back into an
+                        instance of the business object class being maintained.  This data is stored
+                        in the <code>KRNS_MAINT_DOC_T</code> table in the <code>DOC_CNTNT</code>
+                        column.  In order to address this, a program was written that can be
+                        executed to perform the needed maintainable XML conversion.  This program is
+                        included in the <code>rice-development-tools</code> module of Kuali Rice.
+                        Instructions on how to set up the tool and run it can be found in it's
+                        javadocs located here:</para>
+                    <para><link xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/maintainablexml/ConvertMaintainableXML.html">http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/maintainablexml/ConvertMaintainableXML.html</link></para>
+                    <para>
+                        <caution><para>While this utility is available, it was difficult for the Kuali Rice team to be able to test this tool with a lot of different
+                        maintenance document scenarios.  We suggest that this conversion be tested thoroughly by those using the conversion utility prior to performing
+                        the upgrade in production.  This means performing the conversion and then verifying the ability to open and route to completion maintenance
+                        documents which were ENROUTE at the point-in-time of upgrade.</para></caution>
+                    </para>
+                </section>
+                <section>
+                    <title>XML Ingestion</title>
+                    <para>There is currently no (easy) way to perform XML ingestion while the Kuali
+                        Rice Standalone server is offline. However, there are some XML files which
+                        should be ingested as part of the Rice 2.0 upgrade. These files are located
+                        in the <code>scripts/upgrades/1.0.3 to 2.0.0/xml-ingest-updates</code>
+                        directory of the standalone server distribution.</para>
+                    <para>Once the database has been upgraded and you have successfully started your
+                        version 2.0 Kuali Rice Standalone Server, you can use the XML Ingester
+                        screen in order to ingest these files.  Most of these files are related to
+                        setting up KEW configuration for the new KRMS module.  So if you are not
+                        planning to take advantage of this new module immediately, you do not need
+                        to do this ingestion right away.</para>
+                </section>
+            </section>
+            <section>
+                <title>Update Configuration</title>
+                <para>The most frequently customized configuration parameters which are used by the
+                    standalone server have not changed a whole lot between Rice 1.0.x and 2.0.
+                    However there are a few changes which are important to note.</para>
+                <para>First of all, in Rice 1.0.x there was a configuration parameter named
+                        <code>rice.additionalSpringFiles</code>.  This was used to load custom
+                    Spring files into the standalone server (or a client application) which could be
+                    used to override internal Kuali Rice services for the purposes of customization.
+                    In Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
+                    parameter.  Instead there is one per module of Rice such as
+                        <code>rice.kew.additionalSpringFiles</code>,
+                        <code>rice.ksb.additionalSpringFiles</code>,
+                        <code>rice.kim.additionalSpringFiles</code>, etc.  When re-applying and
+                    loading customizations, this needs to be taken into account.  Additionally, you
+                    will need to ensure you are overriding the server in the appropriate module or
+                    else the service override will not take effect.</para>
+                <para>Additionally, the caching implementation for Rice has been reworked to use the
+                    Ehcache library.  As a result, the various kim.cache.* configuration parameters
+                    are no longer available.  Instead, when needing to customize how caching for KIM
+                    (or any other module of Rice) is configured, a custom ehcache configuration file
+                    can be loaded through configuration parameters like
+                        <code>kim.ehcache.config.location</code>,
+                        <code>kew.ehcache.config.location</code>, etc.</para>
+                <para>Generally speaking, for configuration parameters which you are using and
+                    overriding as part of your standalone server setup, it's best to look at the
+                    value in the configuration defaults for Rice to determine if or how it has
+                    changed in Rice 2.0.  The source for that configuration default file can be
+                    found here:</para>
+                <para><link xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}/impl/src/main/resources/META-INF/common-config-defaults.xml">http://svn.kuali.org/repos/rice/tags/rice-${project.version}/impl/src/main/resources/META-INF/common-config-defaults.xml</link></para>
+            </section>
+            <section>
+                <title>Deploy</title>
+                <para>Once you have completed updating your standalone server's configuration, you
+                    are ready to do deploy it. This process still works largely the same as it did
+                    in Rice 1.0.x. However, in Rice 2.0, Tomcat 6 or Tomcat 7 is recommended. It is
+                    not recommended to run the Kuali Rice Standalone Server in Tomcat 5.5.x as was
+                    the case with Rice 1.0.x.</para>
+                <para>As part of this, you should ensure that the "lib" directory of your Tomcat
+                    instance has the appropriate JDBC driver for the database you are using.</para>
+                <para>If you have any trouble with this step, please consult <xref linkend="troubleshooting"/>.</para>
+            </section>
+        </section>
+        <section>
+            <title>Upgrading a Client Application</title>
+            <para>Upgrading a Kuali Rice client application is a bit more involved than upgrading
+                the Kuali Rice standalone server. This is because there is no easy "automatic"
+                upgrade path and there will likely be a significant amount of manual work which will
+                need to be done in your application code in order to perform the upgrade. This is
+                because of a few different reasons:<orderedlist>
+                    <listitem>
+                        <para>Many of the service APIs were redesigned in support of version
+                            compatibility.</para>
+                    </listitem>
+                    <listitem>
+                        <para>There was a large amount of "repackaging" of existing Rice code which
+                            was done as part of a modularization effort in Rice 2.0.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Some classes were removed because of redundancies or inconsistencies
+                            in the APIs.</para>
+                    </listitem>
+                    <listitem>
+                        <para>The way that Rice is configured in Spring has changed.</para>
+                    </listitem>
+                </orderedlist>In addition to this, you will want to ensure that your application is
+                only using the allowed API and framework classes from the Kuali Rice libraries in
+                order to ensure that your application will remain compatible across releases of
+                Kuali Rice. See the <link xlink:show="new"
+                    xlink:href="TRG.html#version_compatibility">version compatibility
+                    documentation</link> for more details.</para>
+            <para>The next few sections will take you through the process of upgrading a client
+                application as well as providing additional resources to help you with the
+                process.</para>
+            <section>
+                <title>Client Database Upgrade</title>
+                <para>While there were not a lot of database changes made to the database tables
+                    that a Kuali Rice client application uses, there were a few. Those changes are
+                    fairly minor, however, and can be summarized as follows:<orderedlist>
+                        <listitem>
+                            <para>Added <code>OBJ_ID</code> and <code>VER_NBR</code> columns to the
+                                    <code>KRNS_SESN_DOC_T</code> tables.</para>
+                        </listitem>
+                        <listitem>
+                            <para>On the <code>KRSB_MSG_QUE_T</code> table, changed
+                                    <code>SVC_NMSPC</code> column to <code>APPL_ID</code>.</para>
+                        </listitem>
+                        <listitem>
+                            <para>On the <code>KRNS_DOC_HDR_T</code> table changed the size of the
+                                    <code>FDOC_DESC</code> column from 40 to 255 characters.</para>
+                        </listitem>
+                    </orderedlist>Those are the only structural changes which need to be made to
+                    existing client application databases. MySQL and Oracle scripts for performing
+                    these updates are available in the following locations in the Rice distribution downloads:<variablelist>
+                        <varlistentry>
+                            <term>MySQL</term>
+                            <listitem>
+                                <para><code>scripts/upgrades/1.0.3.3 to
+                                        2.0.0/final/update_client_final_mysql.sql</code></para>
+                            </listitem>
+                        </varlistentry>
+                        <varlistentry>
+                            <term>Oracle</term>
+                            <listitem>
+                                <para><code>scripts/upgrades/1.0.3.3 to
+                                        2.0.0/final/update_client_final_oracle.sql</code></para>
+                            </listitem>
+                        </varlistentry>
+                    </variablelist>Finally, the <code>KRNS_MAINT_DOC_T</code> table which includes
+                    maintainable XML will be in each client application which uses the KNS. If your
+                    application uses maintenance documents, you will need to perform the maintenance
+                    XML upgraded as described earlier in <xref linkend="maintainable_xml"/>.</para>
+            </section>
+            <section>
+                <title>Library Upgrades</title>
+                <para>As <link linkend="library_changes_and_additions">mentioned previously</link>,
+                    there have been numerous 3rd-party dependency updates in this version of Rice.
+                    Additionally, modularity work that was done during this release has resulted in
+                    a more granular set of Rice libraries. All of these library dependencies are
+                    included with the binary distribution of Kuali Rice. Additionally, if an
+                    application is using Maven, all of the Rice dependencies are available in the
+                    Maven Central Repository under the <code>org.kuali.rice</code> group id: <link
+                        xlink:href="http://search.maven.org/#search|ga|1|g%3A%22org.kuali.rice%22"
+                        >http://search.maven.org/#search|ga|1|g%3A%22org.kuali.rice%22</link></para>
+                <para>Details on the library changes will be outlined in the next few sections. You
+                    will need to update the libraries associated with your existing project as
+                    necessary in order to react to this.  What follows are tables detailing
+                    libraries added, removed, and changed from Rice 1.0.3.3 to Rice 2.0.  In
+                    addition to this information, detailed dependency analysis can be found on the
+                    Maven-generated site for Kuali Rice <link
+                        xlink:href="http://site.kuali.org/rice/${project.version}/index.html"
+                        >http://site.kuali.org/rice/${project.version}/index.html</link><caution>
+                        <title>Be Careful!</title>
+                        <para>Even if you may not need one of the libraries listed below as a Rice
+                            dependency, your application may be using it for something else. So be
+                            sure to verify whether or not you are using a particular library in your
+                            application independently of Rice before you remove it from your
+                            project.</para>
+                    </caution></para>
+                <section>
+                    <title>Kuali Rice Libraries</title>
+                    <para>In Rice 1.0.x, there were only two main jars, <code>rice-api</code> and
+                            <code>rice-impl</code>. With the modularity work there are more api jars
+                        corresponding to service apis and framework components. Additionally, the
+                        implementation module has been split (though there is still a shared
+                        implementation module as not all components of the Rice implementation have
+                        been fully modularized as of the Rice 2.0.0 release). This work was done
+                        according to the design outlined at the following page: <link
+                            xlink:href="	https://wiki.kuali.org/x/SoD8E">Modularity
+                        Design</link></para>
+                    <informaltable frame="all" pgwide="1">
+                        <tgroup cols="2">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <thead>
+                                <row>
+                                    <entry>Old Library</entry>
+                                    <entry>New Library</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>rice-api-1.0.3.3.jar</entry>
+                                    <entry>rice-core-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-core-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-core-service-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-core-service-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-edl-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-ken-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kew-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kew-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kim-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kim-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kns-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-krad-app-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-krad-web-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-krms-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-krms-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-ksb-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-location-api-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-location-framework-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry>rice-impl-1.0.3.3.jar</entry>
+                                    <entry>rice-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-core-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-core-service-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-edl-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kew-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-kim-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-krms-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-ksb-client-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-ksb-server-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-location-impl-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry>rice-sampleapp-1.0.3.3.jar</entry>
+                                    <entry>rice-core-service-web-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-core-web-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-ksb-web-2.0.0.jar</entry>
+                                </row>
+                                <row>
+                                    <entry/>
+                                    <entry>rice-location-web-2.0.0.jar</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </informaltable>
+                </section>
+            <section>
+                <title>Libraries Added between 1.0.3.3 and 2.0.0</title>
+                <informaltable frame="all" pgwide="1">
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Library Added</entry>
+                                <entry>Notes</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row><entry>aspectjrt-1.6.8.jar</entry><entry></entry></row>
+                            <row><entry>aspectjweaver-1.6.8.jar</entry><entry></entry></row>
+                            <row><entry>avalon-framework-4.1.5.jar</entry><entry></entry></row>
+                            <row><entry>btm-2.1.2.jar</entry><entry>Only needed if using Bitronix for your connection pooling </entry></row>
+                            <row><entry>carol-interceptors-1.0.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-chain-1.2.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-transports-common-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>ehcache-core-2.5.0.jar</entry><entry></entry></row>
+                            <row><entry>guava-11.0.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-core-3.6.9.Final.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-jpa-2.0-api-1.0.1.Final.jar</entry><entry></entry></row>
+                            <row><entry>hsqldb-1.8.0.1.jar</entry><entry></entry></row>
+                            <row><entry>irmi-1.1.2.jar</entry><entry></entry></row>
+                            <row><entry>jackson-core-asl-1.8.7.jar</entry><entry></entry></row>
+                            <row><entry>jackson-mapper-asl-1.8.7.jar</entry><entry></entry></row>
+                            <row><entry>jacorb-2.2.3-jonas-patch-20071018.jar</entry><entry></entry></row>
+                            <row><entry>jacorb-idl-2.2.3-jonas-patch-20071018.jar</entry><entry></entry></row>
+                            <row><entry>jcl-over-slf4j-1.6.4.jar</entry><entry>Needed only if you use JCL.</entry></row>
+                            <row><entry>joda-time-2.0.jar</entry><entry></entry></row>
+                            <row><entry>logkit-1.2.jar</entry><entry></entry></row>
+                            <row><entry>serializer-2.7.1.jar</entry><entry></entry></row>
+                            <row><entry>slf4j-api-1.6.4.jar</entry><entry></entry></row>
+                            <row><entry>slf4j-log4j12-1.6.4.jar</entry><entry></entry></row>
+                            <row><entry>spring-asm-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-tx-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-expression-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-security-cas-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-security-core-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>spring-security-web-3.1.0.RELEASE.jar</entry><entry></entry></row> 				  	 
+                            <row><entry>stax2-api-3.1.1.jar</entry><entry></entry></row>
+                            <row><entry>struts-extras-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>struts-taglib-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>tiles-api-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-core-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-jsp-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-servlet-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>tiles-template-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>woodstox-core-asl-4.1.1.jar</entry><entry></entry></row> 
+                        </tbody>
+                    </tgroup>
+                </informaltable>
+            </section>
+            <section>
+                <title>Library Version Changes between 1.0.3.3 and 2.0.0</title>
+                <informaltable frame="all" pgwide="1">
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Old Library</entry>
+                                <entry>New Library</entry>
+                                <entry>Notes</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row><entry>asm-2.2.3.jar</entry><entry>asm-3.3.1.jar</entry>
+                                    <entry>It's very important that you verify that you do not have
+                                        asm-1.5.3.jar on your classpath.  This will cause Apache CXF
+                                        to function improperly when making SOAP service
+                                        calls.</entry></row>
+                            <row><entry>bcprov-jdk15-1.45.jar</entry><entry>bcprov-jdk16-1.46.jar</entry><entry>The Bouncy Castle Crypto package is used for cryptographic algorithms.</entry></row>
+                            <row><entry>carol-2.0.5.jar</entry><entry>carol-3.0.6.jar</entry><entry></entry></row>
+                            <row><entry>cas-client-core-3.1.6.jar</entry><entry>cas-client-core-3.2.1.jar</entry><entry></entry></row>
+                            <row><entry>cglib-nodep-2.1_3.jar</entry><entry>cglib-nodep-2.2.2.jar</entry><entry></entry></row>
+                            <row><entry>commons-beanutils-1.7.0.jar</entry><entry>commons-beanutils-1.8.3-kuali.jar</entry><entry></entry></row>
+                            <row><entry>commons-codec-1.3.jar</entry><entry>commons-codec-1.6.jar</entry><entry></entry></row>
+                            <row><entry>commons-collections-3.2.jar</entry><entry>commons-collections-3.2.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-dbcp-1.2.1.jar</entry><entry>commons-dbcp-1.4.jar</entry><entry></entry></row>
+                            <row><entry>commons-digester-1.6.jar</entry><entry>commons-digester-2.0.jar</entry><entry></entry></row>
+                            <row><entry>commons-fileupload-1.2.1.jar</entry><entry>commons-fileupload-1.2.2.jar</entry><entry>Struts dependency</entry></row>
+                            <row><entry>commons-httpclient-3.0.1.jar</entry><entry>commons-httpclient-3.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-io-1.4.jar</entry><entry>commons-io-2.1.jar</entry><entry></entry></row>
+                            <row><entry>commons-lang-2.3.jar</entry><entry>commons-lang-2.6.jar</entry><entry></entry></row>
+                            <row><entry>commons-pool-1.2.jar</entry><entry>commons-pool-1.5.7.jar</entry><entry>Used by OJB (and others)</entry></row>
+                            <row><entry>commons-validator-1.1.4.jar</entry><entry>commons-validator-1.3.1.jar</entry><entry>Struts dependency</entry></row>
+                            <row><entry>cxf-api-2.2.9.jar</entry><entry>cxf-api-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-common-schemas-2.2.9.jar</entry><entry>cxf-common-schemas-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-common-utilities-2.2.9.jar</entry><entry>cxf-common-utilities-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-bindings-soap-2.2.9.jar</entry><entry>cxf-rt-bindings-soap-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-bindings-xml-2.2.9.jar</entry><entry>cxf-rt-bindings-xml-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-core-2.2.9.jar</entry><entry>cxf-rt-core-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-databinding-aegis-2.2.9.jar</entry><entry>cxf-rt-databinding-aegis-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-databinding-jaxb-2.2.9.jar</entry><entry>cxf-rt-databinding-jaxb-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-frontend-jaxrs-2.2.9.jar</entry><entry>cxf-rt-frontend-jaxrs-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-frontend-jaxws-2.2.9.jar</entry><entry>cxf-rt-frontend-jaxws-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-frontend-simple-2.2.9.jar</entry><entry>cxf-rt-frontend-simple-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-transports-http-2.2.9.jar</entry><entry>cxf-rt-transports-http-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-ws-addr-2.1.5.jar</entry><entry>cxf-rt-ws-addr-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-rt-ws-security-2.1.5.jar</entry><entry>cxf-rt-ws-security-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>cxf-tools-common-2.1.5.jar</entry><entry>cxf-tools-common-2.3.8.jar</entry><entry></entry></row>
+                            <row><entry>db-ojb-1.0.4-patch4.jar</entry><entry>db-ojb-1.0.4-patch8.jar</entry><entry></entry></row>
+                            <row><entry>displaytag-1.1.jar</entry><entry>displaytag-1.2.jar</entry><entry></entry></row>
+                            <row><entry>dwr-1.1.3.jar</entry><entry>dwr-3.0.RC2.jar</entry><entry>In DWR 3.0 all logging is done through the commons-logging API.  Please see the following website for more information: <link xlink:href="http://directwebremoting.org/dwr/documentation/server/configuration/servlet/index.html">http://directwebremoting.org/dwr/documentation/server/configuration/servlet/index.html</link></entry></row>
+                            <row><entry>groovy-all-minimal-1.5.4.jar</entry><entry>groovy-all-1.8.5.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-commons-annotations-3.0.0.ga.jar</entry><entry>hibernate-commons-annotations-3.2.0.Final.jar</entry><entry></entry></row>
+                            <row><entry>hibernate-entitymanager-3.3.1.ga.jar</entry><entry>hibernate-entitymanager-3.6.9.Final.jar</entry><entry></entry></row>
+                            <row><entry>howl-logger-0.1.11.jar</entry><entry>howl-1.0.1-1.jar</entry><entry></entry></row>
+                            <row><entry>javassist-3.3.ga.jar</entry><entry>javassist-3.15.0-GA.jar</entry><entry></entry></row>
+                            <row><entry>jaxb-impl-2.1.9.jar</entry><entry>jaxb-impl-2.1.13.jar</entry><entry></entry></row>
+                            <row><entry>jaxb-xjc-2.1.9.jar</entry><entry>jaxb-xjc-2.1.13.jar</entry><entry></entry></row>
+                            <row><entry>jdom-1.0.jar</entry><entry>jdom-1.1.jar</entry><entry></entry></row>
+                            <row><entry>jettison-1.2.jar</entry><entry>jettison-1.3.jar</entry><entry></entry></row>
+                            <row><entry>jotm-2.0.10.jar</entry><entry>jotm-core-2.1.10.jar</entry><entry></entry></row>
+                            <row><entry>jsr311-api-1.0.jar</entry><entry>jsr311-api-1.1.1.jar</entry><entry></entry></row>
+                            <row><entry>jstl-1.1.2.jar</entry><entry>jstl-1.2.jar</entry><entry></entry></row>
+                            <row><entry>jta-1.0.1B.jar</entry><entry>jta-1.1.jar</entry><entry></entry></row>
+                            <row><entry>log4j-1.2.14.jar</entry><entry>log4j-1.2.16.jar</entry><entry></entry></row>
+                            <row><entry>mail-1.4.jar</entry><entry>mail-1.4.4.jar</entry><entry></entry></row>
+                            <row><entry>neethi-2.0.4.jar</entry><entry>neethi-2.0.5.jar</entry><entry></entry></row>
+                            <row><entry>spring-2.5.6.jar</entry><entry>spring-3.1.0.RELEASE.jar</entry><entry>spring-3.1.0.RC1.jar can be included either as a single jar or the multiple jars listed below</entry></row>
+                            <row><entry>spring-aop-2.5.6.jar</entry><entry>spring-aop-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-beans-2.5.6.jar</entry><entry>spring-beans-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-context-2.5.6.jar</entry><entry>spring-context-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-context-support-2.5.6.jar</entry><entry>spring-context-support-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-core-2.5.6.jar</entry><entry>spring-core-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-jdbc-2.5.6.jar</entry><entry>spring-jdbc-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-orm-2.5.6.jar</entry><entry>spring-orm-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-tx-2.5.6.jar</entry><entry>spring-tx-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-webmvc-2.5.6.jar</entry><entry>spring-webmvc-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>spring-web-2.5.6.jar</entry><entry>spring-web-3.1.0.RELEASE.jar</entry><entry></entry></row>
+                            <row><entry>struts-1.2.9.jar</entry><entry>struts-core-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>struts-el-1.2.9.jar</entry><entry>struts-el-1.3.10.jar</entry><entry></entry></row>
+                            <row><entry>xalan-2.7.0.jar</entry><entry>xalan-2.7.1.jar</entry><entry></entry></row>
+                            <row><entry>XmlSchema-1.4.5.jar</entry><entry>XmlSchema-1.4.7.jar</entry><entry></entry></row>
+                            <row><entry>xmlsec-1.4.3.jar</entry><entry>xmlsec-1.4.4.jar</entry><entry></entry></row>
+                            <row><entry>wss4j-1.5.8.jar</entry><entry>wss4j-1.5.11.jar</entry><entry></entry></row> 
+                        </tbody>
+                    </tgroup>
+                </informaltable>
+                    <caution>
+                        <title>asm</title>
+                        <para>This is mentioned in the table above, but just to reiterate, it is
+                            very important that you verify that you do <emphasis>not</emphasis> have
+                                <code>asm-1.5.3.jar</code> on your classpath.  This will cause
+                            Apache CXF to function improperly when making SOAP service calls.</para>
+                    </caution>
+                <para>
+                    <caution><title>spring-webmvc-struts.jar</title>
+                        <para>Note: As of Spring 2.5, Spring Web MVC is no longer part of the 'spring.jar' file. Spring MVC can be found in 'spring-webmvc.jar' and 'spring-webmvc-portlet.jar' in the lib/modules directory of the distribution. Furthermore, the Struts 1.x support has been factored out into 'spring-webmvc-struts.jar'.
+                            Rice itself does not use spring-webmvc-struts.jar, but if you were including the spring-2.0.4.jar and using the spring web mvc struts functionality, spring-webmvc-struts.jar will now have to be included separately.</para></caution>
+                </para>
+            </section>
+        <section>
+            <title>Libraries Removed between 1.0.3.3 and 2.0.0</title>
+            <informaltable frame="all" pgwide="1">
+                <tgroup cols="1">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Old Library</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row><entry>abdera-core-1.0.jar</entry></row>
+                        <row><entry>abdera-extensions-json-1.0.jar</entry></row>
+                        <row><entry>abdera-extensions-main-1.0.jar</entry></row>
+                        <row><entry>abdera-i18n-1.0.jar</entry></row>
+                        <row><entry>abdera-parser-1.0.jar</entry></row>
+                        <row><entry>acegi-security-1.0.6.jar</entry></row>
+                        <row><entry>acegi-security-cas-1.0.6.jar</entry></row>
+                        <row><entry>activation-1.1.jar</entry></row>
+                        <row><entry>antlr-2.7.6.jar</entry></row>
+                        <row><entry>asm-attrs-1.5.3.jar</entry></row>
+                        <row><entry>axiom-api-1.2.5.jar</entry></row>
+                        <row><entry>axiom-impl-1.2.5.jar</entry></row>
+                        <row><entry>bcel-5.1.jar</entry></row>
+                        <row><entry>bsf-2.4.0.jar</entry></row>
+                        <row><entry>casclient-2.1.1.jar</entry></row>
+                        <row><entry>cas-server-3.0.4.jar</entry></row>
+                        <row><entry>concurrent-1.3.4.jar</entry></row>
+                        <row><entry>derby-10.2.2.0.jar</entry></row>
+                        <row><entry>geronimo-activation_1.1_spec-1.0.2.jar</entry></row>
+                        <row><entry>geronimo-annotation_1.0_spec-1.1.1.jar</entry></row>
+                        <row><entry>geronimo-javamail_1.4_spec-1.3.jar</entry></row>
+                        <row><entry>geronimo-jaxws_2.1_spec-1.0.jar</entry></row>
+                        <row><entry>geronimo-stax-api_1.0_spec-1.0.1.jar</entry></row>
+                        <row><entry>geronimo-ws-metadata_2.0_spec-1.1.2.jar</entry></row>
+                        <row><entry>hibernate-3.2.6.ga.jar</entry></row>
+                        <row><entry>hibernate-annotations-3.3.0.ga.jar</entry></row>
+                        <row><entry>hibernate-validator-3.0.0.ga.jar</entry></row>
+                        <row><entry>jaxb-api-2.1.jar</entry></row>
+                        <row><entry>jaxb-xjc-2.1.13.jar</entry></row>
+                        <row><entry>jaxen-1.1.3.jar</entry></row>
+                        <row><entry>jboss-common-core-2.0.4.GA.jar</entry></row>
+                        <row><entry>jotm_jrmp_stubs-2.0.10.jar</entry></row>
+                        <row><entry>js-1.6R5.jar</entry></row>
+                        <row><entry>nekohtml-0.9.5.jar</entry></row>
+                        <row><entry>oscache-2.3.2.jar</entry></row>
+                        <row><entry>persistence-api-1.0.jar</entry></row>
+                        <row><entry>saaj-api-1.3.jar</entry></row>
+                        <row><entry>saaj-impl-1.3.2.jar</entry></row>
+                        <row><entry>spring-test-2.5.6.jar</entry></row>
+                        <row><entry>standard-1.1.2.jar</entry></row>
+                        <row><entry>wstx-asl-3.2.9.jar</entry></row>
+                        <row><entry>xml-apis-1.0.b2.jar</entry></row>
+                        <row><entry>xmlbeans-2.4.0.jar</entry></row>
+                        <row><entry>xom-1.1.jar</entry></row>
+                    </tbody>
+                </tgroup>
+            </informaltable>
+        </section>
+        <section>
+            <title>Unchanged Libraries</title>
+            <informaltable frame="all" pgwide="1">
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>Library</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row><entry>aopalliance-1.0</entry></row>
+                        <row><entry>commons-logging-1.1</entry></row>
+                        <row><entry>commons-transaction-1.1</entry></row>
+                        <row><entry>connector-api-1.5</entry></row>
+                        <row><entry>dom4j-1.6.1</entry></row>
+                        <row><entry>itext-1.3</entry></row>
+                        <row><entry>jaxb-impl-2.1.13</entry></row>
+                        <row><entry>oro-2.0.8</entry></row>
+                        <row><entry>spring-modules-ojb-0.8a</entry></row>
+                        <row><entry>wsdl4j-1.6.2</entry></row>
+                        <row><entry>xercesImpl-2.9.1</entry></row>
+                        <row><entry>xml-resolver-1.2</entry></row>
+                        <row><entry>xpp3_min-1.1.3.4.O</entry></row>
+                        <row><entry>xstream-1.2.2</entry></row>
+                    </tbody>
+                </tgroup>
+            </informaltable>
+        </section>
+            </section>
+            <section>
+                <title>Web Content Changes</title>
+                <para>For applications which are using the KNS, some of the web content has changed.
+                    This web content includes images, javascript, css, jsp, and tag library files.
+                    When using the KNS these are typically copied into the application.  Therefore
+                    when performing an upgrade, the original KNS web content should be deleted from
+                    the project and the new web content from Rice 2.0.0 should be copied into it's
+                    place.</para>
+                <para><emphasis>However</emphasis>, if the client application has made
+                    customizations to any of these resources then they will need to manually reapply
+                    any customizations they have made.  In order to aid in this process, information
+                    on which web content files have changed can be found here:</para>
+                <para><link
+                        xlink:href="https://wiki.kuali.org/display/KULRICE/Kuali+Rice+2.0+Upgrade+Notes+-+Indiana+University#KualiRice2.0UpgradeNotes-IndianaUniversity-WebContentUpdates"
+                        >Indiana University Notes on Web Content Updates</link></para>
+            </section>
+            <section>
+                <title>Rice Configurer Changes</title>
+                <para>Previously, all module configuration was done via a class wired in Spring
+                    called the <code>RiceConfigurer</code>. This has been replaced by a modular
+                    configuration design, with the rice core being configured in a new
+                        <code>CoreConfigurer</code>. Each module has it's own configurer as well
+                        (<code>KEWConfigurer</code>, <code>KIMConfigurer</code>, etc..). Run modes
+                    are set independently for each module and additional spring files are now
+                    defined on a per-module basis as discussed in the standalone server upgrade
+                    portion of this document.</para>
+                <para>An example Spring configuration which would load all of the available Rice
+                    modules into a client application would look like the
+                    following:<programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  &lt;bean id="config"
+        class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean"
+        p:initialize="true">
+    &lt;property name="configLocations">
+      &lt;list>
+        &lt;value>classpath:config.xml&lt;/value>
+      &lt;/list>
+    &lt;/property>
+  &lt;/bean>
+
+  &lt;bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:properties="#{config.getProperties()}"/>
+
+  &lt;bean id="jtaTransactionManager"
+        class="org.springframework.transaction.jta.JotmFactoryBean">
+        p:defaultTimeout="3600"/>
+    
+  &lt;bean id="riceDataSource"
+        class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource"
+        p:transactionManager-ref="jtaTransactionManager"
+        p:driverClassName="${datasource.driver.name}"
+        p:url="${datasource.url}"
+        p:maxSize="${datasource.pool.maxSize}"
+        p:minSize="${datasource.pool.minSize}"
+        p:maxWait="${datasource.pool.maxWait}"
+        p:validationQuery="${datasource.pool.validationQuery}"
+        p:username="${datasource.username}"
+        p:password="${datasource.password}"/>
+
+  &lt;bean id="riceNonTransactionalDataSource"
+        class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close"
+        p:driverClassName="${datasource.driver.name}"
+        p:url="${datasource.url}"
+        p:maxActive="${datasource.pool.maxActive}"
+        p:minIdle="${datasource.minIdle}"
+        p:initialSize="${datasource.initialSize}"
+        p:validationQuery="${datasource.pool.validationQuery}"
+        p:username="${datasource.username}"
+        p:password="${datasource.password}"
+        p:accessToUnderlyingConnectionAllowed="${datasource.accessToUnderlyingConnectionAllowed}"/>
+
+  &lt;bean id="coreConfigurer"
+        class="org.kuali.rice.core.impl.config.module.CoreConfigurer"
+        depends-on="config"
+        p:transactionManager-ref="jtaTransactionManager"
+        p:userTransaction-ref="jtaTransactionManager"
+        p:dataSource-ref="/>
+
+  &lt;bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"/>
+  &lt;bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer"/>
+  &lt;bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
+  &lt;bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
+  &lt;bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
+  &lt;bean id="krmsConfigurer" class="org.kuali.rice.krms.config.KRMSConfigurer"/>
+  &lt;bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
+
+&lt;/beans></programlisting></para>
+                <para>For the example above, most all of these modules would be running in the
+                    REMOTE run mode. That is the default with the exception of
+                        <code>CoreConfigurer</code> and <code>KRADConfigurer</code> which always run
+                    in LOCAL module and don't have a REMOTE run mode. It's important in these cases
+                    to load the Rice <code>common-config-defaults.xml</code> file into your
+                    configuration context so that the appropriate defaults can be applied.</para>
+                <para>The following example shows doing this as well as switching the KIM and KEW
+                    run modes to "embedded"
+                    mode:<programlisting>&lt;config>
+  &lt;param name="config.location">classpath:META-INF/common-config-defaults.xml&lt;/param>
+  ...
+  &lt;param name="kew.mode">EMBEDDED&lt;/param>
+  &lt;param name="kim.mode">EMBEDDED&lt;/param>
+  ...
+&lt;/config></programlisting>Note
+                    that if you were in fact configuring KEW and KIM for embedded mode you would
+                    also need to inject a <emphasis>serverDataSource</emphasis> into the
+                        <code>CoreConfigurer</code> which would point to your Kuali Rice Standalone
+                    Server database.</para>
+            </section>
+            <section>
+                <title>API Changes</title>
+                <para>More information on some of the specific API changes which were made for the
+                    various Rice modules can be found <link
+                        xlink:href="https://wiki.kuali.org/display/KULRICE/Kuali+Rice+2.0+Upgrade+Notes+-+Indiana+University#KualiRice2.0UpgradeNotes-IndianaUniversity-ImpactingChanges"
+                        >in the Indiana University upgrade notes on impacting changes</link>.</para>
+            </section>
     </section>
-    <section>
-        <title>Items Addressed in Rice 2.0</title>                
+        <section>
+            <title>Data Warehouse and Reporting</title>
+            <para>If you have written any reports against your Kuali Rice database tables, they may
+                need to be updated to reflect changes to the database tables in version 2.0.
+                Generally speaking, the changes to database tables is not extensive, but here is a
+                summary of some of the significant changes that have been made:<orderedlist>
+                    <listitem>
+                        <para>The <code>DOC_HDR_ID</code> and other numeric identifiers in the
+                                <code>KREW_*</code> tables have been changed to <code>VARCHAR</code>
+                            data types. This facilitates more flexibility in the kind of data which
+                            can be stored in these tables and brings the KEW tables in line with
+                            other tables in Kuali Rice.</para>
+                    </listitem>
+                    <listitem>
+                        <para>The following tables were renamed:<table frame="all" pgwide="1">
+                                <title>Renamed Tables</title>
+                                <tgroup cols="2">
+                                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                                    <thead>
+                                        <row>
+                                            <entry>Old Table Name</entry>
+                                            <entry>New Table Name</entry>
+                                        </row>
+                                    </thead>
+                                    <tbody>
+                                        <row>
+                                            <entry>KRNS_NMSPC_T</entry>
+                                            <entry>KRCR_NMSPC_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_PARM_TYP_T</entry>
+                                            <entry>KRCR_PARM_TYP_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_PARM_DTL_TYP_T</entry>
+                                            <entry>KRCR_CMPNT_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_PARM_T</entry>
+                                            <entry>KRCR_PARM_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_CAMPUS_T</entry>
+                                            <entry>KRLC_CMP_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KRNS_CMP_TYP_T</entry>
+                                            <entry>KRLC_CMP_TYP_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_COUNTRY_T</entry>
+                                            <entry>KRLC_CNTRY_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_STATE_T</entry>
+                                            <entry>KRLC_ST_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_POSTAL_CODE_T</entry>
+                                            <entry>KRLC_PSTL_CD_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KR_COUNTY_T</entry>
+                                            <entry>KRLC_CNTY_T</entry>
+                                        </row>
+                                        <row>
+                                            <entry>KREW_STYLE_T</entry>
+                                            <entry>KRCR_STYLE_T</entry>
+                                        </row>
+                                    </tbody>
+                                </tgroup>
+                            </table></para>
+                    </listitem>
+                    <listitem>
+                        <para>Additional changes which might affect reporting can be found in the
+                            final upgrade SQL scripts.</para>
+                    </listitem>
+                </orderedlist></para>
+        </section>
+        <section xml:id="troubleshooting">
+            <title>Troubleshooting</title>
+            <para>The amount of work done in Kuali Rice version 2.0 was fairly significant,
+                therefore it is likely that there are some gaps this upgrade guide. If you encounter
+                problems when attempting your upgrade, please do the following:<orderedlist>
+                    <listitem>
+                        <para>Check the <link xlink:href="https://wiki.kuali.org/x/JGu1Eg">Kuali
+                                Rice 2.0 - Upgrade Troubleshooting</link> page in the Kuali Rice
+                            wiki. This page will contain some FAQ's and any necessary addendums to
+                            this upgrade guide.</para>
+                    </listitem>
+                    <listitem>
+                        <para>If you don't find your answer there, join the
+                                <email>rice.collab@kuali.org</email> mailing list and post your
+                            questions there.  You can join this mailing list through the Kuali
+                            Information System at <link xlink:href="http://kuali.org/kis"
+                                >http://kuali.org/kis</link></para>
+                    </listitem>
+                </orderedlist></para>
+        </section>
+            </section>
+                <section xml:id="items_addressed_in_rice_2.0">
+        <title>Items Addressed in Rice 2.0</title>                                                                                        
 <section><title>        Bug Fix
 </title>
 <itemizedlist>
@@ -948,8 +1921,8 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3925'>KULRICE-3925</link>] -         Impex appears to be broken with Ant 1.8.0
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-3951">KULRICE-3951</link>] - log4j
-                        settings are not being respected. Fix logging mess. </para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3951'>KULRICE-3951</link>] -         log4j settings are not being respected.  FIx logging mess.
+</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3956'>KULRICE-3956</link>] -         fix eclipse&#39;s complaing with cobertura.classpath not being a valid reference in build.xml
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3971'>KULRICE-3971</link>] -         update the coverage report to filter out test classes
@@ -1242,6 +2215,8 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5567'>KULRICE-5567</link>] -         Parameter Maintenance Document does not check it&#39;s edit rules
 </para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5572'>KULRICE-5572</link>] -         processCustomSaveDocumentBusinessRules Errors not being acknowledged on first save
+</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5576'>KULRICE-5576</link>] -         Rice Dev: Action List Preferences, checking the Current Route Node(s) causes error 
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5577'>KULRICE-5577</link>] -         Remove Application Document Status from Action List Preferences since it is not displayed as a separate column
@@ -1318,8 +2293,9 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5743'>KULRICE-5743</link>] -         Add support for &quot;max display length&quot; on document search result columns
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5744'>KULRICE-5744</link>] -         Help link on document search shoudl result to custom document type documentation when a document type is selected
-</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-5744"
+                            >KULRICE-5744</link>] - Help link on document search should result to
+                        custom document type documentation when a document type is selected </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5748'>KULRICE-5748</link>] -         Validate that &quot;to&quot; dates are after &quot;from&quot; dates on document search
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5751'>KULRICE-5751</link>] -         &quot;Clear Named Searches&quot; no longer works in document search
@@ -1394,8 +2370,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5815'>KULRICE-5815</link>] -         Parameter Maintainable
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5816'>KULRICE-5816</link>] -         Get context selection working correctly in agenda editor
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5819'>KULRICE-5819</link>] -         Review and clean up parameter and component data in KRCR_PARM_T and KRCR_CMPNT_T
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5823'>KULRICE-5823</link>] -         make it so that attributes are not validated when eDocLite is canceled 
@@ -1454,6 +2428,8 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5870'>KULRICE-5870</link>] -         Missing div tag in RuleQuickLinks.jsp 
 </para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5874'>KULRICE-5874</link>] -         Rice Dev: Dev Not Working
+</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5875'>KULRICE-5875</link>] -         Missing Error Message Not Handled Well
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5876'>KULRICE-5876</link>] -         Rice Dev: Workgroup Inquiry screen from route log not showing assigned principals
@@ -1471,8 +2447,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5889'>KULRICE-5889</link>] -         Need &quot;infinite scrolling table&quot; in kitchen sink
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5890'>KULRICE-5890</link>] -         Need a tab navigation group in kitchen sink
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5893'>KULRICE-5893</link>] -         Error messages need to be resolved on the remote services
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5894'>KULRICE-5894</link>] -         Improve documentation of AttributeError, especially for error messages
 </para></listitem>
@@ -1708,8 +2682,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6374'>KULRICE-6374</link>] -         Hidden fields not rendering on Inquiry Views
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6375'>KULRICE-6375</link>] -         Something is going on with Page refreshes.
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6376'>KULRICE-6376</link>] -         Incident report does not display correctly when an exception is thrown in the view
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6377'>KULRICE-6377</link>] -         Remove single quotes from binding paths due to JS issues
@@ -1727,6 +2699,8 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6393'>KULRICE-6393</link>] -         PeopleFlow members show up as secondary delegates in the route log 
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6400'>KULRICE-6400</link>] -         &quot;even&quot; and &quot;odd&quot; text is showing up in table elements (myplan)
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6403'>KULRICE-6403</link>] -         Div id, span id, label for, and other values use number, not natural language
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6409'>KULRICE-6409</link>] -         Field groups in collection lines do not get binding correctly prefixed
 </para></listitem>
@@ -1776,6 +2750,8 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6480'>KULRICE-6480</link>] -         Fix HashMap concurrency issue in org.kuali.rice.krad.UserSession
 </para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6481'>KULRICE-6481</link>] -         KRIM_ROLE_PERM_T allows for null ROLE_ID/PERM_ID
+</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6483'>KULRICE-6483</link>] -         Ad hoc tab styling issues
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6485'>KULRICE-6485</link>] -         Reorder group no longer displays/works
@@ -1819,6 +2795,148 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6546'>KULRICE-6546</link>] -         Rice Dev: eDoc Lite delivered example broken (eDoc.Example1DocType)
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6549'>KULRICE-6549</link>] -         Display of AuthorizationException messages seems incorrect
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6552'>KULRICE-6552</link>] -         Term Spec maint doc create new: Category collection doesn&#39;t show namespace or name when using &quot;lookup / add multiple...&quot;
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6556'>KULRICE-6556</link>] -         Rice Dev: Principal ID search on Person lookup is case sensitive
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6558'>KULRICE-6558</link>] -         Resolve remoting situation for string coercion service used for proposition validation
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6560'>KULRICE-6560</link>] -         RoleTypeServiceBase&#39;s has incorrect check within hasDerivedRole method
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6561'>KULRICE-6561</link>] -         DataDictionaryValidationService&#39;s validateBusinessObject is not functioning properly
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6564'>KULRICE-6564</link>] -         PDF generation spits out multiple Failed to load image: errors when building DocBook docs
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6566'>KULRICE-6566</link>] -         Rice Dev: Error thrown when return value from lookup on eDoc Lite
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6571'>KULRICE-6571</link>] -         KRMS Term Categories allow multiple identical entries
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6572'>KULRICE-6572</link>] -         KRMS Valid Term Specification to Context Assignments.   Allows Duplicate Assignments
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6576'>KULRICE-6576</link>] -         PeopleFlow Action Id lookup throws NPE
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6577'>KULRICE-6577</link>] -         KRAD Infrastructure not handling null OJB proxies?
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6582'>KULRICE-6582</link>] -         Reflection-based toString methods cause problems on business objects
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6586'>KULRICE-6586</link>] -         Rice Dev: KRMS NPE when trying to edit/create an agenda
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6587'>KULRICE-6587</link>] -         Document Search Results open in a new window regardless of the system parameter (DOCUMENT_SEARCH_POPUP_IND) value
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6592'>KULRICE-6592</link>] -         wrong sequence used for an insert in 2011-09-26b.sql upgrade scripts
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6593'>KULRICE-6593</link>] -         take action button is missing for taking mass actions
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6594'>KULRICE-6594</link>] -         When creating mail messages, use the actual user to send the email rather than the backdoor user.
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6595'>KULRICE-6595</link>] -         Problem with Data Dictionary Entry hierarchy for transactional documents
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6599'>KULRICE-6599</link>] -         Module names passed to module configurers should all be lowercase
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6601'>KULRICE-6601</link>] -         WorkflowDocumentService not currently getting published on the service bus
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6609'>KULRICE-6609</link>] -         KSB run mode should default to &quot;remote&quot;
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6610'>KULRICE-6610</link>] -         if you delete the root proposition in a rule, you get an incident report
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6615'>KULRICE-6615</link>] -         Quickfinder lookups result in incident reports on return
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6618'>KULRICE-6618</link>] -         Add abstract=&quot;true&quot; to UIF base beans that are associated with abstract classes
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6619'>KULRICE-6619</link>] -         Role Lookup does not provide link to inquiry
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6620'>KULRICE-6620</link>] -         Role Inquiry does not contain the information present in Rice 1.x
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6621'>KULRICE-6621</link>] -         Related keys on collections are not being set on add line
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6622'>KULRICE-6622</link>] -         &quot;Packet too large&quot; error thrown from inserting into Session document table
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6633'>KULRICE-6633</link>] -         KualiMaintenanceDocumentAction is modifying the http request parameter map which is not permitted
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6636'>KULRICE-6636</link>] -         Incorrect KEW service references while running in embedded mode
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6648'>KULRICE-6648</link>] -         empty input fields with p:required=&quot;true&quot; aren&#39;t preventing maintenance document submits.
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6649'>KULRICE-6649</link>] -         DWR setValue method, by default, escapes HTML (in 3.0 M1, RC2 releases); dhtml.js needs modification
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6652'>KULRICE-6652</link>] -         Lock down (add auth check) to Context, Term Specification, and Term maintenance docs
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6653'>KULRICE-6653</link>] -         IFrame height adjustment logic leads to JS error in IE8
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6659'>KULRICE-6659</link>] -         Fix call to isBoNotesEnabled on KNS maintainable
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6660'>KULRICE-6660</link>] -         KRAD tldheader.jsp contains old KNS tags
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6686'>KULRICE-6686</link>] -         AdHocRouteRecipients Tab - Person Lookup is incorrectly mapping principalName to AdHocRoutePerson.id
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6687'>KULRICE-6687</link>] -         Person lookup isn&#39;t case-insensitive in Rice 2.0
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6688'>KULRICE-6688</link>] -         member paging broken on Group &amp; Role inquiry
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6692'>KULRICE-6692</link>] -         For PeopleFlow actions, returning from lookup for id doesn&#39;t populate name
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6695'>KULRICE-6695</link>] -         Review and fix the proper scenarios under which &quot;approvalPeopleFlowActionTypeService&quot; and &quot;notificationPeopleFlowActionTypeService&quot; are exported and need to be loaded
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6700'>KULRICE-6700</link>] -         Rice Dev1: Error on Group and Role Inquiry when using Pagination Links
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6701'>KULRICE-6701</link>] -         KSPD: Research speeding up unmarshalling in base Document Search
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6705'>KULRICE-6705</link>] -         autoGrowNestedPaths breaking complex field validations
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6709'>KULRICE-6709</link>] -         Configuring separate add line fields for a collection causes and exception when attempting to add a line
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6710'>KULRICE-6710</link>] -         Drop krms_cntxt_vld_rule_t, krms_cntxt_vld_actn_t and krms_cntxt_vld_agenda_t tables
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6711'>KULRICE-6711</link>] -         RoleMemberBo.groovy contains invalid code
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6720'>KULRICE-6720</link>] -         Clicking Add Proposition throwns NPE in org.kuali.rice.krad.uif.util.ComponentFactory.getNewInstanceForRefresh(ComponentFactory.java:143) origComponent is null
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6734'>KULRICE-6734</link>] -         NPE First time KRAD Incident Report 
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6756'>KULRICE-6756</link>] -         DocumentSearchCustomizationServiceImpl does not load customizers properly
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6758'>KULRICE-6758</link>] -         Apply error colors not working for tabs due to syntax error
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6763'>KULRICE-6763</link>] -         Another instance of incorrect kew service reference in embedded mode
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6767'>KULRICE-6767</link>] -         Applying of result customizations in DocumentSearchServiceImpl does not work properly
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6768'>KULRICE-6768</link>] -         Customization of clearing document search criteria does not clear properly if no DocumentSearchCustomizer is defined for a document type
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6770'>KULRICE-6770</link>] -         Server side required error message from dictionary validation not getting variable replaced
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6772'>KULRICE-6772</link>] -         ModuleConfigurers should not allow injection of moduleName and validRunModes
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6778'>KULRICE-6778</link>] -         View header (and page) size doesn&#39;t span full width
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6783'>KULRICE-6783</link>] -         Incorrect service reference to RoutingReportService while running Routing report in embedded mode
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6788'>KULRICE-6788</link>] -         KSB SOAPFaultException while attempting to insert a BO Note (while running in embedded mode)
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6789'>KULRICE-6789</link>] -         SOAPFaultException from background EmailQueue processing (while invoking ImmediateEmailReminderQueue.sendReminder method)
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6790'>KULRICE-6790</link>] -         ClassCastException when background KSB message processing invokes kimCacheAdminService (embedded mode)
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6791'>KULRICE-6791</link>] -         Term Specification collection members multiply
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6793'>KULRICE-6793</link>] -         ClassCastException QuickFinder cannot be cast to Field on Create new PeopleFlow PeopleFlow Summary Type selection.
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6794'>KULRICE-6794</link>] -         KNS field label not being rendered in DD validation messages
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6795'>KULRICE-6795</link>] -         krad.utility.js error message when adding PeopleFlow Members (in Firefox)
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6797'>KULRICE-6797</link>] -         Term Spec Multiple Lookups return (single) value doesn&#39;t.
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6799'>KULRICE-6799</link>] -         DOC_STAT_NM length changed from 64 to 20 characters
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6800'>KULRICE-6800</link>] -         ParamaterRepositoryService throws exception due to null ParameterType
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6803'>KULRICE-6803</link>] -         Rice Dev: Fix slang that&#39;s incorporated into Campus Lookup Screen
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6811'>KULRICE-6811</link>] -         Conversion of WorkflowFunctions to EDLFunctions is not present in database upgrade scripts
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6812'>KULRICE-6812</link>] -         ValidationIntegrationTest failing on oracle
 </para></listitem>
 </itemizedlist></section>
                                                                                         
@@ -1873,10 +2991,9 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4794'>KULRICE-4794</link>] -         Change DOC_HDR_ID on KREW_DOC_HDR_T from a numeric type to a character type
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4803'>KULRICE-4803</link>] -         Add unique constraint on KIM permission namespace:name
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4811'>KULRICE-4811</link>] -         Get tests working in rice 1.1
-</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-4803"
+                            >KULRICE-4803</link>] - Add unique constraint on KIM permission
+                        namespace:name  </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4816'>KULRICE-4816</link>] -         Implement interaction with the service registry so that it goes over remote connection instead of direct database access
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4838'>KULRICE-4838</link>] -         Move integration tests into a separate module and improve the way we handle instantiation of test clients in the test harness, take advantage of maven integration-test lifecycle
@@ -1904,8 +3021,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4946'>KULRICE-4946</link>] -         Convert Rice to an m2eclipse project
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4947'>KULRICE-4947</link>] -         Test out Maven 3/Move to Maven 3
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5008'>KULRICE-5008</link>] -         Prepare the main 1.1 branch of Rice for Eclipse-based development with Maven
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5010'>KULRICE-5010</link>] -         Improve role-member logic in RoleManagementServiceImpl.removePrincipalFromRole for performance
 </para></listitem>
@@ -2091,8 +3206,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6042'>KULRICE-6042</link>] -         Convert documentation from Word files and Doc2Help to Docbook
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6047'>KULRICE-6047</link>] -         Implement feedback on cleaning up install documentation
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6049'>KULRICE-6049</link>] -         Make the special my.conf params needed for MySQL more apparent in our documentation
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6050'>KULRICE-6050</link>] -         Create Initial Draft of KRMS and KRAD Chapters in User&#39;s Guide and Technical Guide
@@ -2108,6 +3221,8 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6292'>KULRICE-6292</link>] -         Modify term selection ui so that parameterized terms can be specified
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6293'>KULRICE-6293</link>] -         add loadAgenda to AgendaTypeService to allow pluggable qualifier matching
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6294'>KULRICE-6294</link>] -         Validation of proposition constants on add rule
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6295'>KULRICE-6295</link>] -         Make PeopleFlow collection of stops sort by stop #
 </para></listitem>
@@ -2134,8 +3249,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6398'>KULRICE-6398</link>] -         Set up NonSerializableSessionListener so that it defaults to true only when the environment code is &quot;dev&quot;
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6399'>KULRICE-6399</link>] -         Make configuring the reloading data dictionary easier for client app developers
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6420'>KULRICE-6420</link>] -         Javadocs for KRMS api &amp; framework by function
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6431'>KULRICE-6431</link>] -         Refactor KRMS context join table names
 </para></listitem>
@@ -2181,11 +3294,55 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6533'>KULRICE-6533</link>] -         Rename cache service endpoints to &quot;cache admin service&quot; since that&#39;s what we renamed the actual service interface to
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6539'>KULRICE-6539</link>] -         Rename methods in KIM that refer to &quot;ByNamespaceCodeAndName&quot; to just &quot;ByName&quot;
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6539'>KULRICE-6539</link>] -         Rename methods in KIM that refer to &quot;ByNameAndNamespaceCode&quot; to &quot;ByNamespaceCodeAndName&quot;
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6543'>KULRICE-6543</link>] -         Remove PersonService.hasPersonProperty as it&#39;s no longer used
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6544'>KULRICE-6544</link>] -         PermissionService.isAuthorized, hasPermission, getPermissionAssignees, and getAuthorizedPermissions no longer needs to take permission details since permission namespace + name are now unique
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6562'>KULRICE-6562</link>] -         Pull CampusService (and any other test / sample code that leaked in) out of API
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6596'>KULRICE-6596</link>] -         Component publishing should probably be turned off by default
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6597'>KULRICE-6597</link>] -         Make sure abstract and prototype are declared correctly on all beans as necessary
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6607'>KULRICE-6607</link>] -         Cleanup of logging configuration and remove default logging of SOAP service output
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6612'>KULRICE-6612</link>] -         Raise the default connection pool size in common-config-defaults.xml
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6613'>KULRICE-6613</link>] -         There is no API on the role service to remove a permission from a role
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6650'>KULRICE-6650</link>] -         Don&#39;t create NullPointerException on null History copy.
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6655'>KULRICE-6655</link>] -         Add getRequestedActions (returning a Set&lt;ActionRequestType&gt;) and contains to RequestedActions class
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6656'>KULRICE-6656</link>] -         Modified WorkflowDocumentService.getDocumentStatus to return DocumentStatus instead of a String
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6657'>KULRICE-6657</link>] -         Remove getActionsRequested method from WorkflowDocumentService since a similar method is already on WorkflowDocumentActionsService
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6664'>KULRICE-6664</link>] -         Validation ServerSide for KRAD Views
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6665'>KULRICE-6665</link>] -         Validation being skipped for some field types on an addLine js call
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6683'>KULRICE-6683</link>] -         Add a &quot;THIN&quot; client run mode to KEW, KIM, and KSB modules
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6685'>KULRICE-6685</link>] -         It should not be required to have to set &quot;contextConfigLocation&quot; manually on KSBDispatcherServlet
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6697'>KULRICE-6697</link>] -         Remove RunModeServiceExporter since it is no longer being used
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6699'>KULRICE-6699</link>] -         Reduce view size for session storage and form clearling
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6704'>KULRICE-6704</link>] -         reuse ObjectMapper instance in DocumentSearchInternalUtils for better performance
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6707'>KULRICE-6707</link>] -         Add additional Maintenance specific bean defs to add hooks to make changes later
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6713'>KULRICE-6713</link>] -         Added ComponentBase bean for future hooks and default tweaking
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6766'>KULRICE-6766</link>] -         Create integration tests for DocumentSearchCustomizer
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6773'>KULRICE-6773</link>] -         Remove rice.additionalSpringFiles from common-config-defaults.xml
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6786'>KULRICE-6786</link>] -         More helpful error message when object isn&#39;t in session than NullPointer from ComponentFactory
 </para></listitem>
 </itemizedlist></section>
                                     
@@ -2195,6 +3352,8 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3708'>KULRICE-3708</link>] -         Provide an out-of-the-box LDAP connector for Rice
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4528'>KULRICE-4528</link>] -         Implement ability for rice server to know what version of a client server they are calling
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5020'>KULRICE-5020</link>] -         Implement a ComponentService
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5032'>KULRICE-5032</link>] -         Design and Implement a general-purpose criteria-based api for use on Rice services which need it
 </para></listitem>
@@ -2265,7 +3424,7 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6437'>KULRICE-6437</link>] -         Add ability to use #node on client-bound properties like progressiveRender and refreshWhenChanged
 </para></listitem>
 </itemizedlist></section>
-                                                                                    
+                                                                                        
 <section><title>        Task
 </title>
 <itemizedlist>
@@ -2281,29 +3440,21 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3222'>KULRICE-3222</link>] -         Ensure that ParameterServerService can be remoted and improve caching in ParameterServiceProxyImpl
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-3631">KULRICE-3631</link>] - Remove
-                        ActionItem.getRouteHeader() and ActionItem.setRouteHeader(...)  </para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3631'>KULRICE-3631</link>] -         Remove ActionItem.getRouteHeader() and ActionItem.setRouteHeader(...)
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3793'>KULRICE-3793</link>] -         Set up all supporting infrastructure for the 1.1 development work
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3819'>KULRICE-3819</link>] -         Rice access to foundation confluence
+</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3918'>KULRICE-3918</link>] -         Sample app BOs extend PersistableBusinessObject but the corresponding table doesn&#39;t contain the necessary fields.
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3940'>KULRICE-3940</link>] -         Merge 1.0.x.kc branch with 1.1.0 branch
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-3953'>KULRICE-3953</link>] -         Create a ricekulcli110dba database
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4053'>KULRICE-4053</link>] -         Impex not updating 110 DB
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4096'>KULRICE-4096</link>] -         Remove TypedArrayList, use Spring&#39;s AutoPopulatingList in its stead
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4186'>KULRICE-4186</link>] -         Merge 1.0.2 branch into 1.1.0 branch 
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4220'>KULRICE-4220</link>] -         Ensure that Rice is using up-to-date referenced libraries
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4247'>KULRICE-4247</link>] -         Perform and document modularity analysis on KNS
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4406'>KULRICE-4406</link>] -         Include mysql / oracle dependencies in &quot;test&quot; modules with provided scope
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4437'>KULRICE-4437</link>] -         Perform preliminary merge of 1.0.3 into 1.1
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4438'>KULRICE-4438</link>] -         Merge remaining 1.0.3 work into 1.1
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4488'>KULRICE-4488</link>] -         Upgrade Spring schema declarations to 3.0 in spring files.
 </para></listitem>
@@ -2353,7 +3504,7 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4648'>KULRICE-4648</link>] -         Implement service naming and namespace standard for rice services 
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4659'>KULRICE-4659</link>] -         Figure out how client apps will publish their KimTypeServices via SOAP
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4659'>KULRICE-4659</link>] -         Figure out how client apps will publish their KimTypeServices (and other modules&#39; callback service) via SOAP
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4660'>KULRICE-4660</link>] -         Determine WSDL publishing process
 </para></listitem>
@@ -2417,10 +3568,10 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4897'>KULRICE-4897</link>] -         Removal of toStringMapper, toStringBuilder, from BusinessObjectBase
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4898'>KULRICE-4898</link>] -         Remove org.kuali.rice.kew.web.session.Authentication and calls to it.  Replace with KIM permissions.
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4900'>KULRICE-4900</link>] -         Get 1.1 unit tests working
-</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-4898"
+                            >KULRICE-4898</link>] - Remove
+                        org.kuali.rice.kew.web.session.Authentication and calls to it. Replace with
+                        KIM permissions.  </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4904'>KULRICE-4904</link>] -         KC needs FAX to be supported as a Phone type
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4905'>KULRICE-4905</link>] -         Display appropriate icon based on attachment type in Maintenance Documents
@@ -2439,10 +3590,8 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4931'>KULRICE-4931</link>] -         Execute a review of all libraries and version in Kuali Rice 2.0
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4934'>KULRICE-4934</link>] -         Verify service endpoint urls for each version 
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4935'>KULRICE-4935</link>] -         Enable Build Deployment / Tagging For Rice Builds of 1.1.0 and 1.0.3.1
-</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-4934"
+                            >KULRICE-4934</link>] - Verify service endpoint urls for each version  </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4963'>KULRICE-4963</link>] -         Fix ParameterService api so that is can be accessed remotely.
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4965'>KULRICE-4965</link>] -         Remove Timer class for jira
@@ -2465,21 +3614,11 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-4992'>KULRICE-4992</link>] -         Review and rename tables/columns in master database
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5001'>KULRICE-5001</link>] -         Modularize KRMS POC and move into a branch off 1.1 
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5004'>KULRICE-5004</link>] -         Merge 1.0.3.1 into Rice 1.1
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5009'>KULRICE-5009</link>] -         Create tables &amp; BOs needed for propositions
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5017'>KULRICE-5017</link>] -         remove RiceService &amp; GRLServiceInjectionPostProcessor
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5018'>KULRICE-5018</link>] -         Figure out how to Handle non-database related &quot;Components&quot;
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5023'>KULRICE-5023</link>] -         Jenkins versus Hudson
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5033'>KULRICE-5033</link>] -         Set Rice 2.0 up to be able to release with mvn release plugin
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5035'>KULRICE-5035</link>] -         Move Rice 1.1 to trunk and change to version 2.0.0 in pom files
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5037'>KULRICE-5037</link>] -         Do analysis on adding parameter map to Asset 
 </para></listitem>
@@ -2492,8 +3631,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5043'>KULRICE-5043</link>] -         repackage the core modules for our new packaging standards
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5048'>KULRICE-5048</link>] -         Write remote tests for shareddata services to exercise SOAP calls of service APIs
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5060'>KULRICE-5060</link>] -         Update master database from 1.1 to 2.0 and update impex
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5062'>KULRICE-5062</link>] -         Extract StyleService from KEW/EDL to core-api
 </para></listitem>
@@ -2511,10 +3648,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5079'>KULRICE-5079</link>] -         Create KRMS Repository  Term  / Term Resolver Bos
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5081'>KULRICE-5081</link>] -         KRAD test environment is unresponsive
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5083'>KULRICE-5083</link>] -         Merge KRAD milestone2 into trunk
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5084'>KULRICE-5084</link>] -         Update the Rice 2.0.0 Master Database to include KRMS Data Model
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5085'>KULRICE-5085</link>] -         Refactor Asset &amp; AssetResolver to use Term vocabulary and to better fit with data model
@@ -2524,8 +3657,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5090'>KULRICE-5090</link>] -         Come up with a proposal for data inactivation in KRMS repository
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5091'>KULRICE-5091</link>] -         Ensure that all developers are using the same set of code formatting standards
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5092'>KULRICE-5092</link>] -         Update Rice CI emails to go to rice.dev@kuali.org
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5094'>KULRICE-5094</link>] -         Create Term-related contracts, model objects, BOs and services
 </para></listitem>
@@ -2540,8 +3671,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5104'>KULRICE-5104</link>] -         Move rice-krms-test to rice/test/krms
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5107'>KULRICE-5107</link>] -         Demote TermResolutionException to a RuntimeException, and improve the exception message
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5110'>KULRICE-5110</link>] -         Merge 1.0.3.2 changesets to 2.0
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5111'>KULRICE-5111</link>] -         add integration test that uses rice-krms-impl&#39;s BO services to write entities to the DB 
 </para></listitem>
@@ -2671,12 +3800,8 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5298'>KULRICE-5298</link>] -         Configure agenda editor&#39;s context and agenda lookups to do lookaheads
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5302'>KULRICE-5302</link>] -         docbook cleanup
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5303'>KULRICE-5303</link>] -         document or fix redundancies in KeyValue class
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5305'>KULRICE-5305</link>] -         Mavenized license handling
-</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href="https://jira.kuali.org/browse/KULRICE-5303"
+                            >KULRICE-5303</link>] - document or fix redundancies in KeyValue class  </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5309'>KULRICE-5309</link>] -         KRMS Rule Maintenance Screen
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5311'>KULRICE-5311</link>] -         Create lookup &amp; inquiry DD for TermBo and TermSpecificationBo
@@ -2739,17 +3864,13 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5414'>KULRICE-5414</link>] -         App title not getting set in HTML window title
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5417'>KULRICE-5417</link>] -         Convert createproject.groovy to a maven archetype
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5417'>KULRICE-5417</link>] -         Get createproject.groovy working for Rice 2.0
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5419'>KULRICE-5419</link>] -         add description to Context, Term, Term Spec, and KRMS Attribute Definition at DB, BO, model object, builder, and interface layers
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5443'>KULRICE-5443</link>] -         Remove non-soap kim services
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5444'>KULRICE-5444</link>] -         Fix Kim service namespaces
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5448'>KULRICE-5448</link>] -         Apply these 1.0.3.3 fixes to Rice 2.0 code branch
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5449'>KULRICE-5449</link>] -         Verify if these 1.0.3.2 fixes made it to 2.0 and if not, apply to 2.0 trunk
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5453'>KULRICE-5453</link>] -         Get the Agenda Editor submit working
 </para></listitem>
@@ -2793,8 +3914,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5573'>KULRICE-5573</link>] -         KRAD: Test View 1: Checkbox and Radio labels should display differently than field grouping labels
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5588'>KULRICE-5588</link>] -         Rename /scripts/upgrades/1.0.3 to 1.1/ to /scripts/upgrades/1.0.3 to 2.0/
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5589'>KULRICE-5589</link>] -         Rename TypeContract and Type classes in Kim to CodedAttributeContract and CodedAttribute
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5590'>KULRICE-5590</link>] -         Create integration tests for LDAP connector
@@ -2821,14 +3940,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5612'>KULRICE-5612</link>] -         Check in selenium tests to rice-sampleapp module
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5613'>KULRICE-5613</link>] -         Integrate Selenium Tests into CI environment
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5614'>KULRICE-5614</link>] -         Look into JMeter and/or BrowserMob for Load Testing
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5621'>KULRICE-5621</link>] -         Add KRMS doc types to master DB
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5623'>KULRICE-5623</link>] -         Rice 2.0 License Check
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5625'>KULRICE-5625</link>] -         Create permission templates for create, modify, view agenda
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5626'>KULRICE-5626</link>] -         implement UI for selecting Term in proposition from amongst those that are available in the current Context
@@ -2838,8 +3949,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5628'>KULRICE-5628</link>] -         Implement operator selection in proposition editor UI
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5630'>KULRICE-5630</link>] -         Make sure Document Search is working with ranged searches
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5631'>KULRICE-5631</link>] -         Create Document Type in sample app to test all types of remoteable attributes in document search
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5632'>KULRICE-5632</link>] -         Implement KewModuleService so that document and document type ebos are loaded through remote services
 </para></listitem>
@@ -2852,10 +3961,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5636'>KULRICE-5636</link>] -         Fix problems with document search saved searches
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5638'>KULRICE-5638</link>] -         Figure out how to make caching possible for services in the core module
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5640'>KULRICE-5640</link>] -         Fix Rice site deployment
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5641'>KULRICE-5641</link>] -         Ingest KRMS doctypes into master DB
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5644'>KULRICE-5644</link>] -         Selenium Smoke Test Creation: Even More Complex Create-Blanket Approve Documents Tests
 </para></listitem>
@@ -2879,14 +3984,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5674'>KULRICE-5674</link>] -         Add configuration parameter to set whether NonSerializableSessionListener listener is enabled or not.  Default to false for production environment.
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5675'>KULRICE-5675</link>] -         Create milestone test environment which can also double as a test drive for now
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5679'>KULRICE-5679</link>] -         Verify all source files include the ECL 2.0 header
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5680'>KULRICE-5680</link>] -         Add Sample App (bookstore) data to master db
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5683'>KULRICE-5683</link>] -         Apply KRMS test data to master database
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5701'>KULRICE-5701</link>] -         Review JAX-WS service methods that return collections
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5704'>KULRICE-5704</link>] -         Convert RouteDocumentMessageService to a soap service and publish it under a consistent name
@@ -2898,8 +3995,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5721'>KULRICE-5721</link>] -         Remove requirement to specify EVENT in agenda selection criteria
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5723'>KULRICE-5723</link>] -         Make sure that we validate that everything within an agenda is valid within that agenda&#39;s context
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5733'>KULRICE-5733</link>] -         Remove old rule attribute types that are no longer supported because of Document Search changes
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5734'>KULRICE-5734</link>] -         Rename &quot;DocumentSearchSecurityFilterAttribute&quot; to &quot;DocumentSecurityAttribute&quot; for the rule attribute type name
 </para></listitem>
@@ -2953,16 +4048,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5881'>KULRICE-5881</link>] -         Radiobuttons for Rule and Action subtypes labels and buttons touch.
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5883'>KULRICE-5883</link>] -         Fix KEW,KSB, KIM, KEN integration test failures
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5884'>KULRICE-5884</link>] -         Fix KRAD integration test failures
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5886'>KULRICE-5886</link>] -         Fix KRMS integration test failures
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5910'>KULRICE-5910</link>] -         Add oracle script to refresh the data to rice-trunk-integration-test-oracle
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5919'>KULRICE-5919</link>] -         Eliminate gap between artifacts created by /rice/trunk/build.xml and assembly descriptors in /rice/trunk/dist
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5934'>KULRICE-5934</link>] -         Proposition Summary displays &quot;null&quot;, when a new proposition is created using the KRMS Rule Editor
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5937'>KULRICE-5937</link>] -         Add javadocs to WorkflowDocument and WorkflowDocumentFactory
@@ -2973,13 +4058,13 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5958'>KULRICE-5958</link>] -         Bump Bitronix to version 2.1.2
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5959'>KULRICE-5959</link>] -         Create CI integration test job configured to use Bitronix for JTA transaction management and for connection pooling
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5966'>KULRICE-5966</link>] -         update ehcache configurations to set cache&#39;s to expire
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5967'>KULRICE-5967</link>] -         Investigate whether we should publish methods on services to flush caches
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-5992'>KULRICE-5992</link>] -         Create KRAD portal tab for KRAD test links
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6016'>KULRICE-6016</link>] -         Clean up release notes &amp; docbook docs for beta
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6019'>KULRICE-6019</link>] -         Update Database Upgrade information in Release Notes
 </para></listitem>
@@ -2995,8 +4080,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6027'>KULRICE-6027</link>] -         Document the dropping of support for Tomcat 5.5 (servlet spec 2.4/jsp 2.0)
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6036'>KULRICE-6036</link>] -         Update KRMS information in Release Notes
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6041'>KULRICE-6041</link>] -         Update documentation stating that we are now 1.6 compliant for both source and compile
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6058'>KULRICE-6058</link>] -         Upgrade Guide for 2.0: Expand Content and Finalize
@@ -3008,6 +4091,8 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6068'>KULRICE-6068</link>] -         User&#39;s Guide: Review &amp; Update KEW Chapter
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6074'>KULRICE-6074</link>] -         Technical Guide: Review &amp; Update KEW Chapter
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6078'>KULRICE-6078</link>] -         Create Skeleton of Client Developer&#39;s Guide
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6084'>KULRICE-6084</link>] -         Create &amp; expand Features Guide in DocBook
 </para></listitem>
@@ -3027,10 +4112,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6316'>KULRICE-6316</link>] -         Apply Database changes for Validation Type fixes
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6321'>KULRICE-6321</link>] -         Database script consolidation for release
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6324'>KULRICE-6324</link>] -         Rice Dev: Monitoring prep for Rice Dev1 for 1/12/12 testing
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6329'>KULRICE-6329</link>] -         Remove KRAD tab from standalone
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6331'>KULRICE-6331</link>] -         Move LDAP module under KIM
@@ -3038,8 +4119,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6332'>KULRICE-6332</link>] -         help.tag hasn&#39;t been updated from 1.0.3.x code base for trunk
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6343'>KULRICE-6343</link>] -         XpathQualifierResolver bugs
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6359'>KULRICE-6359</link>] -         Remove old upgrade directories from the scripts sub directory
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6360'>KULRICE-6360</link>] -         Remove RunMode.THIN and other traces of legacy &quot;THIN&quot; mode as it is no longer needed
 </para></listitem>
@@ -3050,10 +4129,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6379'>KULRICE-6379</link>] -         Rename remote interfaces so they don&#39;t have the same name as the UIF components
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6380'>KULRICE-6380</link>] -         Remove InquiryNoResultView and build logic into main view
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6381'>KULRICE-6381</link>] -         Images not appearing in KRAD documentation
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6384'>KULRICE-6384</link>] -         Work on packaging of web content for production deploy
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6413'>KULRICE-6413</link>] -         Remove BusAdminService and ability to &quot;update&quot; pool settings from the &quot;Thread Pool&quot; user interface as it&#39;s functionality is currently problematic
 </para></listitem>
@@ -3070,8 +4145,6 @@
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6465'>KULRICE-6465</link>] -         KNS L&amp;F: Document header has alignment problems
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6466'>KULRICE-6466</link>] -         KNS L&amp;F: Breadcrumbs lost styling
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6467'>KULRICE-6467</link>] -         KNS L&amp;F: Changed indicator on maintenance docs not displaying in correct location
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6468'>KULRICE-6468</link>] -         KNS L&amp;F: Disclosure headers are doing a red underline on hover
 </para></listitem>
@@ -3091,8 +4164,6 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6516'>KULRICE-6516</link>] -         Document client applications requirements on what they need to do in order to ensure they remain compatible with future versions of Kuali Rice
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6526'>KULRICE-6526</link>] -         Verify if all the 2.0 upgrade scripts have corresponding client-side scripts if necessary
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6529'>KULRICE-6529</link>] -         Incident report should default to Classic style as that is what KRMS uses
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6536'>KULRICE-6536</link>] -         Coordinate review of all Rice 2.0 apis
@@ -3101,13 +4172,71 @@
 </para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6547'>KULRICE-6547</link>] -         Create New Role seems to be setting KimType to default value, even if other kim type selected
 </para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6548'>KULRICE-6548</link>] -         Setup Clover to check for test coverage
-</para></listitem>
-<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6550'>KULRICE-6550</link>] -         Merge table rebuilds from 2011-06-17-m6.sql and 2011-04-28.sql in update_final_oracle.sql
-</para></listitem>
 <listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6551'>KULRICE-6551</link>] -         Add KRMS doc types to scripts/upgrades 
 </para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6559'>KULRICE-6559</link>] -         People Flow Edit:  exception thrown when adding / deleting delegates to people flow members
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6565'>KULRICE-6565</link>] -         Fix qualifiers on role for Person and Role Documents
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6578'>KULRICE-6578</link>] -         Make it so the standalone server will start up without having to specify the web.bootstrap.spring.file parameter
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6579'>KULRICE-6579</link>] -         Rice: KSPD work on SoapUI
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6581'>KULRICE-6581</link>] -         Rice: KSPD List of Manual Testing Of KSB tasks
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6598'>KULRICE-6598</link>] -         Remove password from principal dto.
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6600'>KULRICE-6600</link>] -         Rice 2.0 upgrade scripts coming with KIM bootstrap data need to be consistent w.r.t ID generation
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6605'>KULRICE-6605</link>] -         KSPD: Work on Http request logger
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6606'>KULRICE-6606</link>] -         KSPD: Hookup JavaMelody/Spring
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6635'>KULRICE-6635</link>] -         Do something about duplication of processCollectionAddLine in ViewHelperServiceImpl and PeopleFlowMaintainableImpl
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6662'>KULRICE-6662</link>] -         Apply sql for permission to the Term,TermSpecification and Context to master DB
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6682'>KULRICE-6682</link>] -         add caching to internal DocumentTypeService
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6684'>KULRICE-6684</link>] -         Rename KRAD Jsp for application view
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6689'>KULRICE-6689</link>] -         Replace string concatenation with StringBuilder.append when rejoining with commas in DocumentSearchServiceImpl.saveSearch
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6690'>KULRICE-6690</link>] -         Verify we are exporting proper KimTypeService implementations as well as embedding appropriate ones
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6693'>KULRICE-6693</link>] -         Add documentation on CallbackServiceExporter to the technical documentation for KIM
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6694'>KULRICE-6694</link>] -         Determine if KRMS Type Services can be properly exported to the service bus and used remotely
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6703'>KULRICE-6703</link>] -         Change WorkflowRuleAttribute validate methods to return List&lt;? extends RemotableAttributeErrorContract&gt;
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6712'>KULRICE-6712</link>] -         Problem with radio groups in htmlControlAttribute
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6714'>KULRICE-6714</link>] -         change assign* methods in RoleService to not throw RiceIllegalStateException when rolemember already exists
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6715'>KULRICE-6715</link>] -         create groovy folders to core-service modules to allow it to compile in eclipse
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6716'>KULRICE-6716</link>] -         Add javax.servlet dependency to location module
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6722'>KULRICE-6722</link>] -         RoleService assign methods don&#39;t check for inactive role members correctly
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6723'>KULRICE-6723</link>] -         ResponsibilityService *ByTemplate methods not handling responsibility details correctly
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6733'>KULRICE-6733</link>] -         convert permission bo objects from groovy to java to test performance difference
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6755'>KULRICE-6755</link>] -         Fix ExceptionRetryCountTest
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6759'>KULRICE-6759</link>] -         Add manual flush method on the IdentityArchiveService. 
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6774'>KULRICE-6774</link>] -         Add information to install guide about how to run createproject.groovy to set up a client application
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6792'>KULRICE-6792</link>] -         Person Lookup not working in KIM embedded mode
+</para></listitem>
+<listitem><para>[<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6801'>KULRICE-6801</link>] -         TO_DATE sql function stripped from doc search sql for &#39;like&#39;, &#39;not like&#39;, and &#39;not equal&#39;
+</para></listitem>
 </itemizedlist></section>
+                                                                                                            
+
             
     </section>
 </article>

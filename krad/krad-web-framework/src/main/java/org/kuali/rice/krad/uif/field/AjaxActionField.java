@@ -53,6 +53,7 @@ public class AjaxActionField extends ActionField {
         // if refresh property name is given, adjust the binding and then attempt to find the
         // component in the view index
         if (StringUtils.isNotBlank(refreshPropertyName)) {
+            // TODO: does this support all binding prefixes?
             if (refreshPropertyName.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {
                 refreshPropertyName = StringUtils.removeStart(refreshPropertyName, UifConstants.NO_BIND_ADJUST_PREFIX);
             } else if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {

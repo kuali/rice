@@ -23,9 +23,4 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
-<%@ taglib uri="http://www.kuali.org/jsp/jstl/functions" prefix="kfunc"%>
-<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
-<%@ taglib tagdir="/WEB-INF/tags/kim" prefix="kim"%>
-<%@ taglib tagdir="/WEB-INF/tags/kew" prefix="kew"%>
-<%@ taglib tagdir="/WEB-INF/tags/kr/dd" prefix="dd"%>
 <%@ taglib tagdir="/WEB-INF/tags/krad" prefix="krad"%>

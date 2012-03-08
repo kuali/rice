@@ -197,17 +197,16 @@
               </bean>
               <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
               <!-- also, the bogus refreshWhenChanged is important because it puts a RuleEditorView-TreeGroup_refreshWrapper around the group that
-                   is needed for the javascript hack that is refreshing the tree when a parameterized term specification is selected from the
-                   term dropdown -->
+                   is needed for the javascript hack that is refreshing -->
               <bean id="RuleEditorView-TreeGroup" parent="Uif-VerticalBoxGroup" p:style="margin-bottom: 5pt; margin-top: 0em;" p:refreshWhenChanged="this.is.a.hack">
                 <property name="layoutManager.orientation" value="VERTICAL"/>
                 <property name="items">
                   <list>
                     <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
-                    <bean id="RuleEditorView-PropositionSummary" parent="RuleEditorView-PropositionSummary-parent"/>
+                    <bean id="RuleEditorView-PropositionSummary" parent="RuleEditorView-PropositionSummary-parent" p:persistInSession="true"/>
                     <bean parent="RuleEditorView-TreeExpandCollapse" />
                     <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
-                    <bean id="RuleEditorView-Tree" parent="RuleEditorView-Tree-parent" />
+                    <bean id="RuleEditorView-Tree" parent="RuleEditorView-Tree-parent" p:persistInSession="true"/>
                   </list>
                 </property>
               </bean>
@@ -440,7 +439,8 @@
     </property>
   </bean>
         
-  <bean id="RuleEditorView-Tree-parent" parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="RuleEditorView-Tree-parent" parent="Uif-TreeSection" p:disclosure.render="false" p:header.render="false"
+        p:style="float:left; margin-left: 2em;" p:persistInSession="true">
     <property name="propertyName" value="agendaItemLine.rule.propositionTree"/>
     <property name="errorsField.displayMessages" value="true" />
     <property name="errorsField.displayFieldLabelWithMessages" value="false" />

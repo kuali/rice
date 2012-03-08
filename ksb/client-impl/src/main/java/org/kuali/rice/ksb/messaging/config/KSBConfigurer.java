@@ -100,7 +100,7 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 	
 	public KSBConfigurer() {
 		super(KsbApiConstants.KSB_MODULE_NAME);
-		setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
+		setValidRunModes(Arrays.asList(RunMode.THIN, RunMode.REMOTE, RunMode.LOCAL));
 		this.internalLifecycles = new ArrayList<Lifecycle>();
 	}
 	
@@ -115,26 +115,30 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 	@Override
 	public List<String> getPrimarySpringFiles(){
 		final List<String> springFileLocations = new ArrayList<String>();
-				
-		boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
-		if (isJpa) {
-			// TODO redo this once we're back to JPA
-        	// springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
-        	throw new UnsupportedOperationException("JPA not currently supported for KSB");
-		}
-		
+
 		springFileLocations.add(SERVICE_BUS_CLIENT_SPRING);
-		
-		if (isMessagePersistenceEnabled()) {
-			springFileLocations.add(MESSAGE_CLIENT_SPRING);
-			springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
-		}
+
+        if (getRunMode() != RunMode.THIN) {
+
+            boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
+            if (isJpa) {
+                // TODO redo this once we're back to JPA
+                // springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
+                throw new UnsupportedOperationException("JPA not currently supported for KSB");
+            }
+
+
+		    if (isMessagePersistenceEnabled()) {
+			    springFileLocations.add(MESSAGE_CLIENT_SPRING);
+			    springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
+		    }
         
-        if (isBamEnabled()) {
-        	springFileLocations.add(BAM_SPRING);
-        	springFileLocations.add(OJB_BAM_SPRING);
+            if (isBamEnabled()) {
+        	    springFileLocations.add(BAM_SPRING);
+        	    springFileLocations.add(OJB_BAM_SPRING);
+            }
         }
-        
+
         if (getRunMode().equals( RunMode.LOCAL )) {
         	springFileLocations.add(REGISTRY_SERVER_SPRING);
         	springFileLocations.add(OJB_REGISTRY_SPRING);

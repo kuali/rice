@@ -77,13 +77,13 @@ public class WorkflowInfoTest extends KEWTestCase {
     public void testGetDocumentStatus() throws Exception {
         // verify that a null document id throws an exception
         try {
-            String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(null);
+            DocumentStatus status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(null);
             fail("A WorkflowException should have been thrown, instead returned status: " + status);
         } catch (IllegalArgumentException e) {}
 
         // verify that a bad document id throws an exception
         try {
-            String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus("-1");
+            DocumentStatus status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus("-1");
             fail("A IllegalStateException Should have been thrown, instead returned status: " + status);
         } catch (IllegalStateException e) {}
 
@@ -93,13 +93,13 @@ public class WorkflowInfoTest extends KEWTestCase {
         String documentId = document.getDocumentId();
         assertNotNull(documentId);
 
-        String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
-        assertEquals("Document should be INITIATED.", KewApiConstants.ROUTE_HEADER_INITIATED_CD, status);
+        DocumentStatus status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
+        assertEquals("Document should be INITIATED.", KewApiConstants.ROUTE_HEADER_INITIATED_CD, status.getCode());
 
         // cancel the doc, it's status should be updated
         document.cancel("");
         status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
-        assertEquals("Document should be CANCELED.", KewApiConstants.ROUTE_HEADER_CANCEL_CD, status);
+        assertEquals("Document should be CANCELED.", KewApiConstants.ROUTE_HEADER_CANCEL_CD, status.getCode());
     }
 
     /**

@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Prerequisite constraints require that some other attribute be non-empty in order for the constraint to be valid. 
@@ -39,4 +44,29 @@ public class PrerequisiteConstraint extends BaseConstraint {
 	public void setPropertyName(String propertyName) {
 		this.propertyName = propertyName;
 	}
+
+    @Override
+    public String getLabelKey(){
+        if(StringUtils.isBlank(this.labelKey)){
+            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "prerequisiteFallback";
+        }
+        else{
+            return super.getLabelKey();
+        }
+    }
+
+    @Override
+    /**
+     * @see BaseConstraint#getValidationMessageParams()
+     * @return the validation message list if defined. If not defined,  return  the property name
+     */
+    public List<String> getValidationMessageParams() {
+        if(super.getValidationMessageParams() == null) {
+            ArrayList<String> params = new ArrayList<String>(1);
+            params.add(getPropertyName());
+            return params;
+        } else {
+            return super.getValidationMessageParams();
+        }
+    }
 }

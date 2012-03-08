@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.core.api.uif.DataType;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint{
+public class SimpleConstraint extends BaseConstraint implements ExistenceConstraint, RangeConstraint, LengthConstraint{
     
 	@XmlElement
 	private Boolean required;
@@ -49,6 +51,8 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
 	
 	@XmlElement
 	private Integer maxOccurs;
+
+    private DataType dataType;
 
 	/**
 	 * If true the field is required
@@ -162,7 +166,14 @@ public class SimpleConstraint extends BaseConstraint implements ExistenceConstra
     @Override
     public Boolean isRequired() {
         return getRequired();
-    }	
-	
+    }
+
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
 }
 

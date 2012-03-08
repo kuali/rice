@@ -946,6 +946,7 @@ public final class KewApiConstants {
 	public static final String HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME = "helpDeskActionListPerson";
 	public static final String PREFERENCES = "Preferences";
 	public static final String WORKFLOW_DOCUMENT_MAP_ATTR_NAME = "workflowDocumentMap";
+    public static final String WORKFLOW_ACTION_IGNORE_UNKOWN_PRINCIPAL_IDS = "ignoreUnknownPrincipalIds";
 
     public static final String USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM = "userOptions.default.useOutBox";
 

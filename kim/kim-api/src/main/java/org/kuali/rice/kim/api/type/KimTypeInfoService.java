@@ -28,6 +28,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.Collection;
 
+/**
+ *
+ * This service provides read operations for KimType
+ *
+ *@author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 @WebService(name = "kimTypeInfoService", targetNamespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KimTypeInfoService {

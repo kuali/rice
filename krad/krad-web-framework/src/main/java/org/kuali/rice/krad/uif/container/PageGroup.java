@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -53,7 +54,12 @@ public class PageGroup extends Group {
             prefixScript = this.getOnDocumentReadyScript();
         }
 
-        this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();");
+        if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
+        }
+        else{
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
+        }
     }
 
     /**

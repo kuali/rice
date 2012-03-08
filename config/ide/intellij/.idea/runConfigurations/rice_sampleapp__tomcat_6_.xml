@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rice sampleapp (tomcat 6)" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6.0.35">
+  <configuration default="false" name="rice sampleapp (tomcat 6)" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6">
     <option name="OPEN_IN_BROWSER" value="false" />
     <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/kr-dev/" />
     <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml" />
@@ -13,6 +13,7 @@
       </artifact>
     </deployment>
     <server-settings>
+      <option name="DEPLOY_TOMCAT_APPS" value="false" />
       <option name="BASE_DIRECTORY_NAME" value="Unnamed_rice_2" />
     </server-settings>
     <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
@@ -57,7 +58,7 @@
       <option name="BuildArtifacts" enabled="true">
         <artifact name="rice-sampleapp:war exploded" />
       </option>
-      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/../../../web/pom.xml" goal="process-resources" />
+      <option name="Maven.BeforeRunTask" enabled="false" file="$PROJECT_DIR$/../../../web/pom.xml" goal="process-resources" />
     </method>
   </configuration>
 </component>

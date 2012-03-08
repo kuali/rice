@@ -693,6 +693,27 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setRenderOutput(String renderOutput);
 
     /**
+     * Indicates whether the component should be stored with the session view regardless of configuration
+     *
+     * <p>
+     * By default the framework nulls out any components that do not have a refresh condition or are needed for
+     * collection processing. This can be a problem if custom application code is written to refresh a component
+     * without setting the corresponding component flag. In this case this property can be set to true to force the
+     * framework to keep the component in session. Defaults to false
+     * </p>
+     *
+     * @return boolean true if the component should be stored in session, false if not
+     */
+    public boolean isPersistInSession();
+
+    /**
+     * Setter for the indicator to force persistence of the component in session
+     *
+     * @param persistInSession
+     */
+    public void setPersistInSession(boolean persistInSession);
+
+    /**
      * Security object that indicates what authorization (permissions) exist for the component
      *
      * @return ComponentSecurity instance

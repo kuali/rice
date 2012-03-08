@@ -193,7 +193,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		return this.moduleName;
 	}
 
-	public void setModuleName(String moduleName) {
+	protected void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
     
@@ -209,7 +209,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		return this.validRunModes;
 	}
 
-	public void setValidRunModes(List<RunMode> validRunModes) {
+	protected void setValidRunModes(List<RunMode> validRunModes) {
 		this.validRunModes = validRunModes;
 	}
 	

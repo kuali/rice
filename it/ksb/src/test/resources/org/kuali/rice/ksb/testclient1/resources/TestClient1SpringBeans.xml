@@ -129,12 +129,6 @@
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory" />
 
 	<bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
-		<property name="moduleName" value="CORE" />
-		<property name="validRunModes">
-			<list>
-				<value>LOCAL</value>
-			</list>
-		</property>
 		<property name="properties">
 			<props>
 				<prop key="plugin.registry.enabled">true</prop>
@@ -153,12 +147,6 @@
   <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
 	
 	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-		<property name="moduleName" value="KSB" />
-		<property name="validRunModes">
-			<list>
-				<value>LOCAL</value>
-			</list>
-		</property>
 		<property name="services">
 			<list>
 				<bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition">

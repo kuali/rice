@@ -36,7 +36,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 	private static final String CONSTRAINT_NAME = "existence constraint";
 	
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.Validatable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader) \
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, ExistenceConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -68,9 +68,8 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
 		if (constraint.isRequired().booleanValue() && !skipConstraint(attributeValueReader)) {
 			// If this attribute is required and the value is null then 
 			if (ValidationUtils.isNullOrEmpty(value)) 
-				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED);
-			
-			return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
+				return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeValueReader.getLabel(attributeValueReader.getAttributeName()));
+ 			return result.addSuccess(attributeValueReader, CONSTRAINT_NAME);
 		}
 
 		return result.addSkipped(attributeValueReader, CONSTRAINT_NAME);

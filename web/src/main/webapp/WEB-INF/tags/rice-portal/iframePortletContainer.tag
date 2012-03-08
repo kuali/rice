@@ -104,12 +104,9 @@
       var url = jQuery(thisIframe).attr('src');
       if ((url.indexOf("http") != 0 && url.indexOf("ftp") != 0) || url.match(regex)[1].toString() === window.location.host) {
         sameDomain = true;
-        if (thisIframe[0] && thisIframe[0].contentWindow.document.body) {
+        if (!browserIsIE8 && thisIframe[0] && thisIframe[0].contentWindow.document.body) {
           if_height = thisIframe[0].contentWindow.document.body.scrollHeight;
-
-          if (!browserIsIE8) {
             thisIframe.height(if_height);
-          }
         }
       }
       else {

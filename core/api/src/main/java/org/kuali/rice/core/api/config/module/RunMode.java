@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.core.api.config.module;
 
+/**
+ * Defines different modes of operation for a module of Kuali Rice.  It is up to the implementation of the individual
+ * modules to specify which run modes they support.  Additionally speaking, while each run mode has a general meaning,
+ * individual modules will specify what each of the allowable run modes means for the configuration of the module.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public enum RunMode {
-    LOCAL, EMBEDDED, REMOTE
+    LOCAL, EMBEDDED, REMOTE, THIN
 }

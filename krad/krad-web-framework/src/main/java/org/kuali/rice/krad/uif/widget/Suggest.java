@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -57,6 +58,11 @@ public class Suggest extends WidgetBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
+
+        // if source property name set then can't render the Suggest widget
+        if (StringUtils.isBlank(sourcePropertyName)) {
+            setRender(false);
+        }
 
         if (!isRender()) {
             return;

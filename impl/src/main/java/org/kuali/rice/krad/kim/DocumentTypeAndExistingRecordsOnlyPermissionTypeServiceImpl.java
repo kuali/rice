@@ -23,7 +23,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import java.util.Map;
 
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends PermissionTypeServiceBase {
-	protected boolean performMatch(Map<String, String> inputMap,
+
+    @Override
+    protected boolean performMatch(Map<String, String> inputMap,
 			Map<String, String> storedMap) {
 
 		String requestedDocumentType = inputMap.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);

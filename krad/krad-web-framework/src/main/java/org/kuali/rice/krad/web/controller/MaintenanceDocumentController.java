@@ -25,12 +25,10 @@ import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
@@ -224,26 +222,20 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     @Override
     @RequestMapping(params = "methodToCall=route")
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
 
         ModelAndView modelAndView;
 
-        try {
-            modelAndView = super.route(form, result, request, response);
+        modelAndView = super.route(form, result, request, response);
 
-            MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
-            if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
-                PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService()
-                        .retrieve((PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
-                request.setAttribute("fileName", bo.getFileName());
-            }
-        } catch (ValidationException vex) {
-            if (GlobalVariables.getMessageMap().hasNoErrors()) {
-                throw new RuntimeException("Validation Exception with no error message.", vex);
-            }
-
-            modelAndView = getUIFModelAndView(form);
+        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+        if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
+            PersistableAttachment bo = (PersistableAttachment) getBusinessObjectService()
+                    .retrieve((PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
+            request.setAttribute("fileName", bo.getFileName());
         }
+
+        modelAndView = getUIFModelAndView(form);
 
         return modelAndView;
     }

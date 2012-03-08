@@ -122,7 +122,7 @@
                     <listitem><para>Route Status - The current status of the document</para></listitem>
                     <listitem><para>Route Level - A legacy field providing a numerical representation of where the document is in the route path
                         </para></listitem>
-                    <listitem><para>Create Date - The date the document was created</para></listitem>
+                    <listitem><para>Create Date - The initial date the document was created, doesn't not reflect wether the doucment was routed, saved, etc.</para></listitem>
                     <listitem><para>Doc Status Modification Date - The date at which the document's status was last modified</para></listitem>
                     <listitem><para>Approved Date - The date at which the document's state transitioned to APPROVED</para></listitem>
                     <listitem><para>Finalized Date - The date at which the document's state transitioned to FINAL</para></listitem>

@@ -255,7 +255,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=route")
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         performWorkflowAction(form, WorkflowAction.ROUTE, true);
 
         return getUIFModelAndView(form);
@@ -447,7 +447,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         // Get the note add line
         String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
-        CollectionGroup collectionGroup = uifForm.getPreviousView().getViewIndex().getCollectionGroupByPath(
+        CollectionGroup collectionGroup = uifForm.getPostedView().getViewIndex().getCollectionGroupByPath(
                 selectedCollectionPath);
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(uifForm, addLinePath);

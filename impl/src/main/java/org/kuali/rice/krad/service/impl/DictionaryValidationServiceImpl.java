@@ -207,11 +207,18 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         validate(document, documentEntryName, attributeName, true);
     }
 
+    /**
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean)
+     */
+    @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
             boolean validateRequired) {
         validateDocumentAndUpdatableReferencesRecursively(document, maxDepth, validateRequired, false);
     }
-    
+    /**
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean, boolean)
+     */
+    @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, 
             boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
@@ -465,8 +472,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String, java.lang.String, boolean)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject, String)
      */
     public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
 
@@ -515,7 +521,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param reference the <code>ReferenceDefinition</code> of the collection to validate
      * @param displayFieldName the name of the field
      * @param intermediateCollections array containing the path to the collection as tokens
-     * @param pathToAttribute the rebuilt path to the ReferenceDefinition.attributeToHighlightOnFail which includes the
+     * @param pathToAttributeI the rebuilt path to the ReferenceDefinition.attributeToHighlightOnFail which includes the
      * index of
      * each subcollection
      * @return
@@ -552,8 +558,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject, String, String, String)
      */
 
     public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName,
@@ -696,8 +701,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * This overridden method ...
-     *
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.krad.document.TransactionalDocument)
      */
     public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
@@ -717,10 +720,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument,
-     *      org.kuali.rice.krad.bo.PersistableBusinessObject)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument, org.kuali.rice.krad.bo.BusinessObject, String)
      */
     public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
             BusinessObject newCollectionItem, String collectionName) {
@@ -776,9 +776,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     if (attributePath == null || attributePath.isEmpty()){
                         attributePath = constraintValidationResult.getAttributeName();
                     }
-                    setFieldError(constraintValidationResult.getEntryName(),
-                            attributePath, constraintValidationResult.getErrorKey(),
-                            constraintValidationResult.getErrorParameters());
+                    if(constraintValidationResult.getConstraintLabelKey() != null){
+                        GlobalVariables.getMessageMap().putError(attributePath,
+                                constraintValidationResult.getConstraintLabelKey(),
+                                constraintValidationResult.getErrorParameters());
+                    }
+                    else{
+                        GlobalVariables.getMessageMap().putError(attributePath,
+                                constraintValidationResult.getErrorKey(),
+                                constraintValidationResult.getErrorParameters());
+                    }
                 }
             }
         }
@@ -861,7 +868,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
                     Collection<Constraint> processorResultContraints = processorResult.getConstraints();
                     if (processorResultContraints != null && processorResultContraints.size() > 0)
-                        additionalConstraints.addAll(processorResultContraints);
+                        constraintQueue.addAll(processorResultContraints);
 
                     // Change the selected definition to whatever was returned from the processor
                     if (processorResult.isDefinitionProvided())
@@ -869,9 +876,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     // Change the selected attribute value reader to whatever was returned from the processor
                     if (processorResult.isAttributeValueReaderProvided())
                         selectedAttributeValueReader = processorResult.getAttributeValueReader();
+
                 }
 
-                // After iterating through all the constraints for this processor, add additional constraints for following processors
+                // After iterating through all the constraints for this processor, add the ones that werent consumed by this processor to the queue
                 constraintQueue.addAll(additionalConstraints);
             }
         }
@@ -905,7 +913,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     "Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() +
                             "\" on entry \"" + attributeValueReader.getEntryName() +
                             "\" because no attribute definition can be found.");
-
+        
         Object value = attributeValueReader.getValue();
 
         processElementConstraints(result, value, definition, attributeValueReader, checkIfRequired);
@@ -956,6 +964,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         if (value != null) {
                             AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(
                                     value, childEntry.getFullClassName(), childEntry, attributeValueReader.getPath());
+                            nestedAttributeValueReader.setAttributeName(attributeValueReader.getAttributeName());
                             //Validate nested object, however skip attribute definition porcessing on
                             //nested object entry, since they have already been processed above.
                             validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false);

@@ -32,8 +32,8 @@ import org.kuali.rice.ksb.security.SignatureSigningResponseWrapper;
 import org.kuali.rice.ksb.security.SignatureVerifyingRequestWrapper;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.BeansException;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerExecutionChain;
@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -60,11 +59,13 @@ import java.util.Locale;
 public class KSBDispatcherServlet extends DispatcherServlet {
 
 	private static final Logger LOG = Logger.getLogger(KSBDispatcherServlet.class);
-
 	private static final long serialVersionUID = 6790121225857950019L;
+    private static final String REMOTING_SERVLET_CONFIG_LOCATION = "classpath:org/kuali/rice/ksb/config/remoting-servlet.xml";
+
 	private KSBHttpInvokerHandler httpInvokerHandler;
 	private ServletController cxfServletController;
-	
+
+    @Override
 	protected void initFrameworkServlet() throws ServletException, BeansException {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();
 		
@@ -94,6 +95,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		this.setPublishEvents(false);
 	}
 
+    @Override
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		if (handler instanceof HttpRequestHandler) {
 			return new HttpRequestHandlerAdapter();
@@ -108,13 +110,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		throw new RiceRuntimeException("handler of type " + handler.getClass().getName() + " is not known and can't be used by " + KSBDispatcherServlet.class.getName());
 	}
 
-	/**
-	 * Return the HandlerExecutionChain for this request.
-	 * Try all handler mappings in order.
-	 * @param request current HTTP request
-	 * @param cache whether to cache the HandlerExecutionChain in a request attribute
-	 * @return the HandlerExceutionChain, or <code>null</code> if no handler could be found
-	 */
+    @Override
 	protected HandlerExecutionChain getHandler(HttpServletRequest request, boolean cache) throws Exception {
 		return this.httpInvokerHandler.getHandler(request);
 	}
@@ -143,6 +139,12 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		}
 	}
 
+    @Override
+    protected WebApplicationContext initWebApplicationContext() {
+        setContextConfigLocation(REMOTING_SERVLET_CONFIG_LOCATION);
+        return super.initWebApplicationContext();
+    }
+
 	protected boolean isSecure(HttpServletRequest request) {
 		QName serviceName = this.httpInvokerHandler.getServiceNameFromRequest(request);
 		if (LOG.isDebugEnabled()) {
@@ -159,30 +161,5 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		}
 		return serviceConfiguration.getBusSecurity();
 	}
-	
-	/**
-	 * Overriding this method to correct a NullPointerException when the
-	 * getLocale() method is called on the LocaleContext returned here.  This
-	 * tries to use the LocaleContext from the parent class, but if a NPE is
-	 * thrown when getLocale() is invoked on the context it will return a new
-	 * LocaleContext which defaults to English.
-	 */
-	@Override
-    protected LocaleContext buildLocaleContext(HttpServletRequest request) {
-        try {
-            // Get the context from the parent class
-            LocaleContext localeContext = super.buildLocaleContext(request);
-            // Check to see if the localeResolver is null
-            localeContext.getLocale();
-            return localeContext;
-        } catch (NullPointerException npe) {
-            // If a NPE is thrown catch it and return a LocaleContext which
-            // always returns English
-            return new LocaleContext() {
-                public Locale getLocale() {
-                    return Locale.ENGLISH;
-                }
-            };
-        }
-    }
+
 }

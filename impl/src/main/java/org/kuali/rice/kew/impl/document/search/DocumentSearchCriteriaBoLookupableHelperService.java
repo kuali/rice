@@ -487,6 +487,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         if (isRouteLogPopup()) {
             link.setTarget("_blank");
         }
+        else {
+            link.setTarget("_self");
+        }
         link.setDisplayText("Route Log for document " + documentId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/" +
                 "RouteLog.do?documentId=" + documentId;
@@ -498,7 +501,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * Returns true if the document handler should open in a new window.
      */
     protected boolean isDocumentHandlerPopup() {
-        return BooleanUtils.toBooleanDefaultIfNull(
+      return BooleanUtils.toBooleanDefaultIfNull(
                 CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                     KewApiConstants.KEW_NAMESPACE,
                     KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,

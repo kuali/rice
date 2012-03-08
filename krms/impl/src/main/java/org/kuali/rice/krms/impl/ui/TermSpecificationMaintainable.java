@@ -56,21 +56,27 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         TermSpecificationBo termSpecificationBo = (TermSpecificationBo) super.retrieveObjectForEditOrCopy(document,
                 dataObjectKeys);
 
-        // find contexts for this term spec
-        Collection<ContextValidTermBo> validContextMappings =
-                getBoService().findMatching(ContextValidTermBo.class,
-                        Collections.singletonMap("termSpecificationId", termSpecificationBo.getId()));
-
-        if (!CollectionUtils.isEmpty(validContextMappings)) for (ContextValidTermBo validContextMapping : validContextMappings) {
-            ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, validContextMapping.getContextId());
-            termSpecificationBo.getContexts().add(context);
-        }
-
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
             document.getDocumentHeader().setDocumentDescription("New Term Specification Document");
         }
 
         return termSpecificationBo;
+    }
+
+    /**
+     * Add the Term Specification's Context to the given termSpecificationBo.  Note that there is no check for the Context
+     * already having been added to the Term Specification.
+     * @param termSpecificationBo with
+     */
+    private void findContexts(TermSpecificationBo termSpecificationBo) {
+        Collection<ContextValidTermBo> validContextMappings =
+            getBoService().findMatching(ContextValidTermBo.class,
+                    Collections.singletonMap("termSpecificationId", termSpecificationBo.getId()));
+
+        if (!CollectionUtils.isEmpty(validContextMappings)) for (ContextValidTermBo validContextMapping : validContextMappings) {
+            ContextBo context = getBoService().findBySinglePrimaryKey(ContextBo.class, validContextMapping.getContextId());
+            termSpecificationBo.getContexts().add(context);
+        }
     }
 
     /**

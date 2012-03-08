@@ -27,5 +27,5 @@ public interface RuleAttributeDAO {
     public RuleAttribute findByRuleAttributeId(String ruleAttributeId);
     public List<RuleAttribute> getAllRuleAttributes();
     public RuleAttribute findByName(String name);
-    public RuleAttribute findByClassName(String classname);
+    public List<RuleAttribute> findByClassName(String classname);
 }

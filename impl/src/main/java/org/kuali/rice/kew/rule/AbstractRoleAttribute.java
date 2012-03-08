@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.routeheader.DocumentContent;
+
+import java.util.List;
 
 
 /**
@@ -27,7 +28,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
  */
 public abstract class AbstractRoleAttribute extends AbstractWorkflowAttribute implements RoleAttribute {
 
-    public boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions) {
+    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         //throw new UnsupportedOperationException("Role attributes do not implement isMatch");
         return true;
     }

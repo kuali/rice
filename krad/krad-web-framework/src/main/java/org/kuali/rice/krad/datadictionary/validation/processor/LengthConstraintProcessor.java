@@ -33,6 +33,10 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
  */
 public class LengthConstraintProcessor extends MandatoryElementConstraintProcessor<LengthConstraint> {
 
+    private static final String MIN_LENGTH_KEY = "validation.minLengthConditional";
+    private static final String MAX_LENGTH_KEY = "validation.maxLengthConditional";
+    private static final String RANGE_KEY = "validation.lengthRange";
+
 	private static final String CONSTRAINT_NAME = "length constraint";
 	
 	/**
@@ -105,13 +109,13 @@ public class LengthConstraintProcessor extends MandatoryElementConstraintProcess
         
         // If both comparisons happened then if either comparison failed we can show the end user the expected range on both sides.
         if (lessThanMax != Result.UNDEFINED && greaterThanMin != Result.UNDEFINED) 
-        	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_OUT_OF_RANGE, minErrorParameter, maxErrorParameter);
+        	return result.addError(RANGE_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_OUT_OF_RANGE, minErrorParameter, maxErrorParameter);
         // If it's the max comparison that fails, then just tell the end user what the max can be
         else if (lessThanMax == Result.INVALID)
-        	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INCLUSIVE_MAX, maxErrorParameter);
+        	return result.addError(MAX_LENGTH_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_INCLUSIVE_MAX, maxErrorParameter);
         // Otherwise, just tell them what the min can be
         else 
-        	return result.addError(attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, minErrorParameter);
+        	return result.addError(MIN_LENGTH_KEY, attributeValueReader, CONSTRAINT_NAME, RiceKeyConstants.ERROR_EXCLUSIVE_MIN, minErrorParameter);
         
 	}
 

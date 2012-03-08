@@ -43,7 +43,7 @@
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/datePicker.jsp"/>
     <property name="styleClasses" value="calendar"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="showOn" value="button"/>
         <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
@@ -62,7 +62,7 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLink.jsp"/>
     <property name="height" value="95%"/>
     <property name="width" value="75%"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="autoScale" value="true"/>
         <entry key="centerOnScroll" value="true"/>
@@ -85,7 +85,7 @@
   <bean id="Uif-RichTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.RichTable"
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/richTable.jsp"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="sDom" value="fTrtip"/>
         <entry key="bRetrieve" value="true"/>
@@ -99,7 +99,7 @@
 
   <bean id="Uif-PagedRichTable" parent="Uif-PagedRichTable-parentBean"/>
   <bean id="Uif-PagedRichTable-parentBean" parent="Uif-RichTable-parentBean" scope="prototype">
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map merge="true">
         <entry key="sScrollX" value="100%"/>
         <entry key="bScrollCollapse" value="true"/>
@@ -109,7 +109,7 @@
 
   <bean id="Uif-ScrollableRichTable" parent="Uif-ScrollableRichTable-parentBean"/>
   <bean id="Uif-ScrollableRichTable-parentBean" parent="Uif-RichTable-parentBean" scope="prototype">
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map merge="true">
         <entry key="sDom" value="fTrt"/>
         <entry key="bScrollInfinite" value="true"/>
@@ -216,7 +216,7 @@
   <bean id="Uif-Tree-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tree" scope="prototype"
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tree.jsp"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="themes" value="{'theme' : 'default', 'dots' : 'true', 'icons' : 'false'}"/>
         <entry key="plugins" value="[ 'themes','html_data' ]"/>
@@ -228,7 +228,7 @@
   <bean id="Uif-Suggest-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Suggest" scope="prototype"
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/suggest.jsp"/>
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="minLength" value="2"/>
         <entry key="delay" value="300"/>
@@ -249,7 +249,7 @@
   <bean id="Uif-Spinner" parent="Uif-Spinner-parentBean"/>
   <bean id="Uif-Spinner-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Spinner" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="componentOptions">
+    <property name="templateOptions">
       <map>
         <entry key="min" value="0"/>
         <entry key="stepInc" value="1"/>

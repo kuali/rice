@@ -97,7 +97,7 @@ public class ViewCleaner {
         container.setHelp(null);
         container.setLayoutManager(null);
         container.setInstructionalMessageField(null);
-        container.setComponentOptions(new HashMap<String, String>());
+        container.setTemplateOptions(new HashMap<String, String>());
         container.setComponentModifiers(new ArrayList<ComponentModifier>());
         container.setPropertyReplacers(new ArrayList<PropertyReplacer>());
     }
@@ -114,7 +114,7 @@ public class ViewCleaner {
         inputField.setFieldDirectInquiry(null);
         inputField.setFieldInquiry(null);
         inputField.setLabel(null);
-        inputField.setComponentOptions(new HashMap<String, String>());
+        inputField.setTemplateOptions(new HashMap<String, String>());
         inputField.setComponentModifiers(new ArrayList<ComponentModifier>());
         inputField.setPropertyReplacers(new ArrayList<PropertyReplacer>());
     }

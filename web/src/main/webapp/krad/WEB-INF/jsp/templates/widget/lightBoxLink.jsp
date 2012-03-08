@@ -25,5 +25,5 @@
  --%>
  
 <krad:script value="
-   createLightBoxLink('${componentId}', ${widget.componentOptionsJSString});
+   createLightBoxLink('${componentId}', ${widget.templateOptionsJSString});
 "/>

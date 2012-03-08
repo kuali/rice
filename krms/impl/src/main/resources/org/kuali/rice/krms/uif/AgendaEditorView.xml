@@ -560,7 +560,7 @@
     <property name="tree">
 
       <bean parent="AgendaTreeWidget">
-        <property name="componentOptions">
+        <property name="templateOptions">
           <map>
             <entry key="'plugins'"
               value="['themes','html_data', 'ui', 'crrm', 'dnd']" />

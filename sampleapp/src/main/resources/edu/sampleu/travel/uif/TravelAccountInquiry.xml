@@ -76,7 +76,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                  </list>
               </property>
              <!-- TODO: appears to interfere with rich table resizing after window resize
-             <property name="layoutManager.richTable.componentOptions">
+             <property name="layoutManager.richTable.templateOptions">
                <map>
                  <entry key="aoColumns">
                    <value>

@@ -111,7 +111,7 @@ public class DirectInquiry extends Inquiry {
 		boolean lightBoxShow = directInquiryActionField.getLightBoxDirectInquiry() != null;
 		if (lightBoxShow) {
 			lightBoxOptions = directInquiryActionField.getLightBoxDirectInquiry()
-					.getComponentOptionsJSString();
+					.getTemplateOptionsJSString();
 		}
 
 		// Build parameter string using the actual names of the fields as on the

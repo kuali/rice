@@ -777,7 +777,7 @@ public class ClientValidationUtils {
         
                 if (field.getExclusiveMin() != null) {
                     if (field.getControl() instanceof TextControl && ((TextControl) field.getControl()).getDatePicker() != null) {
-                        ((TextControl) field.getControl()).getDatePicker().getComponentOptions().put("minDate", field.getExclusiveMin());
+                        ((TextControl) field.getControl()).getDatePicker().getTemplateOptions().put("minDate", field.getExclusiveMin());
                     }
                     else{
                         String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n minExclusive: ["+ field.getExclusiveMin() + "]});";
@@ -787,7 +787,7 @@ public class ClientValidationUtils {
         
                 if (field.getInclusiveMax() != null) {
                     if (field.getControl() instanceof TextControl && ((TextControl) field.getControl()).getDatePicker() != null) {
-                        ((TextControl) field.getControl()).getDatePicker().getComponentOptions().put("maxDate", field.getInclusiveMax());
+                        ((TextControl) field.getControl()).getDatePicker().getTemplateOptions().put("maxDate", field.getInclusiveMax());
                     }
                     else{
                         String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n maxInclusive: ["+ field.getInclusiveMax() + "]});";

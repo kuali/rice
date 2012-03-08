@@ -423,7 +423,7 @@
               p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
           <property name="control">
             <bean parent="Uif-DateControl">
-              <property name="datePicker.componentOptions">
+              <property name="datePicker.templateOptions">
                 <map>
                   <entry key="showOn" value="both"/>
                   <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>

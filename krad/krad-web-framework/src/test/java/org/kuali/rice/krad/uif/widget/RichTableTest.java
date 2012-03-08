@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.widget;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krad.datadictionary.validation.Account;
 import org.kuali.rice.krad.datadictionary.validation.Employee;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -142,8 +141,8 @@ public class RichTableTest {
      * @param optionKey - a string with the rich table option key being tested
      */
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
-        richTable.getComponentOptions().put(optionKey, optionsOnGroup);
+        richTable.getTemplateOptions().put(optionKey, optionsOnGroup);
         richTable.performFinalize(new View(), new UifFormBase(), group);
-        assertEquals(optionsOnRichTable,richTable.getComponentOptions().get(optionKey));
+        assertEquals(optionsOnRichTable,richTable.getTemplateOptions().get(optionKey));
     }
 }

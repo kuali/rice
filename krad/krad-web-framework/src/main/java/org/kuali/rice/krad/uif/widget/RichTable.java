@@ -82,18 +82,18 @@ public class RichTable extends WidgetBase {
 
         if (isRender()) {
             if (StringUtils.isNotBlank(getEmptyTableMessage())) {
-                getComponentOptions().put(UifConstants.TableToolsKeys.LANGUAGE,
+                getTemplateOptions().put(UifConstants.TableToolsKeys.LANGUAGE,
                         "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
             }
 
             if (!isShowSearchAndExportOptions()) {
-                Object domOption = getComponentOptions().get(UifConstants.TableToolsKeys.SDOM);
+                Object domOption = getTemplateOptions().get(UifConstants.TableToolsKeys.SDOM);
                 if (domOption instanceof String) {
                     String sDomOption = (String) domOption;
                     if (StringUtils.isNotBlank(sDomOption)) {
                         sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
                         sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
-                        getComponentOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+                        getTemplateOptions().put(UifConstants.TableToolsKeys.SDOM, sDomOption);
                     }
                 }
 
@@ -101,7 +101,7 @@ public class RichTable extends WidgetBase {
 
             // for add events, disable initial sorting
             if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
-                getComponentOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
+                getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
             }
 
             if (component instanceof CollectionGroup) {
@@ -109,7 +109,7 @@ public class RichTable extends WidgetBase {
             }
 
             if (isDisableTableSort()) {
-                getComponentOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
+                getTemplateOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
             }
         }
     }
@@ -133,7 +133,7 @@ public class RichTable extends WidgetBase {
                     && !collectionGroup.isReadOnly()
                     && !((layoutManager instanceof TableLayoutManager) && ((TableLayoutManager) layoutManager)
                     .isSeparateAddLine())) {
-                getComponentOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
+                getTemplateOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
@@ -151,9 +151,9 @@ public class RichTable extends WidgetBase {
             }
 
             // if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
-            if (!StringUtils.isEmpty(getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
+            if (!StringUtils.isEmpty(getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
                 // get the contents of the JS array string
-                String jsArray = getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
+                String jsArray = getTemplateOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
                 int startBrace = StringUtils.indexOf(jsArray,"[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + " , ");
@@ -210,7 +210,7 @@ public class RichTable extends WidgetBase {
 
             tableToolsColumnOptions.append("]");
 
-            getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+            getTemplateOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
        }
     }
 

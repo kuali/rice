@@ -46,7 +46,7 @@ public class Growls extends WidgetBase {
      */
     public void setSticky(boolean sticky) {
         this.sticky = sticky;
-        this.getComponentOptions().put("sticky", Boolean.toString(sticky));
+        this.getTemplateOptions().put("sticky", Boolean.toString(sticky));
     }
 
     /**
@@ -63,7 +63,7 @@ public class Growls extends WidgetBase {
      */
     public void setTimeShown(int timeShown) {
         this.timeShown = timeShown;
-        this.getComponentOptions().put("life", Integer.toString(timeShown));
+        this.getTemplateOptions().put("life", Integer.toString(timeShown));
     }
 
     /**
@@ -81,6 +81,6 @@ public class Growls extends WidgetBase {
      */
     public void setPosition(String position) {
         this.position = position;
-        this.getComponentOptions().put("position", position);
+        this.getTemplateOptions().put("position", position);
     }
 }

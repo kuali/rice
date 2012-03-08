@@ -554,29 +554,29 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @return Map<String, String> options
      */
-    public Map<String, String> getComponentOptions();
+    public Map<String, String> getTemplateOptions();
 
     /**
-     * Setter for the widget's options
+     * Setter for the template's options
      *
-     * @param widgetOptions
+     * @param templateOptions
      */
-    public void setComponentOptions(Map<String, String> componentOptions);
+    public void setTemplateOptions(Map<String, String> templateOptions);
 
     /**
      * Options that are passed through to the Component renderer. See
-     * documentation on the particular widget render for available options.
+     * documentation on the particular component render for available options.
      *
      * @return String options
      */
-    public String getComponentOptionsJSString();
+    public String getTemplateOptionsJSString();
 
     /**
-     * Setter for the widget's options
+     * Setter for the template's options
      *
-     * @param widgetOptions
+     * @param templateOptionsJSString
      */
-    public void setComponentOptionsJSString(String componentOptions);
+    public void setTemplateOptionsJSString(String templateOptionsJSString);
 
     /**
      * Can be used to order a component within a List of other components, lower

@@ -122,8 +122,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     private List<ComponentModifier> componentModifiers;
 
-    private Map<String, String> componentOptions;
-    private String componentOptionsJSString;
+    private Map<String, String> templateOptions;
+    private String templateOptionsJSString;
 
     @ReferenceCopy(newCollectionInstance = true)
     private transient Map<String, Object> context;
@@ -150,7 +150,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
-        componentOptions = new HashMap<String, String>();
+        templateOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
     }
@@ -1188,39 +1188,39 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         this.onMouseMoveScript = onMouseMoveScript;
     }
 
-    public Map<String, String> getComponentOptions() {
-        if (componentOptions == null) {
-            componentOptions = new HashMap<String, String>();
+    public Map<String, String> getTemplateOptions() {
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
         }
-        return this.componentOptions;
+        return this.templateOptions;
     }
 
-    public void setComponentOptions(Map<String, String> componentOptions) {
-        this.componentOptions = componentOptions;
+    public void setTemplateOptions(Map<String, String> templateOptions) {
+        this.templateOptions = templateOptions;
     }
 
     /**
-     * Builds a string from the underlying <code>Map</code> of component options
+     * Builds a string from the underlying <code>Map</code> of template options
      * that will export that options as a JavaScript Map for use in js and
      * jQuery plugins
      *
      * @return String of widget options formatted as JS Map
      */
     @Override
-    public String getComponentOptionsJSString() {
-        if (componentOptionsJSString != null) {
-            return componentOptionsJSString;
+    public String getTemplateOptionsJSString() {
+        if (templateOptionsJSString != null) {
+            return templateOptionsJSString;
         }
 
-        if (componentOptions == null) {
-            componentOptions = new HashMap<String, String>();
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
         }
         StringBuilder sb = new StringBuilder();
 
         sb.append("{");
 
-        for (String optionKey : componentOptions.keySet()) {
-            String optionValue = componentOptions.get(optionKey);
+        for (String optionKey : templateOptions.keySet()) {
+            String optionValue = templateOptions.get(optionKey);
 
             if (sb.length() > 1) {
                 sb.append(",");
@@ -1267,8 +1267,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     @Override
-    public void setComponentOptionsJSString(String componentOptionsJSString) {
-        this.componentOptionsJSString = componentOptionsJSString;
+    public void setTemplateOptionsJSString(String templateOptionsJSString) {
+        this.templateOptionsJSString = templateOptionsJSString;
     }
 
     public String getEventCode() {

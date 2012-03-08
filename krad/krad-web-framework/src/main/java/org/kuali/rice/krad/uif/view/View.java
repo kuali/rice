@@ -224,8 +224,8 @@ public class View extends ContainerBase {
 
         String growlScript = "";
         Growls gw = view.getGrowls();
-        if (!gw.getComponentOptions().isEmpty()) {
-            growlScript = "setGrowlDefaults(" + gw.getComponentOptionsJSString() + ");";
+        if (!gw.getTemplateOptions().isEmpty()) {
+            growlScript = "setGrowlDefaults(" + gw.getTemplateOptionsJSString() + ");";
         }
 
         this.setPreLoadScript(prefixScript + growlScript);

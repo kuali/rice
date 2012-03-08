@@ -25,6 +25,6 @@
  --%>
 
 <krad:script value="
-  createSuggest('${parent.control.id}', ${widget.componentOptionsJSString}, '${parent.id}',
+  createSuggest('${parent.control.id}', ${widget.templateOptionsJSString}, '${parent.id}',
    ${widget.suggestQuery.queryFieldMappingJsString});
 "/>

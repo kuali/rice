@@ -30,6 +30,6 @@
   <tiles:putAttribute name="field" value="${field}"/>
 </tiles:insertTemplate>
 
-<krad:script value="createSpinner('${control.id}', ${control.spinner.componentOptionsJSString});" />
+<krad:script value="createSpinner('${control.id}', ${control.spinner.templateOptionsJSString});" />
 
  

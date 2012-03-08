@@ -446,7 +446,7 @@
     <property name="errorsField.displayFieldLabelWithMessages" value="false" />
     <property name="tree">
       <bean parent="RuleTreeWidget">
-        <property name="componentOptions">
+        <property name="templateOptions">
           <map>
             <entry key="'plugins'"
               value="['themes','html_data', 'ui', 'crrm', 'dnd']" />

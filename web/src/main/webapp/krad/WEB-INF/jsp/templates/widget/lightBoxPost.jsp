@@ -25,5 +25,5 @@
  --%>
  
 <krad:script value="
-   createLightBoxPost('${componentId}', ${widget.componentOptionsJSString}, ${widget.actionParameterMapString} , ${widget.lookupReturnByScript});
+   createLightBoxPost('${componentId}', ${widget.templateOptionsJSString}, ${widget.actionParameterMapString} , ${widget.lookupReturnByScript});
 "/>

@@ -52,10 +52,6 @@ public class UifConstants {
         HORIZONTAL, VERTICAL
     }
 
-    public static enum MessageType {
-        NORMAL, CUTLINE, INSTRUCTIONAL, CONSTRAINT, REQUIRED, HELP_SUMMARY, HELP_DESCRIPTION
-    }
-
     public static enum ViewType {
         DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT;
     }

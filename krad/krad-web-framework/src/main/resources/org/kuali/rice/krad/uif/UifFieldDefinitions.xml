@@ -147,8 +147,7 @@
   </bean>
 
   <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
-  <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
-        p:messageType="INSTRUCTIONAL">
+  <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-instructionalMessage</value>
@@ -157,8 +156,7 @@
   </bean>
 
   <bean id="Uif-ConstraintMessage" parent="Uif-ConstraintMessage-parentBean"/>
-  <bean id="Uif-ConstraintMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
-        p:messageType="CONSTRAINT">
+  <bean id="Uif-ConstraintMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-constraintMessage</value>
@@ -168,7 +166,7 @@
 
   <bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
   <bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
-        p:messageText="*" p:messageType="REQUIRED">
+        p:messageText="*">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-requiredMessage</value>
@@ -473,8 +471,7 @@ perform page navigation-->
 
   <!-- Common Fields -->
 
-  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-MessageField" p:messageText="* indicates required field"
-        p:messageType="REQUIRED">
+  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-MessageField" p:messageText="* indicates required field">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-requiredInstructionsMessage</value>

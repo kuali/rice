@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
  * 
  * <p>
  * The <code>MessageField</code> is used to display static text in the user
- * interface. The message type can be used to group similar messages for styling
+ * interface
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -31,7 +31,6 @@ public class MessageField extends FieldBase {
 	private static final long serialVersionUID = 4090058533452450395L;
 
 	private String messageText;
-	private String messageType;
 
 	public MessageField() {
 		super();
@@ -55,15 +54,6 @@ public class MessageField extends FieldBase {
         return render;
 	}
 
-	public MessageField(String messageType) {
-		this.messageType = messageType;
-	}
-
-	public MessageField(String messageText, String messageType) {
-		this.messageText = messageText;
-		this.messageType = messageType;
-	}
-
 	/**
 	 * Text that makes up the message that will be displayed
 	 * 
@@ -80,31 +70,6 @@ public class MessageField extends FieldBase {
 	 */
 	public void setMessageText(String messageText) {
 		this.messageText = messageText;
-	}
-
-	/**
-	 * Type of the field's message, used to suffix the message fields id
-	 * 
-	 * <p>
-	 * Messages that have similar intent can be grouped by this type string. For
-	 * messages of the same type, their id will contain the same suffix which
-	 * can be used for scripting to apply additional styling or behavior to that
-	 * groups of messages (for example show/hide)
-	 * </p>
-	 * 
-	 * @return String message type
-	 */
-	public String getMessageType() {
-		return this.messageType;
-	}
-
-	/**
-	 * Setter for the message's type
-	 * 
-	 * @param messageType
-	 */
-	public void setMessageType(String messageType) {
-		this.messageType = messageType;
 	}
 
 }

@@ -52,7 +52,7 @@
       <bean parent="Uif-HeaderFour"/>
     </property>
     <property name="cutline">
-      <bean parent="Uif-MessageField" p:messageType="CUTLINE" p:styleClasses="kr-cutline"/>
+      <bean parent="Uif-MessageField" p:styleClasses="uif-cutlineMessage"/>
     </property>
   </bean>
 

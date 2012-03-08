@@ -29,7 +29,7 @@
               value="@{courseSection.course.subjectId} @{courseSection.course.number} @{courseSection.course.title}"/>
     <property name="header.items">
       <list>
-        <bean parent="Uif-Link" p:linkLabel="Back to term" p:target="foo"/>
+        <bean parent="Uif-LinkField" p:linkLabel="Back to term" p:target="foo"/>
       </list>
     </property>
     <property name="items">
@@ -91,7 +91,7 @@
         p:header.styleClasses="header-borderBottom">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkLabel="Edit" p:target="foo"/>
+        <bean parent="Uif-LinkField" p:linkLabel="Edit" p:target="foo"/>
         <bean parent="GenericTextField" p:propertyName="subjectId" p:label="Subject ID"/>
         <bean parent="Uif-HorizontalFieldGroup">
           <property name="items">
@@ -139,7 +139,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-Link" p:linkLabel="view other sections (@{courseSection.course.sections.size()})"
+        <bean parent="Uif-LinkField" p:linkLabel="view other sections (@{courseSection.course.sections.size()})"
               p:target="foo"/>
         <!--
         ********************************************************************************************************************

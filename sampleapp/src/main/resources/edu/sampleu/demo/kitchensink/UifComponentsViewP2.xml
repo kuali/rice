@@ -256,7 +256,7 @@
     <property name="title" value="Link Fields"/>
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkLabel="Kuali Website"
+        <bean parent="Uif-LinkField" p:linkLabel="Kuali Website"
               p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links"/>
 
         <bean parent="Uif-LinkGroup" p:title="LinkGroup"

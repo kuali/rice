@@ -377,16 +377,18 @@ perform page navigation-->
     <property name="clientSideJs" value="submitForm();"/>
   </bean>
 
-  <bean id="Uif-Link" parent="Uif-Link-parentBean"/>
-  <bean id="Uif-Link-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
+  <bean id="Uif-LinkField" parent="Uif-LinkField-parentBean"/>
+  <bean id="Uif-LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-link</value>
+        <value>uif-linkField</value>
       </list>
     </property>
-    <property name="target" value="_self"/>
+    <property name="link">
+      <bean parent="Uif-Link"/>
+    </property>
   </bean>
 
   <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
@@ -537,7 +539,7 @@ perform page navigation-->
     </property>
   </bean>
 
-  <bean id="Uif-CreateNewLink" parent="Uif-Link"
+  <bean id="Uif-CreateNewLink" parent="Uif-LinkField"
         p:linkLabel="Create New"
         p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
     <property name="styleClasses">

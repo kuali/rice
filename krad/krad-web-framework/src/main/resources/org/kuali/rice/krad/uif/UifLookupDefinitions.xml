@@ -57,7 +57,7 @@
       </bean>
     </property>
     <property name="resultsReturnField">
-      <bean parent="Uif-Link">
+      <bean parent="Uif-LinkField">
         <property name="label" value="Return Value"/>
         <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
       </bean>
@@ -72,7 +72,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:order="10">
+        <bean parent="Uif-LinkField" p:order="10">
           <property name="linkLabel" value="edit"/>
           <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
           <property name="finalizeMethodAdditionalArguments">
@@ -82,7 +82,7 @@
           </property>
           <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line)}"/>
         </bean>
-        <bean parent="Uif-Link" p:order="20">
+        <bean parent="Uif-LinkField" p:order="20">
           <property name="linkLabel" value="copy"/>
           <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
           <property name="finalizeMethodAdditionalArguments">
@@ -92,7 +92,7 @@
           </property>
           <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction()}"/>
         </bean>
-        <bean parent="Uif-Link" p:order="30">
+        <bean parent="Uif-LinkField" p:order="30">
           <property name="linkLabel" value="delete"/>
           <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
           <property name="finalizeMethodAdditionalArguments">

@@ -28,7 +28,7 @@
     <property name="title" value="@{registrationTerm}, @{registrationYear}"/>
     <property name="header.items">
       <list>
-        <bean parent="Uif-Link" p:linkLabel="Change" p:target="foo"/>
+        <bean parent="Uif-LinkField" p:linkLabel="Change" p:target="foo"/>
       </list>
     </property>
     <property name="items">
@@ -171,7 +171,7 @@
                   <bean parent="Uif-MessageField" p:label="Location" p:fieldLabel.render="true"
                         p:messageText="&lt;span class='kr-highlight-blue'&gt;@{#line.location}&lt;/span&gt;"
                         p:fieldLabel.styleClasses="labelLeft" p:fieldLabel.renderColon="false"/>
-                  <bean parent="Uif-Link" p:label="Syllabus" p:linkLabel="Download" p:target="foo"
+                  <bean parent="Uif-LinkField" p:label="Syllabus" p:linkLabel="Download" p:target="foo"
                         p:fieldLabel.styleClasses="labelLeft" p:fieldLabel.renderColon="false"/>
                 </list>
               </property>

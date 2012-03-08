@@ -13,7 +13,6 @@
       </artifact>
     </deployment>
     <server-settings>
-      <option name="DEPLOY_TOMCAT_APPS" value="false" />
       <option name="BASE_DIRECTORY_NAME" value="Unnamed_rice_2" />
     </server-settings>
     <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
@@ -58,6 +57,7 @@
       <option name="BuildArtifacts" enabled="true">
         <artifact name="rice-sampleapp:war exploded" />
       </option>
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/../../../web/pom.xml" goal="process-resources" />
     </method>
   </configuration>
 </component>

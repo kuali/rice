@@ -61,7 +61,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.BlankField;
+import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
@@ -102,12 +102,12 @@ public class ComponentFactory {
     protected static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
     protected static final String ACTION_FIELD = "Uif-PrimaryActionButton";
     protected static final String ACTION_LINK_FIELD = "Uif-ActionLink";
-    protected static final String LINK_FIELD = "Uif-Link";
-    protected static final String IFRAME_FIELD = "Uif-IframeField";
+    protected static final String LINK_FIELD = "Uif-LinkField";
+    protected static final String IFRAME = "Uif-Iframe";
     protected static final String IMAGE_FIELD = "Uif-ImageField";
-    protected static final String BLANK_FIELD = "Uif-EmptyField";
+    protected static final String SPACE_FIELD = "Uif-SpaceField";
     protected static final String GENERIC_FIELD = "Uif-CustomTemplateField";
-    protected static final String LABEL_FIELD = "Uif-Label";
+    protected static final String LABEL = "Uif-Label";
     protected static final String MESSAGE_FIELD = "Uif-MessageField";
     protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
     protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
@@ -529,24 +529,24 @@ public class ComponentFactory {
         return (LinkField) getNewComponentInstance(LINK_FIELD);
     }
 
-    public static Iframe getIframeField() {
-        return (Iframe) getNewComponentInstance(IFRAME_FIELD);
+    public static Iframe getIframe() {
+        return (Iframe) getNewComponentInstance(IFRAME);
     }
 
     public static ImageField getImageField() {
         return (ImageField) getNewComponentInstance(IMAGE_FIELD);
     }
 
-    public static BlankField getBlankField() {
-        return (BlankField) getNewComponentInstance(BLANK_FIELD);
+    public static SpaceField getSpaceField() {
+        return (SpaceField) getNewComponentInstance(SPACE_FIELD);
     }
 
     public static GenericField getGenericField() {
         return (GenericField) getNewComponentInstance(GENERIC_FIELD);
     }
 
-    public static Label getLabelField() {
-        return (Label) getNewComponentInstance(LABEL_FIELD);
+    public static Label getLabel() {
+        return (Label) getNewComponentInstance(LABEL);
     }
 
     public static MessageField getMessageField() {

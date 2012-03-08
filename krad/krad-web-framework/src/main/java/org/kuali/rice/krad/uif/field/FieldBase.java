@@ -150,7 +150,7 @@ public class FieldBase extends ComponentBase implements Field {
      */
     public void setLabel(String labelText) {
         if (StringUtils.isNotBlank(labelText) && this.fieldLabel == null) {
-            this.fieldLabel = ComponentFactory.getLabelField();
+            this.fieldLabel = ComponentFactory.getLabel();
         }
 
         if (this.fieldLabel != null) {

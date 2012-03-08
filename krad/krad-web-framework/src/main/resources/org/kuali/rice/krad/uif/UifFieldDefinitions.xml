@@ -416,13 +416,13 @@ perform page navigation-->
     </property>
   </bean>
 
-  <bean id="Uif-EmptyField" parent="Uif-EmptyField-parentBean"/>
-  <bean id="Uif-EmptyField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.BlankField"
+  <bean id="Uif-SpaceField" parent="Uif-SpaceField-parentBean"/>
+  <bean id="Uif-SpaceField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.SpaceField"
         parent="Uif-FieldBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/blankField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/spaceField.jsp"/>
     <property name="styleClasses">
       <list merge="true">
-        <value>uif-emptyField</value>
+        <value>uif-spaceField</value>
       </list>
     </property>
   </bean>

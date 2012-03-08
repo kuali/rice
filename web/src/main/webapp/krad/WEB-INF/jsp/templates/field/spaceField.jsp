@@ -17,8 +17,10 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.SpaceField"/>
+
 <%--
-    Writes out HTML space entity
+    Writes out HTML space entity with a span wrapper
     
  --%>
 

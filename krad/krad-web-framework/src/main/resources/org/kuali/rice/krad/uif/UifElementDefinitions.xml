@@ -82,4 +82,9 @@
     <property name="target" value="_self"/>
   </bean>
 
+  <bean id="Uif-Space" parent="Uif-Space-parentBean"/>
+  <bean id="Uif-Space-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Space"
+        parent="Uif-ContentElementBase" scope="prototype">
+  </bean>
+
 </beans>

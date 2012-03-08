@@ -63,6 +63,9 @@
         <value>uif-documentPage</value>
       </list>
     </property>
+    <property name="footer">
+      <bean parent="Uif-DocumentPageFooter"/>
+    </property>
   </bean>
 
   <bean id="Uif-DocumentInfoGroup" parent="Uif-GridGroup" p:readOnly="true">

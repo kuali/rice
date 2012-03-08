@@ -127,7 +127,7 @@ public class ComponentFactory {
 
     protected static final String HEADER = "Uif-HeaderFieldBase";
     protected static final String FOOTER = "Uif-FooterBase";
-    protected static final String FOOTER_SAVECLOSECANCEL = "Uif-FormFooter";
+    protected static final String FOOTER_SAVECLOSECANCEL = "Uif-FormPageFooter";
 
     /**
      * Gets a fresh copy of the component by the id passed in which used to look up the component in

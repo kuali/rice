@@ -805,3 +805,7 @@ div.blockPage{
 .uif-labelBlock{
     display: block;
 }
+
+img.changed-header-icon {
+    padding-left:5px; padding-right:5px
+}

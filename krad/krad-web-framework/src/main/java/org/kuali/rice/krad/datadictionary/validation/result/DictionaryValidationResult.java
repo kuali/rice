@@ -27,7 +27,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class DictionaryValidationResult {
+public class DictionaryValidationResult implements Iterable<ConstraintValidationResult> {
 	
 	private Map<String, EntryValidationResult> entryValidationResultMap;
 	private ErrorLevel errorLevel;

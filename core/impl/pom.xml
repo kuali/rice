@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.kuali.rice</groupId>
         <artifactId>rice-core</artifactId>
-        <version>2.2-jneal-1-SNAPSHOT</version>
+        <version>2.2-jneal-1</version>
     </parent>
 
     <properties>
         <monitoring.spring.import />
-        <monitoring.spring.service></monitoring.spring.service>
+        <monitoring.spring.service />
     </properties>
 
     <dependencies>

@@ -65,7 +65,7 @@ still render, but render in a hidden container --%>
 
 	<%-- generate event code for component --%>
 	<krad:eventScript component="${component}" />
-	
+
 	<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged
 	              || component.refreshedByAction || component.hidden}">
 		</div>
@@ -101,5 +101,10 @@ still render, but render in a hidden container --%>
 	<c:forEach items="${component.refreshWhenChangedControlNames}" var="cName">
 		<krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', '${component.refreshDiscloseMethodToCall}');" />
 	</c:forEach>
+</c:if>
+
+<%-- Add Tooltip if the tooltip content is not empty --%>
+<c:if test="${(!empty component.toolTip.tooltipContentHTML)}">
+  <krad:script value="createTooltip('${component.id}', '${component.toolTip.tooltipContentHTML}', ${component.toolTip.componentOptionsJSString}, ${component.toolTip.onFocusFlag});" />
 </c:if>
 

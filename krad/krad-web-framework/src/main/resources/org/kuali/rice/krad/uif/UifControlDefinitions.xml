@@ -32,6 +32,9 @@
         <value>uif-control</value>
       </list>
     </property>
+    <property name="toolTip">
+      <bean parent="Uif-Tooltip"/>
+    </property>
   </bean>
 
   <bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>

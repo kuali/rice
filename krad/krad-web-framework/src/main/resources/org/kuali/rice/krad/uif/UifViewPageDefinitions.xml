@@ -42,6 +42,8 @@
         <value>/krad/plugins/jqueryUI/jquery.autocomplete.css</value>
         <value>/krad/plugins/rice/menu/tabs.css</value>
         <value>/krad/plugins/rice/spinner/smartspinner.css</value>
+        <value>/krad/plugins/tooltip/jquery.tools.tooltip.css</value>
+        <value>/krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
       </list>
     </property>
     <property name="jsFiles">
@@ -80,6 +82,8 @@
         <value>krad/scripts/krad.utility.js</value>
         <value>krad/scripts/krad.validate.js</value>
         <value>krad/scripts/krad.widget.js</value>
+        <value>krad/plugins/tooltip/jquery.tools.min.js</value>
+        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</value>
       </list>
     </property>
   </bean>

@@ -598,6 +598,28 @@ function createSpinner(id, options) {
 }
 
 /**
+ * Creates the tooltip widget for an component
+ *
+ * @param id - id for the component to apply the tooltip to
+ * @param options - options for the tooltip
+ */
+function createTooltip(id, text, options, onFocusFlag) {
+    options['innerHtml'] = text;
+    if (onFocusFlag) {
+        jq("#" + id).focus(function() {
+            jq("#" + id).CreateBubblePopup(options);
+            jq("#" + id).ShowBubblePopup();
+        });
+        jq("#" + id).blur(function() {
+            jq("#" + id).HideBubblePopup();
+            jq("#" + id).RemoveBubblePopup();
+        });
+    } else {
+        jq("#" + id).CreateBubblePopup(options);
+    }
+}
+
+/**
  * Executes a query with ajax for the given field to retrieve additional information after
  * the field has been updated (on blur)
  *

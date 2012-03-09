@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -129,6 +130,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private transient Map<String, Object> context;
 
     private List<PropertyReplacer> propertyReplacers;
+
+    private Tooltip toolTip;
 
     public ComponentBase() {
         super();
@@ -1535,6 +1538,19 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public boolean isSkipInTabOrder() {
         return skipInTabOrder;
+    }
+
+
+    public Tooltip getToolTip() {
+        return toolTip;
+    }
+
+    public void setToolTip(Tooltip toolTip) {
+        this.toolTip = toolTip;
+    }
+    
+    public void setToolTipText(String tooltTipText) {
+        getToolTip().setTooltipContentHTML(tooltTipText);
     }
 
 }

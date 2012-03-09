@@ -258,4 +258,34 @@
     </property>
   </bean>
 
+  <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>
+  <bean id="Uif-Tooltip-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tooltip" scope="prototype">
+    <property name="templateOptions">
+      <map>
+        <entry key="themePath" value="../krad/plugins/tooltip/jquerybubblepopup-theme/"/>
+        <entry key="themeName" value="black"/>
+      </map>
+    </property>
+    <property name="helpTemplateOptions">
+      <map>
+        <entry key="themeName" value="black"/>
+        <entry key="selectable" value="true"/>
+      </map>
+    </property>
+    <property name="errorTemplateOptions">
+      <map>
+        <entry key="themeName" value="orange"/>
+      </map>
+    </property>
+    <property name="focusTemplateOptions">
+      <map>
+        <entry key="manageMouseEvents" value="false"/>
+        <entry key="position" value="right"/>
+        <entry key="align" value="center"/>
+        <entry key="tail" value="{ align:'center', hidden: true }"/>
+      </map>
+    </property>
+  </bean>
+
+
 </beans>

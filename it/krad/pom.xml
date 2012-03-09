@@ -104,6 +104,7 @@
       <version>${project.version}</version>
       <artifactId>rice-sampleapp</artifactId>
       <scope>test</scope>
+      <type>war</type>
     </dependency>
 
     <!-- HACK!! this dependency should not be here -->

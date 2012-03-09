@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif
 
+// NOTICE: The copy right at the beginning of cssReplacements.txt must be removed before
+// running this program
+
 def currentDir = new File(".");
 
 def inputFile = new File("cssReplacements.txt");
@@ -32,7 +35,7 @@ currentDir.eachFileRecurse(
       if (file.isFile() && file.name.endsWith(".css") && !file.name.startsWith("jquery")) {
         fileText = file.text;
         replaceMap.each{
-            fileText = fileText.replace(it.key, it.value);
+            fileText = fileText?.replace(it.key, it.value);
         }
         file.write(fileText);
     }

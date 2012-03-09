@@ -15,6 +15,9 @@
  */
 def currentDir = new File(".");
 
+// NOTICE: The copy right at the beginning of beanReplacements.txt must be removed before
+// running this program
+
 def inputFile = new File("beanReplacements.txt");
 def replaceMap = new HashMap();
 

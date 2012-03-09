@@ -302,7 +302,7 @@ function showChangeIconOnGroupHeader(fieldId, idSuffix) {
     var headerIcon = jq("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {
-        targetElement.append("<img id='" + fieldId + "_changeIcon' class='changed-header-icon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
+        targetElement.append("<img id='" + fieldId + "_changeIcon' class='uif-changedHeaderIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
     }
 }
 

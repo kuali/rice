@@ -20,6 +20,7 @@
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
     <documentType overwriteMode="true">
       <name>DocumentTypeXmlParseTest-NoRoutePathOnly</name>
+       <label>DocumentTypeXmlParseTest-NoRoutePathOnly</label>
     </documentType>
   </documentTypes>
 </data>

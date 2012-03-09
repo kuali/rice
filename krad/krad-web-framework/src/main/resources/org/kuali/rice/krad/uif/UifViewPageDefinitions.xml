@@ -159,7 +159,7 @@
       </list>
     </property>
     <property name="footer">
-      <ref bean="Uif-FormPageFooter"/>
+      <bean parent="Uif-FooterBase"/>
     </property>
   </bean>
 

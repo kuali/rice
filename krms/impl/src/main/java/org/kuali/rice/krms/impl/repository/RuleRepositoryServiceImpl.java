@@ -88,12 +88,14 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 		// walk thru the agenda items, building an agenda tree definition Builder along the way
 		AgendaTreeDefinition.Builder myBuilder = AgendaTreeDefinition.Builder.create();
 		myBuilder.setAgendaId( agendaId );
-		myBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
+        if (agendaItemId != null) {
+		    myBuilder = walkAgendaItemTree(agendaItemId, myBuilder);
+        }
 		
 		// build the agenda tree and return it
 		return myBuilder.build();
 	}
-	
+    	
 	@Override
 	public List<AgendaTreeDefinition> getAgendaTrees(List<String> agendaIds) {
 		List<AgendaTreeDefinition> agendaTrees = new ArrayList<AgendaTreeDefinition>();

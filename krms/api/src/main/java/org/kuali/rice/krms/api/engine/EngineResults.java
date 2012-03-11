@@ -29,7 +29,10 @@ public interface EngineResults {
      * Return the ResultEvent for the given index
      * @param index of the ResultEvent to return
      * @return {@link ResultEvent} whose index was given
+     *
+     * @deprecated use {@link #getAllResults()} instead, this method will be removed in a future version
      */
+    @Deprecated
 	public ResultEvent getResultEvent(int index);
 
     /**

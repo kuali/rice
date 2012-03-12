@@ -18,7 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupContract;
@@ -41,7 +40,6 @@ import org.kuali.rice.kim.framework.identity.EntityTypeEbo;
 import org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo;
 import org.kuali.rice.kim.framework.identity.affiliation.EntityAffiliationTypeEbo;
 import org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusEbo;
-import org.kuali.rice.kim.framework.identity.email.EntityEmailTypeContractEbo;
 import org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo;
 import org.kuali.rice.kim.framework.identity.employment.EntityEmploymentStatusEbo;
 import org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeEbo;
@@ -335,9 +333,9 @@ public class KimModuleService extends ModuleServiceBase {
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
 		}
-		if(Role.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+		if(RoleBo.class.isAssignableFrom(inquiryBusinessObjectClass)) {
 			return inquiryUrl + KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
-		} else if(Group.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+		} else if(GroupBo.class.isAssignableFrom(inquiryBusinessObjectClass)) {
 			return inquiryUrl + KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
 		} else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
 			return inquiryUrl + KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;

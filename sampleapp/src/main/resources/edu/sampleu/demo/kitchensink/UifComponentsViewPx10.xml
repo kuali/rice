@@ -91,6 +91,25 @@
             <bean parent="Uif-CheckboxControl"/>
           </property>
         </bean>
+
+        <bean parent="GenericTextField" p:label="Field Tooltip" p:required="false" p:propertyName="field1" p:readOnly="false"
+              p:instructionalText="Hover mouse over label or select control to display tooltip">
+          <property name="fieldLabel">
+            <bean parent="Uif-Label">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContentHTML='&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color="#660033"&gt;&lt;a href="http://www.vegabit.com/jquery_bubble_popup_v2/#examples" target="_blank"&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;'/>
+              </property>        
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:onFocusFlag="true" p:tooltipContentHTML="This is a focus event tooltip"/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
       </list>
     </property>
   </bean>

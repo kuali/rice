@@ -105,6 +105,6 @@ still render, but render in a hidden container --%>
 
 <%-- Add Tooltip if the tooltip content is not empty --%>
 <c:if test="${(!empty component.toolTip.tooltipContentHTML)}">
-  <krad:script value="createTooltip('${component.id}', '${component.toolTip.tooltipContentHTML}', ${component.toolTip.componentOptionsJSString}, ${component.toolTip.onFocusFlag});" />
+  <krad:script value="createTooltip('${component.id}', '${component.toolTip.tooltipContentHTML}', ${component.toolTip.templateOptionsJSString}, ${component.toolTip.onFocusFlag});" />
 </c:if>
 

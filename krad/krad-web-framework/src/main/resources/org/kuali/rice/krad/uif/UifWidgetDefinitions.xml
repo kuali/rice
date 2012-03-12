@@ -264,6 +264,7 @@
       <map>
         <entry key="themePath" value="../krad/plugins/tooltip/jquerybubblepopup-theme/"/>
         <entry key="themeName" value="black"/>
+        <entry key="selectable" value="true"/>
       </map>
     </property>
     <property name="helpTemplateOptions">

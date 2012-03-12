@@ -33,29 +33,17 @@ package org.kuali.rice.kns.datadictionary.validation;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.uif.RemotableAttributeFieldContract;
-import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.doctype.DocumentType;
-import org.kuali.rice.kew.api.doctype.DocumentTypeService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.comparator.StringValueComparator;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
@@ -66,27 +54,30 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
-import javax.jws.WebParam;
 import java.beans.PropertyDescriptor;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * An abstract base class for type service implementations which provides default validation of attributes from the Data
+ * <p>An abstract base class for type service implementations which provides default validation of attributes from the Data
  * Dictionary.  It attempts to remain module independent by leaving the translation of the attribute definitions to a
  * generic format that includes the required {@link RemotableAttributeField}s as an unimplemented template method,
  * see{@link #getTypeAttributeDefinitions(String)}.
+ * </p>
+ * <p>Note that any {@link RemotableAttributeError}s returned from here should be fully resolved to the messages to be
+ * displayed to the user (in other words, they should not contain error keys).  <b>The same approach should be taken by
+ * subclasses since the message resources may not be present on the remote server that is invoking this service</b>.
+ * There is a {@link #createErrorString(String, String...)} utility method that can be used to resolve
+ * errorKeys and format them appropriately.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeService*/ {
+public abstract class AttributeValidatingTypeServiceBase {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AttributeValidatingTypeServiceBase.class);
     private static final String ANY_CHAR_PATTERN_S = ".*";
@@ -99,20 +90,41 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
     /**
      * Retrieves active type attribute definitions and translates them into a module-independent representation.  Note
      * that they should be returned in the order desired for display.
-     * @param typeId
+     *
+     * @param typeId the identifier for the type
      * @return a correctly ordered List of active, module-independent type attribute definitions
      */
     protected abstract List<TypeAttributeDefinition> getTypeAttributeDefinitions(String typeId);
 
+    /**
+     * Validates an attribute that is *not* mapped to a data dictionary component via
+     * {@link TypeAttributeDefinition#componentName} and {@link TypeAttributeDefinition#name}.
+     *
+     * @param attr the RemotableAttributeField for which to validate.
+     * @param key the attribute name
+     * @param value the attribute value
+     * @return a List of {@link RemotableAttributeError}s with fully resolved error messages (not error keys).  May
+     * return null or an empty List if no errors are encountered.
+     */
     protected abstract List<RemotableAttributeError>
     validateNonDataDictionaryAttribute(RemotableAttributeField attr, String key, String value);
 
 
 
     /**
-     * This is the default implementation.  It calls into the service for each attribute to
+     * <p>This is the default implementation.  It calls into the service for each attribute to
      * validate it there.  No combination validation is done.  That should be done
-     * by overriding this method.
+     * by overriding this method.</p>
+     * <p>This implementation calls {@link #getTypeAttributeDefinitions(String)} to retrieve module-agnostic 
+     * representations.  It then iterates through the entry set of attributes, and calls 
+     * {@link #validateNonDataDictionaryAttribute(org.kuali.rice.core.api.uif.RemotableAttributeField, String, String)} 
+     * or {@link #validateDataDictionaryAttribute(org.kuali.rice.kns.datadictionary.validation.AttributeValidatingTypeServiceBase.TypeAttributeDefinition, String, String)}
+     * as appropriate.  Lastly it calls {@link #validateReferencesExistAndActive(java.util.Map, java.util.Map, java.util.List)}.
+     * </p>
+     *
+     * @param typeId the identifier for the type
+     * @param attributes the Map of attribute names to values
+     * @return the List of errors ({@link RemotableAttributeError}s) encountered during validation.
      */
     public List<RemotableAttributeError> validateAttributes(String typeId, Map<String, String> attributes) {
 
@@ -168,11 +180,27 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
         return typeAttributeDefinitionMap;
     }
 
-
-    //
-    // Here there be dragons -- adapted from DataDictionaryTypeServiceBase, please excuse X-.
-    //
+    /**
+     * <p>Cross-validates referenced components amongst attributes to ensure they refer to existing and active
+     * business objects.</p>
+     * <p>This implementation instantiates any components mapped by attributes, populates them as best it can, and then
+     * uses the {@link DataDictionaryService} to get relationship information.  Then, through the
+     * {@link DictionaryValidationService} it attempts to ensure that any referenced business objects mapped by other
+     * attributes exist and are active.  It pulls any errors encountered out of the global error map via calls to 
+     * {@link #extractErrorsFromGlobalVariablesErrorMap(String)}</p>
+     * <p>TODO: who can explain this? :-)</p>
+     *
+     * @param typeAttributeDefinitionMap a Map from attribute name to {@link TypeAttributeDefinition} containing all of
+     * the attribute definitions for this type.
+     * @param attributes the Map of attribute names to values
+     * @param previousValidationErrors a List of previously encountered errors used to short circuit testing on
+     * attributes that are already known to have errors.
+     * @return the List of errors encountered. Cannot return null.
+     */
 	protected List<RemotableAttributeError> validateReferencesExistAndActive( Map<String, TypeAttributeDefinition> typeAttributeDefinitionMap, Map<String, String> attributes, List<RemotableAttributeError> previousValidationErrors) {
+        //
+        // Here there be dragons -- adapted from DataDictionaryTypeServiceBase, please excuse X-.
+        //
 
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
@@ -252,11 +280,122 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
 		return errors;
 	}
 
-    protected List<RemotableAttributeError> validateAttributeRequired(RemotableAttributeField field, String objectClassName, String attributeName, Object attributeValue, String errorKey) {
+    /**
+     * <p>Returns a String suitable for use in error messages to represent the given attribute.</p>
+     * <p>This implementation returns a String of the format "longLabel (shortLabel)" where those fields are pulled
+     * from the passed in definition.</p>
+     *
+     * @param definition the definition for which to create an error label.
+     * @return the error label String.
+     */
+    protected static String getAttributeErrorLabel(RemotableAttributeField definition) {
+        String longAttributeLabel = definition.getLongLabel();
+        String shortAttributeLabel = definition.getShortLabel();
+
+        return longAttributeLabel + " (" + shortAttributeLabel + ")";
+    }
+
+    /**
+     * <p>creates an error String from the given errorKey and parameters.</p>
+     * <p>This implementation will attempt to resolve the errorKey using the {@link ConfigurationService}, and format it
+     * with the provided params using {@link MessageFormat#format(String, Object...)}.  If the errorKey can't be
+     * resolved, it will return a string like the following: errorKey:param1;param2;param3;
+     * </p>
+     *
+     * @param errorKey the errorKey
+     * @param params the error params
+     * @return error string
+     */
+    protected String createErrorString(String errorKey, String... params) {
+
+        String errorString = getConfigurationService().getPropertyValueAsString(errorKey);
+        if (StringUtils.isEmpty(errorString)) {
+            final StringBuilder s = new StringBuilder(errorKey).append(':');
+            if (params != null) {
+                for (String p : params) {
+                    if (p != null) {
+                        s.append(p);
+                        s.append(';');
+                    }
+                }
+            }
+            errorString = s.toString();
+        } else {
+            errorString = MessageFormat.format(errorString, params);
+        }
+        return errorString;
+    }
+
+    /**
+     * <p>Validates a data dictionary mapped attribute for a primitive property.</p>
+     * <p>This implementation checks that the attribute is defined using the {@link DataDictionaryService} if it is
+     * from a specific set of types defined in TypeUtils.  Then, if the value is not blank, it checks for errors by
+     * calling
+     * {@link #validateAttributeFormat(org.kuali.rice.core.api.uif.RemotableAttributeField, String, String, String, String)}.
+     * If it is blank, it checks for errors by calling
+     * {@link #validateAttributeRequired(org.kuali.rice.core.api.uif.RemotableAttributeField, String, String, Object, String)}
+     * .</p>
+     *
+     * @param typeAttributeDefinition the definition for the attribute
+     * @param componentName the data dictionary component name
+     * @param object the instance of the component
+     * @param propertyDescriptor the descriptor for the property that the attribute maps to
+     * @return a List of errors ({@link RemotableAttributeError}s) encountered during validation.  Cannot return null.
+     */
+    protected List<RemotableAttributeError> validatePrimitiveAttributeFromDescriptor (
+            TypeAttributeDefinition typeAttributeDefinition, String componentName, Object object,
+            PropertyDescriptor propertyDescriptor) {
+
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+        // validate the primitive attributes if defined in the dictionary
+        if (null != propertyDescriptor
+                && getDataDictionaryService().isAttributeDefined(componentName, propertyDescriptor.getName())) {
+
+            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+            Class<?> propertyType = propertyDescriptor.getPropertyType();
+
+            if (TypeUtils.isStringClass(propertyType)
+                    || TypeUtils.isIntegralClass(propertyType)
+                    || TypeUtils.isDecimalClass(propertyType)
+                    || TypeUtils.isTemporalClass(propertyType)) {
+
+                // check value format against dictionary
+                if (value != null && StringUtils.isNotBlank(value.toString())) {
+                    if (!TypeUtils.isTemporalClass(propertyType)) {
+                        errors.addAll(validateAttributeFormat(typeAttributeDefinition.getField(), componentName,
+                                propertyDescriptor.getName(), value.toString(), propertyDescriptor.getName()));
+                    }
+                } else {
+                	// if it's blank, then we check whether the attribute should be required
+                    errors.addAll(validateAttributeRequired(typeAttributeDefinition.getField(), componentName,
+                            propertyDescriptor.getName(), value, propertyDescriptor.getName()));
+                }
+            }
+        }
+        return errors;
+    }
+
+
+    /**
+     * <p>Validates required-ness of an attribute against its corresponding value</p>
+     * <p>This implementation checks if an attribute value is null or blank, and if so checks if the
+     * {@link RemotableAttributeField} is required.  If it is, a {@link RemotableAttributeError} is created
+     * with the message populated by a call to {@link #createErrorString(String, String...)}.</p>
+     *
+     * @param field the field for the attribute being tested
+     * @param objectClassName the class name for the component
+     * @param attributeName the name of the attribute
+     * @param attributeValue the value of the attribute
+     * @param errorKey the errorKey used to identify the field
+     * @return the List of errors ({@link RemotableAttributeError}s) encountered during validation.  Cannot return null.
+     */
+    protected List<RemotableAttributeError> validateAttributeRequired(RemotableAttributeField field,
+            String objectClassName, String attributeName, Object attributeValue, String errorKey) {
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         // check if field is a required field for the business object
 
-        if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
+        if (attributeValue == null
+                || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
 
             boolean required = field.isRequired();
             if (required) {
@@ -270,69 +409,32 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
         return errors;
     }
 
-    protected static String getAttributeErrorLabel(RemotableAttributeField definition) {
-        String longAttributeLabel = definition.getLongLabel();
-        String shortAttributeLabel = definition.getShortLabel();
-
-        return longAttributeLabel + " (" + shortAttributeLabel + ")";
-    }
-
-    /** will create a string like the following:
-     * errorKey:param1;param2;param3;
-     *
-     * @param errorKey the errorKey
-     * @param params the error params
-     * @return error string
+    /**
+     * <p>Gets the validation {@link Pattern} for the given {@link RemotableAttributeField}.</p>
+     * <p>This implementation checks if there is a regexConstraint set on the field, and if so
+     * it compiles a Pattern (with no special flags) using it.  Otherwise, it returns a pattern that
+     * always matches.</p>
+     * 
+     * @param field the field for which to return a validation {@link Pattern}.
+     * @return the compiled {@link Pattern} to use in validation the given field.
      */
-    protected static String createErrorString(String errorKey, String... params) {
-        final StringBuilder s = new StringBuilder(errorKey).append(':');
-        if (params != null) {
-            for (String p : params) {
-                if (p != null) {
-                    s.append(p);
-                    s.append(';');
-                }
-            }
-        }
-        return s.toString();
-    }
-
-	protected List<RemotableAttributeError> validateDataDictionaryAttribute(TypeAttributeDefinition typeAttributeDefinition, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
-		return validatePrimitiveFromDescriptor(typeAttributeDefinition.getField(), entryName, object, propertyDescriptor);
-	}
-
-    protected List<RemotableAttributeError> validatePrimitiveFromDescriptor(RemotableAttributeField field, String entryName, Object object, PropertyDescriptor propertyDescriptor) {
-        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
-        // validate the primitive attributes if defined in the dictionary
-        if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
-            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
-            Class<?> propertyType = propertyDescriptor.getPropertyType();
-
-            if (TypeUtils.isStringClass(propertyType) || TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) || TypeUtils.isTemporalClass(propertyType)) {
-
-                // check value format against dictionary
-                if (value != null && StringUtils.isNotBlank(value.toString())) {
-                    if (!TypeUtils.isTemporalClass(propertyType)) {
-                        errors.addAll(validateAttributeFormat(field, entryName, propertyDescriptor.getName(), value.toString(), propertyDescriptor.getName()));
-                    }
-                }
-                else {
-                	// if it's blank, then we check whether the attribute should be required
-                    errors.addAll(validateAttributeRequired(field, entryName, propertyDescriptor.getName(), value, propertyDescriptor.getName()));
-                }
-            }
-        }
-        return errors;
-    }
-
     protected Pattern getAttributeValidatingExpression(RemotableAttributeField field) {
         if (field == null || StringUtils.isBlank(field.getRegexConstraint())) {
             return ANY_CHAR_PATTERN;
         }
 
         return Pattern.compile(field.getRegexConstraint());
-     }
+    }
 
+    /**
+     * <p>Gets a {@link Formatter} appropriate for the data type of the given field.</p>
+     * <p>This implementation returns null if {@link org.kuali.rice.core.api.uif.RemotableAttributeField#getDataType()} 
+     * returns null.  Otherwise, it returns the result of calling {@link Formatter#getFormatter(Class)} on the
+     * {@link org.kuali.rice.core.api.uif.DataType}'s type</p>
+     *
+     * @param field the field for which to provide a {@link Formatter}.
+     * @return an applicable {@link Formatter}, or null if one can't be found.
+     */
 	protected Formatter getAttributeFormatter(RemotableAttributeField field) {
         if (field.getDataType() == null) {
             return null;
@@ -341,6 +443,24 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
         return Formatter.getFormatter(field.getDataType().getType());
     }
 
+    /**
+     * <p>Validates the format of the value for the given attribute field.</p>
+     * <p>This implementation checks if the attribute value is not blank, in which case it checks (as applicable) the
+     * max length, min length, min value, max value, and format (using the {@link Pattern} returned by
+     * {@link #getAttributeValidatingExpression(org.kuali.rice.core.api.uif.RemotableAttributeField)}).  If that doesn't
+     * match, it will use the Formatter returned by
+     * {@link #getAttributeFormatter(org.kuali.rice.core.api.uif.RemotableAttributeField)} to format the value and try
+     * matching against it again.  For each format error that is found,
+     * {@link #createErrorString(String, String...)} is called to prepare the text for the
+     * {@link RemotableAttributeError} that is generated.
+     *
+     * @param field the field for the attribute whose value we are validating
+     * @param objectClassName the name of the class to which the attribute belongs
+     * @param attributeName the name of the attribute
+     * @param attributeValue the String value whose format we are validating
+     * @param errorKey the name of the property on the object class that this attribute maps to
+     * @return a List containing any errors ({@link RemotableAttributeError}s) that are detected.
+     */
     protected List<RemotableAttributeError> validateAttributeFormat(RemotableAttributeField field, String objectClassName, String attributeName, String attributeValue, String errorKey) {
     	List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
@@ -357,6 +477,12 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
                         createErrorString(RiceKeyConstants.ERROR_MAX_LENGTH, errorLabel, maxLength.toString())).build());
                 return errors;
             }
+            Integer minLength = field.getMinLength();
+            if ((minLength != null) && (minLength.intValue() > attributeValue.length())) {
+                errors.add(RemotableAttributeError.Builder.create(errorKey,
+                        createErrorString(RiceKeyConstants.ERROR_MIN_LENGTH, errorLabel, minLength.toString())).build());
+                return errors;
+            }
             Pattern validationExpression = getAttributeValidatingExpression(field);
             if (!ANY_CHAR_PATTERN_S.equals(validationExpression.pattern())) {
             	if ( LOG.isDebugEnabled() ) {
@@ -371,9 +497,7 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
                         isError = !validationExpression.matcher(String.valueOf(o)).matches();
                     }
                     if (isError) {
-                        // if createErrorString is abstracted or externalized, need to do it here too in place of
-                        // field.getRegexConstraintMsg()
-                        errors.add(RemotableAttributeError.Builder.create(errorKey, field.getRegexContraintMsg())
+                        errors.add(RemotableAttributeError.Builder.create(errorKey, createErrorString(field.getRegexContraintMsg(), errorLabel))
                                 .build());
                     }
                     return errors;
@@ -412,27 +536,30 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
 
 
     /**
-     * will create a list of errors in the following format:
+     * <p>Removes all errors for the given attributeName from the global error map, transforms them as appropriate and
+     * returns them as a List of Strings.</p>
+     * <p>This implementation iterates through any errors found in the error map, transforms them by calling
+     * {@link #createErrorString(String, String...)} and adds them to the List that is then returned</p>
      *
-     * error_key:param1;param2;param3;
+     * @param attributeName the attribute name for which to extract errors from the global error map.
+     * @return a List of error Strings
      */
 	protected List<String> extractErrorsFromGlobalVariablesErrorMap(String attributeName) {
 		Object results = GlobalVariables.getMessageMap().getErrorMessagesForProperty(attributeName);
 		List<String> errors = new ArrayList<String>();
         if (results instanceof String) {
-        	errors.add((String)results);
+        	errors.add(createErrorString((String) results));
         } else if ( results != null) {
         	if (results instanceof List) {
 	        	List<?> errorList = (List<?>)results;
 	        	for (Object msg : errorList) {
 	        		ErrorMessage errorMessage = (ErrorMessage)msg;
-	        		errors.add(DataDictionaryTypeServiceHelper.createErrorString(errorMessage.getErrorKey(),
-                            errorMessage.getMessageParameters()));
+	        		errors.add(createErrorString(errorMessage.getErrorKey(), errorMessage.getMessageParameters()));
 				}
 	        } else {
 	        	String [] temp = (String []) results;
 	        	for (String string : temp) {
-					errors.add(string);
+					errors.add(createErrorString(string));
 				}
 	        }
         }
@@ -440,7 +567,20 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
         return errors;
 	}
 
-
+    /**
+     * <p>Validates the attribute value for the given {@link TypeAttributeDefinition} having a componentName.</p>
+     * <p>This implementation instantiates a component object using reflection on the class name specified in the
+     * {@link TypeAttributeDefinition}s componentName, gets a {@link PropertyDescriptor} for the attribute of the
+     * component object, hydrates the attribute's value from it's String form, sets that value on the component object,
+     * and then delegates to
+     * {@link #validatePrimitiveAttributeFromDescriptor(org.kuali.rice.kns.datadictionary.validation.AttributeValidatingTypeServiceBase.TypeAttributeDefinition, String, Object, java.beans.PropertyDescriptor)}.
+     * </p>
+     *
+     * @param typeAttributeDefinition
+     * @param attributeName
+     * @param value
+     * @return
+     */
     protected List<RemotableAttributeError> validateDataDictionaryAttribute(TypeAttributeDefinition typeAttributeDefinition, String attributeName, String value) {
 		try {
             // create an object of the proper type per the component
@@ -453,7 +593,7 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
                     // set the value on the object so that it can be checked
                     Object attributeValue = getAttributeValue(propertyDescriptor, value);
                     propertyDescriptor.getWriteMethod().invoke( componentObject, attributeValue);
-                    return validateDataDictionaryAttribute(typeAttributeDefinition,
+                    return validatePrimitiveAttributeFromDescriptor(typeAttributeDefinition,
                             typeAttributeDefinition.getComponentName(), componentObject, propertyDescriptor);
                 }
             }
@@ -465,13 +605,22 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
 
     private Object getAttributeValue(PropertyDescriptor propertyDescriptor, String attributeValue){
         Object attributeValueObject = null;
-        if(propertyDescriptor!=null && attributeValue!=null){
+        if (propertyDescriptor!=null && attributeValue!=null) {
             Class<?> propertyType = propertyDescriptor.getPropertyType();
-            if (String.class.equals(propertyType)){
-                attributeValueObject = KRADUtils
-                        .createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
-            } else {
+            if (String.class.equals(propertyType)) {
+                // it's already a String
                 attributeValueObject = attributeValue;
+            } // KULRICE-6808: Kim Role Maintenance - Custom boolean role qualifier values are not being converted properly
+            else if (Boolean.class.equals(propertyType) || Boolean.TYPE.equals(propertyType)) {
+                attributeValueObject = Truth.strToBooleanIgnoreCase(attributeValue);
+            } else {
+                // try to create one with KRADUtils for other misc data types
+                attributeValueObject = KRADUtils.createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
+                // if that didn't work, we'll get a null back
+                if (attributeValueObject == null ) {
+                    // this doesn't seem like a great option, since we know the property isn't of type String
+                    attributeValueObject = attributeValue;
+                }
             }
         }
         return attributeValueObject;
@@ -505,6 +654,15 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
 
     protected DataDictionaryRemoteFieldService getDataDictionaryRemoteFieldService() {
         return DataDictionaryRemoteFieldServiceHolder.dataDictionaryRemoteFieldService;
+    }
+
+    // lazy initialization holder class
+    private static class ConfigurationServiceHolder {
+        public static ConfigurationService configurationService = KRADServiceLocator.getKualiConfigurationService();
+    }
+    
+    protected ConfigurationService getConfigurationService() {
+        return ConfigurationServiceHolder.configurationService;
     }
 
 
@@ -541,6 +699,8 @@ public abstract class AttributeValidatingTypeServiceBase /*implements KimTypeSer
          * @param name the name for this attribute.  Must not be empty or null.
          * @param componentName The name of a data dictionary component that this field refers to. May be null.
          * @param label The label to use for this attribute.  May be null.
+         * @param properties a catch all for properties important to a module's type attrbute definitions
+         * that aren't directly supported by {@link TypeAttributeDefinition}.
          */
         public TypeAttributeDefinition(RemotableAttributeField field, String name, String componentName, String label, Map<String, String> properties) {
             if (field == null) throw new RiceIllegalArgumentException("field must not be null");

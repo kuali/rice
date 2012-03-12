@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
 
 /**
  * <p>An abstract base class for type service implementations which provides default validation of attributes from the Data
- * Dictionary.  It attempts to remain module independent by leaving the translation of the attribute definitions to a
+ * Dictionary.  It attempts to remain module independent by requiring the translation of the attribute definitions to a
  * generic format that includes the required {@link RemotableAttributeField}s as an unimplemented template method,
  * see{@link #getTypeAttributeDefinitions(String)}.
  * </p>

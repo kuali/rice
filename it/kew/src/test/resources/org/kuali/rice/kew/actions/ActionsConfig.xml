@@ -715,6 +715,7 @@
     <documentType>
       <name>AdhocRouteTest-PriorityParallel</name>
       <docHandler>_blank</docHandler>
+      <label>AdhocRouteTest-PriorityParallel</label>
       <routePaths>
         <routePath>
           <start name="AdHoc" />

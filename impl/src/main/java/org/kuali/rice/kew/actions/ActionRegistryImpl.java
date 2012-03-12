@@ -126,32 +126,7 @@ public class ActionRegistryImpl implements ActionRegistry {
 		}
 	}
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.actions.ActionValidationService#getValidActions(org.kuali.rice.kew.user.WorkflowUser, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)
-     */
-    public ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException {
-    	ValidActions validActions = new ValidActions();
-    	ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
-    	for ( ActionRequestValue ar : document.getActionRequests() ) {
-    		if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator()) && StringUtils.equals( ar.getStatus(), ActionRequestStatus.ACTIVATED.getCode() ) ) {
-    			activeRequests.add(ar);
-    		}
-    	}
-    	for (String actionTakenCode : actionMap.keySet())
-    	{
-    		List<DataDefinition> parameters = new ArrayList<DataDefinition>();
-    		parameters.add(new DataDefinition(document));
-    		parameters.add(new DataDefinition(principal));
-    		ActionTakenEvent actionEvent = createAction(actionTakenCode, parameters);
-    		if (StringUtils.isEmpty(actionEvent.validateActionRules(activeRequests)))
-    		{
-    			validActions.addActionTakenCode(actionTakenCode);
-    		}
-    	}
-    	return validActions;
-    }
-    
-    public org.kuali.rice.kew.api.action.ValidActions getNewValidActions(PrincipalContract principal, DocumentRouteHeaderValue document) {
+    public org.kuali.rice.kew.api.action.ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document) {
     	try {
     		org.kuali.rice.kew.api.action.ValidActions.Builder builder = org.kuali.rice.kew.api.action.ValidActions.Builder.create();
     		List<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();

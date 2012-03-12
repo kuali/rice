@@ -332,7 +332,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     protected ValidActions determineValidActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
         Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-        return KEWServiceLocator.getActionRegistry().getNewValidActions(principal, documentBo);
+        return KEWServiceLocator.getActionRegistry().getValidActions(principal, documentBo);
     }
 
     @Override

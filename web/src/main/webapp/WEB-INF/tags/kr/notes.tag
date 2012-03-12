@@ -100,7 +100,7 @@
                         <c:set var="finderClass" value="${fn:replace(attachmentTypesValuesFinderClass,'.','|')}"/>
                         <td class="infoline">
                             <html:select property="newNote.attachment.attachmentTypeCode">
-                                <html:optionsCollection property="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" label="label" value="key"/>
+                                <html:optionsCollection property="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" label="value" value="key"/>
                             </html:select>
                         </td>
                      </c:if>
@@ -109,7 +109,7 @@
                      </c:if>
                      <td class="infoline"><div align="center"><html:image property="methodToCall.insertBONote" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Add a Note" title="Add a Note" styleClass="tinybutton"/></div></td>	 
 			       </tr>
-			   </c:if>   
+			   </c:if>
 
   <c:forEach var="note" items="${documentNotes}" varStatus="status">
 

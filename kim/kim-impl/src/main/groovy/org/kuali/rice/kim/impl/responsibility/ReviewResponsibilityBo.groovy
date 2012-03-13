@@ -42,7 +42,11 @@ class ReviewResponsibilityBo extends ResponsibilityBo {
     public void loadFromKimResponsibility(ResponsibilityBo resp) {
         resp.metaClass.properties.each {
             if (this.metaClass.respondsTo(this, MetaProperty.getSetterName(it.name))) {
-                this.setProperty(it.name, resp.getProperty(it.name))
+                try {
+                    this.setProperty(it.name, resp.getProperty(it.name))
+                } catch (IllegalArgumentException iae) {
+                    throw new IllegalArgumentException("setProperty exception. type=" + it.type + " name=" + it.name + " : "+ iae.getMessage(), iae);
+                }
             }
         }
 

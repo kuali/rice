@@ -58,6 +58,13 @@
 
   <bean id="miscGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
     <property name="title" value="Various configuration and feature examples"/>
+    <property name="header">
+      <bean parent="Uif-SectionHeader">
+        <property name="toolTip">
+          <bean parent="Uif-Tooltip" p:tooltipContentHTML="This is header tooltip"/>
+        </property>
+      </bean>
+    </property>
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"

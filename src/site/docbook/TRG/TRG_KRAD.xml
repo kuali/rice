@@ -799,7 +799,30 @@
             instructions for setting up a Rice project, include assumptions for what is already done
             and not covered in the instructions, such as setting up all else needed for development
             environment - what are pre-reqs, what are co-reqs, etc..)</para>
-        
+        <section>
+            <title>Configure Rice without KRAD (KNS Only)</title>
+            <para>In some cases it may be desireable to only use the KNS without KRAD. For example if you're timelines push a conversion to KRAD out into the future, you may
+            see some beneifts with startup performance and with memory usage.</para>
+            <para>You can override the kradApplicationModuleConfiguration bean to not include any of the files in the UIF folder. That is, you only need to include these files:</para>
+            <programlisting>
+&lt;property name="dataDictionaryPackages">
+&lt;list>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml&lt;/value>
+&lt;value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml&lt;/value>
+&lt;/list>
+&lt;/property>
+            </programlisting>
+            <para>Likewise, this can be done for the ‘baselinePackages’ property on the dataDictionaryService bean.</para>
+        </section>
         <section>
             <title>Creating the KRAD database tables / connections to data?</title>
             <para/>

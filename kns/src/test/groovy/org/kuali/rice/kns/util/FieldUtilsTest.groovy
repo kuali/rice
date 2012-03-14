@@ -148,6 +148,18 @@ class FieldUtilsTest {
         }
     }
 
+    @Test
+    void testConvertCurrencyField() {
+        Field field = new Field("currencyField", "field with currency control");
+        field.setFieldType(Field.CURRENCY);
+        field.setSize(6);
+        field.setFormattedMaxLength(8);
+        field.setMaxLength(6);
+        
+        RemotableAttributeField remoteField = FieldUtils.convertFieldToAttributeField(field);
+        Field newField = FieldUtils.convertRemotableAttributeField(remoteField);
+    }
+
 //    protected displayRows(List<Row> rows) {
 //        rows.each {
 //            it.fields.each {

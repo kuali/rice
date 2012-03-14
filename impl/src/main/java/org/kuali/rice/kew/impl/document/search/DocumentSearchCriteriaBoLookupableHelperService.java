@@ -27,6 +27,8 @@ import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
@@ -67,6 +69,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -846,7 +849,15 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 wrapDocumentAttributeColumnName(customColumn);
                 // list moving forward if the attribute has more than one value
                 Formatter formatter = customColumn.getFormatter();
-                customColumn.setPropertyValue(formatter.format(documentAttribute.getValue()).toString());
+                Object attributeValue = documentAttribute.getValue();
+                if (formatter.getPropertyType().equals(KualiDecimal.class)
+                        && documentAttribute.getValue() instanceof BigDecimal) {
+                    attributeValue = new KualiDecimal((BigDecimal)attributeValue);
+                } else if (formatter.getPropertyType().equals(KualiPercent.class)
+                        && documentAttribute.getValue() instanceof BigDecimal) {
+                    attributeValue = new KualiPercent((BigDecimal)attributeValue);
+                }
+                customColumn.setPropertyValue(formatter.format(attributeValue).toString());
             }
         }
     }

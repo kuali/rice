@@ -41,6 +41,7 @@ import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.web.format.CurrencyFormatter;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -1508,10 +1509,32 @@ public final class FieldUtils {
         } else {
             //this ain't right....
             Field tempField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
+            if (remotableAttributeField.getMaxLength() != null) {
+                tempField.setMaxLength(remotableAttributeField.getMaxLength());
+            }
+            //List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
 
             if (remotableAttributeField.getShortLabel() != null) {
                 tempField.setFieldLabel(remotableAttributeField.getShortLabel());
             }
+
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                tempField.setFieldDataType(remotableAttributeField.getDataType().getType().getName().toLowerCase());
+            } else {
+                tempField.setFieldDataType(DataType.FLOAT.getType().getName().toLowerCase());
+            }
+
+            tempField.setMainFieldLabel(remotableAttributeField.getLongLabel());
+            tempField.setFieldHelpSummary(remotableAttributeField.getHelpSummary());
+            tempField.setUpperCase(remotableAttributeField.isForceUpperCase());
+            if (remotableAttributeField.getMaxLength() != null) {
+                if (remotableAttributeField.getMaxLength().intValue() > 0) {
+                    tempField.setMaxLength(remotableAttributeField.getMaxLength().intValue());
+                } else {
+                    tempField.setMaxLength(100);
+                }
+            }
+            tempField.setFieldRequired(remotableAttributeField.isRequired());
 
             fields.add(tempField);
         }
@@ -1542,7 +1565,6 @@ public final class FieldUtils {
 
         List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
         builder.setDataType(DataType.valueOf(field.getFieldDataType().toUpperCase()));
-        
         builder.setShortLabel(field.getFieldLabel());
         builder.setLongLabel(field.getMainFieldLabel());
         builder.setHelpSummary(field.getFieldHelpSummary());
@@ -1550,7 +1572,11 @@ public final class FieldUtils {
         //builder.setHelpDescription();
         builder.setForceUpperCase(field.isUpperCase());
         //builder.setMinLength()
-        builder.setMaxLength(new Integer(field.getMaxLength()));
+        if (field.getMaxLength() > 0) {
+            builder.setMaxLength(new Integer(field.getMaxLength()));
+        } else {
+            builder.setMaxLength(new Integer(100));
+        }
         //builder.setMinValue();
         //builder.setMaxValue();
         //builder.setRegexConstraint(field.);
@@ -1565,6 +1591,10 @@ public final class FieldUtils {
             quickfinder.setFieldConversions(toMap(field.getFieldConversions()));
             quickfinder.setLookupParameters(toMap(field.getLookupParameters()));
             widgets.add(quickfinder);
+        }
+        if (field.getFieldType().equals(Field.CURRENCY)) {
+            builder.setDataType(DataType.CURRENCY);
+            builder.setMaxLength(field.getFormattedMaxLength());
         }
         if (field.isDatePicker()) {
             widgets.add(RemotableDatepicker.Builder.create());
@@ -1612,6 +1642,10 @@ public final class FieldUtils {
             RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
             control.setMultiple(true);
             return control;
+        } else if (Field.CURRENCY.equals(type)) {
+            RemotableTextInput.Builder control = RemotableTextInput.Builder.create();
+            control.setSize(field.getSize());
+            return control;
         } else {
 		    throw new IllegalArgumentException("Illegal field type found: " + type);
         }
@@ -1628,7 +1662,10 @@ public final class FieldUtils {
         if (control == null || control instanceof RemotableTextInput) {
             fieldType = Field.TEXT;
             if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
-                field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+              field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            }
+            if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
+                field.setFormattedMaxLength(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
             }
         } else if (control instanceof RemotableCheckboxGroup) {
             RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
@@ -1756,7 +1793,7 @@ public final class FieldUtils {
                 column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
             }
         }  else {
-         column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+            column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
         }
 
         return column;

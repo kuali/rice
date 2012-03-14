@@ -447,13 +447,25 @@
                                 the new KEW services that was added in Rice 2.0.</para>
                         </listitem>
                     </itemizedlist></para>
-                <para>
-                    <caution><para><code>WorkflowDocument.returnToPreviousNode</code> method takes in two String arguments nodeName and annotation. 
-                        The order in which these arguments are expected has been reversed in 2.0.  This has been fixed in the upcoming 
-                        Rice 2.0.1 release. [<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6863'>KULRICE-6863</link>]
-                    </para></caution>
-                </para>
-            </section>
+            </section>                
+                <section>
+                <title>WorkflowDocument.returnToPreviousNode Signature Updates</title>
+                <para>With 2.0, the exiting method singature for
+                        <code>WorkflowDocument.returnToPreviousNode</code> takes in two String
+                    arguments of nodeName and annotation, was mistakenly reversed. This has been
+                    fixed in the upcoming Rice 2.0.1 release with [<link xlink:show="new"
+                        xlink:href="https://jira.kuali.org/browse/KULRICE-6863">KULRICE-6863</link>]
+                    by setting the method back to<code>void returnToPreviousNode(String annotation,
+                        String nodeName);</code>
+                </para><para>Additionally, Rice 2.0 introduced a new <code>WorkflowDocument.returnToPreviousNode</code>
+                    that has the signature of <code>void returnToPreviousNode(ReturnPoint
+                        returnPoint, String annotation);</code> To keep the signature consistent
+                    with the String, String version, this has also been updated in 2.0.1 to be
+                        <code>void returnToPreviousNode(String annotation, ReturnPoint
+                        returnPoint);</code> Early adopters of 2.0 that may have implemented the new
+                    method will need to be sure to update any calls to this new method.</para>
+                </section>
+
             <section>
                 <title>Document Search</title>
                 <para>One of the major KEW framework refactorings that was undertaken for Rice 2.0

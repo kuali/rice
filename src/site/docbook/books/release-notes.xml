@@ -447,6 +447,12 @@
                                 the new KEW services that was added in Rice 2.0.</para>
                         </listitem>
                     </itemizedlist></para>
+                <para>
+                    <caution><para><code>WorkflowDocument.returnToPreviousNode</code> method takes in two String arguments nodeName and annotation. 
+                        The order in which these arguments are expected has been reversed in 2.0.  This has been fixed in the upcoming 
+                        Rice 2.0.1 release. [<link xlink:show="new" xlink:href='https://jira.kuali.org/browse/KULRICE-6863'>KULRICE-6863</link>]
+                    </para></caution>
+                </para>
             </section>
             <section>
                 <title>Document Search</title>

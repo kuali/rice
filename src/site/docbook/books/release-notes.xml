@@ -1210,7 +1210,6 @@ Done.</programlisting></para>
                                             <para><code>java -jar target/encryption-key-converter-1.0-SNAPSHOT.jar 7IC64w6ksLR</code></para></listitem></orderedlist></listitem>
                             </orderedlist></para>
                             <note><para>The app contains the commons-codec 1.3 inside of the executable so there's no need to grab it elsewhere.</para></note>
-                            <caution><para>This only works if this sample program is using the Base64 class from version 1.3 and not 1.6 of commons-codec!</para></caution>
                 </section>
             </section>
             <section>

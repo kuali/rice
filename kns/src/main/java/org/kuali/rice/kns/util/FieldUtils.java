@@ -1519,7 +1519,7 @@ public final class FieldUtils {
             }
 
             if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
-                tempField.setFieldDataType(remotableAttributeField.getDataType().getType().getName().toLowerCase());
+                tempField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
             } else {
                 tempField.setFieldDataType(DataType.FLOAT.getType().getName().toLowerCase());
             }

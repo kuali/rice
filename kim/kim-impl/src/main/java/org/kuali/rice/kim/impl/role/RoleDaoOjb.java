@@ -571,7 +571,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         Criteria memberSubCrit = new Criteria();
         memberSubCrit.addIn("id", roleIds);
-        //memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "id");
+        memberSubCrit.addEqualToField("id", Criteria.PARENT_QUERY_PREFIX + "id");
         return QueryFactory.newReportQuery(RoleBo.class, memberSubCrit);
 
     }
@@ -634,7 +634,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         Criteria memberSubCrit = new Criteria();
         memberSubCrit.addIn("id", roleIds);
-        //memberSubCrit.addEqualToField("id", Criteria.PARENT_QUERY_PREFIX + "roleId");
+        memberSubCrit.addEqualToField("id", Criteria.PARENT_QUERY_PREFIX + "id");
         return QueryFactory.newReportQuery(RoleBo.class, memberSubCrit);
 
     }
@@ -644,8 +644,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
        //Map<String,String> searchCrit = new HashMap<String, String>();
        final QueryByCriteria.Builder searchCrit = QueryByCriteria.Builder.create();
        for (Entry<String, String> entry : groupCrit.entrySet()) {
-                       if (entry.getKey().equals(KimConstants.AttributeConstants.NAME)) {
-                   searchCrit.setPredicates(equal(entry.getKey(), entry.getValue()));
+                       if (entry.getKey().equals(KimConstants.AttributeConstants.GROUP_NAME)) {
+                   searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAME, entry.getValue()));
                        } else { // the namespace code for the group field is named something besides the default. Set it to the default.
                    searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue()));
 

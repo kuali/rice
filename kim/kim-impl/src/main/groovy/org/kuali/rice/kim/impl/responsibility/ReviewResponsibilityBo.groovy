@@ -45,7 +45,7 @@ class ReviewResponsibilityBo extends ResponsibilityBo {
                 try {
                     this.setProperty(it.name, resp.getProperty(it.name))
                 } catch (IllegalArgumentException iae) {
-                    throw new IllegalArgumentException("setProperty exception. type=" + it.type + " name=" + it.name + " : "+ iae.getMessage(), iae);
+                    throw new IllegalArgumentException("setProperty exception. type=" + it.type + " name=" + it.name + " resp.getProperty(it.name)=" + resp.getProperty(it.name) + " resp.getProperty(it.name) Class=" + resp.getProperty(it.name).getClass() + " : " + iae.getMessage(), iae);
                 }
             }
         }

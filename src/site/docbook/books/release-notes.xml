@@ -1191,9 +1191,13 @@ Done.</programlisting></para>
                 <para><link xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}/impl/src/main/resources/META-INF/common-config-defaults.xml">http://svn.kuali.org/repos/rice/tags/rice-${project.version}/impl/src/main/resources/META-INF/common-config-defaults.xml</link></para>
                 <section>
                     <title>Encryption Key Update in Override Cases</title>
-                    <para>If you override the encryption key, there is an extra step that needs to be done to ensure users have acces to existing workflow documents.  
-                        Due to the move from commons-codec 1.3 to 1.6 in Rice 2.0 and the way the library works in the face of improperly padded base64 strings, 
-                        the encryption.key property of open workflow documents needs to be updated.  We've provided a utility for doing this and it's located here…</para>
+                    <para>If you override the encryption key, there is an extra step that needs to
+                        be done to ensure users have acces to existing workflow documents. Due to
+                        the move from commons-codec 1.3 to 1.6 in Rice 2.0 and the way the library
+                        works in the face of improperly padded base64 strings, the encryption.key
+                        configuration property needs to be updated to ensure that it has the correct
+                        padding.. We've provided a utility for doing this and it's located
+                        here…</para>
                         <para>
                             <link xlink:href="http://svn.kuali.org/repos/rice/tools/encryption-key-converter/trunk">http://svn.kuali.org/repos/rice/tools/encryption-key-converter/trunk</link></para>
                         <para>To run this…

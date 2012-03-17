@@ -25,7 +25,7 @@
     
  --%>
  
-<form:select id="${field.id}" path="${field.bindingInfo.bindingPath}" 
+<form:select id="${control.id}" path="${field.bindingInfo.bindingPath}"
              size="${control.size}" multiple="${control.multiple}"
              cssClass="${control.styleClassesAsString}" disabled="${control.disabled}"
              tabindex="${control.tabIndex}">

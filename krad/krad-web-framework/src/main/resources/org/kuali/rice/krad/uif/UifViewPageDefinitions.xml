@@ -176,7 +176,7 @@
     </property>
     <!-- default set here so page header will always be generated -->
     <property name="title" value="&amp;nbsp;"/>
-    <property name="errorsField">
+    <property name="validationMessages">
       <bean parent="Uif-PageValidationMessages"/>
     </property>
     <property name="header">

@@ -62,7 +62,7 @@ import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.SpaceField;
-import org.kuali.rice.krad.uif.field.ErrorsField;
+import org.kuali.rice.krad.uif.field.ValidationMessages;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
@@ -513,8 +513,8 @@ public class ComponentFactory {
         return control;
     }
 
-    public static ErrorsField getErrorsField() {
-        return (ErrorsField) getNewComponentInstance(ERRORS_FIELD);
+    public static ValidationMessages getErrorsField() {
+        return (ValidationMessages) getNewComponentInstance(ERRORS_FIELD);
     }
 
     public static ActionField getActionField() {

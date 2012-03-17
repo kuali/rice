@@ -158,7 +158,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
             String highlightScript =
-                    "jq(\"#" + container.getId() + "_div > tr:first\").effect(\"highlight\",{}, 6000);";
+                    "jq(\"#" + container.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
             String onReadyScript = collectionGroup.getOnDocumentReadyScript();
             if (StringUtils.isNotBlank(onReadyScript)) {
                 highlightScript = onReadyScript + highlightScript;
@@ -239,7 +239,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			Component sequenceField = null;
             if (!isAddLine) {
                 sequenceField = ComponentUtils.copy(sequenceFieldPrototype, idSuffix);
-
+                //Ignore in validation processing
+                sequenceField.addDataAttribute("vignore", "yes");
                 if (generateAutoSequence && (sequenceField instanceof MessageField)) {
                     ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
                 }

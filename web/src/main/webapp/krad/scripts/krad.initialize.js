@@ -24,12 +24,26 @@ jQuery.blockUI.defaults.overlayCSS = {};
 // validation init
 var pageValidatorReady = false;
 var validateClient = true;
+var messageSummariesShown = false;
+
+var errorImage;
+var warningImage;
+var infoImage;
 
 //sets up the validator with the necessary default settings and methods
 //also sets up the dirty check and other page scripts
 //note the use of onClick and onFocusout for on the fly validation client side
 function setupPage(validate){
 	jq('#kualiForm').dirty_form({changedClass: 'dirty', includeHidden: true});
+
+    errorImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error.png' alt='Error' /> ";
+    warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
+    infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
+
+    messageSummariesShown = false;
+    jq("[data-role='InputField']").each(function(){
+        handleMessagesAtField(jQuery(this).attr('id'));
+    });
 
     validateClient = validate;
 	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
@@ -63,43 +77,74 @@ function setupPage(validate){
             if(validateClient){
                 var valid = jq(element).valid();
                 dependsOnCheck(element, new Array());
-                if((element.type == "select-one" || element.type == "select-multiple") && jq(element).hasClass("valid")){
-                    applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
-                    showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
-                }
             }
 		},
-		wrapper: "li",
+		wrapper: "",
 		highlight: function(element, errorClass, validClass) {
 			jq(element).addClass(errorClass).removeClass(validClass);
             jq(element).attr("aria-invalid", "true");
-			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 1, 0, 0, true);
-			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 1);
 		},
 		unhighlight: function(element, errorClass, validClass) {
 			jq(element).removeClass(errorClass).addClass(validClass);
-            jq(element).attr("aria-invalid", "false");
-			applyErrorColors(getAttributeId(element.id, element.type) + "_errors_div", 0, 0, 0, true);
-			showFieldIcon(getAttributeId(element.id, element.type) + "_errors_div", 0);
+            jq(element).removeAttr("aria-invalid");
 		},
-		errorPlacement: function(error, element) {
-			var id = getAttributeId(element.attr('id'), element[0].type);
-			//check to see if the option to use labels is on
-			if (!jq("#" + id + "_errors_div").hasClass("noLabels")) {
-				var label = getLabel(id);
-				label = jq.trim(label);
-				if (label) {
-					if (label.charAt(label.length - 1) == ":") {
-						label = label.slice(0, -1);
-					}
-					error.find("label").before(label + " - ");
-				}
-			}
-			jq("#" + id + "_errors_div").show();
-			jq("#" + id + "_errors_errorMessages").show();
-			var errorList = jq("#" + id + "_errors_errorMessages ul");
-			error.appendTo(errorList);
-		}
+		errorPlacement: function(error, element) {},
+        showErrors: function (nameErrorMap, elementObjectList) {
+            this.defaultShowErrors();
+
+            for(var i in elementObjectList){
+                var element = elementObjectList[i].element;
+                var message = elementObjectList[i].message;
+                var id = getAttributeId(jQuery(element).attr('id'));
+
+                var data = jQuery("#" + id).data("validationMessages");
+
+                var exists = false;
+                if(data.errors.length){
+                    for(var j in data.errors){
+                        if(data.errors[j] === message){
+                            exists = true;
+                        }
+                    }
+                }
+
+                if(!exists){
+                    data.errors.push(message);
+                    jQuery("#" + id).data("validationMessages", data);
+
+                    if(messageSummariesShown){
+                       handleMessagesAtField(id);
+                    }
+                    else{
+                       writeMessagesAtField(id);
+                    }
+                }
+            }
+
+        },
+        success: function (label) {
+            var htmlFor = jQuery(label).attr('for');
+            var id = "";
+            if(htmlFor.indexOf("_control") >= 0){
+                id = getAttributeId(htmlFor);
+            }
+            else{
+                id = jQuery("[name='" + htmlFor +"']:first").attr("id");
+                id = getAttributeId(id);
+            }
+
+            var data = jQuery("#" + id).data("validationMessages");
+            if(data.errors.length){
+                data.errors = [];
+                jQuery("#" + id).data("validationMessages", data);
+                if(messageSummariesShown){
+                   handleMessagesAtField(id);
+                }
+                else{
+                   writeMessagesAtField(id);
+                }
+            }
+        }
 	});
 
     jq(".required").each(function(){
@@ -110,6 +155,19 @@ function setupPage(validate){
 	pageValidatorReady = true;
 
 	jq.watermark.showAll();
+}
+
+/**
+ * Retrieves the value for a configuration parameter
+ *
+ * @param paramName - name of the parameter to retrieve
+ */
+function getConfigParam(paramName) {
+    var configParams = jq(document).data("ConfigParameters");
+    if (configParams) {
+        return configParams[paramName];
+    }
+    return "";
 }
 
 jQuery.validator.addMethod("minExclusive", function(value, element, param){

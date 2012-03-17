@@ -21,7 +21,7 @@
 
 <c:set var="readOnly" value="${field.readOnly || !field.inputAllowed}"/>
 
-<krad:span component="${field}">
+<krad:div component="${field}">
 
   <krad:fieldLabel field="${field}">
 
@@ -82,6 +82,11 @@
   <!-- placeholder for dynamic field markers -->
   <span id="${field.id}_markers"></span>
 
+  <%-- render error container for field --%>
+  <c:if test="${!readOnly}">
+    <krad:template component="${field.validationMessages}"/>
+  </c:if>
+
   <%-- render field constraint if field is editable --%>
   <c:if test="${!readOnly}">
     <krad:template component="${field.constraintMessageField}"/>
@@ -112,14 +117,13 @@
   <c:forEach items="${field.hiddenPropertyNames}" var="hiddenPropertyName" varStatus="status">
     <form:hidden id="${field.id}_h${status.count}" path="${hiddenPropertyName}"/>
   </c:forEach>
-</krad:span>
 
-<%-- transform all text on attribute field to uppercase --%>
-<c:if test="${!readOnly && field.performUppercase}">
-  <krad:script value="jq('#${field.control.id}').css('text-transform', 'uppercase');"/>
-</c:if>
+  <%-- transform all text on attribute field to uppercase --%>
+  <c:if test="${!readOnly && field.performUppercase}">
+    <krad:script value="jq('#${field.control.id}').css('text-transform', 'uppercase');"/>
+  </c:if>
+</krad:div>
 
-<%-- render error container for field --%>
-<c:if test="${!readOnly && ((empty field.errorsField.alternateContainer) || (!field.errorsField.alternateContainer))}">
-  <krad:template component="${field.errorsField}"/>
-</c:if>
+
+
+

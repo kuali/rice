@@ -33,7 +33,7 @@
         <value>uif-group</value>
       </list>
     </property>
-    <property name="errorsField">
+    <property name="validationMessages">
       <bean parent="Uif-GroupValidationMessages"/>
     </property>
     <property name="disclosure">

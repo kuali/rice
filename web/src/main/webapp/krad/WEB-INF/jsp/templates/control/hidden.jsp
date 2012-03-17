@@ -25,5 +25,5 @@
     
  --%>
 
-<form:hidden id="${field.id}" path="${field.bindingInfo.bindingPath}"
+<form:hidden id="${control.id}" path="${field.bindingInfo.bindingPath}"
              cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"/>

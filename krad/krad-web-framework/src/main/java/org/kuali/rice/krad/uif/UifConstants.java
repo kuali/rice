@@ -90,15 +90,16 @@ public class UifConstants {
 
     public static class IdSuffixes {
         public static final String ADD_LINE = "_add";
+        public static final String CONTROL = "_control";
         public static final String ATTRIBUTE = "_attribute";
         public static final String COMPARE = "_comp";
         public static final String CONSTRAINT = "_constraint";
         public static final String DIRECT_INQUIRY = "_directinquiry";
-        public static final String DIV = "_div";
         public static final String ERRORS = "_errors";
         public static final String INSTRUCTIONAL = "_instructional";
         public static final String LINE = "_line";
         public static final String LABEL = "_label";
+        public static final String FIELDSET = "_fieldset";
         public static final String SUB = "_sub";
         public static final String SUGGEST = "_suggest";
         public static final String QUICK_FINDER = "_quickfinder";

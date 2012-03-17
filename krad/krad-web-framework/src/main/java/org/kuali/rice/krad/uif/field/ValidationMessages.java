@@ -18,8 +18,12 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -35,8 +39,8 @@ import java.util.List;
 
 /**
  * Field that displays error, warning, and info messages for the keys that are
- * matched. By default, an ErrorsField will match on id and bindingPath (if this
- * ErrorsField is for an InputField), but can be set to match on
+ * matched. By default, an ValidationMessages will match on id and bindingPath (if this
+ * ValidationMessages is for an InputField), but can be set to match on
  * additionalKeys and nested components keys (of the its parentComponent).
  *
  * In addition, there are a variety of options which can be toggled to effect
@@ -46,7 +50,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ErrorsField extends FieldBase {
+public class ValidationMessages extends FieldBase {
     private static final long serialVersionUID = 780940788435330077L;
 
     private List<String> additionalKeysToMatch;
@@ -91,11 +95,14 @@ public class ErrorsField extends FieldBase {
     private int errorCount;
     private int warningCount;
     private int infoCount;
+    
+    //isInputField
+    private boolean onInputField;
 
     // not used
     private boolean displayLockMessages;
 
-    public ErrorsField() {
+    public ValidationMessages() {
         super();
         alternateContainer = false;
     }
@@ -103,9 +110,9 @@ public class ErrorsField extends FieldBase {
     /**
      * PerformFinalize will generate the messages and counts used by the
      * errorsField based on the keys that were matched from the MessageMap for
-     * this ErrorsField. It will also set up nestedComponents of its
+     * this ValidationMessages. It will also set up nestedComponents of its
      * parentComponent correctly based on the flags that were chosen for this
-     * ErrorsField.
+     * ValidationMessages.
      *
      * @see org.kuali.rice.krad.uif.field.FieldBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
@@ -129,6 +136,16 @@ public class ErrorsField extends FieldBase {
 
         List<String> masterKeyList = getKeys(parent);
         MessageMap messageMap = GlobalVariables.getMessageMap();
+        
+        String parentContainerId = "";
+        Object parentContainer = parent.getContext().get("parent");
+        if(parentContainer != null && (parentContainer instanceof Container || parentContainer instanceof FieldGroup)){
+            parentContainerId = ((Component)parentContainer).getId();
+        }
+        
+        if(parentContainer != null && parentContainer instanceof FieldGroup){
+            masterKeyList.add(((Component)parentContainer).getId());
+        }
 
         // TODO: need constants
         if (!displayFieldLabelWithMessages) {
@@ -142,22 +159,17 @@ public class ErrorsField extends FieldBase {
         }
 
         if (displayMessages) {
-            if (displayNestedMessages) {
-                this.addNestedKeys(masterKeyList, parent);
-            }
 
             for (String key : masterKeyList) {
-                if (displayErrorMessages) {
-                    errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
-                }
-                if (displayWarningMessages) {
-                    warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
-                }
-                if (displayInfoMessages) {
-                    infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
-                }
+
+                errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
+
+                warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
+
+                infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
             }
-        } else if (displayFieldErrorIcon) {
+        }
+        else if (displayFieldErrorIcon) {
             // Checks to see if any errors exist for this field, if they do set
             // errorCount as positive
             // so the jsp will call the corresponding js to show the icon
@@ -172,31 +184,7 @@ public class ErrorsField extends FieldBase {
 
         //Check for errors that are not matched on the page(only applies when parent is page)
         if (parent instanceof PageGroup) {
-            if (errorCount < messageMap.getErrorCount()) {
-                List<String> diff = messageMap.getPropertiesWithErrors();
-                diff.removeAll(masterKeyList);
-                for (String key : diff) {
-                    errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
-                }
-
-            }
-            if (warningCount < messageMap.getWarningCount()) {
-                List<String> diff = messageMap.getPropertiesWithWarnings();
-                diff.removeAll(masterKeyList);
-                for (String key : diff) {
-                    warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
-                }
-            }
-            if (infoCount < messageMap.getInfoCount()) {
-                List<String> diff = messageMap.getPropertiesWithInfo();
-                diff.removeAll(masterKeyList);
-                for (String key : diff) {
-                    infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
-                }
-            }
-
-            // TODO: need constant
-            this.setId("errorsFieldForPage");
+            //TODO add logic to check for keys not matched on anything
         }
 
         if (fireGrowlsForMessages) {
@@ -205,21 +193,123 @@ public class ErrorsField extends FieldBase {
         }
 
         //Remove any textual duplicates that may have snuck in, by converting to set and back to list
-        errors = new ArrayList<String>(new LinkedHashSet<String>(errors));
+/*        errors = new ArrayList<String>(new LinkedHashSet<String>(errors));
         warnings = new ArrayList<String>(new LinkedHashSet<String>(warnings));
-        infos = new ArrayList<String>(new LinkedHashSet<String>(infos));
+        infos = new ArrayList<String>(new LinkedHashSet<String>(infos));*/
 
-        errorCount = errors.size();
-        warningCount = warnings.size();
-        infoCount = infos.size();
+        this.addDataAttribute("messagesFor", parent.getId());
 
-        // dont display anything if there are no messages
-        if (errorCount + warningCount + infoCount == 0 || !displayMessages) {
-            // TODO: CSS constant
-            this.setStyle("display: none;");
-        } else {
-            this.setStyle("display: visible");
+        if(parent instanceof InputField){
+            this.onInputField = true;
+            
+            parent.addDataAttribute("parent", parentContainerId);
+            parent.addDataAttribute("validationMessages", "{"
+                    + "displayIcon:" + true + ","
+                    + "displayTooltip:"+ true + ","
+                    + "serverErrors:" + convertStringListToJsArray(errors) + ","
+                    + "serverWarnings:" + convertStringListToJsArray(warnings) + ","
+                    + "serverInfo:" + convertStringListToJsArray(infos)
+                    + "}");
         }
+        else if(parent instanceof Container){
+
+            List<? extends Component> items = ((Container)parent).getItems();
+            boolean skipSections = false;
+            if(parent instanceof CollectionGroup){
+                if(((CollectionGroup)parent).getLayoutManager() instanceof StackedLayoutManager){
+                    items = ((StackedLayoutManager)((CollectionGroup)parent).getLayoutManager()).getStackedGroups();
+                }
+                else if(((CollectionGroup)parent).getLayoutManager() instanceof TableLayoutManager){
+                    items = ((TableLayoutManager)((CollectionGroup)parent).getLayoutManager()).getDataFields();
+                    skipSections = true;
+                }
+            }
+
+            List<String> sectionIds = new ArrayList<String>();
+            List<String> fieldOrder = new ArrayList<String>();
+            collectIdsFromItems(items, sectionIds, fieldOrder, skipSections);
+            
+            parent.addDataAttribute("parent", parentContainerId);
+
+            boolean pageLevel = false;
+            boolean forceShow = false;
+            if(parent instanceof PageGroup){
+                pageLevel = true;
+                forceShow = true;
+            }
+            else if(parentContainer instanceof FieldGroup) {
+                //note this means container of the parent is a FieldGroup
+                forceShow = true;
+            }
+
+            parent.addDataAttribute("validationMessages", "{"
+                    + "summarize:" + true + ","
+                    + "displayErrors:" + true + ","
+                    + "displayWarnings:" + true + ","
+                    + "displayInfo:" + true + ","
+                    + "pageLevel:" + pageLevel + ","
+                    + "forceShow:" + forceShow + ","
+                    + "sections:" + convertStringListToJsArray(sectionIds) + ","
+                    + "order:" + convertStringListToJsArray(fieldOrder) + ","
+                    + "serverErrors:" + convertStringListToJsArray(errors) + ","
+                    + "serverWarnings:" + convertStringListToJsArray(warnings) + ","
+                    + "serverInfo:" + convertStringListToJsArray(infos)
+                    + "}");
+        }
+        //TODO add fieldGroup check if necessary
+
+        this.setStyle("display: none;");
+    }
+
+    private void collectIdsFromItems(List<? extends Component> items, List<String> sectionIds, List<String> order, boolean skipSections){
+
+        if(items != null){
+            for(Component c: items){
+                if(c instanceof Container || c instanceof FieldGroup){
+                    if(c instanceof FieldGroup){
+                        if(!skipSections &&
+                            ((FieldGroup)c).getFieldLabel().isRender() &&
+                            !((FieldGroup)c).getFieldLabel().isHidden() &&
+                            (StringUtils.isNotEmpty(((FieldGroup)c).getLabel()) ||
+                            StringUtils.isNotEmpty(((FieldGroup)c).getFieldLabel().getLabelText()))){
+                            sectionIds.add(c.getId());
+                            order.add("f$" + c.getId());
+                            continue;
+                        }
+                        else{
+                            c = ((FieldGroup) c).getGroup();
+                            if(c == null){
+                                continue;
+                            }
+                        }
+                    }
+                    //TODO possibly find a better way to identify a section/subsection but this may work
+                    if(!skipSections && ((Container) c).getHeader() != null && ((Container) c).getHeader().isRender() &&
+                            (StringUtils.isNotBlank(((Container) c).getHeader().getHeaderText())
+                            || StringUtils.isNotBlank(c.getTitle()))){
+                        sectionIds.add(c.getId());
+                        //TODO make constant for section token
+                        order.add("s$" + c.getId());
+                    }
+                    else{
+                        collectIdsFromItems(((Container) c).getItems(), sectionIds, order, skipSections);
+                    }
+                }
+                else if(c instanceof InputField){
+                    order.add(c.getId());    
+                }
+            }
+        }
+    }
+    
+    private String convertStringListToJsArray(List<String> list){
+        String array = "[";
+        for(String s: list){
+            array = array + "'" + s + "',";
+        }
+        array = StringUtils.removeEnd(array, ",");
+        array = array + "]";
+        return array;
     }
 
     /**
@@ -240,8 +330,6 @@ public class ErrorsField extends FieldBase {
         for (List<ErrorMessage> errorList : lists) {
             if (errorList != null && StringUtils.isNotBlank(key)) {
                 ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-                String comboMessage = "";
-                String label = "";
 
                 for (ErrorMessage e : errorList) {
                     String message = configService.getPropertyValueAsString(e.getErrorKey());
@@ -252,40 +340,9 @@ public class ErrorsField extends FieldBase {
                         message = message.replace("'", "''");
                         message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
                     }
-                    if (displayFieldLabelWithMessages) {
-                        InputField field = (InputField) view.getViewIndex().getDataFieldByPath(key);
-                        if (field != null && field.getLabel() != null) {
-                            label = field.getLabel();
-                        }
-                    }
 
-                    // adding them to combo string instead of the list
-                    if (combineMessages) {
-                        if (comboMessage.isEmpty()) {
-                            comboMessage = message;
-                        } else {
-                            comboMessage = comboMessage + ",  " + message;
-                        }
-                    } else {
-                        // add it directly to the list - non combined messages
-                        if (StringUtils.isNotEmpty(label)) {
-                            result.add(label + " - " + message);
-                        } else {
-                            result.add(message);
-                        }
+                    result.add(message);
 
-                    }
-                }
-                // add the single combo string to the returned list
-                // combineMessages will also be checked in the template to
-                // further
-                // combine them
-                if (StringUtils.isNotEmpty(comboMessage)) {
-                    if (StringUtils.isNotEmpty(label)) {
-                        result.add(label + " - " + comboMessage);
-                    } else {
-                        result.add(comboMessage);
-                    }
                 }
             }
         }
@@ -294,11 +351,11 @@ public class ErrorsField extends FieldBase {
     }
 
     /**
-     * Gets all the keys associated to this ErrorsField. This includes the id of
+     * Gets all the keys associated to this ValidationMessages. This includes the id of
      * the parent component, additional keys to match, and the bindingPath if
-     * this is an ErrorsField for an InputField. These are the keys that are
+     * this is an ValidationMessages for an InputField. These are the keys that are
      * used to match errors with their component and display them as part of its
-     * ErrorsField.
+     * ValidationMessages.
      *
      * @return
      */
@@ -316,7 +373,6 @@ public class ErrorsField extends FieldBase {
                 keyList.add(((InputField) parent).getBindingInfo().getBindingPath());
             }
         }
-        // Will there be additional components to check beyond InputField?
 
         return keyList;
     }
@@ -332,11 +388,11 @@ public class ErrorsField extends FieldBase {
      */
     private void addNestedKeys(List<String> keyList, Component component) {
         for (Component c : component.getComponentsForLifecycle()) {
-            ErrorsField ef = null;
+            ValidationMessages ef = null;
             if (c instanceof InputField) {
-                ef = ((InputField) c).getErrorsField();
+                ef = ((InputField) c).getValidationMessages();
             } else if (c instanceof ContainerBase) {
-                ef = ((ContainerBase) c).getErrorsField();
+                ef = ((ContainerBase) c).getValidationMessages();
             }
             if (ef != null) {
                 if (!allowMessageRepeat) {
@@ -393,7 +449,7 @@ public class ErrorsField extends FieldBase {
     /**
      * If displayErrorMessages is true, error messages will be displayed,
      * otherwise they will not. Unlike many of the options contained on
-     * ErrorsField, this will not effect client side validations; ie this will
+     * ValidationMessages, this will not effect client side validations; ie this will
      * not turn off errorMessage display for client side validation, as it may
      * prevent a user from completing a form. To turn off client side validation
      * AND its messaging use the applyClientSide flag on the Constraint itself.
@@ -487,7 +543,7 @@ public class ErrorsField extends FieldBase {
     }
 
     /**
-     * If true, the errorTitle set on this ErrorsField will be displayed along
+     * If true, the errorTitle set on this ValidationMessages will be displayed along
      * with the error messages. Otherwise, the title will not be displayed.
      *
      * @return the displayErrorTitle
@@ -504,7 +560,7 @@ public class ErrorsField extends FieldBase {
     }
 
     /**
-     * If true, the warningTitle set on this ErrorsField will be displayed along
+     * If true, the warningTitle set on this ValidationMessages will be displayed along
      * with the warning messages. Otherwise, the title will not be displayed.
      *
      * @return the displayWarningTitle
@@ -521,7 +577,7 @@ public class ErrorsField extends FieldBase {
     }
 
     /**
-     * If true, the infoTitle set on this ErrorsField will be displayed along
+     * If true, the infoTitle set on this ValidationMessages will be displayed along
      * with the info messages. Otherwise, the title will not be displayed.
      *
      * @return the displayInfoTitle
@@ -559,7 +615,7 @@ public class ErrorsField extends FieldBase {
     /**
      * If true, error, warning, and info messages will be displayed (provided
      * they are also set to display). Otherwise, no messages for this
-     * ErrorsField container will be displayed (including ones set to display).
+     * ValidationMessages container will be displayed (including ones set to display).
      * This is a global display on/off switch for all messages.
      *
      * @return the displayMessages
@@ -576,10 +632,10 @@ public class ErrorsField extends FieldBase {
     }
 
     /**
-     * If true, this ErrorsField will show messages related to the nested
+     * If true, this ValidationMessages will show messages related to the nested
      * components of its parent component, and not just those related only to
      * its parent component. Otherwise, it will be up to the individual
-     * components to display their messages, if any, in their ErrorsField.
+     * components to display their messages, if any, in their ValidationMessages.
      *
      * @return the displayNestedMessages
      */
@@ -612,13 +668,13 @@ public class ErrorsField extends FieldBase {
     }
 
     /**
-     * If true, when this is set on an ErrorsField whose parentComponent has
+     * If true, when this is set on an ValidationMessages whose parentComponent has
      * nested Containers or AttributeFields, it will allow those fields to also
-     * show their ErrorsField messages. Otherwise, it will turn off the the
+     * show their ValidationMessages messages. Otherwise, it will turn off the the
      * display of those messages. This can be used to avoid repeating
      * information to the user per field, if errors are already being displayed
      * at the parent's level. This flag has no effect if displayNestedMessages
-     * is false on this ErrorsField.
+     * is false on this ValidationMessages.
      *
      * @return the allowMessageRepeat
      */
@@ -635,7 +691,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * displayCounts is true if the counts of errors, warning, and info messages
-     * within this ErrorsField should be displayed (includes count of nested
+     * within this ValidationMessages should be displayed (includes count of nested
      * messages if displayNestedMessages is true).
      *
      * @return
@@ -653,7 +709,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * The list of error messages found for the keys that were matched on this
-     * ErrorsField This is generated and cannot be set
+     * ValidationMessages This is generated and cannot be set
      *
      * @return the errors
      */
@@ -663,7 +719,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * The list of warning messages found for the keys that were matched on this
-     * ErrorsField This is generated and cannot be set
+     * ValidationMessages This is generated and cannot be set
      *
      * @return the warnings
      */
@@ -673,7 +729,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * The list of info messages found for the keys that were matched on this
-     * ErrorsField This is generated and cannot be set
+     * ValidationMessages This is generated and cannot be set
      *
      * @return the infos
      */
@@ -683,7 +739,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * The count of error messages found for the keys that were matched on this
-     * ErrorsField This is generated and cannot be set
+     * ValidationMessages This is generated and cannot be set
      *
      * @return the errorCount
      */
@@ -693,7 +749,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * The count of warning messages found for the keys that were matched on
-     * this ErrorsField This is generated and cannot be set
+     * this ValidationMessages This is generated and cannot be set
      *
      * @return the warningCount
      */
@@ -703,7 +759,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * The count of info messages found for the keys that were matched on this
-     * ErrorsField This is generated and cannot be set
+     * ValidationMessages This is generated and cannot be set
      *
      * @return the infoCount
      */
@@ -713,7 +769,7 @@ public class ErrorsField extends FieldBase {
 
     /**
      * If this is true, the display of messages is being handled by another
-     * container. The ErrorsField html generated by the jsp will still be used,
+     * container. The ValidationMessages html generated by the jsp will still be used,
      * but it will be placed in different location within the page than the
      * default to accommodate an alternate layout. This flag is used by
      * BoxLayoutManager.
@@ -843,5 +899,13 @@ public class ErrorsField extends FieldBase {
 
     public String getGrowlScript() {
         return growlScript;
+    }
+
+    public boolean isOnInputField() {
+        return onInputField;
+    }
+
+    public void setOnInputField(boolean onInputField) {
+        this.onInputField = onInputField;
     }
 }

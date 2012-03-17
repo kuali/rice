@@ -22,8 +22,6 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
-import org.kuali.rice.krad.datadictionary.validation.capability.Formatable;
-import org.kuali.rice.krad.datadictionary.validation.capability.HierarchicallyConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
@@ -39,7 +37,6 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
-import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
@@ -93,7 +90,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private KeyValuesFinder optionsFinder;
     private boolean performUppercase;
 
-    private ErrorsField errorsField;
+    private ValidationMessages validationMessages;
 
     // messages
     private String constraintText;
@@ -133,6 +130,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         super.performFinalize(view, model, parent);
 
         setupIds();
+        this.addDataAttribute("role", "InputField");
 
         // invoke options finder if options not configured on the control
         List<KeyValue> fieldOptions = new ArrayList<KeyValue>();
@@ -276,11 +274,12 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     protected void setupIds() {
         // update ids so they all match the attribute
-        if (getControl() != null) {
+/*        if (getControl() != null) {
             getControl().setId(getId());
-        }
+        }*/
 
-        setNestedComponentIdAndSuffix(getErrorsField(), UifConstants.IdSuffixes.ERRORS);
+        setNestedComponentIdAndSuffix(getControl(), UifConstants.IdSuffixes.CONTROL);
+        setNestedComponentIdAndSuffix(getValidationMessages(), UifConstants.IdSuffixes.ERRORS);
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
         setNestedComponentIdAndSuffix(getInstructionalMessageField(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
@@ -288,23 +287,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getFieldDirectInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
         setNestedComponentIdAndSuffix(getFieldSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
-        setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
-    }
-
-    /**
-     * Helper method for suffixing the ids of the fields nested components
-     *
-     * @param component - component to adjust id for
-     * @param suffix - suffix to append to id
-     */
-    private void setNestedComponentIdAndSuffix(Component component, String suffix) {
-        if (component != null) {
-            String fieldId = getId();
-            fieldId += suffix;
-
-            component.setId(fieldId);
+        if(this.getFieldLabel() != null){
+            this.getFieldLabel().setLabelForComponentId(this.getControl().getId());
         }
+        if(this.getControl() != null){
+            this.getControl().addDataAttribute("controlFor", this.getId());
+        }
+
+        //setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
     }
+
+
 
     /**
      * Defaults the properties of the <code>InputField</code> to the
@@ -393,7 +386,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(control);
-        components.add(errorsField);
+        components.add(validationMessages);
         components.add(fieldLookup);
         components.add(fieldDirectInquiry);
         components.add(fieldSuggest);
@@ -436,22 +429,22 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     /**
      * Field that contains the messages (errors) for the input field. The
-     * <code>ErrorsField</code> holds configuration on associated messages along
+     * <code>ValidationMessages</code> holds configuration on associated messages along
      * with information on rendering the messages in the user interface
      *
-     * @return ErrorsField instance
+     * @return ValidationMessages instance
      */
-    public ErrorsField getErrorsField() {
-        return this.errorsField;
+    public ValidationMessages getValidationMessages() {
+        return this.validationMessages;
     }
 
     /**
      * Setter for the input field's errors field
      *
-     * @param errorsField
+     * @param validationMessages
      */
-    public void setErrorsField(ErrorsField errorsField) {
-        this.errorsField = errorsField;
+    public void setValidationMessages(ValidationMessages validationMessages) {
+        this.validationMessages = validationMessages;
     }
 
     /**

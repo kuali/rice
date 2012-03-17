@@ -406,12 +406,12 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='expand_collapse-buttons'/>";
         }
 
-        var groupAccordionSpanId = groupId + "_group";
+        var groupAccordionSpanId = groupId + "_disclosureContent";
 
         // perform initial open/close and insert toggle link and image
-        var headerText = jq("#" + headerId + "_div > :header, #" + headerId + "_div > label").html();
+        var headerText = jq("#" + headerId + " > :header, #" + headerId + " > label").html();
         if (defaultOpen) {
-            jq("#" + groupAccordionSpanId).slideDown(000)
+            jq("#" + groupAccordionSpanId).slideDown(000);
             headerText = expandImage + headerText;
         }
         else {
@@ -419,8 +419,8 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             headerText = collapseImage + headerText;
         }
 
-        jq("#" + headerId + "_div > :header, #" + headerId + "_div > label").html(headerText);
-        jq("#" + headerId + "_div > :header, #" + headerId + "_div > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
+        jq("#" + headerId + " > :header, #" + headerId + " > label").html(headerText);
+        jq("#" + headerId + " > :header, #" + headerId + " > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
         // perform slide and switch image
         if (defaultOpen) {
@@ -494,7 +494,7 @@ function createTable(tableId, options) {
  * @param collectionId - id for the collection to select checkboxes for
  */
 function selectAllLines(collectionId) {
-    jq("#" + collectionId + "_div" + " input:checkbox.kr-select-line").attr('checked', true);
+    jq("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', true);
 }
 
 /**
@@ -504,7 +504,7 @@ function selectAllLines(collectionId) {
  * @param collectionId - id for the collection to deselect checkboxes for
  */
 function deselectAllLines(collectionId) {
-    jq("#" + collectionId + "_div" + " input:checkbox.kr-select-line").attr('checked', false);
+    jq("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', false);
 }
 
 /**
@@ -584,7 +584,7 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
  * @param options - options for reorderer plug-in
  */
 function createReorderer(divId, options) {
-    fluid.reorderGrid(jq("#" + divId + "_div"), options);
+    fluid.reorderGrid(jq("#" + divId), options);
 }
 
 /**

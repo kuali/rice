@@ -1199,7 +1199,7 @@ public class View extends ContainerBase {
      * messages in their entirety will be displayed in growls, for warning and
      * error messages a growl message will notify the user that these messages
      * exist on the page. If this setting is disabled, it is recommended that
-     * infoMessage display be enabled for the page ErrorsField bean in order to
+     * infoMessage display be enabled for the page ValidationMessages bean in order to
      * display relevant information to the user. Note: the growl scripts are
      * built out in the PageGroup class.
      *

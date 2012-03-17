@@ -251,7 +251,7 @@ li label.kr-error {
     font-weight:normal;
     margin-bottom:5px;
 }
-.boxLayoutHorizontalItem {
+.uif-boxLayoutHorizontalItem {
     padding-bottom:1em;
 }
 .uif-primaryActionButton.boxLayoutHorizontalItem {
@@ -340,18 +340,24 @@ li label.kr-error {
 * html .clearfix {
 	height: 1%;
 }
-.boxLayoutHorizontalItem {
+.uif-boxLayoutHorizontalItem {
 	float:left;
 	display:block;
 	margin-right:20px;
 }
 
-.fieldContainerVerticalItem {
-	padding-bottom: 5px;
-	display: block;
+.uif-stackedCollectionLayout > .uif-collectionItem{
+    display: block;
+    margin-bottom: 5px;
 }
 
-.boxLayoutVerticalItem {
+.uif-placeholder{
+    display: none !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.uif-boxLayoutVerticalItem {
     display: block;
     margin-bottom: 5px;
 }

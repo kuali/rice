@@ -41,7 +41,7 @@
   <c:set var="imageRole" value="role='presentation'"/>
 </c:if>
 
-<krad:span component="${field}">
+<krad:div component="${field}">
 
   <krad:fieldLabel field="${field}">
 
@@ -81,4 +81,4 @@
 
   </krad:fieldLabel>
 
-</krad:span>
+</krad:div>

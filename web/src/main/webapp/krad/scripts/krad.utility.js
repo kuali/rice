@@ -23,15 +23,13 @@ var bodyHeight;
  * @returns a string that has been escaped for use in jQuery selectors
  */
 function escapeName(name){
-    if(name != undefined && name != null && name != ""){
-        name = name.replace(/\\'/g, "'");
-        name = name.replace(/'/g, "\\'");
-        name = name.replace(/\\"/g, "\"");
-        name = name.replace(/"/g, "\\\"");
-        name = name.replace(/\./g, "\\.");
-        name = name.replace(/\[/g, "\\[");
-        name = name.replace(/\]/g, "\\]");
-    }
+    name = name.replace(/\\'/g, "'");
+    name = name.replace(/'/g, "\\'");
+    name = name.replace(/\\"/g, "\"");
+    name = name.replace(/"/g, "\\\"");
+    name = name.replace(/\./g, "\\.");
+    name = name.replace(/\[/g, "\\[");
+    name = name.replace(/\]/g, "\\]");
     return name;
 }
 
@@ -98,18 +96,7 @@ function setConfigParam(paramName, paramValue) {
     configParams[paramName] = paramValue;
 }
 
-/**
- * Retrieves the value for a configuration parameter
- *
- * @param paramName - name of the parameter to retrieve
- */
-function getConfigParam(paramName) {
-    var configParams = jq(document).data("ConfigParameters");
-    if (configParams) {
-        return configParams[paramName];
-    }
-    return "";
-}
+
 
 /**
  * Called when a view is rendered to initialize the state of components
@@ -219,6 +206,12 @@ function getLabel(id){
  */
 function runHiddenScripts(id, isSelector){
 	if(id){
+        //run dataScript first always
+        jq("#" + id).find("input[data-role='dataScript']").each(function(){
+            eval(jq(this).val());
+            jq(this).attr("script", "first_run");
+            jq(this).removeAttr("name");
+        });
         var selector = "#" + id;
         if (isSelector && isSelector == true) {
             selector = id;
@@ -228,8 +221,15 @@ function runHiddenScripts(id, isSelector){
             jq(this).attr("script", "first_run");
 			jq(this).removeAttr("name");
 		});
+        runScriptsForId(id);
 	}
 	else{
+        //run dataScript first always
+        jq("input[data-role='dataScript']").each(function(){
+            eval(jq(this).val());
+            jq(this).attr("script", "first_run");
+            jq(this).removeAttr("name");
+        });
 		jq("input[name='script']").each(function(){
 			eval(jq(this).val());
             jq(this).attr("script", "first_run");
@@ -238,19 +238,34 @@ function runHiddenScripts(id, isSelector){
 	}
 }
 
-function runHiddenScriptsAgain(id){
-    if(id){
-        jq("#" + id).find("script[name='first_run']").each(function(){
-            eval(jq(this).val());
-            jq(this).removeAttr("script");
+function runScriptsForId(id) {
+    if (id) {
+        jq("input[data-role='dataScript']").each(function () {
+            if (jq(this).data("for") === id) {
+                eval(jq(this).val());
+                jq(this).attr("script", "first_run");
+                jq(this).removeAttr("name");
+            }
+        });
+        jq("input[name='script']").each(function () {
+            if (jq(this).data("for") === id) {
+                eval(jq(this).val());
+                jq(this).attr("script", "first_run");
+                jq(this).removeAttr("name");
+            }
         });
     }
-    else{
-        jq("input[script='first_run']").each(function(){
-            eval(jq(this).val());
-            jq(this).removeAttr("script");
-        });
-    }
+}
+
+function runHiddenScriptsAgain(){
+    jq("input[data-role='dataScript']").each(function(){
+        eval(jq(this).val());
+        jq(this).removeAttr("script");
+    });
+    jq("input[script='first_run']").each(function(){
+        eval(jq(this).val());
+        jq(this).removeAttr("script");
+    });
 }
 
 /**
@@ -399,17 +414,13 @@ function checkDirty(event){
 
 /**
  * Gets the actual attribute id to use element manipulation related to this attribute.
- * This method is necessary due to radio/checkboxes appending an additional suffix to the
- * id, and the hook being the base id without this suffix
  *
  * @param elementId
  * @param elementType
  */
-function getAttributeId(elementId, elementType){
+function getAttributeId(elementId){
 	var id = elementId;
-	if(elementType == "radio" || elementType == "checkbox" || elementType == "select-one" || elementType == "select-multiple"){
-		id = elementId.replace(/_attribute\S*/, "");
-	}
+	id = elementId.replace(/_control\S*/, "");
 	return id;
 }
 

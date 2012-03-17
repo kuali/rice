@@ -15,22 +15,10 @@
     limitations under the License.
 
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.FieldGroup"/>
-
-<%--
-    Field that contains a nested Group
-    
- --%>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.ValidationMessages"/>
 
 <krad:div component="${field}">
-
-  <krad:fieldLabel field="${field}">
-    <fieldset aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
-      <legend style="display: none">${field.label}</legend>
-      <krad:template component="${field.group}"/>
-    </fieldset>
-  </krad:fieldLabel>
-
 </krad:div>
+

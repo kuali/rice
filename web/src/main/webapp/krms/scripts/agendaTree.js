@@ -23,7 +23,7 @@ function getRuleIdFromParentLi(parentLiNode) {
 
 function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
 
-    var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
+    var collectionGroupDivLocator = '#' + collectionGroupId;
 
     var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedItemInput();
@@ -39,7 +39,7 @@ function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
                 if(jq(collectionGroupDivLocator).length){
                     jq(collectionGroupDivLocator).replaceWith(component);
                 }
-                runHiddenScripts(collectionGroupId + '_div');
+                runHiddenScripts(collectionGroupId);
             }
             });
 

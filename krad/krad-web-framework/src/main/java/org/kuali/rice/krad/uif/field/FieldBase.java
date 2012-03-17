@@ -111,6 +111,26 @@ public class FieldBase extends ComponentBase implements Field {
             if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)){
                 fieldLabel.addStyleClass("uif-labelBlock");
             }
+
+            fieldLabel.addDataAttribute("labelFor", this.getId());
+            if(StringUtils.isNotBlank(this.getFieldLabel().getLabelText())){
+                this.addDataAttribute("label", this.getFieldLabel().getLabelText());
+            }
+        }
+    }
+
+    /**
+     * Helper method for suffixing the ids of the fields nested components
+     *
+     * @param component - component to adjust id for
+     * @param suffix - suffix to append to id
+     */
+    protected void setNestedComponentIdAndSuffix(Component component, String suffix) {
+        if (component != null) {
+            String fieldId = getId();
+            fieldId += suffix;
+
+            component.setId(fieldId);
         }
     }
 

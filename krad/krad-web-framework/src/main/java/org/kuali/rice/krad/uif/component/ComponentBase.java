@@ -130,6 +130,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private transient Map<String, Object> context;
 
     private List<PropertyReplacer> propertyReplacers;
+    
+    private Map<String,String> dataAttributes;
 
     private Tooltip toolTip;
 
@@ -156,6 +158,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         templateOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
         propertyReplacers = new ArrayList<PropertyReplacer>();
+        dataAttributes = new HashMap<String, String>();
     }
 
     /**
@@ -252,6 +255,31 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
                     ((ControlBase) component).setTabIndex(-1);
                 }
             }
+        }
+
+        //if this is not rendering and it is not rendering via an ajax call, but still has a
+        //progressive render condition
+        //we still want to render the component, but hide it (in ajax cases, template creates a placeholder)
+        boolean hide = false;
+        if(!this.render && !this.progressiveRenderViaAJAX && !this.progressiveRenderAndRefresh && StringUtils.isNotBlank(progressiveRender)){
+            hide = true;
+        }
+        else if(this.isHidden()){
+            hide = true;     
+        }
+        
+        if(hide){
+            if(StringUtils.isNotBlank(this.getStyle())){
+                if(this.getStyle().endsWith(";")){
+                    this.setStyle(this.getStyle() + " display: none;");
+                }
+                else{
+                    this.setStyle(this.getStyle() + "; display: none;");
+                }
+            }
+            else{
+                this.setStyle("display: none;");
+            }       
         }
     }
 
@@ -1232,36 +1260,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             sb.append(optionKey);
             sb.append(":");
 
-            boolean isNumber = false;
-            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1))
-                    || optionValue.trim().substring(0, 1).equals("-"))) {
-                try {
-                    Double.parseDouble(optionValue.trim());
-                    isNumber = true;
-                } catch (NumberFormatException e) {
-                    isNumber = false;
-                }
-            }
-            // If an option value starts with { or [, it would be a nested value
-            // and it should not use quotes around it
-            if (StringUtils.startsWith(optionValue, "{") || StringUtils.startsWith(optionValue, "[")) {
-                sb.append(optionValue);
-            }
-            // need to be the base boolean value "false" is true in js - a non
-            // empty string
-            else if (optionValue.equalsIgnoreCase("false") || optionValue.equalsIgnoreCase("true")) {
-                sb.append(optionValue);
-            }
-            // if it is a call back function, do not add the quotes
-            else if (StringUtils.startsWith(optionValue, "function") && StringUtils.endsWith(optionValue, "}")) {
-                sb.append(optionValue);
-            }
-            // for numerics
-            else if (isNumber) {
-                sb.append(optionValue);
-            } else {
-                sb.append("\"" + optionValue + "\"");
-            }
+            sb.append(convertToJsValue(optionValue));
         }
 
         sb.append("}");
@@ -1553,4 +1552,93 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         getToolTip().setTooltipContentHTML(tooltTipText);
     }
 
+    /**
+     * Add a data attribute to the dataAttributes map
+     * @param key
+     * @param value
+     */
+    public void addDataAttribute(String key, String value){
+        dataAttributes.put(key,value);    
+    }
+
+    public Map<String, String> getDataAttributes() {
+        return dataAttributes;
+    }
+
+    /**
+     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
+     * The attributes that are complex objects (contain {}) they will be written through script.
+     * The attritubes that are simple (contain no objects) will be written directly to the html of the
+     * component using standard data-.
+     * Either way they can be access through .data() call in jQuery
+     * @param dataAttributes
+     */
+    public void setDataAttributes(Map<String, String> dataAttributes) {
+        this.dataAttributes = dataAttributes;
+    }
+
+    /**
+     * Returns js that will add data to this component by the element which matches its id.
+     * This will return script for only the complex data elements (containing {});
+     * @return jQuery data script for adding complex data attributes
+     */
+    public String getComplexDataAttributesJs(){
+        String js = "";
+        for(Map.Entry<String,String> data: dataAttributes.entrySet()){
+            if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
+                js = js + "jQuery(\"#" + this.getId() + "\").data(\"" + data.getKey()
+                        +"\", " + data.getValue() +");";
+            }
+        }
+        return js;
+    }
+
+    /**
+     * Returns a string that can be put into a the tag of a component to add data attributes inline.
+     * This does not include the complex attributes which contain {}
+     * @return html string for data attributes for the simple attributes
+     */
+    public String getSimpleDataAttributes(){
+        String attributes = "";
+        for(Map.Entry<String,String> data: dataAttributes.entrySet()){
+            if(!data.getValue().trim().startsWith("{")){
+                attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
+            }
+        }
+        return attributes;        
+    }
+
+    //TODO move this to a utility class
+    private String convertToJsValue(String value){
+        boolean isNumber = false;
+        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.trim().substring(0, 1))
+                || value.trim().substring(0, 1).equals("-"))) {
+            try {
+                Double.parseDouble(value.trim());
+                isNumber = true;
+            } catch (NumberFormatException e) {
+                isNumber = false;
+            }
+        }
+        // If an option value starts with { or [, it would be a nested value
+        // and it should not use quotes around it
+        if (StringUtils.startsWith(value, "{") || StringUtils.startsWith(value, "[")) {
+            return value;
+        }
+        // need to be the base boolean value "false" is true in js - a non
+        // empty string
+        else if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
+            return value;
+        }
+        // if it is a call back function, do not add the quotes
+        else if (StringUtils.startsWith(value, "function") && StringUtils.endsWith(value, "}")) {
+            return value;
+        }
+        // for numerics
+        else if (isNumber) {
+            return value;
+        } else {
+            return "\"" + value + "\"";
+        }    
+    }
 }

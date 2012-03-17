@@ -21,8 +21,7 @@
 
 <!DOCTYPE HTML>
 <html lang="en">
-
-  <!----------------------------------- #BEGIN HEAD --------------------------------------->
+  <%----------------------------------- HEAD ---------------------------------------%>
   <head>
     <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
       <script type="text/javascript">
@@ -31,9 +30,8 @@
       // -->
       </script>
     </c:if>
-    
-    <krad:scriptingVariables/>
 
+    <krad:scriptingVariables/>
     <title>
       <s:message code="app.title"/>
       :: ${view.title}
@@ -79,46 +77,8 @@
     </script>    
   </head>
 
-  <!----------------------------------- #BEGIN BODY --------------------------------------->
-
+  <%----------------------------------- BODY ---------------------------------------%>
   <body>
-    <%--View is hidden here but shown by the initial ready jq script after page content scripts
-     have completed--%>
-    <div id="view_div" style="display:none;">
-     <krad:div component="${view}">
-
-      <krad:backdoor/>
-
-      <!----------------------------------- #BEGIN FORM --------------------------------------->
-      <c:if test="${view.renderForm}">
-        <c:set var="postUrl" value="${view.formPostUrl}"/>
-        <c:if test="${empty postUrl}">
-          <c:set var="postUrl" value="${KualiForm.formPostUrl}"/>
-        </c:if>
-        
-        <form:form 
-           id="kualiForm"
-           action="${postUrl}"
-           method="post"
-           enctype="multipart/form-data"
-           modelAttribute="KualiForm"
-           onsubmit="${view.onSubmitScript}"
-           cssStyle="form_format topLabel page">
-
-           <a name="topOfForm"></a>
-      
-           <jsp:doBody/>
-
-           <span id="formComplete"></span>
-        </form:form>
-        <!----------------------------------- End Form --------------------------------------->
-      </c:if>  
-   
-      <c:if test="${!view.renderForm}"> 
-         <jsp:doBody/>
-      </c:if>  
-    
-     </krad:div>
-    </div>
+    <jsp:doBody/>
   </body>
 </html>

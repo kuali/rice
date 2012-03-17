@@ -25,10 +25,6 @@
 
 <krad:span component="${field}">
 
-  <krad:fieldLabel field="${field}">
-
     ${field.messageText}
-
-  </krad:fieldLabel>
 
 </krad:span>

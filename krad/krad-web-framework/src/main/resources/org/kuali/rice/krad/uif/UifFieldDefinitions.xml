@@ -93,7 +93,7 @@
       </list>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
-    <property name="errorsField">
+    <property name="validationMessages">
       <bean parent="Uif-FieldValidationMessages"/>
     </property>
     <property name="fieldLookup">
@@ -186,9 +186,9 @@
   </bean>
 
   <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
-  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ErrorsField"
+  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ValidationMessages"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
     <property name="styleClasses">
       <list>
         <value>uif-validationMessages</value>

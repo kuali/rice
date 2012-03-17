@@ -28,7 +28,7 @@ function getPropositionIdFromParentLi(parentLiNode) {
 
 function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
-    var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
+    var collectionGroupDivLocator = '#' + collectionGroupId;
 
     var elementToBlock = jq(collectionGroupDivLocator);
     var selectedItemInput = getSelectedPropositionInput();
@@ -43,7 +43,7 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
             if(jq(collectionGroupDivLocator).length){
                 jq(collectionGroupDivLocator).replaceWith(component);
             }
-            runHiddenScripts(collectionGroupId + '_div');
+            runHiddenScripts(collectionGroupId);
         }
         });
 

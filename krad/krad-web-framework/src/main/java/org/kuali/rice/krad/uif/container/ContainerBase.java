@@ -21,7 +21,7 @@ import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.ErrorsField;
+import org.kuali.rice.krad.uif.field.ValidationMessages;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -49,7 +49,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private int itemOrderingSequence;
 
 	private String additionalMessageKeys;
-	private ErrorsField errorsField;
+	private ValidationMessages validationMessages;
 
 	private Help help;
 	private LayoutManager layoutManager;
@@ -127,6 +127,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
 			header.setHeaderText(this.getTitle());
 		}
+        
+        if(header != null){
+            header.addDataAttribute("headerFor", this.getId());
+        }
 
 		// setup summary message field if necessary
 		if (instructionalMessageField != null && StringUtils.isBlank(instructionalMessageField.getMessageText())) {
@@ -136,6 +140,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		if (layoutManager != null) {
 			layoutManager.performFinalize(view, model, this);
 		}
+        
 	}
 
 	/**
@@ -147,7 +152,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 		components.add(header);
 		components.add(footer);
-		components.add(errorsField);
+		components.add(validationMessages);
 		components.add(help);
 		components.add(instructionalMessageField);
 
@@ -211,19 +216,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getErrorsField()
+	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
 	 */
 	@Override
-	public ErrorsField getErrorsField() {
-		return this.errorsField;
+	public ValidationMessages getValidationMessages() {
+		return this.validationMessages;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setErrorsField(org.kuali.rice.krad.uif.field.ErrorsField)
+	 * @see org.kuali.rice.krad.uif.container.Container#setValidationMessages(org.kuali.rice.krad.uif.field.ValidationMessages)
 	 */
 	@Override
-	public void setErrorsField(ErrorsField errorsField) {
-		this.errorsField = errorsField;
+	public void setValidationMessages(ValidationMessages validationMessages) {
+		this.validationMessages = validationMessages;
 	}
 
 	/**

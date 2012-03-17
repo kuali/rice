@@ -21,11 +21,11 @@
 <html>
 	<s:nestedPath path="KualiForm">
     <%-- render errors field for page so they can be pulled and updated on the view --%>
-    <krad:template component="${KualiForm.postedView.currentPage.errorsField}"/>
+    <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
 
     <%-- now render the updated component wrapped in an update span --%>
 		<span id="${Component.id}_update">
-			<krad:template component="${Component}"/>
+			<krad:template componentUpdate="true" component="${Component}"/>
 		</span>
 	</s:nestedPath>
 </html>

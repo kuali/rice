@@ -1,3 +1,4 @@
+</krad:div>
 <%--
 
     Copyright 2005-2012 The Kuali Foundation
@@ -24,7 +25,7 @@
     
  --%>
 
-<krad:span component="${field}">
+<krad:div component="${field}">
 
   <krad:fieldLabel field="${field}">
 

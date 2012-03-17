@@ -126,7 +126,7 @@
         </bean>
 
         <bean id="UifCompView-Page8" parent="Uif-Page" p:title="Errors"
-              p:instructionalText="ErrorsField options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  ErrorsField options are also available on InputFields.">
+              p:instructionalText="validationMessages options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  validationMessages options are also available on InputFields.">
           <property name="items">
             <list>
               <ref bean="errors1"/>

@@ -209,10 +209,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getFactoryId(), "");
 
         // remove attribute suffix since that gets added in lifecycle
-        if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
+        /*if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
             suffix = StringUtils.removeEnd(suffix, UifConstants.IdSuffixes.ATTRIBUTE);
         }
-        ComponentUtils.updateIdWithSuffix(component, suffix);
+        ComponentUtils.updateIdWithSuffix(component, suffix);*/
 
         // binding path should stay the same
         if (component instanceof DataBinding) {
@@ -258,7 +258,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 Component origNestedComponent = null;
                 if (nestedComponent instanceof DataField) {
                     origNestedComponent = view.getViewIndex().getComponentById(
-                            nestedComponent.getId() + suffix + UifConstants.IdSuffixes.ATTRIBUTE);
+                            nestedComponent.getId() + suffix); //+ UifConstants.IdSuffixes.ATTRIBUTE);
                 } else {
                     origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
                 }

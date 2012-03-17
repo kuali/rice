@@ -32,6 +32,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Controller for the Test UI Page
  *
@@ -131,4 +135,125 @@ public class UifComponentsTestController extends UifControllerBase {
         GlobalVariables.getMessageMap().putInfo("list5[0].subList[0].field1", "serverTestInfo");
         return refresh(uiTestForm, result, request, response);
     }
+
+    private String[] validationMessageFields =
+            {"field1", "field2", "field3", "field4", "field5", "field6", "field8", "field9", "field10", "field11",
+                    "field12", "field13", "field14", "bField1", "field114", "field117", "list4[0].field1",
+                    "list4[0].field2","list4[0].subList[1].field1",
+                    "list4[0].subList[1].field2", "list4[0].subList[2].field2", "list1[0].field1", "list1[0].field2",
+            "field80", "field121", "field122", "field123"};
+
+    /**
+     * Adds errors to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addErrors")
+    public ModelAndView addErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        
+        for(String key: validationMessageFields){
+            GlobalVariables.getMessageMap().putError(key, "error1Test");
+        }
+        
+        Random r = new Random();
+        for(int i =0; i < 3; i++){
+            int index = r.nextInt(validationMessageFields.length);
+            GlobalVariables.getMessageMap().putError(validationMessageFields[index], "error2Test");
+        }
+
+        return getUIFModelAndView(form);
+    }
+    
+    /**
+     * Adds warnings to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addWarnings")
+    public ModelAndView addWarnings(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        for(String key: validationMessageFields){
+            GlobalVariables.getMessageMap().putWarning(key, "warning1Test");
+        }
+        
+        Random r = new Random();
+        for(int i =0; i < 3; i++){
+            int index = r.nextInt(validationMessageFields.length);
+            GlobalVariables.getMessageMap().putWarning(validationMessageFields[index], "warning2Test");
+        }
+
+        return getUIFModelAndView(form);
+    }
+    
+    /**
+     * Adds infos to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addInfo")
+    public ModelAndView addInfo(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        for(String key: validationMessageFields){
+            GlobalVariables.getMessageMap().putInfo(key, "info1Test");
+        }
+        
+        Random r = new Random();
+        for(int i =0; i < 3; i++){
+            int index = r.nextInt(validationMessageFields.length);
+            GlobalVariables.getMessageMap().putInfo(validationMessageFields[index], "info2Test");
+        }
+
+        return getUIFModelAndView(form);
+    }
+    
+    /**
+     * Adds all message types to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addAllMessages")
+    public ModelAndView addAllMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        this.addErrors(form, result, request, response);
+        this.addWarnings(form, result, request, response);
+        this.addInfo(form, result, request, response);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Adds error and warning messages to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addErrorWarnMessages")
+    public ModelAndView addErrorWarnMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        this.addErrors(form, result, request, response);
+        this.addWarnings(form, result, request, response);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Adds error and info messages to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addErrorInfoMessages")
+    public ModelAndView addErrorInfoMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        this.addErrors(form, result, request, response);
+        this.addInfo(form, result, request, response);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Adds warning and info messages to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addWarningInfoMessages")
+    public ModelAndView addWarnInfoMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        this.addWarnings(form, result, request, response);
+        this.addInfo(form, result, request, response);
+
+        return getUIFModelAndView(form);
+    }
+
 }

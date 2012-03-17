@@ -25,7 +25,7 @@
       <property name="title" value="Group Errors" />
       <property name="instructionalText"
         value="Group with displayMessages turned on (off by default because messages are displayed at page level and at field level normally)" />
-      <property name="errorsField">
+      <property name="validationMessages">
         <bean parent="Uif-GroupValidationMessages">
           <property name="displayMessages" value="true" />
         </bean>
@@ -36,7 +36,7 @@
       <property name="title" value="Group Errors" />
       <property name="instructionalText"
         value="Group with displayMessages turned on, highlight on, and allowMessageRepeat off (don't allow same messages to show up below this level, ie at the field level)" />
-      <property name="errorsField">
+      <property name="validationMessages">
         <bean parent="Uif-GroupValidationMessages">
           <property name="displayMessages" value="true" />
           <property name="allowMessageRepeat" value="false" />
@@ -49,7 +49,7 @@
       <property name="title" value="Group Errors" />
       <property name="instructionalText"
         value="Group with combineMessages off(messages for the same field will be multiple lines instead of one) and displayErrorTitle, displayWarningTitle, displayInfoTitle on" />
-      <property name="errorsField">
+      <property name="validationMessages">
         <bean parent="Uif-GroupValidationMessages">
           <property name="displayMessages" value="true" />
           <property name="displayErrorTitle" value="true" />
@@ -64,8 +64,8 @@
     <bean id="errors4" parent="genericTextGroup">
       <property name="title" value="Group Errors" />
       <property name="instructionalText"
-        value="Group with ErrorsField's displayCounts off, displayFieldErrorIcon on and highlightOnError off for its InputFields, and displayInfoMessages on (off by default because info messages only appear in growls)" />
-      <property name="errorsField">
+        value="Group with validationMessages's displayCounts off, displayFieldErrorIcon on and highlightOnError off for its InputFields, and displayInfoMessages on (off by default because info messages only appear in growls)" />
+      <property name="validationMessages">
         <bean parent="Uif-GroupValidationMessages">
           <property name="displayMessages" value="true" />
           <property name="displayCounts" value="false" />
@@ -76,7 +76,7 @@
         <list>
           <bean parent="GenericTextField" p:label="Field 1" p:required="true"
             p:propertyName="gField1">
-            <property name="errorsField">
+            <property name="validationMessages">
               <bean parent="Uif-FieldValidationMessages">
                 <property name="highlightOnError" value="false" />
                 <property name="displayFieldErrorIcon" value="true" />
@@ -85,7 +85,7 @@
           </bean>
           <bean parent="GenericTextField" p:label="Field 2" p:required="true"
             p:propertyName="gField2">
-            <property name="errorsField">
+            <property name="validationMessages">
               <bean parent="Uif-FieldValidationMessages">
                 <property name="highlightOnError" value="false" />
                 <property name="displayFieldErrorIcon" value="true" />
@@ -94,7 +94,7 @@
           </bean>
           <bean parent="GenericTextField" p:label="Field 3" p:required="true"
             p:propertyName="gField3">
-            <property name="errorsField">
+            <property name="validationMessages">
               <bean parent="Uif-FieldValidationMessages">
                 <property name="highlightOnError" value="false" />
                 <property name="displayFieldErrorIcon" value="true" />

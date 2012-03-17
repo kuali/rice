@@ -81,7 +81,7 @@
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:applyDefaultCellWidths="false"/>
     </property>
     <property name="fieldBindingObjectPath" value="document"/>
-    <property name="errorsField.render" value="false"/>
+    <property name="validationMessages.render" value="false"/>
   </bean>
 
   <bean id="Uif-DocumentOverviewSection" parent="Uif-Disclosure-GridSection" p:layoutManager.numberOfColumns="4"
@@ -163,7 +163,7 @@
     <property name="bindingInfo.bindingObjectPath" value="document"/>
     <property name="disclosure.defaultOpen"
               value="@{!document.notes.empty or #component.defaultOpen}"/>
-    <property name="errorsField.additionalKeysToMatch" value="attachmentFile"/>
+    <property name="validationMessages.additionalKeysToMatch" value="attachmentFile"/>
     <property name="addLineActionFields">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note"/>

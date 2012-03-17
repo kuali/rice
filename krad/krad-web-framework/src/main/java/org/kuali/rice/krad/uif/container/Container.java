@@ -17,7 +17,7 @@ package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
-import org.kuali.rice.krad.uif.field.ErrorsField;
+import org.kuali.rice.krad.uif.field.ValidationMessages;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.widget.Help;
@@ -181,19 +181,19 @@ public interface Container extends Component {
 	 * Containers can collect the errors for the contained component and display
 	 * either all the messages or counts. This <code>Field</code> is used to
 	 * render those messages. Styling and other configuration is done through
-	 * the <code>ErrorsField</code>
+	 * the <code>ValidationMessages</code>
 	 * </p>
 	 * 
-	 * @return ErrorsField holding the container errors
+	 * @return ValidationMessages holding the container errors
 	 */
-	public ErrorsField getErrorsField();
+	public ValidationMessages getValidationMessages();
 
 	/**
 	 * Setter for the containers errors field
 	 * 
-	 * @param errorsField
+	 * @param validationMessages
 	 */
-	public void setErrorsField(ErrorsField errorsField);
+	public void setValidationMessages(ValidationMessages validationMessages);
 
 	/**
 	 * Help configuration object for the container

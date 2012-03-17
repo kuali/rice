@@ -53,7 +53,11 @@
 					p:propertyName="field36" />
 				<bean parent="GenericTextField" p:label="Field 3"
 					p:progressiveRenderAndRefresh="true" p:progressiveRender="@{#form.field34 eq 'show3'}"
-					p:propertyName="field37" />
+					p:propertyName="field37" p:instructionalText="has email address validCharactersConstraint">
+          <property name="validCharactersConstraint">
+            <bean parent="EmailAddressPatternConstraint" />
+          </property>
+        </bean>
 				<bean parent="GenericTextField" p:label="Show Field through matching"
 					p:progressiveRenderAndRefresh="true" p:maxLength="1"
 					p:instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"

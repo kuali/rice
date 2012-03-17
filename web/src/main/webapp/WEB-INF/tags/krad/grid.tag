@@ -131,13 +131,13 @@
   <c:choose>
     <c:when test="${renderHeaderRow || renderHeaderColumn || (item['class'].simpleName eq 'HeaderField')}">
       <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
-          rowspan="${item.rowSpan}" ${style} class="${item.styleClassesAsString} col${actualColCount}">
+          rowspan="${item.rowSpan}" ${style} col${actualColCount}">
         <krad:template component="${item}"/>
       </th>
     </c:when>
     <c:otherwise>
       <td role="presentation" ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-        ${style} class="${item.styleClassesAsString} col${actualColCount}" >
+        ${style} col${actualColCount}" >
         <krad:template component="${item}"/>
       </td>
     </c:otherwise>

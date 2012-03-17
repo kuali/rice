@@ -34,28 +34,17 @@
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
-<c:set var="itemSpanClasses" value="class=\"fieldLine boxLayoutVerticalItem clearfix\""/>
-
-<c:if test="${container.fieldContainer}">
-  <c:set var="fieldItemsStyle" value="style=\"float:left;\""/>
-  <c:set var="itemSpanClasses" value="class=\"fieldContainerVerticalItem clearfix\""/>
-</c:if>
-
 <div id="${manager.id}" ${style} ${styleClass}>
-  <span ${fieldItemsStyle}>
-    <c:choose>
-      <c:when test="${manager.wrapperGroup != null}">
-         <%-- render Group --%>
-        <krad:template component="${manager.wrapperGroup}"/>
-      </c:when>
-      <c:otherwise>
-        <%-- render items --%>
-        <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">
-          <span ${itemSpanClasses}>
-            <krad:template component="${item}"/>
-          </span>
-       </c:forEach>
-      </c:otherwise>
-     </c:choose>
-  </span>
+  <c:choose>
+    <c:when test="${manager.wrapperGroup != null}">
+       <%-- render Group --%>
+      <krad:template component="${manager.wrapperGroup}"/>
+    </c:when>
+    <c:otherwise>
+      <%-- render items --%>
+     <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">
+      <krad:template component="${item}"/>
+     </c:forEach>
+    </c:otherwise>
+   </c:choose>
 </div>

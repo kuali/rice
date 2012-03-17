@@ -19,22 +19,27 @@
 
 <tiles:useAttribute name="element" classname="org.kuali.rice.krad.uif.element.Label"/>
 
+<krad:attributeBuilder component="${element}"/>
+
 <c:set var="label" value="${element.labelText}"/>
 
 <c:if test="${element.renderColon}">
   <c:set var="label" value="${label}:"/>
 </c:if>
 
-<%-- required message --%>
-<c:if test="${element.requiredMessagePlacement eq 'LEFT'}">
-  <krad:template component="${element.requiredMessageField}"/>
-</c:if>
+<krad:span component="${element}">
+  <%-- required message --%>
+  <c:if test="${element.requiredMessagePlacement eq 'LEFT'}">
+    <krad:template component="${element.requiredMessageField}"/>
+  </c:if>
 
-<label id="${element.id}" for="${element.labelForComponentId}">
-  ${label}
-</label>
+  <label id="${element.id}" for="${element.labelForComponentId}">
+    ${label}
+  </label>
 
-<%-- required message --%>
-<c:if test="${element.requiredMessagePlacement eq 'RIGHT'}">
-  <krad:template component="${element.requiredMessageField}"/>
-</c:if>
+  <%-- required message --%>
+  <c:if test="${element.requiredMessagePlacement eq 'RIGHT'}">
+    <krad:template component="${element.requiredMessageField}"/>
+  </c:if>
+
+</krad:span>

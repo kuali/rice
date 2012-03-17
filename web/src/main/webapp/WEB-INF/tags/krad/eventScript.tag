@@ -129,5 +129,5 @@ supported and configured on the component --%>
 </krad:buffer>
 
 <c:if test="${!empty fn:trim(bufferOut)}">
-    <krad:script value="${fn:trim(bufferOut)}" />
+    <krad:script component="${component}" value="${fn:trim(bufferOut)}" />
 </c:if>

@@ -66,12 +66,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				tempDiv.innerHTML = response;
 				var hasError = handleIncidentReport(response);
 				if(!hasError){
-                    var newServerErrors = jq("#errorsFieldForPage_div", tempDiv).clone();
 					successCallback(tempDiv);
-                    if(successCallback !== replacePage){
-                        jq("#errorsFieldForPage_div").replaceWith(newServerErrors);
-                        runHiddenScripts("errorsFieldForPage_div");
-                    }
 				}
 				jq("#formComplete").html("");
 			},
@@ -121,7 +116,9 @@ function validateAndSubmit(methodToCall, successCallback){
 	jq.watermark.hideAll();
 
     var validForm = true;
+
     if(validateClient){
+        messageSummariesShown = true;
         validForm = jq("#kualiForm").valid();
     }
 
@@ -132,8 +129,9 @@ function validateAndSubmit(methodToCall, successCallback){
 	else{
 		jq.watermark.showAll();
 		jq("#formComplete").html("");
-		jumpToTop();
 		alert("The form contains errors.  Please correct these errors and try again.");
+        jumpToTop();
+        jQuery(".uif-pageValidationDisclosureLink").focus();
 	}
 }
 
@@ -158,7 +156,7 @@ function replacePage(contentDiv){
 	var page = jq("#viewpage_div", contentDiv);
     page.hide();
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
-    var pageInLayout = "#viewlayout_div > #viewpage_div";
+    var pageInLayout = "#Uif-ViewContentWrapper > #viewpage_div";
 	jq(pageInLayout).replaceWith(page);
 
 	setPageBreadcrumb();
@@ -195,10 +193,10 @@ function handleActionLink(methodToCall, navigateToPageId) {
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
 function retrieveComponent(id, baseId, methodToCall){
-	var elementToBlock = jq("#" + id + "_refreshWrapper");
+	var elementToBlock = jq("#" + id);
 
 	var updateRefreshableComponentCallback = function(htmlContent){
-		var component = jq("#" + id + "_refreshWrapper", htmlContent);
+		var component = jq("#" + id + "_update", htmlContent);
 
         var displayWithId = id;
         if (id.indexOf('_attribute') > 0) {
@@ -206,7 +204,7 @@ function retrieveComponent(id, baseId, methodToCall){
         }
 
 		// special label handling, if any
-		var theLabel = jq("#" + displayWithId + "_label_span", htmlContent);
+		var theLabel = jq("#" + displayWithId + "_label_span", component);
 		if(jq(".displayWith-" + displayWithId).length && theLabel.length){
 			theLabel.addClass("displayWith-" + displayWithId);
 			jq("span.displayWith-" + displayWithId).replaceWith(theLabel);
@@ -214,21 +212,39 @@ function retrieveComponent(id, baseId, methodToCall){
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
-                var origColor = jq(component).css("background-color");
-                jq(component).css("background-color", "");
-                jq(component).addClass("uif-progressiveDisclosure-highlight");
+                var origColor = jq(component).find("#" + id).css("background-color");
+                jq(component).find("#" + id).css("background-color", "");
+                jq(component).find("#" + id).addClass("uif-progressiveDisclosure-highlight");
+
+                // remove old stuff
+                if(jq("#" + id + "_errors").length){
+                    jq("#" + id + "_errors").remove();
+                }
+                jq("input[data-for='"+ id +"']").each(function () {
+                    jq(this).remove();
+                });
 
 				// replace component
-				if(jq("#" + id + "_refreshWrapper").length){
-					jq("#" + id + "_refreshWrapper").replaceWith(component);
+				if(jq("#" + id).length){
+					jq("#" + id).replaceWith(component.html());
 				}
 
-				runHiddenScripts(id + "_refreshWrapper");
+                if(jq("#" + id).parent().is("td")){
+                    jq("#" + id).parent().show();
+                }
+
+                //runs scripts on the span or div with id
+				runHiddenScripts(id);
+                //Interpret new server message state for refreshed InputFields
+                jQuery("#" + id).find("[data-role='InputField']").each(function(){
+                    handleMessagesAtField(jQuery(this).attr('id'));
+                });
+
                 if(origColor == ""){
                     origColor = "transparent";
                 }
 
-                jq("#" + id + "_refreshWrapper").animate({backgroundColor: origColor}, 5000);
+                jq("#" + id).animate({backgroundColor: origColor}, 5000);
 			}
 		});
 
@@ -254,16 +270,16 @@ function retrieveComponent(id, baseId, methodToCall){
  * not displayed (false)
  */
 function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
-    var elementToBlock = jq("#" + collectionGroupId + "_div");
+    var elementToBlock = jq("#" + collectionGroupId);
     var updateCollectionCallback = function(htmlContent){
-    	var component = jq("#" + collectionGroupId + "_div", htmlContent);
+    	var component = jq("#" + collectionGroupId, htmlContent);
 
 		elementToBlock.unblock({onUnblock: function(){
 				//replace component
-				if(jq("#" + collectionGroupId + "_div").length){
-					jq("#" + collectionGroupId + "_div").replaceWith(component);
+				if(jq("#" + collectionGroupId).length){
+					jq("#" + collectionGroupId).replaceWith(component);
 				}
-				runHiddenScripts(collectionGroupId + "_div");
+				runHiddenScripts(collectionGroupId);
 			}
 		});
     };
@@ -275,16 +291,16 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
 
 function performCollectionAction(collectionGroupId){
 	if(collectionGroupId){
-		var elementToBlock = jq("#" + collectionGroupId + "_div");
+		var elementToBlock = jq("#" + collectionGroupId);
 	    var updateCollectionCallback = function(htmlContent){
-	    	var component = jq("#" + collectionGroupId + "_div", htmlContent);
+	    	var component = jq("#" + collectionGroupId, htmlContent);
 
 			elementToBlock.unblock({onUnblock: function(){
 					//replace component
-					if(jq("#" + collectionGroupId + "_div").length){
-						jq("#" + collectionGroupId + "_div").replaceWith(component);
+					if(jq("#" + collectionGroupId).length){
+						jq("#" + collectionGroupId).replaceWith(component);
 					}
-					runHiddenScripts(collectionGroupId + "_div");
+					runHiddenScripts(collectionGroupId);
 				}
 			});
 	    };
@@ -355,7 +371,7 @@ function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall){
 function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCall){
 	jq("[name='"+ escapeName(controlName) +"']").live('change', function() {
 		// visible check because a component must logically be visible to refresh
-		var refreshComp = jq("#" + refreshId + "_refreshWrapper");
+		var refreshComp = jq("#" + refreshId);
 		if(refreshComp.length){
 			if(condition()){
 				retrieveComponent(refreshId, baseId, methodToCall);
@@ -380,15 +396,15 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCa
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall){
 	if (!baseId.match("\_c0$")) {
 		jq("[name='"+ escapeName(controlName) +"']").live('change', function() {
-			var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
+			var refreshDisclosure = jq("#" + disclosureId);
 			if(refreshDisclosure.length){
                 var displayWithId = disclosureId;
-                if (disclosureId.indexOf('_attribute') > 0) {
+/*                if (disclosureId.indexOf('_attribute') > 0) {
                     displayWithId = disclosureId.replace('_attribute', '');
-                }
+                }*/
 
 				if(condition()){
-					if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
+					if(refreshDisclosure.data("role") == "placeholder" || alwaysRetrieve){
 						retrieveComponent(disclosureId, baseId, methodToCall);
 					}
 					else{
@@ -396,13 +412,16 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
                         refreshDisclosure.css("background-color", "");
                         refreshDisclosure.addClass("uif-progressiveDisclosure-highlight");
 						refreshDisclosure.show();
+                        if(refreshDisclosure.parent().is("td")){
+                            refreshDisclosure.parent().show();
+                        }
                         if(origColor == ""){
                            origColor = "transparent";
                         }
                         refreshDisclosure.animate({backgroundColor: origColor}, 5000);
 
 						//re-enable validation on now shown inputs
-						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
+						hiddenInputValidationToggle(disclosureId);
 						jq(".displayWith-" + displayWithId).show();
 
 					}
@@ -410,7 +429,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 				else{
 					refreshDisclosure.hide();
 					// ignore validation on hidden inputs
-					hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
+					hiddenInputValidationToggle(disclosureId);
 					jq(".displayWith-" + displayWithId).hide();
 				}
 			}

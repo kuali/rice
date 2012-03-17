@@ -871,4 +871,37 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      */
     public List<String> getRefreshWhenChangedControlNames();
 
+    /**
+     * Add a data attribute to the dataAttributes map
+     * @param key
+     * @param value
+     */
+    public void addDataAttribute(String key, String value);
+
+    public Map<String, String> getDataAttributes();
+
+    /**
+     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
+     * The attributes that are complex objects (contain {}) they will be written through script.
+     * The attritubes that are simple (contain no objects) will be written directly to the html of the
+     * component using standard data-.
+     * Either way they can be access through .data() call in jQuery
+     * @param dataAttributes
+     */
+    public void setDataAttributes(Map<String, String> dataAttributes);
+
+    /**
+     * Returns js that will add data to this component by the element which matches its id.
+     * This will return script for only the complex data elements (containing {});
+     * @return jQuery data script for adding complex data attributes
+     */
+    public String getComplexDataAttributesJs();
+
+    /**
+     * Returns a string that can be put into a the tag of a component to add data attributes inline.
+     * This does not include the complex attributes which contain {}
+     * @return html string for data attributes for the simple attributes
+     */
+    public String getSimpleDataAttributes();
+
 }

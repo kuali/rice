@@ -108,7 +108,13 @@
       <bean parent="Uif-Label" p:renderColon="false" p:styleClasses="infoline"/>
     </property>
     <property name="sequenceFieldPrototype">
-      <bean parent="Uif-InputField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
+      <bean parent="Uif-InputField" p:readOnly="true" p:label=" " p:shortLabel=" ">
+        <property name="styleClasses">
+          <list merge="true">
+            <value>uif-sequenceItem</value>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="actionFieldPrototype">
       <bean parent="Uif-VerticalFieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>

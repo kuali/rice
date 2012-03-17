@@ -186,9 +186,9 @@ function setRecipientValue(recipientBase, value, isError ) {
     var containerDiv = document.getElementById(recipientBase + divSuffix);
     if (containerDiv) {
 		if (value == '') {
-			DWRUtil.setValue( containerDiv.id, "&nbsp;", {escapeHtml:false} );
+			DWRUtil.setValue( containerDiv.id, "&nbsp;" );
 		} else {
-			DWRUtil.setValue( containerDiv.id, value, isError?{escapeHtml:false}:{escapeHtml:true} );
+			DWRUtil.setValue( containerDiv.id, value, isError?null:{escapeHtml:true} );
 		}
 	}
     if (containerHidden) {

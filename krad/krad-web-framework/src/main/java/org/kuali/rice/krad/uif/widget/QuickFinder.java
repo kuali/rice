@@ -345,6 +345,17 @@ public class QuickFinder extends WidgetBase {
         this.dataObjectClassName = dataObjectClassName;
     }
 
+    /**
+     * When multiple target lookup views exists for the same data object class, the view name can be set to
+     * determine which one to use
+     *
+     * <p>
+     * When creating multiple lookup views for the same data object class, the view name can be specified for the
+     * different versions (for example 'simple' and 'advanced'). When multiple lookup views exist the view name must
+     * be sent with the data object class for the request. Note the view id can be alternatively used to uniquely
+     * identify the lookup view
+     * </p>
+     */
     public String getViewName() {
         return this.viewName;
     }

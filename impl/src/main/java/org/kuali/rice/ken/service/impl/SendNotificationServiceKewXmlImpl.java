@@ -17,8 +17,11 @@ package org.kuali.rice.ken.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.ken.api.notification.Notification;
+import org.kuali.rice.ken.api.notification.NotificationResponse;
 import org.kuali.rice.ken.api.service.SendNotificationService;
-import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
@@ -47,16 +50,33 @@ public class SendNotificationServiceKewXmlImpl implements SendNotificationServic
      * @see org.kuali.rice.ksb.messaging.service.KSBXMLService#invoke(java.lang.String)
      */
     @Override
-    public void invoke(String message) {
+    public NotificationResponse invoke(String message) {
         if (StringUtils.isBlank(message)) {
             throw new RiceIllegalArgumentException("xml is null or blank");
         }
 
         try {
-           NotificationResponse response = notificationService.sendNotification(message);
+           NotificationResponseBo response = notificationService.sendNotification(message);
            LOG.info(response.getMessage());
+           return NotificationResponseBo.to(response);
         } catch (Exception e) {
             throw new WorkflowRuntimeException(e);
+        }
+    }
+
+    @Override
+    public NotificationResponse sendNotification(Notification notification) {
+        if (null == notification) {
+            throw new RiceIllegalArgumentException("xml is null or blank");
+        }
+
+        try {
+            NotificationBo notificationBo = NotificationBo.from(notification);
+            NotificationResponseBo response = notificationService.sendNotification(notificationBo);
+            LOG.info(response.getMessage());
+            return NotificationResponseBo.to(response);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
     }
 }

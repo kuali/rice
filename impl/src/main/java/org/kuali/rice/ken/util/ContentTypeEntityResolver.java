@@ -18,7 +18,7 @@ package org.kuali.rice.ken.util;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -47,7 +47,7 @@ public class ContentTypeEntityResolver extends ContentTypeResourceResolver imple
             LOG.warn("Cannot resolve non-ContentType resources");
             return null;
         }
-        NotificationContentType notificationContentType = resolveContentType(systemId);
+        NotificationContentTypeBo notificationContentType = resolveContentType(systemId);
         if (notificationContentType == null) {
             LOG.error("Unable to resolve system id '" + systemId + "' locally...delegating to default resolution strategy.");
             return null;

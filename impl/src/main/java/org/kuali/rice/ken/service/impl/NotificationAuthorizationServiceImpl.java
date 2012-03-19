@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.service.impl;
 
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -47,9 +47,9 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
     }
 
     /**
-     * @see org.kuali.rice.ken.service.NotificationAuthorizationService#isProducerAuthorizedToSendNotificationForChannel(org.kuali.rice.ken.bo.NotificationProducer, org.kuali.rice.ken.bo.NotificationChannel)
+     * @see org.kuali.rice.ken.service.NotificationAuthorizationService#isProducerAuthorizedToSendNotificationForChannel(org.kuali.rice.ken.bo.NotificationProducerBo, org.kuali.rice.ken.bo.NotificationChannelBo)
      */
-    public boolean isProducerAuthorizedToSendNotificationForChannel(NotificationProducer producer, NotificationChannel channel) {
+    public boolean isProducerAuthorizedToSendNotificationForChannel(NotificationProducerBo producer, NotificationChannelBo channel) {
 	List channels = producer.getChannels();
 
 	if(channels.contains(channel)) {

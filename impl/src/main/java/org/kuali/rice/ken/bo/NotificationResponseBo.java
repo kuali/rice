@@ -15,15 +15,21 @@
  */
 package org.kuali.rice.ken.bo;
 
+import org.kuali.rice.ken.api.notification.NotificationResponse;
+import org.kuali.rice.ken.api.notification.NotificationResponseContract;
 import org.kuali.rice.ken.util.NotificationConstants;
-
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 
 /**
  * This class represents the data structure that will house information for
  * a Notification Response
+ *
+ * TODO: Really this class should just be replaced by NotificationResponse...
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NotificationResponse {
+public class NotificationResponseBo implements NotificationResponseContract {
     
     private String status;
     
@@ -34,7 +40,7 @@ public class NotificationResponse {
     /**
      * Constructs a NotificationResponse.java instance.
      */
-    public NotificationResponse() {
+    public NotificationResponseBo() {
 	status = NotificationConstants.RESPONSE_STATUSES.SUCCESS;
     }
     
@@ -86,5 +92,35 @@ public class NotificationResponse {
     public void setNotificationId(Long notificationId) {
         this.notificationId = notificationId;
     }
-    
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationResponse to(NotificationResponseBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationResponse.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationResponseBo from(NotificationResponse im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationResponseBo bo = new NotificationResponseBo();
+        bo.setMessage(im.getMessage());
+        bo.setNotificationId(im.getNotificationId());
+        bo.setStatus(im.getStatus());
+
+        return bo;
+    }
 }

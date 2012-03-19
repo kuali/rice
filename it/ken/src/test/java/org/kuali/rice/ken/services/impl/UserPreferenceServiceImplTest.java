@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.UserChannelSubscription;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.UserChannelSubscriptionBo;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
@@ -52,13 +52,14 @@ public class UserPreferenceServiceImplTest extends KENTestCase {
         UserPreferenceService impl = services.getUserPreferenceService();
         HashMap primaryKeys = new HashMap();
         primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        NotificationChannelBo
+                channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
-        UserChannelSubscription newSub = new UserChannelSubscription();
+        UserChannelSubscriptionBo newSub = new UserChannelSubscriptionBo();
         newSub.setUserId(VALID_USER_ID);
         newSub.setChannel(channel);
         impl.subscribeToChannel(newSub);
-        UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+        UserChannelSubscriptionBo sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
         assertNotNull(sub);
         assertEquals(VALID_USER_ID, sub.getUserId());
         assertEquals(VALID_CHANNEL_ID_LONG, sub.getChannel().getId());
@@ -69,13 +70,14 @@ public class UserPreferenceServiceImplTest extends KENTestCase {
         UserPreferenceService impl = services.getUserPreferenceService();
         HashMap primaryKeys = new HashMap();
         primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        NotificationChannelBo
+                channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
-        UserChannelSubscription newSub = new UserChannelSubscription();
+        UserChannelSubscriptionBo newSub = new UserChannelSubscriptionBo();
         newSub.setUserId(VALID_USER_ID);
         newSub.setChannel(channel);
         impl.subscribeToChannel(newSub);
-        Collection<UserChannelSubscription> subs = impl.getCurrentSubscriptions(VALID_USER_ID);
+        Collection<UserChannelSubscriptionBo> subs = impl.getCurrentSubscriptions(VALID_USER_ID);
         assertEquals(1, subs.size());
     }
 
@@ -84,18 +86,19 @@ public class UserPreferenceServiceImplTest extends KENTestCase {
         UserPreferenceService impl = services.getUserPreferenceService();
         HashMap primaryKeys = new HashMap();
         primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+        NotificationChannelBo
+                channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
 
-        UserChannelSubscription newSub = new UserChannelSubscription();
+        UserChannelSubscriptionBo newSub = new UserChannelSubscriptionBo();
         newSub.setUserId(VALID_USER_ID);
         newSub.setChannel(channel);
         impl.subscribeToChannel(newSub);
 
-        UserChannelSubscription userChannelSubscription = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+        UserChannelSubscriptionBo userChannelSubscription = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
         impl.unsubscribeFromChannel(userChannelSubscription);
 
-        UserChannelSubscription sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
+        UserChannelSubscriptionBo sub = impl.getSubscription(VALID_CHANNEL_ID, VALID_USER_ID);
         assertNull(sub);
 
     }

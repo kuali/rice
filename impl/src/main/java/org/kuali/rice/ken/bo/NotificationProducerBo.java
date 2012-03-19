@@ -15,8 +15,15 @@
  */
 package org.kuali.rice.ken.bo;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationChannel;
+import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
+import org.kuali.rice.ken.api.notification.NotificationProducer;
+import org.kuali.rice.ken.api.notification.NotificationProducerContract;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
+import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -30,7 +37,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="KREN_PRODCR_T")
-public class NotificationProducer extends PersistableBusinessObjectBase{
+public class NotificationProducerBo extends PersistableBusinessObjectBase implements NotificationProducerContract {
     @Id
     @GeneratedValue(generator="KREN_PRODCR_S")
 	@GenericGenerator(name="KREN_PRODCR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -51,13 +58,13 @@ public class NotificationProducer extends PersistableBusinessObjectBase{
 	           joinColumns=@JoinColumn(name="PRODCR_ID"), 
 	           inverseJoinColumns=@JoinColumn(name="CHNL_ID"))
 	@OrderBy("id ASC")
-	private List<NotificationChannel> channels;
+	private List<NotificationChannelBo> channels;
     
     /**
      * Constructs a NotificationProducer instance.
      */
-    public NotificationProducer() {
-	channels = new ArrayList<NotificationChannel>();
+    public NotificationProducerBo() {
+	channels = new ArrayList<NotificationChannelBo>();
     }
 
     /**
@@ -128,7 +135,7 @@ public class NotificationProducer extends PersistableBusinessObjectBase{
      * Gets the channels attribute. 
      * @return Returns the channels.
      */
-    public List<NotificationChannel> getChannels() {
+    public List<NotificationChannelBo> getChannels() {
         return channels;
     }
 
@@ -136,7 +143,49 @@ public class NotificationProducer extends PersistableBusinessObjectBase{
      * Sets the channels attribute value.
      * @param channels The channels to set.
      */
-    public void setChannels(List<NotificationChannel> channels) {
+    public void setChannels(List<NotificationChannelBo> channels) {
         this.channels = channels;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationProducer to(NotificationProducerBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationProducer.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationProducerBo from(NotificationProducer im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationProducerBo bo = new NotificationProducerBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+
+        bo.setName(im.getName());
+        bo.setDescription(im.getDescription());
+        bo.setContactInfo(im.getContactInfo());
+
+        List<NotificationChannelBo> tempChannels = new ArrayList<NotificationChannelBo>();
+        if (CollectionUtils.isNotEmpty(im.getChannels())) {
+            for (NotificationChannel channel : im.getChannels()) {
+                tempChannels.add(NotificationChannelBo.from(channel));
+            }
+            bo.setChannels(tempChannels);
+        }
+        return bo;
     }
 }

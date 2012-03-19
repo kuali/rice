@@ -46,7 +46,7 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
     @Column(name="SYS_ID", nullable=true)
 	private String deliverySystemId;  // can hold an identifier from the endpoint delivery mechanism system (i.e. workflow id, SMS id, etc)
 	@Column(name="LOCKD_DTTM", nullable=true)
-	private Timestamp lockedDate;
+	private Timestamp lockedDateValue;
 
     /**
      * Lock column for OJB optimistic locking
@@ -57,7 +57,7 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="NTFCTN_ID")
-	private Notification notification;
+	private NotificationBo notification;
 
     /**
      * Constructs a NotificationMessageDelivery instance.
@@ -110,7 +110,7 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
 
     /**
      * Sets the messageDeliveryStatus attribute value.
-     * @param messageDeliveryStatus The messageDeliveryStatus to set.
+     * @param deliveryStatus The messageDeliveryStatus to set.
      */
     public void setMessageDeliveryStatus(String deliveryStatus) {
         this.messageDeliveryStatus = deliveryStatus;
@@ -136,23 +136,23 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
      * Gets the lockedDate attribute. 
      * @return Returns the lockedDate.
      */
-    public Timestamp getLockedDate() {
-        return lockedDate;
+    public Timestamp getLockedDateValue() {
+        return this.lockedDateValue;
     }
     
     /**
      * Sets the lockedDate attribute value.
-     * @param lockedDate The lockedDate to set.
+     * @param lockedDateValue The lockedDate to set.
      */
-    public void setLockedDate(Timestamp lockedDate) {
-        this.lockedDate = lockedDate;
+    public void setLockedDateValue(Timestamp lockedDateValue) {
+        this.lockedDateValue = lockedDateValue;
     }
 
     /**
      * Gets the notification attribute. 
      * @return Returns the notification.
      */
-    public Notification getNotification() {
+    public NotificationBo getNotification() {
         return notification;
     }
 
@@ -160,7 +160,7 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
      * Sets the notification attribute value.
      * @param notification The notification to set.
      */
-    public void setNotification(Notification notification) {
+    public void setNotification(NotificationBo notification) {
         this.notification = notification;
     }
 

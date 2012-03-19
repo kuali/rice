@@ -47,6 +47,18 @@ public final class KenApiConstants {
         public static final String SEND_NOTIFICATION_SERVICE = "sendNotificationService";
     }
 
+    public static final class NotificationConstants {
+
+    }
+
+    public static final class RESPONSE_STATUSES {
+        public static final String SUCCESS = "Success";
+        public static final String FAILURE = "Failure";
+
+        private RESPONSE_STATUSES() {
+            throw new UnsupportedOperationException("do not call");
+        }
+    }
 
     private KenApiConstants() {
         throw new UnsupportedOperationException("do not call");

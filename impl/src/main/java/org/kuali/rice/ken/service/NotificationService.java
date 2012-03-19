@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.service;
 
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -38,7 +38,7 @@ public interface NotificationService {
      * @param notificationMessageAsXml
      * @return NotificationResponse response object
      */
-    public NotificationResponse sendNotification(String notificationMessageAsXml) throws IOException, XmlException;
+    public NotificationResponseBo sendNotification(String notificationMessageAsXml) throws IOException, XmlException;
     
     /**
      * This method allows consumers to send notification messages.  This particular service 
@@ -46,7 +46,7 @@ public interface NotificationService {
      * @param notification
      * @return NotificationResponse
      */
-    public NotificationResponse sendNotification(Notification notification);
+    public NotificationResponseBo sendNotification(NotificationBo notification);
     
     /**
      * This method will retrieve a Notification object from the system, given the id of the 
@@ -54,7 +54,7 @@ public interface NotificationService {
      * @param id
      * @return Notification
      */
-    public Notification getNotification(Long id);
+    public NotificationBo getNotification(Long id);
     
     /**
      * This method will retrieve a collection of notifications given a contentTypeName and recipientId.
@@ -62,7 +62,7 @@ public interface NotificationService {
      * @param recipientId the recipient id
      * @return Collection of notifications
      */
-    public Collection<Notification> getNotificationsForRecipientByType(String contentTypeName, String recipientId);
+    public Collection<NotificationBo> getNotificationsForRecipientByType(String contentTypeName, String recipientId);
     
     /**
      * This method will "dismiss"/remove a NotificationMessageDelivery with the specified cause.
@@ -81,11 +81,11 @@ public interface NotificationService {
      * the caller should arrange to invoke this from within a newly created transaction).
      * @return a list of notifications to be resolved that have been marked as taken by the caller
      */
-    public Collection<Notification> takeNotificationsForResolution();
+    public Collection<NotificationBo> takeNotificationsForResolution();
     
     /**
      * Unlocks specified notification
      * @param notification the notification object to unlock
      */
-    public void unlockNotification(Notification notification);
+    public void unlockNotification(NotificationBo notification);
 }

@@ -17,6 +17,9 @@ package org.kuali.rice.ken.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationRecipient;
+import org.kuali.rice.ken.api.notification.NotificationSender;
+import org.kuali.rice.ken.api.notification.NotificationSenderContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -28,7 +31,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREN_SNDR_T")
-public class NotificationSender extends PersistableBusinessObjectBase{
+public class NotificationSenderBo extends PersistableBusinessObjectBase implements NotificationSenderContract {
     @Id
     @GeneratedValue(generator="KREN_SNDR_S")
 	@GenericGenerator(name="KREN_SNDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -45,12 +48,12 @@ public class NotificationSender extends PersistableBusinessObjectBase{
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name="NTFCTN_ID", insertable=false, updatable=false)
-    private Notification notification;
+    private NotificationBo notification;
 
     /**
      * Constructs a NotificationSender.java instance.
      */
-    public NotificationSender() {
+    public NotificationSenderBo() {
     }
 
     /**
@@ -95,9 +98,41 @@ public class NotificationSender extends PersistableBusinessObjectBase{
 
     /**
      * Sets the senderName attribute value.
-     * @param senderName The senderName to set.
+     * @param userId The senderName to set.
      */
     public void setSenderName(String userId) {
         this.senderName = userId;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationSender to(NotificationSenderBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationSender.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationSenderBo from(NotificationSender im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationSenderBo bo = new NotificationSenderBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+        bo.setSenderName(im.getSenderName());
+        bo.setNotificationId(im.getNotificationId());
+        return bo;
     }
 }

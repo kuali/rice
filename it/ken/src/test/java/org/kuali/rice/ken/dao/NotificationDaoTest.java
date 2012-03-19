@@ -21,13 +21,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
+import org.kuali.rice.ken.bo.NotificationPriorityBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -41,12 +41,12 @@ import org.kuali.rice.ken.util.NotificationConstants;
  */
 public class NotificationDaoTest extends BusinessObjectPersistenceTestCaseBase {
     Long id = new Long(-1);
-    NotificationPriority mockPriority = MockObjectsUtil.getTestPriority1();
-    NotificationContentType mockContentType = MockObjectsUtil.getTestContentType1();
-    NotificationChannel mockChannel = MockObjectsUtil.getTestChannel1();
-    NotificationProducer mockProducer = MockObjectsUtil.getTestProducer1();
+    NotificationPriorityBo mockPriority = MockObjectsUtil.getTestPriority1();
+    NotificationContentTypeBo mockContentType = MockObjectsUtil.getTestContentType1();
+    NotificationChannelBo mockChannel = MockObjectsUtil.getTestChannel1();
+    NotificationProducerBo mockProducer = MockObjectsUtil.getTestProducer1();
     
-    Notification notification = new Notification();
+    NotificationBo notification = new NotificationBo();
 
     private String deliveryType = NotificationConstants.DELIVERY_TYPES.ACK;
     private Timestamp sendDateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -83,12 +83,12 @@ public class NotificationDaoTest extends BusinessObjectPersistenceTestCaseBase {
      */
     @Override
     protected boolean retrieve() {
-	notification = new Notification();
+	notification = new NotificationBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.ID, id);
-	notification = (Notification) businessObjectDao.findByPrimaryKey(Notification.class, criteria);
+	notification = (NotificationBo) businessObjectDao.findByPrimaryKey(NotificationBo.class, criteria);
 	
 	boolean success = true;
 	
@@ -109,11 +109,11 @@ public class NotificationDaoTest extends BusinessObjectPersistenceTestCaseBase {
      */
     @Override
     protected boolean insert() {
-	List<NotificationRecipient> recipients = new ArrayList();
+	List<NotificationRecipientBo> recipients = new ArrayList();
 	recipients.add(MockObjectsUtil.getTestRecipient1());
 	recipients.add(MockObjectsUtil.getTestRecipient2());
 	
-	List<NotificationSender> senders = new ArrayList();
+	List<NotificationSenderBo> senders = new ArrayList();
 	senders.add(MockObjectsUtil.getTestSender1());
 	senders.add(MockObjectsUtil.getTestSender2());
 	

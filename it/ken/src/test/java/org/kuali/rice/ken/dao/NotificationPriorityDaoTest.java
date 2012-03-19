@@ -17,7 +17,7 @@ package org.kuali.rice.ken.dao;
 
 import java.util.HashMap;
 
-import org.kuali.rice.ken.bo.NotificationPriority;
+import org.kuali.rice.ken.bo.NotificationPriorityBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -28,8 +28,8 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationPriorityDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    NotificationPriority mockPriority1 = MockObjectsUtil.getTestPriority1();
-    NotificationPriority priority1 = MockObjectsUtil.getTestPriority1();
+    NotificationPriorityBo mockPriority1 = MockObjectsUtil.getTestPriority1();
+    NotificationPriorityBo priority1 = MockObjectsUtil.getTestPriority1();
     
     private String[] updatedDescriptions = {"Test 1 - updated description", "Test 2 - updated description"};
     
@@ -51,12 +51,12 @@ public class NotificationPriorityDaoTest extends BusinessObjectPersistenceTestCa
      */
     @Override
     protected boolean retrieve() {
-	priority1 = new NotificationPriority();
+	priority1 = new NotificationPriorityBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockPriority1.getName());
-	priority1 = (NotificationPriority) (businessObjectDao.findMatching(NotificationPriority.class, criteria)).iterator().next();
+	priority1 = (NotificationPriorityBo) (businessObjectDao.findMatching(NotificationPriorityBo.class, criteria)).iterator().next();
 	
 	boolean success = true;
 	

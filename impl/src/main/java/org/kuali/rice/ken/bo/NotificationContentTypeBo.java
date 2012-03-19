@@ -18,9 +18,15 @@ package org.kuali.rice.ken.bo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.ken.api.notification.NotificationContentType;
+import org.kuali.rice.ken.api.notification.NotificationContentTypeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * This class represents the different types of Notification content that the system can handle.  
@@ -29,7 +35,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREN_CNTNT_TYP_T")
-public class NotificationContentType extends PersistableBusinessObjectBase{
+public class NotificationContentTypeBo extends PersistableBusinessObjectBase implements NotificationContentTypeContract {
     @Id
     @GeneratedValue(generator="KREN_CNTNT_TYP_S")
 	@GenericGenerator(name="KREN_CNTNT_TYP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -56,7 +62,7 @@ public class NotificationContentType extends PersistableBusinessObjectBase{
     /**
      * Constructs a NotificationContentType instance.
      */
-    public NotificationContentType() {
+    public NotificationContentTypeBo() {
     }
 
     /**
@@ -181,5 +187,43 @@ public class NotificationContentType extends PersistableBusinessObjectBase{
      */
     public void setXsl(String xsl) {
         this.xsl = xsl;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationContentType to(NotificationContentTypeBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationContentType.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationContentTypeBo from(NotificationContentType im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationContentTypeBo bo = new NotificationContentTypeBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+        bo.setName(im.getName());
+        bo.setDescription(im.getDescription());
+
+        bo.setCurrent(im.isCurrent());
+        bo.setVersion(im.getVersion());
+        bo.setNamespace(im.getNamespace());
+        bo.setXsd(im.getXsd());
+        bo.setXsl(im.getXsl());
+        return bo;
     }
 }

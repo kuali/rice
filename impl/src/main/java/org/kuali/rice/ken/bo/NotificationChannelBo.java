@@ -15,8 +15,20 @@
  */
 package org.kuali.rice.ken.bo;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationChannel;
+import org.kuali.rice.ken.api.notification.NotificationChannelContract;
+import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
+import org.kuali.rice.ken.api.notification.NotificationChannelReviewerContract;
+import org.kuali.rice.ken.api.notification.NotificationContentType;
+import org.kuali.rice.ken.api.notification.NotificationListRecipient;
+import org.kuali.rice.ken.api.notification.NotificationListRecipientContract;
+import org.kuali.rice.ken.api.notification.NotificationProducer;
+import org.kuali.rice.ken.api.notification.NotificationProducerContract;
+import org.kuali.rice.ken.api.notification.UserChannelSubscription;
+import org.kuali.rice.ken.api.notification.UserChannelSubscriptionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -32,7 +44,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "KREN_CHNL_T")
-public class NotificationChannel extends PersistableBusinessObjectBase {
+public class NotificationChannelBo extends PersistableBusinessObjectBase implements NotificationChannelContract {
 	@Id
 	@GeneratedValue(generator="KREN_CHNL_S")
 	@GenericGenerator(name="KREN_CHNL_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -50,34 +62,34 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 
 	// List references
 	@OneToMany(cascade={CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, 
-			targetEntity=org.kuali.rice.ken.bo.NotificationRecipientList.class, mappedBy="channel")
+			targetEntity=NotificationRecipientListBo.class, mappedBy="channel")
 	@OrderBy ("id ASC")
-	private List<NotificationRecipientList> recipientLists;
+	private List<NotificationRecipientListBo> recipientLists;
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})@JoinTable(name="KREN_CHNL_PRODCR_T", 
 			joinColumns=@JoinColumn(name="CHNL_ID"), 
 			inverseJoinColumns=@JoinColumn(name="PRODCR_ID"))
 	@OrderBy ("id ASC")
-	private List<NotificationProducer> producers;
+	private List<NotificationProducerBo> producers;
 	
 	@OneToMany(cascade={CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, 
-			targetEntity=org.kuali.rice.ken.bo.NotificationChannelReviewer.class, mappedBy="channel")
+			targetEntity=NotificationChannelReviewerBo.class, mappedBy="channel")
 	@OrderBy ("id ASC")
-	private List<NotificationChannelReviewer> reviewers = new ArrayList<NotificationChannelReviewer>();
+	private List<NotificationChannelReviewerBo> reviewers = new ArrayList<NotificationChannelReviewerBo>();
 	
 	@OneToMany(cascade={CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, 
-			targetEntity=org.kuali.rice.ken.bo.UserChannelSubscription.class, mappedBy="channel")
+			targetEntity=UserChannelSubscriptionBo.class, mappedBy="channel")
 	@OrderBy ("id ASC")
-	private List<UserChannelSubscription> subscriptions = new ArrayList<UserChannelSubscription>();
+	private List<UserChannelSubscriptionBo> subscriptions = new ArrayList<UserChannelSubscriptionBo>();
 
 
 	/**
 	 * Constructs a NotificationChannel instance.
 	 */
-	public NotificationChannel() {
+	public NotificationChannelBo() {
 		super();
-		recipientLists = new ArrayList<NotificationRecipientList>();
-		producers = new ArrayList<NotificationProducer>();
+		recipientLists = new ArrayList<NotificationRecipientListBo>();
+		producers = new ArrayList<NotificationProducerBo>();
 	}
 
 	/**
@@ -85,7 +97,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * 
 	 * @return Returns the recipientLists.
 	 */
-	public List<NotificationRecipientList> getRecipientLists() {
+	public List<NotificationRecipientListBo> getRecipientLists() {
 		return recipientLists;
 	}
 
@@ -95,7 +107,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * @param recipientLists
 	 *            The recipientLists to set.
 	 */
-	public void setRecipientLists(List<NotificationRecipientList> recipientLists) {
+	public void setRecipientLists(List<NotificationRecipientListBo> recipientLists) {
 		this.recipientLists = recipientLists;
 	}
 
@@ -104,7 +116,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * 
 	 * @param recipientList
 	 */
-	public void addRecipientList(NotificationRecipientList recipientList) {
+	public void addRecipientList(NotificationRecipientListBo recipientList) {
 		this.recipientLists.add(recipientList);
 	}
 
@@ -113,7 +125,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * 
 	 * @param recipientList
 	 */
-	public void removeRecipientList(NotificationRecipientList recipientList) {
+	public void removeRecipientList(NotificationRecipientListBo recipientList) {
 		this.recipientLists.remove(recipientList);
 	}
 
@@ -198,7 +210,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * 
 	 * @return Returns the producers.
 	 */
-	public List<NotificationProducer> getProducers() {
+	public List<NotificationProducerBo> getProducers() {
 		return producers;
 	}
 
@@ -208,7 +220,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * @param producers
 	 *            The producers to set.
 	 */
-	public void setProducers(List<NotificationProducer> producers) {
+	public void setProducers(List<NotificationProducerBo> producers) {
 		this.producers = producers;
 	}
 
@@ -217,7 +229,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * 
 	 * @return the list of reviewers for notification publications to this channel
 	 */
-	public List<NotificationChannelReviewer> getReviewers() {
+	public List<NotificationChannelReviewerBo> getReviewers() {
 		return reviewers;
 	}
 
@@ -227,7 +239,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * @param reviewers
 	 *            the list of reviewers for notification publications to this channel
 	 */
-	public void setReviewers(List<NotificationChannelReviewer> reviewers) {
+	public void setReviewers(List<NotificationChannelReviewerBo> reviewers) {
 		this.reviewers = reviewers;
 	}
 
@@ -236,7 +248,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * 
 	 * @return the list of subscriptions to this channel
 	 */
-	public List<UserChannelSubscription> getSubscriptions() {
+	public List<UserChannelSubscriptionBo> getSubscriptions() {
 		return subscriptions;
 	}
 
@@ -246,7 +258,7 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 * @param subscriptions
 	 *            the list of subscriptions to this channel
 	 */
-	public void setSubscriptions(List<UserChannelSubscription> subscriptions) {
+	public void setSubscriptions(List<UserChannelSubscriptionBo> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
 
@@ -257,7 +269,74 @@ public class NotificationChannel extends PersistableBusinessObjectBase {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		NotificationChannel channelToCompare = (NotificationChannel) obj;
+		NotificationChannelBo channelToCompare = (NotificationChannelBo) obj;
 		return this.getId().equals(channelToCompare.getId());
 	}
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationChannel to(NotificationChannelBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationChannel.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationChannelBo from(NotificationChannel im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationChannelBo bo = new NotificationChannelBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+        bo.setName(im.getName());
+        bo.setDescription(im.getDescription());
+
+        bo.setSubscribable(im.isSubscribable());
+
+        List<NotificationRecipientListBo> tempRecipientLists = new ArrayList<NotificationRecipientListBo>();
+        if (CollectionUtils.isNotEmpty(im.getRecipientLists())) {
+            for (NotificationListRecipient listRecipient : im.getRecipientLists()) {
+                tempRecipientLists.add(NotificationRecipientListBo.from(listRecipient));
+            }
+            bo.setRecipientLists(tempRecipientLists);
+        }
+
+        List<NotificationProducerBo> tempProducers = new ArrayList<NotificationProducerBo>();
+        if (CollectionUtils.isNotEmpty(im.getProducers())) {
+            for (NotificationProducer producer : im.getProducers()) {
+                tempProducers.add(NotificationProducerBo.from(producer));
+            }
+            bo.setProducers(tempProducers);
+        }
+
+        List<NotificationChannelReviewerBo> tempReviewers = new ArrayList<NotificationChannelReviewerBo>();
+        if (CollectionUtils.isNotEmpty(im.getReviewers())) {
+            for (NotificationChannelReviewer reviewer : im.getReviewers()) {
+                tempReviewers.add(NotificationChannelReviewerBo.from(reviewer));
+            }
+            bo.setReviewers(tempReviewers);
+        }
+
+        List<UserChannelSubscriptionBo> tempSubscriptions = new ArrayList<UserChannelSubscriptionBo>();
+        if (CollectionUtils.isNotEmpty(im.getSubscriptions())) {
+            for (UserChannelSubscription subscription : im.getSubscriptions()) {
+                tempSubscriptions.add(UserChannelSubscriptionBo.from(subscription));
+            }
+            bo.setSubscriptions(tempSubscriptions);
+        }
+
+        return bo;
+    }
 }

@@ -17,6 +17,9 @@ package org.kuali.rice.ken.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationContentType;
+import org.kuali.rice.ken.api.notification.UserChannelSubscription;
+import org.kuali.rice.ken.api.notification.UserChannelSubscriptionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -28,7 +31,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREN_CHNL_SUBSCRP_T")
-public class UserChannelSubscription extends PersistableBusinessObjectBase{
+public class UserChannelSubscriptionBo extends PersistableBusinessObjectBase implements UserChannelSubscriptionContract {
     @Id
     @GeneratedValue(generator="KREN_CHNL_SUBSCRP_S")
 	@GenericGenerator(name="KREN_CHNL_SUBSCRP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -42,28 +45,28 @@ public class UserChannelSubscription extends PersistableBusinessObjectBase{
     
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name="CHNL_ID")
-	private NotificationChannel channel;
+	private NotificationChannelBo channel;
     
     /**
      * Constructs a UserChannelSubscription instance.
      */
-    public UserChannelSubscription() {
+    public UserChannelSubscriptionBo() {
     }
 
     /**
      * Gets the channel attribute. 
      * @return Returns the channel.
      */
-    public NotificationChannel getChannel() {
-	return channel;
+    public NotificationChannelBo getChannel() {
+	    return channel;
     }
 
     /**
      * Sets the channel attribute value.
      * @param channel The channel to set.
      */
-    public void setChannel(NotificationChannel channel) {
-	this.channel = channel;
+    public void setChannel(NotificationChannelBo channel) {
+	    this.channel = channel;
     }
 
     /**
@@ -71,7 +74,7 @@ public class UserChannelSubscription extends PersistableBusinessObjectBase{
      * @return Returns the id.
      */
     public Long getId() {
-	return id;
+	    return id;
     }
 
     /**
@@ -79,7 +82,7 @@ public class UserChannelSubscription extends PersistableBusinessObjectBase{
      * @param id The id to set.
      */
     public void setId(Long id) {
-	this.id = id;
+	    this.id = id;
     }
 
     /**
@@ -87,7 +90,7 @@ public class UserChannelSubscription extends PersistableBusinessObjectBase{
      * @return Returns the userId.
      */
     public String getUserId() {
-	return userId;
+	    return userId;
     }
 
     /**
@@ -95,7 +98,41 @@ public class UserChannelSubscription extends PersistableBusinessObjectBase{
      * @param userId The userId to set.
      */
     public void setUserId(String userId) {
-	this.userId = userId;
+	    this.userId = userId;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static UserChannelSubscription to(UserChannelSubscriptionBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return UserChannelSubscription.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static UserChannelSubscriptionBo from(UserChannelSubscription im) {
+        if (im == null) {
+            return null;
+        }
+
+        UserChannelSubscriptionBo bo = new UserChannelSubscriptionBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+
+        bo.setUserId(im.getUserId());
+        bo.setChannel(im.getChannel() == null ? null : NotificationChannelBo.from(im.getChannel()));
+        
+        return bo;
     }
 }
 

@@ -553,7 +553,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 			return false; // don't repopulate this
 		}
 		else if (StringUtils.equalsIgnoreCase("session",getStrutsActionMappingScope()) && !getIsNewForm()) {
-			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName); 
+			return isPropertyEditable(requestParameterName) || isPropertyNonEditableButRequired(requestParameterName);
 		}
 		return true;
 		

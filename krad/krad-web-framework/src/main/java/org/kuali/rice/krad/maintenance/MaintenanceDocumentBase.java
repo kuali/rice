@@ -17,6 +17,7 @@ package org.kuali.rice.krad.maintenance;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
@@ -66,6 +67,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -112,7 +114,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected boolean fieldsClearedOnCopy;
     @Transient
     protected boolean displayTopicFieldInNotes = false;
-
     @Transient
     protected String attachmentPropertyName;
 
@@ -277,6 +278,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 LOG.error("Error while parsing document contents", e);
                 throw new RuntimeException("Could not load document contents from xml", e);
             } catch (SAXException e) {
+                LOG.error("Error while parsing document contents", e);
                 LOG.error("Error while parsing document contents", e);
                 throw new RuntimeException("Could not load document contents from xml", e);
             } catch (IOException e) {
@@ -505,6 +507,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
             newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
+            if(newMaintainableObject.getDataObject() instanceof PersistableAttachment)
+            {
+                populateAttachmentForBO();
+            }
             // If a maintenance lock exists, warn the user.
             checkForLockingDocument(false);
         }
@@ -619,8 +625,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
-
-        populateDocumentAttachment();
+        if (this.newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+            populateDocumentAttachment();
+        }
         populateXmlDocumentContentsFromMaintainables();
     }
 
@@ -639,20 +646,46 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
     }
 
-    protected void populateAttachmentForBO() {
+    public void populateAttachmentForBO() {
         refreshAttachment();
 
         PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getDataObject();
 
-        if (attachment != null) {
-            byte[] fileContents;
-            fileContents = attachment.getAttachmentContent();
-            if (fileContents.length > 0) {
-                boAttachment.setAttachmentContent(fileContents);
-                boAttachment.setFileName(attachment.getFileName());
-                boAttachment.setContentType(attachment.getContentType());
-            }
-        }
+    	if (ObjectUtils.isNotNull(getAttachmentPropertyName())) {
+    		String attachmentPropNm = getAttachmentPropertyName();
+    		String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
+    		FormFile attachmentFromBusinessObject;
+
+    		if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment)) {
+    			try {
+    				Method[] methods = boAttachment.getClass().getMethods();
+    				for (Method method : methods) {
+    					if (method.getName().equals(attachmentPropNmSetter)) {
+    						attachmentFromBusinessObject =  (FormFile)(boAttachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(boAttachment));
+    						if (attachmentFromBusinessObject != null) {
+    							boAttachment.setAttachmentContent(attachmentFromBusinessObject.getFileData());
+    							boAttachment.setFileName(attachmentFromBusinessObject.getFileName());
+    							boAttachment.setContentType(attachmentFromBusinessObject.getContentType());
+    						}
+    						break;
+    					}
+    				}
+    		   } catch (Exception e) {
+    				LOG.error("Not able to get the attachment " + e.getMessage());
+    				throw new RuntimeException("Not able to get the attachment " + e.getMessage());
+    		   }
+    	  }
+      }
+
+      if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment) && (attachment != null)) {
+    	  byte[] fileContents;
+          fileContents = attachment.getAttachmentContent();
+          if (fileContents.length > 0) {
+              boAttachment.setAttachmentContent(fileContents);
+              boAttachment.setFileName(attachment.getFileName());
+              boAttachment.setContentType(attachment.getContentType());
+          }
+       }
     }
 
     public void populateDocumentAttachment() {
@@ -818,7 +851,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * The {@link NoteType} for maintenance documents is determined by whether or not the underlying {@link
      * Maintainable} supports business object notes or not.  This is determined via a call to {@link
-     * Maintainable#isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
+     * Maintainable#   isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
      * Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT}. <li>Otherwise, delegate
      * to
      * {@link DocumentBase#getNoteType()} </ul>

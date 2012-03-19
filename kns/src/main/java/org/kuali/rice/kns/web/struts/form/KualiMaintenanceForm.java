@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.config.ConfigurationException;
@@ -162,6 +163,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 Object propertyValue = requestParameters.get(parameter);
                 
                 if(propertyValue != null && propertyValue instanceof FormFile) {
+                      populateAttachmentFile(maintenanceDocument, propertyName, (FormFile) propertyValue);
                     if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
                         maintenanceDocument.setFileAttachment((FormFile) propertyValue);
                     }
@@ -171,7 +173,27 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         }
     }
 
-    /**
+    private void populateAttachmentFile(MaintenanceDocumentBase maintenanceDocument, String propertyName, FormFile propertyValue) {
+         if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
+ 	 	 	 PersistableBusinessObject boClass;
+             String boPropertyName;
+             boClass = maintenanceDocument.getNewMaintainableObject().getBusinessObject();
+             boPropertyName = propertyName;
+             String className = boClass.getClass().getName();
+             try {
+                 PropertyUtils.setProperty(boClass, boPropertyName, propertyValue);
+
+             } catch (InvocationTargetException e) {
+                 throw new RuntimeException("no setter for property '" + className + "." + boPropertyName + "'", e);
+             } catch (NoSuchMethodException e) {
+                 throw new RuntimeException("no setter for property '" + className + "." + boPropertyName + "'", e);
+             } catch (IllegalAccessException e) {
+                 throw new RuntimeException("problem accessing property '" + className + "." + boPropertyName + "'", e);
+             }
+         }
+    }
+
+             /**
      * Hook into populate so we can set the maintenance documents and feed the field values to its maintainables.
      */
     @Override

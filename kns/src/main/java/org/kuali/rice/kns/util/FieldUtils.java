@@ -624,7 +624,15 @@ public final class FieldUtils {
 
     public static void populateReadableField(Field field, BusinessObject businessObject){
 		Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
-		if (obj != null) {
+
+        // For files the FormFile is not being persisted instead the file data is stored in
+		// individual fields as defined by PersistableAttachment.
+	    if (Field.FILE.equals(field.getFieldType())) {
+            Object fileName = ObjectUtils.getNestedValue(businessObject, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+            field.setPropertyValue(fileName);
+        }
+
+        if (obj != null) {
 			String formattedValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(businessObject, field.getPropertyName());
 			field.setPropertyValue(formattedValue);
         	

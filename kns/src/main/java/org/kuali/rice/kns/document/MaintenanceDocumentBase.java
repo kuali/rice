@@ -79,6 +79,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
         this.fileAttachment = fileAttachment;
     }
 
+    @Override
     public void populateDocumentAttachment() {
         refreshAttachment();
 

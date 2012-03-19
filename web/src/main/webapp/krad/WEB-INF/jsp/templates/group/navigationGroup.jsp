@@ -22,7 +22,7 @@
 
 <%-- renders standard unordered list and calls doNavigation function --%>
 
-<!----------------------------------- #NAVIGATION --------------------------------------->
+<!-- NAVIGATION -->
 
   <%-- render items in list --%>
   <ul id="${group.id}" role="navigation">

@@ -33,7 +33,7 @@
 
   <div id="view_div" style="display:none;" class="uif-application">
 
-    <!----------------------------------- APPLICATION HEADER --------------------------------------->
+    <!-- APPLICATION HEADER -->
     <krad:template component="${view.applicationHeader}"/>
     <krad:backdoor/>
 
@@ -53,32 +53,32 @@
         <form:hidden path="validateDirty"/>
       </c:if>
 
-      <!----------------------------------- VIEW --------------------------------------->
+      <!-- VIEW -->
       <krad:div component="${view}">
 
-        <!----------------------------------- BREADCRUMBS --------------------------------------->
+        <!-- BREADCRUMBS -->
         <c:if test="${!view.breadcrumbsInApplicationHeader}">
           <krad:template component="${view.breadcrumbs}"/>
         </c:if>
 
-        <!----------------------------------- VIEW HEADER --------------------------------------->
+        <!-- VIEW HEADER -->
         <krad:template component="${view.header}"/>
 
-        <!----------------------------------- VIEW CONTENT --------------------------------------->
+        <!-- VIEW CONTENT -->
         <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper">
 
-          <!----------------------------------- VIEW NAVIGATION --------------------------------------->
+          <!-- VIEW NAVIGATION -->
           <div>
             <krad:template component="${view.navigation}" currentPageId="${view.currentPageId}"/>
           </div>
 
-          <!----------------------------------- PAGE CONTENT --------------------------------------->
+          <!-- PAGE CONTENT -->
           <div id="viewpage_div" class="uif-pageContentWrapper">
 
-            <!----------------------------------- PAGE --------------------------------------->
+            <!-- PAGE -->
             <krad:template component="${view.currentPage}"/>
 
-            <!----------------------------------- PAGE RELATED VARS --------------------------------------->
+            <!-- PAGE RELATED VARS -->
             <c:if test="${view.renderForm}">
               <form:hidden path="pageId"/>
               <c:if test="${!empty view.currentPage}">
@@ -98,7 +98,7 @@
 
         </div>
 
-        <!----------------------------------- VIEW FOOTER --------------------------------------->
+        <!-- VIEW FOOTER -->
         <div id="viewfooter_div">
           <krad:template component="${view.footer}"/>
         </div>
@@ -106,7 +106,7 @@
     </krad:form>
   </div>
 
-  <!----------------------------------- APPLICATION FOOTER --------------------------------------->
+  <!-- APPLICATION FOOTER -->
   <krad:template component="${view.applicationFooter}"/>
 
 </krad:html>

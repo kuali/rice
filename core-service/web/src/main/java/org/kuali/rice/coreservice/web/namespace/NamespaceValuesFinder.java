@@ -43,7 +43,7 @@ public class NamespaceValuesFinder extends KeyValuesBase {
         List<KeyValue> labels = new ArrayList<KeyValue>( namespaces.size() );
         labels.add(new ConcreteKeyValue("", ""));
         for ( Namespace namespace : namespaces ) {
-            labels.add( new ConcreteKeyValue(namespace.getCode(), namespace.getName() ) );
+            labels.add( new ConcreteKeyValue(namespace.getCode(), namespace.getCode() + " - " + namespace.getName() ) );
         }
         return labels;
     }

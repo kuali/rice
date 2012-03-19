@@ -315,8 +315,8 @@ public class KimModuleService extends ModuleServiceBase {
 		urlParameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObjectClassAttribute);
 		try{
 			Class inquiryBusinessObjectClass = Class.forName(businessObjectClassAttribute);
-			if(Role.class.isAssignableFrom(inquiryBusinessObjectClass) || 
-					Group.class.isAssignableFrom(inquiryBusinessObjectClass) || 
+			if(RoleContract.class.isAssignableFrom(inquiryBusinessObjectClass) ||
+					GroupContract.class.isAssignableFrom(inquiryBusinessObjectClass) ||
 					Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
 		        urlParameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
 			} else{
@@ -329,21 +329,37 @@ public class KimModuleService extends ModuleServiceBase {
 		return urlParameters;
 	}
 
-	@Override
-	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
-		String inquiryUrl = KimCommonUtilsInternal.getKimBasePath();
-		if (!inquiryUrl.endsWith("/")) {
-			inquiryUrl = inquiryUrl + "/";
-		}
-		if(Role.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-			return inquiryUrl + KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
-		} else if(Group.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-			return inquiryUrl + KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
-		} else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-			return inquiryUrl + KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
-		}
-		return super.getInquiryUrl(inquiryBusinessObjectClass);
-	}
+    @Override
+    public boolean isExternalizable(Class boClazz) {
+        if (boClazz == null) {
+            return false;
+        }
+        if(RoleContract.class.isAssignableFrom(boClazz)) {
+            return true;
+        } else if(GroupContract.class.isAssignableFrom(boClazz)) {
+            return true;
+        } else if(Person.class.isAssignableFrom(boClazz)) {
+            return true;
+        }
+        return ExternalizableBusinessObject.class.isAssignableFrom(boClazz);
+    }
+
+    @Override
+    protected String getInquiryUrl(Class inquiryBusinessObjectClass){
+        String inquiryUrl = KimCommonUtilsInternal.getKimBasePath();
+        if (!inquiryUrl.endsWith("/")) {
+            inquiryUrl = inquiryUrl + "/";
+        }
+        if(RoleContract.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+            return inquiryUrl + KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
+        } else if(GroupContract.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+            return inquiryUrl + KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
+        } else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+            return inquiryUrl + KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
+        }
+        return super.getInquiryUrl(inquiryBusinessObjectClass);
+    }
+
 
     @Override
     public List<List<String>> listAlternatePrimaryKeyFieldNames(

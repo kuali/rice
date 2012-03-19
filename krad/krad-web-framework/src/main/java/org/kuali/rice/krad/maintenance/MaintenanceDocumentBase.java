@@ -505,6 +505,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
             newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
+            if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+                populateAttachmentForBO();
+            }
             // If a maintenance lock exists, warn the user.
             checkForLockingDocument(false);
         }
@@ -620,8 +623,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
 
-        populateDocumentAttachment();
-        populateXmlDocumentContentsFromMaintainables();
+        if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+            populateDocumentAttachment();
+            populateAttachmentForBO();
+        }
     }
 
     /**

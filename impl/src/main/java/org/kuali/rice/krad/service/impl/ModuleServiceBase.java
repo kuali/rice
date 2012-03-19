@@ -245,7 +245,7 @@ public class ModuleServiceBase implements ModuleService {
     @Deprecated
     public String getExternalizableBusinessObjectInquiryUrl(Class inquiryBusinessObjectClass,
             Map<String, String[]> parameters) {
-        if (!ExternalizableBusinessObject.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+        if (!isExternalizable(inquiryBusinessObjectClass)) {
             return KRADConstants.EMPTY_STRING;
         }
         String businessObjectClassAttribute;
@@ -485,6 +485,7 @@ public class ModuleServiceBase implements ModuleService {
     /**
      * @see org.kuali.rice.krad.service.ModuleService#isExternalizable(java.lang.Class)
      */
+    @Override
     public boolean isExternalizable(Class boClazz) {
         if (boClazz == null) {
             return false;

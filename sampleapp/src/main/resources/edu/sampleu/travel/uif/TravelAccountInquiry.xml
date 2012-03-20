@@ -28,7 +28,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="Items">
          <list>
            <bean parent="Uif-Disclosure-GridSection">
-             <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
                 <bean parent="Uif-DataField" p:propertyName="number"/>
@@ -61,7 +60,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </list>
               </property>
            </bean>
-           <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
+           <bean parent="Uif-Disclosure-TableCollectionSection">
               <property name="title" value="Fiscal Officer Accounts - Default (No Column Options set)"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -93,7 +92,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                  -->
            </bean>
 
-           <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
+           <bean parent="Uif-Disclosure-TableCollectionSection">
               <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on rich table"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
@@ -119,7 +118,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </set>
              </property>
            </bean>
-           <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
+           <bean parent="Uif-Disclosure-TableCollectionSection">
               <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on layout manager"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>

@@ -133,6 +133,7 @@
     <property name="richTable">
       <bean parent="Uif-PagedRichTable"/>
     </property>
+    <property name="suppressLineWrapping" value="true"/>
   </bean>
 
   <!--Stacked Collection Layout Managers-->

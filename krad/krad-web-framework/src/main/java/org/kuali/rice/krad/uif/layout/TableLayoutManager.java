@@ -149,7 +149,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			totalColumns++;
 		}
 
-        if (collectionGroup.isRenderAddLine()){
+        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()){
             if(StringUtils.isBlank(this.getFirstLineStyle()) && !isSeparateAddLine()){
                 this.setFirstLineStyle("kr-addLine");
             }
@@ -418,7 +418,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.ContainerAware#getSupportedContainer()
+     *     @see  CollectionLayoutManager#getSupportedContainer()
 	 */
 	@Override
 	public Class<? extends Container> getSupportedContainer() {

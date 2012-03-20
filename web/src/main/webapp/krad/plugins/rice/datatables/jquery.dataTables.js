@@ -845,21 +845,37 @@
 		 */
 		function classSettings ()
 		{
+            /*
+             * Begin Kuali Customization
+             * 3/19/12 - Eric Njogu
+             * KULRICE-6959
+             */
+            /**
+                     * subtracts the add line row - if present - from the row count
+                     */
+            this.subtractAddLineRow = function (recordCount) {
+                if ($(this.nTable).find("[class ~= 'kr-addLine']").length != 0) {
+                    return recordCount - 1;
+                } else {
+                    return recordCount;
+                }
+            };
+
 			this.fnRecordsTotal = function ()
 			{
-				if ( this.oFeatures.bServerSide ) {
-					return parseInt(this._iRecordsTotal, 10);
+                if ( this.oFeatures.bServerSide ) {
+                    return this.subtractAddLineRow(parseInt(this._iRecordsTotal, 10));
 				} else {
-					return this.aiDisplayMaster.length;
+                   return this.subtractAddLineRow(this.aiDisplayMaster.length);
 				}
 			};
 			
 			this.fnRecordsDisplay = function ()
 			{
 				if ( this.oFeatures.bServerSide ) {
-					return parseInt(this._iRecordsDisplay, 10);
+                    return this.subtractAddLineRow(parseInt(this._iRecordsDisplay, 10));
 				} else {
-					return this.aiDisplay.length;
+                    return this.subtractAddLineRow(this.aiDisplay.length);
 				}
 			};
 			
@@ -867,16 +883,18 @@
 			{
 				if ( this.oFeatures.bServerSide ) {
 					if ( this.oFeatures.bPaginate === false || this._iDisplayLength == -1 ) {
-						return this._iDisplayStart+this.aiDisplay.length;
+						return this.subtractAddLineRow(this._iDisplayStart+this.aiDisplay.length);
 					} else {
-						return Math.min( this._iDisplayStart+this._iDisplayLength, 
-							this._iRecordsDisplay );
+						return this.subtractAddLineRow(Math.min( this._iDisplayStart+this._iDisplayLength,
+							this._iRecordsDisplay ));
 					}
 				} else {
-					return this._iDisplayEnd;
+					return this.subtractAddLineRow(this._iDisplayEnd);
 				}
 			};
-			
+
+            /** end kuali customization */
+
 			/*
 			 * Variable: oInstance
 			 * Purpose:  The DataTables object for this table

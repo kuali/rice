@@ -399,10 +399,38 @@ public class QuickFinder extends WidgetBase {
         this.referencesToRefresh = referencesToRefresh;
     }
 
+    /**
+     * Map that determines what properties from a result lookup row (if selected) will be returned to properties on
+     * the calling view
+     *
+     * <p>
+     * The purpose of using the lookup is to search for a particular value and return that value to the form being
+     * completed. In order for the lookup framework to return the field back to us, we must specify the name of the
+     * field on the data object class whose value we need, and the name of the field on the calling view. Furthermore,
+     * we can choose to have the lookup return additional fields that populate other form fields or informational
+     * properties (see ‘Field Queries and Informational Properties’). These pairs of fields are known as
+     * ‘field conversions’.
+     * </p>
+     *
+     * <p>
+     * The fieldConversions property is a Map. Each entry represents a field that will be returned back from the
+     * lookup, with the entry key being the field name on the data object class, and the entry value being the field
+     * name on the calling view. It is helpful to think of this as a from-to mapping. Pulling from the data object
+     * field (map key) to the calling view field (map value).
+     * </p>
+     *
+     * @return Map<String, String> mapping of lookup data object property names to view property names
+     */
     public Map<String, String> getFieldConversions() {
         return this.fieldConversions;
     }
 
+    /**
+     * Setter for the map that determines what properties on a lookup result row are returned and how they map to
+     * properties on the calling view
+     *
+     * @param fieldConversions
+     */
     public void setFieldConversions(Map<String, String> fieldConversions) {
         this.fieldConversions = fieldConversions;
     }

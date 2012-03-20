@@ -17,7 +17,6 @@ package org.kuali.rice.krad.maintenance;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
@@ -647,46 +646,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     public void populateAttachmentForBO() {
-        refreshAttachment();
+    // TODO: need to convert this from using struts form file
 
-        PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getDataObject();
-
-    	if (ObjectUtils.isNotNull(getAttachmentPropertyName())) {
-    		String attachmentPropNm = getAttachmentPropertyName();
-    		String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
-    		FormFile attachmentFromBusinessObject;
-
-    		if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment)) {
-    			try {
-    				Method[] methods = boAttachment.getClass().getMethods();
-    				for (Method method : methods) {
-    					if (method.getName().equals(attachmentPropNmSetter)) {
-    						attachmentFromBusinessObject =  (FormFile)(boAttachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(boAttachment));
-    						if (attachmentFromBusinessObject != null) {
-    							boAttachment.setAttachmentContent(attachmentFromBusinessObject.getFileData());
-    							boAttachment.setFileName(attachmentFromBusinessObject.getFileName());
-    							boAttachment.setContentType(attachmentFromBusinessObject.getContentType());
-    						}
-    						break;
-    					}
-    				}
-    		   } catch (Exception e) {
-    				LOG.error("Not able to get the attachment " + e.getMessage());
-    				throw new RuntimeException("Not able to get the attachment " + e.getMessage());
-    		   }
-    	  }
-      }
-
-      if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment) && (attachment != null)) {
-    	  byte[] fileContents;
-          fileContents = attachment.getAttachmentContent();
-          if (fileContents.length > 0) {
-              boAttachment.setAttachmentContent(fileContents);
-              boAttachment.setFileName(attachment.getFileName());
-              boAttachment.setContentType(attachment.getContentType());
-          }
-       }
     }
+
+
 
     public void populateDocumentAttachment() {
         // TODO: need to convert this from using struts form file

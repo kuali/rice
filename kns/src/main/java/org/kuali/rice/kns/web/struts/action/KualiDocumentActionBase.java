@@ -43,6 +43,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.question.RecallQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -992,6 +993,54 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         return returnToSender(request, mapping, kualiDocumentFormBase);
+    }
+
+    /**
+     * Calls the document service to disapprove the document
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward recall(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
+        String reason = request.getParameter(KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME);
+
+        // start in logic for confirming the disapproval
+        if (question == null) {
+            // ask question if not already asked
+            return this.performQuestionWithInput(mapping, form, request, response,
+                    KRADConstants.DOCUMENT_RECALL_QUESTION,
+                    "",
+                    KRADConstants.RECALL_QUESTION, KRADConstants.MAPPING_RECALL, "");
+        } else {
+            Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+
+            boolean cancel = !((KRADConstants.DOCUMENT_RECALL_QUESTION.equals(question)) && RecallQuestion.RECALL_TO_ACTIONLIST.equals(buttonClicked));
+
+            if (StringUtils.isBlank(reason)) {
+                reason = "";
+                // TODO: change to a Note, as per disapprove action
+                // arbitrary for now
+                int reason_length = getDataDictionaryService().getAttributeMaxLength(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME);
+                return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+                        KRADConstants.DOCUMENT_RECALL_QUESTION,
+                        "",
+                        KRADConstants.RECALL_QUESTION, KRADConstants.MAPPING_RECALL, "", reason,
+                        RiceKeyConstants.ERROR_DOCUMENT_RECALL_REASON_REQUIRED,
+                        KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(reason_length));
+            }
+
+            KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+            doProcessingAfterPost(kualiDocumentFormBase, request);
+            getDocumentService().recallDocument(kualiDocumentFormBase.getDocument(), reason, cancel);
+
+            return returnToSender(request, mapping, kualiDocumentFormBase);
+        }
     }
 
     /**

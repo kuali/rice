@@ -333,6 +333,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     	return getPolicyByName(DocumentTypePolicyEnum.REGENERATE_ACTION_REQUESTS_ON_CHANGE.getName(), Boolean.TRUE);
     }
 
+    public DocumentTypePolicy getRecallNotification() {
+        return getPolicyByName(DocumentTypePolicyEnum.RECALL_NOTIFICATION.getName(), (String) null);
+    }
+
     /**
      * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
      * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.

@@ -21,7 +21,7 @@ import java.util.Map;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-
+import org.kuali.rice.kew.api.action.ActionType;
 
 /**
  * Utility class to translate the various codes into labels and vice versa.
@@ -46,6 +46,7 @@ public class CodeTranslator {
         newAtLabels.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_TAKEN_APPROVED);
         newAtLabels.put(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE);
         newAtLabels.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_TAKEN_CANCELED);
+        newAtLabels.put(ActionType.RECALL.getCode(), ActionType.RECALL.getLabel());
         newAtLabels.put(KewApiConstants.ACTION_TAKEN_COMPLETED_CD, KewApiConstants.ACTION_TAKEN_COMPLETED);
         newAtLabels.put(KewApiConstants.ACTION_TAKEN_ROUTED_CD, KewApiConstants.ACTION_TAKEN_ROUTED);
         newAtLabels.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_TAKEN_DENIED);

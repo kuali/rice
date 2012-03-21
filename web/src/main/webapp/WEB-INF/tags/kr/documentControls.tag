@@ -78,6 +78,9 @@
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CANCEL] and not suppressCancelButton}">
 	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel" tabindex="${tabindex}" />
 	            </c:if>
+              <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_RECALL]}">
+                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_recall.gif" styleClass="globalbuttons" property="methodToCall.recall" title="Recall current document" alt="Recall current document" onclick="resetScrollPosition();" tabindex="${tabindex}" />
+              </c:if>
                 <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_COPY]}">
                    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_copy.gif" styleClass="globalbuttons" property="methodToCall.copy" title="Copy current document" alt="Copy current document" onclick="resetScrollPosition();" tabindex="${tabindex}" />
                 </c:if>

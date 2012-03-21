@@ -656,6 +656,8 @@
 
   <bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
 
+  <bean id="recallQuestion" class="org.kuali.rice.kns.question.RecallQuestion" scope="prototype"/>
+
   <bean id="documentAdHocService" class="org.kuali.rice.krad.service.impl.DocumentAdHocServiceImpl"/>
 
   <bean id="documentDao" class="org.kuali.rice.krad.dao.proxy.DocumentDaoProxy">

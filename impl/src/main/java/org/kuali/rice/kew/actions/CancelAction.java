@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -40,11 +41,16 @@ public class CancelAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CancelAction.class);
 
     public CancelAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_CANCELED_CD, rh, principal);
+        this(ActionType.CANCEL, rh, principal, null);
     }
 
     public CancelAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KewApiConstants.ACTION_TAKEN_CANCELED_CD, rh, principal, annotation);
+        this(ActionType.CANCEL, rh, principal, annotation);
+    }
+
+    // Template constructor for use by third parties
+    CancelAction(ActionType type, DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
+        super(type.getCode(), rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -101,6 +107,11 @@ public class CancelAction extends ActionTakenEvent {
         return actionCompatible;
     }
 
+    // Template method for subclasses
+    protected void markDocumentStatus() throws InvalidActionTakenException {
+        getRouteHeader().markDocumentCanceled();
+    }
+
     public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
@@ -127,7 +138,7 @@ public class CancelAction extends ActionTakenEvent {
 
         try {
             String oldStatus = getRouteHeader().getDocRouteStatus();
-            getRouteHeader().markDocumentCanceled();
+            markDocumentStatus();
             String newStatus = getRouteHeader().getDocRouteStatus();
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             notifyStatusChange(newStatus, oldStatus);

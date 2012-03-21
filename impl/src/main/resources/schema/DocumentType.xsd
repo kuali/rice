@@ -19,6 +19,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
         xmlns:c="ns:workflow/common"
         xmlns:dt="ns:workflow/DocumentType"
+        xmlns:rule="ns:workflow/Rule"
         targetNamespace="ns:workflow/DocumentType"
         attributeFormDefault="unqualified"
         elementFormDefault="qualified" xmlns:Q1="xsd">
@@ -49,6 +50,7 @@
   </annotation>
 
   <import namespace="ns:workflow/common" schemaLocation="resource:common"/>
+  <import namespace="ns:workflow/Rule" schemaLocation="resource:Rule"/>
 
   <element name="documentTypes">
     <complexType>
@@ -418,8 +420,30 @@
       		</documentation>
       	</annotation>
       </element>
+      <any minOccurs="0"/>
     </sequence>
   </complexType>
+
+  <complexType name="RoleIdentifier">
+    <annotation>
+      <documentation>Specifies a role to send Recall notifications to</documentation>
+    </annotation>
+    <sequence>
+      <annotation><documentation>Allows any child element</documentation></annotation>
+      <any minOccurs="0"/>
+    </sequence>
+    <attribute name="namespace" type="c:ShortStringType" use="required"/>
+    <attribute name="name" type="c:ShortStringType" use="required"/>
+  </complexType>
+
+  <element name="recipients">
+    <complexType>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <group ref="rule:ResponsibilityIdentifier"/>
+        <element name="role" type="dt:RoleIdentifier"/>
+      </choice>
+    </complexType>
+  </element>
 
   <!-- Defined in DocumentTypePolicyEnum class -->
   <simpleType name="PolicyNameType">
@@ -458,6 +482,10 @@
       <enumeration value="fail_on_inactive_group"/>
       <enumeration value="REGENERATE_ACTION_REQUESTS_ON_CHANGE"/>
       <enumeration value="regenerate_action_requests_on_change"/>
+      <enumeration value="NOTIFY_COMPLETED_ON_RETURN"/>
+      <enumeration value="notify_completed_on_return"/>
+      <enumeration value="RECALL_NOTIFICATION"/>
+      <enumeration value="recall_notification"/>
     </restriction>
   </simpleType>
 

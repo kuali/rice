@@ -80,6 +80,12 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
         return canEdit(document);
     }
 
+    public boolean canRecall(Document document) {
+        // Enroute - the most liberal approximation of recallability
+        // DocumentAuthorizer will perform finer-grained authorization
+        return document.getDocumentHeader().getWorkflowDocument().isEnroute();
+    }
+
     public boolean canCopy(Document document) {
         boolean canCopy = false;
         if (document.getAllowsCopy()) {

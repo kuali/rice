@@ -355,6 +355,13 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
+    public void recall(String annotation, boolean cancel) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().recall(
+                constructDocumentActionParameters(annotation), cancel);
+        resetStateAfterAction(result);
+    }
+
+    @Override
     public void blanketApprove(String annotation) {
         DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(
                 constructDocumentActionParameters(annotation));
@@ -673,6 +680,16 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     @Override
     public boolean isCanceled() {
         return checkStatus(DocumentStatus.CANCELED);
+    }
+
+    /**
+     * Indicates if the document is in the recalled state or not.
+     *
+     * @return true if in the specified state
+     */
+    @Override
+    public boolean isRecalled() {
+        return checkStatus(DocumentStatus.RECALLED);
     }
 
     /**

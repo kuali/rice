@@ -185,6 +185,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     @Override
+    public void recall(WorkflowDocument workflowDocument, String annotation, boolean cancel) throws WorkflowException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("recalling document(" + workflowDocument.getDocumentId() + ",'" + annotation + "', '" + cancel + "')");
+        }
+
+        workflowDocument.recall(annotation, cancel);
+    }
+
+    @Override
     public void clearFyi(WorkflowDocument workflowDocument, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("clearing FYI for document(" + workflowDocument.getDocumentId() + ")");

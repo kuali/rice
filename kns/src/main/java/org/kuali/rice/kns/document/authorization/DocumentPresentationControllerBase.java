@@ -18,204 +18,17 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
-import org.kuali.rice.coreservice.framework.parameter.ParameterService;
-import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
-
-public class DocumentPresentationControllerBase implements DocumentPresentationController {
-//    private static Log LOG = LogFactory.getLog(DocumentPresentationControllerBase.class);
-
-	private static transient ParameterService parameterService;
-  
-    public boolean canInitiate(String documentTypeName) {
-    	return true;
-    }
-    
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can edit the document)
-     */
-    public boolean canEdit(Document document){
-    	boolean canEdit = false;
-    	WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.isInitiated() || workflowDocument.isSaved() || workflowDocument.isEnroute() || workflowDocument.isException()) {
-        	canEdit = true; 
-        }
-        
-        return canEdit;
-    }
-    
-    
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can add notes to the document)
-     */
-    public boolean canAnnotate(Document document){
-    	return canEdit(document);
-    }
-    
-   
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can reload the document)
-     */
-    public boolean canReload(Document document){
-    	WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	return (canEdit(document) && !workflowDocument.isInitiated()) ;
-             
-    }
-    
-    
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can close the document)
-     */
-    public boolean canClose(Document document){
-    	return true;
-    }
-    
-    
-   
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can save the document)
-     */
-    public boolean canSave(Document document){
-    	return canEdit(document);
-    }
-    
-  
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can route the document)
-     */
-    public boolean canRoute(Document document){
-    	boolean canRoute = false;
-    	WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	if (workflowDocument.isInitiated() || workflowDocument.isSaved()){
-    		 canRoute = true;
-    	}
-    	return canRoute;
-    }
-        
-   
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can cancel the document)
-     */
-    public boolean canCancel(Document document){
-    	return canEdit(document);
-    }
-    
-   
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can copy the document)
-     */
-    public boolean canCopy(Document document){
-    	 boolean canCopy = false;
-    	 if(document.getAllowsCopy()){
-    		 canCopy = true;
-    	 }
-    	 return canCopy;
-    }
-    
-    
-   
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can perform route report)
-     */
-    public boolean canPerformRouteReport(Document document){
-        return getParameterService().getParameterValueAsBoolean(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
-    }
-    
-   
-    /**
-     * 
-     * @param document
-     * @return boolean (true if can do ad hoc route)
-     */
-    public boolean canAddAdhocRequests(Document document){
-    	return true;
-    }
-    
-   
-    /**
-     * This method ...
-     * 
-     * @param document
-     * @return boolean (true if can blanket approve the document)
-     */
-    public boolean canBlanketApprove(Document document){
-    	// check system parameter - if Y, use default workflow behavior: allow a user with the permission
-    	// to perform the blanket approve action at any time
-    	Boolean allowBlanketApproveNoRequest = getParameterService().getParameterValueAsBoolean(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND);
-    	if ( allowBlanketApproveNoRequest != null && allowBlanketApproveNoRequest.booleanValue() ) {
-    		return canEdit(document);
-    	}
-    	// otherwise, limit the display of the blanket approve button to only the initiator of the document
-    	// (prior to routing)
-    	WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	if ( canRoute(document) && StringUtils.equals( workflowDocument.getInitiatorPrincipalId(), GlobalVariables.getUserSession().getPrincipalId() ) ) {
-    		return true;
-    	}
-    	// or to a user with an approval action request
-    	if ( workflowDocument.isApprovalRequested() ) {
-    		return true;
-    	}
-    	
-    	return false;
-    }
-    
-    public boolean canApprove(Document document) {
-    	return true;
-    }
-
-    public boolean canDisapprove(Document document) {
-    	// most of the time, a person who can approve can disapprove
-    	return canApprove(document);
-    }
-    
-    public boolean canSendAdhocRequests(Document document) {
-    	WorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	return !(kualiWorkflowDocument.isInitiated() || kualiWorkflowDocument.isSaved());
-    }
-    
-    public boolean canSendNoteFyi(Document document) {
-    	return true;
-    }
-    
-    public boolean canEditDocumentOverview(Document document){
-    	WorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	return (kualiWorkflowDocument.isInitiated() || kualiWorkflowDocument.isSaved());
-    }
-
-    public boolean canFyi(Document document) {
-    	return true;
-    }
-    
-    public boolean canAcknowledge(Document document) {
-    	return true;
-    }
-    
+/**
+ * KNS version of the DocumentPresentationControllerBase - adds #getDocumentActions via {@link DocumentPresentationController}
+ */
+public class DocumentPresentationControllerBase extends org.kuali.rice.krad.document.DocumentPresentationControllerBase implements DocumentPresentationController {
     /**
      * @see DocumentPresentationController#getDocumentActions(org.kuali.rice.krad.document.Document)
      */
+    @Override
     public Set<String> getDocumentActions(Document document){
     	Set<String> documentActions = new HashSet<String>();
     	if (canEdit(document)){
@@ -240,6 +53,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	if(canCancel(document)){
     		documentActions.add(KRADConstants.KUALI_ACTION_CAN_CANCEL);
     	}
+
+        if(canRecall(document)){
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_RECALL);
+        }
     	 
     	if(canReload(document)){
     		documentActions.add(KRADConstants.KUALI_ACTION_CAN_RELOAD);
@@ -281,13 +98,4 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     	}
     	return documentActions;
     }
-
-	protected ParameterService getParameterService() {
-		if ( parameterService == null ) {
-			parameterService = CoreFrameworkServiceLocator.getParameterService();
-		}
-		return parameterService;
-	}
-
-
 }

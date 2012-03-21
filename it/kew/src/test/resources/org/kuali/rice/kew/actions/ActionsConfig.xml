@@ -445,7 +445,46 @@
 				</policy>
 			</policies>
 		</documentType>
-		<documentType>
+
+    <documentType>
+      <name>RecallTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+    </documentType>
+    <documentType>
+      <name>RecallWithPrevNotifyTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <policies>
+        <policy>
+          <name>NOTIFY_COMPLETED_ON_RETURN</name>
+          <value>true</value>
+        </policy>
+      </policies>
+    </documentType>
+    <documentType>
+      <name>RecallWithThirdPartyNotifyTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <policies>
+        <policy>
+          <name>NOTIFY_COMPLETED_ON_RETURN</name>
+          <value>true</value>
+        </policy>
+        <policy>
+          <name>RECALL_NOTIFICATION</name>
+          <value>true</value>
+          <recipients xmlns:r="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule" xmlns:dt="ns:workflow/DocumentType">
+            <r:principalName>quickstart</r:principalName>
+            <r:user>quickstart</r:user>
+            <role namespace="KR-SYS" name="Technical Administrator"/>
+          </recipients>
+        </policy>
+      </policies>
+    </documentType>
+
+
+    <documentType>
 			<name>BlanketApproveMandatoryNodeTest</name>
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveMandatoryNodeTest</description>

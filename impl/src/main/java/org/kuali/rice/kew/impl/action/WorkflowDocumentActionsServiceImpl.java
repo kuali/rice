@@ -547,6 +547,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
+    public DocumentActionResult recall(DocumentActionParameters parameters, final boolean cancel) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(cancel, "cancel");
+        return executeActionInternal(parameters, new StandardDocumentActionCallback() {
+            public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId,
+                    String annotation) throws WorkflowException {
+                return KEWServiceLocator.getWorkflowDocumentService().recallDocument(principalId, documentBo, annotation, cancel);
+            }
+            public String getActionName() {
+                return ActionType.RECALL.getLabel();
+            }
+        });
+    }
+
+    @Override
     public DocumentActionResult clearFyi(DocumentActionParameters parameters) {
         incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, FYI_CALLBACK);

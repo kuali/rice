@@ -32,6 +32,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
 import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
+import org.kuali.rice.kew.engine.node.NodeJotter;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RoleNode;
@@ -59,6 +60,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -68,6 +70,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -108,14 +112,13 @@ public class DocumentTypeXmlParser {
         return xpath;
     }
     
-    public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
+    public List<DocumentType> parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
         Document routeDocument=XmlHelper.trimXml(input);
-        Map documentTypesByName = new HashMap();
-        for (Iterator iterator = parseAllDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
-            DocumentType type = (DocumentType) iterator.next();
+        Map<String, DocumentType> documentTypesByName = new HashMap();
+        for (DocumentType type:  parseAllDocumentTypes(routeDocument)) {
             documentTypesByName.put(type.getName(), type);
         }
-        return new ArrayList(documentTypesByName.values());
+        return new ArrayList<DocumentType>(documentTypesByName.values());
     }
 
     /**
@@ -1343,7 +1346,7 @@ public class DocumentTypeXmlParser {
 		return node.getNodeValue();
 	}
 
-    private List getDocumentTypePolicies(NodeList documentTypePolicies, DocumentType documentType) throws XPathExpressionException, XmlException {
+    private List getDocumentTypePolicies(NodeList documentTypePolicies, DocumentType documentType) throws XPathExpressionException, XmlException, ParserConfigurationException {
         List policies = new ArrayList();
         Set policyNames = new HashSet();
 
@@ -1391,6 +1394,11 @@ public class DocumentTypeXmlParser {
             		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
             			throw new XmlException("Application Document Status Policy requires a <stringValue>");
             		}
+
+                    String customConfig = parseDocumentPolicyCustomXMLConfig(documentTypePolicies.item(i));
+                    if (customConfig != null) {
+                        policy.setPolicyStringValue(customConfig);
+                    }
             	}
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy string value", xpee);
@@ -1405,6 +1413,31 @@ public class DocumentTypeXmlParser {
         }
 
         return policies;
+    }
+
+    /**
+     * Parses any custom XML configuration if present and returns it as an XML string.
+     * If no custom XML elements are present in the policy configuration, null is returned.
+     * @param policyNode the document type policy Node
+     * @return XML configuration string or null
+     * @throws ParserConfigurationException
+     */
+    private static String parseDocumentPolicyCustomXMLConfig(Node policyNode) throws ParserConfigurationException {
+        final Collection<String> KNOWN_POLICY_ELEMENTS = Arrays.asList(new String[] { "name", "value", "stringValue" });
+        // Store any other elements as XML in the policy string value
+        Document policyConfig = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Element root = policyConfig.createElement("config");
+        policyConfig.appendChild(root);
+        // add unknown nodes from the config document
+        NodeList children = policyNode.getChildNodes();
+        for (int j = 0; j < children.getLength(); j++) {
+            Node c = children.item(j);
+            if (c instanceof Element && !KNOWN_POLICY_ELEMENTS.contains(c.getNodeName())) {
+                root.appendChild(policyConfig.importNode(c, true));
+            }
+        }
+        // if there are in-fact custom xml configuration nodes, then go ahead and save the config doc as XML
+        return (root.getChildNodes().getLength() > 0) ? XmlJotter.jotDocument(policyConfig) : null;
     }
 
     private List getDocumentTypeStatuses(NodeList documentTypeStatuses, DocumentType documentType) throws XPathExpressionException, XmlException {

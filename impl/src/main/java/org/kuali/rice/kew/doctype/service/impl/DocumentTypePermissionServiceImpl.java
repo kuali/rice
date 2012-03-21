@@ -155,6 +155,38 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			return true;
 			}			
 	}
+
+    public boolean canRecall(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String appDocStatus, String initiatorPrincipalId) {
+        validatePrincipalId(principalId);
+        validateDocumentType(documentType);
+        validateRouteNodeNames(routeNodeNames);
+        validateDocumentStatus(documentStatus);
+        //validate...(appDocStatus);
+
+        // TODO: KULRICE-5931 add appDocStatus to permissionDetails
+        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+
+        boolean foundAtLeastOnePermission = false;
+        boolean authorizedByPermission = false;
+        boolean principalIsInitiator = StringUtils.equals(initiatorPrincipalId, principalId);
+
+        // loop over permission details, only one of them needs to be authorized
+        for (Map<String, String> permissionDetails : permissionDetailList) {
+            Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
+            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
+                foundAtLeastOnePermission = true;
+                if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
+                        KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {
+                    authorizedByPermission = true;
+                    break;
+                }
+            }
+        }
+
+        // alternative could be to only authorize initiator if the permission is omitted
+        // (i.e. exclude initiator if the initiator does not have the recall permission)
+        return authorizedByPermission || principalIsInitiator;
+    }
 	
 	public boolean canInitiate(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);

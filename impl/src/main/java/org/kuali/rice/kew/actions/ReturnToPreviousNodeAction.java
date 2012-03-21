@@ -21,6 +21,8 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteHelper;
@@ -35,6 +37,7 @@ import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -57,9 +60,10 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
     private RouteHelper helper = new RouteHelper();
-    private String nodeName;
+    protected String nodeName;
     private boolean superUserUsage;
     private boolean sendNotifications = true;
+    protected boolean sendNotificationsForPreviousRequests = false;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
@@ -96,16 +100,37 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     }
 
     /**
+     * Revokes requests, deactivating them with the specified ActionTakenValue.  Sends FYI notifications if sendNotifications is true.
      * TODO will this work properly in the case of an ALL APPROVE role requests with some of the requests already completed?
      */
-    private void revokePendingRequests(List<ActionRequestValue> pendingRequests, ActionTakenValue actionTaken, Recipient delegator) {
+    private void revokePendingRequests(List<ActionRequestValue> pendingRequests, ActionTakenValue actionTaken, PrincipalContract principal, Recipient delegator) {
         revokeRequests(pendingRequests);
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
-        	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader());
-        	List<ActionRequestValue> notificationRequests = arFactory.generateNotifications(pendingRequests, getPrincipal(), delegator, KewApiConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
-        	getActionRequestService().activateRequests(notificationRequests);
+            generateNotificationsForRevokedRequests(pendingRequests, principal, delegator);
         }
+    }
+
+    /**
+     * Revokes requests (not deactivating them).  Sends FYI notifications if sendNotifications is true.
+     */
+    private void revokePreviousRequests(List<ActionRequestValue> actionRequests, PrincipalContract principal, Recipient delegator) {
+        revokeRequests(actionRequests);
+        if (sendNotificationsForPreviousRequests) {
+            generateNotificationsForRevokedRequests(actionRequests, principal, delegator);
+        }
+    }
+
+    /**
+     * Generates FYIs for revoked ActionRequests
+     * @param revokedRequests the revoked actionrequests
+     * @param principal principal taking action, omitted from notifications
+     * @param delegator delegator to omit from notifications
+     */
+    private void generateNotificationsForRevokedRequests(List<ActionRequestValue> revokedRequests, PrincipalContract principal, Recipient delegator) {
+        ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader());
+        List<ActionRequestValue> notificationRequests = arFactory.generateNotifications(revokedRequests, principal, delegator, KewApiConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
+        getActionRequestService().activateRequests(notificationRequests);
     }
 
     /**
@@ -124,13 +149,21 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
     }
 
+    /**
+     * Template method that determines what action request to generate when returning to initiator
+     * @return the ActionRequestType
+     */
+    protected ActionRequestType getReturnToInitiatorActionRequestType() {
+        return ActionRequestType.APPROVE;
+    }
+    
     private void processReturnToInitiator(RouteNodeInstance newNodeInstance) {
-	// important to pull this from the RouteNode's DocumentType so we get the proper version
+	    // important to pull this from the RouteNode's DocumentType so we get the proper version
         RouteNode initialNode = newNodeInstance.getRouteNode().getDocumentType().getPrimaryProcess().getInitialRouteNode();
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
             LOG.debug("Document was returned to initiator");
             ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
-            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorPrincipal(), getActionTakenCode(), getPrincipal(), "Document initiator");
+            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(getReturnToInitiatorActionRequestType().getCode(), getRouteHeader().getInitiatorPrincipal(), getActionTakenCode(), getPrincipal(), "Document initiator");
             getActionRequestService().activateRequest(notificationRequest);
         }
     }
@@ -148,11 +181,20 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             String docStatus = getRouteHeader().getDocRouteStatus();
             return "Document of status '" + docStatus + "' cannot taken action '" + KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = findApplicableActionRequests(actionRequests);
         if (! isActionCompatibleRequest(filteredActionRequests) && ! isSuperUserUsage()) {
-            return "No request for the user is compatible with the RETURN TO PREVIOUS NODE action";
+            return "No request for the user is compatible with the " + ActionType.fromCode(this.getActionTakenCode()).getLabel() + " action";
         }
         return "";
+    }
+
+    /**
+     * Allows subclasses to determine which actionrequests to inspect for purposes of action validation
+     * @param actionRequests all actionrequests for this document
+     * @return a (possibly) filtered list of actionrequests
+     */
+    protected List<ActionRequestValue> findApplicableActionRequests(List<ActionRequestValue> actionRequests) {
+        return filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
     }
 
     /* (non-Javadoc)
@@ -222,6 +264,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             validateReturnPoint(nodeName, activeNodeInstances, result);
 
             LOG.debug("Record the returnToPreviousNode action");
+            // determines the highest priority delegator in the list of action requests
+            // this delegator will be used to save the action taken, and omitted from notification request generation
             Recipient delegator = findDelegatorForActionRequests(actionRequests);
             ActionTakenValue actionTaken = saveActionTaken(Boolean.FALSE, delegator);
 
@@ -240,11 +284,20 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
                     }
                 }
             }
-            revokeRequests(doneRequests);
+            revokePreviousRequests(doneRequests, getPrincipal(), delegator);
             LOG.debug("Change pending requests to FYI and activate for docId " + getRouteHeader().getDocumentId());
-            revokePendingRequests(pendingRequests, actionTaken, delegator);
+            revokePendingRequests(pendingRequests, actionTaken, getPrincipal(), delegator);
             notifyActionTaken(actionTaken);
             executeNodeChange(activeNodeInstances, result);
+            sendAdditionalNotifications();
+    }
+
+    /**
+     * Template method subclasses can use to send addition notification upon a return to previous action.
+     * This occurs after the postprocessors have been called and the node has been changed
+     */
+    protected void sendAdditionalNotifications() {
+        // no implementation
     }
 
     /**

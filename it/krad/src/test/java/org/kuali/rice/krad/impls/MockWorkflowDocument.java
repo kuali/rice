@@ -223,6 +223,9 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
     public void cancel(String annotation) {}
 
     @Override
+    public void recall(String annotation, boolean cancel) {}
+
+    @Override
     public void blanketApprove(String annotation) {}
 
     @Override
@@ -383,6 +386,11 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
 
     @Override
     public boolean isCanceled() {
+        return false;
+    }
+
+    @Override
+    public boolean isRecalled() {
         return false;
     }
 

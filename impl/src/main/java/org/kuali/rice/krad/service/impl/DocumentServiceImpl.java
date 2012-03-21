@@ -320,6 +320,17 @@ public class DocumentServiceImpl implements DocumentService {
         return document;
     }
 
+    @Override
+    public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException {
+        checkForNulls(document);
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().recall(document.getDocumentHeader().getWorkflowDocument(), annotation, cancel);
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
+        removeAdHocPersonsAndWorkgroups(document);
+        return document;
+    }
+
     /**
      * @see org.kuali.rice.krad.service.DocumentService#acknowledgeDocument(org.kuali.rice.krad.document.Document,
      *      java.lang.String,

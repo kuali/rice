@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+    Copyright 2005-2012 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@
 -->
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+
     <documentType>
-      <name>DocumentTypeXmlParserTestDoc_MissingDocStatusPolicyStringValue</name>
-      <description>This document policy is missing document status policy string value</description>
-      <label>DocumentTypeXmlParserTestDoc_MissingDocStatusPolicyValue</label>
+      <name>DocumentTypeXmlParserTestDoc_DocumentTypePolicyConfig</name>
+      <description>This document contains a Document policy with custom XML config</description>
+      <label>DocumentTypeXmlParserTestDoc_DocumentTypePolicyConfig</label>
       <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
       <docHandler>_blank</docHandler>
       <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
@@ -40,15 +41,13 @@
       </routeNodes>
       <policies>
         <policy>
-           <name>DOCUMENT_STATUS_POLICY</name>
-           <!-- "accidentally" misplace the document status policy value
-                this also happens to cause a validation error up-front.
-                simply omitting the stringvalue should have a similar semantic failure -->
-           <value>APP</value>
-        </policy>
-        <policy>
-          <name>LOOK_FUTURE</name>
-          <value>false</value>
+          <name>RECALL_NOTIFICATION</name>
+          <value>true</value>
+          <recipients xmlns:r="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+            <r:principalName>quickstart</r:principalName>
+            <r:user>quickstart</r:user>
+            <role namespace="KEW" name="foobar"/>
+          </recipients>
         </policy>
       </policies>
     </documentType>

@@ -30,6 +30,7 @@ import org.kuali.rice.kew.actions.CompleteAction;
 import org.kuali.rice.kew.actions.DisapproveAction;
 import org.kuali.rice.kew.actions.LogDocumentActionAction;
 import org.kuali.rice.kew.actions.MoveDocumentAction;
+import org.kuali.rice.kew.actions.RecallAction;
 import org.kuali.rice.kew.actions.ReleaseWorkgroupAuthority;
 import org.kuali.rice.kew.actions.ReturnToPreviousNodeAction;
 import org.kuali.rice.kew.actions.RevokeAdHocAction;
@@ -191,6 +192,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
+
+    public DocumentRouteHeaderValue recallDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean cancel) throws InvalidActionTakenException {
+        // init(routeHeader);
+        Principal principal = loadPrincipal(principalId);
+        RecallAction action = new RecallAction(routeHeader, principal, annotation, cancel);
+        action.recordAction();
+        indexForSearchAfterActionIfNecessary(routeHeader);
+        return finish(routeHeader);
+    }
 	
 	/**
 	 * Does a search index after a non-post processing action completes

@@ -32,6 +32,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.DocumentStatus;
@@ -222,6 +223,9 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     @Fetch(value = FetchMode.SELECT)
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
+    // an empty list of target document statuses or legal actions
+    private static final String TERMINAL = "";
+
     static {
         stateTransitionMap = new HashMap<String,String>();
         stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_INITIATED_CD, KewApiConstants.ROUTE_HEADER_SAVED_CD + KewApiConstants.ROUTE_HEADER_ENROUTE_CD + KewApiConstants.ROUTE_HEADER_CANCEL_CD);
@@ -229,10 +233,12 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_SAVED_CD, KewApiConstants.ROUTE_HEADER_SAVED_CD + KewApiConstants.ROUTE_HEADER_ENROUTE_CD + KewApiConstants.ROUTE_HEADER_CANCEL_CD + KewApiConstants.ROUTE_HEADER_PROCESSED_CD);
 
         stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD +
-                KewApiConstants.ROUTE_HEADER_CANCEL_CD + KewApiConstants.ROUTE_HEADER_PROCESSED_CD + KewApiConstants.ROUTE_HEADER_EXCEPTION_CD + KewApiConstants.ROUTE_HEADER_SAVED_CD);
-        stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD, "");
-        stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_CANCEL_CD, "");
-        stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_FINAL_CD, "");
+                KewApiConstants.ROUTE_HEADER_CANCEL_CD + KewApiConstants.ROUTE_HEADER_PROCESSED_CD + KewApiConstants.ROUTE_HEADER_EXCEPTION_CD + KewApiConstants.ROUTE_HEADER_SAVED_CD
+                + DocumentStatus.RECALLED.getCode());
+        stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD, TERMINAL);
+        stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_CANCEL_CD, TERMINAL);
+        stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_FINAL_CD, TERMINAL);
+        stateTransitionMap.put(DocumentStatus.RECALLED.getCode(), TERMINAL);
         stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_EXCEPTION_CD, KewApiConstants.ROUTE_HEADER_EXCEPTION_CD + KewApiConstants.ROUTE_HEADER_ENROUTE_CD + KewApiConstants.ROUTE_HEADER_CANCEL_CD + KewApiConstants.ROUTE_HEADER_PROCESSED_CD + KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD + KewApiConstants.ROUTE_HEADER_SAVED_CD);
         stateTransitionMap.put(KewApiConstants.ROUTE_HEADER_PROCESSED_CD, KewApiConstants.ROUTE_HEADER_FINAL_CD + KewApiConstants.ROUTE_HEADER_PROCESSED_CD);
 
@@ -242,7 +248,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         /* ACTION_TAKEN_ROUTED_CD not included in enroute state
          * ACTION_TAKEN_SAVED_CD removed as of version 2.4
          */
-        legalActions.put(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, /*KewApiConstants.ACTION_TAKEN_SAVED_CD + KewApiConstants.ACTION_TAKEN_ROUTED_CD + */KewApiConstants.ACTION_TAKEN_APPROVED_CD + KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KewApiConstants.ACTION_TAKEN_FYI_CD + KewApiConstants.ACTION_TAKEN_ADHOC_CD + KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + KewApiConstants.ACTION_TAKEN_CANCELED_CD + KewApiConstants.ACTION_TAKEN_COMPLETED_CD + KewApiConstants.ACTION_TAKEN_DENIED_CD + KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD + KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD + KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + KewApiConstants.ACTION_TAKEN_MOVE_CD);
+        legalActions.put(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, /*KewApiConstants.ACTION_TAKEN_SAVED_CD + KewApiConstants.ACTION_TAKEN_ROUTED_CD + */KewApiConstants.ACTION_TAKEN_APPROVED_CD + KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KewApiConstants.ACTION_TAKEN_FYI_CD + KewApiConstants.ACTION_TAKEN_ADHOC_CD + KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD + KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + KewApiConstants.ACTION_TAKEN_CANCELED_CD + KewApiConstants.ACTION_TAKEN_COMPLETED_CD + KewApiConstants.ACTION_TAKEN_DENIED_CD + KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD + KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD + KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD + KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD + KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD + KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD + KewApiConstants.ACTION_TAKEN_MOVE_CD + ActionType.RECALL.getCode());
         /* ACTION_TAKEN_ROUTED_CD not included in exception state
          * ACTION_TAKEN_SAVED_CD removed as of version 2.4.2
          */
@@ -251,6 +257,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         legalActions.put(KewApiConstants.ROUTE_HEADER_CANCEL_CD, KewApiConstants.ACTION_TAKEN_FYI_CD + KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD, KewApiConstants.ACTION_TAKEN_FYI_CD + KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
         legalActions.put(KewApiConstants.ROUTE_HEADER_PROCESSED_CD, KewApiConstants.ACTION_TAKEN_FYI_CD + KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD + KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+        legalActions.put(DocumentStatus.RECALLED.getCode(), TERMINAL);
     }
 
     public DocumentRouteHeaderValue() {
@@ -660,18 +667,15 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 
     /**
      * Return true if the given action code is valid for this document's current state.
-     *
-     * @param actionCd
-     *            The action code to be tested.
+     * This method only verifies statically defined action/state transitions, it does not
+     * perform full action validation logic.
+     * @see org.kuali.rice.kew.actions.ActionRegistry#getValidActions(org.kuali.rice.kim.api.identity.principal.PrincipalContract, DocumentRouteHeaderValue)
+     * @param actionCd The action code to be tested.
      * @return True if the action code is valid for the document's status.
      */
     public boolean isValidActionToTake(String actionCd) {
         String actions = (String) legalActions.get(docRouteStatus);
-        if (!actions.contains(actionCd)) {
-            return false;
-        } else {
-            return true;
-        }
+        return actions.contains(actionCd);
     }
 
     public boolean isValidStatusChange(String newStatus) {
@@ -719,7 +723,18 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         LOG.debug(this + " marked canceled");
         setRouteStatus(KewApiConstants.ROUTE_HEADER_CANCEL_CD, FINAL_STATE);
     }
-
+    
+    /**
+     * Mark document recalled.
+     *
+     * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
+     * @throws InvalidActionTakenException
+     */
+    public void markDocumentRecalled() throws InvalidActionTakenException {
+        LOG.debug(this + " marked recalled");
+        setRouteStatus(DocumentStatus.RECALLED.getCode(), FINAL_STATE);
+    }
+    
     /**
      * Mark document disapproved
      *

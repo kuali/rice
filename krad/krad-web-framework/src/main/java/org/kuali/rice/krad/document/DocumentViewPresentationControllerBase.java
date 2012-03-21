@@ -168,6 +168,10 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
         return getDocumentPresentationController().canEdit(document);
     }
 
+    public boolean canRecall(Document document) {
+        return getDocumentPresentationController().canRecall(document);
+    }
+
     public boolean canCopy(Document document) {
         return getDocumentPresentationController().canCopy(document);
     }

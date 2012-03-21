@@ -307,6 +307,14 @@ public interface WorkflowDocument extends DocumentContract {
      */
     void cancel(String annotation);
     /**
+     * Recalls the document, commits updates.
+     * @since 2.1
+     * @param annotation the document action annotation
+     * @see org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#approve(org.kuali.rice.kew.api.action.DocumentActionParameters)
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException
+     */
+    void recall(String annotation, boolean cancel);
+    /**
      * Cancels the document, commits updates.
      * @param annotation the document action annotation
      * @see org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#cancel(org.kuali.rice.kew.api.action.DocumentActionParameters)
@@ -680,6 +688,13 @@ public interface WorkflowDocument extends DocumentContract {
      * @return true if in the specified state
      */
     boolean isCanceled();
+    /**
+     * Indicates if the document is in the recalled state or not.
+     * @since 2.1
+     * @see #getStatus()
+     * @return true if in the specified state
+     */
+    boolean isRecalled();
     /**
      * Indicates if the document is in the disapproved state or not.
      * @see #getStatus()

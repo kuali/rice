@@ -73,6 +73,7 @@ public final class KRADConstants {
 	public static final String KUALI_ACTION_CAN_SAVE = "canSave";
 	public static final String KUALI_ACTION_CAN_ROUTE = "canRoute";
 	public static final String KUALI_ACTION_CAN_CANCEL = "canCancel";
+    public static final String KUALI_ACTION_CAN_RECALL = "canRecall";
 	public static final String KUALI_ACTION_CAN_RELOAD = "canReload";
 	public static final String KUALI_ACTION_CAN_COPY ="canCopy";
 	public static final String KUALI_ACTION_PERFORM_ROUTE_REPORT = "canPerformRouteReport";
@@ -190,7 +191,14 @@ public final class KRADConstants {
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
     public static final String DATA_OBJECT_CLASS_ATTRIBUTE = "dataObjectClassName";
     public static final String CALLING_METHOD = "caller";
+    /**
+     * The {@link org.kuali.rice.kns.question.ConfirmationQuestion} bean
+     */
     public static final String CONFIRMATION_QUESTION = "confirmationQuestion";
+    /**
+     * The {@link org.kuali.rice.kns.question.RecallQuestion} bean
+     */
+    public static final String RECALL_QUESTION= "recallQuestion";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
@@ -216,6 +224,7 @@ public final class KRADConstants {
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
+    public static final String DOCUMENT_RECALL_QUESTION = "DocRecall";
     public static final String DOCUMENT_SENSITIVE_DATA_QUESTION = "DocSensitiveDataQuestion";
 //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
@@ -355,6 +364,7 @@ public final class KRADConstants {
     public static final String MAINTENANCE_NEW_MAINTAINABLE = "document.newMaintainableObject.";
     public static final String MAINTENANCE_OLD_MAINTAINABLE = "document.oldMaintainableObject.";
     public static final String MAPPING_CANCEL = "cancel";
+    public static final String MAPPING_RECALL = "cancel";
     public static final String MAPPING_CLOSE = "close";
     public static final String MAPPING_DISAPPROVE = "disapprove";
 //    public static final String MAPPING_DELETE = "delete";

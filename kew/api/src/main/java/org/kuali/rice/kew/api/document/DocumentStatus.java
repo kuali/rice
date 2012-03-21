@@ -43,6 +43,9 @@ public enum DocumentStatus implements Coded {
 	@XmlEnumValue("F") FINAL("F", DocumentStatusCategory.SUCCESSFUL),
 	@XmlEnumValue("X") CANCELED("X", DocumentStatusCategory.UNSUCCESSFUL),
 	@XmlEnumValue("D") DISAPPROVED("D", DocumentStatusCategory.UNSUCCESSFUL),
+    /**
+     * When invoked, RECALL & CANCEL action will perform the RECALL and set the route status of the document to the new, terminal status of RECALLED
+     */
     @XmlEnumValue("L") RECALLED("L", DocumentStatusCategory.UNSUCCESSFUL);
 
 	private final String code;

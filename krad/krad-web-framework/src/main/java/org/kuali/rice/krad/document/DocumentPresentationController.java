@@ -17,6 +17,10 @@ package org.kuali.rice.krad.document;
 
 
 /**
+ * Determines what actions are applicable to the given document, irrespective of user
+ * or other state.  These initial actions are used as inputs for further filtering depending
+ * on context.
+ * @see DocumentAuthorizer
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentPresentationController {
@@ -59,4 +63,8 @@ public interface DocumentPresentationController {
 
     public boolean canAcknowledge(Document document);
 
+    /**
+     * @since 2.1
+     */
+    public boolean canRecall(Document document);
 }

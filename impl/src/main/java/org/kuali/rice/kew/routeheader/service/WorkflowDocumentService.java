@@ -100,6 +100,12 @@ public interface WorkflowDocumentService {
      */
     public DocumentRouteHeaderValue moveDocument(String principalId, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException;
 
+    /**
+     * TODO: docs
+     * @since 2.1
+     */
+    public DocumentRouteHeaderValue recallDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean cancel) throws InvalidActionTakenException;
+
     // Introduced in 2.2
 
     /**

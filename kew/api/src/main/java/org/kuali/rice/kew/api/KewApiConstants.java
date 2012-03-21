@@ -141,6 +141,8 @@ public final class KewApiConstants {
     public static final String FAIL_ON_INACTIVE_GROUP_POLICY = "FAIL_ON_INACTIVE_GROUP";
     public static final String ENROUTE_ERROR_SUPPRESSION_POLICY = "ENROUTE_ERROR_SUPPRESSION";
     public static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";
+    public static final String NOTIFY_COMPLETED_ON_RETURN_POLICY = "NOTIFY_COMPLETED_ON_RETURN";
+    public static final String RECALL_NOTIFICATION_POLICY = "RECALL_NOTIFICATION";
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";
@@ -880,6 +882,7 @@ public final class KewApiConstants {
 	public static final String AD_HOC_REVIEW_PERMISSION = "Ad Hoc Review Document";
 	public static final String ADMINISTER_ROUTING_PERMISSION = "Administer Routing for Document";
 	public static final String CANCEL_PERMISSION = "Cancel Document";
+    public static final String RECALL_PERMISSION = "Recall Document";
 	public static final String INITIATE_PERMISSION = "Initiate Document";
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";

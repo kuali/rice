@@ -19,12 +19,17 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
+import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -326,6 +331,22 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
     @Override
     public String getRoleName() {
         return getRole();
+    }
+
+    /**
+     * Convenience method to return the Recipient for this RuleResponsibility
+     * @return the Recipient for this RuleResponsibility
+     */
+    public Recipient getRecipient() {
+        if (isUsingPrincipal()) {
+            return new KimPrincipalRecipient(getPrincipal());
+        } else if (isUsingGroup()) {
+            return new KimGroupRecipient(getGroup());
+        } else if (isUsingRole()) {
+            return new RoleRecipient(getRole());
+        } else {
+            return null;
+        }
     }
 
     public static org.kuali.rice.kew.api.rule.RuleResponsibility to(RuleResponsibilityBo bo) {

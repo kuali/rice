@@ -240,4 +240,12 @@ public interface WorkflowDocumentService {
      */
     public String getCurrentRouteNodeNames(WorkflowDocument workflowDocument);
 
+    /**
+     * recall this workflowDocument optionally providing an annotation for this action taken which
+     * will show up in the route log for this document corresponding to this action taken
+     *
+     * @param workflowDocument
+     * @param annotation
+     */
+    public void recall(WorkflowDocument workflowDocument, String annotation, boolean cancel) throws WorkflowException;
 }

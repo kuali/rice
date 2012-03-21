@@ -87,6 +87,7 @@ public final class RiceKeyConstants {
     // Document-specific errors
     public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED = "error.document.annotation.maxLength.exceeded";
     public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";
+    public static final String ERROR_DOCUMENT_RECALL_REASON_REQUIRED = "error.document.recall.reasonRequired";
     public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
     public static final String ERROR_UPLOADFILE_NULL = "error.uploadFile.null";
     public static final String ERROR_UPLOADFILE_EMPTY = "error.uploadFile.empty";
@@ -131,6 +132,7 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_ROUTE_APPROVED = "message.route.approved";
     public static final String MESSAGE_ROUTE_DISAPPROVED = "message.route.disapproved";
     public static final String MESSAGE_ROUTE_CANCELED = "message.route.canceled";
+    public static final String MESSAGE_ROUTE_RECALLED = "message.route.recalled";
     public static final String MESSAGE_ROUTE_ACKNOWLEDGED = "message.route.acknowledged";
     public static final String MESSAGE_ROUTE_FYIED = "message.route.fyied";
     public static final String MESSAGE_NO_HELP_TEXT = "message.nohelp";
@@ -143,6 +145,7 @@ public final class RiceKeyConstants {
 
 
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
+    public static final String QUESTION_RECALL_DOCUMENT = "document.question.recall.text";
     public static final String QUESTION_SENSITIVE_DATA_DOCUMENT = "document.question.sensitiveData.text";
 
     public static final String ERROR_MISSING = "error.missing";

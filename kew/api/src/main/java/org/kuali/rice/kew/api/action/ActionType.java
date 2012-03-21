@@ -108,7 +108,7 @@ public enum ActionType implements Coded {
     /**
      * The document is being recalled.
      */
-    @XmlEnumValue("L") RECALL("L", "RECALLED"),
+    @XmlEnumValue("L") RECALL("L", "RECALL"),
 
     /**
      * The document has non-routed activity against it that is recorded in the route log

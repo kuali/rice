@@ -275,4 +275,15 @@ public interface DocumentService {
      * @throws WorkflowException
      */
     public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
+
+    /**
+     * recall this document, optionally providing an annotation for the recall which will show up in the route log for the
+     * document for this action taken
+     *
+     * @since 2.1
+     * @param document
+     * @param annotation
+     * @return
+     */
+    public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException;
 }

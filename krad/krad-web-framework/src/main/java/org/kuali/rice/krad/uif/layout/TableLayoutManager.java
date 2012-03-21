@@ -780,20 +780,38 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     	this.numberOfDataColumns = numberOfDataColumns;
     }
 
-    /** since columns are visible by default, this set holds propertyNames for the ones meant to be hidden*/
+    /**
+     * since columns are visible by default, this set holds propertyNames for the ones meant to be hidden
+     *
+     * @return a set with propertyNames of columns to be hidden
+     */
     public Set<String> getHiddenColumns() {
         return hiddenColumns;
     }
 
+    /**
+     * setter for the hidden columns set
+     *
+     * @param hiddenColumns - a set containing propertyNames
+     */
     public void setHiddenColumns(Set<String> hiddenColumns) {
         this.hiddenColumns = hiddenColumns;
     }
 
-    /**holds the propertyNames for columns that are to be sorted*/
+    /**
+     * holds the propertyNames for columns that are to be sorted
+     *
+     * @return a set of propertyNames with for columns that will be sorted
+     */
     public Set<String> getSortableColumns() {
         return sortableColumns;
     }
 
+    /**
+     *  setter for sortable columns
+     *
+     * @param sortableColumns - a set containing propertyNames of columns to be sorted
+     */
     public void setSortableColumns(Set<String> sortableColumns) {
         this.sortableColumns = sortableColumns;
     }

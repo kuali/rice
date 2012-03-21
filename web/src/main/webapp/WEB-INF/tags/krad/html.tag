@@ -32,36 +32,62 @@
     </c:if>
 
     <krad:scriptingVariables/>
+
     <title>
       <s:message code="app.title"/>
       :: ${view.title}
     </title>
 
-    <c:forEach items="${view.theme.stylesheets}" var="cssFile" >
-      <c:if test="${fn:startsWith(cssFile, '/')}">
-        <c:set var="cssFile" value="${pageContext.request.contextPath}/${fn:substringAfter(cssFile,'/')}"/>
-      </c:if>
-      <link href="${cssFile}" rel="stylesheet" type="text/css" />
-    </c:forEach>
-    
-    <c:forEach items="${view.additionalCssFiles}" var="cssFile" >
-      <c:if test="${fn:startsWith(cssFile, '/')}">
-        <c:set var="cssFile" value="${pageContext.request.contextPath}/${fn:substringAfter(cssFile,'/')}"/>
-      </c:if>
-      <link href="${cssFile}" rel="stylesheet" type="text/css" />
+    <c:forEach items="${view.theme.stylesheets}" var="cssFile">
+      <c:choose>
+        <c:when test="${fn:startsWith(cssFile,'http')}">
+          <link href="${cssFile}" rel="stylesheet" type="text/css"/>
+        </c:when>
+        <c:otherwise>
+          <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
+        </c:otherwise>
+      </c:choose>
     </c:forEach>
 
-    <c:forEach items="${view.theme.jsFiles}"	var="javascriptFile">
-      <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
-        <script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/${javascriptFile}"></script>
+    <c:forEach items="${view.additionalCssFiles}" var="cssFile">
+      <c:if test="${fn:length(fn:trim(cssFile)) > 0}">
+        <c:choose>
+          <c:when test="${fn:startsWith(cssFile,'http')}">
+            <link href="${cssFile}" rel="stylesheet" type="text/css"/>
+          </c:when>
+          <c:otherwise>
+            <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
+          </c:otherwise>
+        </c:choose>
       </c:if>
     </c:forEach>
-    
-    <c:forEach items="${view.additionalScriptFiles}" var="scriptFile" >
-      <c:if test="${fn:startsWith(scriptFile, '/')}">
-        <c:set var="scriptFile" value="${pageContext.request.contextPath}/${fn:substringAfter(scriptFile,'/')}"/>
+
+    <c:forEach items="${view.theme.jsFiles}" var="javascriptFile">
+      <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
+        <c:choose>
+          <c:when test="${fn:startsWith(javascriptFile,'http')}">
+            <script language="JavaScript" type="text/javascript" src="${javascriptFile}"></script>
+          </c:when>
+          <c:otherwise>
+            <script language="JavaScript" type="text/javascript"
+                    src="${pageContext.request.contextPath}/${javascriptFile}"></script>
+          </c:otherwise>
+        </c:choose>
       </c:if>
-      <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
+    </c:forEach>
+
+    <c:forEach items="${view.additionalScriptFiles}" var="scriptFile">
+      <c:if test="${fn:length(fn:trim(scriptFile)) > 0}">
+        <c:choose>
+          <c:when test="${fn:startsWith(scriptFile,'http')}">
+            <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
+          </c:when>
+          <c:otherwise>
+            <script language="JavaScript" type="text/javascript"
+                    src="${pageContext.request.contextPath}/${scriptFile}"></script>
+          </c:otherwise>
+        </c:choose>
+      </c:if>
     </c:forEach>
 
     <!-- preload script (server variables) -->

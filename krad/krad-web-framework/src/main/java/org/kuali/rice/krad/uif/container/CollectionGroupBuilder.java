@@ -328,8 +328,6 @@ public class CollectionGroupBuilder implements Serializable {
                 FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
-                //subCollectionFieldGroup.setLabel(subCollectionGroup.getTitle());
-                //subCollectionFieldGroup.getFieldLabel().setRender(true);
 
                 ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex);
 

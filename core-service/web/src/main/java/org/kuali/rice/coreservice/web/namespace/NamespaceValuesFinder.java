@@ -53,7 +53,7 @@ public class NamespaceValuesFinder extends KeyValuesBase {
 
         @Override
         public int compare(Namespace o1, Namespace o2) {
-            return o1.getName().compareTo( o2.getName() );
+            return o1.getCode().compareTo( o2.getCode() );
         }
     }
 }

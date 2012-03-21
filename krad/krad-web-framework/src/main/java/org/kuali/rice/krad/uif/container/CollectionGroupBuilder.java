@@ -649,7 +649,11 @@ public class CollectionGroupBuilder implements Serializable {
 			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId());
 
-            actionField.setClientSideJs("performCollectionAction('"+collectionGroup.getId()+"');");
+            String clientSideJs = "performCollectionAction('" + collectionGroup.getId() + "');";
+            if (StringUtils.isNotBlank(actionField.getClientSideJs())) {
+                clientSideJs = actionField.getClientSideJs() + clientSideJs;
+            }
+            actionField.setClientSideJs(clientSideJs);
 		}
 
 		ComponentUtils.updateContextsForLine(lineActions, collectionLine, lineIndex);

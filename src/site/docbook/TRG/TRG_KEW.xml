@@ -2598,7 +2598,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                             </row>
                             <row>
                                 <entry>FROM_ADDRESS</entry>
-                                <entry>quickstart@localhost</entry>
+                                <entry>rice.test@kulai.org</entry>
                                 <entry>Default from email address for notifications. If not set,
                                     this value defaults to admin@localhost. </entry>
                             </row>

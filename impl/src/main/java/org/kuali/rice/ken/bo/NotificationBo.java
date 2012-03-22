@@ -475,7 +475,6 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
         bo.setAutoRemoveDateTimeValue(im.getAutoRemoveDateTime() == null ? null : new Timestamp(im.getAutoRemoveDateTime().getMillis()));
         bo.setTitle(im.getTitle());
         bo.setContent(im.getContent());
-        bo.setProcessingFlag(im.getProcessingFlag());
         bo.setLockedDateValue(im.getLockedDate() == null ? null : new Timestamp(im.getLockedDate().getMillis()));
 
         // object references

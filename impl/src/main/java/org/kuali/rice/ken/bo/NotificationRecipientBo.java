@@ -151,7 +151,7 @@ public class NotificationRecipientBo extends PersistableBusinessObjectBase imple
         bo.setObjectId(im.getObjectId());
 
         bo.setRecipientType(im.getRecipientType());
-        bo.setRecipientType(im.getRecipientType());
+        bo.setRecipientId(im.getRecipientId());
         bo.setNotificationId(im.getNotificationId());
         return bo;
     }

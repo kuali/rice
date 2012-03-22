@@ -624,8 +624,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
-        if (this.newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+        if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
             populateDocumentAttachment();
+            populateAttachmentForBO();
         }
         populateXmlDocumentContentsFromMaintainables();
     }

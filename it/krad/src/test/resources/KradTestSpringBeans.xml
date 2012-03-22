@@ -135,8 +135,6 @@
 
   <bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
 
-  <bean id="krmsConfigurer" class="org.kuali.rice.krms.config.KRMSConfigurer"/>
-		
 	<bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.krad.lookup.LookupResultsDDBoLookupableHelperServiceImpl" />
 
 	<bean id="lookupResultsDDBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl">
@@ -164,13 +162,11 @@
 				<property name="dataDictionaryPackages">
 					<list>
 						<value>org/kuali/rice/krad/test/document</value>
-            <value>edu/sampleu/travel/datadictionary</value>
 					</list>
 				</property>
 				<property name="databaseRepositoryFilePaths">
 					<list>
 						<value>OJB-repository-krad-test.xml</value>
-            <value>OJB-repository-sampleapp.xml</value>
 					</list>
 				</property>
 			</bean>

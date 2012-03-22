@@ -875,6 +875,7 @@ public final class KewApiConstants {
 	public static final String ACTION_REQUEST_CD_DETAIL = "actionRequestCd";
 	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
 	public static final String DOCUMENT_STATUS_DETAIL = "routeStatusCode";
+    public static final String APP_DOC_STATUS_DETAIL = "appDocStatus";
 
 	// Permissions
 

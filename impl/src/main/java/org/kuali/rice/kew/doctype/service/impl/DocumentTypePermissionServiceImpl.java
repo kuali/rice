@@ -161,10 +161,15 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         validateDocumentType(documentType);
         validateRouteNodeNames(routeNodeNames);
         validateDocumentStatus(documentStatus);
-        //validate...(appDocStatus);
+        // no need to validate appdocstatus, this is a free-form application defined value
 
-        // TODO: KULRICE-5931 add appDocStatus to permissionDetails
+        // add appDocStatus to the details
         List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+        if (!StringUtils.isBlank(appDocStatus)) {
+            for (Map<String, String> details: permissionDetailList) {
+                details.put(KewApiConstants.APP_DOC_STATUS_DETAIL, appDocStatus);
+            }
+        }
 
         boolean foundAtLeastOnePermission = false;
         boolean authorizedByPermission = false;
@@ -173,7 +178,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
         // loop over permission details, only one of them needs to be authorized
         for (Map<String, String> permissionDetails : permissionDetailList) {
             Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
-            if (useKimPermission(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
+            if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
                 foundAtLeastOnePermission = true;
                 if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
                         KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {

@@ -20,17 +20,30 @@ import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.common.template.Template;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
+import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -182,6 +195,58 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue("Document should be enroute", document.isEnroute());
 
         assertTrue(WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).isApprovalRequested());
+    }
+
+    @Test public void testRecallPermissionTemplate() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
+        document.route("");
+
+        // nope, technical admins can't recall
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+
+        // get the kim type for just checking against permission document type name
+        KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KR-SYS", "Document Type (Permission)");
+        // default kimtype does not work NPE - no default permissiontypeservice injected?
+        // using default until I can figure out how permissiontypeservices fit into the picture...just use exact match for now
+        //KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KUALI", "Default");
+
+        String templateId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
+        PermissionTemplateBo template = new PermissionTemplateBo();
+        template.setId(templateId);
+        template.setNamespaceCode(KewApiConstants.KEW_NAMESPACE);
+        template.setName(KewApiConstants.RECALL_PERMISSION);
+        template.setKimTypeId(type.getId());
+        template.setActive(true);
+        template.setDescription("Recall permission template");
+        // save our esteemed template
+        template = (PermissionTemplateBo) KRADServiceLocator.getBusinessObjectService().save(template);
+         assertNotNull(KimApiServiceLocator.getPermissionService().getPermissionTemplate(template.getId()));
+        
+        // create a recall permission for the RECALL_TEST_DOC doctype
+        Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
+        permission.setDescription("Recall");
+        permission.setTemplate(Template.Builder.create(template));
+        Map<String, String> attrs = new HashMap<String, String>();
+        attrs.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, RECALL_TEST_DOC);
+        permission.setActive(true);
+        permission.setAttributes(attrs);
+        // have to save template association as second step otherwise it tries to create a new template
+        Permission perm = KimApiServiceLocator.getPermissionService().createPermission(permission.build());
+        assertEquals(perm.getTemplate().getId(), template.getId());
+        assertTrue(KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, null));
+
+        Role techadmin = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
+        KimApiServiceLocator.getRoleService().assignPermissionToRole(perm.getId(), techadmin.getId());
+
+        // now our recall permission is assigned to the technical admin role.  a technical admin should be able to recall the recall_test_doc
+
+        document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
+        document.route("");
+
+        // now technical admins can recall by virtue of having the recall permission on this doc
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
     }
 
     @Test public void testRecallToActionListAsInitiatorAfterApprovals() throws Exception {

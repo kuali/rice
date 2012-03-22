@@ -627,7 +627,13 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 		this.notes = notes;
 	}
 
-    /**
+    @Override
+    protected void postLoad() {
+        super.postLoad();
+        refreshPessimisticLocks();
+    }
+    
+	/**
      * @see org.kuali.rice.krad.document.Document#getPessimisticLocks()
      */
     public List<PessimisticLock> getPessimisticLocks() {

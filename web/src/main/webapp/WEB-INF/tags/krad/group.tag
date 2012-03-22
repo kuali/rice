@@ -18,7 +18,7 @@
 <%@ attribute name="group" required="true"
               description="The group instance that is being rendered"
               type="org.kuali.rice.krad.uif.container.Group"%>
-<!-- #GROUP '${group.id}' HEADER -->
+<!-- GROUP '${group.id}' HEADER -->
 
 <krad:div component="${group}">
 
@@ -35,7 +35,7 @@
 
   <jsp:doBody/>
 
-  <!-- #GROUP '${group.id}' FOOTER -->
+  <!-- GROUP '${group.id}' FOOTER -->
   <c:if test="${!empty group.footer}">
     <krad:template component="${group.footer}"/>
   </c:if>

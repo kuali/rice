@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -1260,7 +1261,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             sb.append(optionKey);
             sb.append(":");
 
-            sb.append(convertToJsValue(optionValue));
+            sb.append(KRADUtils.convertToJsValue(optionValue));
         }
 
         sb.append("}");
@@ -1608,37 +1609,4 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return attributes;        
     }
 
-    //TODO move this to a utility class
-    private String convertToJsValue(String value){
-        boolean isNumber = false;
-        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.trim().substring(0, 1))
-                || value.trim().substring(0, 1).equals("-"))) {
-            try {
-                Double.parseDouble(value.trim());
-                isNumber = true;
-            } catch (NumberFormatException e) {
-                isNumber = false;
-            }
-        }
-        // If an option value starts with { or [, it would be a nested value
-        // and it should not use quotes around it
-        if (StringUtils.startsWith(value, "{") || StringUtils.startsWith(value, "[")) {
-            return value;
-        }
-        // need to be the base boolean value "false" is true in js - a non
-        // empty string
-        else if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
-            return value;
-        }
-        // if it is a call back function, do not add the quotes
-        else if (StringUtils.startsWith(value, "function") && StringUtils.endsWith(value, "}")) {
-            return value;
-        }
-        // for numerics
-        else if (isNumber) {
-            return value;
-        } else {
-            return "\"" + value + "\"";
-        }    
-    }
 }

@@ -1165,16 +1165,16 @@ Done.</programlisting></para>
                     standalone server have not changed a whole lot between Rice 1.0.x and 2.0.
                     However there are a few changes which are important to note.</para>
                 <para>First of all, in Rice 1.0.x there was a configuration parameter named
-                        <code>rice.additionalSpringFiles</code>.  This was used to load custom
-                    Spring files into the standalone server (or a client application) which could be
-                    used to override internal Kuali Rice services for the purposes of customization.
-                    In Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
-                    parameter.  Instead there is one per module of Rice such as
+                        <code>rice.additionalSpringFiles</code>. This was used to load custom Spring
+                    files into the standalone server (or a client application) which could be used
+                    to override internal Kuali Rice services for the purposes of customization. In
+                    Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
+                    parameter. Instead there is one per module of Rice such as
                         <code>rice.kew.additionalSpringFiles</code>,
                         <code>rice.ksb.additionalSpringFiles</code>,
-                        <code>rice.kim.additionalSpringFiles</code>, etc.  When re-applying and
-                    loading customizations, this needs to be taken into account.  Additionally, you
-                    will need to ensure you are overriding the server in the appropriate module or
+                        <code>rice.kim.additionalSpringFiles</code>, etc. When re-applying and
+                    loading customizations, this needs to be taken into account. Additionally, you
+                    will need to ensure you are overriding the service in the appropriate module or
                     else the service override will not take effect.</para>
                 <para>Additionally, the caching implementation for Rice has been reworked to use the
                     Ehcache library.  As a result, the various kim.cache.* configuration parameters

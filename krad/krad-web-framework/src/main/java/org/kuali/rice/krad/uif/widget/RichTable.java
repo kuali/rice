@@ -246,7 +246,7 @@ public class RichTable extends WidgetBase {
      * Constructs the sort data type for each data table columns in a format that will be used to initialize the data table widget via javascript
      *
      * @param isSortable - whether a column should be marked as sortable
-     * @param dataTypeClass  - the class type of the column value - used determine the {@link UifConstants.TableToolsKeys.SORT_TYPE} option
+     * @param dataTypeClass  - the class type of the column value - used determine the sType option - which identifies the search plugin to use
      * @param sortDataType - Defines a data source type for the sorting which can be used to read realtime information from the table
      * @return  a formatted string with data table options for one column
      */

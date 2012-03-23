@@ -243,7 +243,12 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Constructs the sort data type for each datatable columns.
+     * Constructs the sort data type for each data table columns in a format that will be used to initialize the data table widget via javascript
+     *
+     * @param isSortable - whether a column should be marked as sortable
+     * @param dataTypeClass  - the class type of the column value - used determine the {@link UifConstants.TableToolsKeys.SORT_TYPE} option
+     * @param sortDataType - Defines a data source type for the sorting which can be used to read realtime information from the table
+     * @return  a formatted string with data table options for one column
      */
     protected String constructTableColumnOptions(boolean isSortable, Class dataTypeClass, String sortDataType) {
         String colOptions = "null";
@@ -333,7 +338,9 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * since columns are visible by default, this set holds propertyNames for the ones meant to be hidden
+     * Holds propertyNames for the ones meant to be hidden since columns are visible by default
+     *
+     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
      *
      * @return a set with propertyNames of columns to be hidden
      */
@@ -342,7 +349,7 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * setter for the hidden columns set
+     * Setter for the hidden columns set
      *
      * @param hiddenColumns - a set containing propertyNames
      */
@@ -351,7 +358,9 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * holds the propertyNames for columns that are to be sorted
+     * Holds the propertyNames for columns that are to be sorted
+     *
+     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
      *
      * @return a set of propertyNames with for columns that will be sorted
      */
@@ -360,7 +369,7 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     *  setter for sortable columns
+     *  Setter for sortable columns
      *
      * @param sortableColumns - a set containing propertyNames of columns to be sorted
      */

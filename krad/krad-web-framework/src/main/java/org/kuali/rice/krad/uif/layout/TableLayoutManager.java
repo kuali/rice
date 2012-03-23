@@ -781,7 +781,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * since columns are visible by default, this set holds propertyNames for the ones meant to be hidden
+     * Holds propertyNames for the ones meant to be hidden since columns are visible by default
+     *
+     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
      *
      * @return a set with propertyNames of columns to be hidden
      */
@@ -790,7 +792,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * setter for the hidden columns set
+     * Setter for the hidden columns set
      *
      * @param hiddenColumns - a set containing propertyNames
      */
@@ -799,7 +801,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * holds the propertyNames for columns that are to be sorted
+     * Holds the propertyNames for columns that are to be sorted
+     *  *
+     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
      *
      * @return a set of propertyNames with for columns that will be sorted
      */
@@ -808,7 +812,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     *  setter for sortable columns
+     *  Setter for sortable columns
      *
      * @param sortableColumns - a set containing propertyNames of columns to be sorted
      */

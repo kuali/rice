@@ -18,7 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupContract;
@@ -41,7 +40,6 @@ import org.kuali.rice.kim.framework.identity.EntityTypeEbo;
 import org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo;
 import org.kuali.rice.kim.framework.identity.affiliation.EntityAffiliationTypeEbo;
 import org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusEbo;
-import org.kuali.rice.kim.framework.identity.email.EntityEmailTypeContractEbo;
 import org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo;
 import org.kuali.rice.kim.framework.identity.employment.EntityEmploymentStatusEbo;
 import org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeEbo;
@@ -331,35 +329,34 @@ public class KimModuleService extends ModuleServiceBase {
 
     @Override
     public boolean isExternalizable(Class boClazz) {
-        if (boClazz == null) {
-            return false;
-        }
-        if(RoleContract.class.isAssignableFrom(boClazz)) {
-            return true;
-        } else if(GroupContract.class.isAssignableFrom(boClazz)) {
-            return true;
-        } else if(Person.class.isAssignableFrom(boClazz)) {
-            return true;
-        }
-        return ExternalizableBusinessObject.class.isAssignableFrom(boClazz);
+    if (boClazz == null) {
+        return false;
+    }
+    if(RoleContract.class.isAssignableFrom(boClazz)) {
+        return true;
+    } else if(GroupContract.class.isAssignableFrom(boClazz)) {
+        return true;
+    } else if(Person.class.isAssignableFrom(boClazz)) {
+        return true;
+    }
+    return ExternalizableBusinessObject.class.isAssignableFrom(boClazz);
     }
 
-    @Override
-    protected String getInquiryUrl(Class inquiryBusinessObjectClass){
-        String inquiryUrl = KimCommonUtilsInternal.getKimBasePath();
-        if (!inquiryUrl.endsWith("/")) {
-            inquiryUrl = inquiryUrl + "/";
-        }
-        if(RoleContract.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-            return inquiryUrl + KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
-        } else if(GroupContract.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-            return inquiryUrl + KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
-        } else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
-            return inquiryUrl + KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
-        }
-        return super.getInquiryUrl(inquiryBusinessObjectClass);
-    }
-
+	@Override
+	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
+		String inquiryUrl = KimCommonUtilsInternal.getKimBasePath();
+		if (!inquiryUrl.endsWith("/")) {
+			inquiryUrl = inquiryUrl + "/";
+		}
+		if(RoleContract.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+			return inquiryUrl + KimConstants.KimUIConstants.KIM_ROLE_INQUIRY_ACTION;
+		} else if(GroupContract.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+			return inquiryUrl + KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION;
+		} else if(Person.class.isAssignableFrom(inquiryBusinessObjectClass)) {
+			return inquiryUrl + KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION;
+		}
+		return super.getInquiryUrl(inquiryBusinessObjectClass);
+	}
 
     @Override
     public List<List<String>> listAlternatePrimaryKeyFieldNames(

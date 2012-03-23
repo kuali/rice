@@ -60,10 +60,6 @@
           <name>LOOK_FUTURE</name>
           <value>false</value>
         </policy>
-        <policy>
-          <name>NOTIFY_COMPLETED_ON_RETURN</name>
-          <value>false</value>
-        </policy>
       </policies>
     </documentType>
 
@@ -106,10 +102,6 @@
         </policy>
         <policy>
           <name>look_future</name>
-          <value>false</value>
-        </policy>
-        <policy>
-          <name>notify_completed_on_return</name>
           <value>false</value>
         </policy>
       </policies>

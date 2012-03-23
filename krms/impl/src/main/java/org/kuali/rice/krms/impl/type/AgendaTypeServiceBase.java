@@ -24,6 +24,9 @@ import org.kuali.rice.krms.impl.provider.repository.LazyAgendaTree;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
 import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Base class for {@link org.kuali.rice.krms.framework.type.AgendaTypeService} implementations, providing
  * boilerplate for attribute building and merging from various sources.
@@ -31,6 +34,7 @@ import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements AgendaTypeService {
 
     public static final AgendaTypeService defaultAgendaTypeService = new AgendaTypeServiceBase();
+    private static final String NAME_ATTRIBUTE = "name";
 
     @Override
     public Agenda loadAgenda(AgendaDefinition agendaDefinition) {
@@ -41,6 +45,11 @@ public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements Agenda
         if (repositoryToEngineTranslator == null) {
             return null;
         }
+
+        // pass the name as a built-in attribute so that it can be used during selection
+        Map<String, String> existingAttributes = new HashMap<String, String>(agendaDefinition.getAttributes());
+        existingAttributes.put(NAME_ATTRIBUTE, agendaDefinition.getName());
+
         return new BasicAgenda(agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, repositoryToEngineTranslator));
     }
 }

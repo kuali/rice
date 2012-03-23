@@ -30,7 +30,6 @@
     </documentType>
     <documentType overwriteMode="true">
       <name>DocumentTypeXmlParserTestDoc_DocType2</name>
-      <label>DocumentTypeXmlParserTestDoc_DocType2</label>
       <routePaths>
         <routePath>
           <start name="AdHoc" />

@@ -41,6 +41,7 @@ import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalQueryResults;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
@@ -75,6 +76,7 @@ import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
+import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -799,6 +801,27 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmailTypeBo.to(impl);
 	}
+
+    @Override
+    public PrincipalQueryResults findPrincipals(
+            @WebParam(name = "query") QueryByCriteria query) throws RiceIllegalArgumentException {
+        incomingParamCheck(query, "query");
+
+        GenericQueryResults<PrincipalBo> results = criteriaLookupService.lookup(PrincipalBo.class, query);
+
+        PrincipalQueryResults.Builder builder = PrincipalQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Principal.Builder> ims = new ArrayList<Principal.Builder>();
+        for (PrincipalBo bo : results.getResults()) {
+            ims.add(Principal.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
     @Override
     public CodedAttribute getEmploymentStatus( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");

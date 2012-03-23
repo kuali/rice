@@ -37,6 +37,7 @@ import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalQueryResults;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
@@ -1142,4 +1143,16 @@ public interface IdentityService {
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'code=' + #p0")
 	CodedAttribute getEmailType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
+
+    /**
+     * This method finds Principals based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param query the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findPrincipals")
+    @WebResult(name = "results")
+    PrincipalQueryResults findPrincipals(@WebParam(name = "query") QueryByCriteria query)  throws RiceIllegalArgumentException;
 }

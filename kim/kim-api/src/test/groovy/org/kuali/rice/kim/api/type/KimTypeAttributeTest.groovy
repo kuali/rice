@@ -41,11 +41,6 @@ class KimTypeAttributeTest {
     """
 
     @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_ver_num_null() {
-        KimTypeAttribute.Builder.create().setVersionNumber(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_ver_num_less_than_1() {
         KimTypeAttribute.Builder.create().setVersionNumber(-1);
     }

@@ -355,13 +355,6 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
-    public void recall(String annotation, boolean cancel) {
-        DocumentActionResult result = getWorkflowDocumentActionsService().recall(
-                constructDocumentActionParameters(annotation), cancel);
-        resetStateAfterAction(result);
-    }
-
-    @Override
     public void blanketApprove(String annotation) {
         DocumentActionResult result = getWorkflowDocumentActionsService().blanketApprove(
                 constructDocumentActionParameters(annotation));
@@ -683,16 +676,6 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     /**
-     * Indicates if the document is in the recalled state or not.
-     *
-     * @return true if in the specified state
-     */
-    @Override
-    public boolean isRecalled() {
-        return checkStatus(DocumentStatus.RECALLED);
-    }
-
-    /**
      * Indicates if the document is in the disapproved state or not.
      * 
      * @return true if in the specified state
@@ -786,15 +769,15 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
-    public void returnToPreviousNode(String nodeName, String annotation) {
+    public void returnToPreviousNode(String annotation, String nodeName) {
         if (nodeName == null) {
             throw new IllegalArgumentException("nodeName was null");
         }
-        returnToPreviousNode(ReturnPoint.create(nodeName), annotation);
+        returnToPreviousNode(annotation, ReturnPoint.create(nodeName));
     }
 
     @Override
-    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+    public void returnToPreviousNode(String annotation, ReturnPoint returnPoint) {
         if (returnPoint == null) {
             throw new IllegalArgumentException("returnPoint was null");
         }

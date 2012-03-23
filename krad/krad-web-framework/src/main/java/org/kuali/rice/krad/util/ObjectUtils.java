@@ -1072,58 +1072,68 @@ public final class ObjectUtils {
      * @return
      * @throws IllegalArgumentException
      */
-    public static boolean isWriteable(Object o, String p, PersistenceStructureService persistenceStructureService)
-            throws IllegalArgumentException {
-        if (null == o || null == p) {
-            throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
-        }
+    public static boolean isWriteable(Object object, String property, PersistenceStructureService persistenceStructureService)
+    		throws IllegalArgumentException {
+    	if (null == object || null == property) {
+    		throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
+    	}
 
-        boolean b = false;
-
-        // Try the easy way.
-        if (!(PropertyUtils.isWriteable(o, p))) {
-            // If that fails lets try to be a bit smarter, understanding that Collections may be involved.
-            if (-1 != p.indexOf('.')) {
-                String[] parts = p.split("\\.");
-
-                // Get the type of the attribute.
-                Class c = ObjectUtils.getPropertyType(o, parts[0], persistenceStructureService);
-
-                if (c != null) {
-                    Object i = null;
-
-                    // If the next level is a Collection, look into the collection, to find out what type its elements are.
-                    if (Collection.class.isAssignableFrom(c)) {
-                        Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
-                        c = m.get(parts[0]);
-                    }
-
-                    // Look into the attribute class to see if it is writeable.
-                    try {
-                        i = c.newInstance();
-
-                        StringBuffer sb = new StringBuffer();
-                        for (int x = 1; x < parts.length; x++) {
-                            sb.append(1 == x ? "" : ".").append(parts[x]);
-                        }
-                        b = isWriteable(i, sb.toString(), persistenceStructureService);
-
-                    } catch (Exception ex) {
-                        LOG.error("Skipping Criteria: " + p + " - Unable to instantiate class : " + c.getName(), ex);
-                    }
-                } else {
-                    LOG.error("Skipping Criteria: " + p + " - Unable to determine class for object: "
-                            + o.getClass().getName() + " - " + parts[0]);
-                }
-            }
-
-        } else {
-            b = true;
-        }
-
-        return b;
+    	// Try the easy way.
+    	try {
+    		if (!(PropertyUtils.isWriteable(object, property))) {
+    			// If that fails lets try to be a bit smarter, understanding that Collections may be involved.
+    			return isWriteableHelper(object, property, persistenceStructureService);
+    		} else {
+    			return true;
+    		}
+    	} catch (NestedNullException nestedNullException) {
+    		// If a NestedNullException is thrown then the property has a null
+    		// value.  Call the helper to find the class of the property and
+    		// get a newInstance of it.
+    		return isWriteableHelper(object, property, persistenceStructureService);
+    	}
     }
+    
+    /**
+     * This method handles the cases where PropertyUtils.isWriteable is not
+     * sufficient.  It handles cases where the parameter in question is a
+     * collection or if the parameter value is null.
+     * @param object
+     * @param property
+     * @param persistenceStructureService
+     * @return
+     */
+    private static boolean isWriteableHelper(Object object, String property, PersistenceStructureService persistenceStructureService) {
+    	if (property.contains(".")) {
+            String propertyName = StringUtils.substringBefore(property, ".");
 
+            // Get the type of the attribute.
+            Class<?> c = ObjectUtils.getPropertyType(object, propertyName, persistenceStructureService);
+
+            if (c != null) {
+                Object i = null;
+
+                // If the next level is a Collection, look into the collection, to find out what type its elements are.
+                if (Collection.class.isAssignableFrom(c)) {
+                    Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(object.getClass());
+                    c = m.get(propertyName);
+                }
+
+                // Look into the attribute class to see if it is writeable.
+                try {
+                    i = c.newInstance();
+                    return isWriteable(i, StringUtils.substringAfter(property, "."), persistenceStructureService);
+                } catch (Exception ex) {
+                    LOG.error("Skipping Criteria: " + property + " - Unable to instantiate class : " + c.getName(), ex);
+                }
+            } else {
+                LOG.error("Skipping Criteria: " + property + " - Unable to determine class for object: "
+                        + object.getClass().getName() + " - " + propertyName);
+            }
+        }
+    	return false;
+    }
+    
     /**
      * Helper method for creating a new instance of the given class
      * 

@@ -39,14 +39,14 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
 
     @Override
     protected void beforeRequest(HttpServletRequest httpServletRequest, String s) {
-        if (LOG.isDebugEnabled() && loggableExtensions(s)) {
+        if (loggableExtensions(s)) {
             ThreadLocalTimer.setStartTime(new Date().getTime());
         }
     }
 
     @Override
     protected void afterRequest(HttpServletRequest httpServletRequest, String s) {
-        if (LOG.isDebugEnabled() && loggableExtensions(s)) {
+        if (loggableExtensions(s)) {
             long startTime = ThreadLocalTimer.getStartTime();
             logElapsedTime(s, startTime);
             ThreadLocalTimer.unset();
@@ -58,7 +58,7 @@ public class RequestLoggingFilter extends AbstractRequestLoggingFilter {
         long elapsedTime = endTime - startTime;
         StringBuffer sb = new StringBuffer(s);
         sb.append(" ").append(elapsedTime).append(" ms.");
-        LOG.debug(sb.toString());
+        LOG.info(sb.toString());
     }
 
     private boolean loggableExtensions(String s) {

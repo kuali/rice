@@ -158,21 +158,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     @Override
     public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition, String documentTypeName) {
         List<Row> searchRows = getSearchingRows(documentTypeName);
-        List<RemotableAttributeField> attributeFields = new ArrayList<RemotableAttributeField>();
-        DataDictionaryRemoteFieldService dataDictionaryRemoteFieldService =
-                KRADServiceLocatorWeb.getDataDictionaryRemoteFieldService();
-        for (Row row : searchRows) {
-            List<RemotableAttributeField> rowAttributeFields = new ArrayList<RemotableAttributeField>();
-            for (Field field : row.getFields()) {
-                RemotableAttributeField remotableAttributeField = dataDictionaryRemoteFieldService.buildRemotableFieldFromAttributeDefinition(field.getBusinessObjectClassName(), field.getPropertyName());
-                if (remotableAttributeField != null) {
-                    rowAttributeFields.add(remotableAttributeField);
-                }
-            }
-            attributeFields.addAll(rowAttributeFields);
-        }
-        return attributeFields;
-        //return FieldUtils.convertRowsToAttributeFields(searchRows);
+        return FieldUtils.convertRowsToAttributeFields(searchRows);
     }
 
     /**
@@ -292,6 +278,8 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
 
             Field searchField = FieldUtils.getPropertyField(boClass, attributeName, false);
+            // prepend all document attribute field names with "documentAttribute."
+            //searchField.setPropertyName(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + searchField.getPropertyName());
             searchField.setColumnVisible(attr.isShowAttributeInResultSet());
 
             //TODO this is a workaround to hide the Field from the search criteria.

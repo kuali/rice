@@ -590,15 +590,15 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         }
     }
 
-    public List<WorkflowServiceError> validateRuleData(Map paramMap) {
+    public List<RemotableAttributeError> validateRuleData(Map paramMap) {
         this.paramMap = paramMap;
         try {
-            return validate(getConfigXML(), new String[] { "ALL", "RULE" }, paramMap, new ErrorGenerator<WorkflowServiceError>() {
-                public WorkflowServiceError generateInvalidFieldError(Node field, String fieldName, String message) {
-                    return new WorkflowServiceErrorImpl("Xml attribute error.", "routetemplate.xmlattribute.error", message);
+            return validate(getConfigXML(), new String[] { "ALL", "RULE" }, paramMap, new ErrorGenerator<RemotableAttributeError>() {
+                public RemotableAttributeError generateInvalidFieldError(Node field, String fieldName, String message) {
+                    return RemotableAttributeError.Builder.create("routetemplate.xmlattribute.error", message).build();
                 }
-                public WorkflowServiceError generateMissingFieldError(Node field, String fieldName, String message) {
-                    return new WorkflowServiceErrorImpl("Xml attribute error.", "routetemplate.xmlattribute.required.error", field.getAttributes().getNamedItem("title").getNodeValue());
+                public RemotableAttributeError generateMissingFieldError(Node field, String fieldName, String message) {
+                    return RemotableAttributeError.Builder.create("routetemplate.xmlattribute.required.error", field.getAttributes().getNamedItem("title").getNodeValue()).build();
                 }
             });
         } catch (XPathExpressionException e) {
@@ -628,7 +628,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     }
 
     // TODO: possibly simplify even further by unifying AttributeError and WorkflowServiceError
-    public List<? extends RemotableAttributeErrorContract> validateClientRoutingData() {
+    public List<RemotableAttributeError> validateClientRoutingData() {
         LOG.debug("validating client routing data");
         try {
             return validate(getConfigXML(), new String[] { "ALL", "RULE" }, getParamMap(), new ErrorGenerator<RemotableAttributeError>() {

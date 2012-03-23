@@ -186,15 +186,15 @@ function setRecipientValue(recipientBase, value, isError ) {
     var containerDiv = document.getElementById(recipientBase + divSuffix);
     if (containerDiv) {
 		if (value == '') {
-			DWRUtil.setValue( containerDiv.id, "&nbsp;", {escapeHtml:false} );
+			dwr.util.setValue( containerDiv.id, "&nbsp;", {escapeHtml:false} );
 		} else {
-			DWRUtil.setValue( containerDiv.id, value, isError?{escapeHtml:false}:{escapeHtml:true} );
+            dwr.util.setValue( containerDiv.id, value, isError?{escapeHtml:false}:{escapeHtml:true} );
 		}
 	}
     if (containerHidden) {
     	// get rid of HTML in the value
     	value = value.replace(/(<([^>]+)>)/ig,"");
-		DWRUtil.setValue( recipientBase, value );
+        dwr.util.setValue( recipientBase, value );
 	}
 }
 

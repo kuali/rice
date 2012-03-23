@@ -41,6 +41,7 @@ import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.web.format.CurrencyFormatter;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -96,6 +97,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -354,6 +356,13 @@ public final class FieldUtils {
     public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean convertForLookup) {
         Field field = new Field();
         field.setPropertyName(attributeName);
+        
+        //hack to get correct BO impl in case of ebos....
+        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(businessObjectClass)) {
+            ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+            businessObjectClass = moduleService.getExternalizableBusinessObjectDictionaryEntry(businessObjectClass).getDataObjectClass();
+        }
+        
         field.setFieldLabel(getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName));
 
         setFieldControl(businessObjectClass, attributeName, convertForLookup, field);
@@ -622,7 +631,15 @@ public final class FieldUtils {
 
     public static void populateReadableField(Field field, BusinessObject businessObject){
 		Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
-		if (obj != null) {
+
+        // For files the FormFile is not being persisted instead the file data is stored in
+		// individual fields as defined by PersistableAttachment.
+	    if (Field.FILE.equals(field.getFieldType())) {
+            Object fileName = ObjectUtils.getNestedValue(businessObject, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+            field.setPropertyValue(fileName);
+        }
+
+        if (obj != null) {
 			String formattedValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(businessObject, field.getPropertyName());
 			field.setPropertyValue(formattedValue);
         	
@@ -1256,7 +1273,7 @@ public final class FieldUtils {
         return false;
     }
 
-    public static List createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public static List<Field> createAndPopulateFieldsForLookup(List<String> lookupFieldAttributeList, List<String> readOnlyFieldsList, Class businessObjectClass) throws InstantiationException, IllegalAccessException {
         List<Field> fields = new ArrayList<Field>();
         BusinessObjectEntry boe = (BusinessObjectEntry) getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
 
@@ -1507,10 +1524,32 @@ public final class FieldUtils {
         } else {
             //this ain't right....
             Field tempField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
+            if (remotableAttributeField.getMaxLength() != null) {
+                tempField.setMaxLength(remotableAttributeField.getMaxLength());
+            }
+            //List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
 
             if (remotableAttributeField.getShortLabel() != null) {
                 tempField.setFieldLabel(remotableAttributeField.getShortLabel());
             }
+
+            if (!remotableAttributeField.getDataType().equals(DataType.CURRENCY)) {
+                tempField.setFieldDataType(remotableAttributeField.getDataType().name().toLowerCase());
+            } else {
+                tempField.setFieldDataType(DataType.FLOAT.getType().getName().toLowerCase());
+            }
+
+            tempField.setMainFieldLabel(remotableAttributeField.getLongLabel());
+            tempField.setFieldHelpSummary(remotableAttributeField.getHelpSummary());
+            tempField.setUpperCase(remotableAttributeField.isForceUpperCase());
+            if (remotableAttributeField.getMaxLength() != null) {
+                if (remotableAttributeField.getMaxLength().intValue() > 0) {
+                    tempField.setMaxLength(remotableAttributeField.getMaxLength().intValue());
+                } else {
+                    tempField.setMaxLength(100);
+                }
+            }
+            tempField.setFieldRequired(remotableAttributeField.isRequired());
 
             fields.add(tempField);
         }
@@ -1541,7 +1580,6 @@ public final class FieldUtils {
 
         List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
         builder.setDataType(DataType.valueOf(field.getFieldDataType().toUpperCase()));
-
         builder.setShortLabel(field.getFieldLabel());
         builder.setLongLabel(field.getMainFieldLabel());
         builder.setHelpSummary(field.getFieldHelpSummary());
@@ -1549,14 +1587,18 @@ public final class FieldUtils {
         //builder.setHelpDescription();
         builder.setForceUpperCase(field.isUpperCase());
         //builder.setMinLength()
-        builder.setMaxLength(new Integer(field.getMaxLength()));
+        if (field.getMaxLength() > 0) {
+            builder.setMaxLength(new Integer(field.getMaxLength()));
+        } else {
+            builder.setMaxLength(new Integer(100));
+        }
         //builder.setMinValue();
         //builder.setMaxValue();
         //builder.setRegexConstraint(field.);
         //builder.setRegexContraintMsg();
         builder.setRequired(field.isFieldRequired());
         builder.setDefaultValues(Collections.singletonList(field.getDefaultValue()));
-        builder.setControl(FieldUtils.constructControl(field.getFieldType(), field.getFieldValidValues()));
+        builder.setControl(FieldUtils.constructControl(field, field.getFieldValidValues()));
         if (field.getHasLookupable()) {
             builder.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create());
             RemotableQuickFinder.Builder quickfinder =
@@ -1564,6 +1606,10 @@ public final class FieldUtils {
             quickfinder.setFieldConversions(toMap(field.getFieldConversions()));
             quickfinder.setLookupParameters(toMap(field.getLookupParameters()));
             widgets.add(quickfinder);
+        }
+        if (field.getFieldType().equals(Field.CURRENCY)) {
+            builder.setDataType(DataType.CURRENCY);
+            builder.setMaxLength(field.getFormattedMaxLength());
         }
         if (field.isDatePicker()) {
             widgets.add(RemotableDatepicker.Builder.create());
@@ -1576,35 +1622,48 @@ public final class FieldUtils {
         return builder.build();
     }
 
-    private static RemotableAbstractControl.Builder constructControl(String type, List<KeyValue> options) {
+    private static RemotableAbstractControl.Builder constructControl(Field field, List<KeyValue> options) {
 
-        RemotableAbstractControl.Builder control = null;
-        Map<String, String> optionMap = new HashMap<String, String>();
+        //RemotableAbstractControl.Builder control = null;
+        Map<String, String> optionMap = new LinkedHashMap<String, String>();
         if (options != null) {
             for (KeyValue option : options) {
                 optionMap.put(option.getKey(), option.getValue());
             }
         }
+        String type = field.getFieldType();
         if (Field.TEXT.equals(type) || Field.DATEPICKER.equals(type)) {
-			control = RemotableTextInput.Builder.create();
+            RemotableTextInput.Builder control = RemotableTextInput.Builder.create();
+            control.setSize(field.getSize());
+            return control;
         } else if (Field.TEXT_AREA.equals(type)) {
-            control = RemotableTextarea.Builder.create();
+            RemotableTextarea.Builder control = RemotableTextarea.Builder.create();
+            control.setCols(field.getCols());
+            control.setRows(field.getRows());
+            return control;
 		} else if (Field.DROPDOWN.equals(type)) {
-            control = RemotableSelect.Builder.create(optionMap);
+            return RemotableSelect.Builder.create(optionMap);
         } else if (Field.CHECKBOX.equals(type)) {
-            control = RemotableCheckboxGroup.Builder.create(optionMap);
+            return RemotableCheckbox.Builder.create();
 		} else if (Field.RADIO.equals(type)) {
-            control = RemotableRadioButtonGroup.Builder.create(optionMap);
+            return RemotableRadioButtonGroup.Builder.create(optionMap);
 		} else if (Field.HIDDEN.equals(type)) {
-            control = RemotableHiddenInput.Builder.create();
+            return RemotableHiddenInput.Builder.create();
 		} else if (Field.MULTIBOX.equals(type)) {
-            RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
-            builder.setMultiple(true);
-            control = builder;
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setMultiple(true);
+            return control;
+        } else if (Field.MULTISELECT.equals(type)) {
+            RemotableSelect.Builder control = RemotableSelect.Builder.create(optionMap);
+            control.setMultiple(true);
+            return control;
+        } else if (Field.CURRENCY.equals(type)) {
+            RemotableTextInput.Builder control = RemotableTextInput.Builder.create();
+            control.setSize(field.getSize());
+            return control;
         } else {
 		    throw new IllegalArgumentException("Illegal field type found: " + type);
         }
-        return control;
 
     }
 
@@ -1617,6 +1676,12 @@ public final class FieldUtils {
         }
         if (control == null || control instanceof RemotableTextInput) {
             fieldType = Field.TEXT;
+            if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
+              field.setSize(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            }
+            if (((RemotableTextInput)remotableField.getControl()).getSize() != null) {
+                field.setFormattedMaxLength(((RemotableTextInput)remotableField.getControl()).getSize().intValue());
+            }
         } else if (control instanceof RemotableCheckboxGroup) {
             RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
             fieldType = Field.CHECKBOX;
@@ -1642,6 +1707,11 @@ public final class FieldUtils {
             }
         } else if (control instanceof RemotableTextarea) {
             fieldType = Field.TEXT_AREA;
+            if (((RemotableTextarea)remotableField.getControl()).getCols() != null
+                    && ((RemotableTextarea)remotableField.getControl()).getRows() != null) {
+                field.setCols(((RemotableTextarea)remotableField.getControl()).getCols().intValue());
+                field.setSize(((RemotableTextarea)remotableField.getControl()).getRows().intValue());
+            }
         } else {
             throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
         }
@@ -1738,7 +1808,7 @@ public final class FieldUtils {
                 column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
             }
         }  else {
-         column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
+            column.setFormatter(FieldUtils.getFormatterForDataType(dataType));
         }
 
         return column;

@@ -32,7 +32,7 @@ public class CaseConstraintResolver<T extends CaseConstrainable> implements Cons
 	public <C extends Constraint> List<C> resolve(T definition) {
 		@SuppressWarnings("unchecked")
 		C caseConstraint = (C)definition.getCaseConstraint();
-		return Collections.singletonList(caseConstraint);
+		return (caseConstraint == null) ? null : Collections.<C>singletonList(caseConstraint);
 	}
 	
 }

@@ -17,7 +17,7 @@ package org.kuali.rice.ken.service.ws.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ws.NotificationWebService;
@@ -60,17 +60,17 @@ public class NotificationWebServiceImpl /*extends ServletEndpointSupport*/ imple
     public String sendNotification(String notificationMessageAsXml) throws RemoteException {
         PerformanceStopWatch watch = PerformanceLog.startTimer("Time to send notification from web service");
         
-        NotificationResponse response;
+        NotificationResponseBo response;
         try {
             response = notificationService.sendNotification(notificationMessageAsXml);
 
         } catch(IOException ioe) {
-            response = new NotificationResponse();
+            response = new NotificationResponseBo();
             response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
             response.setMessage("Failed to process the message content: " + ioe.getMessage());
             LOG.error("Failed to process the message content", ioe);
         } catch(XmlException ixe) {
-            response = new NotificationResponse();
+            response = new NotificationResponseBo();
             response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
             response.setMessage("Failed to process the message content because the XML message provided to the system was invalid: " + ixe.getMessage());
             LOG.error("Failed to process the message content because the XML message provided to the system was invalid", ixe);

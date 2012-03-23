@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ken.test;
 
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.util.NotificationConstants;
 
 /**
@@ -33,35 +33,35 @@ public final class TestConstants {
     /**
      * Producers
      */
-    public static final NotificationProducer PRODUCER_1 = new NotificationProducer();
+    public static final NotificationProducerBo PRODUCER_1 = new NotificationProducerBo();
     static {
         PRODUCER_1.setId(new Long(101));
         PRODUCER_1.setDescription("First Producer for Unit Tests");
         PRODUCER_1.setName("Test Producer #1");
         PRODUCER_1.setContactInfo("producer_1_and_2@127.0.0.1");
     }
-    public static final NotificationProducer PRODUCER_2 = new NotificationProducer();
+    public static final NotificationProducerBo PRODUCER_2 = new NotificationProducerBo();
     static {
         PRODUCER_2.setId(new Long(102));
         PRODUCER_2.setName("Test Producer #2");
         PRODUCER_2.setDescription("Second Producer for Unit Tests");
         PRODUCER_2.setContactInfo("producer_1_and_2@127.0.0.1");
     }
-    public static final NotificationProducer PRODUCER_3 = new NotificationProducer();
+    public static final NotificationProducerBo PRODUCER_3 = new NotificationProducerBo();
     static {
         PRODUCER_3.setId(new Long(103));
         PRODUCER_3.setName("Test Producer #3");
         PRODUCER_3.setDescription("Third Producer for Unit Tests");
         PRODUCER_3.setContactInfo("producer_3@127.0.0.1");
     }
-    public static final NotificationProducer PRODUCER_4 = new NotificationProducer();
+    public static final NotificationProducerBo PRODUCER_4 = new NotificationProducerBo();
     static {
         PRODUCER_4.setId(new Long(104));
         PRODUCER_4.setName("Test Producer #4");
         PRODUCER_4.setDescription("Fourth Producer for Unit Tests");
         PRODUCER_4.setContactInfo("producer_4@127.0.0.1");
     }
-    public static final NotificationProducer PRODUCER_5 = new NotificationProducer();
+    public static final NotificationProducerBo PRODUCER_5 = new NotificationProducerBo();
     static {
         PRODUCER_5.setId(new Long(105));
         PRODUCER_5.setName("Notification System");

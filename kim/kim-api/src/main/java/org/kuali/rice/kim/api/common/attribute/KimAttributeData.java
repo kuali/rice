@@ -187,7 +187,7 @@ public final class KimAttributeData extends AbstractDataTransferObject implement
 
         public void setId(final String id) {
             if (StringUtils.isWhitespace(id)) {
-                throw new IllegalArgumentException("id is blank");
+                throw new IllegalArgumentException("id is whitespace");
             }
             this.id = id;
         }

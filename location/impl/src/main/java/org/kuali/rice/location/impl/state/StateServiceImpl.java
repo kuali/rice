@@ -17,6 +17,9 @@ package org.kuali.rice.location.impl.state;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -24,6 +27,7 @@ import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.country.CountryService;
 import org.kuali.rice.location.api.services.LocationApiServiceLocator;
 import org.kuali.rice.location.api.state.State;
+import org.kuali.rice.location.api.state.StateQueryResults;
 import org.kuali.rice.location.api.state.StateService;
 
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ public class StateServiceImpl implements StateService {
 
     private BusinessObjectService businessObjectService;
     private CountryService countryService;
+    private CriteriaLookupService criteriaLookupService;
 
     @Override
     public State getState(String countryCode, String code) {
@@ -96,6 +101,25 @@ public class StateServiceImpl implements StateService {
         return Collections.unmodifiableList(toReturn);
     }
 
+    @Override
+    public StateQueryResults findStates(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
+
+        GenericQueryResults<StateBo> results = criteriaLookupService.lookup(StateBo.class, queryByCriteria);
+
+        StateQueryResults.Builder builder = StateQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<State.Builder> ims = new ArrayList<State.Builder>();
+        for (StateBo bo : results.getResults()) {
+            ims.add(State.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
     public CountryService getCountryService() {
         if (countryService == null) {
             countryService = LocationApiServiceLocator.getCountryService();
@@ -109,5 +133,23 @@ public class StateServiceImpl implements StateService {
     
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
     }
 }

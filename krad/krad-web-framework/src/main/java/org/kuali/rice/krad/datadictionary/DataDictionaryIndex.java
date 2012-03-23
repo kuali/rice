@@ -17,7 +17,7 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,7 +34,7 @@ import java.util.Set;
 public class DataDictionaryIndex implements Runnable {
 	private static final Log LOG = LogFactory.getLog(DataDictionaryIndex.class);
 	
-	private KualiDefaultListableBeanFactory ddBeans;
+	private DefaultListableBeanFactory ddBeans;
 	
 	// keyed by BusinessObject class
 	private Map<String, BusinessObjectEntry> businessObjectEntries;
@@ -50,7 +50,7 @@ public class DataDictionaryIndex implements Runnable {
 	// keyed by a class object, and the value is a set of classes that may block the class represented by the key from inactivation 
 	private Map<Class, Set<InactivationBlockingMetadata>> inactivationBlockersForClass;
 
-	public DataDictionaryIndex(KualiDefaultListableBeanFactory ddBeans) {
+	public DataDictionaryIndex(DefaultListableBeanFactory ddBeans) {
 		this.ddBeans = ddBeans;
 	}
 

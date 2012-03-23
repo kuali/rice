@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.location.api.state;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.location.api.LocationConstants;
@@ -108,4 +109,16 @@ public interface StateService {
     @Cacheable(value=State.Cache.NAME, key="'alternateCode=' + #alternateCode")
     List<State> findAllStatesInCountryByAltCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * This method find States based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findStates")
+    @WebResult(name = "results")
+    StateQueryResults findStates(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

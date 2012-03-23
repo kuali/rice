@@ -66,6 +66,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -112,7 +113,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected boolean fieldsClearedOnCopy;
     @Transient
     protected boolean displayTopicFieldInNotes = false;
-
     @Transient
     protected String attachmentPropertyName;
 
@@ -277,6 +277,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 LOG.error("Error while parsing document contents", e);
                 throw new RuntimeException("Could not load document contents from xml", e);
             } catch (SAXException e) {
+                LOG.error("Error while parsing document contents", e);
                 LOG.error("Error while parsing document contents", e);
                 throw new RuntimeException("Could not load document contents from xml", e);
             } catch (IOException e) {
@@ -505,7 +506,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
             newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
-            if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+            if(newMaintainableObject.getDataObject() instanceof PersistableAttachment)
+            {
                 populateAttachmentForBO();
             }
             // If a maintenance lock exists, warn the user.
@@ -622,11 +624,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
-
         if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
             populateDocumentAttachment();
             populateAttachmentForBO();
         }
+        populateXmlDocumentContentsFromMaintainables();
     }
 
     /**
@@ -644,21 +646,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
     }
 
-    protected void populateAttachmentForBO() {
-        refreshAttachment();
+    public void populateAttachmentForBO() {
+    // TODO: need to convert this from using struts form file
 
-        PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getDataObject();
-
-        if (attachment != null) {
-            byte[] fileContents;
-            fileContents = attachment.getAttachmentContent();
-            if (fileContents.length > 0) {
-                boAttachment.setAttachmentContent(fileContents);
-                boAttachment.setFileName(attachment.getFileName());
-                boAttachment.setContentType(attachment.getContentType());
-            }
-        }
     }
+
+
 
     public void populateDocumentAttachment() {
         // TODO: need to convert this from using struts form file
@@ -823,7 +816,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * The {@link NoteType} for maintenance documents is determined by whether or not the underlying {@link
      * Maintainable} supports business object notes or not.  This is determined via a call to {@link
-     * Maintainable#isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
+     * Maintainable#   isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
      * Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT}. <li>Otherwise, delegate
      * to
      * {@link DocumentBase#getNoteType()} </ul>

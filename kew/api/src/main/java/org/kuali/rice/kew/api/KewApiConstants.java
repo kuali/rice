@@ -18,8 +18,6 @@ package org.kuali.rice.kew.api;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.CoreConstants.Versions;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.document.DocumentStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,8 +139,6 @@ public final class KewApiConstants {
     public static final String FAIL_ON_INACTIVE_GROUP_POLICY = "FAIL_ON_INACTIVE_GROUP";
     public static final String ENROUTE_ERROR_SUPPRESSION_POLICY = "ENROUTE_ERROR_SUPPRESSION";
     public static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";
-    public static final String NOTIFY_COMPLETED_ON_RETURN_POLICY = "NOTIFY_COMPLETED_ON_RETURN";
-    public static final String RECALL_NOTIFICATION_POLICY = "RECALL_NOTIFICATION";
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";
@@ -285,7 +281,6 @@ public final class KewApiConstants {
         DOCUMENT_STATUSES.put(KewApiConstants.ROUTE_HEADER_INITIATED_CD, KewApiConstants.ROUTE_HEADER_INITIATED_LABEL);
         DOCUMENT_STATUSES.put(KewApiConstants.ROUTE_HEADER_PROCESSED_CD, KewApiConstants.ROUTE_HEADER_PROCESSED_LABEL);
         DOCUMENT_STATUSES.put(KewApiConstants.ROUTE_HEADER_SAVED_CD, KewApiConstants.ROUTE_HEADER_SAVED_LABEL);
-        DOCUMENT_STATUSES.put(DocumentStatus.RECALLED.getCode(), DocumentStatus.RECALLED.getLabel());
     }
 
     // below must be negative to be 30 days in the past... positive number will push date into future
@@ -376,7 +371,7 @@ public final class KewApiConstants {
     public static final String ROUTE_HEADER_ENROUTE_LABEL = "ENROUTE";
     /** The document is currently being routed. */
     public static final String ROUTE_HEADER_ENROUTE_CD = "R";
-
+    
     public static String UNKNOWN_STATUS = "";
 
     /** Actions Taken Constants **/
@@ -666,7 +661,6 @@ public final class KewApiConstants {
         ACTION_TAKEN_CD.put(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS);
         ACTION_TAKEN_CD.put(KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY);
         ACTION_TAKEN_CD.put(KewApiConstants.ACTION_TAKEN_MOVE_CD, KewApiConstants.ACTION_TAKEN_MOVE);
-        ACTION_TAKEN_CD.put(ActionType.RECALL.getCode(), ActionType.RECALL.getLabel());
     }
 
     public static final String DOCUMENT_CONTENT_VERSION_1 = "1";
@@ -875,7 +869,6 @@ public final class KewApiConstants {
 	public static final String ACTION_REQUEST_CD_DETAIL = "actionRequestCd";
 	public static final String ROUTE_NODE_NAME_DETAIL = "routeNodeName";
 	public static final String DOCUMENT_STATUS_DETAIL = "routeStatusCode";
-    public static final String APP_DOC_STATUS_DETAIL = "appDocStatus";
 
 	// Permissions
 
@@ -883,7 +876,6 @@ public final class KewApiConstants {
 	public static final String AD_HOC_REVIEW_PERMISSION = "Ad Hoc Review Document";
 	public static final String ADMINISTER_ROUTING_PERMISSION = "Administer Routing for Document";
 	public static final String CANCEL_PERMISSION = "Cancel Document";
-    public static final String RECALL_PERMISSION = "Recall Document";
 	public static final String INITIATE_PERMISSION = "Initiate Document";
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";
@@ -954,7 +946,6 @@ public final class KewApiConstants {
 	public static final String HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME = "helpDeskActionListPerson";
 	public static final String PREFERENCES = "Preferences";
 	public static final String WORKFLOW_DOCUMENT_MAP_ATTR_NAME = "workflowDocumentMap";
-    public static final String WORKFLOW_ACTION_IGNORE_UNKOWN_PRINCIPAL_IDS = "ignoreUnknownPrincipalIds";
 
     public static final String USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM = "userOptions.default.useOutBox";
 

@@ -56,6 +56,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -1112,8 +1113,19 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         // urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
+            BusinessObject baseElement = element;
+            //if ebo, then use base BO to get lookupId and find restrictions
+            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(element.getClass())) {
+                try {
+                    baseElement = (BusinessObject)this.getBusinessObjectClass().newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
 
-            final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+            final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(baseElement);
             if (lookupId != null) {
                 lookupForm.setLookupObjectId(lookupId);
             }

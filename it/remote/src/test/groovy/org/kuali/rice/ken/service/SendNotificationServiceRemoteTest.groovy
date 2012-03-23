@@ -16,15 +16,17 @@
 package org.kuali.rice.ken.service;
 
 import org.junit.After;
-import org.junit.Before;
+
+
 import org.kuali.rice.test.remote.RemoteTestHarness
-import org.kuali.rice.ksb.messaging.service.KSBXMLService
+
 import org.kuali.rice.ken.service.impl.SendNotificationServiceKewXmlImpl
 import groovy.mock.interceptor.MockFor
-import org.kuali.rice.ken.service.NotificationService
+
 import org.junit.Test
 import org.kuali.rice.ken.api.service.SendNotificationService
-import org.kuali.rice.ken.bo.NotificationResponse;
+
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 
 /**
  * Tests invoking the SendNotificationService via SOAP
@@ -36,7 +38,7 @@ class SendNotificationServiceRemoteTest {
     @Test
     void testSendNotificationServiceInvocation() {
         def mockNotificationService = new MockFor(NotificationService.class)
-        mockNotificationService.demand.sendNotification(1) { new NotificationResponse() }
+        mockNotificationService.demand.sendNotification(1) { new NotificationResponseBo() }
         def svc = new SendNotificationServiceKewXmlImpl(mockNotificationService.proxyDelegateInstance())
         def sendNotificationService = harness.publishEndpointAndReturnProxy(SendNotificationService.class, svc);
         sendNotificationService.invoke("notification XML")

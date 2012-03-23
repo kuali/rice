@@ -79,24 +79,16 @@ class RoleResponsibilityTest {
     @Test
     public void test_Builder() {
         RoleResponsibility.Builder b =
-        RoleResponsibility.Builder.create(ROLE_RESPONSIBILITY_ID, ROLE_ID, RESPONSIBILITY_ID)
+        RoleResponsibility.Builder.create(ROLE_ID, RESPONSIBILITY_ID)
         b.versionNumber = VERSION
         b.build()
     }
 
     @Test
-    public void test_Builder_no_version() {
-        shouldFail(IllegalStateException) {
-            RoleResponsibility.Builder b =
-            RoleResponsibility.Builder.create(ROLE_RESPONSIBILITY_ID, ROLE_ID, RESPONSIBILITY_ID)
-            b.build()
-        }
-    }
-
-    @Test
     public void test_Builder_create_from_contract() {
         RoleResponsibility.Builder b =
-        RoleResponsibility.Builder.create(ROLE_RESPONSIBILITY_ID, ROLE_ID, RESPONSIBILITY_ID)
+        RoleResponsibility.Builder.create(ROLE_ID, RESPONSIBILITY_ID)
+        b.roleResponsibilityId = ROLE_RESPONSIBILITY_ID
         b.versionNumber = VERSION
         RoleResponsibility rr = b.build()
 

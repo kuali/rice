@@ -258,7 +258,7 @@ public final class KimAttribute extends AbstractDataTransferObject implements Ki
         }
 
         public void setVersionNumber(final Long versionNumber) {
-            if (versionNumber == null || versionNumber <= 0) {
+            if (versionNumber <= 0) {
                 throw new IllegalArgumentException("versionNumber is invalid");
             }
 

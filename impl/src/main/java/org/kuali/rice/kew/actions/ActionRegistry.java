@@ -68,6 +68,8 @@ public interface ActionRegistry {
      *
      * @throws ResourceUnavailableException if an action class cannot be constructed
      */
-    public org.kuali.rice.kew.api.action.ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document);
+    public ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document) throws ResourceUnavailableException;
+    
+    public org.kuali.rice.kew.api.action.ValidActions getNewValidActions(PrincipalContract principal, DocumentRouteHeaderValue document);
 
 }

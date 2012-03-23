@@ -658,11 +658,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // check if there are errors in validating the business object
         GlobalVariables.getMessageMap().addToErrorPath("dataObject");
-        DictionaryValidationResult validationResult = getDictionaryValidationService().validate(newDataObject);
-        if (validationResult.getNumberOfErrors() > 0) {
+        DictionaryValidationResult dictionaryValidationResult = getDictionaryValidationService().validate(newDataObject);
+        if (dictionaryValidationResult.getNumberOfErrors() > 0) {
             success &= false;
-            while (validationResult.iterator().hasNext()){
-                ConstraintValidationResult cvr = validationResult.iterator().next();
+
+            for (ConstraintValidationResult cvr : dictionaryValidationResult) {
                 if (cvr.getStatus() == ErrorLevel.ERROR){
                     GlobalVariables.getMessageMap().putError(cvr.getAttributePath(), cvr.getErrorKey());
                 }

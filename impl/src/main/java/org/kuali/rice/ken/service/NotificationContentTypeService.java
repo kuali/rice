@@ -17,10 +17,10 @@ package org.kuali.rice.ken.service;
 
 import java.util.Collection;
 
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 
 /**
- * Service for accessing {@link NotificationContentType}s
+ * Service for accessing {@link org.kuali.rice.ken.bo.NotificationContentTypeBo}s
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NotificationContentTypeService {
@@ -29,7 +29,7 @@ public interface NotificationContentTypeService {
      * @param name The name of the content type
      * @return NotificationContentType
      */
-    public NotificationContentType getNotificationContentType(String name);
+    public NotificationContentTypeBo getNotificationContentType(String name);
 
     /**
      * This method saves a NotificationContentType object instance to the DB, creating a new, current,
@@ -37,17 +37,17 @@ public interface NotificationContentTypeService {
      * the data of an existing content type record.
      * @param contentType The NotificationContentType instance to save.
      */
-    public void saveNotificationContentType(NotificationContentType contentType);
+    public void saveNotificationContentType(NotificationContentTypeBo contentType);
 
     /**
      * This method returns all current NotificationContentTypes in the system.
      * @return Collection
      */
-    public Collection<NotificationContentType> getAllCurrentContentTypes();
+    public Collection<NotificationContentTypeBo> getAllCurrentContentTypes();
 
     /**
      * This method returns all versions of all NotificationContentTypes in the system.
      * @return Collection
      */
-    public Collection<NotificationContentType> getAllContentTypes();
+    public Collection<NotificationContentTypeBo> getAllContentTypes();
 }

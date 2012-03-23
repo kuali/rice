@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -45,12 +45,12 @@ public class NotificationDaoJpa implements NotificationDao{
 
 		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForResolution(************************ ");
 
-		Criteria criteria = new Criteria(Notification.class.getName());
+		Criteria criteria = new Criteria(NotificationBo.class.getName());
 		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
 		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
 		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
 
-		Collection<Notification> available_notifications = dao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		Collection<NotificationBo> available_notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
 
 		return available_notifications;
 	}
@@ -61,14 +61,14 @@ public class NotificationDaoJpa implements NotificationDao{
 	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.framework.persistence.dao.GenericDao)
 	 */
 	@Override
-	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao) {
+	public Collection findMatchedNotificationsForUnlock(NotificationBo not, GenericDao dao) {
 
 		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
 
-		Criteria criteria = new Criteria(Notification.class.getName());
+		Criteria criteria = new Criteria(NotificationBo.class.getName());
 		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
 
-		Collection<Notification> notifications = dao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		Collection<NotificationBo> notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
 
 		return notifications;
 	}

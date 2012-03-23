@@ -109,7 +109,7 @@
                      </c:if>
                      <td class="infoline"><div align="center"><html:image property="methodToCall.insertBONote" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Add a Note" title="Add a Note" styleClass="tinybutton"/></div></td>	 
 			       </tr>
-			   </c:if>
+			   </c:if>   
 
   <c:forEach var="note" items="${documentNotes}" varStatus="status">
 

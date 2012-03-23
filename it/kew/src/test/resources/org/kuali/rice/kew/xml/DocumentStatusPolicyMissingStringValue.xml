@@ -41,9 +41,6 @@
       <policies>
         <policy>
            <name>DOCUMENT_STATUS_POLICY</name>
-           <!-- "accidentally" misplace the document status policy value
-                this also happens to cause a validation error up-front.
-                simply omitting the stringvalue should have a similar semantic failure -->
            <value>APP</value>
         </policy>
         <policy>

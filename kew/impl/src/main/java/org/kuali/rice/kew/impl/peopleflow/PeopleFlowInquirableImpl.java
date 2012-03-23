@@ -53,8 +53,8 @@ public class PeopleFlowInquirableImpl extends InquirableImpl {
         PeopleFlowBo peopleFlow = (PeopleFlowBo) ((InquiryForm) model).getDataObject();
 
         // retrieve the type service and invoke to get the remotable field definitions
-        if (peopleFlow != null && StringUtils.isNotBlank(peopleFlow.getTypeId())) {
-            String typeId = peopleFlow.getTypeId();
+        String typeId = peopleFlow.getTypeId();
+        if (StringUtils.isNotBlank(typeId)) {
             KewTypeDefinition typeDefinition = KewApiServiceLocator.getKewTypeRepositoryService().getTypeById(typeId);
             PeopleFlowTypeService peopleFlowTypeService = GlobalResourceLoader.<PeopleFlowTypeService>getService(
                     typeDefinition.getServiceName());

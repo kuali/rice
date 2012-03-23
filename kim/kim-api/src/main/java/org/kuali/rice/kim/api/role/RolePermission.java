@@ -193,7 +193,7 @@ public class RolePermission extends AbstractDataTransferObject implements RolePe
         }
 
         public void setVersionNumber(Long versionNumber) {
-            if (versionNumber == null || versionNumber <= 0) {
+            if (versionNumber != null && versionNumber <= 0) {
                 throw new IllegalArgumentException("versionNumber is invalid");
             }
             this.versionNumber = versionNumber;

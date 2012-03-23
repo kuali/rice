@@ -17,7 +17,7 @@ package org.kuali.rice.ken.postprocessor.kew;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
@@ -118,7 +118,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessor {
             LOG.debug("XML:" + document.getApplicationContent());
 
             //parse out the application content into a Notification BO
-                    Notification notification = messageContentService.parseSerializedNotificationXml(document.getApplicationContent().getBytes());
+                    NotificationBo notification = messageContentService.parseSerializedNotificationXml(document.getApplicationContent().getBytes());
 
                     LOG.debug("Notification Content: " + notification.getContent());
 

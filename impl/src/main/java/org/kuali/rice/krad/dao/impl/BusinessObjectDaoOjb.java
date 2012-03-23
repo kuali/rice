@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.krad.dao.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -34,11 +24,20 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.OjbCollectionAware;
 import org.springframework.dao.DataAccessException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is the OJB implementation of the BusinessObjectDao interface and should be used for generic business object unit
@@ -60,7 +59,8 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	 * @see org.kuali.rice.krad.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
 	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
-		if (primaryKey.getClass().getName().startsWith("java.lang.")) {
+		if (primaryKey.getClass().getName().startsWith("java.lang.")
+                || primaryKey.getClass().getName().startsWith("java.sql.") ) {
 			try {
 				return (T) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
 			} catch ( DataAccessException ex ) {
@@ -68,7 +68,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 				return null;
 			}
 		} else {
-			Criteria criteria = buildCriteria(primaryKey);
+			Criteria criteria = buildCriteria(clazz, primaryKey);
 
 	        return (T) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(clazz, criteria));
 		}
@@ -341,35 +341,29 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     }
 
     
-    private Criteria buildCriteria(Object primaryKey) {
-    	Map<String, Object> fieldValues = new HashMap<String, Object>();
+    private <T extends BusinessObject> Criteria buildCriteria(Class<T> clazz, Object primaryKey) {
+        Map<String, Object> fieldValues = new HashMap<String, Object>();
+        List<String> fieldNames = getPersistenceStructureService().getPrimaryKeys(clazz);
+
         //create map of values
-    	for (Field field : primaryKey.getClass().getDeclaredFields()) {
-    		Object fieldValue;
-			try {
-                for (Annotation an : field.getAnnotations()) {
-                    //look for class' Id fields.  This is a bit of a hack because this relies on JPA
-                    //annotations existing, but removes any extra generated fields from the criteria.
-                    if (an.annotationType().getName().equals("javax.persistence.Id")) {
-                        fieldValue = primaryKey.getClass().getMethod("get" + StringUtils.capitalize(field.getName())).invoke(primaryKey);
-                        fieldValues.put(field.getName(), fieldValue);
-                        break;
-                    }
-                }
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-    	}
-        
-        //profit
+        for (String fieldName : fieldNames) {
+            Object fieldValue;
+
+            try {
+                fieldValue = primaryKey.getClass().getMethod("get" + StringUtils.capitalize(fieldName)).invoke(primaryKey);
+                fieldValues.put(fieldName, fieldValue);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
         return this.buildCriteria(fieldValues);
     }
     

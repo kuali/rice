@@ -64,7 +64,7 @@
         <forward name="route_report" path="/../kr/WEB-INF/jsp/RoutingReportForward.jsp"/>
         <forward name="updateTextArea" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         <forward name="exceptionIncidentHandler" path="/../kr/kualiExceptionIncidentReport.do" />
-        <forward name="authorizationExceptionHandler" path="/kr/authorizationExceptionReport.do" />
+        <forward name="authorizationExceptionHandler" path="/../kr/authorizationExceptionReport.do" />
        	<!-- End required KNS forwards -->
        	<forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
        	<forward name="WorkflowError" path="/WEB-INF/jsp/Error.jsp" />

@@ -29,8 +29,8 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Map;
-
 
 /**
  * begin Kuali Foundation modification
@@ -87,14 +87,36 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             return super.getNestedProperty(arg0, arg1);
         }
         catch (NestedNullException e) {
-            return "";
+            return getUnreachableNestedProperty(arg0, arg1);
         }
         catch (InvocationTargetException e1) {
-            return "";
+            return getUnreachableNestedProperty(arg0, arg1);
         }
         // removed commented code
         // end Kuali Foundation modification
     }
+
+    // begin Kuali Foundation modification
+    /**
+     * helper method makes sure we don't return "" for collections
+     */
+    private Object getUnreachableNestedProperty(Object arg0, String arg1) {
+        try {
+            PropertyDescriptor propertyDescriptor  = getPropertyDescriptor(arg0, arg1);
+            if (Collection.class.isAssignableFrom(propertyDescriptor.getPropertyType())) {
+                return null;
+            }
+        } catch (IllegalAccessException e) {
+            // ignore
+        } catch (InvocationTargetException e) {
+            // ignore
+        } catch (NoSuchMethodException e) {
+            // ignore
+        }
+
+        return "";
+    }
+    // end Kuali Foundation modification
 
 
     // begin Kuali Foundation modification 

@@ -86,9 +86,4 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
     public boolean canSendAnyTypeAdHocRequests(Document document, Person user);
 
     public boolean canTakeRequestedAction(Document document, String actionRequestCode, Person user);
-
-    /**
-     * @since 2.1
-     */
-    public boolean canRecall(Document document, Person user);
 }

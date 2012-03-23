@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.KualiDefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import java.util.Map.Entry;
 public class UifDictionaryIndex implements Runnable {
     private static final Log LOG = LogFactory.getLog(UifDictionaryIndex.class);
 
-    private KualiDefaultListableBeanFactory ddBeans;
+    private DefaultListableBeanFactory ddBeans;
 
     // view entries keyed by view id with value the spring bean name
     private Map<String, String> viewBeanEntriesById;
@@ -58,7 +58,7 @@ public class UifDictionaryIndex implements Runnable {
     // view entries indexed by type
     private Map<String, ViewTypeDictionaryIndex> viewEntriesByType;
 
-    public UifDictionaryIndex(KualiDefaultListableBeanFactory ddBeans) {
+    public UifDictionaryIndex(DefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
     }
 

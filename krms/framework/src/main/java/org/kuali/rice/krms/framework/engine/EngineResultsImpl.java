@@ -51,11 +51,13 @@ public class EngineResultsImpl implements EngineResults {
      * Returns null, unimplemented.
      * @param index of the ResultEvent to return
      * @return null
+     *
+     * @deprecated use {@link #getAllResults()} instead, this method will be removed in a future version
      */
 	@Override
+    @Deprecated
 	public ResultEvent getResultEvent(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return getAllResults().get(index);
 	}
 
 	@Override

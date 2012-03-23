@@ -19,11 +19,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.bo.DocumentAttachment;
+import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Transient;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -79,6 +82,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
         this.fileAttachment = fileAttachment;
     }
 
+    @Override
     public void populateDocumentAttachment() {
         refreshAttachment();
 
@@ -109,5 +113,48 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
 //            //Attachment has been deleted - Need to delete the Attachment Reference Object
 //            deleteAttachment();
 //        }
+    }
+
+    @Override
+    public void populateAttachmentForBO() {
+        refreshAttachment();
+
+        PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getDataObject();
+
+    	if (ObjectUtils.isNotNull(getAttachmentPropertyName())) {
+    		String attachmentPropNm = getAttachmentPropertyName();
+    		String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
+    		FormFile attachmentFromBusinessObject;
+
+    		if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment)) {
+    			try {
+    				Method[] methods = boAttachment.getClass().getMethods();
+    				for (Method method : methods) {
+    					if (method.getName().equals(attachmentPropNmSetter)) {
+    						attachmentFromBusinessObject =  (FormFile)(boAttachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(boAttachment));
+    						if (attachmentFromBusinessObject != null) {
+    							boAttachment.setAttachmentContent(attachmentFromBusinessObject.getFileData());
+    							boAttachment.setFileName(attachmentFromBusinessObject.getFileName());
+    							boAttachment.setContentType(attachmentFromBusinessObject.getContentType());
+    						}
+    						break;
+    					}
+    				}
+    		   } catch (Exception e) {
+    				LOG.error("Not able to get the attachment " + e.getMessage());
+    				throw new RuntimeException("Not able to get the attachment " + e.getMessage());
+    		   }
+    	  }
+      }
+
+      if((boAttachment.getFileName() == null) && (boAttachment instanceof PersistableAttachment) && (attachment != null)) {
+    	  byte[] fileContents;
+          fileContents = attachment.getAttachmentContent();
+          if (fileContents.length > 0) {
+              boAttachment.setAttachmentContent(fileContents);
+              boAttachment.setFileName(attachment.getFileName());
+              boAttachment.setContentType(attachment.getContentType());
+          }
+       }
     }
 }

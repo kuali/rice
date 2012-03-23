@@ -325,11 +325,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
 
         if (StringUtils.equalsIgnoreCase(propertyValue, SearchOperator.NULL.op()) || StringUtils.equalsIgnoreCase(propertyValue, SearchOperator.NOT_NULL.op())) {
+            // KULRICE-6846 null Lookup criteria causes sql exception
         	if (StringUtils.contains(propertyValue, SearchOperator.NOT.op())) {
-        		criteria.addColumnNotNull(propertyName);
+        		criteria.addNotNull(propertyName);
         	}
         	else {
-        		criteria.addColumnIsNull(propertyName);
+        		criteria.addIsNull(propertyName);
         	}
         }
         else if (TypeUtils.isStringClass(propertyType)) {

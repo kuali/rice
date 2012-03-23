@@ -447,7 +447,25 @@
                                 the new KEW services that was added in Rice 2.0.</para>
                         </listitem>
                     </itemizedlist></para>
-            </section>
+            </section>                
+                <section>
+                <title>WorkflowDocument.returnToPreviousNode Signature Updates</title>
+                <para>With 2.0, the exiting method singature for
+                        <code>WorkflowDocument.returnToPreviousNode</code> takes in two String
+                    arguments of nodeName and annotation, was mistakenly reversed. This has been
+                    fixed in the upcoming Rice 2.0.1 release with [<link xlink:show="new"
+                        xlink:href="https://jira.kuali.org/browse/KULRICE-6863">KULRICE-6863</link>]
+                    by setting the method back to<code>void returnToPreviousNode(String annotation,
+                        String nodeName);</code>
+                </para><para>Additionally, Rice 2.0 introduced a new <code>WorkflowDocument.returnToPreviousNode</code>
+                    that has the signature of <code>void returnToPreviousNode(ReturnPoint
+                        returnPoint, String annotation);</code> To keep the signature consistent
+                    with the String, String version, this has also been updated in 2.0.1 to be
+                        <code>void returnToPreviousNode(String annotation, ReturnPoint
+                        returnPoint);</code> Early adopters of 2.0 that may have implemented the new
+                    method will need to be sure to update any calls to this new method.</para>
+                </section>
+
             <section>
                 <title>Document Search</title>
                 <para>One of the major KEW framework refactorings that was undertaken for Rice 2.0
@@ -1147,16 +1165,16 @@ Done.</programlisting></para>
                     standalone server have not changed a whole lot between Rice 1.0.x and 2.0.
                     However there are a few changes which are important to note.</para>
                 <para>First of all, in Rice 1.0.x there was a configuration parameter named
-                        <code>rice.additionalSpringFiles</code>.  This was used to load custom
-                    Spring files into the standalone server (or a client application) which could be
-                    used to override internal Kuali Rice services for the purposes of customization.
-                    In Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
-                    parameter.  Instead there is one per module of Rice such as
+                        <code>rice.additionalSpringFiles</code>. This was used to load custom Spring
+                    files into the standalone server (or a client application) which could be used
+                    to override internal Kuali Rice services for the purposes of customization. In
+                    Rice 2.0, there is no longer a single <code>rice.additionalSpringFiles</code>
+                    parameter. Instead there is one per module of Rice such as
                         <code>rice.kew.additionalSpringFiles</code>,
                         <code>rice.ksb.additionalSpringFiles</code>,
-                        <code>rice.kim.additionalSpringFiles</code>, etc.  When re-applying and
-                    loading customizations, this needs to be taken into account.  Additionally, you
-                    will need to ensure you are overriding the server in the appropriate module or
+                        <code>rice.kim.additionalSpringFiles</code>, etc. When re-applying and
+                    loading customizations, this needs to be taken into account. Additionally, you
+                    will need to ensure you are overriding the service in the appropriate module or
                     else the service override will not take effect.</para>
                 <para>Additionally, the caching implementation for Rice has been reworked to use the
                     Ehcache library.  As a result, the various kim.cache.* configuration parameters
@@ -1171,6 +1189,28 @@ Done.</programlisting></para>
                     changed in Rice 2.0.  The source for that configuration default file can be
                     found here:</para>
                 <para><link xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}/impl/src/main/resources/META-INF/common-config-defaults.xml">http://svn.kuali.org/repos/rice/tags/rice-${project.version}/impl/src/main/resources/META-INF/common-config-defaults.xml</link></para>
+                <section>
+                    <title>Encryption Key Update in Override Cases</title>
+                    <para>If you override the encryption key, there is an extra step that needs to
+                        be done to ensure users have acces to existing workflow documents. Due to
+                        the move from commons-codec 1.3 to 1.6 in Rice 2.0 and the way the library
+                        works in the face of improperly padded base64 strings, the encryption.key
+                        configuration property needs to be updated to ensure that it has the correct
+                        padding.. We've provided a utility for doing this and it's located
+                        here…</para>
+                        <para>
+                            <link xlink:href="http://svn.kuali.org/repos/rice/tools/encryption-key-converter/trunk">http://svn.kuali.org/repos/rice/tools/encryption-key-converter/trunk</link></para>
+                        <para>To run this…
+                            <orderedlist>
+                                <listitem><para>Check out out the app above</para></listitem>
+                                <listitem><para>Run <code>mvn package</code> from the command line to create the executable jar in the target folder</para></listitem>
+                                <listitem><para>Run the executable in the target directory with <code>java -jar encryption-key-converter-1.0-SNAPSHOT.jar &lt;current encryption.key property value></code></para>
+                                    <orderedlist>
+                                        <listitem><para>So if the old key was  7IC64w6ksLR and the new key is 7IC64w6rAAAA the command would be:</para>
+                                            <para><code>java -jar target/encryption-key-converter-1.0-SNAPSHOT.jar 7IC64w6ksLR</code></para></listitem></orderedlist></listitem>
+                            </orderedlist></para>
+                            <note><para>The app contains the commons-codec 1.3 inside of the executable so there's no need to grab it elsewhere.</para></note>
+                </section>
             </section>
             <section>
                 <title>Deploy</title>

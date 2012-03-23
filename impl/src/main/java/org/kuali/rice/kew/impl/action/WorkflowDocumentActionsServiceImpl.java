@@ -332,7 +332,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     protected ValidActions determineValidActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
         Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-        return KEWServiceLocator.getActionRegistry().getValidActions(principal, documentBo);
+        return KEWServiceLocator.getActionRegistry().getNewValidActions(principal, documentBo);
     }
 
     @Override
@@ -544,21 +544,6 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     public DocumentActionResult cancel(DocumentActionParameters parameters) {
         incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, CANCEL_CALLBACK);
-    }
-
-    @Override
-    public DocumentActionResult recall(DocumentActionParameters parameters, final boolean cancel) {
-        incomingParamCheck(parameters, "parameters");
-        incomingParamCheck(cancel, "cancel");
-        return executeActionInternal(parameters, new StandardDocumentActionCallback() {
-            public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId,
-                    String annotation) throws WorkflowException {
-                return KEWServiceLocator.getWorkflowDocumentService().recallDocument(principalId, documentBo, annotation, cancel);
-            }
-            public String getActionName() {
-                return ActionType.RECALL.getLabel();
-            }
-        });
     }
 
     @Override

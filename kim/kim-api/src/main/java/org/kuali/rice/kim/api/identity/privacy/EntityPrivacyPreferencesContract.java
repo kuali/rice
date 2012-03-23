@@ -18,12 +18,7 @@ package org.kuali.rice.kim.api.identity.privacy;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
- /**
-  * This is a contract for EntityPrivacyPreferences. Privacy preferences are used to
-  * hide/suppress certain contact information.
-  *
-  * @author Kuali Rice Team (rice.collab@kuali.org)
-  */
+
 public interface EntityPrivacyPreferencesContract extends Versioned, GloballyUnique {
 
     /**

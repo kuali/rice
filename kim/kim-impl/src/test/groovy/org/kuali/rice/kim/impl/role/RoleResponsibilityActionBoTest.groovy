@@ -34,7 +34,8 @@ class RoleResponsibilityActionBoTest {
     static final Long VERSION_NUMBER = 1L;
 
     static {
-        RoleResponsibility.Builder b = RoleResponsibility.Builder.create(ROLE_RESPONSIBILITY_ID, "5", "10");
+        RoleResponsibility.Builder b = RoleResponsibility.Builder.create("5", "10");
+        b.setResponsibilityId(ROLE_RESPONSIBILITY_ID);
         b.versionNumber = VERSION_NUMBER
         ROLE_RESPONSIBILITY = b.build()
     }

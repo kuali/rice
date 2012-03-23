@@ -71,7 +71,7 @@ public class Note extends PersistableBusinessObjectBase {
 	@JoinColumn(name="NTE_TYP_CD", insertable=false, updatable=false)
 	private NoteType noteType;
     @Transient
-    private Person authorUniversal;
+    private transient Person authorUniversal;
     @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "NTE_ID", insertable = false, updatable = false)
 	private Attachment attachment;

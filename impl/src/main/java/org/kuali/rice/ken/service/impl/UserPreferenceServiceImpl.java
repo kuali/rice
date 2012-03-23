@@ -17,7 +17,7 @@ package org.kuali.rice.ken.service.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.UserChannelSubscription;
+import org.kuali.rice.ken.bo.UserChannelSubscriptionBo;
 import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.util.NotificationConstants;
@@ -48,8 +48,8 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     /**
      * @see org.kuali.rice.ken.service.UserPreferenceService#getCurrentSubscriptions(java.lang.String)
      */
-    public Collection<UserChannelSubscription> getCurrentSubscriptions(String userid) {
-        UserChannelSubscription userChannelSubscription = new UserChannelSubscription();
+    public Collection<UserChannelSubscriptionBo> getCurrentSubscriptions(String userid) {
+        UserChannelSubscriptionBo userChannelSubscription = new UserChannelSubscriptionBo();
         userChannelSubscription.setUserId(userid);
 
         return businessObjectDao.findMatchingByExample(userChannelSubscription);
@@ -58,21 +58,22 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     /**
      * @see org.kuali.rice.ken.service.UserPreferenceService#getSubscription(java.lang.String, java.lang.String)
      */
-    public UserChannelSubscription getSubscription(String channelid, String userid) {
+    public UserChannelSubscriptionBo getSubscription(String channelid, String userid) {
         HashMap<String, String> uniqueKeys = new HashMap<String,String>();
 
         uniqueKeys.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channelid);
         uniqueKeys.put(NotificationConstants.BO_PROPERTY_NAMES.USER_ID, userid);
 
-        UserChannelSubscription subscription = (UserChannelSubscription) businessObjectDao.findByUniqueKey(UserChannelSubscription.class, uniqueKeys);
+        UserChannelSubscriptionBo
+                subscription = (UserChannelSubscriptionBo) businessObjectDao.findByUniqueKey(UserChannelSubscriptionBo.class, uniqueKeys);
 
         return subscription; 
     }
 
     /**
-     * @see org.kuali.rice.ken.service.UserPreferenceService#subscribeToChannel(org.kuali.rice.ken.bo.UserChannelSubscription)
+     * @see org.kuali.rice.ken.service.UserPreferenceService#subscribeToChannel(org.kuali.rice.ken.bo.UserChannelSubscriptionBo)
      */
-    public void subscribeToChannel(UserChannelSubscription userChannelSubscription) {
+    public void subscribeToChannel(UserChannelSubscriptionBo userChannelSubscription) {
         LOG.info("Saving channel subscription");
         try {
             businessObjectDao.save(userChannelSubscription);
@@ -83,9 +84,9 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
     }
 
     /**
-     * @see org.kuali.rice.ken.service.UserPreferenceService#unsubscribeFromChannel(org.kuali.rice.ken.bo.UserChannelSubscription)
+     * @see org.kuali.rice.ken.service.UserPreferenceService#unsubscribeFromChannel(org.kuali.rice.ken.bo.UserChannelSubscriptionBo)
      */
-    public void unsubscribeFromChannel(UserChannelSubscription userChannelSubscription) {
+    public void unsubscribeFromChannel(UserChannelSubscriptionBo userChannelSubscription) {
         LOG.info("unsubscribing from channel"); 
         try {
             businessObjectDao.delete(userChannelSubscription);

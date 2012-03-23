@@ -117,11 +117,8 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
 
     public void setMemberId(String memberId) {
         this.memberId = memberId;
-        updateRelatedObject()
-    }
 
-    // trigger update of related object
-    public void updateRelatedObject() {
+        // trigger update of related object
         if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
             getPerson();
         } else if (MemberType.GROUP.getCode().equals(memberTypeCode)) {

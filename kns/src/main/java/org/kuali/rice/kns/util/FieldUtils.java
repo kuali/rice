@@ -356,6 +356,13 @@ public final class FieldUtils {
     public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean convertForLookup) {
         Field field = new Field();
         field.setPropertyName(attributeName);
+        
+        //hack to get correct BO impl in case of ebos....
+        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(businessObjectClass)) {
+            ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+            businessObjectClass = moduleService.getExternalizableBusinessObjectDictionaryEntry(businessObjectClass).getDataObjectClass();
+        }
+        
         field.setFieldLabel(getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName));
 
         setFieldControl(businessObjectClass, attributeName, convertForLookup, field);

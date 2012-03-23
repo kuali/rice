@@ -122,20 +122,9 @@ public class RoleResponsibilityActionTest {
     }
 
     @Test
-    public void test_Builder_null_id() {
-        RoleResponsibilityAction.Builder b = RoleResponsibilityAction.Builder.create()
-        shouldFail(IllegalArgumentException) {b.id = null}
-    }
-
-    @Test
     public void test_Builder_blank_id() {
         RoleResponsibilityAction.Builder b = RoleResponsibilityAction.Builder.create()
         shouldFail(IllegalArgumentException) {b.id = "  "}
     }
 
-    @Test
-    public void test_Builder_null_version() {
-        RoleResponsibilityAction.Builder b = RoleResponsibilityAction.Builder.create()
-        shouldFail(IllegalArgumentException) {b.versionNumber = null}
-    }
 }

@@ -44,6 +44,7 @@ public interface SendNotificationService {
 
     /**
      * This method allows consumers to send notification messages.
+     * @since 2.0.1
      * @param notification
      * @return NotificationResponse
      */

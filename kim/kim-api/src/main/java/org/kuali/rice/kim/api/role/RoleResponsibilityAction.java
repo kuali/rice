@@ -53,7 +53,7 @@ import java.util.Collection;
 })
 public class RoleResponsibilityAction extends AbstractDataTransferObject implements RoleResponsibilityActionContract {
 
-    @XmlElement(name = RoleResponsibilityAction.Elements.ID, required = true)
+    @XmlElement(name = RoleResponsibilityAction.Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = RoleResponsibilityAction.Elements.ROLE_RESPONSIBILITY_ID)
@@ -207,8 +207,8 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
         }
 
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id must be non-null and not empty");
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id must be not be whitespace");
             }
             this.Id = id;
         }
@@ -282,9 +282,6 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
         }
 
         public void setVersionNumber(Long versionNumber) {
-            if (versionNumber == null) {
-                throw new IllegalArgumentException("versionNumber must be non-null");
-            }
             this.versionNumber = versionNumber;
         }
 

@@ -244,16 +244,17 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
     	}
 
         // If this class is an EBO, just call the module service to get the results
-        if ( ExternalizableBusinessObject.class.isAssignableFrom( getBusinessObjectClass() ) ) {
-        	ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
-        	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
+        ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
+        if ( moduleService.isExternalizableBusinessObjectLookupable( getBusinessObjectClass() ) ) {
+        	//ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
+        	BusinessObjectEntry ddEntry = moduleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
         	Map<String,String> filteredFieldValues = new HashMap<String, String>();
         	for (String fieldName : nonBlankFieldValues.keySet()) {
         		if (ddEntry.getAttributeNames().contains(fieldName)) {
         			filteredFieldValues.put(fieldName, nonBlankFieldValues.get(fieldName));
         		}
         	}
-        	searchResults = eboModuleService.getExternalizableBusinessObjectsListForLookup(getBusinessObjectClass(), (Map)filteredFieldValues, unbounded);
+        	searchResults = moduleService.getExternalizableBusinessObjectsListForLookup(getBusinessObjectClass(), (Map)filteredFieldValues, unbounded);
         // if any of the properties refer to an embedded EBO, call the EBO lookups first and apply to the local lookup
         } else if ( hasExternalBusinessObjectProperty( getBusinessObjectClass(), nonBlankFieldValues ) ) {
         	if ( LOG.isDebugEnabled() ) {

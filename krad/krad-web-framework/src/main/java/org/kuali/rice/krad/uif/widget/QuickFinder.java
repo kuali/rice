@@ -435,10 +435,30 @@ public class QuickFinder extends WidgetBase {
         this.fieldConversions = fieldConversions;
     }
 
+    /**
+     * Map that determines what properties from a calling view will be sent to properties on that are rendered
+     * for the lookup view's search fields (they can be hidden)
+     *
+     * <p>
+     * When invoking a lookup view, we can pre-populate search fields on the lookup view with data from the view
+     * that called the lookup. The user can then perform the search with these values, or (if edited is allowed or
+     * the fields are not hidden) change the passed in values. When the lookup is invoked, the values for the
+     * properties configured within the lookup parameters Map will be pulled and passed along as values for the
+     * lookup view properties
+     * </p>
+     *
+     * @return Map<String, String> mapping of calling view properties to lookup view search fields
+     */
     public Map<String, String> getLookupParameters() {
         return this.lookupParameters;
     }
 
+    /**
+     * Setter for the map that determines what property values on the calling view will be sent to properties on the
+     * lookup views search fields
+     *
+     * @param lookupParameters
+     */
     public void setLookupParameters(Map<String, String> lookupParameters) {
         this.lookupParameters = lookupParameters;
     }

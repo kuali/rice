@@ -18,7 +18,7 @@ package org.kuali.rice.krms.api.engine;
 import java.util.List;
 
 /**
- * Results of an @{link Engine}'s execution
+ * Results of an {@link Engine}'s execution
  *
  * @see ResultEvent
  * @author Kuali Rice Team (rice.collab@kuali.org)

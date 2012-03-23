@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="postal_code" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
+    <info>
+        <title>Postal Code</title>
+    </info>
+    <para>Administration > Identity > Locations > Postal Code</para>
+    <para>The Postal Code Maintenance document defines the zip code by city and state. When the user
+        chooses the <emphasis role="bold">Postal Code</emphasis> option from the <emphasis
+            role="bold">Administration</emphasis> menu tab, the system displays the Postal Code
+        Lookup screen. After the user selects a postal code or clicks the <emphasis role="bold"
+            >create new</emphasis> button, the system presents the Postal Code Maintenance document. </para>
+    <note><para>The user may also enter a city and state to find the associated zip code. </para></note>
+    <sect1>
+        <title>Document Layout</title>
+        <figure>
+            <title>Postal Code Maintenance document, create mode</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/postal_code_maintenance_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>The Postal Code Maintenance document includes the <emphasis role="bold">Edit Postal
+                Codes </emphasis>tab.</para>
+        <para>In edit mode, the<emphasis role="bold"> Edit Postal Codes</emphasis> tab presents a
+            display-only set of fields on the left and editable fields on the right in which the
+            user may enter changes.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit Postal Codes tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Country Code </td>
+                        <td>The country code for the country associated with the zip (postal) code. </td>
+                    </tr>
+                    <tr>
+                        <td>Postal Code </td>
+                        <td>Identifies a Postal Service code.</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>Required. The state associated with the zip (postal) code.</td>
+                    </tr>
+                    <tr>
+                        <td>County Code </td>
+                        <td>The unique identifying code for the county associated with the zip (postal) code.</td>
+                    </tr>
+                    <tr>
+                        <td>City Name </td>
+                        <td>Required. The name of the city associated with the zip (postal) code.</td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Indicates whether the postal code is active or inactive. Remove the
+                            check mark to deactivate this postal code.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
+    </sect1>
+</chapter>

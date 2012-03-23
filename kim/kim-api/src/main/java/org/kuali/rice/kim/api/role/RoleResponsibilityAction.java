@@ -159,7 +159,7 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
 
     public static class Builder implements RoleResponsibilityActionContract, ModelBuilder, ModelObjectComplete {
 
-        private String Id;
+        private String id;
         private String roleResponsibilityId;
         private String roleMemberId;
         private String actionTypeCode;
@@ -194,23 +194,19 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
 
         @Override
         public RoleResponsibilityAction build() {
-            if (versionNumber == null || Id == null) {
-                throw new IllegalStateException("versionNumber and id must be non-null and " +
-                        "not empty for RoleResponsibilityAction");
-            }
             return new RoleResponsibilityAction(this);
         }
 
         @Override
         public String getId() {
-            return Id;
+            return id;
         }
 
         public void setId(String id) {
             if (StringUtils.isWhitespace(id)) {
                 throw new IllegalArgumentException("id must be not be whitespace");
             }
-            this.Id = id;
+            this.id = id;
         }
 
         @Override

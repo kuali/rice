@@ -49,11 +49,6 @@ class TemplateTest {
     }
 
 	@Test(expected = IllegalArgumentException.class)
-	void test_Builder_fail_ver_num_null() {
-		Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(null);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	void test_Builder_fail_ver_num_less_than_1() {
 		Template.Builder.create(NAMESPACE_CODE, NAME, KIM_TYPE_ID).setVersionNumber(-1);
 	}

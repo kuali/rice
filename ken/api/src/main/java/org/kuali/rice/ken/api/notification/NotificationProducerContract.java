@@ -26,5 +26,5 @@ public interface NotificationProducerContract extends KenIdentifiable, Versioned
     String getName();
     String getDescription();
     String getContactInfo();
-    List<? extends NotificationChannelContract> getChannels();
+    List<Long> getChannelIds();
 }

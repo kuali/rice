@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
         NotificationProducer.Elements.DESCRIPTION,
         NotificationProducer.Elements.CONTACT_INFO,
         NotificationProducer.Elements.ID,
-        NotificationProducer.Elements.CHANNELS,
+        NotificationProducer.Elements.CHANNEL_IDS,
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -43,9 +43,9 @@ public final class NotificationProducer
     private final String contactInfo;
     @XmlElement(name = Elements.ID, required = false)
     private final Long id;
-    @XmlElementWrapper(name = Elements.CHANNELS, required = false)
-    @XmlElement(name = Elements.CHANNEL, required = false)
-    private final List<NotificationChannel> channels;
+    @XmlElementWrapper(name = Elements.CHANNEL_IDS, required = false)
+    @XmlElement(name = Elements.CHANNEL_ID, required = false)
+    private final List<Long> channelIds;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
     @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
@@ -65,7 +65,7 @@ public final class NotificationProducer
         this.id = null;
         this.versionNumber = null;
         this.objectId = null;
-        this.channels = null;
+        this.channelIds = null;
     }
 
     private NotificationProducer(Builder builder) {
@@ -75,12 +75,7 @@ public final class NotificationProducer
         this.id = builder.getId();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
-        this.channels = new ArrayList<NotificationChannel>();
-        if (CollectionUtils.isNotEmpty(builder.getChannels())) {
-            for (NotificationChannel.Builder channel : builder.getChannels()) {
-                this.channels.add(channel.build());
-            }
-        }
+        this.channelIds = builder.getChannelIds();
     }
 
     @Override
@@ -104,8 +99,8 @@ public final class NotificationProducer
     }
     
     @Override
-    public List<NotificationChannel> getChannels() {
-        return this.channels;
+    public List<Long> getChannelIds() {
+        return this.channelIds;
     }
 
     @Override
@@ -131,7 +126,7 @@ public final class NotificationProducer
         private String description;
         private String contactInfo;
         private Long id;
-        private List<NotificationChannel.Builder> channels;
+        private List<Long> channelIds;
         private Long versionNumber;
         private String objectId;
 
@@ -154,13 +149,7 @@ public final class NotificationProducer
             builder.setDescription(contract.getDescription());
             builder.setContactInfo(contract.getContactInfo());
             builder.setId(contract.getId());
-            if (contract.getChannels() != null) {
-                List<NotificationChannel.Builder> tempChannels = new ArrayList<NotificationChannel.Builder>();
-                for (NotificationChannelContract channel : contract.getChannels()) {
-                    tempChannels.add(NotificationChannel.Builder.create(channel));
-                }
-                builder.setChannels(tempChannels);
-            }
+            builder.setChannelIds(contract.getChannelIds());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
             return builder;
@@ -191,8 +180,8 @@ public final class NotificationProducer
         }
         
         @Override
-        public List<NotificationChannel.Builder> getChannels() {
-            return this.channels;
+        public List<Long> getChannelIds() {
+            return this.channelIds;
         }
 
         @Override
@@ -221,8 +210,8 @@ public final class NotificationProducer
             this.id = id;
         }
         
-        public void setChannels(List<NotificationChannel.Builder> channels) {
-            this.channels = channels;
+        public void setChannelIds(List<Long> channelIds) {
+            this.channelIds = channelIds;
         }
 
         public void setVersionNumber(Long versionNumber) {
@@ -258,8 +247,8 @@ public final class NotificationProducer
         final static String DESCRIPTION = "description";
         final static String CONTACT_INFO = "contactInfo";
         final static String ID = "id";
-        final static String CHANNELS = "channels";
-        final static String CHANNEL = "channel";
+        final static String CHANNEL_IDS = "channelIds";
+        final static String CHANNEL_ID = "channelId";
 
     }
 

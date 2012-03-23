@@ -55,7 +55,8 @@ public class RoleResponsibilityActionTest {
     """
 
     static {
-        RoleResponsibility.Builder b = RoleResponsibility.Builder.create(ROLE_RESPONSIBILITY_ID, "5", "10");
+        RoleResponsibility.Builder b = RoleResponsibility.Builder.create("5", "10");
+        b.setRoleResponsibilityId(ROLE_RESPONSIBILITY_ID);
         b.versionNumber = VERSION_NUMBER
         ROLE_RESPONSIBILITY = b.build()
     }
@@ -98,27 +99,6 @@ public class RoleResponsibilityActionTest {
         b.id = ID
         b.versionNumber = VERSION_NUMBER
         b.build()
-    }
-
-    @Test
-    public void test_builder_no_fields_set() {
-        shouldFail(IllegalStateException) {
-            RoleResponsibilityAction.Builder.create().build()
-        }
-    }
-
-    @Test
-    public void test_Builder_no_version() {
-        RoleResponsibilityAction.Builder b = RoleResponsibilityAction.Builder.create()
-        b.id = ID
-        shouldFail(IllegalStateException) {b.build()}
-    }
-
-    @Test
-    public void test_Builder_no_id() {
-        RoleResponsibilityAction.Builder b = RoleResponsibilityAction.Builder.create()
-        b.versionNumber = VERSION_NUMBER
-        shouldFail(IllegalStateException) {b.build()}
     }
 
     @Test

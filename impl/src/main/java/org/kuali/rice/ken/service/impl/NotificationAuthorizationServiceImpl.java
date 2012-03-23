@@ -50,13 +50,13 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
      * @see org.kuali.rice.ken.service.NotificationAuthorizationService#isProducerAuthorizedToSendNotificationForChannel(org.kuali.rice.ken.bo.NotificationProducerBo, org.kuali.rice.ken.bo.NotificationChannelBo)
      */
     public boolean isProducerAuthorizedToSendNotificationForChannel(NotificationProducerBo producer, NotificationChannelBo channel) {
-	List channels = producer.getChannels();
+        List<Long> channelIds = producer.getChannelIds();
 
-	if(channels.contains(channel)) {
-	    return true;
-	} else {
-	    return false;
-	}
+        if(channelIds.contains(channel.getId())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

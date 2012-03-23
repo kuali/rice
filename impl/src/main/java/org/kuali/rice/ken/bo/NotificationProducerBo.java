@@ -18,15 +18,23 @@ package org.kuali.rice.ken.bo;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.ken.api.notification.NotificationChannel;
-import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.api.notification.NotificationProducer;
 import org.kuali.rice.ken.api.notification.NotificationProducerContract;
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
-import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo;
+import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +81,15 @@ public class NotificationProducerBo extends PersistableBusinessObjectBase implem
      */
     public String getContactInfo() {
 	return contactInfo;
+    }
+
+    @Override
+    public List<Long> getChannelIds() {
+        List<Long> ids = new ArrayList<Long>();
+        for (NotificationChannelBo bo : this.getChannels()) {
+            ids.add(bo.getId());
+        }
+        return ids;
     }
 
     /**
@@ -160,6 +177,7 @@ public class NotificationProducerBo extends PersistableBusinessObjectBase implem
         return NotificationProducer.Builder.create(bo).build();
     }
 
+
     /**
      * Converts a immutable object to its mutable counterpart
      * @param im immutable object
@@ -180,9 +198,10 @@ public class NotificationProducerBo extends PersistableBusinessObjectBase implem
         bo.setContactInfo(im.getContactInfo());
 
         List<NotificationChannelBo> tempChannels = new ArrayList<NotificationChannelBo>();
-        if (CollectionUtils.isNotEmpty(im.getChannels())) {
-            for (NotificationChannel channel : im.getChannels()) {
-                tempChannels.add(NotificationChannelBo.from(channel));
+        if (CollectionUtils.isNotEmpty(im.getChannelIds())) {
+            NotificationChannelService ncs = GlobalResourceLoader.getService("notificationChannelService");
+            for (Long channelId : im.getChannelIds()) {
+                tempChannels.add(ncs.getNotificationChannel(channelId.toString()));
             }
             bo.setChannels(tempChannels);
         }

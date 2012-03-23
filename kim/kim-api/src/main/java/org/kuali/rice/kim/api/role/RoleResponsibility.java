@@ -50,10 +50,10 @@ import java.util.Collection;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-final public class RoleResponsibility extends AbstractDataTransferObject implements RoleResponsibilityContract {
+public final class RoleResponsibility extends AbstractDataTransferObject implements RoleResponsibilityContract {
     private static final long serialVersionUID = 1L;
 
-    @XmlElement(name = RoleResponsibility.Elements.ROLE_RESPONSIBILITY_ID, required = true)
+    @XmlElement(name = RoleResponsibility.Elements.ROLE_RESPONSIBILITY_ID, required = false)
     private final String roleResponsibilityId;
 
     @XmlElement(name = RoleResponsibility.Elements.ROLE_ID)
@@ -133,9 +133,9 @@ final public class RoleResponsibility extends AbstractDataTransferObject impleme
             return new Builder();
         }
 
-        public static Builder create(String roleResponsibilityId, String roleId, String responsibilityId) {
+        public static Builder create(String roleId, String responsibilityId) {
             Builder b = create();
-            b.setRoleResponsibilityId(roleResponsibilityId);
+
             b.setRoleId(roleId);
             b.setResponsibilityId(responsibilityId);
             return b;
@@ -153,10 +153,6 @@ final public class RoleResponsibility extends AbstractDataTransferObject impleme
 
         @Override
         public RoleResponsibility build() {
-            if (versionNumber == null || roleResponsibilityId == null) {
-                throw new IllegalStateException(
-                        "versionNumber and roleResponsibilityId must be non-null for a RoleResponsibility object");
-            }
             return new RoleResponsibility(this);
         }
 
@@ -166,8 +162,8 @@ final public class RoleResponsibility extends AbstractDataTransferObject impleme
         }
 
         public void setRoleResponsibilityId(String roleResponsibilityId) {
-            if (StringUtils.isBlank(roleResponsibilityId)) {
-                throw new IllegalArgumentException("roleResponsibilityId cannot be blank or null");
+            if (StringUtils.isWhitespace(roleResponsibilityId)) {
+                throw new IllegalArgumentException("roleResponsibilityId cannot be whitespace");
             }
             this.roleResponsibilityId = roleResponsibilityId;
         }
@@ -206,9 +202,6 @@ final public class RoleResponsibility extends AbstractDataTransferObject impleme
         }
 
         public void setVersionNumber(Long versionNumber) {
-            if (versionNumber == null) {
-                throw new IllegalArgumentException("versionNumber must be non-null");
-            }
             this.versionNumber = versionNumber;
         }
 

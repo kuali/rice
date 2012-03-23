@@ -808,7 +808,7 @@
         <column name="PLCY_NM" required="true" size="1" type="DECIMAL"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column name="PLCY_VAL" size="64" type="VARCHAR"/>
+        <column name="PLCY_VAL" size="1024" type="VARCHAR"/>
         <unique name="KREW_DOC_TYP_PLCY_RELN_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>

@@ -150,8 +150,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             }
 
             // if property is nested, need to override any parent expressions set on nested beans
-            if (StringUtils.contains(pv.getName(), ".")) {
-                //removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
+            if (StringUtils.contains(pv.getName(), ".") && beanDefinition.getParentName() != null) {
+                removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
             }
         }
 

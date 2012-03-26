@@ -167,7 +167,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     private Object getUnreachableNestedProperty(Object arg0, String arg1) {
         try {
             PropertyDescriptor propertyDescriptor  = getPropertyDescriptor(arg0, arg1);
-            if (Collection.class.isAssignableFrom(propertyDescriptor.getPropertyType())) {
+            if (propertyDescriptor == null || Collection.class.isAssignableFrom(propertyDescriptor.getPropertyType())) {
                 return null;
             }
         } catch (IllegalAccessException e) {

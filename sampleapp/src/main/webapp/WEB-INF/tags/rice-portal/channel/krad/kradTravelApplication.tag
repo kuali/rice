@@ -19,10 +19,9 @@
 <channel:portalChannelTop channelTitle="Sample Travel Application - KNS L&F" />
 <div class="body">
 
-  <!-- the portal_lightbox class is used to designate links that open in a lightbox - inquiry links -->
   <strong>BO Class Tests</strong>
   <ul class="chan">
-    <li><a id="trav_acc_inq_bo" class="portal_link portal_lightbox" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&dialogMode=true"/>Travel Account Inquiry</a></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount"/>Travel Account Inquiry</a></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (New)" url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Maintenance (Edit)" url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="Travel Account Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&criteriaFields['number']=a*&readOnlyFields=number&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
@@ -32,9 +31,9 @@
   <br/>
   <strong>Non BO Class Tests</strong>
   <ul class="chan">
-    <li><a id="fisc_off_inq_1" class="portal_link portal_lightbox"  href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&dialogMode=true"/>FiscalOfficerInfo Inquiry</a></li>
-    <li><a id="fisc_off_inq_2" class="portal_link portal_lightbox"  href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&viewName=FiscalOfficerInfoInquiry2&dialogMode=true"/>FiscalOfficerInfo Inquiry 2</a></li>
-    <li><a id="fisc_off_inq_3" class="portal_link portal_lightbox"  href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=2&viewId=FiscalOfficerInfoInquiry3&dialogMode=true"/>FiscalOfficerInfo Inquiry 3</a></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"/>FiscalOfficerInfo Inquiry</a></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&viewName=FiscalOfficerInfoInquiry2"/>FiscalOfficerInfo Inquiry 2</a></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&id=2&viewId=FiscalOfficerInfoInquiry3"/>FiscalOfficerInfo Inquiry 3</a></li>
     <br/>
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Lookup 2" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&viewId=FiscalOfficerInfoLookupViewUsername&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
@@ -42,7 +41,7 @@
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (New)" url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (Edit)" url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=maintenanceEdit&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"/></li>
     <br>
-    <li><a id="trav_acc_inq_no_bo" class="portal_link portal_lightbox" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&number=a2&dataObjectClassName=edu.sampleu.travel.dto.TravelAccountInfo&dialogMode=true"/>TravelAccountInfo Inquiry</a></li>
+    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&number=a2&dataObjectClassName=edu.sampleu.travel.dto.TravelAccountInfo"/>TravelAccountInfo Inquiry</a></li>
   </ul>
 
 </div>

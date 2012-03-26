@@ -113,6 +113,7 @@
         <value>classpath:edu/sampleu/demo/layout/UifStandardLayout.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifValidationLayout.xml</value>
         <value>classpath:edu/sampleu/demo/auth/TestOpenAuthView.xml</value>
+        <value>classpath:edu/sampleu/demo/data/DataAttributesView.xml</value>
         
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>

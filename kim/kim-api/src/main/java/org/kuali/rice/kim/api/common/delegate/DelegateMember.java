@@ -110,7 +110,11 @@ public final class DelegateMember extends AbstractDataTransferObject
         this.delegationId = builder.getDelegationId();
         this.memberId = builder.getMemberId();
         this.roleMemberId = builder.getRoleMemberId();
-        this.typeCode = builder.getType().getCode();
+        if (builder.getType() == null) {
+            this.typeCode = null;
+        } else {
+            this.typeCode = builder.getType().getCode();
+        }
         this.versionNumber = builder.getVersionNumber();
         this.activeFromDate = builder.getActiveFromDate();
         this.activeToDate = builder.getActiveToDate();

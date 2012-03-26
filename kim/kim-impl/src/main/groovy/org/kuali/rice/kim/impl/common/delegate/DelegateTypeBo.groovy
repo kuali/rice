@@ -78,6 +78,7 @@ public class DelegateTypeBo extends PersistableBusinessObjectBase implements Del
                 active: immutable.active,
                 kimTypeId: immutable.kimTypeId,
                 delegationTypeCode: immutable.delegationTypeCode,
+                members: immutable.members
         );
     }
 }

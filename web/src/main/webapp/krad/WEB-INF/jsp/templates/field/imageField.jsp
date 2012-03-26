@@ -33,4 +33,4 @@
 
   </krad:fieldLabel>
 
-</krad:span>
+</krad:div>

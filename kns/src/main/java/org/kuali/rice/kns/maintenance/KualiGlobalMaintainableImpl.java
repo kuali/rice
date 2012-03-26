@@ -121,7 +121,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         }
 
         // replace the GBO loaded from XML with the GBO loaded from the DB
-        businessObject = newBo;
+        setBusinessObject(newBo);
     }
 
     /**

@@ -45,6 +45,7 @@ public interface CountryService {
      * @param code the given country code
      * @return a country object with the given country code.  A null reference is returned if an invalid or
      *         non-existant code is supplied.
+     * @throws RiceIllegalArgumentException if the code is blank or null
      */
     @WebMethod(operationName = "getCountry")
     @WebResult(name = "country")
@@ -57,8 +58,8 @@ public interface CountryService {
      * @param alternateCode the given alternate country code
      * @return A country object with the given alternate country code if a country with that alternate country code
      *         exists.  Otherwise, null is returned.
-     * @throws IllegalStateException if multiple Countries exist with the same passed in alternateCode
-     * @throws IllegalArgumentException if alternateCode is null or is a whitespace only string.
+     * @throws RiceIllegalStateException if multiple Countries exist with the same passed in alternateCode
+     * @throws RiceIllegalArgumentException if alternateCode is null or is a whitespace only string.
      */
     @WebMethod(operationName = "getCountryByAlternateCode")
     @WebResult(name = "country")

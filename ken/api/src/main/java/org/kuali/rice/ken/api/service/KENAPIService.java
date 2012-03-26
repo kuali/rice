@@ -34,6 +34,7 @@ public interface KENAPIService {
     /**
      * Returns the names of all deliverers the recipient has configured for a given channel
      * @return the names of all deliverers the recipient has configured for a given channel
+     * @throws RiceIllegalArgumentException if the recipient,  channel is null or blank.
      */
     Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel) throws RiceIllegalArgumentException;
 
@@ -42,6 +43,7 @@ public interface KENAPIService {
      * @param recipient the recipient
      * @param prefKey the preference key
      * @return the specified recipient preference for the user
+     * @throws RiceIllegalArgumentException if the recipient,  prefKey is null or blank
      */
     String getRecipientPreference(String recipient, String prefKey) throws RiceIllegalArgumentException;
 }

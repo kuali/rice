@@ -52,7 +52,7 @@ public interface CountyService {
      * @param stateCode   postal state code. cannot be blank.
      * @param code        county code. cannot be blank
      * @return a {@link County} or null
-     * @throws IllegalArgumentException country code, postal state code, or county code is blank
+     * @throws RiceIllegalArgumentException country code, postal state code, or county code is blank
      */
     @WebMethod(operationName = "getCounty")
     @WebResult(name = "county")
@@ -75,7 +75,7 @@ public interface CountyService {
      * @param countryCode state code. cannot be blank.
      * @param stateCode   postal state code. cannot be blank.
      * @return an immutable collection of counties
-     * @throws IllegalArgumentException country code, postal state code is blank
+     * @throws RiceIllegalArgumentException country code, postal state code is blank
      */
     @WebMethod(operationName = "findAllCountiesInCountryAndState")
     @XmlElementWrapper(name = "counties", required = true)

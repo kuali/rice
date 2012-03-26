@@ -41,7 +41,7 @@ public interface CampusService {
      * This will return a {@link Campus}.
      *
      * @param code the code of the campus to return
-     * @throws IllegalArgumentException if the code is null
+     * @throws RiceIllegalArgumentException if the code is null
      * @throws IllegalStateException if the campus does not exist in the system under the
      * specific code
      */
@@ -65,9 +65,8 @@ public interface CampusService {
      *
      * @param code the code of the campus type to return
      * @return CampusType object represented by the passed in code
-     * @throws IllegalArgumentException if the code is null
-     * @throws IllegalStateException if the campus does not exist in the system under the
-     * specific code
+     * @throws RiceIllegalArgumentException if the code is null
+     *
      */
     @WebMethod(operationName="getCampusType")
     @WebResult(name = "campusType")

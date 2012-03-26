@@ -52,7 +52,7 @@ public interface StateService {
      * @param countryCode country code. cannot be blank.
      * @param code        state code. cannot be blank.
      * @return a {@link State} or null
-     * @throws IllegalArgumentException country code or state code is blank
+     * @throws RiceIllegalArgumentException country code or state code is blank
      */
     @WebMethod(operationName = "getState")
     @WebResult(name = "state")
@@ -74,7 +74,7 @@ public interface StateService {
      *
      * @param countryCode state code. cannot be blank.
      * @return an immutable collection of states
-     * @throws IllegalArgumentException country code is blank
+     * @throws RiceIllegalArgumentException country code is blank
      */
     @WebMethod(operationName = "findAllStatesInCountry")
     @XmlElementWrapper(name = "states", required = true)

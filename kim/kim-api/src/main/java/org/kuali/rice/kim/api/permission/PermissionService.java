@@ -71,8 +71,8 @@ public interface PermissionService {
      *
      * @param permission the permission to create
      * @return the newly created object.  will never be null.
-     * @throws IllegalArgumentException if the permission is null
-     * @throws IllegalStateException if the permission is already existing in the system
+     * @throws RiceIllegalArgumentException if the permission is null
+     * @throws RiceIllegalStateException if the permission is already existing in the system
      */
     @WebMethod(operationName="createPermission")
     @WebResult(name = "permission")
@@ -85,8 +85,8 @@ public interface PermissionService {
      *
      * @param permission the permission to update
      * @return the updated object.  will never be null
-     * @throws IllegalArgumentException if the permission is null
-     * @throws IllegalStateException if the permission does not exist in the system
+     * @throws RiceIllegalArgumentException if the permission is null
+     * @throws RiceIllegalStateException if the permission does not exist in the system
      */
     @WebMethod(operationName="updatePermission")
     @WebResult(name = "permission")
@@ -112,7 +112,7 @@ public interface PermissionService {
      * @param namespaceCode the namespace code.  cannot be null or blank.
      * @param permissionName the permission name. cannot be null or blank.
      * @return true is principal has permission
-     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
     @WebMethod(operationName = "hasPermission")
     @WebResult(name = "hasPermission")
@@ -138,7 +138,7 @@ public interface PermissionService {
      * @param permissionName the permission name. cannot be null or blank.
      * @param qualification the qualifications to test against.
      * @return true is principal has permission
-     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
@@ -165,7 +165,7 @@ public interface PermissionService {
      * @param permissionTemplateName the permission name. cannot be null or blank.
      * @param permissionDetails the permission details
      * @return true is principal has permission
-     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
     @WebMethod(operationName = "hasPermissionByTemplate")
     @WebResult(name = "hasPermission")
@@ -196,7 +196,7 @@ public interface PermissionService {
      * @param permissionDetails the permission details
      * @param qualification the permission qualifications
      * @return true is principal has permission
-     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
     @WebMethod(operationName = "isAuthorizedByTemplate")
     @WebResult(name = "isAuthorized")
@@ -224,7 +224,7 @@ public interface PermissionService {
      * @param permissionName the permission name. cannot be null or blank.
      * @param qualification the permission qualifications
      * @return list of assignees that have been assigned the permissions
-     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
 	@WebMethod(operationName = "getPermissionAssignees")
     @XmlElementWrapper(name = "assignees", required = true)
@@ -252,7 +252,7 @@ public interface PermissionService {
      * @param permissionDetails the permission details.
      * @param qualification the permission qualifications
      * @return list of assignees that have been assigned the permissions by template
-     * @throws IllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, permissionName is null or blank
      */
 	@WebMethod(operationName = "getPermissionAssigneesByTemplate")
     @XmlElementWrapper(name = "assignees", required = true)
@@ -271,7 +271,7 @@ public interface PermissionService {
      * @param namespaceCode the namespace code.  cannot be null or blank.
      * @param permissionName the permission name. cannot be null or blank.
      * @return true if given permission is defined on any Roles
-     * @throws IllegalArgumentException if the namespaceCode or permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode or permissionName is null or blank
      */
     @WebMethod(operationName = "isPermissionDefined")
     @WebResult(name = "isPermissionDefined")
@@ -286,7 +286,7 @@ public interface PermissionService {
      * @param permissionTemplateName the permission name. cannot be null or blank.
      * @param permissionDetails the permission template details
      * @return true if given permission template is defined on any Roles
-     * @throws IllegalArgumentException if the namespaceCode or permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode or permissionName is null or blank
      */
     @WebMethod(operationName = "isPermissionDefinedByTemplate")
     @WebResult(name = "isPermissionDefinedByTemplate")
@@ -315,7 +315,7 @@ public interface PermissionService {
      * @param permissionName the permission name. cannot be null or blank.
      * @param qualification the permission qualifications
      * @return list of permissions that are authorized with the given parameters
-     * @throws IllegalArgumentException if the principalId, namespaceCode or permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode or permissionName is null or blank
      */
 	@WebMethod(operationName = "getAuthorizedPermissions")
     @XmlElementWrapper(name = "permissions", required = true)
@@ -352,7 +352,7 @@ public interface PermissionService {
      * @param permissionDetails the permission template details.
      * @param qualification the permission qualifications
      * @return list of permissions that are authorized with the given parameters
-     * @throws IllegalArgumentException if the principalId, namespaceCode or permissionTemplateName is null or blank
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode or permissionTemplateName is null or blank
      */
 	@WebMethod(operationName = "getAuthorizedPermissionsByTemplate")
     @XmlElementWrapper(name = "permissions", required = true)
@@ -379,7 +379,7 @@ public interface PermissionService {
      *
      * @param id the unique id to retrieve the permission by. cannot be null or blank.
      * @return a {@link org.kuali.rice.kim.api.permission.Permission} or null
-     * @throws IllegalArgumentException if the id is null or blank
+     * @throws RiceIllegalArgumentException if the id is null or blank
      */
 	@WebMethod(operationName = "getPermission")
     @WebResult(name = "permission")
@@ -396,7 +396,7 @@ public interface PermissionService {
      * @param namespaceCode namespace code for permission. cannot be null or blank.
      * @param name name of permission.  cannot be null or blank.
      * @return a {@link org.kuali.rice.kim.api.permission.Permission} or null
-     * @throws IllegalArgumentException if the namespaceCode or name is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode or name is null or blank
      */
     @WebMethod(operationName = "findPermByNamespaceCodeAndName")
     @WebResult(name = "permission")
@@ -413,7 +413,7 @@ public interface PermissionService {
      * @param namespaceCode namespace code for permission. cannot be null or blank.
      * @param templateName name of permission template.  cannot be null or blank.
      * @return a list of {@link org.kuali.rice.kim.api.permission.Permission} or null
-     * @throws IllegalArgumentException if the namespaceCode or name is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode or name is null or blank
 	 */
 	@WebMethod(operationName = "findPermissionsByTemplate")
     @XmlElementWrapper(name = "permissions", required = true)
@@ -434,7 +434,7 @@ public interface PermissionService {
      *
      * @param id the unique id to retrieve the template by. cannot be null or blank.
      * @return a {@link Template} or null
-     * @throws IllegalArgumentException if the id is null or blank
+     * @throws RiceIllegalArgumentException if the id is null or blank
      */
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "id")
@@ -447,7 +447,7 @@ public interface PermissionService {
      * @param namespaceCode the namespace code.  cannot be null or blank.
      * @param name the template name. cannot be null or blank.
      * @return a {@link Template} or null
-     * @throws IllegalArgumentException if the id or namespaceCode is null or blank
+     * @throws RiceIllegalArgumentException if the id or namespaceCode is null or blank
      */
 	@WebMethod(operationName = "findPermTemplateByNamespaceCodeAndName")
     @WebResult(name = "permissionTemplate")
@@ -475,7 +475,7 @@ public interface PermissionService {
      * @param namespaceCode the permission namespace code.  cannot be null or blank.
      * @param permissionName the permission name. cannot be null or blank.
      * @return a list of role Ids, or an empty list if none found
-     * @throws IllegalArgumentException if the namespaceCode or permissionName is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode or permissionName is null or blank
      */
 	@WebMethod(operationName = "getRoleIdsForPermission")
     @XmlElementWrapper(name = "roleIds", required = true)
@@ -489,7 +489,7 @@ public interface PermissionService {
      *
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return query results.  will never return null.
-     * @throws IllegalArgumentException if the queryByCriteria is null
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findPermissions")
     @WebResult(name = "results")
@@ -501,7 +501,7 @@ public interface PermissionService {
      *
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return query results.  will never return null.
-     * @throws IllegalArgumentException if the queryByCriteria is null
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findPermissionTemplates")
     @WebResult(name = "results")

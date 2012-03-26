@@ -82,7 +82,7 @@ public interface IdentityService {
      *
      * @param query the criteria.  Cannot be null.
      * @return query results.  will never return null.
-     * @throws IllegalArgumentException if the queryByCriteria is null
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findEntityDefaults")
     @WebResult(name = "results")
@@ -93,7 +93,7 @@ public interface IdentityService {
      *
      * @param query the criteria.  Cannot be null.
      * @return query results.  will never return null.
-     * @throws IllegalArgumentException if the queryByCriteria is null
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findEntities")
     @WebResult(name = "results")
@@ -109,7 +109,7 @@ public interface IdentityService {
      *
      * @param id the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.Entity} or null
-     * @throws IllegalArgumentException if the id is blank
+     * @throws RiceIllegalArgumentException if the id is blank
      */
     @WebMethod(operationName = "getEntity")
     @WebResult(name = "entity")
@@ -125,7 +125,7 @@ public interface IdentityService {
      *
      * @param principalId the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.Entity} or null
-     * @throws IllegalArgumentException if the principalId is blank
+     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getEntityByPrincipalId")
     @WebResult(name = "entity")
@@ -141,7 +141,7 @@ public interface IdentityService {
      *
      * @param principalName the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.Entity} or null
-     * @throws IllegalArgumentException if the id is blank
+     * @throws RiceIllegalArgumentException if the id is blank
      */
     @WebMethod(operationName = "getEntityByPrincipalName")
     @WebResult(name = "entity")
@@ -157,7 +157,7 @@ public interface IdentityService {
      *
      * @param employeeId the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.Entity} or null
-     * @throws IllegalArgumentException if the employeeId is blank
+     * @throws RiceIllegalArgumentException if the employeeId is blank
      */
     @WebMethod(operationName = "getEntityByEmployeeId")
     @WebResult(name = "entity")
@@ -170,8 +170,8 @@ public interface IdentityService {
      *
      * @param entity the entity to create
      * @return the newly created Entity object.
-     * @throws IllegalArgumentException if the entity is null
-     * @throws IllegalStateException if the entity already exists in the system
+     * @throws RiceIllegalArgumentException if the entity is null
+     * @throws RiceIllegalStateException if the entity already exists in the system
      */
     @WebMethod(operationName="createEntity")
     @WebResult(name = "entity")
@@ -184,8 +184,8 @@ public interface IdentityService {
      *
      * @param entity the entity to update
      * @return the updated Entity object.
-     * @throws IllegalArgumentException if the entity is null
-     * @throws IllegalStateException if the entity does not already exist in the system
+     * @throws RiceIllegalArgumentException if the entity is null
+     * @throws RiceIllegalStateException if the entity does not already exist in the system
      */
     @WebMethod(operationName="updateEntity")
     @WebResult(name = "entity")
@@ -198,8 +198,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the entity to inactivate
      * @return the inactivated Entity object.
-     * @throws IllegalArgumentException if the entity is null
-     * @throws IllegalStateException if the entity does not already exist in the system
+     * @throws RiceIllegalArgumentException if the entity is null
+     * @throws RiceIllegalStateException if the entity does not already exist in the system
      */
     @WebMethod(operationName="inactivateEntity")
     @WebResult(name = "entity")
@@ -220,7 +220,7 @@ public interface IdentityService {
      *
      * @param id the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
-     * @throws IllegalArgumentException if the id is blank
+     * @throws RiceIllegalArgumentException if the id is blank
      */
     @WebMethod(operationName = "getEntityDefault")
     @WebResult(name = "entityDefault")
@@ -238,7 +238,7 @@ public interface IdentityService {
      *
      * @param principalId the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
-     * @throws IllegalArgumentException if the principalId is blank
+     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalId")
     @WebResult(name = "entityDefault")
@@ -256,7 +256,7 @@ public interface IdentityService {
      *
      * @param principalName the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
-     * @throws IllegalArgumentException if the principalId is blank
+     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalName")
     @WebResult(name = "entityDefault")
@@ -274,7 +274,7 @@ public interface IdentityService {
      *
      * @param employeeId the unique id to retrieve the entity by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} or null
-     * @throws IllegalArgumentException if the employeeId is blank
+     * @throws RiceIllegalArgumentException if the employeeId is blank
      */
     @WebMethod(operationName = "getEntityDefaultByEmployeeId")
     @WebResult(name = "entityDefault")
@@ -291,7 +291,7 @@ public interface IdentityService {
      *
      * @param principalId the unique id to retrieve the principal by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.principal.Principal} or null
-     * @throws IllegalArgumentException if the principalId is blank
+     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getPrincipal")
     @WebResult(name = "principal")
@@ -307,7 +307,7 @@ public interface IdentityService {
      *
      * @param principalName the unique id to retrieve the principal by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.principal.Principal} or null
-     * @throws IllegalArgumentException if the principalId is blank
+     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getPrincipalByPrincipalName")
     @WebResult(name = "principal")
@@ -324,7 +324,7 @@ public interface IdentityService {
      * @param principalName the unique id to retrieve the principal by. cannot be null.
      * @param password the password for the principal
      * @return a {@link org.kuali.rice.kim.api.identity.principal.Principal} or null
-     * @throws IllegalArgumentException if the principalName is blank
+     * @throws RiceIllegalArgumentException if the principalName is blank
      */
     @WebMethod(operationName = "getPrincipalByPrincipalNameAndPassword")
     @WebResult(name = "principal")
@@ -338,8 +338,8 @@ public interface IdentityService {
      *
      * @param principal the principal to create
      * @return the newly created Principal object.
-     * @throws IllegalArgumentException if the principal is null
-     * @throws IllegalStateException if the principal already exists in the system or the principal object is not populated with entityId and principalName
+     * @throws RiceIllegalArgumentException if the principal is null
+     * @throws RiceIllegalStateException if the principal already exists in the system or the principal object is not populated with entityId and principalName
      */
     @WebMethod(operationName="addPrincipalToEntity")
     @WebResult(name = "principal")
@@ -353,8 +353,8 @@ public interface IdentityService {
      *
      * @param principal the principal to update
      * @return the updated Principal object.
-     * @throws IllegalArgumentException if the principal is null
-     * @throws IllegalStateException if the principal does not exist in the system.
+     * @throws RiceIllegalArgumentException if the principal is null
+     * @throws RiceIllegalStateException if the principal does not exist in the system.
      */
     @WebMethod(operationName="updatePrincipal")
     @WebResult(name = "principal")
@@ -368,8 +368,8 @@ public interface IdentityService {
      *
      * @param principalId the unique id of the principal to inactivate
      * @return the inactivated Principal object.
-     * @throws IllegalArgumentException if the principal is null
-     * @throws IllegalStateException if the principal does not exist in the system.
+     * @throws RiceIllegalArgumentException if the principal is null
+     * @throws RiceIllegalStateException if the principal does not exist in the system.
      */
     @WebMethod(operationName="inactivatePrincipal")
     @WebResult(name = "principal")
@@ -383,8 +383,8 @@ public interface IdentityService {
      *
      * @param principalName the unique principalName of the principal to inactivate
      * @return the inactivated Principal object.
-     * @throws IllegalArgumentException if the principal is null
-     * @throws IllegalStateException if the principal does not exist in the system.
+     * @throws RiceIllegalArgumentException if the principal is null
+     * @throws RiceIllegalStateException if the principal does not exist in the system.
      */
     @WebMethod(operationName="inactivatePrincipalByName")
     @WebResult(name = "principal")
@@ -400,8 +400,8 @@ public interface IdentityService {
      *
      * @param entityTypeContactInfo the EntityTypeContactInfo to create
      * @return the newly created EntityTypeContactInfo object.
-     * @throws IllegalArgumentException if the entityTypeContactInfo is null
-     * @throws IllegalStateException if the entityTypeContactInfo already exists in the system or the EntityTypeContactInfo object is not populated with entityId and entityTypeCode
+     * @throws RiceIllegalArgumentException if the entityTypeContactInfo is null
+     * @throws RiceIllegalStateException if the entityTypeContactInfo already exists in the system or the EntityTypeContactInfo object is not populated with entityId and entityTypeCode
      */
     @WebMethod(operationName="addEntityTypeContactInfoToEntity")
     @WebResult(name = "entityTypeContactInfo")
@@ -416,8 +416,8 @@ public interface IdentityService {
      *
      * @param entityTypeContactInfo the EntityTypeContactInfo to update
      * @return the updated EntityTypeContactInfo object.
-     * @throws IllegalArgumentException if the entityTypeContactInfo is null
-     * @throws IllegalStateException if the entityTypeContactInfo does not exist in the system.
+     * @throws RiceIllegalArgumentException if the entityTypeContactInfo is null
+     * @throws RiceIllegalStateException if the entityTypeContactInfo does not exist in the system.
      */
     @WebMethod(operationName="updateEntityTypeContactInfo")
     @WebResult(name = "entityTypeContactInfo")
@@ -432,8 +432,8 @@ public interface IdentityService {
      * @param entityId the entityId of the EntityTypeContactInfo to inactivate
      * @param entityTypeCode the entityTypeCode of the EntityTypeContactInfo to inactivate
      * @return the inactivated EntityTypeContactInfo object.
-     * @throws IllegalArgumentException if the entityId or entityTypeCode passed in is null
-     * @throws IllegalStateException if the EntityTypeContactInfo does not exist in the system.
+     * @throws RiceIllegalArgumentException if the entityId or entityTypeCode passed in is null
+     * @throws RiceIllegalStateException if the EntityTypeContactInfo does not exist in the system.
      */
     @WebMethod(operationName="inactivateEntityTypeContactInfo")
     @WebResult(name = "entityTypeContactInfo")
@@ -449,8 +449,8 @@ public interface IdentityService {
      *
      * @param address the EntityAddress to create
      * @return the newly created EntityAddress object.
-     * @throws IllegalArgumentException if the address is null
-     * @throws IllegalStateException if the address already exists in the system or address is not populated with entityId and entityTypeCode
+     * @throws RiceIllegalArgumentException if the address is null
+     * @throws RiceIllegalStateException if the address already exists in the system or address is not populated with entityId and entityTypeCode
      */
     @WebMethod(operationName="addAddressToEntity")
     @WebResult(name = "address")
@@ -465,7 +465,7 @@ public interface IdentityService {
      * @param address the EntityAddress to update
      * @return the updated EntityAddress object.
      * @throws IllegalArgumentException if the address is null
-     * @throws IllegalStateException if the address does not exist in the system.
+     * @throws RiceIllegalArgumentException if the address does not exist in the system.
      */
     @WebMethod(operationName="updateAddress")
     @WebResult(name = "address")
@@ -479,8 +479,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the EntityAddress to inactivate
      * @return the updated EntityAddress object.
-     * @throws IllegalArgumentException if the id is null
-     * @throws IllegalStateException if the address does not exist in the system.
+     * @throws RiceIllegalArgumentException if the id is null
+     * @throws RiceIllegalStateException if the address does not exist in the system.
      */
     @WebMethod(operationName="inactivateAddress")
     @WebResult(name = "address")
@@ -495,8 +495,8 @@ public interface IdentityService {
      *
      * @param email the EntityEmail to create
      * @return the newly created EntityEmail object.
-     * @throws IllegalArgumentException if the email is null
-     * @throws IllegalStateException if the email already exists in the system or email is not populated with entityId and entityTypeCode
+     * @throws RiceIllegalArgumentException if the email is null
+     * @throws RiceIllegalStateException if the email already exists in the system or email is not populated with entityId and entityTypeCode
      */
     @WebMethod(operationName="addEmailToEntity")
     @WebResult(name = "email")
@@ -510,8 +510,8 @@ public interface IdentityService {
      *
      * @param email the EntityEmail to update
      * @return the updated EntityEmail object.
-     * @throws IllegalArgumentException if the email is null
-     * @throws IllegalStateException if the email does not exist in the system.
+     * @throws RiceIllegalArgumentException if the email is null
+     * @throws RiceIllegalStateException if the email does not exist in the system.
      */
     @WebMethod(operationName="updateEmail")
     @WebResult(name = "email")
@@ -525,8 +525,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the EntityEmail to inactivate
      * @return the inactivated EntityEmail object.
-     * @throws IllegalArgumentException if the id is null
-     * @throws IllegalStateException if the email does not exist in the system.
+     * @throws RiceIllegalArgumentException if the id is null
+     * @throws RiceIllegalStateException if the email does not exist in the system.
      */
     @WebMethod(operationName="inactivateEmail")
     @WebResult(name = "email")
@@ -541,8 +541,8 @@ public interface IdentityService {
      *
      * @param phone the EntityPhone to create
      * @return the newly created EntityPhone object.
-     * @throws IllegalArgumentException if the phone is null
-     * @throws IllegalStateException if the phone already exists in the system or phone is not populated with entityId and entityTypeCode
+     * @throws RiceIllegalArgumentException if the phone is null
+     * @throws RiceIllegalStateException if the phone already exists in the system or phone is not populated with entityId and entityTypeCode
      */
     @WebMethod(operationName="addPhoneToEntity")
     @WebResult(name = "phone")
@@ -556,8 +556,8 @@ public interface IdentityService {
      *
      * @param phone the EntityPhone to update
      * @return the updated EntityPhone object.
-     * @throws IllegalArgumentException if the phone is null
-     * @throws IllegalStateException if the phone does not exist in the system.
+     * @throws RiceIllegalArgumentException if the phone is null
+     * @throws RiceIllegalStateException if the phone does not exist in the system.
      */
     @WebMethod(operationName="updatePhone")
     @WebResult(name = "phone")
@@ -571,8 +571,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the EntityPhone to inactivate
      * @return the inactivated EntityPhone object.
-     * @throws IllegalArgumentException if the id is null
-     * @throws IllegalStateException if the phone does not exist in the system.
+     * @throws RiceIllegalArgumentException if the id is null
+     * @throws RiceIllegalStateException if the phone does not exist in the system.
      */
     @WebMethod(operationName="inactivatePhone")
     @WebResult(name = "phone")
@@ -588,8 +588,8 @@ public interface IdentityService {
      *
      * @param externalId the EntityExternalIdentifier to create
      * @return the newly created EntityExternalIdentifier object.
-     * @throws IllegalArgumentException if the externalId is null
-     * @throws IllegalStateException if the externalId already exists in the system or externalId is not populated with entityId and externalIdentifierTypeCode
+     * @throws RiceIllegalArgumentException if the externalId is null
+     * @throws RiceIllegalStateException if the externalId already exists in the system or externalId is not populated with entityId and externalIdentifierTypeCode
      */
     @WebMethod(operationName="addExternalIdentifierToEntity")
     @WebResult(name = "externalId")
@@ -603,8 +603,8 @@ public interface IdentityService {
      *
      * @param externalId the EntityExternalIdentifier to update
      * @return the updated EntityExternalIdentifier object.
-     * @throws IllegalArgumentException if the externalId is null
-     * @throws IllegalStateException if the externalId does not exist in the system.
+     * @throws RiceIllegalArgumentException if the externalId is null
+     * @throws RiceIllegalStateException if the externalId does not exist in the system.
      */
     @WebMethod(operationName="updateExternalIdentifier")
     @WebResult(name = "externalId")
@@ -619,8 +619,8 @@ public interface IdentityService {
      *
      * @param affiliation the EntityAffiliation to create
      * @return the newly created EntityAffiliation object.
-     * @throws IllegalArgumentException if the affiliation is null
-     * @throws IllegalStateException if the affiliation already exists in the system or affiliation is not populated with entityId and affiliationType
+     * @throws RiceIllegalArgumentException if the affiliation is null
+     * @throws RiceIllegalStateException if the affiliation already exists in the system or affiliation is not populated with entityId and affiliationType
      */
     @WebMethod(operationName="addAffiliationToEntity")
     @WebResult(name = "affiliation")
@@ -634,8 +634,8 @@ public interface IdentityService {
      *
      * @param affiliation the EntityAffiliation to update
      * @return the updated EntityAffiliation object.
-     * @throws IllegalArgumentException if the affiliation is null
-     * @throws IllegalStateException if the affiliation does not exist in the system.
+     * @throws RiceIllegalArgumentException if the affiliation is null
+     * @throws RiceIllegalStateException if the affiliation does not exist in the system.
      */
     @WebMethod(operationName="updateAffiliation")
     @WebResult(name = "affiliation")
@@ -649,8 +649,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the  EntityAffiliation to inactivate
      * @return the updated EntityAffiliation object.
-     * @throws IllegalArgumentException if the affiliation is null
-     * @throws IllegalStateException if the affiliation does not exist in the system.
+     * @throws RiceIllegalArgumentException if the affiliation is null
+     * @throws RiceIllegalStateException if the affiliation does not exist in the system.
      */
     @WebMethod(operationName="inactivateAffiliation")
     @WebResult(name = "affiliation")
@@ -677,8 +677,8 @@ public interface IdentityService {
      *
      * @param name the EntityName to create
      * @return the newly created EntityName object.
-     * @throws IllegalArgumentException if the name is null
-     * @throws IllegalStateException if the name already exists in the system or name is not populated with entityId and nameType
+     * @throws RiceIllegalArgumentException if the name is null
+     * @throws RiceIllegalStateException if the name already exists in the system or name is not populated with entityId and nameType
      */
     @WebMethod(operationName="addNameToEntity")
     @WebResult(name = "name")
@@ -692,8 +692,8 @@ public interface IdentityService {
      *
      * @param name the EntityName to update
      * @return the updated EntityName object.
-     * @throws IllegalArgumentException if the name is null
-     * @throws IllegalStateException if the name does not exist in the system.
+     * @throws RiceIllegalArgumentException if the name is null
+     * @throws RiceIllegalStateException if the name does not exist in the system.
      */
     @WebMethod(operationName="updateName")
     @WebResult(name = "name")
@@ -707,8 +707,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the EntityName to inactivate
      * @return the inactivated EntityName object.
-     * @throws IllegalArgumentException if the id is null
-     * @throws IllegalStateException if the name with the id does not exist in the system.
+     * @throws RiceIllegalArgumentException if the id is null
+     * @throws RiceIllegalStateException if the name with the id does not exist in the system.
      */
     @WebMethod(operationName="inactivateName")
     @WebResult(name = "name")
@@ -723,8 +723,8 @@ public interface IdentityService {
      *
      * @param employment the EntityEmployment to create
      * @return the newly created EntityName object.
-     * @throws IllegalArgumentException if the employment is null
-     * @throws IllegalStateException if the employment already exists in the system or employment is not populated with entityId and employmentType
+     * @throws RiceIllegalArgumentException if the employment is null
+     * @throws RiceIllegalStateException if the employment already exists in the system or employment is not populated with entityId and employmentType
      */
     @WebMethod(operationName="addEmploymentToEntity")
     @WebResult(name = "employment")
@@ -738,8 +738,8 @@ public interface IdentityService {
      *
      * @param employment the EntityEmployment to update
      * @return the updated EntityEmployment object.
-     * @throws IllegalArgumentException if the employment is null
-     * @throws IllegalStateException if the employment does not exist in the system.
+     * @throws RiceIllegalArgumentException if the employment is null
+     * @throws RiceIllegalStateException if the employment does not exist in the system.
      */
     @WebMethod(operationName="updateEmployment")
     @WebResult(name = "employment")
@@ -753,8 +753,8 @@ public interface IdentityService {
      *
      * @param id the unique id of the EntityEmployment to inactivate
      * @return the inactivated EntityEmployment object.
-     * @throws IllegalArgumentException if the id is null
-     * @throws IllegalStateException if the employment with the id does not exist in the system.
+     * @throws RiceIllegalArgumentException if the id is null
+     * @throws RiceIllegalStateException if the employment with the id does not exist in the system.
      */
     @WebMethod(operationName="inactivateEmployment")
     @WebResult(name = "employment")
@@ -769,8 +769,8 @@ public interface IdentityService {
      *
      * @param bioDemographics the EntityBioDemographics to create
      * @return the newly created EntityBioDemographics object.
-     * @throws IllegalArgumentException if the bioDemographics is null
-     * @throws IllegalStateException if the bioDemographics already exists in the system or bioDemographics is not populated with entityId
+     * @throws RiceIllegalArgumentException if the bioDemographics is null
+     * @throws RiceIllegalStateException if the bioDemographics already exists in the system or bioDemographics is not populated with entityId
      */
     @WebMethod(operationName="addBioDemographicsToEntity")
     @WebResult(name = "bioDemographics")
@@ -784,8 +784,8 @@ public interface IdentityService {
      *
      * @param bioDemographics the EntityBioDemographics to update
      * @return the updated EntityBioDemographics object.
-     * @throws IllegalArgumentException if the bioDemographics is null
-     * @throws IllegalStateException if the bioDemographics does not exist in the system.
+     * @throws RiceIllegalArgumentException if the bioDemographics is null
+     * @throws RiceIllegalStateException if the bioDemographics does not exist in the system.
      */
     @WebMethod(operationName="updateBioDemographics")
     @WebResult(name = "bioDemographics")
@@ -802,7 +802,7 @@ public interface IdentityService {
      *
      * @param id the unique id to retrieve the EntityPrivacyPreferences by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} or null
-     * @throws IllegalArgumentException if the entityId is blank
+     * @throws RiceIllegalArgumentException if the entityId is blank
      */
     @WebMethod(operationName = "getEntityPrivacyPreferences")
     @WebResult(name = "privacyPreferences")
@@ -816,8 +816,8 @@ public interface IdentityService {
      *
      * @param privacyPreferences the EntityPrivacyPreferences to create
      * @return the newly created EntityPrivacyPreferences object.
-     * @throws IllegalArgumentException if the privacyPreferences is null
-     * @throws IllegalStateException if the privacyPreferences already exists in the system or privacyPreferences is not populated with entityId
+     * @throws RiceIllegalArgumentException if the privacyPreferences is null
+     * @throws RiceIllegalStateException if the privacyPreferences already exists in the system or privacyPreferences is not populated with entityId
      */
     @WebMethod(operationName="addPrivacyPreferencesToEntity")
     @WebResult(name = "privacyPreferences")
@@ -831,8 +831,8 @@ public interface IdentityService {
      *
      * @param privacyPreferences the EntityPrivacyPreferences to update
      * @return the updated EntityPrivacyPreferences object.
-     * @throws IllegalArgumentException if the privacyPreferences is null
-     * @throws IllegalStateException if the privacyPreferences does not exist in the system.
+     * @throws RiceIllegalArgumentException if the privacyPreferences is null
+     * @throws RiceIllegalStateException if the privacyPreferences does not exist in the system.
      */
     @WebMethod(operationName="updatePrivacyPreferences")
     @WebResult(name = "privacyPreferences")
@@ -848,8 +848,8 @@ public interface IdentityService {
      *
      * @param citizenship the EntityCitizenship to create
      * @return the newly created EntityCitizenship object.
-     * @throws IllegalArgumentException if the citizenship is null
-     * @throws IllegalStateException if the citizenship already exists in the system or citizenship is not populated with entityId and status
+     * @throws RiceIllegalArgumentException if the citizenship is null
+     * @throws RiceIllegalStateException if the citizenship already exists in the system or citizenship is not populated with entityId and status
      */
     @WebMethod(operationName="addCitizenshipToEntity")
     @WebResult(name = "citizenship")
@@ -863,8 +863,8 @@ public interface IdentityService {
      *
      * @param citizenship the EntityCitizenship to update
      * @return the updated EntityCitizenship object.
-     * @throws IllegalArgumentException if the citizenship is null
-     * @throws IllegalStateException if the citizenship does not exist in the system.
+     * @throws RiceIllegalArgumentException if the citizenship is null
+     * @throws RiceIllegalStateException if the citizenship does not exist in the system.
      */
     @WebMethod(operationName="updateCitizenship")
     @WebResult(name = "citizenship")
@@ -878,8 +878,8 @@ public interface IdentityService {
      *
      * @param id the id of the EntityCitizenship to inactivate
      * @return the inactivated EntityCitizenship object.
-     * @throws IllegalArgumentException if the citizenship is null
-     * @throws IllegalStateException if the citizenship does not exist in the system.
+     * @throws RiceIllegalArgumentException if the citizenship is null
+     * @throws RiceIllegalStateException if the citizenship does not exist in the system.
      */
     @WebMethod(operationName="inactivateCitizenship")
     @WebResult(name = "citizenship")
@@ -894,8 +894,8 @@ public interface IdentityService {
      *
      * @param ethnicity the EntityEthnicity to create
      * @return the newly created EntityEthnicity object.
-     * @throws IllegalArgumentException if the ethnicity is null
-     * @throws IllegalStateException if the ethnicity already exists in the system or ethnicity is not populated with entityId and ethnicity code
+     * @throws RiceIllegalArgumentException if the ethnicity is null
+     * @throws RiceIllegalStateException if the ethnicity already exists in the system or ethnicity is not populated with entityId and ethnicity code
      */
     @WebMethod(operationName="addEthnicityToEntity")
     @WebResult(name = "ethnicity")
@@ -909,8 +909,8 @@ public interface IdentityService {
      *
      * @param ethnicity the EntityEthnicity to update
      * @return the updated EntityEthnicity object.
-     * @throws IllegalArgumentException if the ethnicity is null
-     * @throws IllegalStateException if the ethnicity does not exist in the system.
+     * @throws RiceIllegalArgumentException if the ethnicity is null
+     * @throws RiceIllegalStateException if the ethnicity does not exist in the system.
      */
     @WebMethod(operationName="updateEthnicity")
     @WebResult(name = "ethnicity")
@@ -925,8 +925,8 @@ public interface IdentityService {
      *
      * @param residency the EntityResidency to create
      * @return the newly created EntityResidency object.
-     * @throws IllegalArgumentException if the residency is null
-     * @throws IllegalStateException if the residency already exists in the system or residency is not populated with entityId
+     * @throws RiceIllegalArgumentException if the residency is null
+     * @throws RiceIllegalStateException if the residency already exists in the system or residency is not populated with entityId
      */
     @WebMethod(operationName="addResidencyToEntity")
     @WebResult(name = "residency")
@@ -940,8 +940,8 @@ public interface IdentityService {
      *
      * @param residency the EntityResidency to update
      * @return the updated EntityResidency object.
-     * @throws IllegalArgumentException if the residency is null
-     * @throws IllegalStateException if the residency does not exist in the system.
+     * @throws RiceIllegalArgumentException if the residency is null
+     * @throws RiceIllegalStateException if the residency does not exist in the system.
      */
     @WebMethod(operationName="updateResidency")
     @WebResult(name = "residency")
@@ -957,8 +957,8 @@ public interface IdentityService {
      *
      * @param visa the EntityVisa to create
      * @return the newly created EntityVisa object.
-     * @throws IllegalArgumentException if the visa is null
-     * @throws IllegalStateException if the visa already exists in the system or visa is not populated with entityId and a visaTypeKey
+     * @throws RiceIllegalArgumentException if the visa is null
+     * @throws RiceIllegalStateException if the visa already exists in the system or visa is not populated with entityId and a visaTypeKey
      */
     @WebMethod(operationName="addVisaToEntity")
     @WebResult(name = "visa")
@@ -972,8 +972,8 @@ public interface IdentityService {
      *
      * @param visa the EntityVisa to update
      * @return the updated EntityVisa object.
-     * @throws IllegalArgumentException if the visa is null
-     * @throws IllegalStateException if the visa does not exist in the system.
+     * @throws RiceIllegalArgumentException if the visa is null
+     * @throws RiceIllegalStateException if the visa does not exist in the system.
      */
     @WebMethod(operationName="updateVisa")
     @WebResult(name = "visa")
@@ -990,7 +990,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEntityType")
     @WebResult(name = "type")
@@ -1007,7 +1007,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getAddressType")
     @WebResult(name = "type")
@@ -1023,7 +1023,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the EntityAffiliationType by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getAffiliationType")
     @WebResult(name = "affiliationType")
@@ -1039,7 +1039,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getCitizenshipStatus")
     @WebResult(name = "type")
@@ -1055,7 +1055,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEmploymentType")
     @WebResult(name = "type")
@@ -1071,7 +1071,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEmploymentStatus")
     @WebResult(name = "type")
@@ -1087,7 +1087,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the EntityExternalIdentifierType by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getExternalIdentifierType")
     @WebResult(name = "type")
@@ -1103,7 +1103,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getNameType")
     @WebResult(name = "type")
@@ -1119,7 +1119,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getPhoneType")
     @WebResult(name = "type")
@@ -1135,7 +1135,7 @@ public interface IdentityService {
      *
      * @param code the unique id to retrieve the Type by. Cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.CodedAttribute} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName = "getEmailType")
     @WebResult(name = "type")

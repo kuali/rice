@@ -45,8 +45,8 @@ public interface ParameterRepositoryService {
      *
      * @param parameter the parameter to create
      * @return the parameter that was created
-     * @throws IllegalArgumentException if the parameter is null
-     * @throws IllegalStateException if the parameter is already existing in the system
+     * @throws RiceIllegalArgumentException if the parameter is null
+     * @throws RiceIllegalStateException if the parameter is already existing in the system
      */
     @WebMethod(operationName="createParameter")
     @WebResult(name = "parameter")
@@ -66,8 +66,8 @@ public interface ParameterRepositoryService {
      *
      * @param parameter the parameter to update
      * @return the parameter that was updated
-     * @throws IllegalArgumentException if the parameter is null
-     * @throws IllegalStateException if the parameter does not exist in the system under the
+     * @throws RiceIllegalArgumentException if the parameter is null
+     * @throws RiceIllegalStateException if the parameter does not exist in the system under the
      * specific application id or default rice application id
      */
     @WebMethod(operationName="updateParameter")
@@ -93,7 +93,7 @@ public interface ParameterRepositoryService {
      *
      * @param key the key to retrieve the parameter by. cannot be null.
      * @return a {@link Parameter} or null
-     * @throws IllegalArgumentException if the key is null
+     * @throws RiceIllegalArgumentException if the key is null
      */
     @WebMethod(operationName="getParameter")
     @WebResult(name = "parameter")
@@ -116,7 +116,7 @@ public interface ParameterRepositoryService {
      *
      * @param key the key to retrieve the parameter by. cannot be null.
      * @return a string value or null
-     * @throws IllegalArgumentException if the key is null
+     * @throws RiceIllegalArgumentException if the key is null
      */
     @WebMethod(operationName="getParameterValueAsString")
     @WebResult(name = "value")
@@ -159,7 +159,7 @@ public interface ParameterRepositoryService {
      *
      * @param key the key to retrieve the parameter by. cannot be null.
      * @return a boolean value or null
-     * @throws IllegalArgumentException if the key is null
+     * @throws RiceIllegalArgumentException if the key is null
      */
     @WebMethod(operationName="getParameterValueAsBoolean")
     @WebResult(name = "value")
@@ -189,7 +189,7 @@ public interface ParameterRepositoryService {
      *
      * @param key the key to retrieve the parameter by. cannot be null.
      * @return an immutable collection of strings
-     * @throws IllegalArgumentException if the key is null
+     * @throws RiceIllegalArgumentException if the key is null
      */
     @WebMethod(operationName="getParameterValuesAsString")
     @XmlElementWrapper(name = "values", required = true)
@@ -231,7 +231,7 @@ public interface ParameterRepositoryService {
      * @param key the key to retrieve the parameter by. cannot be null.
      * @param subParameterName the sub parameter to search for
      * @return a string value or null
-     * @throws IllegalArgumentException if the key is null or if the subParameterName is blank
+     * @throws RiceIllegalArgumentException if the key is null or if the subParameterName is blank
      */
     @WebMethod(operationName="getSubParameterValueAsString")
     @WebResult(name = "value")
@@ -281,7 +281,7 @@ public interface ParameterRepositoryService {
      * @param key the key to retrieve the parameter by. cannot be null.
      * @param subParameterName the sub parameter to search for
      * @return an immutable collection of strings
-     * @throws IllegalArgumentException if the key is null or if the subParameterName is blank
+     * @throws RiceIllegalArgumentException if the key is null or if the subParameterName is blank
      */
     @WebMethod(operationName="getSubParameterValuesAsString")
     @XmlElementWrapper(name = "values", required = true)

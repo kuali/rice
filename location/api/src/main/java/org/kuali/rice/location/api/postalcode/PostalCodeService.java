@@ -51,7 +51,7 @@ public interface PostalCodeService {
      * @param countryCode country code. cannot be blank.
      * @param code postal code value. cannot be blank.
      * @return a {@link PostalCode} or null
-     * @throws IllegalArgumentException country code or postal code value is blank
+     * @throws RiceIllegalArgumentException country code or postal code value is blank
      */
     @WebMethod(operationName="getPostalCode")
     @WebResult(name = "postalCode")
@@ -73,7 +73,7 @@ public interface PostalCodeService {
      *
      * @param countryCode state code. cannot be blank.
      * @return an immutable collection of states
-     * @throws IllegalArgumentException country code is blank
+     * @throws RiceIllegalArgumentException country code is blank
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
     @XmlElementWrapper(name = "postalCodes", required = false)

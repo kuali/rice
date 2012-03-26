@@ -43,6 +43,7 @@ public interface MessageDelivererRegistryService extends MessageDelivererRegistr
      * This method returns the associated deliverer class instance for the given MessageDelivery instance.
      * @param messageDelivery
      * @return MessageDeliverer or null if not found
+     * @throws RiceIllegalArgumentException if messageDelivery is null
      */
     MessageDeliverer getDeliverer(MessageDelivery messageDelivery) throws RiceIllegalArgumentException;
     
@@ -50,6 +51,7 @@ public interface MessageDelivererRegistryService extends MessageDelivererRegistr
      * This method returns the associated deliverer class instance for the given deliverer name.
      * @param messageDelivererName
      * @return MessageDeliverer or null if not found
+     * @throws RiceIllegalArgumentException if messageDelivererName is null
      */
     MessageDeliverer getDelivererByName(String messageDelivererName) throws RiceIllegalArgumentException;
 }

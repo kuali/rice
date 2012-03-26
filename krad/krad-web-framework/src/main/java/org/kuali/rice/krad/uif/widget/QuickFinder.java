@@ -463,10 +463,28 @@ public class QuickFinder extends WidgetBase {
         this.lookupParameters = lookupParameters;
     }
 
+    /**
+     * Comma delimited String of property names on the lookup view that should be read only
+     *
+     * <p>
+     * When requesting a lookup view, property names for fields that are rendered as search criteria can be marked
+     * as read-only. This is usually done when a lookup parameter for that property is sent in and the user should
+     * not be allowed to change the value
+     * </p>
+     *
+     * @return String property names (delimited by a comma) whose criteria fields should be read-only on the
+     * lookup view
+     */
     public String getReadOnlySearchFields() {
         return this.readOnlySearchFields;
     }
 
+    /**
+     * Setter for property names for criteria fields on the lookup view that should be read-only (multiple property
+     * names are specified using a comma delimiter)
+     *
+     * @param readOnlySearchFields
+     */
     public void setReadOnlySearchFields(String readOnlySearchFields) {
         this.readOnlySearchFields = readOnlySearchFields;
     }

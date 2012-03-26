@@ -270,104 +270,103 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function(a,b) {
 	return y - x;
 };
 
-jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var input = jq(this).find('input:text');
-		if(input.length != 0){
-			aData.push( input.val() );	
-		}else{
-            // match DataField or InputField CSS classes - respectively
-			var input1 = jq(this).find('.uif-field');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.find("span:first").text()));
-			}else{
-				aData.push("");
-			}
-		}
-		
-	} );
-	return aData;
+jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
+    var aData = [];
+    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var input = jq(this).find('input:text');
+        if (input.length != 0) {
+            aData.push(input.val());
+        } else {
+            // find span for the data or input field and get its text
+            var input1 = jq(this).find('.uif-field');
+            if (input1.length != 0) {
+                aData.push(jq.trim(input1.find("span:first").text()));
+            } else {
+                // just use the text within the cell
+                aData.push(jq(this).text());
+            }
+        }
+
+    });
+
+    return aData;
 }
 
 /* Create an array with the values of all the select options in a column */
-jQuery.fn.dataTableExt.afnSortData['dom-select'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var selected = jq(this).find('select option:selected:first');
-		if(selected.length != 0){
-			aData.push( selected.text() );	
-		}else{
-			var input1 = jq(this).find('.uif-inputField');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.text()));
-			}else{
-				aData.push( "");
-			}
-		}
-		
-	} );
-	return aData;
+jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn) {
+    var aData = [];
+    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var selected = jq(this).find('select option:selected:first');
+        if (selected.length != 0) {
+            aData.push(selected.text());
+        } else {
+            var input1 = jq(this).find('.uif-inputField');
+            if (input1.length != 0) {
+                aData.push(jq.trim(input1.text()));
+            } else {
+                aData.push("");
+            }
+        }
+
+    });
+
+    return aData;
 }
 
 /* Create an array with the values of all the checkboxes in a column */
-jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var checkboxes = jq(this).find('input:checkbox');
-		if(checkboxes.length != 0){
-			var str = "";
-			for(i=0; i < checkboxes.length; i++){
-				var check = checkboxes[i]; 
-				if (check.checked == true && check.value.length > 0){
-					str += check.value + " ";
-				}
-			}
-			aData.push( str );
-		}else{
-			var input1 = jq(this).find('.uif-inputField');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.text()));
-			}else{
-				aData.push( "");
-			}
-		}
-		
-	} );
-	return aData;
-	
+jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn) {
+    var aData = [];
+    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var checkboxes = jq(this).find('input:checkbox');
+        if (checkboxes.length != 0) {
+            var str = "";
+            for (i = 0; i < checkboxes.length; i++) {
+                var check = checkboxes[i];
+                if (check.checked == true && check.value.length > 0) {
+                    str += check.value + " ";
+                }
+            }
+            aData.push(str);
+        } else {
+            var input1 = jq(this).find('.uif-inputField');
+            if (input1.length != 0) {
+                aData.push(jq.trim(input1.text()));
+            } else {
+                aData.push("");
+            }
+        }
+
+    });
+
+    return aData;
 }
 
-jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function  ( oSettings, iColumn )
-{
-	var aData = [];
-	jq( 'td:eq('+iColumn+')', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
-		var radioButtons = jq(this).find('input:radio');
-		if(radioButtons.length != 0){
-			var value = "";
-			for(i=0; i < radioButtons.length; i++){
-				var radio = radioButtons[i];
-				if (radio.checked == true){
-					value = radio.value;
-					break;
-				}
-			}
-			aData.push( value );
-		}else{
-			var input1 = jq(this).find('.uif-inputField');
-			if(input1.length != 0){
-				aData.push(jq.trim(input1.text()));
-			}else{
-				aData.push( "");
-			}
-		}
-		
-	} );
-	return aData;
-	
+jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) {
+    var aData = [];
+    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var radioButtons = jq(this).find('input:radio');
+        if (radioButtons.length != 0) {
+            var value = "";
+            for (i = 0; i < radioButtons.length; i++) {
+                var radio = radioButtons[i];
+                if (radio.checked == true) {
+                    value = radio.value;
+                    break;
+                }
+            }
+            aData.push(value);
+        } else {
+            var input1 = jq(this).find('.uif-inputField');
+            if (input1.length != 0) {
+                aData.push(jq.trim(input1.text()));
+            } else {
+                aData.push("");
+            }
+        }
+
+    });
+
+    return aData;
 }
 
 // setup window javascript error handler
@@ -420,7 +419,7 @@ jq(document).ready(function() {
 jq(window).bind('beforeunload', function (evt) {
     // clear server form if closing the browser tab/window or going back
     // TODO: work out back button problem so we can add this clearing
-//    if (!event.clientY || (event.clientY < 0)) {
+//    if (!event.pageY || (event.pageY < 0)) {
 //        clearServerSideForm();
 //    }
 });

@@ -869,89 +869,17 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
-        Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        String reason = request.getParameter(KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME);
 
-        if (StringUtils.isBlank(reason)) {
-            String context = request.getParameter(KRADConstants.QUESTION_CONTEXT);
-            if (context != null && StringUtils.contains(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=")) {
-                reason = StringUtils.substringAfter(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=");
-            }
-        }
+        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT, KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, ConfirmationQuestion.NO, RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO);
+        ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
 
-        String disapprovalNoteText = "";
-
-        // start in logic for confirming the disapproval
-        if (question == null) {
-            // ask question if not already asked
-            return this.performQuestionWithInput(mapping, form, request, response,
-                    KRADConstants.DOCUMENT_DISAPPROVE_QUESTION,
-                    getKualiConfigurationService().getPropertyValueAsString(
-                            RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
-                    KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "");
-        }
-        Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
-        if ((KRADConstants.DOCUMENT_DISAPPROVE_QUESTION.equals(question))
-                && ConfirmationQuestion.NO.equals(buttonClicked)) {
-            // if no button clicked just reload the doc
-            return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        }
-
-        // have to check length on value entered
-        String introNoteMessage = getKualiConfigurationService().getPropertyValueAsString(
-                RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO)
-                + KRADConstants.BLANK_SPACE;
-
-        // build out full message
-        disapprovalNoteText = introNoteMessage + reason;
-
-        // check for sensitive data in note
-        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
-                KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
-        if (warnForSensitiveData) {
-            String context = KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=" + reason;
-            ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response,
-                    KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, disapprovalNoteText, "disapprove", context);
-            if (forward != null) {
-                return forward;
-            }
-        } else {
-            if (KRADUtils.containsSensitiveDataPatternMatch(disapprovalNoteText)) {
-                return this
-                        .performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
-                                KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService()
-                                .getPropertyValueAsString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
-                                KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "", reason,
-                                RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
-                                KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason");
-            }
-        }
-
-        int disapprovalNoteTextLength = disapprovalNoteText.length();
-
-        // get note text max length from DD
-        int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class,
-                KRADConstants.NOTE_TEXT_PROPERTY_NAME);
-
-        if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
-
-            if (reason == null) {
-                // prevent a NPE by setting the reason to a blank string
-                reason = "";
-            }
-            return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
-                    KRADConstants.DOCUMENT_DISAPPROVE_QUESTION,
-                    getKualiConfigurationService().getPropertyValueAsString(
-                            RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
-                    KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, "", reason,
-                    RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
-                    KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength));
+        if (resp.forward != null) {
+            return resp.forward;
         }
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
-        getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), disapprovalNoteText);
+        getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), resp.reason);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
         kualiDocumentFormBase.setAnnotation("");
 
@@ -1007,40 +935,21 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     public ActionForward recall(ActionMapping mapping, ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        String reason = request.getParameter(KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME);
+        
+        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_RECALL_QUESTION, RiceKeyConstants.QUESTION_RECALL_DOCUMENT, KRADConstants.RECALL_QUESTION, KRADConstants.MAPPING_RECALL, null, RiceKeyConstants.MESSAGE_RECALL_NOTE_TEXT_INTRO);
+        ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
 
-        // start in logic for confirming the disapproval
-        if (question == null) {
-            // ask question if not already asked
-            return this.performQuestionWithInput(mapping, form, request, response,
-                    KRADConstants.DOCUMENT_RECALL_QUESTION,
-                    "",
-                    KRADConstants.RECALL_QUESTION, KRADConstants.MAPPING_RECALL, "");
-        } else {
-            Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
-
-            boolean cancel = !((KRADConstants.DOCUMENT_RECALL_QUESTION.equals(question)) && RecallQuestion.RECALL_TO_ACTIONLIST.equals(buttonClicked));
-
-            if (StringUtils.isBlank(reason)) {
-                reason = "";
-                // TODO: change to a Note, as per disapprove action
-                // arbitrary for now
-                int reason_length = getDataDictionaryService().getAttributeMaxLength(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME);
-                return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
-                        KRADConstants.DOCUMENT_RECALL_QUESTION,
-                        "",
-                        KRADConstants.RECALL_QUESTION, KRADConstants.MAPPING_RECALL, "", reason,
-                        RiceKeyConstants.ERROR_DOCUMENT_RECALL_REASON_REQUIRED,
-                        KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(reason_length));
-            }
-
-            KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
-            doProcessingAfterPost(kualiDocumentFormBase, request);
-            getDocumentService().recallDocument(kualiDocumentFormBase.getDocument(), reason, cancel);
-
-            return returnToSender(request, mapping, kualiDocumentFormBase);
+        if (resp.forward != null) {
+            return resp.forward;
         }
+        
+        boolean cancel = !((KRADConstants.DOCUMENT_RECALL_QUESTION.equals(resp.question)) && RecallQuestion.RECALL_TO_ACTIONLIST.equals(resp.button));
+
+        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost(kualiDocumentFormBase, request);
+        getDocumentService().recallDocument(kualiDocumentFormBase.getDocument(), resp.reason, cancel);
+
+        return returnToSender(request, mapping, kualiDocumentFormBase);
     }
 
     /**
@@ -1937,6 +1846,144 @@ public class KualiDocumentActionBase extends KualiAction {
             Document document = ((KualiDocumentFormBase) form).getDocument();
 
             getBusinessObjectService().linkUserFields(document);
+        }
+    }
+
+    /**
+     * Class that encapsulates the workflow for obtaining an reason from an action prompt.
+     */
+    private class ReasonPrompt {
+        final String questionId;
+        final String questionTextKey;
+        final String questionType;
+        final String questionCallerMapping;
+        final String abortButton;
+        final String noteIntroKey;
+
+        private class Response {
+            final String question;
+            final ActionForward forward;
+            final String reason;
+            final String button;
+            Response(String question, ActionForward forward) {
+                this(question, forward, null, null);
+            }
+            Response(String question, String reason, String button) {
+                this(question, null, reason, button);
+            }
+            private Response(String question, ActionForward forward, String reason, String button) {
+                this.question = question;
+                this.forward = forward;
+                this.reason = reason;
+                this.button = button;
+            }
+        }
+
+        /**
+         * @param questionId the question id/instance, 
+         * @param questionTextKey application resources key for question text
+         * @param questionType the {@link org.kuali.rice.kns.question.Question} question type
+         * @param questionCallerMapping mapping of original action
+         * @param abortButton button value considered to abort the prompt and return (optional, may be null)
+         * @param noteIntroKey application resources key for quesiton text prefix (optional, may be null)
+         */
+        private ReasonPrompt(String questionId, String questionTextKey, String questionType, String questionCallerMapping, String abortButton, String noteIntroKey) {
+            this.questionId = questionId;
+            this.questionTextKey = questionTextKey;
+            this.questionType = questionType;
+            this.questionCallerMapping = questionCallerMapping;
+            this.abortButton = abortButton;
+            this.noteIntroKey = noteIntroKey;
+        }
+
+        /**
+         * Obtain a validated reason and button value via a Question prompt.  Reason is validated against
+         * sensitive data patterns, and max Note text length
+         * @param mapping Struts mapping
+         * @param form Struts form
+         * @param request http request
+         * @param response http response
+         * @return Response object representing *either*: 1) an ActionForward due to error or abort 2) a reason and button clicked
+         * @throws Exception
+         */
+        public Response ask(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+            String question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
+            String reason = request.getParameter(KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME);
+
+            if (StringUtils.isBlank(reason)) {
+                String context = request.getParameter(KRADConstants.QUESTION_CONTEXT);
+                if (context != null && StringUtils.contains(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=")) {
+                    reason = StringUtils.substringAfter(context, KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=");
+                }
+            }
+
+            String disapprovalNoteText = "";
+
+            // start in logic for confirming the disapproval
+            if (question == null) {
+                // ask question if not already asked
+                return new Response(question, performQuestionWithInput(mapping, form, request, response,
+                        this.questionId,
+                        getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
+                        this.questionType, this.questionCallerMapping, ""));
+            }
+
+            String buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+            if (this.questionId.equals(question) && abortButton != null && abortButton.equals(buttonClicked)) {
+                // if no button clicked just reload the doc
+                return new Response(question, mapping.findForward(RiceConstants.MAPPING_BASIC));
+            }
+
+            // have to check length on value entered
+            String introNoteMessage = "";
+            if (noteIntroKey != null) {
+                introNoteMessage = getKualiConfigurationService().getPropertyValueAsString(this.noteIntroKey) + KRADConstants.BLANK_SPACE;
+            }
+
+            // build out full message
+            disapprovalNoteText = introNoteMessage + reason;
+
+            // check for sensitive data in note
+            boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                    KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                    KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+            if (warnForSensitiveData) {
+                String context = KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=" + reason;
+                ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response,
+                        KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, disapprovalNoteText, this.questionCallerMapping, context);
+                if (forward != null) {
+                    return new Response(question, forward);
+                }
+            } else {
+                if (KRADUtils.containsSensitiveDataPatternMatch(disapprovalNoteText)) {
+                    return new Response(question, performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+                            this.questionId, getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
+                            this.questionType, this.questionCallerMapping, "", reason,
+                            RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
+                            KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason"));
+                }
+            }
+
+            int disapprovalNoteTextLength = disapprovalNoteText.length();
+
+            // get note text max length from DD
+            int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME);
+
+            if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
+
+                if (reason == null) {
+                    // prevent a NPE by setting the reason to a blank string
+                    reason = "";
+                }
+                return new Response(question, performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+                        this.questionId,
+                        getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
+                        this.questionType, this.questionCallerMapping, "", reason,
+                        RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
+                        KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength)));
+            }
+
+            return new Response(question, disapprovalNoteText, buttonClicked);
         }
     }
 }

@@ -139,6 +139,7 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_REVERT_SUCCESSFUL = "message.revert.successful";
     public static final String MESSAGE_REVERT_UNNECESSARY = "message.revert.unnecessary";
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
+    public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
 
     public static final String MESSAGE_DELETE="message.delete";
     public static final String MESSAGE_DELETED="mesage.deleted";

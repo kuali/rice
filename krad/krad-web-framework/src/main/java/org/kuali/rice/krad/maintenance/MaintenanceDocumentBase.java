@@ -627,6 +627,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             populateDocumentAttachment();
             populateAttachmentForBO();
         }
+        populateXmlDocumentContentsFromMaintainables();
     }
 
     /**

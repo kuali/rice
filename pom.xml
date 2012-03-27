@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.0.33</version>
+    <version>1.1.0</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -180,7 +180,7 @@
 
     <!-- Directory wsdl's get generated into -->
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
-    <plugin.http.version>1.0.4</plugin.http.version>
+    <plugin.http.version>1.0.5</plugin.http.version>
   </properties>
 
   <profiles>

@@ -180,7 +180,7 @@
 
     <!-- Directory wsdl's get generated into -->
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
-    <plugin.http.version>1.0.2</plugin.http.version>
+    <plugin.http.version>1.0.4</plugin.http.version>
   </properties>
 
   <profiles>

@@ -34,10 +34,14 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -207,8 +211,9 @@ public class RecallActionTest extends KEWTestCase {
         assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
         assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
 
-        // get the kim type for just checking against permission document type name
-        KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KR-SYS", "Document Type (Permission)");
+        // set up the kim type
+        KimType type = configureKimType();
+
         // default kimtype does not work NPE - no default permissiontypeservice injected?
         // using default until I can figure out how permissiontypeservices fit into the picture...just use exact match for now
         //KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KUALI", "Default");
@@ -223,7 +228,7 @@ public class RecallActionTest extends KEWTestCase {
         template.setDescription("Recall permission template");
         // save our esteemed template
         template = (PermissionTemplateBo) KRADServiceLocator.getBusinessObjectService().save(template);
-         assertNotNull(KimApiServiceLocator.getPermissionService().getPermissionTemplate(template.getId()));
+        assertNotNull(KimApiServiceLocator.getPermissionService().getPermissionTemplate(template.getId()));
         
         // create a recall permission for the RECALL_TEST_DOC doctype
         Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
@@ -231,12 +236,21 @@ public class RecallActionTest extends KEWTestCase {
         permission.setTemplate(Template.Builder.create(template));
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, RECALL_TEST_DOC);
+        attrs.put(KewApiConstants.APP_DOC_STATUS_DETAIL, "recallable by admins");
         permission.setActive(true);
         permission.setAttributes(attrs);
-        // have to save template association as second step otherwise it tries to create a new template
+
         Permission perm = KimApiServiceLocator.getPermissionService().createPermission(permission.build());
         assertEquals(perm.getTemplate().getId(), template.getId());
-        assertTrue(KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, null));
+        assertEquals(2, perm.getAttributes().size());
+        assertEquals(RECALL_TEST_DOC, perm.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
+        Map<String, String> testDetails = new HashMap<String, String>();
+        testDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, RECALL_TEST_DOC);
+        // XXX: FIXME: appDocStatus is not getting explicitly or implicitly checked by
+        // the "KR-SYS:Document Type & Routing Node or State" kim type (DocumentTypeAndNodeOrStatePermissionTypeServiceImpl)
+        // so it looks like we'll need a specialized subclass after all
+        testDetails.put(KewApiConstants.APP_DOC_STATUS_DETAIL, "THIS SHOULD FAIL BUT WON'T");
+        assertTrue(KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, testDetails));
 
         Role techadmin = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
         KimApiServiceLocator.getRoleService().assignPermissionToRole(perm.getId(), techadmin.getId());
@@ -249,6 +263,38 @@ public class RecallActionTest extends KEWTestCase {
         // now technical admins can recall by virtue of having the recall permission on this doc
         assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
         assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+    }
+
+    protected static KimType configureKimType() {
+        // get the kim type for just checking against permission document type name
+        //KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KR-SYS", "Document Type (Permission)");
+        //KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KR-SYS", "Document Type, Routing Node & Field(s)");
+        KimType type = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace("KR-SYS", "Document Type & Routing Node or State");
+        KimAttributeBo bo = new KimAttributeBo();
+        bo.setAttributeName("appDocStatus");
+        bo.setNamespaceCode("KR-WKFLW");
+        bo.setActive(true);
+        bo.setComponentName("org.kuali.rice.kim.bo.impl.KimAttributes");
+        bo.setId("99");
+        bo = (KimAttributeBo) KRADServiceLocator.getBusinessObjectService().save(bo);
+
+        KimTypeBo ktbo = KimTypeBo.from(type);
+        KimTypeAttributeBo ktabo = new KimTypeAttributeBo();
+        ktabo.setActive(true);
+        ktabo.setKimAttribute(bo);
+        ktabo.setKimAttributeId(bo.getId());
+        ktabo.setKimTypeId(type.getId());
+        ktabo.setSortCode("a");
+        ktbo.getAttributeDefinitions().add(ktabo);
+        KRADServiceLocator.getBusinessObjectService().save(ktabo);
+        KRADServiceLocator.getBusinessObjectService().save(ktbo);
+
+        KimType savedType = KimApiServiceLocator.getKimTypeInfoService().getKimType(type.getId());
+        assertEquals(4, savedType.getAttributeDefinitions().size());
+        KimTypeAttribute appDocStatusAttr = savedType.getAttributeDefinitionByName("appDocStatus");
+        assertNotNull(appDocStatusAttr.getKimAttribute());
+        
+        return type;
     }
 
     @Test public void testRecallToActionListAsInitiatorAfterApprovals() throws Exception {

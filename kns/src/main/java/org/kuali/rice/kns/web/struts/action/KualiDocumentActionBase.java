@@ -884,7 +884,7 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request,
                                     HttpServletResponse response) throws Exception {
 
-        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT, KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_DISAPPROVE, ConfirmationQuestion.NO, RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO);
+        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT, KRADConstants.CONFIRMATION_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED, KRADConstants.MAPPING_DISAPPROVE, ConfirmationQuestion.NO, RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO);
         ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
 
         if (resp.forward != null) {
@@ -950,7 +950,7 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward recall(ActionMapping mapping, ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         
-        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_RECALL_QUESTION, RiceKeyConstants.QUESTION_RECALL_DOCUMENT, KRADConstants.RECALL_QUESTION, KRADConstants.MAPPING_RECALL, null, RiceKeyConstants.MESSAGE_RECALL_NOTE_TEXT_INTRO);
+        ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_RECALL_QUESTION, RiceKeyConstants.QUESTION_RECALL_DOCUMENT, KRADConstants.RECALL_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_RECALL_REASON_REQUIRED, KRADConstants.MAPPING_RECALL, null, RiceKeyConstants.MESSAGE_RECALL_NOTE_TEXT_INTRO);
         ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
 
         if (resp.forward != null) {
@@ -963,7 +963,8 @@ public class KualiDocumentActionBase extends KualiAction {
         doProcessingAfterPost(kualiDocumentFormBase, request);
         getDocumentService().recallDocument(kualiDocumentFormBase.getDocument(), resp.reason, cancel);
 
-        return returnToSender(request, mapping, kualiDocumentFormBase);
+        // just return to doc view
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 
     /**
@@ -1870,6 +1871,7 @@ public class KualiDocumentActionBase extends KualiAction {
         final String questionId;
         final String questionTextKey;
         final String questionType;
+        final String missingReasonKey;
         final String questionCallerMapping;
         final String abortButton;
         final String noteIntroKey;
@@ -1901,13 +1903,14 @@ public class KualiDocumentActionBase extends KualiAction {
          * @param abortButton button value considered to abort the prompt and return (optional, may be null)
          * @param noteIntroKey application resources key for quesiton text prefix (optional, may be null)
          */
-        private ReasonPrompt(String questionId, String questionTextKey, String questionType, String questionCallerMapping, String abortButton, String noteIntroKey) {
+        private ReasonPrompt(String questionId, String questionTextKey, String questionType, String missingReasonKey, String questionCallerMapping, String abortButton, String noteIntroKey) {
             this.questionId = questionId;
             this.questionTextKey = questionTextKey;
             this.questionType = questionType;
             this.questionCallerMapping = questionCallerMapping;
             this.abortButton = abortButton;
             this.noteIntroKey = noteIntroKey;
+            this.missingReasonKey = missingReasonKey;
         }
 
         /**
@@ -1993,7 +1996,7 @@ public class KualiDocumentActionBase extends KualiAction {
                         this.questionId,
                         getKualiConfigurationService().getPropertyValueAsString(this.questionTextKey),
                         this.questionType, this.questionCallerMapping, "", reason,
-                        RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
+                        this.missingReasonKey,
                         KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME, Integer.toString(noteTextMaxLength)));
             }
 

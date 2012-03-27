@@ -364,7 +364,7 @@ public final class KRADConstants {
     public static final String MAINTENANCE_NEW_MAINTAINABLE = "document.newMaintainableObject.";
     public static final String MAINTENANCE_OLD_MAINTAINABLE = "document.oldMaintainableObject.";
     public static final String MAPPING_CANCEL = "cancel";
-    public static final String MAPPING_RECALL = "cancel";
+    public static final String MAPPING_RECALL = "recall";
     public static final String MAPPING_CLOSE = "close";
     public static final String MAPPING_DISAPPROVE = "disapprove";
 //    public static final String MAPPING_DELETE = "delete";

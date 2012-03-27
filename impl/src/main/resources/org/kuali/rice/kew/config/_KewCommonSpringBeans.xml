@@ -55,6 +55,11 @@
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="rice.ksb.serviceBus"/>
 
+  <bean id="rice.kew.import.kualiModuleService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiModuleService"/>
+  </bean>
+
   <bean id="kewServiceExporter"
         class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
         abstract="true"

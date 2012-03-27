@@ -79,9 +79,19 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
+    public List<CodedAttribute> findAllAddressTypes() {
+        return getInnerIdentityService().findAllAddressTypes();
+    }
+
+    @Override
 	public EntityAffiliationType getAffiliationType(String code) {
 		return getInnerIdentityService().getAffiliationType(code);
 	}
+
+    @Override
+    public List<EntityAffiliationType> findAllAffiliationTypes() {
+        return getInnerIdentityService().findAllAffiliationTypes();
+    }
 
     /**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getCitizenshipStatus(java.lang.String)
@@ -90,7 +100,12 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	public CodedAttribute getCitizenshipStatus(String code) {
 		return CodedAttribute.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
 	}
-    
+
+    @Override
+    public List<CodedAttribute> findAllCitizenshipStatuses() {
+        return getInnerIdentityService().findAllCitizenshipStatuses();
+    }
+
     @Override
 	public EntityNamePrincipalName getDefaultNamesForPrincipalId(String principalId) {
     	EntityNamePrincipalName name = getInnerIdentityService().getDefaultNamesForPrincipalId(principalId);
@@ -159,6 +174,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
+    public List<CodedAttribute> findAllEmailTypes() {
+        return getInnerIdentityService().findAllEmailTypes();
+    }
+
+    @Override
     public PrincipalQueryResults findPrincipals(QueryByCriteria query) throws RiceIllegalArgumentException {
         return getInnerIdentityService().findPrincipals(query);
     }
@@ -171,6 +191,10 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		return getInnerIdentityService().getEmploymentStatus(code);
 	}
 
+    @Override
+    public List<CodedAttribute> findAllEmploymentStatuses() {
+        return getInnerIdentityService().findAllEmploymentStatuses();
+    }
 
     /**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEmploymentType(java.lang.String)
@@ -180,6 +204,10 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 		return getInnerIdentityService().getEmploymentType(code);
 	}
 
+    @Override
+    public List<CodedAttribute> findAllEmploymentTypes() {
+        return getInnerIdentityService().findAllEmploymentTypes();
+    }
 
     /**
 	 * This method first tries the inner IdentityService impl, and resorts to
@@ -295,6 +323,11 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
+    public List<CodedAttribute> findAllNameTypes() {
+        return getInnerIdentityService().findAllNameTypes();
+    }
+
+    @Override
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(
 			String entityId) {
 		return getInnerIdentityService().getEntityPrivacyPreferences(entityId);
@@ -364,18 +397,32 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	}
 
     @Override
+    public List<CodedAttribute> findAllEntityTypes() {
+        return getInnerIdentityService().findAllEntityTypes();
+    }
+
+    @Override
 	public EntityExternalIdentifierType getExternalIdentifierType(String code) {
 		return getInnerIdentityService().getExternalIdentifierType(code);
 	}
 
+    @Override
+    public List<EntityExternalIdentifierType> findAllExternalIdendtifierTypes() {
+        return getInnerIdentityService().findAllExternalIdendtifierTypes();
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getPhoneType(java.lang.String)
 	 */
     @Override
 	public CodedAttribute getPhoneType(String code) {
 		return getInnerIdentityService().getPhoneType(code);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllPhoneTypes() {
+        return getInnerIdentityService().findAllPhoneTypes();
+    }
 
     @Override
 	public Principal getPrincipal(String principalId) {

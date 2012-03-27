@@ -105,9 +105,8 @@
     </property>
   </bean>
 
-  <bean id="coreServiceServerModuleConfiguration-parentBean"
-        class="org.kuali.rice.krad.bo.ModuleConfiguration"
-        abstract="true">
+  <bean id="coreServiceServerModuleConfiguration"
+        class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-CR"/>
     <property name="dataSourceName" value="coreServiceDataSource"/>
     <property name="initializeDataDictionary" value="true"/>
@@ -127,18 +126,11 @@
         <value>org.kuali.rice.coreservice.</value>
       </list>
     </property>
-    <property name="externalizableBusinessObjectImplementations">
-      <map>
-        <entry key="org.kuali.rice.coreservice.framework.component.ComponentEbo"
-               value="org.kuali.rice.coreservice.impl.component.ComponentBo"/>
-        <entry key="org.kuali.rice.coreservice.framework.namespace.NamespaceEbo"
-               value="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"/>
-        <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo"
-               value="org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo"/>
-        <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterEbo"
-               value="org.kuali.rice.coreservice.impl.parameter.ParameterBo"/>
-      </map>
-    </property>
+  </bean>
+
+  <bean id="coreServiceServerModule" class="org.kuali.rice.coreservice.service.impl.CoreServiceModuleService">
+    <property name="moduleConfiguration" ref="coreServiceServerModuleConfiguration"/>
+    <property name="kualiModuleService" ref="rice.coreService.import.kualiModuleService"/>
   </bean>
 
   <bean id="rice.coreService.import.businessObjectService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

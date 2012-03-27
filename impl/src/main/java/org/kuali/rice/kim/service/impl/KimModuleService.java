@@ -48,8 +48,6 @@ import org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo;
 import org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;

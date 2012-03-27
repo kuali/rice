@@ -38,13 +38,8 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
 
     protected static final Logger LOG = Logger.getLogger(ModuleServiceBase.class);
 
-   // protected ModuleConfiguration moduleConfiguration;
     protected BusinessObjectService businessObjectService;
-    //protected LookupService lookupService;
     protected BusinessObjectDictionaryService businessObjectDictionaryService;
-    //protected KualiModuleService kualiModuleService;
-    //protected ApplicationContext applicationContext;
-    //protected ConfigurationService kualiConfigurationService;
 
 
     /**

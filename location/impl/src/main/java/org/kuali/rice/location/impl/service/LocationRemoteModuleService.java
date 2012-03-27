@@ -110,30 +110,9 @@ public class LocationRemoteModuleService extends RemoteModuleServiceBase {
         QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
         Predicate predicate = PredicateUtils.convertObjectMapToPredicate(fieldValues);
         queryBuilder.setPredicates(predicate);
-        
+
         return this.queryForEbos(businessObjectClass, queryBuilder.build());
     }
-
-    /*@Override
-    public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
-            Class<T> businessObjectClass, Map<String, Object> fieldValues, boolean unbounded) {
-
-        Map<String, String> searchCriteria = new HashMap<String, String>();
-        for (Map.Entry<String, Object> fieldValue : fieldValues.entrySet()) {
-            if (fieldValue.getValue() != null) {
-                searchCriteria.put(fieldValue.getKey(), fieldValue.getValue().toString());
-            }
-            else {
-                searchCriteria.put(fieldValue.getKey(), null);
-            }
-        }
-        //convert fieldValues to Query
-        QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
-        Predicate predicate = PredicateUtils.convertMapToPredicate(searchCriteria);
-        queryBuilder.setPredicates(predicate);
-
-        return this.queryForEbos(businessObjectClass, queryBuilder.build());
-    }*/
 
     @Override
     public boolean isExternalizable(Class boClass) {
@@ -170,7 +149,7 @@ public class LocationRemoteModuleService extends RemoteModuleServiceBase {
         primaryKeys.add("code");
         if(StateContract.class.isAssignableFrom(boClass)
                 || PostalCodeContract.class.isAssignableFrom(boClass)){
-            return Collections.singletonList("countryCode");
+            primaryKeys.add("countryCode");
         }
         return primaryKeys;
     }

@@ -50,6 +50,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
 /**
  * This service provides operations to query for principal and identity data.
@@ -998,6 +999,16 @@ public interface IdentityService {
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EntityType}", key="'code=' + #p0")
 	CodedAttribute getEntityType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
+    /**
+     * Finds all EntityTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllEntityTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EntityType}", key="'all'")
+    List<CodedAttribute> findAllEntityTypes();
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityAddressType code.
@@ -1016,6 +1027,18 @@ public interface IdentityService {
 	CodedAttribute getAddressType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
     /**
+     * Finds all EntityAddressTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllAddressTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{AddressType}", key="'all'")
+    List<CodedAttribute> findAllAddressTypes();
+
+
+    /**
      * Gets the {@link org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType} for a given EntityAffiliationType code.
      *
      * <p>
@@ -1030,6 +1053,17 @@ public interface IdentityService {
     @WebResult(name = "affiliationType")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{AffiliationType}", key="'code=' + #p0")
 	EntityAffiliationType getAffiliationType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+
+    /**
+     * Finds all EntityAffiliationTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType}
+     */
+    @WebMethod(operationName = "findAllAffiliationTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{AffiliationType}", key="'all'")
+    List<EntityAffiliationType> findAllAffiliationTypes();
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityCitizenship status code.
@@ -1048,6 +1082,17 @@ public interface IdentityService {
 	CodedAttribute getCitizenshipStatus( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
     /**
+     * Finds all EntityCitizenshipStatuses
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllCitizenshipStatuses")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{CitizenshipStatus}", key="'all'")
+    List<CodedAttribute> findAllCitizenshipStatuses();
+
+    /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmployment type code.
      *
      * <p>
@@ -1062,7 +1107,18 @@ public interface IdentityService {
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentType}", key="'code=' + #p0")
 	CodedAttribute getEmploymentType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
-    
+
+    /**
+     * Finds all EntityEmploymentTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllEmploymentTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentType}", key="'all'")
+    List<CodedAttribute> findAllEmploymentTypes();
+
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmployment status code.
      *
@@ -1078,7 +1134,18 @@ public interface IdentityService {
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentStatus}", key="'code=' + #p0")
 	CodedAttribute getEmploymentStatus( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
-    
+
+    /**
+     * Finds all EntityEmploymentStatuses
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllEmploymentStatuses")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentStatus}", key="'all'")
+    List<CodedAttribute> findAllEmploymentStatuses();
+
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType} for a given type code.
      *
@@ -1094,6 +1161,17 @@ public interface IdentityService {
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{ExternalIdentifierType}", key="'code=' + #p0")
 	EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
+
+    /**
+     * Finds all ExternalIdentifierTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType}
+     */
+    @WebMethod(operationName = "findAllExternalIdentifierTypeTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{ExternalIdentifierType}", key="'all'")
+    List<EntityExternalIdentifierType> findAllExternalIdendtifierTypes();
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityName type code.
@@ -1110,6 +1188,17 @@ public interface IdentityService {
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'code=' + #p0")
 	CodedAttribute getNameType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
+
+    /**
+     * Finds all EntityNameTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllNameTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'all'")
+    List<CodedAttribute> findAllNameTypes();
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityPhone type code.
@@ -1126,6 +1215,17 @@ public interface IdentityService {
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'code=' + #p0")
 	CodedAttribute getPhoneType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
+
+    /**
+     * Finds all EntityPhoneTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllPhoneTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'all'")
+    List<CodedAttribute> findAllPhoneTypes();
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmail type code.
@@ -1143,6 +1243,16 @@ public interface IdentityService {
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'code=' + #p0")
 	CodedAttribute getEmailType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
+    /**
+     * Finds all EntityEmailTypes
+     *
+     * @since 2.0.1
+     * @return a list of {@link org.kuali.rice.kim.api.identity.CodedAttribute}
+     */
+    @WebMethod(operationName = "findAllEmailTypes")
+    @WebResult(name = "types")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'all'")
+    List<CodedAttribute> findAllEmailTypes();
 
     /**
      * This method finds Principals based on a query criteria.  The criteria cannot be null.

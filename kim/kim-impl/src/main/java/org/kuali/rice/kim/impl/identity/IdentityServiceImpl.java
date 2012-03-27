@@ -771,6 +771,17 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityAddressTypeBo.to(impl);
 	}
 
+    @Override
+    public List<CodedAttribute> findAllAddressTypes() {
+        List<EntityAddressTypeBo> bos = (List<EntityAddressTypeBo>)businessObjectService
+                .findMatching(EntityAddressTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityAddressTypeBo bo : bos) {
+            codedAttributes.add(EntityAddressTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
 
     @Override
     public EntityAffiliationType getAffiliationType( String code ) throws RiceIllegalArgumentException {
@@ -784,6 +795,18 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
+    public List<EntityAffiliationType> findAllAffiliationTypes() {
+        List<EntityAffiliationTypeBo> bos = (List<EntityAffiliationTypeBo>)businessObjectService
+                .findMatching(EntityAffiliationTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<EntityAffiliationType> codedAttributes = new ArrayList<EntityAffiliationType>();
+        for (EntityAffiliationTypeBo bo : bos) {
+            codedAttributes.add(EntityAffiliationTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
+
+    @Override
     public CodedAttribute getCitizenshipStatus( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
         EntityCitizenshipStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
@@ -792,6 +815,19 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityCitizenshipStatusBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllCitizenshipStatuses() {
+        List<EntityCitizenshipStatusBo> bos = (List<EntityCitizenshipStatusBo>)businessObjectService
+                .findMatching(EntityCitizenshipStatusBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityCitizenshipStatusBo bo : bos) {
+            codedAttributes.add(EntityCitizenshipStatusBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
+
     @Override
     public CodedAttribute getEmailType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
@@ -801,6 +837,18 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmailTypeBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllEmailTypes() {
+        List<EntityEmailTypeBo> bos = (List<EntityEmailTypeBo>)businessObjectService
+                .findMatching(EntityEmailTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityEmailTypeBo bo : bos) {
+            codedAttributes.add(EntityEmailTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
 
     @Override
     public PrincipalQueryResults findPrincipals(
@@ -831,6 +879,19 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmploymentStatusBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllEmploymentStatuses() {
+        List<EntityEmploymentStatusBo> bos = (List<EntityEmploymentStatusBo>)businessObjectService
+                .findMatching(EntityEmploymentStatusBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityEmploymentStatusBo bo : bos) {
+            codedAttributes.add(EntityEmploymentStatusBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
+
     @Override
     public CodedAttribute getEmploymentType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
@@ -840,6 +901,19 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityEmploymentTypeBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllEmploymentTypes() {
+        List<EntityEmploymentTypeBo> bos = (List<EntityEmploymentTypeBo>)businessObjectService
+                .findMatching(EntityEmploymentTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityEmploymentTypeBo bo : bos) {
+            codedAttributes.add(EntityEmploymentTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
+
     @Override
     public CodedAttribute getNameType(String code) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
@@ -849,6 +923,19 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityNameTypeBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllNameTypes() {
+        List<EntityNameTypeBo> bos = (List<EntityNameTypeBo>)businessObjectService
+                .findMatching(EntityNameTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityNameTypeBo bo : bos) {
+            codedAttributes.add(EntityNameTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
+
     @Override
     public CodedAttribute getEntityType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
@@ -858,6 +945,18 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityTypeBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllEntityTypes() {
+        List<EntityTypeBo> bos = (List<EntityTypeBo>)businessObjectService
+                .findMatching(EntityTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityTypeBo bo : bos) {
+            codedAttributes.add(EntityTypeBo.to(bo));    
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
 
     @Override
     public EntityExternalIdentifierType getExternalIdentifierType( String code ) throws RiceIllegalArgumentException {
@@ -870,6 +969,17 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityExternalIdentifierTypeBo.to(impl);
 	}
 
+    @Override
+    public List<EntityExternalIdentifierType> findAllExternalIdendtifierTypes() {
+        List<EntityExternalIdentifierTypeBo> bos = (List<EntityExternalIdentifierTypeBo>)businessObjectService
+                .findMatching(EntityExternalIdentifierTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<EntityExternalIdentifierType> codedAttributes = new ArrayList<EntityExternalIdentifierType>();
+        for (EntityExternalIdentifierTypeBo bo : bos) {
+            codedAttributes.add(EntityExternalIdentifierTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
 
     @Override
     public CodedAttribute getPhoneType( String code ) throws RiceIllegalArgumentException {
@@ -880,6 +990,18 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return EntityPhoneTypeBo.to(impl);
 	}
+
+    @Override
+    public List<CodedAttribute> findAllPhoneTypes() {
+        List<EntityPhoneTypeBo> bos = (List<EntityPhoneTypeBo>)businessObjectService
+                .findMatching(EntityPhoneTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+
+        List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
+        for (EntityPhoneTypeBo bo : bos) {
+            codedAttributes.add(EntityPhoneTypeBo.to(bo));
+        }
+        return Collections.unmodifiableList(codedAttributes);
+    }
 
     @Override
     public Entity createEntity(Entity entity) throws RiceIllegalArgumentException, RiceIllegalStateException {

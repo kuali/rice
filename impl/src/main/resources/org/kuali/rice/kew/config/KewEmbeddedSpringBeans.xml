@@ -285,11 +285,6 @@
     <property name="serviceName" value="persistenceServiceOjb"/>
   </bean>
 
-  <bean id="rice.kew.import.kualiModuleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="kualiModuleService"/>
-  </bean>
-
   <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService">
     <property name="moduleConfiguration" ref="kewModuleConfiguration"/>
     <property name="kualiModuleService" ref="rice.kew.import.kualiModuleService"/>

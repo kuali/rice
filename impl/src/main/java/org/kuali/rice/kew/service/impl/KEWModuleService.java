@@ -191,7 +191,8 @@ public class KEWModuleService extends ModuleServiceBase {
 		return super.getExternalizableBusinessObjectInquiryUrl(
 				inquiryBusinessObjectClass, parameters);
 	}
-	/**
+
+    /**
 	 * We want to be able to use name as an alternate key
 	 *
 	 * @see org.kuali.rice.krad.service.ModuleService#listAlternatePrimaryKeyFieldNames(java.lang.Class)

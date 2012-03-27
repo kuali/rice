@@ -15,16 +15,28 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.NoOpStringFormatter;
 import org.kuali.rice.core.web.format.TimestampAMPMFormatter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -49,14 +61,6 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.util.AutoPopulatingList;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is
@@ -97,7 +101,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     private String formKey;
     private String docNum;
     
-
+    private List<ActionRequest> actionRequests;
+    private List<String> selectedActionRequests;
+    private String superUserAnnotation;
+    
     
     /**
      * Stores the error map from previous requests, so that we can continue to display error messages displayed during a previous request
@@ -776,7 +783,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         this.setRefreshCaller(null);
         this.setAnchor(null);
         this.setCurrentTabIndex(0);
-        
+        this.setSelectedActionRequests(new ArrayList<String>());
     }
 
     
@@ -899,5 +906,45 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     		final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
     		super.setHeaderNavigationTabs(navList.toArray(list));
     	}
-    } 
+    }
+    
+    public List<ActionRequest> getActionRequests() {
+		return actionRequests;
+	}
+
+	public void setActionRequests(List<ActionRequest> actionRequests) {
+		this.actionRequests = actionRequests;
+	}
+
+	public List<String> getSelectedActionRequests() {
+		return selectedActionRequests;
+	}
+
+	public void setSelectedActionRequests(List<String> selectedActionRequests) {
+		this.selectedActionRequests = selectedActionRequests;
+	}
+
+	public String getSuperUserAnnotation() {
+		return superUserAnnotation;
+	}
+
+	public void setSuperUserAnnotation(String superUserAnnotation) {
+		this.superUserAnnotation = superUserAnnotation;
+	}
+	
+	public boolean isSuperUserAuthorized() {
+		return KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeName(GlobalVariables.getUserSession().getPrincipalId(), this.getDocTypeName());
+	}
+	
+	public boolean isStateAllowsSuperUserAction() {
+		DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+		return !(StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
+				 StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()) ||
+				 StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()));
+	}
+	
+	public boolean isSuperUserDocument() {
+		DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+		return !(StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) || StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
+	}
 }

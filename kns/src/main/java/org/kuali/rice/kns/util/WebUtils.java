@@ -15,6 +15,28 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -29,6 +51,7 @@ import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -51,27 +74,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * General helper methods for handling requests.
@@ -805,5 +807,19 @@ public class WebUtils {
     	String convertedString = startingString.replaceAll("\n", "<br />");
     	convertedString = convertedString.replaceAll("  ", "&nbsp;&nbsp;").replaceAll("(&nbsp; | &nbsp;)", "&nbsp;&nbsp;");
     	return convertedString;
+    }
+    
+    public static String getKimGroupDisplayName(String groupId) {
+    	if(StringUtils.isBlank(groupId)) {
+    		throw new IllegalArgumentException("Group ID must have a value");
+    	}
+    	return KimApiServiceLocator.getGroupService().getGroup(groupId).getName();
+    }
+    
+    public static String getPrincipalDisplayName(String principalId) {
+    	if(StringUtils.isBlank(principalId)) {
+    		throw new IllegalArgumentException("Principal ID must have a value");
+    	}
+    	return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
     }
 }

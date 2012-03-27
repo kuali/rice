@@ -30,7 +30,13 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.DocumentActionParameters;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -92,11 +98,14 @@ import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -158,6 +167,7 @@ public class KualiDocumentActionBase extends KualiAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionForward returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
+        KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
 
         // if found methodToCall, pass control to that method
         try {
@@ -259,6 +269,10 @@ public class KualiDocumentActionBase extends KualiAction {
             }
         }
 
+        // Pull in the pending action requests for the document and attach them to the form
+        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(documentForm.getDocId());
+        documentForm.setActionRequests(actionRequests);
+        
         return returnForward;
     }
 
@@ -1985,6 +1999,74 @@ public class KualiDocumentActionBase extends KualiAction {
 
             return new Response(question, disapprovalNoteText, buttonClicked);
         }
+    }
+    
+    public ActionForward takeSuperUserActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    	KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+    	if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+    		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.annotation.missing", "");
+    		return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    	} else if(documentForm.getSelectedActionRequests().isEmpty()) {
+    		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.takeactions.none.selected", "");
+    		return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    	}
+    	for(String actionRequestId : documentForm.getSelectedActionRequests()) {
+    		ActionRequest actionRequest = null;
+    		for(ActionRequest pendingActionRequest : documentForm.getActionRequests()) {
+    			if(StringUtils.equals(pendingActionRequest.getId(), actionRequestId)) {
+    				actionRequest = pendingActionRequest;
+    				break;
+    			}
+    		}
+    		if(actionRequest == null) {
+    			// If the action request isn't pending then skip it
+    			continue;
+    		}
+            WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
+            DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
+            documentActions.superUserTakeRequestedAction(parameters, true, actionRequestId);
+            String messageString;
+            if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.ACKNOWLEDGE.getCode())) {
+                messageString = "general.routing.superuser.actionRequestAcknowledged";
+            } else if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.FYI.getCode())) {
+                messageString = "general.routing.superuser.actionRequestFYI";
+            } else if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode())) {
+                messageString = "general.routing.superuser.actionRequestCompleted";
+            } else if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+                messageString = "general.routing.superuser.actionRequestApproved";
+            } else {
+                messageString = "general.routing.superuser.actionRequestApproved";
+            }
+            GlobalVariables.getMessageMap().putInfo("document", messageString, documentForm.getDocId(), actionRequestId);
+            documentForm.setSuperUserAnnotation("");
+    	}
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    public ActionForward superUserDisapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+    	KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+    	if(StringUtils.isBlank(documentForm.getSuperUserAnnotation())) {
+    		GlobalVariables.getMessageMap().putErrorForSectionId("superuser.errors", "superuser.disapprove.annotation.missing", "");
+    		return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    	}
+        WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
+        DocumentActionParameters parameters = DocumentActionParameters.create(documentForm.getDocId(), GlobalVariables.getUserSession().getPrincipalId(), documentForm.getSuperUserAnnotation());
+        documentActions.superUserDisapprove(parameters, true);
+        GlobalVariables.getMessageMap().putInfo("document", "general.routing.superuser.disapproved", documentForm.getDocId());
+    	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
+    private WorkflowDocumentActionsService getWorkflowDocumentActionsService(String documentTypeId) {
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(documentTypeId);
+        String applicationId = documentType.getApplicationId();
+        QName serviceName = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0,
+                KewApiConstants.ServiceNames.WORKFLOW_DOCUMENT_ACTIONS_SERVICE_SOAP);
+        WorkflowDocumentActionsService service = (WorkflowDocumentActionsService) KsbApiServiceLocator.getServiceBus()
+                .getService(serviceName, applicationId);
+        if (service == null) {
+            service = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        }
+        return service;
     }
 }
 

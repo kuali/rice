@@ -110,6 +110,20 @@ public interface WorkflowDocumentService {
     @WebResult(name = "rootActionRequests")
 	List<ActionRequest> getRootActionRequests(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
+    
+    /**
+     * Gets a list of ActionRequests which are pending for a given documentId
+     * 
+     * @since 2.1
+     * @param documentId the unique id of a document
+     * @return the list of pending ActionRequests for a given documentId
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getPendingActionRequests")
+    @XmlElementWrapper(name = "pendingActionRequests", required = true)
+    @XmlElement(name = "pendingActionRequest", required = false)
+    @WebResult(name = "pendingActionRequests")
+    List<ActionRequest> getPendingActionRequests(String documentId);
 
     /**
      * Gets a list of ActionRequests for a given documentId, nodeName and principalId

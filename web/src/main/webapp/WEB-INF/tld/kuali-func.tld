@@ -146,4 +146,18 @@
     	<function-signature>java.lang.String preserveWhitespace(java.lang.String)</function-signature>
     	<example>${kfunc:preserveWhitespace("foo\n\nbar")}</example>
     </function>
+    <function>
+        <description>Fetches the display name of a KIM Group when given the group ID</description>
+        <name>getKimGroupDisplayName</name>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+        <function-signature>java.lang.String getKimGroupDisplayName(java.lang.String)</function-signature>
+        <example>${kfunc:getKimGroupDisplayName("1234")}</example>
+    </function>
+    <function>
+        <description>Fetches the display name for a principal when given the principal ID</description>
+        <name>getPrincipalDisplayName</name>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+        <function-signature>java.lang.String getPrincipalDisplayName(java.lang.String)</function-signature>
+        <example>${kfunc:getPrincpalDisplayName("1234")}</example>
+    </function>
 </taglib>

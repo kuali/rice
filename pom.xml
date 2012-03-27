@@ -111,6 +111,7 @@
     <jdom.version>1.1</jdom.version>
     <jetty.version>7.5.1.v20110908</jetty.version>
     <joda-time.version>2.0</joda-time.version>
+    <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10</jotm.version>
     <bitronix.version>2.1.2</bitronix.version>
     <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
@@ -1235,6 +1236,12 @@
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
         <version>${joda-time.version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time-jsptags</artifactId>
+        <version>${joda-time-jsptags.version}</version>
       </dependency>
 
       <dependency>

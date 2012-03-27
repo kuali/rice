@@ -215,6 +215,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 	
 	@Override
+	public List<ActionRequest> getPendingActionRequests(String documentId) {
+		if (StringUtils.isBlank(documentId)) {
+			throw new RiceIllegalArgumentException("documentId was blank or null");
+		}
+		List<ActionRequest> actionRequests = new ArrayList<ActionRequest>();
+		List<ActionRequestValue> actionRequestBos = KEWServiceLocator.getActionRequestService().findAllPendingRequests(documentId);
+		for (ActionRequestValue actionRequestBo : actionRequestBos) {
+			actionRequests.add(ActionRequestValue.to(actionRequestBo));
+		}
+		return Collections.unmodifiableList(actionRequests);
+	}
+	
+	@Override
 	public List<ActionRequest> getActionRequestsForPrincipalAtNode(String documentId, String nodeName,
             String principalId) {
         if (StringUtils.isBlank(documentId)) {

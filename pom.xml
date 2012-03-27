@@ -180,6 +180,7 @@
 
     <!-- Directory wsdl's get generated into -->
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
+    <plugin.http.version>1.0.2</plugin.http.version>
   </properties>
 
   <profiles>
@@ -787,7 +788,7 @@
         <plugin>
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>maven-http-plugin</artifactId>
-          <version>1.0.2</version>
+          <version>${plugin.http.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>

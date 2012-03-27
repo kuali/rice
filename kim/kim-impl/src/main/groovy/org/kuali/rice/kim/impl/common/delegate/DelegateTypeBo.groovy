@@ -72,13 +72,17 @@ public class DelegateTypeBo extends PersistableBusinessObjectBase implements Del
     }
 
     public static DelegateTypeBo from(DelegateType immutable) {
+        // build list of DelegateMemberBo
+        def tmpMembers = []
+        immutable.members.each {tmpMembers.add(DelegateMemberBo.from(it))}
+
         return new DelegateTypeBo(
                 delegationId: immutable.delegationId,
                 roleId: immutable.roleId,
                 active: immutable.active,
                 kimTypeId: immutable.kimTypeId,
                 delegationTypeCode: immutable.delegationTypeCode,
-                members: immutable.members
+                members:  tmpMembers
         );
     }
 }

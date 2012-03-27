@@ -39,6 +39,7 @@ class DelegateTypeBoTest {
         DelegateMember.Builder memberBuilder = DelegateMember.Builder.create()
         memberBuilder.setDelegationMemberId('10001')
         memberBuilder.setVersionNumber(1)
+        memberBuilder.setAttributes([:])
         List<DelegateMember.Builder> members = new ArrayList<DelegateMember.Builder>()
         members.add(memberBuilder)
 

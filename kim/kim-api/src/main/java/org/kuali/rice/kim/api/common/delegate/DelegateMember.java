@@ -221,10 +221,6 @@ public final class DelegateMember extends AbstractDataTransferObject
         }
 
         public DelegateMember build() {
-            if (StringUtils.isEmpty(this.delegationMemberId) || this.versionNumber == null) {
-                throw new IllegalStateException("Required fields of delegationMemberId and versionNumber set to valid non-null" +
-                        " values before calling build()");
-            }
             return new DelegateMember(this);
         }
 

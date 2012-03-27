@@ -1939,9 +1939,9 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.kuali.org/repos/rice/branches/rice-2.0</connection>
-    <developerConnection>scm:svn:http://svn.kuali.org/repos/rice/branches/rice-2.0</developerConnection>
-    <url>http://svn.kuali.org/repos/rice/branches/rice-2.0</url>
+    <connection>scm:svn:http://svn.kuali.org/repos/rice/branches/rice-2.0-KC</connection>
+    <developerConnection>scm:svn:http://svn.kuali.org/repos/rice/branches/rice-2.0-KC</developerConnection>
+    <url>http://svn.kuali.org/repos/rice/branches/rice-2.0-KC</url>
   </scm>
 
 </project>

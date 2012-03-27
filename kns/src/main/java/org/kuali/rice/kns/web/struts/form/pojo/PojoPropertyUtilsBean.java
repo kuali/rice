@@ -16,15 +16,19 @@
 // begin Kuali Foundation modification
 package org.kuali.rice.kns.web.struts.form.pojo;
 
+import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.MappedPropertyDescriptor;
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.beans.IndexedPropertyDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -133,6 +137,63 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         return obj;
     }
 	// end Kuali Foundation modification
+
+    /*
+     *  Kuali modification to make isWriteable work like it did in beanUtils 1.7.
+     *  Checking for nested nulls caused exceptions in rice 2.0.
+     */
+    @Override
+    public boolean isWriteable(Object bean, String name) {
+        // Validate method parameters
+        if (bean == null) {
+            throw new IllegalArgumentException("No bean specified");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("No name specified for bean class '" +
+                    bean.getClass() + "'");
+        }
+
+        // Remove any subscript from the final name value
+        name = getResolver().getProperty(name);
+
+        // Treat WrapDynaBean as special case - may be a read-only property
+        // (see Jira issue# BEANUTILS-61)
+        if (bean instanceof WrapDynaBean) {
+            bean = ((WrapDynaBean)bean).getInstance();
+        }
+
+        // Return the requested result
+        if (bean instanceof DynaBean) {
+            // All DynaBean properties are writeable
+            return (((DynaBean) bean).getDynaClass().getDynaProperty(name) != null);
+        } else {
+            try {
+                PropertyDescriptor desc =
+                        getPropertyDescriptor(bean, name);
+                if (desc != null) {
+                    Method writeMethod = desc.getWriteMethod();
+                    if (writeMethod == null) {
+                        if (desc instanceof IndexedPropertyDescriptor) {
+                            writeMethod = ((IndexedPropertyDescriptor) desc).getIndexedWriteMethod();
+                        } else if (desc instanceof MappedPropertyDescriptor) {
+                            writeMethod = ((MappedPropertyDescriptor) desc).getMappedWriteMethod();
+                        }
+                        writeMethod = MethodUtils.getAccessibleMethod(bean.getClass(), writeMethod);
+                    }
+                    return (writeMethod != null);
+                } else {
+                    return (false);
+                }
+            } catch (IllegalAccessException e) {
+                return (false);
+            } catch (InvocationTargetException e) {
+                return (false);
+            } catch (NoSuchMethodException e) {
+                return (false);
+            }
+        }
+
+    }
 
     /**
      * begin Kuali Foundation modification
@@ -514,5 +575,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             
         }
     }
+
+
 
 }

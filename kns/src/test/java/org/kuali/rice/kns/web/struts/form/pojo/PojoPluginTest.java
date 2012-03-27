@@ -17,6 +17,7 @@
 package org.kuali.rice.kns.web.struts.form.pojo;
 
 import org.apache.commons.beanutils.NestedNullException;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -51,8 +52,27 @@ public class PojoPluginTest {
 
         // before, the empty string was being returned, which doesn't make sense for a collection
         assertFalse("".equals(result));
+
         // now we return null
         assertTrue(null == result);
+    }
+
+    /**
+     * <p>Testing scenario that isWriteable blows up with NestedNullException when property value is null
+     * KULRICE-6877: KualiMaintainbleImpl#performCollectionForceUpperCase blowing up</p>
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testNestedNullIsWriteable() throws Exception {
+
+        // We need to initialize PropertyUtils to use our plugins
+        new PojoPlugin().init(null, null);
+
+        TestCollectionHolderHolder tchh = new TestCollectionHolderHolder();
+        assertTrue(PropertyUtils.isWriteable(tchh,  "tch2.collection"));
+
+
     }
 
     /**
@@ -60,6 +80,7 @@ public class PojoPluginTest {
      */
     public static class TestCollectionHolderHolder extends PersistableBusinessObjectBase {
         private TestCollectionHolder tch = null;
+        private TestCollectionHolder2 tch2;
 
         public TestCollectionHolder getTch() {
             return tch;
@@ -67,6 +88,14 @@ public class PojoPluginTest {
 
         public void setTch(TestCollectionHolder tch) {
             this.tch = tch;
+        }
+
+        public TestCollectionHolder2 getTch2() {
+            return tch2;
+        }
+
+        public void setTch2(TestCollectionHolder2 tch2) {
+            this.tch2 = tch2;
         }
     }
 
@@ -86,5 +115,23 @@ public class PojoPluginTest {
             this.collection = collection;
         }
     }
+
+    /**
+     * Test class that holds a collection, but trying to get it results in a
+     * NestedNullException.
+     * @throws NestedNullException
+     */
+    public static class TestCollectionHolder2 extends PersistableBusinessObjectBase {
+        private Collection collection = Collections.emptyList();
+
+        public Collection getCollection() {
+            return collection;
+        }
+
+        public void setCollection(Collection collection) {
+            this.collection = collection;
+        }
+    }
+
 
 }

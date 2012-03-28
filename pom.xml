@@ -1150,6 +1150,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl104-over-slf4j</artifactId>
           </exclusion>
+          <!--Added to avoid multiple version of slf4j-log4j12 being used-->
+        <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+          </exclusion>
+
           <exclusion>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>

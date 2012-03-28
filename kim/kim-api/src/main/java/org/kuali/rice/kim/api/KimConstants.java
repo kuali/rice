@@ -329,6 +329,7 @@ public final class KimConstants {
         public static final String CAMPUS_CODE = "campusCode";
         public static final String ACTION_REQUEST_CD = "actionRequestCd";
         public static final String ROUTE_STATUS_CODE = "routeStatusCode";
+        public static final String APP_DOC_STATUS = "appDocStatus";
         public static final String ROUTE_NODE_NAME = "routeNodeName";
         public static final String ROLE_NAME = "roleName";
         public static final String PERMISSION_NAME = "permissionName";

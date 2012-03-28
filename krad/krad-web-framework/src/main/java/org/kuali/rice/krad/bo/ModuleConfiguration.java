@@ -31,7 +31,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in.
+ * This class contains various configuration properties for a Rice module.
+ * <p>
+ * The Rice framework is composed of several separate modules each of which is
+ * responsible for providing a set of functionality. These include:
+ *      KEW - an enterprise workflow module
+ *      KIM - an identity management module
+ *      KRAD - an rapid application development module
+ *      as well as several others. Refer to the Rice documentation for a complete list.
+ * Applications will also have their own module configurations.
+ * Each module has its own namespace and application context. And may define its own data source, entity manager, data dictionary service,
+ * and other properties.
+ * The ModuleConfiguration is created during Spring initialization.
+ *</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -69,6 +81,10 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	protected DataDictionaryService dataDictionaryService;
 
+    /**
+     *  Constructor for a ModuleConfiguration.
+     *  Initializes the arrays to empty ArrayLists.
+     */
 	public ModuleConfiguration() {
 		databaseRepositoryFilePaths = new ArrayList<String>();
 		dataDictionaryPackages = new ArrayList<String>();
@@ -78,7 +94,10 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	}
 
 	/**
-	 * @return the databaseRepositoryFilePaths
+     * Retrieves the database repository file paths configured for this module.
+     * The file paths are returned as a List of Strings. If no file paths are configured,
+     * an empty list is returned.  This method should never return null.
+	 * @return a List containing the databaseRepositoryFilePaths
 	 */
 	public List<String> getDatabaseRepositoryFilePaths() {
 		return this.databaseRepositoryFilePaths;

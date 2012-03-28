@@ -489,10 +489,26 @@ public class QuickFinder extends WidgetBase {
         this.readOnlySearchFields = readOnlySearchFields;
     }
 
+    /**
+     * Indicates whether the return links for lookup results should be rendered
+     *
+     * <p>
+     * A lookup view can be invoked to allow the user to select a value (or set of values) to return back to the
+     * calling view. For single value lookups this is done with a return link that is rendered for each row. This
+     * return link can be disabled by setting this property to true
+     * </p>
+     *
+     * @return boolean true if the return link should not be shown, false if it should be
+     */
     public Boolean getHideReturnLink() {
         return this.hideReturnLink;
     }
 
+    /**
+     * Setter for the hide return link indicator
+     *
+     * @param hideReturnLink
+     */
     public void setHideReturnLink(Boolean hideReturnLink) {
         this.hideReturnLink = hideReturnLink;
     }

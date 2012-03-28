@@ -24,6 +24,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
+import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
@@ -423,7 +424,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         List<String> roleIds = new ArrayList<String>();
         Criteria memberSubCrit = new Criteria();
         QueryByCriteria.Builder qb = QueryByCriteria.Builder.create();
-        qb.setPredicates(equal("principals.principalName", principalName));
+        qb.setPredicates(like("principals.principalName", principalName));
         List<EntityDefault> entities = KimApiServiceLocator.getIdentityService().findEntityDefaults(qb.build()).getResults();
         if (entities == null
                 || entities.size() == 0) {
@@ -497,7 +498,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         for (Map.Entry<String, String> entry : fieldValues.entrySet()) {
             if (StringUtils.isNotBlank(entry.getValue())) {
-                String nameValue = entry.getValue().replace('*', '%');
+                String nameValue = entry.getValue();
                 if (permFieldName.contains(entry.getKey())) {
                     permFieldMap.put(entry.getKey(), nameValue);
                 } else if (respFieldName.contains(entry.getKey())) {
@@ -505,7 +506,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                 } else if (entry.getKey().startsWith(KimConstants.AttributeConstants.GROUP_NAME)) {
                     groupFieldMap.put(entry.getKey(), nameValue);
                 } else if (entry.getKey().contains(".")) {
-                    attrFieldMap.put(entry.getKey(), nameValue);
+                    attrFieldMap.put(entry.getKey(), nameValue).replace('*', '%');
                 } else {
                     lookupNamesMap.put(entry.getKey(), nameValue);
                 }
@@ -534,30 +535,28 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     private ReportQueryByCriteria setupPermCriteria(Map<String, String> permCrit) {
 
-        List<Predicate> andConds = new ArrayList<Predicate>();
-
+        Map<String, String> actualCriteriaMap = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : permCrit.entrySet()) {
             if (entry.getKey().equals("permTmplName") || entry.getKey().equals("permTmplNamespaceCode")) {
                 if (entry.getKey().equals("permTmplName")) {
-                    andConds.add(equal("template." + KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, entry.getValue()));
-
+                    actualCriteriaMap.put("template." + KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, entry.getValue());
                 } else {
-                     andConds.add(equal("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
+                    actualCriteriaMap.put("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
                 }
             }
 
             if (entry.getKey().equals("permName") || entry.getKey().equals("permNamespaceCode")) {
                 if (entry.getKey().equals("permName")) {
-                     andConds.add(equal(KimConstants.UniqueKeyConstants.PERMISSION_NAME, entry.getValue()));
+                    actualCriteriaMap.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, entry.getValue());
                 } else {
-                     andConds.add(equal(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
-
+                    actualCriteriaMap.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
                 }
             }
         }
 
-
-        List<Permission> permList = KimApiServiceLocator.getPermissionService().findPermissions(QueryByCriteria.Builder.fromPredicates(andConds.toArray(new Predicate[]{}))).getResults();
+        Predicate predicate = PredicateUtils.convertMapToPredicate(actualCriteriaMap);
+        List<Permission> permList = KimApiServiceLocator.getPermissionService().findPermissions(
+                QueryByCriteria.Builder.fromPredicates(predicate)).getResults();
         List<String> roleIds = null;
 
         if (permList != null && !permList.isEmpty()) {
@@ -599,24 +598,25 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     private ReportQueryByCriteria setupRespCriteria(Map<String, String> respCrit) {
         QueryByCriteria.Builder queryByCriteriaBuilder = QueryByCriteria.Builder.create();
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        Map<String, String> actualCriteriaMap = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : respCrit.entrySet()) {
             if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
                 if (entry.getKey().equals("respTmplName")) {
-                    predicates.add(PredicateFactory.equal("template." + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, entry.getValue()));
+                    actualCriteriaMap.put("template." + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, entry.getValue());
                 } else {
-                    predicates.add(PredicateFactory.equal("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
+                    actualCriteriaMap.put("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
                 }
             }
             if (entry.getKey().equals("respName") || entry.getKey().equals("respNamespaceCode")) {
                 if (entry.getKey().equals("respName")) {
-                    predicates.add(PredicateFactory.equal(KimConstants.UniqueKeyConstants.RESPONSIBILITY_NAME, entry.getValue()));
+                    actualCriteriaMap.put(KimConstants.UniqueKeyConstants.RESPONSIBILITY_NAME, entry.getValue());
                 } else {
-                    predicates.add(PredicateFactory.equal(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
+                    actualCriteriaMap.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue());
                 }
             }
         }
-        queryByCriteriaBuilder.setPredicates(PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()])));
+        Predicate predicate = PredicateUtils.convertMapToPredicate(actualCriteriaMap);
+        queryByCriteriaBuilder.setPredicates(predicate);
 
         ResponsibilityService responsibilityService = KimApiServiceLocator.getResponsibilityService();
         ResponsibilityQueryResults results = responsibilityService.findResponsibilities(queryByCriteriaBuilder.build());
@@ -641,19 +641,20 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     private ReportQueryByCriteria setupGroupCriteria(Map<String,String> groupCrit) {
 
-       //Map<String,String> searchCrit = new HashMap<String, String>();
-       final QueryByCriteria.Builder searchCrit = QueryByCriteria.Builder.create();
-       for (Entry<String, String> entry : groupCrit.entrySet()) {
-                       if (entry.getKey().equals(KimConstants.AttributeConstants.GROUP_NAME)) {
-                   searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAME, entry.getValue()));
-                       } else { // the namespace code for the group field is named something besides the default. Set it to the default.
-                   searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue()));
-
-                       }
+        //Map<String,String> searchCrit = new HashMap<String, String>();
+        final QueryByCriteria.Builder searchCrit = QueryByCriteria.Builder.create();
+        Map<String, String> actualCrit = new HashMap<String, String>();
+        for (Entry<String, String> entry : groupCrit.entrySet()) {
+            if (entry.getKey().equals(KimConstants.AttributeConstants.GROUP_NAME)) {
+                actualCrit.put(KimConstants.AttributeConstants.NAME, entry.getValue());
+            } else { // the namespace code for the group field is named something besides the default. Set it to the default.
+                actualCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
+            }
        }
 
        Criteria crit = new Criteria();
-
+       Predicate predicate = PredicateUtils.convertMapToPredicate(actualCrit);
+       searchCrit.setPredicates(predicate);
        List<String> groupIds = KimApiServiceLocator.getGroupService().findGroupIds(searchCrit.build());
 
        if(groupIds == null || groupIds.isEmpty()){
@@ -706,12 +707,4 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         Query q = QueryFactory.newQuery(RoleBo.class, queryCriteria);
         return (List<RoleBo>) getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }
-
-    private List<String> getRoleMembersGroupIds(String memberNamespaceCode, String memberName){
-       QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-       builder.setPredicates(and(
-                   like(KimConstants.AttributeConstants.GROUP_NAME, memberName),
-                   like(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode)));
-        return KimApiServiceLocator.getGroupService().findGroupIds(builder.build());
-   }
 }

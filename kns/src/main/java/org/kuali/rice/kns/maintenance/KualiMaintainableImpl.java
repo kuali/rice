@@ -304,7 +304,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
      */
     @Override
     public void saveDataObject() {
-        super.saveDataObject();    //To change body of overridden methods use File | Settings | File Templates.
+        saveBusinessObject();
     }
 
     /**

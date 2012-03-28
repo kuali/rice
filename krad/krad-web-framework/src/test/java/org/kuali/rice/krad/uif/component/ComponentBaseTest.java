@@ -48,8 +48,8 @@ public class ComponentBaseTest {
         // set data attributes - for testing purposes only - they do not have any functional significance
         dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
         dataAttributes.put("transitions", "3");
-        dataAttributes.put("colorNames", "{brown, blue, pink}");
-        dataAttributes.put("intervals", "{2, 5, 13}");
+        dataAttributes.put("growing-seasons", "{summer:'hot', winter:'cold'}");
+        dataAttributes.put("intervals", "{short:2, medium:5, long:13}");
         component.setDataAttributes(dataAttributes);
     }
 
@@ -59,8 +59,8 @@ public class ComponentBaseTest {
      */
     public void testGetComplexDataAttributesJs() throws Exception {
         assertNotNull(component.getComplexDataAttributesJs());
-        String expected = "jQuery(\"#action1\").data(\"colorNames\", {brown, blue, pink});"
-                + "jQuery(\"#action1\").data(\"intervals\", {2, 5, 13});";
+        String expected = "jQuery('#action1').data('growing-seasons', {summer:'hot', winter:'cold'});"
+                + "jQuery('#action1').data('intervals', {short:2, medium:5, long:13});";
         assertEquals("complex attributes JS string did not match", expected, component.getComplexDataAttributesJs());
     }
 

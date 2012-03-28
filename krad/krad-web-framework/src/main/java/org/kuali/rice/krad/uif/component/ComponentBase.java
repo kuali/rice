@@ -1587,8 +1587,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         String js = "";
         for(Map.Entry<String,String> data: dataAttributes.entrySet()){
             if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
-                js = js + "jQuery(\"#" + this.getId() + "\").data(\"" + data.getKey()
-                        +"\", " + data.getValue() +");";
+                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
+                        +"', " + data.getValue() +");";
             }
         }
         return js;

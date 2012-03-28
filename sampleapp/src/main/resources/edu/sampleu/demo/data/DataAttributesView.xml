@@ -47,13 +47,30 @@
     </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
-   <!--
-  <bean id="UifLayoutView_KNS" parent="UifLayoutView">
-    <property name="theme">
-      <bean parent="Uif-ClassicKnsTheme"/>
+   
+  <!-- base beans to hold data attributes -->
+
+  <bean id="Uif-InputField-LabelTop-with-test-data-attributes" parent="Uif-InputField-LabelTop" abstract="true">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
     </property>
   </bean>
-            -->
+
+  <bean id="Uif-InputField-with-test-data-attributes" parent="Uif-InputField" abstract="true">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+  </bean>
   <!--
   ********************************************************************************************************************
                                            Data Attributes View Menu
@@ -74,12 +91,18 @@
   ********************************************************************************************************************
   -->
   <bean id="dataAttributesView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Box Layout Vertical"/>
+    <property name="title" value="InputFields"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
       <list>
       <ref bean="textInputField"/>
       <ref bean="textAreaInputField"/>
+      <ref bean="datePicker"/>
+      <ref bean="checkBox"/>
+      <ref bean="radioButton"/>
+      <ref bean="fileUpload"/>
+      <ref bean="userControl"/>
+      <ref bean="spinnerControl"/>
       </list>
     </property>
   </bean>
@@ -91,23 +114,17 @@
   -->
 
   <!-- text input field -->
-  <bean id="textInputField" parent="Uif-InputField-LabelTop" p:label="Field Label" p:required="true"
+  <bean id="textInputField" parent="Uif-InputField-LabelTop-with-test-data-attributes" p:label="Field Label" p:required="true"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:propertyName="field1">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Enter Data">
-        <property name="dataAttributes">
-          <map>
-            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
-            <entry key="transitions" value="3"/>
-          </map>
-        </property>
       </bean>
     </property>
   </bean>
 
   <!-- text area -->
-  <bean id="textAreaInputField" parent="Uif-InputField"
+  <bean id="textAreaInputField" parent="Uif-InputField-with-test-data-attributes"
         p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false"
@@ -115,13 +132,78 @@
     <property name="control">
       <bean parent="Uif-TextAreaControl" p:textExpand="true" p:rows="5"
             p:cols="40" p:watermarkText="Text Here...">
-        <property name="dataAttributes">
+       </bean>
+    </property>
+  </bean>
+  
+  <!-- date picker -->
+  <bean id="datePicker" parent="Uif-InputField-LabelTop-with-test-data-attributes" p:propertyName="field3" p:label="Date 2"
+        p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
+    <property name="control">
+      <bean parent="Uif-DateControl">
+        <property name="datePicker.templateOptions">
           <map>
-            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
-            <entry key="transitions" value="3"/>
+            <entry key="showOn" value="both"/>
+            <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+            <entry key="buttonImageOnly" value="true"/>
+            <entry key="showAnim" value="fadeIn"/>
+            <entry key="showButtonPanel" value="true"/>
+            <entry key="changeMonth" value="true"/>
+            <entry key="changeYear" value="true"/>
+            <entry key="numberOfMonths" value="2"/>
           </map>
         </property>
-       </bean>
+      </bean>
+    </property>
+  </bean>
+
+  <!-- checkbox -->
+  <bean id="checkBox" parent="Uif-InputField-with-test-data-attributes" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+        p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
+    <property name="control">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+  </bean>
+
+  <!-- radio button -->
+  <bean id="radioButton" parent="Uif-InputField-with-test-data-attributes" p:propertyName="field5" p:label="Radio 2" p:width="auto"
+        p:instructionalText="RadioGroupControl using explicitly defined key-value pairs from the DD">
+    <property name="control">
+      <bean parent="Uif-VerticalRadioControl">
+        <property name="options">
+          <list>
+            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
+            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <!-- file upload -->
+  <bean id="fileUpload" parent="Uif-InputField-with-test-data-attributes" p:propertyName="fileUpload" p:label="File Control">
+    <property name="instructionalText" value="Use to upload files"/>
+    <property name="control">
+      <bean parent="Uif-FileControl" p:size="30"/>
+    </property>
+  </bean>
+
+  <!-- user control -->
+  <bean id="userControl" parent="Uif-InputField-with-test-data-attributes" p:propertyName="testPerson.principalName" p:label="User Control">
+    <property name="instructionalText"
+              value="Type user id and user full name will display after tabbing, or use lookup to select a person"/>
+    <property name="control">
+      <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="testPersonId"
+            p:personNamePropertyName="testPerson.name"/>
+    </property>
+  </bean>
+
+  <!-- spinner control -->
+  <bean id="spinnerControl" parent="Uif-InputField-with-test-data-attributes" p:propertyName="field131" p:label="Spinner Control">
+    <property name="instructionalText"
+              value="Click the arrows on the right side of the control to increment/decrement the value"/>
+    <property name="control">
+      <bean parent="Uif-SpinnerControl"/>
     </property>
   </bean>
 </beans>

@@ -28,7 +28,7 @@
 <form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
             size="${control.size}" maxlength="${control.maxLength}" readonly="${control.readOnly}"
             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-            tabindex="${control.tabIndex}" minLength="${control.minLength}"/><!-- <c:out value="${control.simpleDataAttributes}"/> -->
+            tabindex="${control.tabIndex}" minLength="${control.minLength}"/>
 <%--
 Use double quotes around watermark text to avoid apostrophe trouble
 credit - http://rayaspnet.blogspot.com/2011/03/how-to-handle-apostrophe-in-javascript.html

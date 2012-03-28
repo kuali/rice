@@ -17,21 +17,25 @@ package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- *  Tests that the data attributes are rendered as expected for all controls
+ *  Tests that the data attributes are rendered as expected for all controls and widgets
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifDataAttributesIT {
     private Selenium selenium;
+    private  Log log = LogFactory.getLog(getClass());
 
     @Before
     public void setUp() throws Exception {
@@ -54,17 +58,32 @@ public class UifDataAttributesIT {
         selenium.open(
                 "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
         selenium.waitForPageToLoad("50000");
-        String[] controlIds = {"textInputField", "textAreaInputField"};
-        for (int i=0; i<controlIds.length; i++) {
-            String elementId = controlIds[i] + UifConstants.IdSuffixes.CONTROL;
-            String controlXpath="//*[(@id='" + elementId + "')]";// and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
-            assertTrue(elementId + " does not have simple data attributes present", selenium.isElementPresent(controlXpath));
+
+        String[] beanIds = {"textInputField", "textAreaInputField", "datePicker", "checkBox", "radioButton", "fileUpload"};
+
+        for (int i=0; i<beanIds.length; i++) {
+            String divId = beanIds[i];
+            // String controlId = beanIds[i] + UifConstants.IdSuffixes.CONTROL;
+            // check for complex attributes
+            String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ divId + "')]";
+            assertTrue(divId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
+
+            String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
+            assertNotNull("script value is null",scriptValue);
+            // log.info("scriptValue for " + divId + " is " + scriptValue);
+            assertTrue(divId + ": script does not contain expected code",
+                    scriptValue.contains("jQuery('#" + divId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});"
+                            + "jQuery('#" + divId + "').data('intervals', {short:2, medium:5, long:13});"));
+
+            // check for simple attributes
+            String simpleAttributesXpath="//div[(@id='" + divId + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
+            assertTrue(divId + " does not have simple data attributes present", selenium.isElementPresent(simpleAttributesXpath));
         }
     }
 
     @After
     public void tearDown() throws Exception {
-        //selenium.stop();
+        selenium.stop();
     }
     
 

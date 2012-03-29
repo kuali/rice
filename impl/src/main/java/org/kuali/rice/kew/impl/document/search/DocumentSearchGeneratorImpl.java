@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.impl.document.search;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -57,6 +58,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -279,6 +281,14 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         }
     }
 
+    /**
+     * Processes the search result row, returning a DocumentSearchResult
+     * @param criteria the original search criteria
+     * @param searchAttributeStatement statement being used to call the database for queries
+     * @param rs the search result set
+     * @return a DocumentSearchResult representing the current ResultSet row
+     * @throws SQLException
+     */
     protected DocumentSearchResult.Builder processRow(DocumentSearchCriteria criteria, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
 
         String documentId = rs.getString("DOC_HDR_ID");
@@ -303,6 +313,12 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         documentBuilder.setDateCreated(new DateTime(createTimestamp.getTime()));
         documentBuilder.setTitle(title);
         documentBuilder.setApplicationDocumentStatus(applicationDocumentStatus);
+        documentBuilder.setApplicationDocumentStatusDate(new DateTime(rs.getTimestamp("APP_DOC_STAT_MDFN_DT")));
+        documentBuilder.setDateApproved(new DateTime(rs.getTimestamp("APRV_DT")));
+        documentBuilder.setDateFinalized(new DateTime(rs.getTimestamp("FNL_DT")));
+        documentBuilder.setApplicationDocumentId(rs.getString("APP_DOC_ID"));
+        documentBuilder.setDateLastModified(new DateTime(rs.getTimestamp("STAT_MDFN_DT")));
+        documentBuilder.setRoutedByPrincipalId(rs.getString("RTE_PRNCPL_ID"));
 
         // TODO - KULRICE-5755 - should probably set as many properties on the document as we can
         documentBuilder.setDocumentHandlerUrl(rs.getString("DOC_HDLR_URL"));
@@ -362,10 +378,26 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         String sqlPrefix = "Select * from (";
         String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.CRTE_DT desc";
+        
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
-        StringBuilder selectSQL = new StringBuilder("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "+ docHeaderTableAlias +".INITR_PRNCPL_ID, "
-                + docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docHeaderTableAlias +".APP_DOC_STAT, "+ docTypeTableAlias +".DOC_TYP_NM, "
-                + docTypeTableAlias +".LBL, "+ docTypeTableAlias +".DOC_HDLR_URL, "+ docTypeTableAlias +".ACTV_IND");
+        StringBuilder selectSQL = new StringBuilder("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "
+                                                    + StringUtils.join(new String[] {
+                                                        docHeaderTableAlias + ".INITR_PRNCPL_ID",
+                                                        docHeaderTableAlias + ".DOC_HDR_STAT_CD",
+                                                        docHeaderTableAlias + ".CRTE_DT",
+                                                        docHeaderTableAlias + ".TTL",
+                                                        docHeaderTableAlias + ".APP_DOC_STAT",
+                                                        docHeaderTableAlias + ".STAT_MDFN_DT",
+                                                        docHeaderTableAlias + ".APRV_DT",
+                                                        docHeaderTableAlias + ".FNL_DT",
+                                                        docHeaderTableAlias + ".APP_DOC_ID",
+                                                        docHeaderTableAlias + ".RTE_PRNCPL_ID",
+                                                        docHeaderTableAlias + ".APP_DOC_STAT_MDFN_DT",
+                                                        docTypeTableAlias + ".DOC_TYP_NM",
+                                                        docTypeTableAlias + ".LBL",
+                                                        docTypeTableAlias + ".DOC_HDLR_URL",
+                                                        docTypeTableAlias + ".ACTV_IND"
+                                                    }, ", "));
         StringBuilder fromSQL = new StringBuilder(" from KREW_DOC_TYP_T "+ docTypeTableAlias +" ");
         StringBuilder fromSQLForDocHeaderTable = new StringBuilder(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");
 

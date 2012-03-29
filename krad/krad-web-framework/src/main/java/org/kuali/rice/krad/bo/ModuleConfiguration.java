@@ -104,7 +104,8 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	}
 
 	/**
-	 * @param databaseRepositoryFilePaths the databaseRepositoryFilePaths to set
+     * Sets the List of database repository file paths.
+	 * @param databaseRepositoryFilePaths the List of databaseRepositoryFilePaths to set
 	 */
 	public void setDatabaseRepositoryFilePaths(
 			List<String> databaseRepositoryFilePaths) {
@@ -113,14 +114,18 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	}
 
 	/**
-	 * @return the dataDictionaryPackages
+     * Returns a list of data dictionary packages configured for this ModuleConfiguration.
+     * If no data dictionary packages are defined, will return an empty list.
+     * Should never return null.
+	 * @return a List of Strings containingthe names of the dataDictionaryPackages
 	 */
 	public List<String> getDataDictionaryPackages() {
 		return this.dataDictionaryPackages;
 	}
 
 	/**
-	 * @param dataDictionaryPackages the dataDictionaryPackages to set
+     * Sets the list of data dictionary packages associated with this ModuleConfiguration.
+	 * @param dataDictionaryPackages a List of Strings containing the dataDictionaryPackages.
 	 */
 	public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {
 		this.trimList(dataDictionaryPackages);			

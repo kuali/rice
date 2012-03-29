@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.0.1-M4</version>
+  <version>2.0.1-M5-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -1945,9 +1945,9 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.kuali.org/repos/rice/tags/rice-2.0.1-M4</connection>
-    <developerConnection>scm:svn:http://svn.kuali.org/repos/rice/tags/rice-2.0.1-M4</developerConnection>
-    <url>http://svn.kuali.org/repos/rice/tags/rice-2.0.1-M4</url>
+    <connection>scm:svn:http://svn.kuali.org/repos/rice/branches/rice-2.0</connection>
+    <developerConnection>scm:svn:http://svn.kuali.org/repos/rice/branches/rice-2.0</developerConnection>
+    <url>http://svn.kuali.org/repos/rice/branches/rice-2.0</url>
   </scm>
 
 </project>

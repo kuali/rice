@@ -60,13 +60,14 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
     private RouteHelper helper = new RouteHelper();
-    protected String nodeName;
+    protected final String nodeName;
     private boolean superUserUsage;
     private boolean sendNotifications = true;
     protected boolean sendNotificationsForPreviousRequests = false;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
+        this.nodeName = null;
     }
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {

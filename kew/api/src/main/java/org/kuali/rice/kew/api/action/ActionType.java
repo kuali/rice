@@ -107,6 +107,7 @@ public enum ActionType implements Coded {
 
     /**
      * The document is being recalled.
+     * @since 2.1
      */
     @XmlEnumValue("L") RECALL("L", "RECALL"),
 

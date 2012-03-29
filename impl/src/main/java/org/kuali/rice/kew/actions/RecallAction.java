@@ -200,8 +200,6 @@ public class RecallAction extends ReturnToPreviousNodeAction {
         for (Recipient recipient: this.notificationRecipients) {
             if (!(recipient instanceof KimRoleRecipient)) {
                 arFactory.addRootActionRequest(ActionRequestType.FYI.getCode(), 0, recipient, "Document was recalled", KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, null, null, null);
-                //KEWServiceLocator.getActionRequestService().activateRequest(v);
-                //KEWServiceLocator.getActionRequestService().saveActionRequest(v);
             } else {
                 KimRoleRecipient kimRoleRecipient = (KimRoleRecipient) recipient;
                 // no qualifications
@@ -228,9 +226,7 @@ public class RecallAction extends ReturnToPreviousNodeAction {
             }
             // we are in cancel mode, execute a cancel action with RECALL code
             // NOTE: this performs CancelAction validation, including getDocumentTypePermissionService().canCancel
-            // which may in fact be the correct thing to do
-            // TODO: verify isActionCompatibleRequest will be true under all recall contexts
-            // or simply stub this out to true, since we are programmatically forcing this action
+            // stub out isActionCompatibleRequest since we are programmatically forcing this action
             new CancelAction(ActionType.RECALL, this.routeHeader, this.getPrincipal(), this.annotation) {
                 @Override
                 public boolean isActionCompatibleRequest(List<ActionRequestValue> requests) {

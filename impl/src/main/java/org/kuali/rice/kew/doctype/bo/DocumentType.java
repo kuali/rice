@@ -333,6 +333,12 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     	return getPolicyByName(DocumentTypePolicyEnum.REGENERATE_ACTION_REQUESTS_ON_CHANGE.getName(), Boolean.TRUE);
     }
 
+    /**
+     * Returns the {@link DocumentTypePolicyEnum.RECALL_NOTIFICATION} policy on the document if defined, or
+     * the default value for this policy which is true.
+     * @return the RECALL_NOTIFICATION document type policy
+     * @since 2.1
+     */
     public DocumentTypePolicy getRecallNotification() {
         return getPolicyByName(DocumentTypePolicyEnum.RECALL_NOTIFICATION.getName(), (String) null);
     }

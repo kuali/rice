@@ -1585,13 +1585,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public String getComplexDataAttributesJs(){
         String js = "";
-        for(Map.Entry<String,String> data: dataAttributes.entrySet()){
-            if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
-                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
-                        +"', " + data.getValue() +");";
+        if (getDataAttributes() == null) {
+            return js;
+        } else {
+            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
+                if(data.getValue().trim().startsWith("{") && data.getValue().trim().endsWith("}")){
+                    js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
+                            +"', " + data.getValue() +");";
+                }
             }
+            return js;
         }
-        return js;
     }
 
     /**
@@ -1601,12 +1605,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public String getSimpleDataAttributes(){
         String attributes = "";
-        for(Map.Entry<String,String> data: dataAttributes.entrySet()){
-            if(!data.getValue().trim().startsWith("{")){
-                attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
+        if (getDataAttributes() == null) {
+            return attributes;
+        } else {
+            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
+                if(!data.getValue().trim().startsWith("{")){
+                    attributes = attributes + " " + "data-" + data.getKey() + "=\"" + data.getValue() + "\"";
+                }
             }
+            return attributes;
         }
-        return attributes;        
     }
 
 }

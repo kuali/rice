@@ -36,7 +36,7 @@
 </c:if>
 
 <img id="${element.id}" src="${element.source}" alt="${element.altText}"
-${height} ${style} ${styleClass} ${title} />
+${height} ${style} ${styleClass} ${title} ${element.simpleDataAttributes} />
 
 <%-- render caption header below --%>
 <c:if test="${!empty element.captionHeader.headerText && !element.captionHeaderAboveImage}">

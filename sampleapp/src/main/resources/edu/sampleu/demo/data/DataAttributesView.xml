@@ -37,9 +37,7 @@
           <property name="items">
             <list>
               <ref bean="dataAttributesView-BoxSection1"/>
-              <!--
-              <ref bean="UifLayoutView-BoxSection2"/>
-              -->
+              <ref bean="dataAttributesView-BoxSection2"/>
             </list>
           </property>
         </bean>
@@ -79,15 +77,27 @@
   <bean id="dataAttributesView-Menu" parent="Uif-TabNavigationGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="dataAttributesView-Page1"
-              p:actionLabel="Page 1"/>
+         <ref bean="navigationLink"/>
       </list>
+    </property>
+  </bean>
+
+  <!-- -->
+  <bean id="navigationLink" parent="Uif-NavigationActionLink" p:navigateToPageId="dataAttributesView-Page1"
+        p:actionLabel="Page 1">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
     </property>
   </bean>
 
   <!--
   ********************************************************************************************************************
-                                           A section to hold various controls and widgets
+                                           A section to hold input fields
   ********************************************************************************************************************
   -->
   <bean id="dataAttributesView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
@@ -109,6 +119,30 @@
 
   <!--
   ********************************************************************************************************************
+                                           A section to hold various fields
+  ********************************************************************************************************************
+  -->
+  <bean id="dataAttributesView-BoxSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+    <property name="title" value="Various Fields"/>
+    <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
+    <property name="items">
+      <list>
+        <ref bean="imageField"/>
+        <ref bean="actionLink-noImage"/>
+        <ref bean="actionLink-imageRight"/>
+        <ref bean="actionLink-imageLeft"/>
+        <ref bean="imageAction"/>
+        <ref bean="buttonTextOnly"/>
+        <ref bean="buttonImageBottom"/>
+        <ref bean="buttonImageLeft"/>
+        <ref bean="buttonImageRight"/>
+        <ref bean="buttonImageTop"/>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
                                            All controls and widgets should be added below and their data attributes configured
   ********************************************************************************************************************
   -->
@@ -121,6 +155,9 @@
       <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Enter Data">
       </bean>
     </property>
+    <!-- testing that the property below is reflected on the field's label
+    https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad# -->
+    <property name="fieldLabel.style" value="color:red"/>
   </bean>
 
   <!-- text area -->
@@ -204,6 +241,114 @@
               value="Click the arrows on the right side of the control to increment/decrement the value"/>
     <property name="control">
       <bean parent="Uif-SpinnerControl"/>
+    </property>
+  </bean>
+  
+  <!-- image field -->
+  <bean id="imageField" parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
+        p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
+    <!-- set simple attributes on image -->
+    <property name="image.dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+      </map>
+    </property>
+    <!-- to get the selenium test to pass - but is meant to be initialized to a generated value by krad -->
+    <property name="image.id" value="imageField"/>
+    <!-- set complex attributes on image field since it has a wrapping div - where they can be set -->
+    <property name="dataAttributes">
+      <map>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+  </bean>
+
+  <!-- action link base bean with data attributes -->
+  <bean id="Uif-ActionLink-with-data-attributes" parent="Uif-ActionLink" abstract="true">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+  </bean>
+
+  <!-- action link no image -->
+  <bean id="actionLink-noImage" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');"/>
+  
+  <!-- action link with image right -->
+  <bean id="actionLink-imageRight" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image right" p:actionImageLocation="RIGHT"
+        p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+            p:altText="Search"/>
+    </property>
+  </bean>
+
+  <!-- action link with image left -->
+  <bean id="actionLink-imageLeft" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image left (default)"
+        p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+            p:altText="Search"/>
+    </property>
+  </bean>
+
+  <!-- primary action button base bean to hold data attributes -->
+  <bean id="Uif-PrimaryActionButton-with-data-attributes" parent="Uif-PrimaryActionButton">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+   </bean>
+
+  <!-- action button - rendered as an image -->
+  <bean id="imageAction" parent="Uif-PrimaryActionButton-with-data-attributes" p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
+            p:altText="ActionImageField demonstration"/>
+    </property>
+    <property name="actionImageLocation" value="IMAGE_ONLY"/>
+  </bean>
+
+  <!-- action button - no image text only -->
+  <bean id="buttonTextOnly" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField" p:clientSideJs="alert('You clicked a button');"/>
+
+  <!-- action button - image bottom -->
+  <bean id="buttonImageBottom" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
+        p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+    </property>
+  </bean>
+
+  <bean id="buttonImageTop" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image TOP" p:actionImageLocation="TOP"
+        p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+    </property>
+  </bean>
+
+  <bean id="buttonImageLeft" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image LEFT" p:actionImageLocation="LEFT"
+        p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+    </property>
+  </bean>
+
+  <bean id="buttonImageRight" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image RIGHT" p:actionImageLocation="RIGHT"
+        p:clientSideJs="alert('You clicked a button');">
+    <property name="actionImage">
+      <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
     </property>
   </bean>
 </beans>

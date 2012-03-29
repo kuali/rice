@@ -73,4 +73,22 @@ public class ComponentBaseTest {
         String expected = " data-iconTemplateName=\"cool-icon-%s.png\" data-transitions=\"3\"";
         assertEquals("simple attributes did not match", expected, component.getSimpleDataAttributes());
     }
+
+    @Test
+    /**
+     *  test that complex date attributes are converted into a jquery script ok even when data attributes are null
+     */
+    public  void testGetComplexAttributesJSWhenNull () throws Exception{
+        component.setDataAttributes(null);
+        assertEquals("complex attributes JS string did not match", "", component.getComplexDataAttributesJs());
+    }
+
+    @Test
+    /**
+     * test that simple data attributes are converted into inline attributes ok  when data attributes are null
+     */
+    public void testGetSimpleDataAttributesWhenNull() throws Exception {
+        component.setDataAttributes(null);
+        assertEquals("simple attributes did not match", "", component.getSimpleDataAttributes());
+    }
 }

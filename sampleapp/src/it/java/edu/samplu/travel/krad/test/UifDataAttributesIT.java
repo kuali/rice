@@ -24,6 +24,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -59,26 +62,47 @@ public class UifDataAttributesIT {
                 "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
         selenium.waitForPageToLoad("50000");
 
-        String[] beanIds = {"textInputField", "textAreaInputField", "datePicker", "checkBox", "radioButton", "fileUpload"};
+        //create a map that will specify in which html tag to look for simple attributes
+        Map<String, String[]> tagAndElements = new HashMap<String, String[]>();
+        // elements whose simple attributes are set in the wrapping div
+        String[] divWrappedElements = {"textInputField", "textAreaInputField", "datePicker", "checkBox", "radioButton", "fileUpload"};
+        // elements whose simple attributes are set in an anchor tag
+        String[] anchorElements = {"navigationLink", "actionLink-noImage", "actionLink-imageRight", "actionLink-imageLeft"};
+        String[] imgElements = {"imageField"};
+        String[] buttonElements = {"buttonTextOnly", "buttonImageBottom", "buttonImageLeft", "buttonImageTop", "buttonImageRight"};
+        String[] inputElements = {"imageAction"};
+        
+        tagAndElements.put("div", divWrappedElements);
+        tagAndElements.put("a", anchorElements);
+        tagAndElements.put("img", imgElements);
+        tagAndElements.put("button", buttonElements);
+        tagAndElements.put("input", inputElements);
 
-        for (int i=0; i<beanIds.length; i++) {
-            String divId = beanIds[i];
-            // String controlId = beanIds[i] + UifConstants.IdSuffixes.CONTROL;
-            // check for complex attributes
-            String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ divId + "')]";
-            assertTrue(divId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
+        for (String tag: tagAndElements.keySet()) {
+            String[] elementIds = tagAndElements.get(tag);
+            for (int i=0; i<elementIds.length; i++) {
+                String tagId = elementIds[i];
+                // String controlId = beanIds[i] + UifConstants.IdSuffixes.CONTROL;
+                // check for complex attributes
+                String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId + "')]";
+                assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
 
-            String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
-            assertNotNull("script value is null",scriptValue);
-            // log.info("scriptValue for " + divId + " is " + scriptValue);
-            assertTrue(divId + ": script does not contain expected code",
-                    scriptValue.contains("jQuery('#" + divId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});"
-                            + "jQuery('#" + divId + "').data('intervals', {short:2, medium:5, long:13});"));
+                String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
+                assertNotNull("script value is null",scriptValue);
+                // log.info("scriptValue for " + divId + " is " + scriptValue);
+                assertTrue(tagId + ": script does not contain expected code",
+                        scriptValue.contains("jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});"
+                                + "jQuery('#" + tagId + "').data('intervals', {short:2, medium:5, long:13});"));
 
-            // check for simple attributes
-            String simpleAttributesXpath="//div[(@id='" + divId + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
-            assertTrue(divId + " does not have simple data attributes present", selenium.isElementPresent(simpleAttributesXpath));
+                // check for simple attributes
+                String simpleAttributesXpath="//" + tag + "[(@id='" + tagId + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
+                assertTrue(tagId + " does not have simple data attributes present", selenium.isElementPresent(simpleAttributesXpath));
+            }
         }
+        // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
+        String styleValue = selenium.getAttribute("//span[@id='textInputField_label_span']@style");
+        // log.info("styleValue is " + styleValue);
+        assertTrue("textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
     }
 
     @After

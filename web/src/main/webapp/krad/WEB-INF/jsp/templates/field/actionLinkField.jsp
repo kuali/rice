@@ -56,7 +56,7 @@
         <c:choose>
           <c:when test="${field.actionImageLocation != null && (field.actionImageLocation eq 'RIGHT')}">
             <a id="${field.id}" ${href}
-               onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}
+               onclick="return false;"${name} ${style} ${styleClass} ${tabindex}  ${field.simpleDataAttributes}>${field.actionLabel}
               <img ${imageRole}
                       class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}" ${height} ${width}
                       style="${field.actionImage.style}" src="${field.actionImage.source}"
@@ -65,7 +65,7 @@
           </c:when>
           <c:otherwise>
             <a id="${field.id}" ${href}
-               onclick="return false;"${name} ${style} ${styleClass} ${tabindex}><img ${imageRole}
+               onclick="return false;"${name} ${style} ${styleClass} ${tabindex} ${field.simpleDataAttributes}><img ${imageRole}
                     class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}" ${height} ${width}
                     style="${field.actionImage.style}" src="${field.actionImage.source}"
                     alt="${field.actionImage.altText}"/>${field.actionLabel}
@@ -75,7 +75,7 @@
       </c:when>
       <c:otherwise>
         <a id="${field.id}" ${href}
-           onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}</a>
+           onclick="return false;" ${name} ${style} ${styleClass} ${tabindex} ${field.simpleDataAttributes}>${field.actionLabel}</a>
       </c:otherwise>
     </c:choose>
 

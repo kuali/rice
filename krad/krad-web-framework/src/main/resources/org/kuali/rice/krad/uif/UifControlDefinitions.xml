@@ -134,7 +134,7 @@
     <property name="cols" value="35"/>
   </bean>
 
-  <bean id="Uif-MediumTextAreaControl" parent="Uif-MediumTextControl-parentBean"/>
+  <bean id="Uif-MediumTextAreaControl" parent="Uif-MediumTextAreaControl-parentBean"/>
   <bean id="Uif-MediumTextAreaControl-parentBean" parent="Uif-TextAreaControl">
     <property name="styleClasses">
       <list merge="true">

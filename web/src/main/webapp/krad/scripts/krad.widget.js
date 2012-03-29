@@ -141,7 +141,7 @@ function createLightBoxLink(controlId, options) {
                 jq("#" + controlId).click(function (e) {
                     e.preventDefault();
                     options['href'] = jq("#" + controlId).attr('href');
-                    top.$.fancybox(options);
+                    top.jq.fancybox(options);
                 });
             }
         } else {

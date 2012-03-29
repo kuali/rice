@@ -115,6 +115,10 @@
         OBJ_ID="B7DBFABEFD368CBFE0402E0AA9D757C9" VER_NBR="1"/>
     <KRIM_ATTR_DEFN_T ACTV_IND="Y"
         CMPNT_NM="org.kuali.rice.kim.bo.impl.KimAttributes"
+        KIM_ATTR_DEFN_ID="54" NM="appDocStatus" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="BC5444677C22328CE0402E0AA9D77D80" VER_NBR="1"/>
+    <KRIM_ATTR_DEFN_T ACTV_IND="Y"
+        CMPNT_NM="org.kuali.rice.kim.bo.impl.KimAttributes"
         KIM_ATTR_DEFN_ID="6" NM="propertyName" NMSPC_CD="KR-NS"
         OBJ_ID="5ADF18B6D48D7954E0404F8189D85002" VER_NBR="1"/>
     <KRIM_ATTR_DEFN_T ACTV_IND="Y"

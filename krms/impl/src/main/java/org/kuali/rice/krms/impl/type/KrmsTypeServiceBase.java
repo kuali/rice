@@ -201,7 +201,8 @@ public abstract class KrmsTypeServiceBase extends AttributeValidatingTypeService
 
             controlBuilder.setWatermark(attributeDefinition.getDescription());
 
-            builder.setLongLabel(attributeDefinition.getName());
+            builder.setShortLabel(attributeDefinition.getLabel());
+            builder.setLongLabel(attributeDefinition.getLabel());
             builder.setName(attributeDefinition.getName());
 
 //            builder.setHelpSummary("helpSummary: " + attributeDefinition.getDescription());

@@ -38,6 +38,15 @@
     <server.phase>package</server.phase>
   </properties>
   <profiles>
+    <!-- Profile for generating versioned builds. Don't need the distributions as those get generated each night as a SNAPSHOT -->
+    <profile>
+      <id>builds</id>
+      <properties>
+        <bin.phase>none</bin.phase>
+        <src.phase>none</src.phase>
+        <server.phase>none</server.phase>
+      </properties>
+    </profile>
     <profile>
       <id>kuali-release</id>
       <build>

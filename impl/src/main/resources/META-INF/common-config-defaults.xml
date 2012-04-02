@@ -439,6 +439,7 @@
   <param name="rice.krms.notificationPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.approvalPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.expose.services.on.bus" override="false">true</param>
+  <param name="krms.ehcache.config.location" override="false">classpath:org/kuali/rice/krms/config/krms.ehcache.xml</param>
 
   <!-- LOCATION -->
 

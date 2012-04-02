@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 public interface KrmsAttributeDefinitionService {
 
@@ -30,6 +32,7 @@ public interface KrmsAttributeDefinitionService {
      * @throws IllegalArgumentException if the attribute definition is null
      * @throws IllegalStateException if the attribute definition already exists in the system
      */
+    @CacheEvict(value={KrmsAttributeDefinition.Cache.NAME}, allEntries = true)
 	public KrmsAttributeDefinition createAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
 
     /**
@@ -40,6 +43,7 @@ public interface KrmsAttributeDefinitionService {
      * @throws IllegalArgumentException if the attribute definition is null
      * @throws IllegalStateException if the attribute definition does not exist in the system
      */
+    @CacheEvict(value={KrmsAttributeDefinition.Cache.NAME}, allEntries = true)
 	public void updateAttributeDefinition(KrmsAttributeDefinition attributeDefinition);
 
     /**
@@ -49,6 +53,7 @@ public interface KrmsAttributeDefinitionService {
      * @return a KrmsAttributeDefinition object with the given id.  A null reference is returned if an invalid or
      *         non-existant id is supplied.
      */
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'attributeDefinitionId=' + #p0")
 	public KrmsAttributeDefinition getAttributeDefinitionById(String id);
 
     /**
@@ -60,6 +65,7 @@ public interface KrmsAttributeDefinitionService {
      *         exists.  Otherwise, null is returned.
      * @throws IllegalStateException if multiple KrmsAttributeDefinitions exist with the same name and namespace
      */
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
 	public KrmsAttributeDefinition getAttributeDefinitionByNameAndNamespace(String name, String namespace);
 
    /**
@@ -67,6 +73,7 @@ public interface KrmsAttributeDefinitionService {
      *
      * @return all KrmsAttributeDefinition for a namespace
      */
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'namespace=' + #p0")
 	public List<KrmsAttributeDefinition> findAttributeDefinitionsByNamespace(String namespace);
 
 
@@ -75,6 +82,7 @@ public interface KrmsAttributeDefinitionService {
       *
       * @return all KrmsAttributeDefinition for a type.  May be empty, will not be null;
       */
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'typeId=' + #p0")
      public List<KrmsAttributeDefinition> findAttributeDefinitionsByType(String typeId);
 
 
@@ -83,6 +91,7 @@ public interface KrmsAttributeDefinitionService {
      *
      * @return all KrmsAttributeDefinitions
      */
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'all'")
 	public List<KrmsAttributeDefinition> findAllAttributeDefinitions();
 
 	/**

@@ -37,6 +37,18 @@
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
+  <!-- the distributed cache manager that calls into the locationCacheAdminService on the ksb -->
+  <bean id="krmsDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
+    <property name="cacheManager" ref="krmsLocalCacheManager" />
+    <property name="serviceName" value="{http://rice.kuali.org/krms/v2_0}krmsCacheAdminService" />
+  </bean>
+
+  <bean id="rice.krms.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="krmsDistributedCacheManager" />
+  </bean>
+
+  <!-- caching end -->
+
   <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
     <property name="localServiceName" value="KRMSContext" />
   </bean>

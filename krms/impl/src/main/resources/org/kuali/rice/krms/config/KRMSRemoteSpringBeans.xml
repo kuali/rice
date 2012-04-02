@@ -23,6 +23,10 @@
 
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSCommonSpringBeans.xml" />
 
+  <bean id="rice.krms.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="krmsLocalCacheManager" />
+  </bean>
+
   <bean id="rice.krms.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.krms.serviceNamespace"/>

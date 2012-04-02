@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
@@ -460,7 +461,9 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         final static String AGENDAS = "agendas";
 		final static String ATTRIBUTES = "attributes";
     }
-		
-	
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + ContextDefinition.Constants.TYPE_NAME;
+    }
 	
 }

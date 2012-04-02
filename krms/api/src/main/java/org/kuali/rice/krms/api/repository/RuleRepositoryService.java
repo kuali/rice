@@ -20,6 +20,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -63,6 +64,7 @@ public interface RuleRepositoryService {
 	 */
 	@WebMethod(operationName = "getAgendaTree")
 	@WebResult(name = "agendaTree")
+    @Cacheable(value= AgendaTreeDefinition.Cache.NAME, key="'agendaId=' + #p0")
 	public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId);
 	
 	/**
@@ -100,6 +102,7 @@ public interface RuleRepositoryService {
 	 */
 	@WebMethod(operationName = "getRule")
 	@WebResult(name = "rule")
+    @Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleId=' + #p0")
 	public RuleDefinition getRule(@WebParam(name = "ruleId") String ruleId);
 	
 	/**

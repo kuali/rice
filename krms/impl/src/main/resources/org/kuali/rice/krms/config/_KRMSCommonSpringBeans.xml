@@ -19,16 +19,37 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+                           http://www.springframework.org/schema/util/spring-util-3.1.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache.xsd">
 
   <util:constant id="rice.krms.serviceNamespace" static-field="org.kuali.rice.krms.api.KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0"/>
 
   <bean id="rice.location.propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" value="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
 	</bean>
+
+  <bean id="krmsLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager">
+      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+            p:configLocation="${krms.ehcache.config.location}"/>
+    </property>
+  </bean>
+
+  <bean id="rice.krms.import.globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="globalCacheManager"/>
+
+  <cache:annotation-driven cache-manager="rice.krms.import.globalCacheManager"/>
+
+  <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
+  <bean id="krmsCacheAdminService"
+        class="org.kuali.rice.core.impl.cache.CacheAdminServiceImpl"
+        p:cacheManager-ref="krmsLocalCacheManager"/>
 
   <bean id="rice.krms.import.serviceBus"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
@@ -39,6 +60,15 @@
         class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
         abstract="true">
     <property name="serviceBus" ref="rice.krms.import.serviceBus"/>
+  </bean>
+
+  <bean id="krmsCacheAdminService.exporter" parent="krmsServiceExporter" p:exportIf="krmsCacheAdminService.expose">
+    <property name="serviceDefinition">
+      <bean parent="krmsService"
+            p:service-ref="krmsCacheAdminService"
+            p:localServiceName="krmsCacheAdminService"
+            p:queue="false"/>
+    </property>
   </bean>
 
   <bean id="krmsService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">

@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * This is the interface for accessing KRMS repository Rule related bos 
@@ -24,10 +27,16 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
  *
  */
 public interface RuleBoService {
+    @CacheEvict(value={RuleDefinition.Cache.NAME}, allEntries = true)
 	public RuleDefinition createRule(RuleDefinition rule);
+
+    @CacheEvict(value={RuleDefinition.Cache.NAME}, allEntries = true)
 	public void updateRule(RuleDefinition rule);
-	
+
+    @Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleId=' + #p0")
 	public RuleDefinition getRuleByRuleId(String ruleId);
+
+    @Cacheable(value= RuleDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'namespace=' + #p1")
 	public RuleDefinition getRuleByNameAndNamespace(String name, String namespace);
 	
 //	public void createRuleAttribute(RuleAttribute ruleAttribute);

@@ -19,6 +19,10 @@ import java.util.Set;
 
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * This is the interface for accessing KRMS repository Agenda related
@@ -36,6 +40,7 @@ public interface AgendaBoService {
      * @throws IllegalArgumentException if the Agenda is null
      * @throws IllegalStateException if the Agenda already exists in the system
      */
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public AgendaDefinition createAgenda(AgendaDefinition agenda);
 	
     /**
@@ -44,7 +49,8 @@ public interface AgendaBoService {
      * @param agenda  The Agenda to update
      * @throws IllegalArgumentException if the Agenda is null
      * @throws IllegalStateException if the Agenda does not exists in the system
-     */	
+     */
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public void updateAgenda(AgendaDefinition agenda);
 	
     /**
@@ -54,6 +60,7 @@ public interface AgendaBoService {
      * @return an {@link AgendaDefinition} identified by the given agendaId.  
      * A null reference is returned if an invalid or non-existent id is supplied.
      */
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'agendaId=' + #p0")
 	public AgendaDefinition getAgendaByAgendaId(String agendaId);
 	
     /**
@@ -66,6 +73,7 @@ public interface AgendaBoService {
      * A null reference is returned if an invalid or non-existent name and
      * namespace combination is supplied.
      */
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'contextId=' + #p1")
 	public AgendaDefinition getAgendaByNameAndContextId(String name, String contextId);
 	
     /**
@@ -75,6 +83,7 @@ public interface AgendaBoService {
      * @return a set of {@link AgendaDefinition} associated with the given context.  
      * A null reference is returned if an invalid or contextId is supplied.
      */
+    @Cacheable(value= AgendaDefinition.Cache.NAME, key="'contextId=' + #p0")
 	public Set<AgendaDefinition> getAgendasByContextId(String contextId);
 	
     /**
@@ -85,6 +94,7 @@ public interface AgendaBoService {
      * @throws IllegalArgumentException if the AgendaItemDefinition is null
      * @throws IllegalStateException if the AgendaItemDefinition already exists in the system
      */
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public AgendaItemDefinition createAgendaItem(AgendaItemDefinition agendaItem);
 	
     /**
@@ -93,7 +103,8 @@ public interface AgendaBoService {
      * @param agendaItem  The AgendaItemDefinition to update
      * @throws IllegalArgumentException if the AgendaItemDefinition is null
      * @throws IllegalStateException if the AgendaItemDefinition does not exists in the system
-     */	
+     */
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public void updateAgendaItem(AgendaItemDefinition agendaItem);
 	
     /**
@@ -117,6 +128,7 @@ public interface AgendaBoService {
      * @throws IllegalArgumentException if the AgendaItemDefinition is null
      * @throws IllegalStateException if the parent AgendaItemDefinition does not already exists in the system
      */
+    @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
 	public void addAgendaItem(AgendaItemDefinition agendaItem, String parentId, Boolean position);
 	
     /**
@@ -126,6 +138,7 @@ public interface AgendaBoService {
      * @return an {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition} identified by the given id.
      * A null reference is returned if an invalid or non-existent id is supplied.
      */
+    @Cacheable(value= AgendaItemDefinition.Cache.NAME, key="'id=' + #p0")
 	public AgendaItemDefinition getAgendaItemById(String id);
 
 	/**

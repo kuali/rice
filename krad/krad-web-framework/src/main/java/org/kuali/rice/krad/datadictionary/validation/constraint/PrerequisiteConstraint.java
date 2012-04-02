@@ -46,16 +46,6 @@ public class PrerequisiteConstraint extends BaseConstraint {
 	}
 
     @Override
-    public String getLabelKey(){
-        if(StringUtils.isBlank(this.labelKey)){
-            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "prerequisiteFallback";
-        }
-        else{
-            return super.getLabelKey();
-        }
-    }
-
-    @Override
     /**
      * @see BaseConstraint#getValidationMessageParams()
      * @return the validation message list if defined. If not defined,  return  the property name

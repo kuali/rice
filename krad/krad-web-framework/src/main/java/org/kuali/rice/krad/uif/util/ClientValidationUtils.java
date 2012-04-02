@@ -58,6 +58,7 @@ public class ClientValidationUtils {
 	public static final String PREREQ_MSG_KEY = "prerequisite";
 	public static final String POSTREQ_MSG_KEY = "postrequisite";
 	public static final String MUSTOCCURS_MSG_KEY = "mustOccurs";
+    public static final String MUSTOCCURS_MSG_EQUAL_KEY = "mustOccursEqualMinMax";
 	public static final String GENERIC_FIELD_MSG_KEY = "general.genericFieldName";
 	
 	public static final String ALL_MSG_KEY = "general.all";
@@ -685,11 +686,12 @@ public class ClientValidationUtils {
 			String and = configService.getPropertyValueAsString(AND_MSG_KEY);
 			String or = configService.getPropertyValueAsString(OR_MSG_KEY);
 			String all = configService.getPropertyValueAsString(ALL_MSG_KEY);
+            String mustOccursMsgEqualMinMax = configService.getPropertyValueAsString(
+                    UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_EQUAL_KEY);
 			String atMost = configService.getPropertyValueAsString(ATMOST_MSG_KEY);
 			String genericLabel = configService.getPropertyValueAsString(GENERIC_FIELD_MSG_KEY);
 			String mustOccursMsg = configService.getPropertyValueAsString(
 			        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_MSG_KEY);
-			//String postfix = configService.getPropertyValueAsString(VALIDATION_MSG_KEY_PREFIX + MUSTOCCURS_POST_MSG_KEY);
 			String statement="";
 			for(int i=0; i< mustOccursPathNames.size(); i++){
 				String andedString = "";
@@ -717,41 +719,43 @@ public class ClientValidationUtils {
 							}
 						}
 						else{
-							andedString = andedString + "<li>" + label + "</li>";
+							andedString = andedString + "(" + label + ")";
 						}
 					}
 					if(min.equals(max)){
-						andedString = "<li>" + andedString + "</li>";
+						andedString = "(" + andedString + ")";
 					}
-					andedString="<ul>" + andedString + "</ul>";
-				
-					if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && !min.equals(max)){
-						andedString = MessageFormat.format(mustOccursMsg, min + "-" + max) + "<br/>" +andedString;
-					}
-					else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i==0){
-						andedString = MessageFormat.format(mustOccursMsg, all) + "<br/>" +andedString;
-					}
-					else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i!=0){
-						//leave andedString as is
-					}
-					else if(StringUtils.isNotEmpty(min)){
-						andedString = MessageFormat.format(mustOccursMsg, min) + "<br/>" +andedString;
-					}
-					else if(StringUtils.isNotEmpty(max)){
-						andedString = MessageFormat.format(mustOccursMsg, atMost + " " + max) + "<br/>" +andedString;
-					}
+                    
+                    if(StringUtils.isNotBlank(andedString) && !andedString.equals("()")){
+                        if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && !min.equals(max)){
+                            andedString = MessageFormat.format(mustOccursMsg, min + "-" + max) + " " +andedString;
+                        }
+                        else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i==0){
+                            andedString = mustOccursMsgEqualMinMax + " " +andedString;
+                        }
+                        else if(StringUtils.isNotEmpty(min) && StringUtils.isNotEmpty(max) && min.equals(max) && i!=0){
+                            //leave andedString as is
+                        }
+                        else if(StringUtils.isNotEmpty(min)){
+                            andedString = MessageFormat.format(mustOccursMsg, min) + " " +andedString;
+                        }
+                        else if(StringUtils.isNotEmpty(max)){
+                            andedString = MessageFormat.format(mustOccursMsg, atMost + " " + max) + " " +andedString;
+                        }
+                    }
 				}
 				if(StringUtils.isNotEmpty(andedString)){
-					if(i==0){
-						statement = andedString;
+					if(StringUtils.isNotBlank(statement)){
+                        statement = statement + " " + or.toUpperCase() + " " + andedString;
 					}
 					else{
-						statement = statement + or.toUpperCase() + andedString;
+                        statement = andedString;
 					}
 				}
 			}
 			if(StringUtils.isNotEmpty(statement)){
 				message = statement;
+                message = message.replace(")(", " " + or + " ");
 			}
 		}
 		

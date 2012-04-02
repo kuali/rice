@@ -182,8 +182,10 @@
   <bean id="Uif-VerticalRadioControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.RadioGroupControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/radioGroup.jsp"/>
-    <property name="delimiter">
-      <value><![CDATA[</br>]]></value>
+    <property name="fieldsetClasses">
+      <list merge="true">
+        <value>uif-verticalRadioFieldset</value>
+      </list>
     </property>
     <property name="styleClasses">
       <list merge="true">
@@ -199,6 +201,11 @@
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/radioGroup.jsp"/>
     <property name="delimiter" value="&amp;nbsp;"/>
+    <property name="fieldsetClasses">
+      <list merge="true">
+        <value>uif-horizontalRadioFieldset</value>
+      </list>
+    </property>
     <property name="styleClasses">
       <list merge="true">
         <value>uif-radioControl</value>
@@ -212,8 +219,10 @@
         class="org.kuali.rice.krad.uif.control.CheckboxGroupControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkboxGroup.jsp"/>
-    <property name="delimiter">
-      <value><![CDATA[</br>]]></value>
+    <property name="fieldsetClasses">
+      <list merge="true">
+        <value>uif-verticalCheckboxesFieldset</value>
+      </list>
     </property>
     <property name="styleClasses">
       <list merge="true">
@@ -229,6 +238,11 @@
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkboxGroup.jsp"/>
     <property name="delimiter" value="&amp;nbsp;"/>
+    <property name="fieldsetClasses">
+      <list merge="true">
+        <value>uif-horizontalCheckboxesFieldset</value>
+      </list>
+    </property>
     <property name="styleClasses">
       <list merge="true">
         <value>uif-checkboxesControl</value>

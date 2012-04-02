@@ -89,14 +89,4 @@ public class MustOccurConstraint extends BaseConstraint {
 	public void setMax(Integer max) {
 		this.max = max;
 	}
-
-    @Override
-    public String getLabelKey(){
-        if(StringUtils.isBlank(this.labelKey)){
-            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "mustoccursFallback";
-        }
-        else{
-            return super.getLabelKey();
-        }
-    }
 }

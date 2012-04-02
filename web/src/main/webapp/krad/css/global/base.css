@@ -17,6 +17,9 @@
 /* CSS Document */
 
 /* GENERAL - applies to all look and feel (KNS and KS)********************/
+ul li{
+    list-style: none;
+}
 
 a{
 	font-weight:normal;
@@ -232,18 +235,7 @@ li label.kr-error {
 	border: 1px solid #82CAFA;
 	background-color: #AFDCEC;
 }
-.uif-validationMessages ul {		/* was .errorsField ul*/ /* renamed in xml and/or jsp */
-	list-style: none outside none;
-	margin: 0;
-}
-.uif-validationMessages li {		/* was .errorsField li */ /* renamed in xml and/or jsp */
-	list-style: none outside none;
-	margin-left: 0;
-    margin-bottom:5px;
-	padding: 1px 0;
-	line-height: 1.3em;
-    display:block;
-}
+
 .errorLines label {
     font-weight:normal;
 }
@@ -271,26 +263,26 @@ li label.kr-error {
 }
 /* breadcrumbs */
 
-.kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */
+.uif-breadcrumbs {
     display: block;
     width: 100%;
     letter-spacing: 0.02em;
     padding: 3px 0 3px 25px;
  }
 
- .kr-breadcrumbs a {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */
+ .uif-breadcrumbs a {
 	text-decoration: none;
  }
 
- .kr-breadcrumbs a:visited{		/* was .breadcrumbs a:visited*/ /* renamed in xml and/or jsp */
+ .uif-breadcrumbs a:visited{
 	text-decoration: none;
  }
 
- .kr-breadcrumbs a:focus, .kr-breadcrumbs a:hover{  /* was .breadcrumbs a:focus, .breadcrumbs a:hover*/ /* renamed in xml and/or jsp */
+ .uif-breadcrumbs a:focus, .uif-breadcrumbs a:hover{
  	text-decoration: underline;
  }
 
- .kr-breadcrumbs ol, li{   /* was .breadcrumbs ol, li*/ /* renamed in xml and/or jsp */
+ .uif-breadcrumbs ol, .uif-breadcrumbs li{
     display: inline;
     margin: 0;
     list-style: none;
@@ -814,4 +806,416 @@ div.blockPage{
 
 img.uif-changedHeaderIcon {
     padding-left:5px; padding-right:5px
+}
+
+fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"]{
+    display: inline;
+    padding-right: 0.5em;
+    max-width: 64em;
+}
+
+.uif-verticalRadioFieldset > span, .uif-verticalCheckboxesFieldset > span{
+    clear: both;
+    float: left;
+    padding-left: 0.5em;
+}
+
+.uif-horizontalRadioFieldset > span, .uif-verticalCheckboxesFieldset > span{
+    padding-left: 0.5em;
+}
+
+/** Validation Messages framework css **/
+.uif-clientMessageItems{
+    max-width: 250px;
+    padding: 1px;
+}
+
+.uif-clientMessageItems ul{
+    margin-left: 1em;
+}
+
+.uif-serverMessageItems{
+    max-width: 250px;
+}
+
+.uif-serverMessageItems ul{
+    margin-left: 1em;
+}
+
+.uif-validationMessages{
+    background-color: #F5F5DC;
+    border: 1px solid gray;
+    padding-top: .5em;
+    padding-bottom: .5em;
+}
+
+.uif-validationMessages, .uif-clientMessageItems, .uif-serverMessageItems{
+    color: black;
+}
+
+.uif-validationMessages ul {
+	list-style: none outside none;
+	margin: 0;
+    margin-left: 1.5em;
+}
+
+.uif-validationMessages li {
+	list-style: none outside none;
+	margin-left: 0;
+	line-height: 1.3em;
+    margin-bottom: .3em;
+    display:block;
+}
+
+.uif-validationMessages ul > li > ul{
+    margin-left: 2em;
+}
+
+.uif-pageValidationHeader{
+    margin: .5em;
+    padding: .5em;
+    border: 1px solid black;
+}
+
+.uif-pageValidationHeader-error{
+    background-color: #FFE1E9;
+}
+
+.uif-pageValidationHeader-warning{
+    background-color: #FFFEDA;
+}
+
+.uif-pageValidationHeader-info{
+    background-color: #E7F3FE;
+}
+
+.uif-hasError > .uif-control{
+    border: 2px solid red;
+}
+
+.uif-hasError > fieldset{
+    border: 1px dotted red;
+}
+
+.uif-hasWarning > .uif-control{
+
+}
+
+.uif-hasWarning > fieldset{
+    border: 1px dotted gray;
+}
+
+.uif-hasInfo > .uif-control{
+
+}
+
+.uif-hasInfo > fieldset{
+    border: 1px dotted gray;
+}
+
+.uif-validationMessages li a{
+    color: #000088;
+}
+
+.uif-validationMessages li a:hover, .uif-validationMessages li a:focus{
+    color: #0044ff;
+}
+
+li.uif-errorMessageItem:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: red;
+  font-size: 20px;
+}
+
+li.uif-warningMessageItem:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: #ffd700;
+  font-size: 20px;
+}
+
+li.uif-infoMessageItem:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: black;
+  font-size: 20px;
+}
+
+.uif-errorHighlight-section > .uif-header .uif-headerText{
+    background-color: #FFE1E9;
+}
+
+.uif-warningHighlight-section > .uif-header .uif-headerText{
+    background-color: #FFFEDA;
+}
+
+.uif-infoHighlight-section > .uif-header .uif-headerText{
+    background-color: #E7F3FE;
+}
+
+.uif-errorHighlight > .uif-control, .uif-errorHighlight > fieldset{
+    background-color: #FFE1E9;
+}
+
+.uif-warningHighlight > .uif-control, .uif-warningHighlight > fieldset{
+    background-color: #FFFEDA;
+}
+
+.uif-infoHighlight > .uif-control, .uif-infoHighlight > fieldset{
+    background-color: #E7F3FE;
+}
+
+.uif-clientErrorDiv{
+    background-color: #FFE1E9;
+}
+
+.uif-clientWarningDiv{
+    background-color: #FFFEDA;
+}
+
+.uif-clientInfoDiv{
+    background-color: #E7F3FE;
+}
+
+.jquerybubblepopup-kr-error-cs  .jquerybubblepopup-innerHtml{
+    background-color:#FFE1E9
+}
+
+.jquerybubblepopup-kr-warning-cs  .jquerybubblepopup-innerHtml{
+    background-color:#FFFEDA
+}
+
+.jquerybubblepopup-kr-info-cs  .jquerybubblepopup-innerHtml{
+    background-color:#E7F3FE
+}
+
+.jquerybubblepopup-kr-error-ss  .jquerybubblepopup-innerHtml,
+.jquerybubblepopup-kr-warning-ss  .jquerybubblepopup-innerHtml,
+.jquerybubblepopup-kr-info-ss  .jquerybubblepopup-innerHtml{
+	background-color: white;
+}
+
+fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"]{
+    display: inline;
+    padding-right: 0.5em;
+    max-width: 64em;
+}
+
+.uif-verticalRadioFieldset > span, .uif-verticalCheckboxesFieldset > span{
+    clear: both;
+    float: left;
+    padding-left: 0.5em;
+}
+
+.uif-horizontalRadioFieldset > span, .uif-verticalCheckboxesFieldset > span{
+    padding-left: 0.5em;
+}
+
+/** Validation Messages framework css **/
+.uif-clientMessageItems{
+    max-width: 250px;
+    padding: 1px;
+}
+
+.uif-clientMessageItems ul{
+    margin-left: 1em;
+}
+
+.uif-serverMessageItems{
+    max-width: 250px;
+}
+
+.uif-serverMessageItems ul{
+    margin-left: 1em;
+}
+
+.uif-validationMessages{
+    background-color: #F5F5DC;
+    border: 1px solid gray;
+    padding-top: .5em;
+    padding-bottom: .5em;
+}
+
+.uif-validationMessages, .uif-clientMessageItems, .uif-serverMessageItems{
+    color: black;
+}
+
+.uif-validationMessages ul {
+	list-style: none outside none;
+	margin: 0;
+    margin-left: 1.5em;
+}
+
+.uif-validationMessages li {
+	list-style: none outside none;
+	margin-left: 0;
+	line-height: 1.3em;
+    margin-bottom: .3em;
+    display:block;
+}
+
+.uif-validationMessages ul > li > ul{
+    margin-left: 2em;
+}
+
+.uif-pageValidationHeader{
+    margin: .5em;
+    padding: .5em;
+    border: 1px solid black;
+}
+
+.uif-pageValidationHeader-error{
+    background-color: #FFE1E9;
+}
+
+.uif-pageValidationHeader-warning{
+    background-color: #FFFEDA;
+}
+
+.uif-pageValidationHeader-info{
+    background-color: #E7F3FE;
+}
+
+.uif-hasError > .uif-control{
+    border: 2px solid red;
+}
+
+.uif-hasError > fieldset{
+    border: 1px dotted red;
+}
+
+.uif-hasWarning > .uif-control{
+
+}
+
+.uif-hasWarning > fieldset{
+    border: 1px dotted gray;
+}
+
+.uif-hasInfo > .uif-control{
+
+}
+
+.uif-hasInfo > fieldset{
+    border: 1px dotted gray;
+}
+
+.uif-validationMessages li a{
+    color: #000088;
+}
+
+.uif-validationMessages li a:hover, .uif-validationMessages li a:focus{
+    color: #0044ff;
+}
+
+li.uif-errorMessageItem:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: red;
+  font-size: 20px;
+}
+
+li.uif-warningMessageItem:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: #ffd700;
+  font-size: 20px;
+}
+
+li.uif-infoMessageItem:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: black;
+  font-size: 20px;
+}
+
+.uif-errorHighlight-section > .uif-header .uif-headerText{
+    background-color: #FFE1E9;
+}
+
+.uif-warningHighlight-section > .uif-header .uif-headerText{
+    background-color: #FFFEDA;
+}
+
+.uif-infoHighlight-section > .uif-header .uif-headerText{
+    background-color: #E7F3FE;
+}
+
+.uif-errorHighlight > .uif-control, .uif-errorHighlight > fieldset{
+    background-color: #FFE1E9;
+}
+
+.uif-warningHighlight > .uif-control, .uif-warningHighlight > fieldset{
+    background-color: #FFFEDA;
+}
+
+.uif-infoHighlight > .uif-control, .uif-infoHighlight > fieldset{
+    background-color: #E7F3FE;
+}
+
+.uif-clientErrorDiv{
+    background-color: #FFE1E9;
+}
+
+.uif-clientWarningDiv{
+    background-color: #FFFEDA;
+}
+
+.uif-clientInfoDiv{
+    background-color: #E7F3FE;
+}
+
+.jquerybubblepopup-kr-error-cs  .jquerybubblepopup-innerHtml{
+    background-color:#FFE1E9
+}
+
+.jquerybubblepopup-kr-warning-cs  .jquerybubblepopup-innerHtml{
+    background-color:#FFFEDA
+}
+
+.jquerybubblepopup-kr-info-cs  .jquerybubblepopup-innerHtml{
+    background-color:#E7F3FE
+}
+
+.jquerybubblepopup-kr-error-ss  .jquerybubblepopup-innerHtml,
+.jquerybubblepopup-kr-warning-ss  .jquerybubblepopup-innerHtml,
+.jquerybubblepopup-kr-info-ss  .jquerybubblepopup-innerHtml{
+	background-color: white;
 }

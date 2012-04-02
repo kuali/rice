@@ -19,13 +19,13 @@
 
 <tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.RadioGroupControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.InputField"/>
-
 <%--
     Standard HTML Radio Input
     
  --%>
-<fieldset aria-labelledby="${field.id}_label" id="${field.id}">
-<legend style="display: none">${field.label}</legend>
+<fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
+          data-type="RadioSet" id="${field.id}">
+  <legend style="display: none">${field.label}</legend>
   <form:radiobuttons id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                      items="${control.options}" itemValue="key" itemLabel="value"
                      cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"

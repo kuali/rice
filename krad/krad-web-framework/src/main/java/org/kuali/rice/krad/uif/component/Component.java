@@ -382,9 +382,6 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * the view
      * </p>
      *
-     * <p>
-     * e.g. 'header left'
-     * </p>
      *
      * @return List<String> css style classes to apply
      */

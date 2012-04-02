@@ -222,6 +222,16 @@ function runHiddenScripts(id, isSelector){
 			jq(this).removeAttr("name");
 		});
         runScriptsForId(id);
+
+        //reinitialize BubblePopup
+        initBubblePopups();
+        //Interpret new server message state for refreshed InputFields
+        jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
+            var data = jQuery(this).data("validationMessages");
+            if(!data.processed){
+                handleMessagesAtField(jQuery(this).attr('id'));
+            }
+        });
 	}
 	else{
         //run dataScript first always
@@ -235,7 +245,19 @@ function runHiddenScripts(id, isSelector){
             jq(this).attr("script", "first_run");
 			jq(this).removeAttr("name");
 		});
+
+        //reinitialize BubblePopup
+        initBubblePopups();
+        //Interpret new server message state for refreshed InputFields
+        jQuery("[data-role='InputField']").each(function(){
+            var data = jQuery(this).data("validationMessages");
+            if(!data.processed){
+                handleMessagesAtField(jQuery(this).attr('id'));
+            }
+        });
 	}
+
+
 }
 
 function runScriptsForId(id) {

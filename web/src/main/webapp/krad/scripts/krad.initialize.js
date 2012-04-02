@@ -30,6 +30,212 @@ var errorImage;
 var warningImage;
 var infoImage;
 
+// common event registering done here through JQuery ready event
+jq(document).ready(function() {
+	setPageBreadcrumb();
+
+	// buttons
+	jq("input:submit").button();
+	jq("input:button").button();
+    jq("a.button").button();
+
+    // common ajax setup
+	jq.ajaxSetup({
+		  beforeSend: function() {
+		     createLoading(true);
+		  },
+		  complete: function(){
+			 createLoading(false);
+		  },
+		  error: function(jqXHR, textStatus, errorThrown){
+			 createLoading(false);
+			 showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
+		  }
+	});
+
+	runHiddenScripts("");
+    jq("#view_div").show();
+    createLoading(false);
+
+    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
+    jq(window).unload(function() {
+        createLoading(false);
+    });
+
+    //setup the various event handlers for fields - THIS IS IMPORTANT
+    initFieldHandlers();
+});
+
+/**
+ * Sets up the various handlers for various field controls.
+ * This function includes handlers that are critical to the behavior of KRAD validation and message frameworks
+ * on the client
+ */
+function initFieldHandlers(){
+    //when these fields are focus store what the current errors are if any and show the messageTooltip
+    jq(document).on("focus",
+            "[data-role='InputField'] input, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea, "
+                    + "[data-role='InputField'] option",
+            function () {
+                var id = getAttributeId(jQuery(this).attr('id'));
+
+                //keep track of what errors it had on initial focus
+                var data = jQuery("#" + id).data("validationMessages");
+                data.focusedErrors = data.errors;
+                jQuery("#" + id).data("validationMessages", data);
+
+                //show tooltip on focus
+                showMessageTooltip(id, false);
+            });
+
+    //when these fields are focused out validate and if this field never had an error before, show and close, otherwise
+    //immediately close the tooltip
+    jq(document).on("focusout",
+            "[data-role='InputField'] input:text, "
+                    + "[data-role='InputField'] input:password, "
+                    + "[data-role='InputField'] input:file, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea",
+            function () {
+                var id = getAttributeId(jQuery(this).attr('id'));
+                var data = jQuery("#" + id).data("validationMessages");
+                var hadError = data.focusedErrors.length;
+
+                if (validateClient) {
+                    var valid = jq(this).valid();
+                    dependsOnCheck(this, new Array());
+                }
+
+                if (!hadError && !valid) {
+                    //never had a client error before, so pop-up and delay
+                    showMessageTooltip(id, true, true);
+                }
+                else {
+                    hideMessageTooltip(id);
+                }
+            });
+
+    //when these fields are changed validate immediately
+    jq(document).on("change",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio, "
+                    + "[data-role='InputField'] select",
+            function () {
+                if (validateClient) {
+                    jq(this).valid();
+                    dependsOnCheck(this, new Array());
+                }
+            });
+
+    //special radio and checkbox control handling for click events
+    jq(document).on("click",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio,"
+                    + "fieldset[data-type='CheckboxSet'] label,"
+                    + "fieldset[data-type='RadioSet'] label",
+            function () {
+                var event = jQuery.Event("handleFieldsetMessages");
+                event.element = this;
+                //fire the handleFieldsetMessages event on every input of checkbox or radio fieldset
+                jQuery("fieldset > span > input").not(this).trigger(event);
+            });
+
+    //special radio and checkbox control handling for focus events
+    jq(document).on("focus",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio",
+            function () {
+                var event = jQuery.Event("handleFieldsetMessages");
+                event.element = this;
+                //fire the handleFieldsetMessages event on every input of checkbox or radio fieldset
+                jQuery("fieldset > span > input").not(this).trigger(event);
+            });
+
+    //when focused out the checkbox and radio controls that are part of a fieldset will check if another control in
+    //their fieldset has received focus after a short period of time, otherwise the tooltip will close.
+    //if not part of the fieldset, the closing behavior is similar to normal fields
+    //in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
+    //in the fieldset has focus)
+    jq(document).on("focusout",
+            "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio",
+            function () {
+                var parent = jQuery(this).parent();
+                var id = getAttributeId(jQuery(this).attr('id'));
+
+                //radio/checkbox is in fieldset case
+                if (parent.parent().is("fieldset")) {
+                    //we only ever want this to be handled once per attachment
+                    jQuery(this).one("handleFieldsetMessages", function (event) {
+                        var proceed = true;
+                        //if the element that invoked the event is part of THIS fieldset, we do not lose focus, so
+                        //do not proceed with close handling
+                        if (event.element
+                                && jQuery(event.element).is(jQuery(this).closest("fieldset").find("input"))) {
+                            proceed = false;
+                        }
+
+                        //the fieldset is focused out - proceed
+                        if (proceed) {
+                            var hadError = parent.parent().find("input").hasClass("error");
+
+                            if (validateClient) {
+                                var valid = jq(this).valid();
+                                dependsOnCheck(this, new Array());
+                            }
+
+                            if (!hadError && !valid) {
+                                //never had a client error before, so pop-up and delay close
+                                showMessageTooltip(id, true, true);
+                            }
+                            else {
+                                hideMessageTooltip(id);
+                            }
+                        }
+                    });
+
+                    var currentElement = this;
+
+                    //if no radios/checkboxes are reporting events assume we want to proceed with closing the message
+                    setTimeout(function () {
+                        var event = jQuery.Event("handleFieldsetMessages");
+                        event.element = [];
+                        jQuery(currentElement).trigger(event);
+                    }, 500);
+                }
+                //non-fieldset case
+                else if (!jQuery(this).parent().parent().is("fieldset")) {
+                    var hadError = jq(this).hasClass("error");
+                    //not in a fieldset - so validate directly
+                    if (validateClient) {
+                        var valid = jq(this).valid();
+                        dependsOnCheck(this, new Array());
+                    }
+
+                    if (!hadError && !valid) {
+                        //never had a client error before, so pop-up and delay
+                        showMessageTooltip(id, true, true);
+                    }
+                    else {
+                        hideMessageTooltip(id);
+                    }
+                }
+            });
+}
+
+function initBubblePopups(){
+    //this can ONLY ever have ONE CALL that selects ALL elements that may have a BubblePopup
+    //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
+    //will cause a severe loss of functionality and buggy behavior
+    //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
+    jq("input, select, textarea, "
+            + " label").CreateBubblePopup(
+            {   manageMouseEvents: false,
+                themePath: "../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+}
+
 //sets up the validator with the necessary default settings and methods
 //also sets up the dirty check and other page scripts
 //note the use of onClick and onFocusout for on the fly validation client side
@@ -40,12 +246,18 @@ function setupPage(validate){
     warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
     infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
 
+    //Reset summary state before processing each field - summaries are shown if server messages
+    // or on client page validation
     messageSummariesShown = false;
+
+    //flag to turn off and on validation mechanisms on the client
+    validateClient = validate;
+
     jq("[data-role='InputField']").each(function(){
-        handleMessagesAtField(jQuery(this).attr('id'));
+        var id = jQuery(this).attr('id');
+        handleMessagesAtField(id);
     });
 
-    validateClient = validate;
 	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){
         var validateDirty = jq("[name='validateDirty']").val();
@@ -65,21 +277,21 @@ function setupPage(validate){
 	{
 		onsubmit: false,
 		ignore: ".ignoreValid",
-		onclick: function(element) {
+		wrapper: "",
+        onfocusout: false,
+        onclick: false,
+        onkeyup: function(element){
             if(validateClient){
-                if(element.type != "select-one") {
-                    var valid = jq(element).valid();
+                var id = getAttributeId(jQuery(element).attr('id'));
+                var data = jQuery("#" + id).data("validationMessages");
+
+                //if this field previously had errors validate on key up
+                if(data.focusedErrors && data.focusedErrors.length){
+                    jq(element).valid();
                     dependsOnCheck(element, new Array());
                 }
             }
-		},
-		onfocusout: function(element) {
-            if(validateClient){
-                var valid = jq(element).valid();
-                dependsOnCheck(element, new Array());
-            }
-		},
-		wrapper: "",
+        },
 		highlight: function(element, errorClass, validClass) {
 			jq(element).addClass(errorClass).removeClass(validClass);
             jq(element).attr("aria-invalid", "true");
@@ -87,6 +299,20 @@ function setupPage(validate){
 		unhighlight: function(element, errorClass, validClass) {
 			jq(element).removeClass(errorClass).addClass(validClass);
             jq(element).removeAttr("aria-invalid");
+
+            var id = getAttributeId(jQuery(element).attr("id"));
+            var data = jQuery("#" + id).data("validationMessages");
+
+            data.errors = [];
+            jQuery("#" + id).data("validationMessages", data);
+            if(messageSummariesShown){
+               handleMessagesAtField(id);
+            }
+            else{
+               writeMessagesAtField(id);
+            }
+            hideMessageTooltip(id);
+
 		},
 		errorPlacement: function(error, element) {},
         showErrors: function (nameErrorMap, elementObjectList) {
@@ -109,6 +335,7 @@ function setupPage(validate){
                 }
 
                 if(!exists){
+                    data.errors = [];
                     data.errors.push(message);
                     jQuery("#" + id).data("validationMessages", data);
 
@@ -118,6 +345,7 @@ function setupPage(validate){
                     else{
                        writeMessagesAtField(id);
                     }
+                    showMessageTooltip(id, false, true);
                 }
             }
 
@@ -143,6 +371,7 @@ function setupPage(validate){
                 else{
                    writeMessagesAtField(id);
                 }
+                showMessageTooltip(id, false, true);
             }
         }
 	});
@@ -382,38 +611,6 @@ function errorHandler(msg,url,lno)
   return false;
 }
 
-// common event registering done here through JQuery ready event
-jq(document).ready(function() {
-	setPageBreadcrumb();
-
-	// buttons
-	jq("input:submit").button();
-	jq("input:button").button();
-    jq("a.button").button();
-
-    // common ajax setup
-	jq.ajaxSetup({
-		  beforeSend: function() {
-		     createLoading(true);
-		  },
-		  complete: function(){
-			 createLoading(false);
-		  },
-		  error: function(jqXHR, textStatus, errorThrown){
-			 createLoading(false);
-			 showGrowl('Status: ' + textStatus + '<br/>' + errorThrown, 'Server Response Error', 'errorGrowl');
-		  }
-	});
-
-	runHiddenScripts("");
-    jq("#view_div").show();
-    createLoading(false);
-
-    // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
-    jq(window).unload(function() {
-        createLoading(false);
-    });
-});
 
 // script that should execute when the page unloads
 jq(window).bind('beforeunload', function (evt) {
@@ -422,6 +619,7 @@ jq(window).bind('beforeunload', function (evt) {
 //    if (!event.pageY || (event.pageY < 0)) {
 //        clearServerSideForm();
 //    }
+    console.log("unload");
 });
 
 

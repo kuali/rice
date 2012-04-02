@@ -140,7 +140,7 @@
               </cssSourceExcludes>
               <jsSourceDir>krad</jsSourceDir>
               <jsSourceFiles>
-                <jsSourceFile>plugins/jquery/jquery-1.6.3.js</jsSourceFile>
+                <jsSourceFile>plugins/jquery/jquery-1.7.2.js</jsSourceFile>
                 <jsSourceFile>plugins/jqueryUI/jquery-ui-1.8.9.js</jsSourceFile>
                 <jsSourceFile>plugins/blockUI/jquery.blockUI.js</jsSourceFile>
                 <jsSourceFile>plugins/validate/jquery.validate.js</jsSourceFile>

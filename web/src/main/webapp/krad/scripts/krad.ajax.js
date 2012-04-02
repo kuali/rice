@@ -68,6 +68,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				if(!hasError){
 					successCallback(tempDiv);
 				}
+
 				jq("#formComplete").html("");
 			},
             error: function(jqXHR, textStatus) {
@@ -94,6 +95,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 					// note that if you want to unblock simultaneous with showing the new retrieval
 					// you must do so in the successCallback
 					elementToBlock.unblock();
+
 				},
 				error: function(){
 					if(elementToBlock.hasClass("unrendered")){
@@ -235,10 +237,6 @@ function retrieveComponent(id, baseId, methodToCall){
 
                 //runs scripts on the span or div with id
 				runHiddenScripts(id);
-                //Interpret new server message state for refreshed InputFields
-                jQuery("#" + id).find("[data-role='InputField']").each(function(){
-                    handleMessagesAtField(jQuery(this).attr('id'));
-                });
 
                 if(origColor == ""){
                     origColor = "transparent";

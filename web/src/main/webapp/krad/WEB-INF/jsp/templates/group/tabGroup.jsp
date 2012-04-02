@@ -26,14 +26,14 @@
     <%-- render items in list --%>
     <ul id="${group.id}_tabList">
       <c:forEach items="${group.items}" var="item">
-        <li data-tabFor="${item.id}">
+        <li data-tabfor="${item.id}">
           <a  href="#${item.id}_tab">${item.title}</a>
         </li>
       </c:forEach>
     </ul>
 
     <c:forEach items="${group.items}" var="item">
-      <div data-tabWrapperFor="${item.id}" id="${item.id}_tab">
+      <div data-tabwrapperfor="${item.id}" data-type="TabWrapper" id="${item.id}_tab">
         <krad:template component="${item}"/>
       </div>
     </c:forEach>

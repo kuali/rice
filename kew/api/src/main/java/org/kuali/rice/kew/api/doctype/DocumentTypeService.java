@@ -27,6 +27,8 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
  * TODO ...
  * 
@@ -61,6 +63,12 @@ public interface DocumentTypeService {
     @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeName=' + #p0")
     DocumentType getDocumentTypeByName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "findAllDocumentTypes")
+    @WebResult(name = "documentTypes")
+    @XmlElement(name = "documentTypes", required = false)
+    @Cacheable(value= DocumentType.Cache.NAME, key="'all'")
+    List<DocumentType> findAllDocumentTypes();
 
     @WebMethod(operationName = "isSuperUserForDocumentTypeId")
     @WebResult(name = "isSuperUser")

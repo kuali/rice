@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.location.api.county;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.location.api.LocationConstants;
 import org.springframework.cache.annotation.Cacheable;
@@ -84,4 +85,16 @@ public interface CountyService {
     @Cacheable(value=County.Cache.NAME, key="'countryCode=' + #p0 + '|' + 'stateCode=' + #p1")
     List<County> findAllCountiesInCountryAndState(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "stateCode") String stateCode)
             throws RiceIllegalArgumentException;
+
+    /**
+     * This method find Counties based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findCounties")
+    @WebResult(name = "results")
+    CountyQueryResults findCounties(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

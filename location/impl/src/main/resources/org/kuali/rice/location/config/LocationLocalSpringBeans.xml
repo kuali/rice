@@ -103,36 +103,42 @@
 
   <bean id="locationServerModule" class="org.kuali.rice.location.service.impl.LocationModuleService">
     <property name="moduleConfiguration" ref="locationModuleConfiguration"/>
-    <property name="kualiModuleService" ref="kualiModuleService"/>
+    <property name="kualiModuleService" ref="rice.location.import.kualiModuleService"/>
   </bean>
 
   <bean id="businessObjectService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="businessObjectService"/>
   </bean>
 
+  <bean id="rice.location.import.criteriaLookupService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="criteriaLookupService"/>
+  </bean>
+
   <bean id="postalCodeService" class="org.kuali.rice.location.impl.postalcode.PostalCodeServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
   </bean>
 
   <bean id="countyService" class="org.kuali.rice.location.impl.county.CountyServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
   </bean>
 
   <bean id="stateService" class="org.kuali.rice.location.impl.state.StateServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
   </bean>
 
   <bean id="countryService" class="org.kuali.rice.location.impl.country.CountryServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
     <property name="parameterService" ref="rice.location.import.parameterService"/>
+    <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
   </bean>
 
   <bean id="campusService" class="org.kuali.rice.location.impl.campus.CampusServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
-  <bean id="kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="kualiModuleService" />
+    <property name="criteriaLookupService" ref="rice.location.import.criteriaLookupService"/>
   </bean>
 
   <bean id="campusGroupTypeService" class="org.kuali.rice.location.impl.campus.CampusGroupTypeServiceImpl"/>

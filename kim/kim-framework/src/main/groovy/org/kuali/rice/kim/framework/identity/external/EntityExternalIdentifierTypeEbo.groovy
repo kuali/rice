@@ -18,13 +18,16 @@ package org.kuali.rice.kim.framework.identity.external
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
-class EntityExternalIdentifierTypeEbo extends PersistableBusinessObjectBase implements EntityExternalIdentifierTypeContract {
+class EntityExternalIdentifierTypeEbo implements EntityExternalIdentifierTypeContract, ExternalizableBusinessObject {
     String code;
     String name;
     boolean active;
     String sortCode;
 	boolean encryptionRequired;
+    Long versionNumber;
+    String objectId;
 
 
     /**

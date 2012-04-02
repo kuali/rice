@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.location.api.country;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.location.api.LocationConstants;
@@ -102,5 +103,17 @@ public interface CountryService {
     @WebResult(name = "country")
     @Cacheable(value = Country.Cache.NAME,  key="'default'")
     Country getDefaultCountry();
+
+    /**
+     * This method find Countries based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findCountries")
+    @WebResult(name = "results")
+    CountryQueryResults findCountries(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 
 }

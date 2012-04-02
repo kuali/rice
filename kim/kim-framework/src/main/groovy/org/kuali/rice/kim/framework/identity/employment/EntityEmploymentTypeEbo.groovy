@@ -18,12 +18,15 @@ package org.kuali.rice.kim.framework.identity.employment
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
-public class EntityEmploymentTypeEbo extends PersistableBusinessObjectBase implements CodedAttributeContract {
+public class EntityEmploymentTypeEbo implements CodedAttributeContract, ExternalizableBusinessObject {
     String code;
     String name;
     boolean active;
     String sortCode;
+    Long versionNumber;
+    String objectId;
 
 
     /**

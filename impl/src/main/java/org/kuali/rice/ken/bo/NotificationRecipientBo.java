@@ -17,6 +17,9 @@ package org.kuali.rice.ken.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationListRecipient;
+import org.kuali.rice.ken.api.notification.NotificationRecipient;
+import org.kuali.rice.ken.api.notification.NotificationRecipientContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -28,7 +31,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREN_RECIP_T")
-public class NotificationRecipient extends PersistableBusinessObjectBase{
+public class NotificationRecipientBo extends PersistableBusinessObjectBase implements NotificationRecipientContract {
     @Id
     @GeneratedValue(generator="KREN_RECIP_S")
 	@GenericGenerator(name="KREN_RECIP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -47,12 +50,12 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name="NTFCTN_ID", insertable=false, updatable=false)
-    private Notification notification;
+    private NotificationBo notification;
     
     /**
      * Constructs a NotificationRecipient instance.
      */
-    public NotificationRecipient() {
+    public NotificationRecipientBo() {
     }
 
     /**
@@ -60,7 +63,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @return Returns the id.
      */
     public Long getId() {
-	return id;
+	    return id;
     }
 
     /**
@@ -68,7 +71,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @param id The id to set.
      */
     public void setId(Long id) {
-	this.id = id;
+	    this.id = id;
     }
 
     /**
@@ -76,7 +79,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @return Returns the notificationId.
      */
     public Long getNotificationId() {
-	return notificationId;
+	    return notificationId;
     }
 
     /**
@@ -84,7 +87,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @param notificationId The notificationId to set.
      */
     public void setNotificationId(Long notificationId) {
-	this.notificationId = notificationId;
+	    this.notificationId = notificationId;
     }
 
     /**
@@ -92,7 +95,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @return Returns the recipientId.
      */
     public String getRecipientId() {
-	return recipientId;
+	    return recipientId;
     }
 
     /**
@@ -100,7 +103,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @param recipientId The recipientId to set.
      */
     public void setRecipientId(String recipientId) {
-	this.recipientId = recipientId;
+	    this.recipientId = recipientId;
     }
 
     /**
@@ -108,7 +111,7 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @return Returns the recipientType.
      */
     public String getRecipientType() {
-	return recipientType;
+	    return recipientType;
     }
 
     /**
@@ -116,7 +119,41 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
      * @param recipientType The recipientType to set.
      */
     public void setRecipientType(String recipientType) {
-	this.recipientType = recipientType;
+	    this.recipientType = recipientType;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationRecipient to(NotificationRecipientBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationRecipient.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationRecipientBo from(NotificationRecipient im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationRecipientBo bo = new NotificationRecipientBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+
+        bo.setRecipientType(im.getRecipientType());
+        bo.setRecipientId(im.getRecipientId());
+        bo.setNotificationId(im.getNotificationId());
+        return bo;
     }
 }
 

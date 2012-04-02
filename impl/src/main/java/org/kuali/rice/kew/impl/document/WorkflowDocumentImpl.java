@@ -786,15 +786,15 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
-    public void returnToPreviousNode(String nodeName, String annotation) {
+    public void returnToPreviousNode(String annotation, String nodeName) {
         if (nodeName == null) {
             throw new IllegalArgumentException("nodeName was null");
         }
-        returnToPreviousNode(ReturnPoint.create(nodeName), annotation);
+        returnToPreviousNode(annotation, ReturnPoint.create(nodeName));
     }
 
     @Override
-    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {
+    public void returnToPreviousNode(String annotation, ReturnPoint returnPoint) {
         if (returnPoint == null) {
             throw new IllegalArgumentException("returnPoint was null");
         }

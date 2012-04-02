@@ -286,10 +286,6 @@
     </property>
   </bean>
 
-  <bean id="rice.kim.import.kualiModuleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kualiModuleService"/>
-
   <bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"
         p:kualiModuleService-ref="rice.kim.import.kualiModuleService"/>

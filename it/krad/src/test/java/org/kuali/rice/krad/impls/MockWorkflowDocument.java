@@ -437,7 +437,7 @@ public abstract class MockWorkflowDocument implements WorkflowDocument {
     public void returnToPreviousNode(String nodeName, String annotation) {}
 
     @Override
-    public void returnToPreviousNode(ReturnPoint returnPoint, String annotation) {}
+    public void returnToPreviousNode(String annotation, ReturnPoint returnPoint) {}
 
     @Override
     public void move(MovePoint movePoint, String annotation) {}

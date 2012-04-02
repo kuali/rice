@@ -131,7 +131,10 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         SqlBuilder sqlBuilder = this.getSqlBuilder();
 
         for (String documentAttributeName : documentAttributeValues.keySet()) {
-
+            String documentAttributeNameForSQL = documentAttributeName;
+            if (documentAttributeName.contains(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
+                documentAttributeNameForSQL = documentAttributeName.replaceFirst(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX, "");
+            }
             List<String> searchValues = documentAttributeValues.get(documentAttributeName);
             if (CollectionUtils.isEmpty(searchValues)) {
                 continue;
@@ -153,7 +156,8 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
             } else {
                 crit = sqlBuilder.createCriteria("VAL", searchValues.get(0) , tableName, tableAlias, dataTypeClass, !caseSensitive);
             }
-            sqlBuilder.addCriteria("KEY_CD", documentAttributeName, String.class, false, false, crit); // this is always of type string.
+
+            sqlBuilder.addCriteria("KEY_CD", documentAttributeNameForSQL, String.class, false, false, crit); // this is always of type string.
             sqlBuilder.andCriteria("DOC_HDR_ID", tableAlias + ".DOC_HDR_ID", "KREW_DOC_HDR_T", "DOC_HDR", SqlBuilder.JoinType.class, false, false, crit);
 
             if (finalCriteria == null ){
@@ -165,7 +169,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
             // - below is the old code
             // if where clause is empty then use passed in prefix... otherwise generate one
             String whereClausePrefix = (whereSql.length() == 0) ? whereClausePredicatePrefix : getGeneratedPredicatePrefix(whereSql.length());
-            QueryComponent qc = generateSearchableAttributeSql(tableName, documentAttributeName, whereClausePrefix, tableIndex);
+            QueryComponent qc = generateSearchableAttributeSql(tableName, documentAttributeNameForSQL, whereClausePrefix, tableIndex);
             fromSql.append(qc.getFromSql());
             tableIndex++;
         }
@@ -181,7 +185,8 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
     private RemotableAttributeField getSearchFieldByName(String fieldName, List<RemotableAttributeField> searchFields) {
         for (RemotableAttributeField searchField : searchFields) {
-            if (searchField.getName().equals(fieldName)) {
+            if (searchField.getName().equals(fieldName)
+                    || searchField.getName().equals(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + fieldName)) {
                 return searchField;
             }
         }

@@ -46,7 +46,8 @@ class RoleResponsibilityBoTest {
 
     @Test
     void test_from() {
-        RoleResponsibility.Builder b = RoleResponsibility.Builder.create(ROLE_RESPONSIBILITY_ID, ROLE_ID, RESPONSIBILITY_ID)
+        RoleResponsibility.Builder b = RoleResponsibility.Builder.create(ROLE_ID, RESPONSIBILITY_ID)
+        b.roleResponsibilityId = ROLE_RESPONSIBILITY_ID
         b.versionNumber = VERSION
         RoleResponsibility immutable = b.build()
 

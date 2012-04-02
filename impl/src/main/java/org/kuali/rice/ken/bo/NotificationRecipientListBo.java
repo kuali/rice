@@ -17,6 +17,9 @@ package org.kuali.rice.ken.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationListRecipient;
+import org.kuali.rice.ken.api.notification.NotificationListRecipientContract;
+import org.kuali.rice.ken.api.notification.NotificationProducer;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -27,7 +30,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREN_RECIP_LIST_T")
-public class NotificationRecipientList extends PersistableBusinessObjectBase{
+public class NotificationRecipientListBo extends PersistableBusinessObjectBase implements NotificationListRecipientContract {
     @Id
     @GeneratedValue(generator="KREN_RECIP_LIST_S")
 	@GenericGenerator(name="KREN_RECIP_LIST_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -43,19 +46,19 @@ public class NotificationRecipientList extends PersistableBusinessObjectBase{
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name="CHNL_ID", insertable=false, updatable=false)
-	private NotificationChannel channel;
+	private NotificationChannelBo channel;
     
     /**
      * Constructs a NotificationRecipientList.java instance.
      */
-    public NotificationRecipientList() {
+    public NotificationRecipientListBo() {
     }
 
     /**
      * Gets the channel attribute. 
      * @return Returns the channel.
      */
-    public NotificationChannel getChannel() {
+    public NotificationChannelBo getChannel() {
         return channel;
     }
 
@@ -64,7 +67,7 @@ public class NotificationRecipientList extends PersistableBusinessObjectBase{
      * Sets the channel attribute value.
      * @param channel The channel to set.
      */
-    public void setChannel(NotificationChannel channel) {
+    public void setChannel(NotificationChannelBo channel) {
         this.channel = channel;
     }
 
@@ -114,6 +117,41 @@ public class NotificationRecipientList extends PersistableBusinessObjectBase{
      */
     public void setRecipientType(String recipientType) {
         this.recipientType = recipientType;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationListRecipient to(NotificationRecipientListBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationListRecipient.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationRecipientListBo from(NotificationListRecipient im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationRecipientListBo bo = new NotificationRecipientListBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+
+        bo.setRecipientType(im.getRecipientType());
+        bo.setRecipientId(im.getRecipientId());
+
+        bo.setChannel(im.getChannel() == null ? null : NotificationChannelBo.from(im.getChannel()));
+        return bo;
     }
 }
 

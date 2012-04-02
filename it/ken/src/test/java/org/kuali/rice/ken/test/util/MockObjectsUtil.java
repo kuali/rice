@@ -16,14 +16,14 @@
 package org.kuali.rice.ken.test.util;
 
 import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationChannelReviewer;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
+import org.kuali.rice.ken.bo.NotificationPriorityBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 
 import java.sql.Timestamp;
@@ -46,8 +46,8 @@ public final class MockObjectsUtil {
      * @param subscribable
      * @return NotificationChannel
      */
-    public static final NotificationChannel buildTestNotificationChannel(String name, String description, boolean subscribable) {
-        NotificationChannel channel = new NotificationChannel();
+    public static final NotificationChannelBo buildTestNotificationChannel(String name, String description, boolean subscribable) {
+        NotificationChannelBo channel = new NotificationChannelBo();
         channel.setName(name);
         channel.setDescription(description);
         channel.setSubscribable(subscribable);
@@ -58,7 +58,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationChannel
      */
-    public static final NotificationChannel getTestChannel1() {
+    public static final NotificationChannelBo getTestChannel1() {
         return buildTestNotificationChannel("Test Channel 1", "Test Channel 1 - description", true);
     }
 
@@ -66,7 +66,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationChannel
      */
-    public static final NotificationChannel getTestChannel2() {
+    public static final NotificationChannelBo getTestChannel2() {
         return buildTestNotificationChannel("Test Channel 2", "Test Channel 2 - description", false);
     }
 
@@ -77,8 +77,8 @@ public final class MockObjectsUtil {
      * @param contactInfo
      * @return
      */
-    public static final NotificationProducer buildTestNotificationProducer(String name, String description, String contactInfo) {
-        NotificationProducer producer = new NotificationProducer();
+    public static final NotificationProducerBo buildTestNotificationProducer(String name, String description, String contactInfo) {
+        NotificationProducerBo producer = new NotificationProducerBo();
         producer.setName(name);
         producer.setDescription(description);
         producer.setContactInfo(contactInfo);
@@ -91,8 +91,8 @@ public final class MockObjectsUtil {
      * @param reviewerId
      * @return
      */
-    public static final NotificationChannelReviewer buildTestNotificationChannelReviewer(MemberType reviewerType, String reviewerId) {
-        NotificationChannelReviewer reviewer = new NotificationChannelReviewer();
+    public static final NotificationChannelReviewerBo buildTestNotificationChannelReviewer(MemberType reviewerType, String reviewerId) {
+        NotificationChannelReviewerBo reviewer = new NotificationChannelReviewerBo();
         reviewer.setReviewerType(reviewerType.getCode());
         reviewer.setReviewerId(reviewerId);
         return reviewer;
@@ -102,7 +102,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationProducer
      */
-    public static final NotificationProducer getTestProducer1() {
+    public static final NotificationProducerBo getTestProducer1() {
         return buildTestNotificationProducer("Produer 1", "Producer 1 - description", "Producer 1 - contact info");
     }
 
@@ -114,8 +114,8 @@ public final class MockObjectsUtil {
      * @param xsd
      * @return NotificationContentType
      */
-    public static final NotificationContentType buildTestNotificationContentType(String name, String description, String namespace, String xsd, String xsl) {
-        NotificationContentType contentType = new NotificationContentType();
+    public static final NotificationContentTypeBo buildTestNotificationContentType(String name, String description, String namespace, String xsd, String xsl) {
+        NotificationContentTypeBo contentType = new NotificationContentTypeBo();
         contentType.setName(name);
         contentType.setDescription(description);
         contentType.setNamespace(namespace);
@@ -128,7 +128,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationContentType
      */
-    public static final NotificationContentType getTestContentType1() {
+    public static final NotificationContentTypeBo getTestContentType1() {
         return buildTestNotificationContentType("Content Type 1", "Content Type 1 - description", "Content Type 1 - namespace", "Simple.xsd", "Simple.xsl");
     }
 
@@ -139,8 +139,8 @@ public final class MockObjectsUtil {
      * @param order
      * @return NotificationPriority
      */
-    public static final NotificationPriority buildTestNotificationPriority(String name, String description, Integer order) {
-        NotificationPriority priority = new NotificationPriority();
+    public static final NotificationPriorityBo buildTestNotificationPriority(String name, String description, Integer order) {
+        NotificationPriorityBo priority = new NotificationPriorityBo();
         priority.setName(name);
         priority.setDescription(description);
         priority.setOrder(order);
@@ -151,7 +151,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationPriority
      */
-    public static final NotificationPriority getTestPriority1() {
+    public static final NotificationPriorityBo getTestPriority1() {
         return buildTestNotificationPriority("Priority 1", "Priority 1 - description", new Integer(1));
     }
 
@@ -161,8 +161,8 @@ public final class MockObjectsUtil {
      * @param recipientType
      * @return NotificationRecipient
      */
-    public static final NotificationRecipient buildTestNotificationRecipient(String recipientId, MemberType recipientType) {
-        NotificationRecipient recipient = new NotificationRecipient();
+    public static final NotificationRecipientBo buildTestNotificationRecipient(String recipientId, MemberType recipientType) {
+        NotificationRecipientBo recipient = new NotificationRecipientBo();
         recipient.setRecipientId(recipientId);
         recipient.setRecipientType(recipientType.getCode());
         return recipient;
@@ -172,7 +172,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationRecipient
      */
-    public static final NotificationRecipient getTestRecipient1() {
+    public static final NotificationRecipientBo getTestRecipient1() {
         return buildTestNotificationRecipient("ag266", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
     }
 
@@ -180,7 +180,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationRecipient
      */
-    public static final NotificationRecipient getTestRecipient2() {
+    public static final NotificationRecipientBo getTestRecipient2() {
 	 return buildTestNotificationRecipient("Notification Team", KimGroupMemberTypes.GROUP_MEMBER_TYPE);
     }
 
@@ -190,14 +190,14 @@ public final class MockObjectsUtil {
      * @param recipientType
      * @return Notification
      */
-    public static final Notification buildTestNotification(String deliveryType, Timestamp sendDateTime, Timestamp autoRemoveDateTime, NotificationContentType contentType,
-	    String content, NotificationPriority priority, NotificationProducer producer, NotificationChannel channel, List<NotificationRecipient> recipients,
-	    List<NotificationSender> senders) {
-        Notification notification = new Notification();
-        notification.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
+    public static final NotificationBo buildTestNotification(String deliveryType, Timestamp sendDateTime, Timestamp autoRemoveDateTime, NotificationContentTypeBo contentType,
+	    String content, NotificationPriorityBo priority, NotificationProducerBo producer, NotificationChannelBo channel, List<NotificationRecipientBo> recipients,
+	    List<NotificationSenderBo> senders) {
+        NotificationBo notification = new NotificationBo();
+        notification.setCreationDateTimeValue(new Timestamp(System.currentTimeMillis()));
         notification.setDeliveryType(deliveryType);
-        notification.setSendDateTime(sendDateTime);
-        notification.setAutoRemoveDateTime(autoRemoveDateTime);
+        notification.setSendDateTimeValue(sendDateTime);
+        notification.setAutoRemoveDateTimeValue(autoRemoveDateTime);
         notification.setContentType(contentType);
         notification.setContent(content);
         notification.setPriority(priority);
@@ -211,12 +211,11 @@ public final class MockObjectsUtil {
 
     /**
      * This method is a helper to build a NotificationSender instance.
-     * @param recipientId
-     * @param recipientType
+     * @param userId
      * @return NotificationSender
      */
-    public static final NotificationSender buildTestNotificationSender(String userId) {
-        NotificationSender sender = new NotificationSender();
+    public static final NotificationSenderBo buildTestNotificationSender(String userId) {
+        NotificationSenderBo sender = new NotificationSenderBo();
         sender.setSenderName(userId);
         return sender;
     }
@@ -225,7 +224,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationSender
      */
-    public static final NotificationSender getTestSender1() {
+    public static final NotificationSenderBo getTestSender1() {
         return buildTestNotificationSender("Joe Schmoe");
     }
 
@@ -233,7 +232,7 @@ public final class MockObjectsUtil {
      * This method returns back a specific test mock object.
      * @return NotificationSender
      */
-    public static final NotificationSender getTestSender2() {
+    public static final NotificationSenderBo getTestSender2() {
 	return buildTestNotificationSender("John Doe");
     }
 }

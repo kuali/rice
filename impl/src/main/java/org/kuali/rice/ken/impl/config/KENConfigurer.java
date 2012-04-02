@@ -26,7 +26,7 @@ import java.util.List;
 public class KENConfigurer extends ModuleConfigurer {
     public KENConfigurer() {
         super(KenApiConstants.Namespaces.MODULE_NAME);
-        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL, RunMode.EMBEDDED));
+        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
     }
 
     @Override

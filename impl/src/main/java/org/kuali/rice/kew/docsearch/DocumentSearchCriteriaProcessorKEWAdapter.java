@@ -15,27 +15,25 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import com.google.common.collect.Iterables;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class adapts the RemotableAttributeField instances from the various attributes
@@ -244,6 +242,12 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                 }
                 // prepend all document attribute field names with "documentAttribute."
                 field.setPropertyName(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + field.getPropertyName());
+                if (StringUtils.isNotBlank(field.getLookupParameters())) {
+                    field.setLookupParameters(prefixLookupParameters(field.getLookupParameters()));
+                }
+                if (StringUtils.isNotBlank(field.getFieldConversions())) {
+                    field.setFieldConversions(prefixFieldConversions(field.getFieldConversions()));
+                }
             }
             fixedDocumentAttributeRows.add(row);
         }
@@ -318,6 +322,50 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
         hiddenRow.setFields(hiddenFields);
         rows.add(hiddenRow);
 
+    }
+    
+    private String prefixLookupParameters(String lookupParameters) {
+        StringBuilder newLookupParameters = new StringBuilder(KRADConstants.EMPTY_STRING);
+        String[] conversions = StringUtils.split(lookupParameters, KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+
+        for (int m = 0; m < conversions.length; m++) {
+            String conversion = conversions[m];
+            String[] conversionPair = StringUtils.split(conversion, KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
+            String conversionFrom = conversionPair[0];
+            String conversionTo = conversionPair[1];
+            conversionFrom = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + conversionFrom;
+            newLookupParameters.append(conversionFrom)
+                    .append(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR)
+                    .append(conversionTo);
+
+            if (m < conversions.length) {
+                newLookupParameters.append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+            }
+        }
+        return newLookupParameters.toString();
+    }
+    
+    private String prefixFieldConversions(String fieldConversions) {
+        StringBuilder newFieldConversions = new StringBuilder(KRADConstants.EMPTY_STRING);
+        String[] conversions = StringUtils.split(fieldConversions, KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+
+        for (int l = 0; l < conversions.length; l++) {
+            String conversion = conversions[l];
+            //String[] conversionPair = StringUtils.split(conversion, KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+            String[] conversionPair = StringUtils.split(conversion, KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
+            String conversionFrom = conversionPair[0];
+            String conversionTo = conversionPair[1];
+            conversionTo = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + conversionTo;
+            newFieldConversions.append(conversionFrom)
+                    .append(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR)
+                    .append(conversionTo);
+
+            if (l < conversions.length) {
+                newFieldConversions.append(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
+            }
+        }
+
+        return newFieldConversions.toString();
     }
 
 }

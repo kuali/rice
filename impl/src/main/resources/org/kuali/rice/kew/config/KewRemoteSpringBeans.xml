@@ -42,4 +42,26 @@
         p:serviceName="actionListService"
         p:objectType="org.kuali.rice.kew.api.actionlist.ActionListService"/>
 
+  <bean id="kewModule" class="org.kuali.rice.kew.impl.service.KewRemoteModuleService">
+    <property name="moduleConfiguration" ref="kewModuleConfiguration"/>
+    <property name="kualiModuleService" ref="rice.kew.import.kualiModuleService"/>
+  </bean>
+
+  <bean id="kewModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="KR-WKFLW"/>
+    <property name="dataSourceName" value="kewDataSource"/>
+    <property name="initializeDataDictionary" value="false"/>
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.kew.</value>
+      </list>
+    </property>
+    <property name="externalizableBusinessObjectImplementations">
+      <map>
+        <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
+        <entry key="org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEbo"
+               value="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo"/>
+      </map>
+    </property>
+  </bean>
 </beans>

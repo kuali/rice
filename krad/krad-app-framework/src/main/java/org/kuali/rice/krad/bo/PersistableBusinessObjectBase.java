@@ -236,7 +236,9 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
      * @see org.apache.ojb.broker.PersistenceBrokerAware#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
      */
     public final void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	prePersist();
+        //setObjectId(UUID.randomUUID().toString());
+        setObjectId(null);
+        prePersist();
     }
     
     /**
@@ -275,7 +277,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     protected void preUpdate() {
     	generateAndSetObjectIdIfNeeded();
     }
-        
+
     /**
      * If this PersistableBusinessObject does not already have a unique objectId, this method will generate
      * one and set it's value on this object.
@@ -289,7 +291,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     /**
      * getService Refreshes the reference objects from the primitive values.
      * 
-     * @see org.kuali.rice.kns.bo.BusinessObject#refresh()
+     * @see org.kuali.rice.krad.bo.BusinessObject#refresh()
      */
     public void refresh() {
         getPersistenceService().retrieveNonKeyFields(this);

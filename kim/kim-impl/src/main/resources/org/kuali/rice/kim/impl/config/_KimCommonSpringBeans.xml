@@ -56,6 +56,10 @@
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="rice.ksb.serviceBus"/>
 
+  <bean id="rice.kim.import.kualiModuleService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="kualiModuleService"/>
+
   <bean id="kimServiceExporter"
         class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
         abstract="true"

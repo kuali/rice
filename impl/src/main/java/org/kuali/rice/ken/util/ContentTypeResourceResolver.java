@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.util;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 
 /**
@@ -44,10 +44,10 @@ public class ContentTypeResourceResolver {
      * @param id
      * @return
      */
-    public NotificationContentType resolveContentType(String id) {
+    public NotificationContentTypeBo resolveContentType(String id) {
 	if (!id.startsWith(CONTENT_TYPE_PREFIX)) return null;
         String contentType = id.substring(CONTENT_TYPE_PREFIX.length());
-        NotificationContentType notificationContentType = notificationContentTypeService.getNotificationContentType(contentType);
+        NotificationContentTypeBo notificationContentType = notificationContentTypeService.getNotificationContentType(contentType);
         if (contentType == null) {
             LOG.warn("Content type '" + contentType + "' not found in notification database");
             return null;

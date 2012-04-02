@@ -18,7 +18,10 @@ package org.kuali.rice.location.service.impl;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.location.api.LocationConstants;
 import org.kuali.rice.location.api.campus.Campus;
 import org.kuali.rice.location.api.campus.CampusService;
@@ -48,6 +51,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -217,6 +221,51 @@ public class LocationModuleService extends ModuleServiceBase {
 		// otherwise, use the default implementation
 		return super.getExternalizableBusinessObjectsListForLookup(externalizableBusinessObjectClass, fieldValues, unbounded);
 	}
+
+    @Override
+    protected String getInquiryUrl(Class inquiryBusinessObjectClass) {
+        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.KUALI_RICE_URL_KEY);
+        String inquiryUrl = riceBaseUrl;
+        if (!inquiryUrl.endsWith("/")) {
+            inquiryUrl = inquiryUrl + "/";
+        }
+        return inquiryUrl + KRADConstants.INQUIRY_ACTION;
+    }
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.service.ModuleService#getExternalizableBusinessObjectLookupUrl(java.lang.Class,
+     *      java.util.Map)
+     */
+    @Deprecated
+    @Override
+    public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass,
+            Map<String, String> parameters) {
+        Properties urlParameters = new Properties();
+
+        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.KUALI_RICE_URL_KEY);
+        String lookupUrl = riceBaseUrl;
+        if (!lookupUrl.endsWith("/")) {
+            lookupUrl = lookupUrl + "/";
+        }
+        if (parameters.containsKey(KRADConstants.MULTIPLE_VALUE)) {
+            lookupUrl = lookupUrl + KRADConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+        } else {
+            lookupUrl = lookupUrl + KRADConstants.LOOKUP_ACTION;
+        }
+        for (String paramName : parameters.keySet()) {
+            urlParameters.put(paramName, parameters.get(paramName));
+        }
+
+        Class clazz = getExternalizableBusinessObjectImplementation(inquiryBusinessObjectClass);
+
+        urlParameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, clazz == null ? "" : clazz.getName());
+
+        return UrlFactory.parameterizeUrl(lookupUrl, urlParameters);
+    }
 
 
     protected CampusService getCampusService() {

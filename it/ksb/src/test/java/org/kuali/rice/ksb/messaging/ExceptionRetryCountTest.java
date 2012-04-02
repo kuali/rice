@@ -99,7 +99,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 
 		assertEquals("Service should have been called 3 times", 3, TesetHarnessExplodingQueue.NUM_CALLS);
 
-	List<PersistedMessageBO> messagesQueued = KSBServiceLocator.getMessageQueueService().findByServiceName(
+	    List<PersistedMessageBO> messagesQueued = KSBServiceLocator.getMessageQueueService().findByServiceName(
 		this.retryCountServiceName, "invoke");
 		PersistedMessageBO message = messagesQueued.get(0);
 		assertEquals("Message should be in exception status", KSBConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());

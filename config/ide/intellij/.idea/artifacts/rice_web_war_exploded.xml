@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-web:war exploded">
-    <output-path>$PROJECT_DIR$/../../../web/target/rice-web-2.0.0-b4-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/../../../web/target/rice-web-2.1.0-M2-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-web/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -8,28 +8,28 @@
           <element id="module-output" name="rice-web" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="rice-krms-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-krms-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-impl" />
           </element>
-          <element id="archive" name="rice-core-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-impl" />
           </element>
-          <element id="archive" name="rice-core-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
           </element>
-          <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" />
+          <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" />
           <element id="library" level="project" name="Maven: asm:asm:3.3.1" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
           <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
-          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.6" />
+          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.7" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
           <element id="library" level="project" name="Maven: commons-transaction:commons-transaction:1.1" />
-          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.5" />
+          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.6" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.16" />
           <element id="library" level="project" name="Maven: hsqldb:hsqldb:1.8.0.1" />
           <element id="library" level="project" name="Maven: xerces:xercesImpl:2.9.1" />
-          <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.2" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.4" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.4" />
           <element id="library" level="project" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:3.1.0.RELEASE" />
@@ -40,9 +40,11 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.0" />
-          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" />
-          <element id="library" level="project" name="Maven: com.google.guava:guava:r09" />
-          <element id="archive" name="rice-core-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.4.4" />
+          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.8.5" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:11.0" />
+          <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:1.3.9" />
+          <element id="archive" name="rice-core-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.1.0.RELEASE" />
@@ -50,14 +52,14 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:3.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:3.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springmodules:spring-modules-ojb:0.8a" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:3.6.9.Final" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" />
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:3.6.7.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:3.6.9.Final" />
           <element id="library" level="project" name="Maven: xapool:xapool:1.5.0-patch3" />
-          <element id="library" level="project" name="Maven: org.ow2.jotm:jotm-core:2.1.9" />
+          <element id="library" level="project" name="Maven: org.ow2.jotm:jotm-core:2.1.10" />
           <element id="library" level="project" name="Maven: org.ow2.carol:carol:3.0.6" />
           <element id="library" level="project" name="Maven: org.ow2.carol:carol-interceptors:1.0.1" />
           <element id="library" level="project" name="Maven: org.ow2.carol.irmi:irmi:1.1.2" />
@@ -67,36 +69,37 @@
           <element id="library" level="project" name="Maven: logkit:logkit:1.2" />
           <element id="library" level="project" name="Maven: org.objectweb.howl:howl:1.0.1-1" />
           <element id="library" level="project" name="Maven: org.codehaus.btm:btm:2.1.2" />
-          <element id="archive" name="rice-krad-app-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
+          <element id="archive" name="rice-krad-app-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-app-framework" />
           </element>
-          <element id="archive" name="rice-kim-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-api" />
           </element>
-          <element id="archive" name="rice-kew-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-api" />
           </element>
-          <element id="archive" name="rice-ksb-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-api" />
           </element>
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
-          <element id="archive" name="rice-location-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-api" />
           </element>
-          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" />
-          <element id="archive" name="rice-krad-web-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.5.0" />
+          <element id="archive" name="rice-krad-web-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-web-framework" />
           </element>
-          <element id="archive" name="rice-core-service-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-framework" />
           </element>
-          <element id="archive" name="rice-core-service-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-api" />
           </element>
-          <element id="archive" name="rice-kew-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-framework" />
           </element>
-          <element id="archive" name="rice-kim-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.1.0.RELEASE" />
@@ -107,9 +110,11 @@
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-servlet:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-jsp:2.2.2" />
           <element id="library" level="project" name="Maven: org.apache.tiles:tiles-template:2.2.2" />
-          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.5" />
-          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.5" />
-          <element id="archive" name="rice-kns-2.0.0-b4-SNAPSHOT.jar">
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.8" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.8" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
+          <element id="archive" name="rice-kns-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kns" />
           </element>
           <element id="library" level="project" name="Maven: org.apache.struts:struts-core:1.3.10" />
@@ -121,103 +126,102 @@
           <element id="library" level="project" name="Maven: org.apache.struts:struts-taglib:1.3.10" />
           <element id="library" level="project" name="Maven: displaytag:displaytag:1.2" />
           <element id="library" level="project" name="Maven: com.lowagie:itext:1.3" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.4" />
           <element id="library" level="project" name="Maven: org.directwebremoting:dwr:3.0.RC2" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time-jsptags:1.1.1" />
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.7" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.8" />
           <element id="library" level="project" name="Maven: xml-resolver:xml-resolver:1.2" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-api:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.7" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-api:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.8" />
           <element id="library" level="project" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.7" />
           <element id="library" level="project" name="Maven: org.codehaus.woodstox:woodstox-core-asl:4.1.1" />
           <element id="library" level="project" name="Maven: org.codehaus.woodstox:stax2-api:3.1.1" />
           <element id="library" level="project" name="Maven: org.apache.neethi:neethi:2.0.5" />
           <element id="library" level="project" name="Maven: wsdl4j:wsdl4j:1.6.2" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-core:2.3.7" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-common-schemas:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-core:2.3.8" />
           <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.1.13" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-tools-common:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.3.7" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-transports-common:2.3.7" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-soap:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-tools-common:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.3.8" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-transports-common:2.3.8" />
           <element id="library" level="project" name="Maven: org.codehaus.jettison:jettison:1.3" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.7" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.3.8" />
           <element id="library" level="project" name="Maven: org.apache.ws.security:wss4j:1.5.11" />
           <element id="library" level="project" name="Maven: org.apache.santuario:xmlsec:1.4.4" />
           <element id="library" level="project" name="Maven: xalan:xalan:2.7.1" />
           <element id="library" level="project" name="Maven: xalan:serializer:2.7.1" />
-          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.7" />
-          <element id="library" level="project" name="Maven: javax.mail:mail:1.4.4" />
+          <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-databinding-aegis:2.3.8" />
           <element id="library" level="project" name="Maven: cglib:cglib-nodep:2.2.2" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: javax.resource:connector-api:1.5" />
           <element id="library" level="project" name="Maven: commons-httpclient:commons-httpclient:3.1" />
-          <element id="library" level="project" name="Maven: commons-io:commons-io:2.0.1" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.1" />
           <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" />
           <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.3.4.O" />
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:1.8.4" />
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.2" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.15.0-GA" />
-          <element id="archive" name="rice-core-service-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-impl" />
           </element>
-          <element id="archive" name="rice-krms-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-krms-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-framework" />
           </element>
-          <element id="archive" name="rice-krms-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-krms-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-api" />
           </element>
-          <element id="archive" name="rice-location-web-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-web-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-web" />
           </element>
-          <element id="archive" name="rice-location-impl-2.0.0-b4-SNAPSHOT.jar">
-            <element id="module-output" name="rice-location-impl" />
-          </element>
-          <element id="archive" name="rice-location-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-framework" />
           </element>
-          <element id="archive" name="rice-kew-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-impl-2.1.0-M2-SNAPSHOT.jar">
+            <element id="module-output" name="rice-location-impl" />
+          </element>
+          <element id="archive" name="rice-kew-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-impl" />
           </element>
-          <element id="archive" name="rice-ksb-web-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-web-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-web" />
           </element>
-          <element id="archive" name="rice-ksb-client-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-client-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-client-impl" />
           </element>
-          <element id="archive" name="rice-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
-          <element id="archive" name="rice-ken-api-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-ken-api-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-ken-api" />
           </element>
-          <element id="archive" name="rice-kim-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-impl" />
           </element>
-          <element id="archive" name="rice-core-service-web-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-web-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-web" />
           </element>
-          <element id="archive" name="rice-core-web-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-web-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-web" />
           </element>
-          <element id="archive" name="rice-ksb-server-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-server-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-server-impl" />
           </element>
-          <element id="archive" name="rice-edl-framework-2.0.0-b4-SNAPSHOT.jar">
+          <element id="archive" name="rice-edl-framework-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.0.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
-          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-cas-client:3.0.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.0.7.RELEASE" />
-          <element id="archive" name="rice-edl-impl-2.0.0-b4-SNAPSHOT.jar">
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" />
+          <element id="archive" name="rice-edl-impl-2.1.0-M2-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-impl" />
           </element>
         </element>

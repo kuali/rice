@@ -16,9 +16,13 @@
 package org.kuali.rice.location.impl.county;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.location.api.county.County;
+import org.kuali.rice.location.api.county.CountyQueryResults;
 import org.kuali.rice.location.api.county.CountyService;
 
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ import java.util.Map;
 public class CountyServiceImpl implements CountyService {
 
     private BusinessObjectService businessObjectService;
+    private CriteriaLookupService criteriaLookupService;
 
     @Override
     public County getCounty(String countryCode, String stateCode, String code) {
@@ -84,7 +89,45 @@ public class CountyServiceImpl implements CountyService {
         return Collections.unmodifiableList(toReturn);
     }
 
+    @Override
+    public CountyQueryResults findCounties(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
+
+        GenericQueryResults<CountyBo> results = criteriaLookupService.lookup(CountyBo.class, queryByCriteria);
+
+        CountyQueryResults.Builder builder = CountyQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<County.Builder> ims = new ArrayList<County.Builder>();
+        for (CountyBo bo : results.getResults()) {
+            ims.add(County.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
+
 }

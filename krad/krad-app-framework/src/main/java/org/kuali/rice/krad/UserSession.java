@@ -148,9 +148,6 @@ public class UserSession implements Serializable {
         // only allow backdoor in non-production environments
         if (!isProductionEnvironment()) {
             this.backdoorUser = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-            if (backdoorUser == null) {
-                throw new RiceRuntimeException(principalName + " is not a valid principalName");
-            }
         }
     }
 

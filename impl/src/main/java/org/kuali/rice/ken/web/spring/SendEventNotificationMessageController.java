@@ -18,14 +18,14 @@ package org.kuali.rice.ken.web.spring;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationChannelReviewer;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
+import org.kuali.rice.ken.bo.NotificationPriorityBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.ken.service.NotificationChannelService;
@@ -83,11 +83,11 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @param notification the notification to test
      * @return whether the specified Notification can be reasonably expected to have recipients
      */
-    private boolean hasPotentialRecipients(Notification notification) {
+    private boolean hasPotentialRecipients(NotificationBo notification) {
         LOG.info("notification channel " + notification.getChannel() + " is subscribable: " + notification.getChannel().isSubscribable());
         return notification.getChannel().getRecipientLists().size() > 0 ||
                notification.getChannel().getSubscriptions().size() > 0 ||
-               (notification.getChannel().isSubscribable() && timeIsInTheFuture(notification.getSendDateTime().getTime()));
+               (notification.getChannel().isSubscribable() && timeIsInTheFuture(notification.getSendDateTimeValue().getTime()));
     }
 
     protected NotificationService notificationService;
@@ -186,7 +186,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	model.put("channels", notificationChannelService
 		.getAllNotificationChannels());
 	model.put("priorities", businessObjectDao
-		.findAll(NotificationPriority.class));
+		.findAll(NotificationPriorityBo.class));
         // set sendDateTime to current datetime if not provided
 	String sendDateTime = request.getParameter("sendDateTime");
 	String currentDateTime = Util.getCurrentDateTime();
@@ -242,17 +242,17 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 			    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
 
 	    //parse out the application content into a Notification BO
-	    Notification notification = populateNotificationInstance(request, model);
+	    NotificationBo notification = populateNotificationInstance(request, model);
 
 	    // now get that content in an understandable XML format and pass into document
 	    String notificationAsXml = messageContentService
 		    .generateNotificationMessage(notification);
 
             Map<String, String> attrFields = new HashMap<String,String>();
-            List<NotificationChannelReviewer> reviewers = notification.getChannel().getReviewers();
+            List<NotificationChannelReviewerBo> reviewers = notification.getChannel().getReviewers();
             int ui = 0;
             int gi = 0;
-            for (NotificationChannelReviewer reviewer: reviewers) {
+            for (NotificationChannelReviewerBo reviewer: reviewers) {
                 String prefix;
                 int index;
                 if (KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
@@ -306,12 +306,12 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @return Notification
      * @throws IllegalArgumentException
      */
-    private Notification populateNotificationInstance(
+    private NotificationBo populateNotificationInstance(
 	    HttpServletRequest request, Map<String, Object> model)
 	    throws IllegalArgumentException, ErrorList {
 	ErrorList errors = new ErrorList();
 
-	Notification notification = new Notification();
+	NotificationBo notification = new NotificationBo();
 
 	// grab data from form
 	// channel name
@@ -476,35 +476,35 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	}
 
 	// now populate the notification BO instance
-	NotificationChannel channel = Util.retrieveFieldReference("channel",
-		"name", channelName, NotificationChannel.class,
+	NotificationChannelBo channel = Util.retrieveFieldReference("channel",
+		"name", channelName, NotificationChannelBo.class,
 		businessObjectDao);
 	notification.setChannel(channel);
 
-	NotificationPriority priority = Util.retrieveFieldReference("priority",
-		"name", priorityName, NotificationPriority.class,
+	NotificationPriorityBo priority = Util.retrieveFieldReference("priority",
+		"name", priorityName, NotificationPriorityBo.class,
 		businessObjectDao);
 	notification.setPriority(priority);
 
-	NotificationContentType contentType = Util.retrieveFieldReference(
+	NotificationContentTypeBo contentType = Util.retrieveFieldReference(
 		"contentType", "name",
 		NotificationConstants.CONTENT_TYPES.EVENT_CONTENT_TYPE,
-		NotificationContentType.class, businessObjectDao);
+		NotificationContentTypeBo.class, businessObjectDao);
 	notification.setContentType(contentType);
 
-	NotificationProducer producer = Util
+	NotificationProducerBo producer = Util
 		.retrieveFieldReference(
 			"producer",
 			"name",
 			NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME,
-			NotificationProducer.class, businessObjectDao);
+			NotificationProducerBo.class, businessObjectDao);
 	notification.setProducer(producer);
 
 	for (String senderName : senders) {
 	    if (StringUtils.isEmpty(senderName)) {
 		errors.addError("A sender's name cannot be blank.");
 	    } else {
-		NotificationSender ns = new NotificationSender();
+		NotificationSenderBo ns = new NotificationSenderBo();
 		ns.setSenderName(senderName.trim());
 		notification.addSender(ns);
 	    }
@@ -516,7 +516,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    recipientsExist = true;
 	    for (String userRecipientId : userRecipients) {
 	        if (isUserRecipientValid(userRecipientId, errors)) {
-        		NotificationRecipient recipient = new NotificationRecipient();
+        		NotificationRecipientBo recipient = new NotificationRecipientBo();
         		recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
         		recipient.setRecipientId(userRecipientId);
         		notification.addRecipient(recipient);
@@ -530,7 +530,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    	if (workgroupNamespaceCodes.length == workgroupRecipients.length) {
 	    		for (int i = 0; i < workgroupRecipients.length; i++) {
 	    			if (isWorkgroupRecipientValid(workgroupRecipients[i], workgroupNamespaceCodes[i], errors)) {
-	    				NotificationRecipient recipient = new NotificationRecipient();
+	    				NotificationRecipientBo recipient = new NotificationRecipientBo();
 	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 	    				recipient.setRecipientId(
 	    						getGroupService().getGroupByNamespaceCodeAndName(workgroupNamespaceCodes[i],
@@ -567,7 +567,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             } catch (ParseException pe) {
                 errors.addError("You specified an invalid send date and time.  Please use the calendar picker.");
             }
-            notification.setSendDateTime(new Timestamp(d.getTime()));
+            notification.setSendDateTimeValue(new Timestamp(d.getTime()));
         }
 
         Date d2 = null;
@@ -580,7 +580,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             } catch (ParseException pe) {
                 errors.addError("You specified an invalid auto-remove date and time.  Please use the calendar picker.");
             }
-            notification.setAutoRemoveDateTime(new Timestamp(d2.getTime()));
+            notification.setAutoRemoveDateTimeValue(new Timestamp(d2.getTime()));
         }
 
         if (StringUtils.isNotBlank(startDateTime)) {

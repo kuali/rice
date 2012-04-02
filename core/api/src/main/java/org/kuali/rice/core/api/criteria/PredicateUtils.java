@@ -31,6 +31,21 @@ public final class PredicateUtils {
         throw new UnsupportedOperationException("do not call");
     }
 
+    public static Predicate convertObjectMapToPredicate(Map<String, Object> criteria) {
+        List<Predicate> p = new ArrayList<Predicate>();
+        for (Map.Entry<String, Object> entry : criteria.entrySet()) {
+            if (entry.getValue() != null) {
+                p.add(equal(entry.getKey(), entry.getValue()));
+            }
+        }
+        //wrap everything in an 'and'
+        return and(p.toArray(new Predicate[p.size()]));
+    }
+
+
+    /*
+     * Method to assist in converting a map of values for a lookup 
+     */
     public static Predicate convertMapToPredicate(Map<String, String> criteria) {
         List<Predicate> p = new ArrayList<Predicate>();
         for (Map.Entry<String, String> entry : criteria.entrySet()) {

@@ -712,7 +712,7 @@
                                                     submitForm();
                                                 }
                                             </script>
-                                            <html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
+                                           <html:image property="methodToCall.replaceAttachment.${field.propertyName}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-replace.gif" alt="replace attachment" onclick="excludeSubmitRestriction=true"/>
                                         </div>
                                         <div id="replaceFileDiv" valign="middle" style="display:none;">
                                             ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}

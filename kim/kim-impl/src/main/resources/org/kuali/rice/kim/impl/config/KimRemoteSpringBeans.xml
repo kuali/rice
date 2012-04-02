@@ -60,4 +60,49 @@
         p:serviceName="kimTypeInfoService"
         p:objectType="org.kuali.rice.kim.api.type.KimTypeInfoService"/>
 
+
+  <bean id="kimModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration"
+        p:namespaceCode="KR-IDM"
+        p:dataSourceName="kimDataSource"
+        p:initializeDataDictionary="false">
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.kim.</value>
+      </list>
+    </property>
+    <property name="externalizableBusinessObjectImplementations">
+      <map>
+        <entry key="org.kuali.rice.kim.api.identity.Person"
+               value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
+        <entry key="org.kuali.rice.kim.framework.role.RoleEbo"
+               value="org.kuali.rice.kim.impl.role.RoleBo"/>
+        <entry key="org.kuali.rice.kim.framework.group.GroupEbo"
+               value="org.kuali.rice.kim.impl.group.GroupBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.affiliation.EntityAffiliationTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.citizenship.EntityCitizenshipStatusEbo"
+               value="org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentStatusEbo"
+               value="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.EntityTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.external.EntityExternalIdentifierTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo"/>
+        <entry key="org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo"
+               value="org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="kimModule" class="org.kuali.rice.kim.impl.services.KimRemoteModuleService"
+        p:moduleConfiguration-ref="kimModuleConfiguration"
+        p:kualiModuleService-ref="rice.kim.import.kualiModuleService"/>
 </beans>

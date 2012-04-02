@@ -17,9 +17,12 @@ package org.kuali.rice.ken.api.service;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.api.KenApiConstants;
+import org.kuali.rice.ken.api.notification.Notification;
+import org.kuali.rice.ken.api.notification.NotificationResponse;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -29,6 +32,23 @@ import javax.jws.soap.SOAPBinding;
 @WebService(name= KenApiConstants.ServiceNames.SEND_NOTIFICATION_SERVICE, targetNamespace = KenApiConstants.Namespaces.KEN_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public interface SendNotificationService {
+    /**
+     * This method invokes a notification with the given message.  This particular service
+     * accepts the actual business object.
+     * @param message
+     * @return NotificationResponse
+     */
     @WebMethod(operationName = "invoke")
-    void invoke(@WebParam(name = "message") String message) throws RiceIllegalArgumentException;
+    @WebResult(name = "response")
+    NotificationResponse invoke(@WebParam(name = "message") String message) throws RiceIllegalArgumentException;
+
+    /**
+     * This method allows consumers to send notification messages.
+     * @since 2.0.1
+     * @param notification
+     * @return NotificationResponse
+     */
+    @WebMethod(operationName = "findEntityDefaults")
+    @WebResult(name = "response")
+    NotificationResponse sendNotification(Notification notification);
 }

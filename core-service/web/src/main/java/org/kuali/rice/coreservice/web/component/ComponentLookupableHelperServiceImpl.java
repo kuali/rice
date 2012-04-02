@@ -27,11 +27,7 @@ import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
@@ -58,54 +54,13 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
         if (baseLookup instanceof CollectionIncomplete && !activeCheck.equals("N")) {
             long originalCount = Math.max(baseLookup.size(), ((CollectionIncomplete) baseLookup).getActualSizeIfTruncated());
             long totalCount = originalCount;
-            Pattern detailTypeRegex = null;
-            Pattern namespaceRegex = null;
-            Pattern nameRegex = null;
 
-            if (StringUtils.isNotBlank(fieldValues.get(CODE))) {
-                String patternStr = fieldValues.get(CODE).replace("*", ".*").toUpperCase();
-                try {
-                    detailTypeRegex = Pattern.compile(patternStr);
-                }
-                catch (PatternSyntaxException ex) {
-                    LOG.error("Unable to parse code pattern, ignoring.", ex);
-                }
-            }
-            if (StringUtils.isNotBlank(fieldValues.get(NAMESPACE_CODE))) {
-                String patternStr = fieldValues.get(NAMESPACE_CODE).replace("*", ".*").toUpperCase();
-                try {
-                    namespaceRegex = Pattern.compile(patternStr);
-                }
-                catch (PatternSyntaxException ex) {
-                    LOG.error("Unable to parse namespaceCode pattern, ignoring.", ex);
-                }
-            }
-            if (StringUtils.isNotBlank(fieldValues.get(NAME))) {
-                String patternStr = fieldValues.get(NAME).replace("*", ".*").toUpperCase();
-                try {
-                    nameRegex = Pattern.compile(patternStr);
-                }
-                catch (PatternSyntaxException ex) {
-                    LOG.error("Unable to parse name pattern, ignoring.", ex);
-                }
-            }
-
-            // now search for derived components
-            Map<String, Object> derivedComponentCriteria = new HashMap<String, Object>();
-            if (fieldValues.containsKey(NAMESPACE_CODE) && StringUtils.isNotBlank(fieldValues.get(NAMESPACE_CODE))) {
-                derivedComponentCriteria.put(NAMESPACE_CODE, fieldValues.get(NAMESPACE_CODE));
-            }
-            if (fieldValues.containsKey(CODE) && StringUtils.isNotBlank(fieldValues.get(CODE))) {
-                derivedComponentCriteria.put(CODE, fieldValues.get(CODE));
-            }
-            if (fieldValues.containsKey(NAME) && StringUtils.isNotBlank(fieldValues.get(NAME))) {
-                derivedComponentCriteria.put(NAME, fieldValues.get(NAME));
-            }
             Collection<DerivedComponentBo> derivedComponentBos = null;
-            if (derivedComponentCriteria.isEmpty()) {
+            if (StringUtils.isBlank(fieldValues.get(CODE)) && StringUtils.isBlank(fieldValues.get(NAMESPACE_CODE))
+                    && StringUtils.isBlank(fieldValues.get(NAME))) {
                 derivedComponentBos = KRADServiceLocator.getBusinessObjectService().findAll(DerivedComponentBo.class);
             } else {
-                derivedComponentBos = KRADServiceLocator.getBusinessObjectService().findMatching(DerivedComponentBo.class, derivedComponentCriteria);
+                derivedComponentBos = getLookupService().findCollectionBySearchHelper(DerivedComponentBo.class, fieldValues, false);
             }
             if (CollectionUtils.isNotEmpty(derivedComponentBos)) {
                 for (DerivedComponentBo derivedComponentBo : derivedComponentBos) {

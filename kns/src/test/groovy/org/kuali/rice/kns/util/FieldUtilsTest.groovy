@@ -128,9 +128,7 @@ class FieldUtilsTest {
             def f = it.fields[0]
             assertEquals(rafs[i].name, f.propertyName)
             assertEquals(rafs[i].shortLabel, f.fieldLabel)
-            // XXX: conversion does not set this field ??
-            //assertEquals(rafs[i].dataType, f.fieldDataType)
-            assertEquals(new Field("","").fieldDataType, f.fieldDataType)
+            assertEquals(rafs[i].dataType.name().toLowerCase(), f.fieldDataType)
             switch (rafs[i].dataType) {
                 case DataType.STRING:
                     assertEquals(Field.TEXT, f.fieldType)

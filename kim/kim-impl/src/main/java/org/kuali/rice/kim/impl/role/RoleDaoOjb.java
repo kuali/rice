@@ -527,7 +527,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
             addLikeToCriteria(subCrit, "attributes.attributeValue", entry.getValue());
             addEqualToCriteria(subCrit, "attributes.kimAttributeId", entry.getKey().substring(entry.getKey().indexOf(".") + 1, entry.getKey().length()));
             addEqualToCriteria(subCrit, "attributes.kimTypeId", kimTypeId);
-            subCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
+            subCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "id");
             crit.addExists(QueryFactory.newReportQuery(RoleMemberBo.class, subCrit));
         }
     }
@@ -570,8 +570,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         }
 
         Criteria memberSubCrit = new Criteria();
-        memberSubCrit.addIn("roleId", roleIds);
-        memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
+        memberSubCrit.addIn("id", roleIds);
+        memberSubCrit.addEqualToField("id", Criteria.PARENT_QUERY_PREFIX + "id");
         return QueryFactory.newReportQuery(RoleBo.class, memberSubCrit);
 
     }
@@ -603,7 +603,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         for (Map.Entry<String, String> entry : respCrit.entrySet()) {
             if (entry.getKey().equals("respTmplName") || entry.getKey().equals("respTmplNamespaceCode")) {
                 if (entry.getKey().equals("respTmplName")) {
-                    predicates.add(PredicateFactory.equal("template" + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, entry.getValue()));
+                    predicates.add(PredicateFactory.equal("template." + KimConstants.UniqueKeyConstants.RESPONSIBILITY_TEMPLATE_NAME, entry.getValue()));
                 } else {
                     predicates.add(PredicateFactory.equal("template." + KimConstants.UniqueKeyConstants.NAMESPACE_CODE, entry.getValue()));
                 }
@@ -633,8 +633,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         }
 
         Criteria memberSubCrit = new Criteria();
-        memberSubCrit.addIn("roleId", roleIds);
-        memberSubCrit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
+        memberSubCrit.addIn("id", roleIds);
+        memberSubCrit.addEqualToField("id", Criteria.PARENT_QUERY_PREFIX + "id");
         return QueryFactory.newReportQuery(RoleBo.class, memberSubCrit);
 
     }
@@ -645,10 +645,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
        final QueryByCriteria.Builder searchCrit = QueryByCriteria.Builder.create();
        for (Entry<String, String> entry : groupCrit.entrySet()) {
                        if (entry.getKey().equals(KimConstants.AttributeConstants.GROUP_NAME)) {
-                               //searchCrit.put(entry.getKey(), entry.getValue());
-                   searchCrit.setPredicates(equal(entry.getKey(), entry.getValue()));
+                   searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAME, entry.getValue()));
                        } else { // the namespace code for the group field is named something besides the default. Set it to the default.
-                               //searchCrit.put(KimApiConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
                    searchCrit.setPredicates(equal(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue()));
 
                        }
@@ -663,7 +661,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                groupIds.add("-1");  // this forces a blank return.
        }
        crit.addIn("memberId", groupIds);
-       crit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "roleId");
+       crit.addEqualToField("roleId", Criteria.PARENT_QUERY_PREFIX + "id");
 
                 return QueryFactory.newReportQuery(RoleMemberBo.class, crit);
 

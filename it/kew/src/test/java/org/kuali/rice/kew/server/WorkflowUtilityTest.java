@@ -250,7 +250,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
 
         // now return back to WorkflowDocument
-        document.returnToPreviousNode("WorkflowDocument", "");
+        document.returnToPreviousNode("", "WorkflowDocument");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue(document.isApprovalRequested());
         // Phil should no longer be non-future route log authenticated

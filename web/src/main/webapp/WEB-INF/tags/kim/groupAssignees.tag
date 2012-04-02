@@ -136,7 +136,7 @@
                  <c:set var="inquiryClass" value="org.kuali.rice.kim.api.identity.Person" />
                  <c:set var="keyValue" value="principalId" />
                  <c:if test='${member.memberTypeCode == "G"}'>
-                   <c:set var="inquiryClass" value="org.kuali.rice.kim.api.group.Group" />
+                   <c:set var="inquiryClass" value="org.kuali.rice.kim.impl.group.GroupBo" />
                    <c:set var="keyValue" value="id" />
                  </c:if>
 	             <tr>

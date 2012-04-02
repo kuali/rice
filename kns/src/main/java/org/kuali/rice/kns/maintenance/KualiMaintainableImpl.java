@@ -291,10 +291,6 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	}
 
 
-    @Override
-    public void saveDataObject(){
-        saveBusinessObject();
-    }
     /**
 	 * 
 	 * @see Maintainable#saveBusinessObject()
@@ -303,7 +299,16 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		getBusinessObjectService().linkAndSave(businessObject);
 	}
 
-	/**
+    /**
+     * delegate this call to KNS' {@link org.kuali.rice.kns.maintenance.Maintainable#saveBusinessObject()} in order
+     * to support KNS maintainables.
+     */
+    @Override
+    public void saveDataObject() {
+        saveBusinessObject();
+    }
+
+    /**
 	 * Retrieves title for maintenance document from data dictionary
 	 */
 	public String getMaintainableTitle() {

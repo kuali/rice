@@ -95,11 +95,6 @@ class KimAttributeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_ver_num_null() {
-        KimAttribute.Builder.create(COMPONENT_NAME, ATTRIBUTE_NAME, NAMESPACE_CODE).setVersionNumber(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_ver_num_less_than_1() {
         KimAttribute.Builder.create(COMPONENT_NAME, ATTRIBUTE_NAME, NAMESPACE_CODE).setVersionNumber(-1);
     }

@@ -290,7 +290,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if ((document != null) && (!document.getPessimisticLocks().isEmpty())) {
             releaseLocks(document, methodToCall);
             // refresh pessimistic locks in case custom add/remove changes were made
-            //document.refreshPessimisticLocks();
+            document.refreshPessimisticLocks();
         }
     }
 

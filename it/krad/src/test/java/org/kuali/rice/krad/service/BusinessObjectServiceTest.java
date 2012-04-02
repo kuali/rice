@@ -97,6 +97,13 @@ public class BusinessObjectServiceTest extends KRADTestCase {
     	manager3.setAmId(-99L);
     	manager2 = (AccountManager)businessObjectService.retrieve(manager3);
     	assertNull("manager2 should be null", manager2);
+        
+        AccountManager manager4 = new AccountManager();
+        manager4.setAmId(manager.getAmId());
+        manager2 = (AccountManager)businessObjectService.findBySinglePrimaryKey(AccountManager.class, manager4);
+        assertNotNull("manager2 should not be null", manager2);
+        assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
+
     }
 
     /*

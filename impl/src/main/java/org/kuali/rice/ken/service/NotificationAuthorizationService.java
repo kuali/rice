@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.ken.service;
 
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 
 /**
  * The NotificationAuthorizationService class is responsible for housing permissions and authorization 
@@ -31,7 +31,7 @@ public interface NotificationAuthorizationService {
      * @param channel
      * @return boolean - true if authorized, false if not
      */
-    public boolean isProducerAuthorizedToSendNotificationForChannel(NotificationProducer producer, NotificationChannel channel);
+    public boolean isProducerAuthorizedToSendNotificationForChannel(NotificationProducerBo producer, NotificationChannelBo channel);
     
     /**
      * This method checks to see if the user is authorized as an administrator in the system.

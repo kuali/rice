@@ -22,7 +22,7 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -56,7 +56,7 @@ public class ContentTypeLSResourceResolver extends ContentTypeResourceResolver i
             return null;
         }
 
-        NotificationContentType notificationContentType = resolveContentType(systemId);
+        NotificationContentTypeBo notificationContentType = resolveContentType(systemId);
         if (notificationContentType == null) {
 	    LOG.error("Unable to resolve system id '" + systemId + "' locally...delegating to default resolution strategy.");
 	    return null;

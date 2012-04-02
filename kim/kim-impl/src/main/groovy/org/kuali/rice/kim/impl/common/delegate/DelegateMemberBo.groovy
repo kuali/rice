@@ -100,6 +100,7 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
                 memberId: immutable.memberId,
                 roleMemberId: immutable.roleMemberId,
                 typeCode: immutable.typeCode,
+                versionNumber: immutable.versionNumber
         )
     }
 }

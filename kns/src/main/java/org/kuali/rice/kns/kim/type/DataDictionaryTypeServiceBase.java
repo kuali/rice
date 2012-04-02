@@ -219,20 +219,6 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		return qualification;
 	}
 
-	private Object getAttributeValue(PropertyDescriptor propertyDescriptor, String attributeValue){
-		Object attributeValueObject = null;
-		if(propertyDescriptor!=null && attributeValue!=null){
-			Class<?> propertyType = propertyDescriptor.getPropertyType();
-			if (String.class.equals(propertyType)){
-				attributeValueObject = KRADUtils
-                        .createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
-			} else {
-				attributeValueObject = attributeValue;
-			}
-		}
-		return attributeValueObject;
-	}
-	
 	protected List<RemotableAttributeError> validateReferencesExistAndActive( KimType kimType, Map<String, String> attributes, List<RemotableAttributeError> previousValidationErrors) {
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
@@ -502,7 +488,10 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                 PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attr.getKimAttribute().getAttributeName());
                 if ( propertyDescriptor != null ) {
                     // set the value on the object so that it can be checked
-                    Object attributeValue = getAttributeValue(propertyDescriptor, value);
+                    Object attributeValue = KRADUtils.hydrateAttributeValue(propertyDescriptor.getPropertyType(), value);
+                    if (attributeValue == null) {
+                        attributeValue = value; // not a super-awesome fallback strategy, but...
+                    }
                     propertyDescriptor.getWriteMethod().invoke( componentObject, attributeValue);
                     return validateDataDictionaryAttribute(attr.getKimTypeId(), attr.getKimAttribute().getComponentName(), componentObject, propertyDescriptor);
                 }

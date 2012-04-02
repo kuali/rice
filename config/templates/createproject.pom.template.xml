@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${PROJECT_NAME}-group-id</groupId>
 	<artifactId>${PROJECT_NAME}</artifactId>
@@ -45,7 +46,7 @@
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-impex-master</artifactId>
 			<version>${RICE_VERSION}</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-web</artifactId>
@@ -56,29 +57,44 @@
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-impl</artifactId>
 			<version>${RICE_VERSION}</version>
-        </dependency>
-        <dependency>
+		</dependency>
+		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-edl-impl</artifactId>
 			<version>${RICE_VERSION}</version>
 		</dependency>
-        <dependency>
+		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-krms-impl</artifactId>
 			<version>${RICE_VERSION}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc14</artifactId>
-            <version>10.2.0.3.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.5</version>
-            <scope>provided</scope>
-        </dependency>
+		</dependency>
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kim-impl</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kew-impl</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>		 
+		<dependency>
+			<groupId>org.kuali.rice</groupId>
+			<artifactId>rice-kns</artifactId>
+			<version>${RICE_VERSION}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.3.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.5</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>

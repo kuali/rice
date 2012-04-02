@@ -17,6 +17,9 @@ package org.kuali.rice.ken.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
+import org.kuali.rice.ken.api.notification.NotificationChannelReviewerContract;
+import org.kuali.rice.ken.api.notification.UserChannelSubscription;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -27,7 +30,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREN_RVWER_T")
-public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
+public class NotificationChannelReviewerBo extends PersistableBusinessObjectBase implements NotificationChannelReviewerContract {
     @Id
     @GeneratedValue(generator="KREN_RVWER_S")
 	@GenericGenerator(name="KREN_RVWER_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
@@ -38,7 +41,7 @@ public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
 	private Long id;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH })
 	@JoinColumn(name="CHNL_ID")
-	private NotificationChannel channel;
+	private NotificationChannelBo channel;
     @Column(name="TYP", nullable=false)
 	private String reviewerType;
     @Column(name="PRNCPL_ID", nullable=false)
@@ -64,7 +67,7 @@ public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
      * Returns the channel with which this reviewer is associated
      * @return the channel with which this reviewer is associated
      */
-    public NotificationChannel getChannel() {
+    public NotificationChannelBo getChannel() {
         return channel;
     }
 
@@ -72,7 +75,7 @@ public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
      * Sets the channel with which this reviewer is associated
      * @param channel the channel with which this reviewer is associated
      */
-    public void setChannel(NotificationChannel channel) {
+    public void setChannel(NotificationChannelBo channel) {
         this.channel = channel;
     }
 
@@ -107,5 +110,40 @@ public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
      */
     public void setReviewerType(String reviewerType) {
         this.reviewerType = reviewerType;
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static NotificationChannelReviewer to(NotificationChannelReviewerBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return NotificationChannelReviewer.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationChannelReviewerBo from(NotificationChannelReviewer im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationChannelReviewerBo bo = new NotificationChannelReviewerBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+
+        bo.setReviewerType(im.getReviewerType());
+        bo.setReviewerId(im.getReviewerId());
+        bo.setChannel(im.getChannel() == null ? null : NotificationChannelBo.from(im.getChannel()));
+
+        return bo;
     }
 }

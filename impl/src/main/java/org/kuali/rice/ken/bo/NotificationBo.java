@@ -15,13 +15,33 @@
  */
 package org.kuali.rice.ken.bo;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.joda.time.DateTime;
+import org.kuali.rice.ken.api.notification.Notification;
+import org.kuali.rice.ken.api.notification.NotificationContract;
+import org.kuali.rice.ken.api.notification.NotificationRecipient;
+import org.kuali.rice.ken.api.notification.NotificationRecipientContract;
+import org.kuali.rice.ken.api.notification.NotificationSender;
+import org.kuali.rice.ken.api.notification.NotificationSenderContract;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +53,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="KREN_NTFCTN_T")
-public class Notification extends PersistableBusinessObjectBase implements Lockable {
+public class NotificationBo extends PersistableBusinessObjectBase implements NotificationContract, Lockable {
    
     @Id
     @GeneratedValue(generator="KREN_NTFCTN_S")
@@ -46,11 +66,11 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
     @Column(name="DELIV_TYP", nullable=false)
 	private String deliveryType;
 	@Column(name="CRTE_DTTM", nullable=false)
-	private Timestamp creationDateTime;
+	private Timestamp creationDateTimeValue;
 	@Column(name="SND_DTTM", nullable=true)
-	private Timestamp sendDateTime;
+	private Timestamp sendDateTimeValue;
 	@Column(name="AUTO_RMV_DTTM", nullable=true)
-	private Timestamp autoRemoveDateTime;
+	private Timestamp autoRemoveDateTimeValue;
     @Column(name="TTL", nullable=true)
 	private String title;
     @Lob
@@ -60,7 +80,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
     @Column(name="PROCESSING_FLAG", nullable=false)
 	private String processingFlag;
 	@Column(name="LOCKD_DTTM", nullable=true)
-	private Timestamp lockedDate;
+	private Timestamp lockedDateValue;
     /**
      * Lock column for OJB optimistic locking
      */
@@ -71,33 +91,33 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
     // object references
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="PRIO_ID")
-	private NotificationPriority priority;
+	private NotificationPriorityBo priority;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="CNTNT_TYP_ID")
-	private NotificationContentType contentType;
+	private NotificationContentTypeBo contentType;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="CHNL_ID")
-	private NotificationChannel channel;
+	private NotificationChannelBo channel;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="PRODCR_ID")
-	private NotificationProducer producer;
+	private NotificationProducerBo producer;
     
     // lists
     @OneToMany(cascade={CascadeType.ALL},
-           targetEntity=org.kuali.rice.ken.bo.NotificationRecipient.class, mappedBy="notification")
+           targetEntity=NotificationRecipientBo.class, mappedBy="notification")
     @OrderBy("id ASC")
-	private List<NotificationRecipient> recipients;
+	private List<NotificationRecipientBo> recipients;
     @OneToMany(cascade={CascadeType.ALL},
-           targetEntity=org.kuali.rice.ken.bo.NotificationSender.class, mappedBy="notification")
+           targetEntity=NotificationSenderBo.class, mappedBy="notification")
 	@OrderBy("id ASC")
-    private List<NotificationSender> senders;
+    private List<NotificationSenderBo> senders;
     
     /**
      * Constructs a Notification instance.
      */
-    public Notification() {
-        recipients = new ArrayList<NotificationRecipient>();
-        senders = new ArrayList<NotificationSender>();
+    public NotificationBo() {
+        recipients = new ArrayList<NotificationRecipientBo>();
+        senders = new ArrayList<NotificationSenderBo>();
         processingFlag = NotificationConstants.PROCESSING_FLAGS.UNRESOLVED;
     }
 
@@ -105,16 +125,21 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Returns when this Notification entry was created 
      * @return when this Notification entry was created
      */
-    public Timestamp getCreationDateTime() {
-        return creationDateTime;
+    public Timestamp getCreationDateTimeValue() {
+        return creationDateTimeValue;
+    }
+
+    @Override
+    public DateTime getCreationDateTime() {
+        return this.creationDateTimeValue == null ? null : new DateTime(this.creationDateTimeValue);
     }
 
     /**
      * Sets the creation date of this Notification entry
      * @param created the creation date of this Notification entry
      */
-    public void setCreationDateTime(Timestamp created) {
-        this.creationDateTime = created;
+    public void setCreationDateTimeValue(Timestamp created) {
+        this.creationDateTimeValue = created;
     }
 
     /**
@@ -139,7 +164,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Gets the recipients attribute. 
      * @return Returns the recipients.
      */
-    public List<NotificationRecipient> getRecipients() {
+    public List<NotificationRecipientBo> getRecipients() {
         return recipients;
     }
 
@@ -147,7 +172,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Sets the recipients attribute value.
      * @param recipients The recipients to set.
      */
-    public void setRecipients(List<NotificationRecipient> recipients) {
+    public void setRecipients(List<NotificationRecipientBo> recipients) {
         this.recipients = recipients;
     }
 
@@ -156,15 +181,15 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @param index the index in the recipients collection
      * @return the recipient if found or null
      */
-    public NotificationRecipient getRecipient(int index) {
-        return (NotificationRecipient) recipients.get(index);
+    public NotificationRecipientBo getRecipient(int index) {
+        return (NotificationRecipientBo) recipients.get(index);
     }
     
     /**
      * Adds a recipient
      * @param recipient The recipient to add
      */
-    public void addRecipient(NotificationRecipient recipient) {
+    public void addRecipient(NotificationRecipientBo recipient) {
         recipients.add(recipient);
     }
 
@@ -172,7 +197,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Gets the senders attribute. 
      * @return Returns the senders.
      */
-    public List<NotificationSender> getSenders() {
+    public List<NotificationSenderBo> getSenders() {
         return senders;
     }
 
@@ -180,7 +205,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Sets the senders attribute value.
      * @param senders The senders to set.
      */
-    public void setSenders(List<NotificationSender> senders) {
+    public void setSenders(List<NotificationSenderBo> senders) {
         this.senders = senders;
     }
 
@@ -189,14 +214,14 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @param index the index in the senders collection
      * @return the sender if found or null
      */
-    public NotificationSender getSender(int index) {
-        return (NotificationSender) senders.get(index);
+    public NotificationSenderBo getSender(int index) {
+        return (NotificationSenderBo) senders.get(index);
     }
     /**
      * Adds a sender
      * @param sender The sender to add
      */
-    public void addSender(NotificationSender sender) {
+    public void addSender(NotificationSenderBo sender) {
         senders.add(sender);
     }
 
@@ -204,32 +229,37 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Gets the autoRemoveDateTime attribute. 
      * @return Returns the autoRemoveDateTime.
      */
-    public Timestamp getAutoRemoveDateTime() {
-	return autoRemoveDateTime;
+    public Timestamp getAutoRemoveDateTimeValue() {
+	    return this.autoRemoveDateTimeValue;
+    }
+
+    @Override
+    public DateTime getAutoRemoveDateTime() {
+        return this.autoRemoveDateTimeValue == null ? null : new DateTime(this.autoRemoveDateTimeValue);
     }
 
     /**
      * Sets the autoRemoveDateTime attribute value.
-     * @param autoRemoveDateTime The autoRemoveDateTime to set.
+     * @param autoRemoveDateTimeValue The autoRemoveDateTime to set.
      */
-    public void setAutoRemoveDateTime(Timestamp autoRemoveDateTime) {
-	this.autoRemoveDateTime = autoRemoveDateTime;
+    public void setAutoRemoveDateTimeValue(Timestamp autoRemoveDateTimeValue) {
+	    this.autoRemoveDateTimeValue = autoRemoveDateTimeValue;
     }
 
     /**
      * Gets the channel attribute. 
      * @return Returns the channel.
      */
-    public NotificationChannel getChannel() {
-	return channel;
+    public NotificationChannelBo getChannel() {
+	    return channel;
     }
 
     /**
      * Sets the channel attribute value.
      * @param channel The channel to set.
      */
-    public void setChannel(NotificationChannel channel) {
-	this.channel = channel;
+    public void setChannel(NotificationChannelBo channel) {
+	    this.channel = channel;
     }
 
     /**
@@ -237,7 +267,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @return Returns the content.
      */
     public String getContent() {
-	return content;
+	    return content;
     }
 
     /**
@@ -245,23 +275,23 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @param content The content to set.
      */
     public void setContent(String content) {
-	this.content = content;
+	    this.content = content;
     }
 
     /**
      * Gets the contentType attribute. 
      * @return Returns the contentType.
      */
-    public NotificationContentType getContentType() {
-	return contentType;
+    public NotificationContentTypeBo getContentType() {
+	    return contentType;
     }
 
     /**
      * Sets the contentType attribute value.
      * @param contentType The contentType to set.
      */
-    public void setContentType(NotificationContentType contentType) {
-	this.contentType = contentType;
+    public void setContentType(NotificationContentTypeBo contentType) {
+	    this.contentType = contentType;
     }
 
     /**
@@ -269,7 +299,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @return Returns the deliveryType.
      */
     public String getDeliveryType() {
-	return deliveryType;
+	    return deliveryType;
     }
 
     /**
@@ -277,7 +307,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @param deliveryType The deliveryType to set.
      */
     public void setDeliveryType(String deliveryType) {
-	this.deliveryType = deliveryType.toUpperCase();
+	    this.deliveryType = deliveryType.toUpperCase();
     }
 
     /**
@@ -285,7 +315,7 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @return Returns the id.
      */
     public Long getId() {
-	return id;
+	    return id;
     }
 
     /**
@@ -293,55 +323,60 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @param id The id to set.
      */
     public void setId(Long id) {
-	this.id = id;
+	    this.id = id;
     }
 
     /**
      * Gets the priority attribute. 
      * @return Returns the priority.
      */
-    public NotificationPriority getPriority() {
-	return priority;
+    public NotificationPriorityBo getPriority() {
+	    return priority;
     }
 
     /**
      * Sets the priority attribute value.
      * @param priority The priority to set.
      */
-    public void setPriority(NotificationPriority priority) {
-	this.priority = priority;
+    public void setPriority(NotificationPriorityBo priority) {
+	    this.priority = priority;
     }
 
     /**
      * Gets the producer attribute. 
      * @return Returns the producer.
      */
-    public NotificationProducer getProducer() {
-	return producer;
+    public NotificationProducerBo getProducer() {
+	    return producer;
     }
 
     /**
      * Sets the producer attribute value.
      * @param producer The producer to set.
      */
-    public void setProducer(NotificationProducer producer) {
-	this.producer = producer;
+    public void setProducer(NotificationProducerBo producer) {
+	    this.producer = producer;
     }
 
     /**
      * Gets the sendDateTime attribute. 
      * @return Returns the sendDateTime.
      */
-    public Timestamp getSendDateTime() {
-	return sendDateTime;
+    public Timestamp getSendDateTimeValue() {
+	    return this.sendDateTimeValue;
+    }
+
+    @Override
+    public DateTime getSendDateTime() {
+        return this.sendDateTimeValue == null ? null : new DateTime(this.sendDateTimeValue);
     }
 
     /**
      * Sets the sendDateTime attribute value.
-     * @param sendDateTime The sendDateTime to set.
+     * @param sendDateTimeValue The sendDateTime to set.
      */
-    public void setSendDateTime(Timestamp sendDateTime) {
-	this.sendDateTime = sendDateTime;
+    public void setSendDateTimeValue(Timestamp sendDateTimeValue) {
+	    this.sendDateTimeValue = sendDateTimeValue;
     }
 
     /**
@@ -364,16 +399,21 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Gets the lockedDate attribute. 
      * @return Returns the lockedDate.
      */
-    public Timestamp getLockedDate() {
-        return lockedDate;
+    public Timestamp getLockedDateValue() {
+        return this.lockedDateValue;
+    }
+
+    @Override
+    public DateTime getLockedDate() {
+        return this.lockedDateValue == null ? null : new DateTime(this.lockedDateValue);
     }
     
     /**
      * Sets the lockedDate attribute value.
-     * @param lockedDate The lockedDate to set.
+     * @param lockedDateValue The lockedDate to set.
      */
-    public void setLockedDate(Timestamp lockedDate) {
-        this.lockedDate = lockedDate;
+    public void setLockedDateValue(Timestamp lockedDateValue) {
+        this.lockedDateValue = lockedDateValue;
     }
 
     /**
@@ -398,6 +438,67 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * @return String
      */
     public String getContentMessage() {
-	return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);	
+	    return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);	
+    }
+
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static Notification to(NotificationBo bo) {
+        if (bo == null) {
+            return null;
+        }
+
+        return Notification.Builder.create(bo).build();
+    }
+
+    /**
+     * Converts a immutable object to its mutable counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    public static NotificationBo from(Notification im) {
+        if (im == null) {
+            return null;
+        }
+
+        NotificationBo bo = new NotificationBo();
+        bo.setId(im.getId());
+        bo.setVersionNumber(im.getVersionNumber());
+        bo.setObjectId(im.getObjectId());
+        bo.setDeliveryType(im.getDeliveryType());
+        bo.setCreationDateTimeValue(im.getCreationDateTime() == null ? null : new Timestamp(im.getCreationDateTime().getMillis()));
+        bo.setSendDateTimeValue(im.getSendDateTime() == null ? null : new Timestamp(im.getSendDateTime().getMillis()));
+        bo.setAutoRemoveDateTimeValue(im.getAutoRemoveDateTime() == null ? null : new Timestamp(im.getAutoRemoveDateTime().getMillis()));
+        bo.setTitle(im.getTitle());
+        bo.setContent(im.getContent());
+        bo.setLockedDateValue(im.getLockedDate() == null ? null : new Timestamp(im.getLockedDate().getMillis()));
+
+        // object references
+        bo.setPriority(NotificationPriorityBo.from(im.getPriority()));
+        bo.setContentType(NotificationContentTypeBo.from(im.getContentType()));
+        bo.setChannel(NotificationChannelBo.from(im.getChannel()));
+        bo.setProducer(NotificationProducerBo.from(im.getProducer()));
+
+        // lists
+        List<NotificationRecipientBo> tempRecipients = new ArrayList<NotificationRecipientBo>();
+        if (CollectionUtils.isNotEmpty(im.getRecipients())) {
+            for (NotificationRecipient recipient : im.getRecipients()) {
+                tempRecipients.add(NotificationRecipientBo.from(recipient));
+            }
+            bo.setRecipients(tempRecipients);
+        }
+        List<NotificationSenderBo> tempSenders = new ArrayList<NotificationSenderBo>();
+        if (CollectionUtils.isNotEmpty(im.getSenders())) {
+            for (NotificationSender sender : im.getSenders()) {
+                tempSenders.add(NotificationSenderBo.from(sender));
+            }
+            bo.setSenders(tempSenders);
+        }
+
+        return bo;
     }
 }

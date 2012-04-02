@@ -22,12 +22,15 @@ import javax.persistence.Table
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
-public class EntityEmploymentStatusEbo extends PersistableBusinessObjectBase implements CodedAttributeContract {
+public class EntityEmploymentStatusEbo implements CodedAttributeContract, ExternalizableBusinessObject {
     String code;
     String name;
     boolean active;
     String sortCode;
+    Long versionNumber;
+    String objectId;
 
 
     /**

@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.kim.api.KimConstants;
@@ -474,7 +475,8 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 					BusinessObjectEntry collectionBusinessObjectEntry = (BusinessObjectEntry) getDataDictionaryService()
 							.getDataDictionary().getBusinessObjectEntry(
 									maintainableCollectionDefinition.getBusinessObjectClass().getName());
-					if (collection != null && !collection.isEmpty()) {
+					if (CollectionUtils.isNotEmpty(collection)) {
+                    //if (collection != null && !collection.isEmpty()) {
 				    	int i = 0;
 			     		for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
 							.hasNext();) {

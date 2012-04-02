@@ -160,7 +160,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     @Override
 	public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
 		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByNameCaseInsensitive(criteria.getDocumentTypeName());
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
         DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());

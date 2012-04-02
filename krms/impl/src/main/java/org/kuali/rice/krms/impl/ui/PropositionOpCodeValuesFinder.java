@@ -34,13 +34,15 @@ public class PropositionOpCodeValuesFinder extends KeyValuesBase {
 
     private static final List<KeyValue> LABELS;
     static {
-        final List<KeyValue> labels = new ArrayList<KeyValue>( 6 );
+        final List<KeyValue> labels = new ArrayList<KeyValue>( 8 );
         labels.add(new ConcreteKeyValue(ComparisonOperator.EQUALS.getCode(), ComparisonOperator.EQUALS.getCode()));
         labels.add(new ConcreteKeyValue(ComparisonOperator.GREATER_THAN.getCode(), ComparisonOperator.GREATER_THAN.getCode()));
         labels.add(new ConcreteKeyValue(ComparisonOperator.GREATER_THAN_EQUAL.getCode(), ComparisonOperator.GREATER_THAN_EQUAL.getCode()));
         labels.add(new ConcreteKeyValue(ComparisonOperator.LESS_THAN.getCode(), ComparisonOperator.LESS_THAN.getCode()));
         labels.add(new ConcreteKeyValue(ComparisonOperator.LESS_THAN_EQUAL.getCode(), ComparisonOperator.LESS_THAN_EQUAL.getCode()));
         labels.add(new ConcreteKeyValue(ComparisonOperator.NOT_EQUALS.getCode(), ComparisonOperator.NOT_EQUALS.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.EXISTS.getCode(), ComparisonOperator.EXISTS.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.DOES_NOT_EXIST.getCode(), ComparisonOperator.DOES_NOT_EXIST.getCode()));
         LABELS = Collections.unmodifiableList(labels);
     }
     

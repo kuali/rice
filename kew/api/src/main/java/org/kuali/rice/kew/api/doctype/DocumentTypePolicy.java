@@ -112,7 +112,14 @@ public enum DocumentTypePolicy implements Coded {
     @XmlEnumValue(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE) REGENERATE_ACTION_REQUESTS_ON_CHANGE(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE),
 
     /**
-     * Governs whether FYIs should be sent on *completed* (not pendign) action requests when returning to a previous node (for us with Recall)
+     * Governs whether FYIs should be sent on *pending* (not completed) action requests when returning to a previous node
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-5931
+     */
+    @XmlEnumValue(Codes.NOTIFY_PENDING_ON_RETURN) NOTIFY_PENDING_ON_RETURN(Codes.NOTIFY_PENDING_ON_RETURN),
+
+    /**
+     * Governs whether FYIs should be sent on *completed* (not pending) action requests when returning to a previous node (for use with Recall)
      * @since 2.1
      * @see https://jira.kuali.org/browse/KULRICE-5931
      */
@@ -166,6 +173,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String FAIL_ON_INACTIVE_GROUP = "FAIL_ON_INACTIVE_GROUP";
         private static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";       
         private static final String ENROUTE_ERROR_SUPPRESSION = "ENROUTE_ERROR_SUPPRESSION";
+        private static final String NOTIFY_PENDING_ON_RETURN = "NOTIFY_PENDING_ON_RETURN";
         private static final String NOTIFY_COMPLETED_ON_RETURN = "NOTIFY_COMPLETED_ON_RETURN";
         private static final String RECALL_NOTIFICATION = "RECALL_NOTIFICATION";
     }

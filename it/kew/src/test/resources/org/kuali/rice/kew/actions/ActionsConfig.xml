@@ -463,6 +463,21 @@
       </policies>
     </documentType>
     <documentType>
+      <name>RecallWithoutPendingNotifyTest</name>
+      <parent>NotificationTest</parent>
+      <label>RecallTest</label>
+      <policies>
+        <policy>
+          <name>NOTIFY_COMPLETED_ON_RETURN</name>
+          <value>true</value>
+        </policy>
+        <policy>
+          <name>NOTIFY_PENDING_ON_RETURN</name>
+          <value>false</value>
+        </policy>
+      </policies>
+    </documentType>
+    <documentType>
       <name>RecallWithThirdPartyNotifyTest</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>

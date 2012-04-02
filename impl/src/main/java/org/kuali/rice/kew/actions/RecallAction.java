@@ -96,8 +96,6 @@ public class RecallAction extends ReturnToPreviousNodeAction {
               INITIAL_NODE_NAME,
               sendNotifications, runPostProcessorLogic);
         this.cancel = cancel;
-        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
-       
         this.notificationRecipients = Collections.unmodifiableCollection(parseNotificationRecipients(routeHeader));
     }
 
@@ -150,16 +148,6 @@ public class RecallAction extends ReturnToPreviousNodeAction {
             }
         }
         return toNotify;
-    }
-
-    /**
-     * Checks to see whether the NOTIFY_COMPLETED_ON_RETURN policy has been set (to true)
-     * @param docType the DocumentType
-     * @return whether the NOTIFY_COMPLETED_ON_RETURN policy has been set (to true)
-     */
-    protected static boolean shouldSendNotificationsForPreviousRequests(DocumentType docType) {
-       String val = docType.getPolicies().get(DocumentTypePolicy.NOTIFY_COMPLETED_ON_RETURN);
-       return Boolean.parseBoolean(val);
     }
 
     @Override

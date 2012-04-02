@@ -420,7 +420,7 @@
       		</documentation>
       	</annotation>
       </element>
-      <any minOccurs="0"/>
+      <element ref="dt:recipients" minOccurs="0" maxOccurs="unbounded"/>
     </sequence>
   </complexType>
 
@@ -482,6 +482,8 @@
       <enumeration value="fail_on_inactive_group"/>
       <enumeration value="REGENERATE_ACTION_REQUESTS_ON_CHANGE"/>
       <enumeration value="regenerate_action_requests_on_change"/>
+      <enumeration value="NOTIFY_PENDING_ON_RETURN"/>
+      <enumeration value="notify_pending_on_return"/>
       <enumeration value="NOTIFY_COMPLETED_ON_RETURN"/>
       <enumeration value="notify_completed_on_return"/>
       <enumeration value="RECALL_NOTIFICATION"/>

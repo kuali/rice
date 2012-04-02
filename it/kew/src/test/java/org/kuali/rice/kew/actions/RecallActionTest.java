@@ -59,6 +59,7 @@ import static org.junit.Assert.assertEquals;
 public class RecallActionTest extends KEWTestCase {
     private static final String RECALL_TEST_DOC = "RecallTest";
     private static final String RECALL_NOTIFY_TEST_DOC = "RecallWithPrevNotifyTest";
+    private static final String RECALL_NO_PENDING_NOTIFY_TEST_DOC = "RecallWithoutPendingNotifyTest";
     private static final String RECALL_NOTIFY_THIRDPARTY_TEST_DOC = "RecallWithThirdPartyNotifyTest";
 
     private String EWESTFAL = null;
@@ -189,6 +190,9 @@ public class RecallActionTest extends KEWTestCase {
 
         // initiator has completion request
         assertTrue(document.isCompletionRequested());
+        // can't recall saved doc
+        assertFalse(document.getValidActions().getValidActions().contains(ActionType.RECALL));
+
         // first approver has FYI
         assertTrue(WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).isFYIRequested());
 
@@ -197,9 +201,6 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue("Document should be enroute", document.isEnroute());
 
         assertTrue(WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).isApprovalRequested());
-
-        // document is actually still recallable once recalled-to-actionlist, since it is technically still enroute
-        assertTrue(document.getValidActions().getValidActions().contains(ActionType.RECALL));
     }
 
     private static final String PERM_APP_DOC_STATUS = "recallable by admins";
@@ -306,20 +307,27 @@ public class RecallActionTest extends KEWTestCase {
     }
 
     @Test public void testRecallToActionListAsInitiatorAfterApprovals() throws Exception {
-        this.testRecallToActionListAsInitiatorAfterApprovals(false, null);
+        this.testRecallToActionListAsInitiatorAfterApprovals(RECALL_TEST_DOC);
     }
 
     @Test public void testRecallToActionListAsInitiatorWithNotificationAfterApprovals() throws Exception {
-        this.testRecallToActionListAsInitiatorAfterApprovals(true, null);
+        this.testRecallToActionListAsInitiatorAfterApprovals(RECALL_NOTIFY_TEST_DOC);
+    }
+
+    @Test public void testRecallToActionListAsInitiatorWithoutPendingNotificationAfterApprovals() throws Exception {
+        this.testRecallToActionListAsInitiatorAfterApprovals(RECALL_NO_PENDING_NOTIFY_TEST_DOC);
     }
 
     @Test public void testRecallToActionListAsInitiatorWithThirdPartyNotificationAfterApprovals() throws Exception {
-        this.testRecallToActionListAsInitiatorAfterApprovals(true, new String[] { "quickstart", "admin" });
+        this.testRecallToActionListAsInitiatorAfterApprovals(RECALL_NOTIFY_THIRDPARTY_TEST_DOC);
     }
 
-    protected void testRecallToActionListAsInitiatorAfterApprovals(boolean notifyPreviousRecipients, String[] thirdPartiesNotified) {
-        String docType = !ArrayUtils.isEmpty(thirdPartiesNotified) ? RECALL_NOTIFY_THIRDPARTY_TEST_DOC : (notifyPreviousRecipients ? RECALL_NOTIFY_TEST_DOC : RECALL_TEST_DOC);
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, docType);
+    protected void testRecallToActionListAsInitiatorAfterApprovals(String doctype) {
+        boolean notifyPreviousRecipients = !RECALL_TEST_DOC.equals(doctype);
+        boolean notifyPendingRecipients = !RECALL_NO_PENDING_NOTIFY_TEST_DOC.equals(doctype);
+        String[] thirdPartiesNotified = RECALL_NOTIFY_THIRDPARTY_TEST_DOC.equals(doctype) ? new String[] { "quickstart", "admin" } : new String[] {};
+        
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, doctype);
         document.route("");
 
         WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).approve("");
@@ -335,7 +343,7 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue(document.isCompletionRequested());
         
         // pending approver has FYI
-        assertTrue(WorkflowDocumentFactory.loadDocument(NATJOHNS, document.getDocumentId()).isFYIRequested());
+        assertEquals(notifyPendingRecipients, WorkflowDocumentFactory.loadDocument(NATJOHNS, document.getDocumentId()).isFYIRequested());
         // third approver has FYI
         assertEquals(notifyPreviousRecipients, WorkflowDocumentFactory.loadDocument(RKIRKEND, document.getDocumentId()).isFYIRequested());
         // second approver does not have FYI - approver is initiator, FYI is skipped

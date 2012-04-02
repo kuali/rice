@@ -23,7 +23,9 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
@@ -63,23 +65,27 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     protected final String nodeName;
     private boolean superUserUsage;
     private boolean sendNotifications = true;
-    protected boolean sendNotificationsForPreviousRequests = false;
+    protected final boolean sendNotificationsForPreviousRequests;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
         this.nodeName = null;
+        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
+        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
     }
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
         super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation);
         this.nodeName = nodeName;
-        this.sendNotifications = sendNotifications;
+        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
+        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
     }
     
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
         super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
-        this.sendNotifications = sendNotifications;
+        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
+        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
     }
 
     /**
@@ -88,7 +94,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
         super(overrideActionTakenCode, routeHeader, principal, annotation);
         this.nodeName = nodeName;
-        this.sendNotifications = sendNotifications;
+        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
+        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
     }
     
     /**
@@ -97,7 +104,34 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
         super(overrideActionTakenCode, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
-        this.sendNotifications = sendNotifications;
+        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
+        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
+    }
+
+    /**
+     * Determines whether notifications should be sent to recipients of outstanding actionrequests.
+     * Consults the NOTIFY_PENDING_ON_RETURN document type policy which overrides the constructor value.
+     * @param initialValue the constructor value
+     * @param docType the document type
+     * @return whether notifications should be sent to recipients of outstanding actionrequests
+     */
+    protected static boolean shouldSendNotifications(boolean initialValue, DocumentType docType) {
+        String val = docType.getPolicies().get(DocumentTypePolicy.NOTIFY_PENDING_ON_RETURN);
+        if (val == null) {
+            return initialValue;
+        } else {
+            return Boolean.parseBoolean(val);
+        }
+    }
+
+    /**
+     * Checks to see whether the NOTIFY_COMPLETED_ON_RETURN policy has been set (to true)
+     * @param docType the DocumentType
+     * @return whether the NOTIFY_COMPLETED_ON_RETURN policy has been set (to true)
+     */
+    protected static boolean shouldSendNotificationsForPreviousRequests(DocumentType docType) {
+        String val = docType.getPolicies().get(DocumentTypePolicy.NOTIFY_COMPLETED_ON_RETURN);
+        return Boolean.parseBoolean(val);
     }
 
     /**

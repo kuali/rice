@@ -101,7 +101,13 @@ public final class DocumentTypePolicyEnum {
     public static final DocumentTypePolicyEnum REGENERATE_ACTION_REQUESTS_ON_CHANGE = new DocumentTypePolicyEnum(KewApiConstants.REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY);
 
     /**
-     * Governs whether FYIs should be sent on *completed* (not pending) action requests when returning to a previous node (for us with Recall)
+     * Governs whether FYIs should be sent on *pending* (not completed) action requests when returning to a previous node
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-5931
+     */
+    public static final DocumentTypePolicyEnum NOTIFY_PENDING_ON_RETURN = new DocumentTypePolicyEnum(KewApiConstants.NOTIFY_PENDING_ON_RETURN_POLICY);
+    /**
+     * Governs whether FYIs should be sent on *completed* (not pending) action requests when returning to a previous node (for use with Recall)
      * @since 2.1
      * @see https://jira.kuali.org/browse/KULRICE-5931
      */
@@ -166,6 +172,8 @@ public final class DocumentTypePolicyEnum {
             return ENROUTE_ERROR_SUPPRESSION;
         } else if(REGENERATE_ACTION_REQUESTS_ON_CHANGE.name.equalsIgnoreCase(name)) {
             return REGENERATE_ACTION_REQUESTS_ON_CHANGE;
+        } else if(NOTIFY_PENDING_ON_RETURN.name.equalsIgnoreCase(name)) {
+            return NOTIFY_PENDING_ON_RETURN;
         } else if(NOTIFY_COMPLETED_ON_RETURN.name.equalsIgnoreCase(name)) {
             return NOTIFY_COMPLETED_ON_RETURN;
         } else if(RECALL_NOTIFICATION.name.equalsIgnoreCase(name)) {

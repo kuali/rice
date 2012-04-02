@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RecallActionTest extends KEWTestCase {
     private static final String RECALL_TEST_DOC = "RecallTest";
@@ -121,6 +122,9 @@ public class RecallActionTest extends KEWTestCase {
 
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().findByDocumentId(document.getDocumentId());
         assertEquals("Should not have any action items", 0, actionItems.size());
+
+        // can't recall recalled doc
+        assertFalse(document.getValidActions().getValidActions().contains(ActionType.RECALL));
     }
 
     @Test(expected=InvalidActionTakenException.class)
@@ -180,6 +184,8 @@ public class RecallActionTest extends KEWTestCase {
         document.recall("recalling", false);
 
         assertTrue("Document should be saved", document.isSaved());
+        assertEquals(1, document.getCurrentNodeNames().size());
+        assertTrue(document.getCurrentNodeNames().contains("AdHoc"));
 
         // initiator has completion request
         assertTrue(document.isCompletionRequested());
@@ -191,11 +197,62 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue("Document should be enroute", document.isEnroute());
 
         assertTrue(WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).isApprovalRequested());
+
+        // document is actually still recallable once recalled-to-actionlist, since it is technically still enroute
+        assertTrue(document.getValidActions().getValidActions().contains(ActionType.RECALL));
+    }
+
+    private static final String PERM_APP_DOC_STATUS = "recallable by admins";
+    private static final String ROUTE_NODE = "NotifyFirst";
+    private static final String ROUTE_STATUS = "R";
+
+    protected Permission createRecallPermission(String docType, String appDocStatus, String routeNode, String routeStatus) {
+        Template permTmpl = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
+        assertNotNull(permTmpl);
+        Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
+        permission.setDescription("Recall");
+        permission.setTemplate(Template.Builder.create(permTmpl));
+        Map<String, String> attrs = new HashMap<String, String>();
+        attrs.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, docType);
+        attrs.put(KimConstants.AttributeConstants.APP_DOC_STATUS, appDocStatus);
+        attrs.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME, routeNode);
+        attrs.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, routeStatus);
+        permission.setActive(true);
+        permission.setAttributes(attrs);
+
+        // save the permission and check that's it's wired up correctly
+        Permission perm = KimApiServiceLocator.getPermissionService().createPermission(permission.build());
+        assertEquals(perm.getTemplate().getId(), permTmpl.getId());
+        assertEquals(4, perm.getAttributes().size());
+        assertEquals(RECALL_TEST_DOC, perm.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
+        assertEquals(appDocStatus, perm.getAttributes().get(KimConstants.AttributeConstants.APP_DOC_STATUS));
+        assertEquals(routeNode, perm.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
+        assertEquals(routeStatus, perm.getAttributes().get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
+        
+        return perm;
+    }
+    
+    @Test public void testRecallPermissionMatching() {
+        createRecallPermission(RECALL_TEST_DOC, PERM_APP_DOC_STATUS, ROUTE_NODE, ROUTE_STATUS);
+
+        Map<String, String> details = new HashMap<String, String>();
+        details.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, RECALL_TEST_DOC);
+        details.put(KimConstants.AttributeConstants.APP_DOC_STATUS, PERM_APP_DOC_STATUS);
+        details.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME, ROUTE_NODE);
+        details.put(KimConstants.AttributeConstants.ROUTE_STATUS_CODE, ROUTE_STATUS);
+
+        // test all single field mismatches
+        for (Map.Entry<String, String> entry: details.entrySet()) {
+            Map<String, String> testDetails = new HashMap<String, String>(details);
+            // change a single detail to a non-matching value
+            testDetails.put(entry.getKey(), entry.getValue() + " BOGUS ");
+            assertFalse("non-matching " + entry.getKey() + " detail should cause template to not match", KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, testDetails));
+        }
+
+        assertTrue("template should match details", KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, details));
     }
 
     @Test public void testRecallPermissionTemplate() throws Exception {
-        final String PERM_APP_DOC_STATUS = "recallable by admins";
-
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
         document.route("");
 
@@ -204,44 +261,42 @@ public class RecallActionTest extends KEWTestCase {
         assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
 
         // create a recall permission for the RECALL_TEST_DOC doctype
-        Template permTmpl = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
-        assertNotNull(permTmpl);
-        Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
-        permission.setDescription("Recall");
-        permission.setTemplate(Template.Builder.create(permTmpl));
-        Map<String, String> attrs = new HashMap<String, String>();
-        attrs.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, RECALL_TEST_DOC);
-        attrs.put(KewApiConstants.APP_DOC_STATUS_DETAIL, PERM_APP_DOC_STATUS);
-        permission.setActive(true);
-        permission.setAttributes(attrs);
-
-        // save the permission and check that's it's wired up correctly
-        Permission perm = KimApiServiceLocator.getPermissionService().createPermission(permission.build());
-        assertEquals(perm.getTemplate().getId(), permTmpl.getId());
-        assertEquals(2, perm.getAttributes().size());
-        assertEquals(RECALL_TEST_DOC, perm.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
-        assertEquals(PERM_APP_DOC_STATUS, perm.getAttributes().get(KimConstants.AttributeConstants.APP_DOC_STATUS));
-
-        // test the permission template matching
-        Map<String, String> testDetails = new HashMap<String, String>();
-        testDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, RECALL_TEST_DOC);
-        testDetails.put(KewApiConstants.APP_DOC_STATUS_DETAIL, "THIS SHOULD FAIL");
-        assertFalse("non-matching app doc status should cause template to not match", KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, testDetails));
-        testDetails.put(KewApiConstants.APP_DOC_STATUS_DETAIL, PERM_APP_DOC_STATUS);
-        assertTrue("template should match details", KimApiServiceLocator.getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, testDetails));
+        Permission perm = createRecallPermission(RECALL_TEST_DOC, PERM_APP_DOC_STATUS, ROUTE_NODE, ROUTE_STATUS);
 
         // assign the permission to Technical Administrator role
         Role techadmin = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
         KimApiServiceLocator.getRoleService().assignPermissionToRole(perm.getId(), techadmin.getId());
 
-        // our recall permission is assigned to the technical admin role, but the status will not match
+        // our recall permission is assigned to the technical admin role
+
+        // but the doc will not match...
+        document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_NOTIFY_TEST_DOC);
+        document.route(PERM_APP_DOC_STATUS);
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+
+        // .. the app doc status will not match...
         document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
         document.route("");
         // technical admins can't recall since the app doc status is not correct
         assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
         assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
 
-        // our recall permission is assigned to the technical admin role, and the app doc status should match
+        // ... the node will not match ...
+        document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
+        document.route("");
+        WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).approve(""); // approve past notifyfirstnode
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+
+        // ... the doc status will not match (not recallable anyway) ...
+        document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
+        document.route("");
+        document.cancel("cancelled");
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("quickstart"), document.getDocumentId()).getValidActions().getValidActions().contains(ActionType.RECALL));
+
+        // everything should match
         document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
         document.setApplicationDocumentStatus(PERM_APP_DOC_STATUS);
         document.route("");

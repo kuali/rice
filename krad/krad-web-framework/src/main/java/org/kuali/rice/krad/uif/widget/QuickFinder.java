@@ -513,10 +513,32 @@ public class QuickFinder extends WidgetBase {
         this.hideReturnLink = hideReturnLink;
     }
 
+    /**
+     * Indicates whether the maintenance actions (or others) are rendered on the invoked lookup view
+     *
+     * <p>
+     * By default a lookup view will add an actions column for the result table that display maintenance links (in
+     * addition to a new link at the top of the page) if a maintenance action is available. Custom links can also be
+     * added to the action column as necessary. This flag can be set to true to suppress the rendering of the actions
+     * for the lookup call.
+     * </p>
+     *
+     * <p>
+     * An example of when this might be useful is when invoking a lookup to return a value to a value. Generally in
+     * these cases you don't want to the user going off to another view (such as the maintenance view)
+     * </p>
+     *
+     * @return boolean true if actions should be rendered, false if not
+     */
     public Boolean getSuppressActions() {
         return suppressActions;
     }
 
+    /**
+     * Setter for the suppress actions indicator
+     *
+     * @param suppressActions
+     */
     public void setSuppressActions(Boolean suppressActions) {
         this.suppressActions = suppressActions;
     }

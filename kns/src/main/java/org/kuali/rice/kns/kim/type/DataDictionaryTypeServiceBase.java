@@ -523,6 +523,10 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
             throw new KimTypeAttributeException(ex);
 		}
 
+        if (baseDefinition == null) {
+            throw new KimTypeAttributeException("Attribute definition '" + attributeName + "' not found on component '" + componentClassName + "'");
+        }
+
         final RemotableAttributeField.Builder definition = RemotableAttributeField.Builder.create(baseDefinition.getName());
 
         definition.setLongLabel(baseDefinition.getLabel());

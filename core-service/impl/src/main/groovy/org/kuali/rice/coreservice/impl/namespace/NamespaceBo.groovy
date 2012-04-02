@@ -45,7 +45,7 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceCont
 
     @Type(type="yes_no")
     @Column(name="ACTV_IND")
-    def boolean active;
+    def boolean active = true;
 
     /**
      * Converts a mutable bo to its immutable counterpart

@@ -29,7 +29,7 @@ class NamespaceEbo implements NamespaceContract, MutableInactivatable, Externali
     def String applicationId
     def String code
     def String name
-    def boolean active
+    def boolean active = true;
     def Long versionNumber
 	def String objectId
 

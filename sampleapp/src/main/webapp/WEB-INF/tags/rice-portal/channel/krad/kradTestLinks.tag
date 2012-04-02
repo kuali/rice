@@ -27,6 +27,7 @@
      <li><portal:portalLink displayTitle="true" title="Test View 2" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=foo" /></li>
      <li><portal:portalLink displayTitle="true" title="Test Open Authorization" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=TestOpenAuthView&methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=configurationTestView_KNS&methodToCall=start" /></li>
    </ul>
 
 </div>

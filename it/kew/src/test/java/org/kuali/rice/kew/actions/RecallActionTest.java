@@ -224,8 +224,12 @@ public class RecallActionTest extends KEWTestCase {
         // save the permission and check that's it's wired up correctly
         Permission perm = KimApiServiceLocator.getPermissionService().createPermission(permission.build());
         assertEquals(perm.getTemplate().getId(), permTmpl.getId());
-        assertEquals(4, perm.getAttributes().size());
-        assertEquals(RECALL_TEST_DOC, perm.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
+        int num = 1;
+        if (appDocStatus != null) num++;
+        if (routeNode != null) num++;
+        if (routeStatus != null) num++;
+        assertEquals(num, perm.getAttributes().size());
+        assertEquals(docType, perm.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
         assertEquals(appDocStatus, perm.getAttributes().get(KimConstants.AttributeConstants.APP_DOC_STATUS));
         assertEquals(routeNode, perm.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
         assertEquals(routeStatus, perm.getAttributes().get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
@@ -322,24 +326,45 @@ public class RecallActionTest extends KEWTestCase {
         this.testRecallToActionListAsInitiatorAfterApprovals(RECALL_NOTIFY_THIRDPARTY_TEST_DOC);
     }
 
+    /**
+     * Tests that the document is returned to the *recaller*'s action list, not the original initiator
+     * @throws Exception
+     */
+    @Test public void testRecallToActionListAsThirdParty() throws Exception {
+        Permission perm = createRecallPermission(RECALL_TEST_DOC, null, null, null);
+        // assign the permission to Technical Administrator role
+        Role techadmin = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
+        KimApiServiceLocator.getRoleService().assignPermissionToRole(perm.getId(), techadmin.getId());
+        // recall as 'admin' user
+        testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC);
+    }
+
     protected void testRecallToActionListAsInitiatorAfterApprovals(String doctype) {
+        testRecallToActionListAfterApprovals(EWESTFAL, EWESTFAL, doctype);
+    }
+
+    // Implements various permutations of recalls - with and without doctype policies/notifications of various sorts
+    // and as initiator or a third party recaller
+    protected void testRecallToActionListAfterApprovals(String initiator, String recaller, String doctype) {
         boolean notifyPreviousRecipients = !RECALL_TEST_DOC.equals(doctype);
         boolean notifyPendingRecipients = !RECALL_NO_PENDING_NOTIFY_TEST_DOC.equals(doctype);
         String[] thirdPartiesNotified = RECALL_NOTIFY_THIRDPARTY_TEST_DOC.equals(doctype) ? new String[] { "quickstart", "admin" } : new String[] {};
         
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, doctype);
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(initiator, doctype);
         document.route("");
 
         WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).approve("");
-        WorkflowDocumentFactory.loadDocument(EWESTFAL, document.getDocumentId()).approve("");
+        WorkflowDocumentFactory.loadDocument(initiator, document.getDocumentId()).approve("");
         WorkflowDocumentFactory.loadDocument(RKIRKEND, document.getDocumentId()).approve("");
 
-        document = WorkflowDocumentFactory.loadDocument(EWESTFAL, document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(recaller, document.getDocumentId());
+        System.err.println(document.getValidActions().getValidActions());
+        assertTrue("recaller '" + recaller + "' should be able to RECALL", document.getValidActions().getValidActions().contains(ActionType.RECALL));
         document.recall("recalling", false);
 
         assertTrue("Document should be saved", document.isSaved());
 
-        // initiator has completion request
+        // the recaller has a completion request
         assertTrue(document.isCompletionRequested());
         
         // pending approver has FYI
@@ -347,7 +372,7 @@ public class RecallActionTest extends KEWTestCase {
         // third approver has FYI
         assertEquals(notifyPreviousRecipients, WorkflowDocumentFactory.loadDocument(RKIRKEND, document.getDocumentId()).isFYIRequested());
         // second approver does not have FYI - approver is initiator, FYI is skipped
-        assertFalse(WorkflowDocumentFactory.loadDocument(EWESTFAL, document.getDocumentId()).isFYIRequested());
+        assertFalse(WorkflowDocumentFactory.loadDocument(initiator, document.getDocumentId()).isFYIRequested());
         // first approver has FYI
         assertEquals(notifyPreviousRecipients, WorkflowDocumentFactory.loadDocument(JHOPF, document.getDocumentId()).isFYIRequested());
 
@@ -374,7 +399,7 @@ public class RecallActionTest extends KEWTestCase {
         }
 
         // submit all approvals
-        for (String user: new String[] { JHOPF, EWESTFAL, RKIRKEND, NATJOHNS, BMCGOUGH }) {
+        for (String user: new String[] { JHOPF, initiator, RKIRKEND, NATJOHNS, BMCGOUGH }) {
             document = WorkflowDocumentFactory.loadDocument(user, document.getDocumentId());
             assertTrue(getPrincipalNameForId(user) + " should have approval request", document.isApprovalRequested());
             document.approve("approving");

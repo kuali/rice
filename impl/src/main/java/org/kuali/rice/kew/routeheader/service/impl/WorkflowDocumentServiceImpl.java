@@ -197,7 +197,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         // init(routeHeader);
         Principal principal = loadPrincipal(principalId);
         RecallAction action = new RecallAction(routeHeader, principal, annotation, cancel);
-        action.recordAction();
+        action.performAction();
         indexForSearchAfterActionIfNecessary(routeHeader);
         return finish(routeHeader);
     }

@@ -180,6 +180,14 @@ public class RecallAction extends ReturnToPreviousNodeAction {
         return ActionRequestType.COMPLETE;
     }
 
+    /**
+     * Override the default return to previous behavior so that the document is returned to the recaller, not initiator
+     */
+    @Override
+    protected PrincipalContract determineInitialNodePrincipal(DocumentRouteHeaderValue routeHeader) {
+        return getPrincipal();
+    }
+
     @Override
     protected void sendAdditionalNotifications() {
         super.sendAdditionalNotifications();

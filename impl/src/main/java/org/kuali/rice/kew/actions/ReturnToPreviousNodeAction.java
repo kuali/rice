@@ -198,9 +198,19 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
             LOG.debug("Document was returned to initiator");
             ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
-            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(getReturnToInitiatorActionRequestType().getCode(), getRouteHeader().getInitiatorPrincipal(), getActionTakenCode(), getPrincipal(), "Document initiator");
+            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(getReturnToInitiatorActionRequestType().getCode(), determineInitialNodePrincipal(getRouteHeader()), getActionTakenCode(), getPrincipal(), "Document initiator");
             getActionRequestService().activateRequest(notificationRequest);
         }
+    }
+
+    /**
+     * Determines which principal to generate an actionqrequest when the document is returned to the initial node
+     * By default this is the document initiator.
+     * @param routeHeader the document route header
+     * @return a Principal
+     */
+    protected PrincipalContract determineInitialNodePrincipal(DocumentRouteHeaderValue routeHeader) {
+        return routeHeader.getInitiatorPrincipal();
     }
 
     /* (non-Javadoc)

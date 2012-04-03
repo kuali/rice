@@ -543,10 +543,26 @@ public class QuickFinder extends WidgetBase {
         this.suppressActions = suppressActions;
     }
 
+    /**
+     * Indicates whether the search should be executed when first rendering the lookup view
+     *
+     * <p>
+     * By default the lookup view is rendered, the user enters search values and executes the results. This flag can
+     * be set to true to indicate the search should be performed before showing the screen to the user. This is
+     * generally used when search criteria is being passed in as well
+     * </p>
+     *
+     * @return boolean true if the search should be performed initially, false if not
+     */
     public Boolean getAutoSearch() {
         return this.autoSearch;
     }
 
+    /**
+     * Setter for the auto search indicator
+     *
+     * @param autoSearch
+     */
     public void setAutoSearch(Boolean autoSearch) {
         this.autoSearch = autoSearch;
     }

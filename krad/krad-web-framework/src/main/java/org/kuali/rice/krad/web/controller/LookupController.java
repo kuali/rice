@@ -189,7 +189,7 @@ public class LookupController extends UifControllerBase {
 
         lookupForm.setSearchResults(displayList);
 
-        return getUIFModelAndView(lookupForm);
+        return updateComponent(lookupForm, result, request, response);
     }
 
     /**

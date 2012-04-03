@@ -21,7 +21,6 @@ import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,29 +74,6 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @return Class<?> data object class
      */
     public Class<?> getDataObjectClass();
-
-    /**
-     * Sets the field conversion map on the lookupable
-     *
-     * <p>
-     * The field conversions map specifies the mappings for return fields. When the
-     * user selects a row to return, for each configured field conversion the corresponding value
-     * from the result row will be sent back as the value for the field on the calling field.
-     * </p>
-     *
-     * @param fieldConversions - map of field conversions where key is name of the property on result
-     * data object to get value for, and map value is the name of the field to send the value back as (name
-     * of the field on the calling view)
-     */
-    public void setFieldConversions(Map<String, String> fieldConversions);
-
-    /**
-     * Sets List of fields on the lookupable that should be made read only in the search
-     * criteria group
-     *
-     * @param readOnlyFieldsList - list of read only fields
-     */
-    public void setReadOnlyFieldsList(List<String> readOnlyFieldsList);
 
     /**
      * Invoked to build the return URL for a result row

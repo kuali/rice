@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Arrays;
@@ -140,6 +141,16 @@ public class LookupView extends FormView {
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         LookupForm lookupForm = (LookupForm) model;
+
+        // if showMaintenanceLinks is not already true, only show maintenance links
+        // if the lookup was called from the home application view
+        if (!isShowMaintenanceLinks()) {
+            // TODO replace with check to history
+            if (StringUtils.contains(lookupForm.getReturnLocation(), "/" + KRADConstants.PORTAL_ACTION) || StringUtils
+                    .contains(lookupForm.getReturnLocation(), "/index.html")) {
+                setShowMaintenanceLinks(true);
+            }
+        }
 
         // TODO: need to check lookupForm.isAtLeastOneRowHasActions() somewhere
         if (!isSuppressActions() && isShowMaintenanceLinks()) {

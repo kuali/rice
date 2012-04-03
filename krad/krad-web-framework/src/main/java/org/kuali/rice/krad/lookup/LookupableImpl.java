@@ -76,15 +76,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
     private Class<?> dataObjectClass;
 
-    private Map<String, String> parameters;
-    private List<String> defaultSortAttributeNames;
-
-    // TODO delyea: where to take into account the sort ascending value (old KNS appeared to ignore?)
-    private boolean sortAscending;
-
-    private Map<String, String> fieldConversions;
-    private List<String> readOnlyFieldsList;
-
     private transient ConfigurationService configurationService;
     private transient DataObjectAuthorizationService dataObjectAuthorizationService;
     private transient DataObjectMetaDataService dataObjectMetaDataService;
@@ -93,21 +84,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     private transient EncryptionService encryptionService;
 
     /**
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#populateViewFromRequestParameters(org.kuali.rice.krad.uif.view.View,
-     *      java.util.Map)
-     */
-    @Override
-    public void populateViewFromRequestParameters(View view, Map<String, String> parameters) {
-        super.populateViewFromRequestParameters(view, parameters);
-        /* On the old Lookupable and LookupableHelperService in KNS the parameters list used to have multipart form
-           * data in it where it may not in the new KRAD. See PojoFormBase.populate() method for more information
-           */
-        setParameters(parameters);
-    }
-
-    /**
      * Initialization of Lookupable requires that the business object class be set for the {@link
-     * #initializeAttributeFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.InputField)} method
+     * #initializeInputFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.InputField)} method
      *
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
@@ -119,20 +97,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         LookupView lookupView = (LookupView) view;
-        initializeLookupViewHelperService(lookupView);
+        setDataObjectClass(lookupView.getDataObjectClassName());
 
         super.performInitialization(view, model);
-    }
-
-    /**
-     * Initializes properties on this lookupable from the <code>LookupView</code>
-     *
-     * @param lookupView - lookup view instance
-     */
-    protected void initializeLookupViewHelperService(LookupView lookupView) {
-        setDefaultSortAttributeNames(lookupView.getDefaultSortAttributeNames());
-        setSortAscending(lookupView.isDefaultSortAscending());
-        setDataObjectClass(lookupView.getDataObjectClassName());
     }
 
     /**
@@ -205,7 +172,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         // sort list if default sort column given
-        List<String> defaultSortColumns = getDefaultSortAttributeNames();
+        List<String> defaultSortColumns = ((LookupView) form.getPostedView()).getDefaultSortAttributeNames();
         if ((defaultSortColumns != null) && (defaultSortColumns.size() > 0)) {
             Collections.sort(searchResults, new BeanPropertyComparator(defaultSortColumns, true));
         }
@@ -214,7 +181,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     protected Map<String, String> processSearchCriteria(LookupForm lookupForm, Map<String, String> searchCriteria) {
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(),
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(),
                 lookupForm);
 
         Map<String, String> nonBlankSearchCriteria = new HashMap<String, String>();
@@ -222,7 +189,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             String fieldValue = searchCriteria.get(fieldName);
 
             // don't add hidden criteria
-            LookupView lookupView = (LookupView) lookupForm.getView();
+            LookupView lookupView = (LookupView) lookupForm.getPostedView();
             InputField inputField = criteriaFields.get(fieldName);
             if (inputField.getControl() instanceof HiddenControl) {
                 continue;
@@ -399,7 +366,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     @Override
     public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria) {
-        Map<String, InputField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
+        Map<String, InputField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
         Map<String, String> clearedSearchCriteria = new HashMap<String, String>();
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
@@ -435,7 +402,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             throw new RuntimeException("Lookup not defined for data object " + getDataObjectClass());
         }
 
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
 
         // validate required
         // TODO: this will be done by the uif validation service at some point
@@ -443,7 +410,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             String searchPropertyName = searchKeyValue.getKey();
             String searchPropertyValue = searchKeyValue.getValue();
 
-            LookupView lookupView = (LookupView) form.getView();
+            LookupView lookupView = (LookupView) form.getPostedView();
             InputField inputField = criteriaFields.get(searchPropertyName);
             if (inputField != null) {
                 if (StringUtils.isBlank(searchPropertyValue) && BooleanUtils.isTrue(inputField.getRequired())) {
@@ -911,54 +878,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     @Override
     public Class<?> getDataObjectClass() {
         return this.dataObjectClass;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.lookup.Lookupable#setFieldConversions
-     */
-    @Override
-    public void setFieldConversions(Map<String, String> fieldConversions) {
-        this.fieldConversions = fieldConversions;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.lookup.Lookupable#setReadOnlyFieldsList
-     */
-    @Override
-    public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
-        this.readOnlyFieldsList = readOnlyFieldsList;
-    }
-
-    public Map<String, String> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
-    }
-
-    public List<String> getDefaultSortAttributeNames() {
-        return defaultSortAttributeNames;
-    }
-
-    public void setDefaultSortAttributeNames(List<String> defaultSortAttributeNames) {
-        this.defaultSortAttributeNames = defaultSortAttributeNames;
-    }
-
-    public boolean isSortAscending() {
-        return sortAscending;
-    }
-
-    public void setSortAscending(boolean sortAscending) {
-        this.sortAscending = sortAscending;
-    }
-
-    public List<String> getReadOnlyFieldsList() {
-        return readOnlyFieldsList;
-    }
-
-    public Map<String, String> getFieldConversions() {
-        return fieldConversions;
     }
 
     protected ConfigurationService getConfigurationService() {

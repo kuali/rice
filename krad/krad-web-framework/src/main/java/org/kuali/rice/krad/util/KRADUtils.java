@@ -554,7 +554,8 @@ public final class KRADUtils {
         else if (isNumber) {
             return value;
         } else {
-            return "\"" + value + "\"";
+            // use single quotes since hidden scripts are placed in the value attribute which surrounds the script with double quotes
+            return "'" + value + "'";
         }
     }
 }

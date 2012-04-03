@@ -291,7 +291,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             this.getFieldLabel().setLabelForComponentId(this.getControl().getId());
         }
         if(this.getControl() != null){
-            this.getControl().addDataAttribute("controlFor", this.getId());
+            this.getControl().addDataAttribute(UifConstants.DATA_ATTRIBUTE_CONTROL_FOR, this.getId());
         }
 
         //setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);

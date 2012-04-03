@@ -21,8 +21,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +47,7 @@ public class UifDataAttributesIT {
     }
 
     @Test
+    @Ignore("test was created in the process of clarifying implementation details")
     /**
      * Tests that the data attributes are rendered as expected for all controls
      */
@@ -67,16 +68,30 @@ public class UifDataAttributesIT {
         // elements whose simple attributes are set in the wrapping div
         String[] divWrappedElements = {"textInputField", "textAreaInputField", "datePicker", "checkBox", "radioButton", "fileUpload"};
         // elements whose simple attributes are set in an anchor tag
-        String[] anchorElements = {"navigationLink", "actionLink-noImage", "actionLink-imageRight", "actionLink-imageLeft"};
+        String[] anchorElements = {"navigationLink", "actionLink-noImage", "actionLink-imageRight", "actionLink-imageLeft", "linkField"};
+        // elements whose simple attributes are set in an img tag
         String[] imgElements = {"imageField"};
-        String[] buttonElements = {"buttonTextOnly", "buttonImageBottom", "buttonImageLeft", "buttonImageTop", "buttonImageRight"};
+        // elements whose simple attributes are set in button tag
+        String[] buttonElements = {"buttonImageOnly", "buttonImageBottom", "buttonImageLeft", "buttonImageTop", "buttonImageRight"};
+        // elements whose simple attributes are set in an input tag
         String[] inputElements = {"imageAction"};
+        // elements whose simple attributes are set in a span tag
+        String[] spanElements = {"messageField"};
         
         tagAndElements.put("div", divWrappedElements);
         tagAndElements.put("a", anchorElements);
         tagAndElements.put("img", imgElements);
         tagAndElements.put("button", buttonElements);
         tagAndElements.put("input", inputElements);
+        tagAndElements.put("span", spanElements);
+
+        // a map to hold the tags where the simple attributes are affixed
+        // if a tag is not here, a empty string will be used for the suffix
+        Map<String, String> simpleTagIdSuffix = new HashMap<String, String>();
+        simpleTagIdSuffix.put("a", "_link");
+        simpleTagIdSuffix.put("button", "_button");
+        simpleTagIdSuffix.put("span", "_span");
+
 
         for (String tag: tagAndElements.keySet()) {
             String[] elementIds = tagAndElements.get(tag);
@@ -84,25 +99,86 @@ public class UifDataAttributesIT {
                 String tagId = elementIds[i];
                 // String controlId = beanIds[i] + UifConstants.IdSuffixes.CONTROL;
                 // check for complex attributes
-                String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId + "')]";
-                assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
-
-                String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
-                assertNotNull("script value is null",scriptValue);
-                // log.info("scriptValue for " + divId + " is " + scriptValue);
-                assertTrue(tagId + ": script does not contain expected code",
-                        scriptValue.contains("jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});"
-                                + "jQuery('#" + tagId + "').data('intervals', {short:2, medium:5, long:13});"));
+                verifyComplexAttributes(tagId, "");
 
                 // check for simple attributes
-                String simpleAttributesXpath="//" + tag + "[(@id='" + tagId + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
+                // determine whether we are using a tag id suffix for the simple attributes
+                String tagIdSuffix = "";
+                if (simpleTagIdSuffix.containsKey(tag)) {
+                    tagIdSuffix = simpleTagIdSuffix.get(tag);
+                    // link field has no suffix
+                    if (tagId.equalsIgnoreCase("linkField")) {
+                        tagIdSuffix = "";
+                    }
+                }
+                String simpleAttributesXpath="//" + tag + "[(@id='" + tagId + tagIdSuffix + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
                 assertTrue(tagId + " does not have simple data attributes present", selenium.isElementPresent(simpleAttributesXpath));
             }
         }
-        // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
-        String styleValue = selenium.getAttribute("//span[@id='textInputField_label_span']@style");
-        // log.info("styleValue is " + styleValue);
-        assertTrue("textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
+    }
+
+    /**
+     * check that complex attributes exist in the script
+     * @param tagId - the expected tag id
+     * @param suffix - the expected suffix e.g. _button
+     */
+    private void verifyComplexAttributes(String tagId, String suffix) {
+        tagId = tagId + suffix;
+        String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId +  "')]";
+        assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
+
+        // the message field does not support complex attributes
+        if (!tagId.equalsIgnoreCase("messageField")) {
+            String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
+            assertNotNull("script value is null",scriptValue);
+            // log.info("scriptValue for " + divId + " is " + scriptValue);
+            assertTrue(tagId + ": script does not contain expected code",
+                    scriptValue.contains("jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});"
+                            + "jQuery('#" + tagId + "').data('intervals', {short:2, medium:5, long:13});"));
+        }
+    }
+
+    /**
+     * check that all attributes exist in the script
+     * @param tagId - the expected tag id
+     * @param suffix - the expected suffix e.g. _control
+     * @return true if all attributes were found in script, false otherwise
+     */
+    private boolean verifyAllAttributesInScript(String tagId, String suffix) {
+        tagId = tagId + suffix;
+        String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId +  "')]";
+        assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
+
+        // the message field does not support complex attributes
+        String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
+        assertNotNull("script value is null",scriptValue);
+        log.info("scriptValue for " + tagId + " is " + scriptValue);
+        return scriptValue.contains("jQuery('#" + tagId + "').data('transitions', 3);") &&
+                scriptValue.contains("jQuery('#" + tagId + "').data('iconTemplateName', 'cool-icon-%s.png');") &&
+                scriptValue.contains("jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});") &&
+                scriptValue.contains("jQuery('#" + tagId + "').data('intervals', {short:2, medium:5, long:13});");
+    }
+
+
+    /**
+     * Tests that the data attributes are rendered as expected for all controls
+     */
+    @Test
+    public void testDataAttributesPresentInControls () {
+        selenium.open(System.getProperty("remote.public.url"));
+        assertEquals("Login", selenium.getTitle());
+        selenium.type("__login_user", "admin");
+        selenium.click("//input[@value='Login']");
+        selenium.waitForPageToLoad("50000");
+        assertEquals("Kuali Portal Index", selenium.getTitle());
+        selenium.open(
+                "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
+        selenium.waitForPageToLoad("50000");
+        // input fields, whose controls are implemented as spring form tags, will have both simple and complex attributes set via a script
+        String[] inputFields = {"textInputField_attrs", "textAreaInputField_attrs", "dropDown_attrs", "datePicker", "checkBox", "radioButton", "fileUpload"};
+        for (int i=0; i<3; i++) {
+            assertTrue(inputFields[i] + ": script does not contain expected code", verifyAllAttributesInScript(inputFields[i], "_control"));
+        }
     }
 
     @After

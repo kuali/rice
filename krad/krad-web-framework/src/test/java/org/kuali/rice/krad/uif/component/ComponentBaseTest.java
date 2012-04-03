@@ -36,11 +36,11 @@ import static org.junit.Assert.assertNotNull;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentBaseTest {
-    // use an action field, since ComponentBase is abstract
-    private ActionField component;
+    private Component component;
 
     @Before
     public void setUp() throws Exception {
+        // use an action field, since ComponentBase is abstract
         component = new ActionField();
         component.setId("action1");
         // used a TreeMap since it makes specific guarantees as to the order of entries
@@ -76,6 +76,19 @@ public class ComponentBaseTest {
 
     @Test
     /**
+     * test that get all attributes js works ok even when the data attributes are null
+     */
+    public void testGetAllDataAttributesJs() throws Exception {
+        assertNotNull(component.getAllDataAttributesJs());
+        String expected = "jQuery('#action1').data('growing-seasons', {summer:'hot', winter:'cold'});"
+                + "jQuery('#action1').data('iconTemplateName', 'cool-icon-%s.png');"
+                + "jQuery('#action1').data('intervals', {short:2, medium:5, long:13});"
+                + "jQuery('#action1').data('transitions', 3);";
+        assertEquals("all attributes JS string did not match", expected, component.getAllDataAttributesJs());
+    }
+
+    @Test
+    /**
      *  test that complex date attributes are converted into a jquery script ok even when data attributes are null
      */
     public  void testGetComplexAttributesJSWhenNull () throws Exception{
@@ -90,5 +103,14 @@ public class ComponentBaseTest {
     public void testGetSimpleDataAttributesWhenNull() throws Exception {
         component.setDataAttributes(null);
         assertEquals("simple attributes did not match", "", component.getSimpleDataAttributes());
+    }
+
+    @Test
+    /**
+     * test that get all attributes js works ok even when the data attributes are null
+     */
+    public void testGetAllDataAttributesJsWhenNull() throws Exception {
+        component.setDataAttributes(null);
+        assertEquals("simple attributes did not match", "", component.getAllDataAttributesJs());
     }
 }

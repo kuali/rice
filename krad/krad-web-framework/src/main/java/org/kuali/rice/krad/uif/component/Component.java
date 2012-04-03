@@ -159,7 +159,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @param view - view instance in which the component belongs
      * @param model - object instance containing the view data
-     * @see ViewHelperService#initializeComponent
+     * @see ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View, Object)
      */
     public void performInitialization(View view, Object model);
 
@@ -236,7 +236,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * </p>
      *
      * @return List of component modifiers
-     * @see ViewHelperService#initializeComponent
+     * @see ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View, Object)
      */
     public List<ComponentModifier> getComponentModifiers();
 
@@ -390,14 +390,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     /**
      * Setter for the components style classes
      *
-     * @param styleClass
+     * @param styleClasses
      */
     public void setStyleClasses(List<String> styleClasses);
 
     /**
      * Adds a single style to the list of styles on this component
      *
-     * @param style
+     * @param styleClass
      */
     public void addStyleClass(String styleClass);
 
@@ -900,5 +900,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @return html string for data attributes for the simple attributes
      */
     public String getSimpleDataAttributes();
+
+    /**
+     * Returns js that will add data to this component by the element which matches its id.
+     * <p>This will return script for all the complex data elements.
+     * This method is useful for controls that are implemented as spring form tags</p>
+     * @return jQuery data script for adding all data attributes
+     */
+    public String getAllDataAttributesJs();
+
 
 }

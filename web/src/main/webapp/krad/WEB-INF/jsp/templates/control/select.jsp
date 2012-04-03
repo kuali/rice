@@ -35,6 +35,9 @@
     <form:option value="${option.key}">${option.value}</form:option>
   </c:forEach>           
              
-</form:select>             
+</form:select>
+
+<%-- write all data attributes to script --%>
+<krad:script component="${control}" role="dataScript" value="${control.allDataAttributesJs}"/>
  
  

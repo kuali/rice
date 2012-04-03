@@ -1617,4 +1617,18 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         }
     }
 
+    @Override
+    public String getAllDataAttributesJs() {
+        String js = "";
+        if (getDataAttributes() == null) {
+            return js;
+        } else {
+            for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
+                js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
+                        +"', " + KRADUtils.convertToJsValue(data.getValue()) +");";
+            }
+            return js;
+        }
+    }
+
 }

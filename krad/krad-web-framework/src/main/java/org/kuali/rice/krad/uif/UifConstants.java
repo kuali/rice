@@ -36,6 +36,8 @@ public class UifConstants {
     public static final String LINE_PATH_BIND_ADJUST_PREFIX = "#lp.";
     public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
 
+    public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
+
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
     }

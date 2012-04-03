@@ -36,4 +36,7 @@
 
 <c:if test="${control.textExpand}">
 	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
-</c:if>   
+</c:if>
+
+<%-- write all data attributes to script --%>
+<krad:script component="${control}" role="dataScript" value="${control.allDataAttributesJs}"/>

@@ -126,6 +126,7 @@
     <property name="viewName" value="default"/>
     <property name="viewHelperServiceClassName"
               value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl"/>
+    <property name="persistFormToSession" value="true"/>
     <property name="presentationControllerClass" value="org.kuali.rice.krad.uif.view.ViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.uif.view.ViewAuthorizerBase"/>
     <property name="breadcrumbs">

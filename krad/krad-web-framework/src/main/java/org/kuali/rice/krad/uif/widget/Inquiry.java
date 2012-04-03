@@ -87,6 +87,9 @@ public class Inquiry extends WidgetBase {
         setRender(false);
 
         DataField field = (DataField) parent;
+        if (StringUtils.isBlank(field.getBindingInfo().getBindingPath())) {
+           return;
+        }
 
         // check if field value is null, if so no inquiry
         Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());

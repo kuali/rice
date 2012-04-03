@@ -212,15 +212,18 @@ function runHiddenScripts(id, isSelector){
             jq(this).attr("script", "first_run");
             jq(this).removeAttr("name");
         });
+
         var selector = "#" + id;
         if (isSelector && isSelector == true) {
             selector = id;
         }
+
 		jq(selector).find("input[name='script']").each(function(){
 			eval(jq(this).val());
             jq(this).attr("script", "first_run");
 			jq(this).removeAttr("name");
 		});
+
         runScriptsForId(id);
 
         //reinitialize BubblePopup
@@ -240,6 +243,7 @@ function runHiddenScripts(id, isSelector){
             jq(this).attr("script", "first_run");
             jq(this).removeAttr("name");
         });
+
 		jq("input[name='script']").each(function(){
 			eval(jq(this).val());
             jq(this).attr("script", "first_run");
@@ -269,6 +273,7 @@ function runScriptsForId(id) {
                 jq(this).removeAttr("name");
             }
         });
+
         jq("input[name='script']").each(function () {
             if (jq(this).data("for") === id) {
                 eval(jq(this).val());

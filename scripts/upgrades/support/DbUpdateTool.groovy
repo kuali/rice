@@ -88,22 +88,48 @@ def loadDrivers() {
     }
 }
 
-def script_dir = getScriptPath().parent
-def lib_dir = new File(script_dir, 'lib')
+def findLibDirs(script_dir, list) {
+    script_dir.eachDir {
+        if (it.name == "scripts") {
+            list << it
+        } else {
+            findLibDirs(it, list)
+        }
+    }
+    list
+}
+
+// start up two levels from script location
+def script_dir = getScriptPath().parentFile.parentFile
+def lib_dirs = findLibDirs(script_dir, [])
 
 // add 'lib' dir to classloader
 // this.class.classLoader.rootLoader not available in this version of Groovy (< 1.8.2 ?)...
 //this.class.classLoader.rootLoader.addURL(lib_dir.toURL())
-this.class.classLoader.addURL(lib_dir.toURL())
-
+lib_dirs.each {
+    this.class.classLoader.addURL(it.toURL())
+}
+COMMANDS = [:]
 /* load all the commands */
-COMMANDS = loadCommands(lib_dir)
+lib_dirs.each {
+    COMMANDS += loadCommands(it)
+}
 
 if (args.length < 4) {
     println 'usage: groovy DbUpdateTool.groovy <jdbc url> <username> <pass> <command> <args>'
+    println()
+    println 'example: java -classpath /path/to/mysql-connector-java-5.1.6.jar:/path/to/groovy-all-1.8.1.jar groovy.ui.GroovyMain support/DbUpdateTool.groovy jdbc:mysql://10.0.0.3/schema user pass <command> <args>'
+    println()
+    println 'Commands'
+    println()
     // no command specified? - print help for all commands
-    COMMANDS.each { key, value ->
-        printf("%-40.40s %s\n", key, createCommand(key).help())
+    if (COMMANDS.isEmpty()) {
+        println "no commands defined in lib dirs:"
+        println "\t" + lib_dirs
+    } else {
+        COMMANDS.each { key, value ->
+            printf("%-40.40s %s\n", key, createCommand(key).help())
+        }
     }
     return
 }

@@ -20,6 +20,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -116,10 +118,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Called after Spring binds the request to the form and before the
-     * controller method is invoked.
-     *
-     * @param request - request object containing the query parameters
+     * @see org.kuali.rice.krad.uif.view.ViewModel#postBind(javax.servlet.http.HttpServletRequest)
      */
     public void postBind(HttpServletRequest request) {
         // default form post URL to request URL
@@ -151,6 +150,18 @@ public class UifFormBase implements ViewModel {
         if (!request.getParameterMap().containsKey(UifParameters.SKIP_VIEW_INIT)) {
             skipViewInit = false;
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#postRender(javax.servlet.http.HttpServletRequest)
+     */
+    public void postRender(HttpServletRequest request) {
+        renderFullView = true;
+        skipViewInit = false;
+
+        actionParameters = new HashMap<String, String>();
+        clientStateForSyncing = new HashMap<String, Object>();
+        selectedCollectionLines = new HashMap<String, Set<String>>();
     }
 
     /**

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,20 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ViewModel extends Serializable {
+
+    /**
+     * Called after Spring binds the request to the form and before the controller method is invoked
+     *
+     * @param request - request object containing the query parameters
+     */
+    public void postBind(HttpServletRequest request);
+
+    /**
+     * Called after the view has been rendered to perform resetting or clearing of the data
+     *
+     * @param request - request object containing the query parameters
+     */
+    public void postRender(HttpServletRequest request);
 
     /**
      * Unique Id for the <code>View</code> instance. This is specified for a

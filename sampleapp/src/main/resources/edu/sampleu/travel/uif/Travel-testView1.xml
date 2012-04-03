@@ -43,6 +43,9 @@
     </property>
     <property name="formClass" value="edu.sampleu.travel.krad.form.UITestForm"/>
     <property name="defaultBindingObjectPath" value="travelAccount1"/>
+    <property name="footer">
+      <bean parent="Uif-FormFooter"/>
+    </property>
   </bean>
 
   <bean id="testSection1-cgrid" parent="testSection1">

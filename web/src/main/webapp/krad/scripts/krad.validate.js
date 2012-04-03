@@ -1181,7 +1181,7 @@ function generateSummaryLink(sectionId) {
     var linkType = "";
     var highlight = "";
 
-    if (sectionData.messageTotal) {
+    if (sectionData && sectionData.messageTotal) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
 
         summaryMessage = "The \"" + sectionTitle + "\" " + sectionType + " has " + countMessage;

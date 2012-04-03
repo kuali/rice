@@ -194,15 +194,8 @@
         <value>uif-validationMessages</value>
       </list>
     </property>
-    <property name="displayErrorTitle" value="false"/>
-    <property name="displayWarningTitle" value="false"/>
-    <property name="displayInfoTitle" value="false"/>
     <property name="displayFieldLabelWithMessages" value="true"/>
     <property name="displayNestedMessages" value="false"/>
-    <property name="displayFieldErrorIcon" value="false"/>
-    <property name="highlightOnError" value="true"/>
-    <property name="combineMessages" value="true"/>
-    <property name="allowMessageRepeat" value="true"/>
     <property name="displayMessages" value="true"/>
     <property name="displayErrorMessages" value="true"/>
     <property name="displayWarningMessages" value="true"/>
@@ -225,8 +218,6 @@
       </list>
     </property>
     <property name="displayNestedMessages" value="true"/>
-    <property name="highlightOnError" value="false"/>
-    <property name="combineMessages" value="false"/>
     <!--note global display flag is false by default for groups, but others are true by default,
      no messages will be displayed by default in groups, but all can easily be turned on-->
     <property name="displayMessages" value="false"/>
@@ -248,12 +239,7 @@
       </list>
     </property>
     <property name="fireGrowlsForMessages" value="true"/>
-    <property name="displayErrorTitle" value="true"/>
-    <property name="displayWarningTitle" value="true"/>
-    <property name="displayInfoTitle" value="true"/>
     <property name="displayNestedMessages" value="true"/>
-    <property name="highlightOnError" value="false"/>
-    <property name="combineMessages" value="false"/>
     <property name="displayMessages" value="true"/>
     <property name="displayCounts" value="true"/>
   </bean>

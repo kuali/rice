@@ -58,22 +58,8 @@ public class ValidationMessages extends FieldBase {
     private boolean fireGrowlsForMessages;
     private String growlScript = "";
 
-    // Title variables
-    private String errorTitle;
-    private String warningTitle;
-    private String infoTitle;
-
-    private boolean displayErrorTitle;
-    private boolean displayWarningTitle;
-    private boolean displayInfoTitle;
-
-    // Field variables
-    private boolean highlightOnError;
-    private boolean displayFieldErrorIcon;
-
     // Message construction variables
     private boolean displayFieldLabelWithMessages;
-    private boolean combineMessages;
 
     // Message display flags
     private boolean displayNestedMessages;
@@ -84,7 +70,6 @@ public class ValidationMessages extends FieldBase {
     private boolean displayInfoMessages;
     private boolean displayWarningMessages;
     private boolean displayCounts;
-    private boolean alternateContainer;
 
     // Error messages
     private List<String> errors;
@@ -104,7 +89,6 @@ public class ValidationMessages extends FieldBase {
 
     public ValidationMessages() {
         super();
-        alternateContainer = false;
     }
 
     /**
@@ -151,12 +135,6 @@ public class ValidationMessages extends FieldBase {
         if (!displayFieldLabelWithMessages) {
             this.addStyleClass("noLabels");
         }
-        if (!highlightOnError) {
-            this.addStyleClass("noHighlight");
-        }
-        if (displayFieldErrorIcon) {
-            this.addStyleClass("addFieldIcon");
-        }
 
         if (displayMessages) {
 
@@ -167,18 +145,6 @@ public class ValidationMessages extends FieldBase {
                 warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
 
                 infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
-            }
-        }
-        else if (displayFieldErrorIcon) {
-            // Checks to see if any errors exist for this field, if they do set
-            // errorCount as positive
-            // so the jsp will call the corresponding js to show the icon
-            // messages do not need to be generated because they are not being shown
-            for (String key : masterKeyList) {
-                if (!messageMap.getErrorMessagesForProperty(key, true).isEmpty()) {
-                    errorCount = 1;
-                    break;
-                }
             }
         }
 
@@ -405,48 +371,6 @@ public class ValidationMessages extends FieldBase {
     }
 
     /**
-     * ErrorTitle is the title that will be shown before any error
-     * messages/error counts are displayed
-     *
-     * @return
-     */
-    public String getErrorTitle() {
-        return this.errorTitle;
-    }
-
-    public void setErrorTitle(String errorTitle) {
-        this.errorTitle = errorTitle;
-    }
-
-    /**
-     * WarningTitle is the title that will be shown before any warning
-     * messages/warning counts are displayed
-     *
-     * @return
-     */
-    public String getWarningTitle() {
-        return this.warningTitle;
-    }
-
-    public void setWarningTitle(String warningTitle) {
-        this.warningTitle = warningTitle;
-    }
-
-    /**
-     * InfoTitle is the title that will be shown before any info messages/info
-     * counts are displayed
-     *
-     * @return
-     */
-    public String getInfoTitle() {
-        return this.infoTitle;
-    }
-
-    public void setInfoTitle(String infoTitle) {
-        this.infoTitle = infoTitle;
-    }
-
-    /**
      * If displayErrorMessages is true, error messages will be displayed,
      * otherwise they will not. Unlike many of the options contained on
      * ValidationMessages, this will not effect client side validations; ie this will
@@ -543,57 +467,6 @@ public class ValidationMessages extends FieldBase {
     }
 
     /**
-     * If true, the errorTitle set on this ValidationMessages will be displayed along
-     * with the error messages. Otherwise, the title will not be displayed.
-     *
-     * @return the displayErrorTitle
-     */
-    public boolean isDisplayErrorTitle() {
-        return this.displayErrorTitle;
-    }
-
-    /**
-     * @param displayErrorTitle the displayErrorTitle to set
-     */
-    public void setDisplayErrorTitle(boolean displayErrorTitle) {
-        this.displayErrorTitle = displayErrorTitle;
-    }
-
-    /**
-     * If true, the warningTitle set on this ValidationMessages will be displayed along
-     * with the warning messages. Otherwise, the title will not be displayed.
-     *
-     * @return the displayWarningTitle
-     */
-    public boolean isDisplayWarningTitle() {
-        return this.displayWarningTitle;
-    }
-
-    /**
-     * @param displayWarningTitle the displayWarningTitle to set
-     */
-    public void setDisplayWarningTitle(boolean displayWarningTitle) {
-        this.displayWarningTitle = displayWarningTitle;
-    }
-
-    /**
-     * If true, the infoTitle set on this ValidationMessages will be displayed along
-     * with the info messages. Otherwise, the title will not be displayed.
-     *
-     * @return the displayInfoTitle
-     */
-    public boolean isDisplayInfoTitle() {
-        return this.displayInfoTitle;
-    }
-
-    /**
-     * @param displayInfoTitle the displayInfoTitle to set
-     */
-    public void setDisplayInfoTitle(boolean displayInfoTitle) {
-        this.displayInfoTitle = displayInfoTitle;
-    }
-
-    /**
      * If true, the error messages will display the an InputField's title
      * alongside the error, warning, and info messages related to it. This
      * setting has no effect on messages which do not relate directly to a
@@ -648,23 +521,6 @@ public class ValidationMessages extends FieldBase {
      */
     public void setDisplayNestedMessages(boolean displayNestedMessages) {
         this.displayNestedMessages = displayNestedMessages;
-    }
-
-    /**
-     * Combines the messages for a single key into one concatenated message per
-     * key being matched, seperated by a comma
-     *
-     * @return the combineMessages
-     */
-    public boolean isCombineMessages() {
-        return this.combineMessages;
-    }
-
-    /**
-     * @param combineMessages the combineMessages to set
-     */
-    public void setCombineMessages(boolean combineMessages) {
-        this.combineMessages = combineMessages;
     }
 
     /**
@@ -765,69 +621,6 @@ public class ValidationMessages extends FieldBase {
      */
     public int getInfoCount() {
         return this.infoCount;
-    }
-
-    /**
-     * If this is true, the display of messages is being handled by another
-     * container. The ValidationMessages html generated by the jsp will still be used,
-     * but it will be placed in different location within the page than the
-     * default to accommodate an alternate layout. This flag is used by
-     * BoxLayoutManager.
-     *
-     * This flag only applies to ErrorsFields whose parentComponents are
-     * AttributeFields.
-     *
-     * @return the alternateContainer
-     */
-    public boolean isAlternateContainer() {
-        return this.alternateContainer;
-    }
-
-    /**
-     * @param alternateContainer the alternateContainer to set
-     */
-    public void setAlternateContainer(boolean alternateContainer) {
-        this.alternateContainer = alternateContainer;
-    }
-
-    /**
-     * If true, displays an icon next to each field that has an error (default
-     * KNS look). Otherwise, this icon will not be displayed. Note that any icon
-     * set through css for the message containers will still appear and this
-     * only relates to the icon directly to the right of an input field.
-     *
-     * This flag should only be set on InputField ErrorsFields.
-     *
-     * @return the displayFieldErrorIcon
-     */
-    public boolean isDisplayFieldErrorIcon() {
-        return this.displayFieldErrorIcon;
-    }
-
-    /**
-     * @param displayFieldErrorIcon the displayFieldErrorIcon to set
-     */
-    public void setDisplayFieldErrorIcon(boolean displayFieldErrorIcon) {
-        this.displayFieldErrorIcon = displayFieldErrorIcon;
-    }
-
-    /**
-     * If true, highlights the parentComponent's container when it has an
-     * error/warning/info. Otherwise, this highlighting will not be displayed.
-     * Note that the css can be changed per a type of highlighting, if showing a
-     * different color or no color per type of message is desired.
-     *
-     * @return the highlightOnError
-     */
-    public void setHighlightOnError(boolean highlightOnError) {
-        this.highlightOnError = highlightOnError;
-    }
-
-    /**
-     * @return the highlightOnError
-     */
-    public boolean isHighlightOnError() {
-        return highlightOnError;
     }
 
     private String getGrowlScript(View view) {

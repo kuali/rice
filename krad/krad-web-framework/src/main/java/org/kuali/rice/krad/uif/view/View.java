@@ -115,6 +115,8 @@ public class View extends ContainerBase {
     private ViewIndex viewIndex;
     private Map<String, String> viewRequestParameters;
 
+    private boolean persistFormToSession;
+
     private ViewPresentationController presentationController;
     private ViewAuthorizer authorizer;
 
@@ -153,6 +155,7 @@ public class View extends ContainerBase {
         formClass = UifFormBase.class;
         breadcrumbsInApplicationHeader = false;
         supportsReadOnlyFieldsOverride = true;
+        persistFormToSession = true;
 
         idSequence = 0;
         this.viewIndex = new ViewIndex();
@@ -808,6 +811,47 @@ public class View extends ContainerBase {
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
         this.viewRequestParameters = viewRequestParameters;
+    }
+
+    /**
+     * Indicates whether the form (model) associated with the view should be stored in the user session
+     *
+     * <p>
+     * The form class (or model) is used to hold the data that backs the view along with the built view object. Storing
+     * the form instance in session allows many things:
+     *
+     * <ul>
+     *   <li>Data does not need to be rebuilt for each server request (for example a collection)</li>
+     *   <li>Data that does not need to go to the user can remain on the form, reducing the size of the response and
+     *   improving security</li>
+     *   <li>Data can be keep around in a 'pre-save' state. When requested by the user changes can then be persisted to
+     *   the database</li>
+     *   <li>Certain information about the view that was rendered, such as input fields, collection paths, and refresh
+     *   components can be kept on the form to support UI interaction</li>
+     * </ul>
+     *
+     * Setting this flag to false will prevent the form from being kept in session and as a result will limit what can
+     * be done by the framework. In almost all cases this is not recommended.
+     * </p>
+     *
+     * <p>
+     * Note all forms will be cleared when the user session expires (based on the rice configuration). In addition, the
+     * framework enables clear points on certain actions to remove the form when it is no longer needed
+     * </p>
+     *
+     * @return boolean true if the form should be stored in the user session, false if only request based
+     */
+    public boolean isPersistFormToSession() {
+        return persistFormToSession;
+    }
+
+    /**
+     * Setter for the persist form to session indicator
+     *
+     * @param persistFormToSession
+     */
+    public void setPersistFormToSession(boolean persistFormToSession) {
+        this.persistFormToSession = persistFormToSession;
     }
 
     /**

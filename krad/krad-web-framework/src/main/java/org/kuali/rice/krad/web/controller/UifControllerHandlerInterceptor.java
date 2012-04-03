@@ -106,11 +106,19 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 View view = uifForm.getView();
                 if (view != null) {
                     view.getViewHelperService().cleanViewAfterRender(view);
+
+                    // check whether form should be keep in session or not
+                    if (!view.isPersistFormToSession()) {
+                        uifFormManager.removeForm(uifForm);
+                    }
                 }
 
                 uifForm.setPostedView(view);
                 uifForm.setView(null);
             }
+
+            // invoke post render callback on form for cleanup
+            uifForm.postRender(request);
         }
     }
 

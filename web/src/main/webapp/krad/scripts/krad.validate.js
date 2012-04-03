@@ -537,7 +537,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData){
                     var messagesDiv = jQuery("[data-messagesFor='"+ id +"']");
                     var countMessage = generateCountString(data.errorTotal, data.warningTotal,
                             data.infoTotal);
-                    var pageValidationHeader = jQuery("<h3 class='uif-pageValidationHeader' "
+                    var pageValidationHeader = jQuery("<h3 tabindex='0' class='uif-pageValidationHeader' "
                             + "id='pageValidationHeader'>The Page submission has "+ countMessage +"</h3>");
 
                     pageValidationHeader.find(".uif-validationImage").remove();

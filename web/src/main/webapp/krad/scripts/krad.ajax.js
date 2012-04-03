@@ -121,7 +121,9 @@ function validateAndSubmit(methodToCall, successCallback){
 
     if(validateClient){
         messageSummariesShown = true;
+        pauseTooltipDisplay = true;
         validForm = jq("#kualiForm").valid();
+        pauseTooltipDisplay = false;
     }
 
 	if(validForm){
@@ -131,9 +133,9 @@ function validateAndSubmit(methodToCall, successCallback){
 	else{
 		jq.watermark.showAll();
 		jq("#formComplete").html("");
-		alert("The form contains errors.  Please correct these errors and try again.");
         jumpToTop();
-        jQuery(".uif-pageValidationDisclosureLink").focus();
+		alert("The form contains errors.  Please correct these errors and try again.");
+        jQuery(".uif-pageValidationHeader").focus();
 	}
 }
 

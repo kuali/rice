@@ -25,6 +25,7 @@ jQuery.blockUI.defaults.overlayCSS = {};
 var pageValidatorReady = false;
 var validateClient = true;
 var messageSummariesShown = false;
+var pauseTooltipDisplay = false;
 
 var errorImage;
 var warningImage;
@@ -345,7 +346,10 @@ function setupPage(validate){
                     else{
                        writeMessagesAtField(id);
                     }
-                    showMessageTooltip(id, false, true);
+
+                    if(!pauseTooltipDisplay){
+                        showMessageTooltip(id, false, true);
+                    }
                 }
             }
 

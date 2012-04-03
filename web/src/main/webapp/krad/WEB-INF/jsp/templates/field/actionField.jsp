@@ -42,7 +42,7 @@
   <c:set var="disabled" value="disabled=\"true\""/>
 </c:if>
 
-<c:set var="tagId" value="${field.id}_button"/>
+<c:set var="tagId" value="${field.id}"/>
 <c:choose>
 
   <c:when test="${(field.actionImage != null) && field.actionImage.render && (empty field.actionImageLocation || field.actionImageLocation eq 'IMAGE_ONLY')}">

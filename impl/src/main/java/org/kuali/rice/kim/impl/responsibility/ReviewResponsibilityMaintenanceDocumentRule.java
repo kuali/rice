@@ -18,11 +18,13 @@ package org.kuali.rice.kim.impl.responsibility;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.apache.commons.lang.StringUtils;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -37,6 +39,8 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
 
 	protected static final String ERROR_MESSAGE_PREFIX = "error.document.kim.reviewresponsibility.";
 	protected static final String ERROR_DUPLICATE_RESPONSIBILITY = ERROR_MESSAGE_PREFIX + "duplicateresponsibility";
+    protected static final String ERROR_NAMESPACE_AND_NAME_VALIDATION = ERROR_MESSAGE_PREFIX + "namespaceandnamevalidation";
+    protected static final String NAMESPACE_CODE_PROPERTY = "namespaceCode";
 
 	/**
 	 * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument)
@@ -52,8 +56,11 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
                     && resp.getRouteNodeName() != null
                     && !checkForDuplicateResponsibility( resp ) ) {
 				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
-				rulesPassed = false;
+				rulesPassed &= false;
 			}
+             if(StringUtils.isNotBlank(resp.getNamespaceCode()) && StringUtils.isNotBlank(resp.getName())){
+                rulesPassed &=validateNamespaceCodeAndName(resp.getNamespaceCode(),resp.getName());
+             }
         } finally {
 			GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 		}
@@ -72,4 +79,16 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
         ResponsibilityQueryResults results = KimApiServiceLocator.getResponsibilityService().findResponsibilities(builder.build());
 		return results.getResults().isEmpty();
 	}
+
+    protected boolean validateNamespaceCodeAndName(String namespaceCode,String name){
+        Responsibility responsibility = KimApiServiceLocator.getResponsibilityService().findRespByNamespaceCodeAndName(namespaceCode,name);
+
+        if(null != responsibility){
+           GlobalVariables.getMessageMap().putError(NAMESPACE_CODE_PROPERTY,ERROR_NAMESPACE_AND_NAME_VALIDATION,namespaceCode,name);
+           return false;
+        } else {
+            return true;
+        }
+
+    }
 }

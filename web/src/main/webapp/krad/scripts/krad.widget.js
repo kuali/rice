@@ -141,7 +141,7 @@ function createLightBoxLink(controlId, options) {
                 jq("#" + controlId).click(function (e) {
                     e.preventDefault();
                     options['href'] = jq("#" + controlId).attr('href');
-                    top.jq.fancybox(options);
+                    top.jQuery.fancybox(options);
                 });
             }
         } else {
@@ -308,7 +308,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
                 jq.fancybox(lightBoxOptions);
             } else {
                 lightBoxOptions['href'] = url + queryString;
-                top.$.fancybox(lightBoxOptions);
+                top.jQuery.fancybox(lightBoxOptions);
             }
         } else {
 
@@ -326,11 +326,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
  * Closes the lightbox window
 */
 function closeLightbox() {
-    if (top.jq == null) {
-        top.$.fancybox.close();
-    }else {
-        top.jq.fancybox.close();
-    }
+    top.jQuery.fancybox.close();
 }
 
 /**

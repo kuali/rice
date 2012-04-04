@@ -313,7 +313,10 @@ function setupPage(validate) {
                     else {
                         writeMessagesAtField(id);
                     }
-                    hideMessageTooltip(id);
+                    if(!(data.warnings || data.info || data.serverErrors || data.serverWarnings || data.serverInfo)){
+                        hideMessageTooltip(id);
+                    }
+
 
                 },
                 errorPlacement:function (error, element) {

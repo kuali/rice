@@ -359,7 +359,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Operator");
             result &= false;
         }
-        if (StringUtils.isBlank(propConstant)) {
+        if (StringUtils.isBlank(propConstant) && !operator.endsWith("null")) { // ==null and !=null operators have blank values.
             GlobalVariables.getMessageMap().putErrorForSectionId(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
@@ -375,6 +375,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     result &= false;
                 }
             }
+        } else if (operator.endsWith("null")) { // ==null and !=null operators have blank values.
+            propConstant = null;
         }
 
         if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {

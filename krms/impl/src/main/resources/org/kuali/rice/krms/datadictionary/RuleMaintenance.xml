@@ -650,7 +650,7 @@
                   <!-- KULRICE-6728 dont display user entered value if operator is ==null or !=null all others are one or two characters i.e. (?:.|..) -->
                   <!-- user entered value -->
                   <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.parameters[1].value"
-                        p:showLabel="true" p:label="Value" p:maxLength="255" p:required="true"
+                        p:showLabel="true" p:label="Value" p:maxLength="255" p:required="@{#np.proposition.parameters[2].value == null or #np.proposition.parameters[2].value matches '(?:.|..)'}"
                         p:progressiveRenderAndRefresh="true"
                         p:refreshWhenChanged="#proposition.parameters[2].value"
                         p:progressiveRender="@{#np.proposition.parameters[2].value == null or #np.proposition.parameters[2].value matches '(?:.|..)'}">

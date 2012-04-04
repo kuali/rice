@@ -63,7 +63,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 	public void recordAction() throws InvalidActionTakenException {
 		// TODO: this is used because calling this code from SuperUserAction without
         // it causes an optimistic lock
-		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getDocumentId(), true));
+        //setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getDocumentId(), true));
 
 		DocumentType docType = getRouteHeader().getDocumentType();
 

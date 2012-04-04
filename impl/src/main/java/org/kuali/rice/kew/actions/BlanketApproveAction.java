@@ -55,10 +55,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     private Set<String> nodeNames;
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
-
-        setQueueDocumentAfterAction(false);
-
+        this(rh, principal, DEFAULT_ANNOTATION, (Set<String>) null);
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, Integer routeLevel) {
@@ -67,13 +64,11 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, String nodeName) {
         this(rh, principal, annotation, Collections.singleton(nodeName));
-
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, Set<String> nodeNames) {
-        super(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation, DEFAULT_RUN_POSTPROCESSOR_LOGIC, false);
         this.nodeNames = (nodeNames == null ? new HashSet<String>() : nodeNames);
-        setQueueDocumentAfterAction(false);
     }
 
     private static Set<String> convertRouteLevel(DocumentType documentType, Integer routeLevel) {

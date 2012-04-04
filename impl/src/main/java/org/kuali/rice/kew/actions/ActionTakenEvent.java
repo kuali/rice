@@ -51,57 +51,85 @@ import java.util.List;
  */
 public abstract class ActionTakenEvent {
 
-	private static final Logger LOG = Logger.getLogger(ActionTakenEvent.class);
+    /**
+     * Default value for queueing document after the action is recorded
+     */
+    protected static final boolean DEFAULT_QUEUE_DOCUMENT_AFTER_ACTION = true;
+    /**
+     * Default value for running postprocessor logic after the action is recorded.
+     * Inspected when queueing document processing and notifying postprocessors of action taken and doc status change
+     */
+    protected static final boolean DEFAULT_RUN_POSTPROCESSOR_LOGIC = true;
+    /**
+     * Default annotation - none.
+     */
+    protected static final String DEFAULT_ANNOTATION = null;
+
+    private static final Logger LOG = Logger.getLogger(ActionTakenEvent.class);
+
 
 	/**
 	 * Used when saving an ActionTakenValue, and for validation in validateActionRules
+     * TODO: Clarify the intent of actionTakenCode vs getActionPerformed() - which is the perceived incoming
+     * value, and what is getActionPerformed, the "value-we-are-going-to-save-to-the-db"? if so, make
+     * sure that is reflected consistently in all respective usages.
+     * See: SuperUserActionRequestApproveEvent polymorphism
 	 */
 	private String actionTakenCode;
 
 	protected final String annotation;
 
+    /**
+     * This is in spirit immutable, however for expediency it is mutable as at least one action
+     * (ReturnToPreviousNodeAction) attempts to reload the route header after every pp notification.
+     */
 	protected DocumentRouteHeaderValue routeHeader;
 
 	private final PrincipalContract principal;
 
     private final boolean runPostProcessorLogic;
-    
-    private List<String> groupIdsForPrincipal;
-    
 
-    private boolean queueDocumentAfterAction = true;
+    private final boolean queueDocumentAfterAction;
 
+    /**
+     * This is essentially just a cache to avoid an expensive lookup in getGroupIdsForPrincipal
+     */
+    private transient List<String> groupIdsForPrincipal;
 
 	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-		this(actionTakenCode, routeHeader, principal, null, true);
+		this(actionTakenCode, routeHeader, principal, DEFAULT_ANNOTATION, DEFAULT_RUN_POSTPROCESSOR_LOGIC, DEFAULT_QUEUE_DOCUMENT_AFTER_ACTION);
 	}
 
     public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation) {
-        this(actionTakenCode, routeHeader, principal, annotation, true);
+        this(actionTakenCode, routeHeader, principal, annotation, DEFAULT_RUN_POSTPROCESSOR_LOGIC, DEFAULT_QUEUE_DOCUMENT_AFTER_ACTION);
     }
 
 	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessorLogic) {
-	    this.actionTakenCode = actionTakenCode;
-	    this.routeHeader = routeHeader;
+        this(actionTakenCode, routeHeader, principal, annotation, runPostProcessorLogic, DEFAULT_QUEUE_DOCUMENT_AFTER_ACTION);
+	}
+
+    public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessorLogic, boolean queueDocumentAfterAction) {
+        this.actionTakenCode = actionTakenCode;
+        this.routeHeader = routeHeader;
         this.principal = principal;
         this.annotation = annotation == null ? "" : annotation;
-		this.runPostProcessorLogic = runPostProcessorLogic;
-		this.queueDocumentAfterAction = true;
-	}
+        this.runPostProcessorLogic = runPostProcessorLogic;
+        this.queueDocumentAfterAction = queueDocumentAfterAction;
+    }
 
 	public ActionRequestService getActionRequestService() {
 		return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
 	}
 
-	public DocumentRouteHeaderValue getRouteHeader() {
+	protected DocumentRouteHeaderValue getRouteHeader() {
 		return routeHeader;
 	}
 
-	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
+	protected void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
 		this.routeHeader = routeHeader;
 	}
 
-	public PrincipalContract getPrincipal() {
+    protected PrincipalContract getPrincipal() {
 		return principal;
 	}
 
@@ -130,7 +158,7 @@ public abstract class ActionTakenEvent {
 	 * @return error message string of specific error message
 	 */
 	public abstract String validateActionRules();
-	public abstract String validateActionRules(List<ActionRequestValue> actionRequests);
+	protected abstract String validateActionRules(List<ActionRequestValue> actionRequests);
 	
 	/**
 	 * Filters action requests based on if they occur after the given requestCode, and if they relate to this
@@ -139,7 +167,7 @@ public abstract class ActionTakenEvent {
 	 * @param requestCode the request code for all ActionRequestValues to be after
 	 * @return the filtered List of ActionRequestValues
 	 */
-	public List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String requestCode) {
+	protected List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String requestCode) {
 		return getActionRequestService().filterActionRequestsByCode(actionRequests, getPrincipal().getPrincipalId(), getGroupIdsForPrincipal(), requestCode);
 	}
 
@@ -148,6 +176,9 @@ public abstract class ActionTakenEvent {
 		return true;
 	}
 
+    // TODO: determine why some code invokes performAction, and some code invokes record action
+    // notably, WorkflowDocumentServiceImpl. Shouldn't all invocations go through a single public entry point?
+    // are some paths implicitly trying to avoid error handling or document queueing?
 	public void performAction() throws InvalidActionTakenException {
 	    try{
 	        recordAction();
@@ -166,10 +197,6 @@ public abstract class ActionTakenEvent {
 	}
 
 	protected abstract void recordAction() throws InvalidActionTakenException;
-
-	public void performDeferredAction() {
-
-	}
 
 	protected void updateSearchableAttributesIfPossible() {
 		// queue the document up so that it can be indexed for searching if it
@@ -267,7 +294,7 @@ public abstract class ActionTakenEvent {
 		return getActionRequestService().findDelegator(actionRequests);
 	}
 
-	public String getActionTakenCode() {
+	protected String getActionTakenCode() {
 		return actionTakenCode;
 	}
 
@@ -293,11 +320,6 @@ public abstract class ActionTakenEvent {
                     getPrincipal().getPrincipalId());
 		}
 		return groupIdsForPrincipal;
-	}
-
-
-	public void setQueueDocumentAfterAction(boolean queueDocumentAfterAction) {
-		this.queueDocumentAfterAction = queueDocumentAfterAction;
 	}
 
 	private void processPostProcessorException(Exception e) {

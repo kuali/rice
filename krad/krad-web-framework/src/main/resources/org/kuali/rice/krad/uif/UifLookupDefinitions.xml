@@ -130,7 +130,7 @@
   </bean>
 
   <bean id="Uif-LookupResultsCollectionSection" parent="Uif-TableCollectionSection"
-        p:layoutManager.suppressLineWrapping="true">
+        p:id="uLookupResults" p:layoutManager.suppressLineWrapping="true">
     <property name="showInactive" value="true"/>
     <property name="propertyName" value="searchResults"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
@@ -171,7 +171,7 @@
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"/>
+        <bean parent="Uif-AjaxActionButton" p:methodToCall="search" p:actionLabel="Search" p:refreshId="uLookupResults"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel" p:render="@{!#view.dialogMode}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnToPrevious" p:actionLabel="Cancel"

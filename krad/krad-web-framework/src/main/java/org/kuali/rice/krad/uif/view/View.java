@@ -756,7 +756,7 @@ public class View extends ContainerBase {
      * @return ViewHelperService instance
      */
     public ViewHelperService getViewHelperService() {
-        if (this.viewHelperService == null) {
+        if ((this.viewHelperService == null) && (this.viewHelperServiceClassName != null)) {
             viewHelperService = ObjectUtils.newInstance(viewHelperServiceClassName);
         }
 

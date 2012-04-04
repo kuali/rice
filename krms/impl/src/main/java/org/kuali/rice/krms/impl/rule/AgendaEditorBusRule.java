@@ -444,6 +444,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     public ActionTypeService getActionTypeService(String serviceName) {
         return (ActionTypeService)KrmsRepositoryServiceLocator.getService(serviceName);
     }
+
     public AgendaAuthorizationService getAgendaAuthorizationService() {
         return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
     }

@@ -28,6 +28,10 @@ import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 
 public class TestTermResolverTypeService implements TermResolverTypeService {
 
+    public TestTermResolverTypeService() {
+        this.toString();
+    }
+
     @Override
     public TermResolver<?> loadTermResolver(
             final TermResolverDefinition termResolverDefinition) {

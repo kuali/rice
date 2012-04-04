@@ -22,6 +22,8 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 
+import javax.xml.namespace.QName;
+
 /**
  * This class keeps track of the KRMS Repository Services
  * 
@@ -63,7 +65,7 @@ public final class KrmsRepositoryServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.<T>getService(serviceName);
+		return GlobalResourceLoader.<T>getService(QName.valueOf(serviceName));
 	}
 
     public static KrmsAttributeDefinitionService getKrmsAttributeDefinitionService() {

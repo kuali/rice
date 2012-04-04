@@ -162,6 +162,10 @@
   <bean id="compoundPropositionTypeService" class="org.kuali.rice.krms.impl.provider.repository.CompoundPropositionTypeService">
     <property name="translator" ref="repositoryToEngineTranslator"/>
   </bean>
+  
+  <bean id="functionRepositoryService" class="org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService" />
+  </bean>
 
   <bean id="krmsTypeResolver" class="org.kuali.rice.krms.impl.type.KrmsTypeResolverImpl">
     <property name="typeRepositoryService" ref="krmsTypeRepositoryService"/>
@@ -170,9 +174,8 @@
       <bean class="org.kuali.rice.krms.impl.provider.repository.SimplePropositionTypeService">
         <property name="typeResolver" ref="krmsTypeResolver"/>
         <property name="termBoService" ref="termBoService"/>
-        <!-- TODO:
-        <property name="functionRepositoryService" ref="..."/>
-        -->
+        <property name="functionRepositoryService" ref="functionRepositoryService"/>
+        <property name="comparisonOperatorService" ref="comparisonOperatorService"/>
       </bean>
     </property>
   </bean>

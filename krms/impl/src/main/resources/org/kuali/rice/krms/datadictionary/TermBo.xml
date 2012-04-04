@@ -63,7 +63,7 @@
   </bean>
 
   <bean id="TermBo-specificationId" parent="TermBo-specificationId-parentBean"/>
-  <bean id="TermBo-specificationId-parentBean" abstract="true" parent="TermSpecificationBo-id">
+  <bean id="TermBo-specificationId-parentBean" abstract="true" parent="TermSpecificationBo-id" p:required="true">
     <property name="name" value="specification.id"/>
   </bean>
 
@@ -116,7 +116,7 @@
           <property name="items">
             <list>
 
-              <bean parent="Uif-InputField" p:propertyName="description" p:label="Description" p:required="true">
+              <bean parent="Uif-InputField" p:propertyName="description" p:label="Description">
                 <!-- property name="control">
                   <bean parent="Uif-TextAreaControl"/>
                 </property -->
@@ -292,7 +292,8 @@
     <property name="resultFields">
       <list>
         <bean parent="Uif-InputField" p:propertyName="id"/>
-        <bean parent="Uif-InputField" p:propertyName="specification.id"/>
+        <bean parent="Uif-InputField" p:propertyName="description"/>
+        <bean parent="Uif-InputField" p:propertyName="specification.id" p:label="Specification ID"/>
         <bean parent="Uif-InputField" p:propertyName="specification.namespace"/>
         <bean parent="Uif-InputField" p:propertyName="specification.name"/>
         <bean parent="Uif-InputField" p:propertyName="specification.type"/>

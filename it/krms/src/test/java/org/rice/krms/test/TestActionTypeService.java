@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author gilesp
  *
  */
-public class TestActionTypeService implements ActionTypeService, Action {
+public class TestActionTypeService implements ActionTypeService{
 
 	private static final Set<String> actionsFired = new HashSet<String>();
 	
@@ -50,32 +50,9 @@ public class TestActionTypeService implements ActionTypeService, Action {
 		return actionsFired.contains(name);
 	}
 	
-	public TestActionTypeService(String name) {
-		this.name = name;
-	}
-	
-	private final String name;
-	
-	@Override
-	public void execute(ExecutionEnvironment environment) {
-		actionsFired.add(name);
-	}
-	
-	/**
-	 * @see org.kuali.rice.krms.framework.engine.Action#executeSimulation(org.kuali.rice.krms.api.engine.ExecutionEnvironment)
-	 */
-	@Override
-	public void executeSimulation(ExecutionEnvironment environment) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public boolean actionFired() {
-		return actionFired(name);
-	}
-
     @Override
     public Action loadAction(ActionDefinition actionDefinition) {
-        return this;
+        return new TestAction(actionDefinition.getName());
     }
 
     @Override
@@ -98,5 +75,27 @@ public class TestActionTypeService implements ActionTypeService, Action {
             Map<String, String> oldAttributes
     ) throws RiceIllegalArgumentException {
         throw new UnsupportedOperationException();
+    }
+    
+    private class TestAction implements Action {
+
+        private final String name;
+
+        private TestAction(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void execute(ExecutionEnvironment environment) {
+            actionsFired.add(name);
+        }
+
+        /**
+         * @see org.kuali.rice.krms.framework.engine.Action#executeSimulation(org.kuali.rice.krms.api.engine.ExecutionEnvironment)
+         */
+        @Override
+        public void executeSimulation(ExecutionEnvironment environment) {
+            throw new UnsupportedOperationException();
+        }
     }
 }

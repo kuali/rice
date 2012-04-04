@@ -29,6 +29,7 @@
                 copyOnWrite="false"/>
 
   <cache name="http://rice.kuali.org/krms/v2_0/AgendaTreeDefinition" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/AgendaItemType" maxEntriesLocalHeap="500"/>
   <cache name="http://rice.kuali.org/krms/v2_0/RuleType" maxEntriesLocalHeap="500"/>
   <cache name="http://rice.kuali.org/krms/v2_0/KRMSTypeType" maxEntriesLocalHeap="200"/>
   <cache name="http://rice.kuali.org/krms/v2_0/KrmsAttributionDefinitionType" maxEntriesLocalHeap="500"/>

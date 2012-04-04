@@ -50,6 +50,6 @@ public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements Agenda
         Map<String, String> existingAttributes = new HashMap<String, String>(agendaDefinition.getAttributes());
         existingAttributes.put(NAME_ATTRIBUTE, agendaDefinition.getName());
 
-        return new BasicAgenda(agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, repositoryToEngineTranslator));
+        return new BasicAgenda(existingAttributes, new LazyAgendaTree(agendaDefinition, repositoryToEngineTranslator));
     }
 }

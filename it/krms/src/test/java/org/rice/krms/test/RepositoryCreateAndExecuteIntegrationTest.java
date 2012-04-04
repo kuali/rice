@@ -15,30 +15,24 @@
  */
 package org.rice.krms.test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
-import org.kuali.rice.krms.api.repository.RuleRepositoryService;
+import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
@@ -52,173 +46,343 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
-import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
-import org.kuali.rice.krms.impl.provider.repository.CompoundPropositionTypeService;
-import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
-import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
-import org.kuali.rice.krms.impl.provider.repository.RuleRepositoryContextProvider;
-import org.kuali.rice.krms.impl.provider.repository.SimplePropositionTypeService;
 import org.kuali.rice.krms.impl.repository.ActionBoService;
-import org.kuali.rice.krms.impl.repository.ActionBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.AgendaBoService;
-import org.kuali.rice.krms.impl.repository.AgendaBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
-import org.kuali.rice.krms.impl.repository.ContextBoServiceImpl;
+import org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
-import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.PropositionBoService;
-import org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
-import org.kuali.rice.krms.impl.repository.RuleBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.RuleRepositoryServiceImpl;
+import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermBoService;
-import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
-import org.kuali.rice.krms.impl.type.KrmsTypeResolverImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 @BaselineMode(Mode.CLEAR_DB)
 public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
     public static final String CAMPUS_CODE_TERM_NAME = "campusCodeTermSpec";
+
+    static final String NAMESPACE1 = "KRMS_TEST_1";
+    static final String NAMESPACE2 = "KRMS_TEST_2";
+    static final String TSUNAMI_EVENT = "Tsunami";
+    static final String EARTHQUAKE_EVENT = "Earthquake";
+    static final String CONTEXT1 = "Context1";
+    static final String CONTEXT2 = "Context2";
+    static final String NAME = "name";
+    static final String CONTEXT1_QUALIFIER = "Context1Qualifier";
+    static final String CONTEXT1_QUALIFIER_VALUE = "BLAH1";
+    static final String CONTEXT2_QUALIFIER = "Context2Qualifier";
+    static final String CONTEXT2_QUALIFIER_VALUE = "BLAH2";
+    static final String AGENDA1 = "TestAgenda1";
+    static final String AGENDA2 = "Agenda2";
+    static final String AGENDA3 = "Agenda3";
+    static final String AGENDA4 = "Agenda4";
+    static final String PREREQ_TERM_NAME = "prereqTermSpec";
+    static final String PREREQ_TERM_VALUE = "prereqValue";
+    static final String NAMESPACE_CODE = "namespaceCode";
+
     // Services needed for creation:
 	private TermBoService termBoService;
 	private ContextBoService contextRepository;
     private KrmsTypeRepositoryService krmsTypeRepository;
 
-    private PropositionBoService propositionBoService;
+//    private PropositionBoService propositionBoService;
     private RuleBoService ruleBoService;
     private AgendaBoService agendaBoService;
     private ActionBoService actionBoService;
+    private FunctionBoServiceImpl functionBoService;
     private KrmsAttributeDefinitionService krmsAttributeDefinitionService;
 
-    // Services needed for execution:
-    // already have TermBoService above, need that for execution too
-    private RuleRepositoryService ruleRepositoryService;
+    /**
+     *
+     * Setting it up so that KRMS tables are not reset between test methods to make it run much faster
+     *
+     * @return
+     */
+    protected List<String> getPerTestTablesNotToClear() {
+        List<String> tablesNotToClear = super.getPerTestTablesNotToClear();
 
-    private RuleRepositoryContextProvider contextProvider;
-    private ProviderBasedEngine engine;
-    private RepositoryToEngineTranslator repositoryToEngineTranslator;
+        tablesNotToClear.add("KRMS_.*");
+
+        return tablesNotToClear;
+    }
+
+
 
 	@Before
-	public void setup() {
-		// wire up BO services for creation
+    public void setup() {
+        // Reset TestActionTypeService
+        TestActionTypeService.resetActionsFired();
 
-		termBoService = new TermBoServiceImpl();
-		((TermBoServiceImpl)termBoService).setBusinessObjectService(getBoService());
+        termBoService = KrmsRepositoryServiceLocator.getTermBoService();
+        contextRepository = KrmsRepositoryServiceLocator.getContextBoService();
+        krmsTypeRepository = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
 
-		contextRepository = new ContextBoServiceImpl();
-		((ContextBoServiceImpl)contextRepository).setBusinessObjectService(getBoService());
-
-		krmsTypeRepository = new KrmsTypeBoServiceImpl();
-		((KrmsTypeBoServiceImpl)krmsTypeRepository).setBusinessObjectService(getBoService());
-
-		propositionBoService = new PropositionBoServiceImpl();
-		((PropositionBoServiceImpl)propositionBoService).setBusinessObjectService(getBoService());
-
-        ruleBoService = new RuleBoServiceImpl();
-        ((RuleBoServiceImpl)ruleBoService).setBusinessObjectService(getBoService());
-
+        ruleBoService = KrmsRepositoryServiceLocator.getRuleBoService();
+        agendaBoService = KrmsRepositoryServiceLocator.getAgendaBoService();
+        actionBoService = KrmsRepositoryServiceLocator.getBean("actionBoService");
+        functionBoService = KrmsRepositoryServiceLocator.getBean("functionRepositoryService");
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
 
-        agendaBoService = new AgendaBoServiceImpl();
-        ((AgendaBoServiceImpl)agendaBoService).setBusinessObjectService(getBoService());
-        ((AgendaBoServiceImpl)agendaBoService).setAttributeDefinitionService(krmsAttributeDefinitionService);
+        ContextDefinition contextDefintion1 = contextRepository.getContextByNameAndNamespace(CONTEXT1, NAMESPACE1);
 
-        actionBoService = new ActionBoServiceImpl();
-        ((ActionBoServiceImpl)actionBoService).setBusinessObjectService(getBoService());
+        // only set this stuff up if we don't already have Context1 (we don't clear out KRMS tables between test methods)
+        if (contextDefintion1 == null) {
+            PerformanceLogger perfLog = new PerformanceLogger();
+            perfLog.log("starting agenda creation");
+
+            contextDefintion1 = createContextDefinition(NAMESPACE1, CONTEXT1, Collections.singletonMap(
+                    CONTEXT1_QUALIFIER, CONTEXT1_QUALIFIER_VALUE));
+            createAgendaDefinition(AGENDA1, contextDefintion1, TSUNAMI_EVENT, NAMESPACE1);
+
+            ContextDefinition contextDefinition2 = createContextDefinition(NAMESPACE2, CONTEXT2, Collections.singletonMap(
+                    CONTEXT2_QUALIFIER, CONTEXT2_QUALIFIER_VALUE));
+
+            // Create multiple agendas so that we can test selection
+            createAgendaDefinition(AGENDA2, contextDefinition2, EARTHQUAKE_EVENT, NAMESPACE2);
+            createAgendaDefinition(AGENDA3, contextDefinition2, EARTHQUAKE_EVENT, NAMESPACE2);
+            createAgendaDefinition(AGENDA4, contextDefinition2, TSUNAMI_EVENT, NAMESPACE2);
+
+            perfLog.log("finished agenda creation", true);
+        }
+    }
 
 
-        // wire up services needed for execution
+    @Transactional
+    @Test
+    public void testSelectAgendaByAttributeAndName() {
 
-        // Already have termBoService from above, we'll need this for execution too
+        Map<String,String> contextQualifiers = new HashMap<String,String>();
+        contextQualifiers.put(NAMESPACE_CODE, NAMESPACE1);
+        contextQualifiers.put(NAME, CONTEXT1);
+        contextQualifiers.put(CONTEXT1_QUALIFIER, CONTEXT1_QUALIFIER_VALUE);
 
-        ruleRepositoryService = new RuleRepositoryServiceImpl();
-        ((RuleRepositoryServiceImpl)ruleRepositoryService).setBusinessObjectService(getBoService());
-        ((RuleRepositoryServiceImpl)ruleRepositoryService).setCriteriaLookupService(KrmsRepositoryServiceLocator.getCriteriaLookupService());
+        Map<String,String> agendaQualifiers = new HashMap<String,String>();
+        agendaQualifiers.put(AgendaDefinition.Constants.EVENT, TSUNAMI_EVENT);
+        agendaQualifiers.put(NAME, AGENDA1);
+
+        DateTime now = new DateTime();
+
+        SelectionCriteria sc1 = SelectionCriteria.createCriteria(now, contextQualifiers,
+                Collections.singletonMap(AgendaDefinition.Constants.EVENT, TSUNAMI_EVENT));
+
+        Facts.Builder factsBuilder1 = Facts.Builder.create();
+        factsBuilder1.addFact(CAMPUS_CODE_TERM_NAME, "BL");
+        factsBuilder1.addFact(PREREQ_TERM_NAME, PREREQ_TERM_VALUE);
+
+        ExecutionOptions xOptions1 = new ExecutionOptions();
+        xOptions1.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+
+        PerformanceLogger perfLog = new PerformanceLogger();
+        perfLog.log("starting rule execution");
+        EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(sc1, factsBuilder1.build(), xOptions1);
+        perfLog.log("finished rule execution", true);
+        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+
+        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
+
+        assertEquals("3 rules should have been evaluated", 3, ruleEvaluationResults1.size());
+
+        assertTrue("rule 0 should have evaluated to true", ruleEvaluationResults1.get(0).getResult());
+        assertFalse("rule 1 should have evaluated to false", ruleEvaluationResults1.get(1).getResult());
+        assertTrue("rule 2 should have evaluated to true", ruleEvaluationResults1.get(2).getResult());
+
+        // ONLY agenda 1 should have been selected
+        assertTrue(TestActionTypeService.actionFired("TestAgenda1::Rule1::TestAction"));
+        assertFalse(TestActionTypeService.actionFired("TestAgenda1::Rule2::TestAction"));
+        assertTrue(TestActionTypeService.actionFired("TestAgenda1::Rule3::TestAction"));
+
+        assertAgendaDidNotExecute(AGENDA2);
+        assertAgendaDidNotExecute(AGENDA3);
+        assertAgendaDidNotExecute(AGENDA4);
+    }
+
+    @Transactional
+    @Test
+    public void testSelectAgendaByName() {
+        Map<String,String> contextQualifiers = new HashMap<String,String>();
+        contextQualifiers.put(NAMESPACE_CODE, NAMESPACE2);
+        contextQualifiers.put(NAME, CONTEXT2);
+        contextQualifiers.put(CONTEXT2_QUALIFIER, CONTEXT2_QUALIFIER_VALUE);
+        Map<String,String> agendaQualifiers = new HashMap<String,String>();
+
+        /*
+         * We'll specifically NOT select this attribute to make sure that matching only takes place against qualifiers
+         * in the selection criteria
+         */
+        // agendaQualifiers.put(AgendaDefinition.Constants.EVENT, EARTHQUAKE_EVENT);
+
+        agendaQualifiers.put(NAME, AGENDA3);
+        DateTime now = new DateTime();
+
+        SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
+
+        Facts.Builder factsBuilder2 = Facts.Builder.create();
+        factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");
+        factsBuilder2.addFact(PREREQ_TERM_NAME, PREREQ_TERM_VALUE);
+
+        ExecutionOptions xOptions2 = new ExecutionOptions();
+        xOptions2.setFlag(ExecutionFlag.LOG_EXECUTION, true);
 
 
-        repositoryToEngineTranslator = new RepositoryToEngineTranslatorImpl();
+        PerformanceLogger perfLog = new PerformanceLogger();
+        perfLog.log("starting rule execution 1");
+        EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(selectionCriteria, factsBuilder2.build(), xOptions2);
+        perfLog.log("finished rule execution 1");
+        List<ResultEvent> rEvents1 = eResults1.getAllResults();
 
-        KrmsTypeResolverImpl typeResolver = new KrmsTypeResolverImpl();
-        typeResolver.setTypeRepositoryService(krmsTypeRepository);
+        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
-        CompoundPropositionTypeService compoundPropositionTypeService = new CompoundPropositionTypeService();
+        selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
-        // Circular Dependency:
-        // CompoundPropositionTypeService -> RepositoryToEngineTranslatorImpl ->
-        // KrmsTypeResolverImpl -> CompoundPropositionTypeService
-        compoundPropositionTypeService.setTranslator(repositoryToEngineTranslator);
+        assertEquals("3 rules should have been evaluated", 3, ruleEvaluationResults1.size());
 
-        SimplePropositionTypeService simplePropositionTypeService = new SimplePropositionTypeService();
-        simplePropositionTypeService.setTypeResolver(typeResolver);
-        simplePropositionTypeService.setTermBoService(termBoService);
+        assertAgendaDidNotExecute(AGENDA1);
+        assertAgendaDidNotExecute(AGENDA2);
 
-        // TODO: custom functions too.
-        simplePropositionTypeService.setFunctionRepositoryService(null);
+        // ONLY agenda 3 should have been selected
+        assertTrue(TestActionTypeService.actionFired("Agenda3::Rule1::TestAction"));
+        assertFalse(TestActionTypeService.actionFired("Agenda3::Rule2::TestAction"));
+        assertTrue(TestActionTypeService.actionFired("Agenda3::Rule3::TestAction"));
 
-        typeResolver.setDefaultCompoundPropositionTypeService(compoundPropositionTypeService);
-        typeResolver.setDefaultSimplePropositionTypeService(simplePropositionTypeService);
+        assertAgendaDidNotExecute(AGENDA4);
+    }
 
-        ((RepositoryToEngineTranslatorImpl)repositoryToEngineTranslator).setTermBoService(termBoService);
-        ((RepositoryToEngineTranslatorImpl)repositoryToEngineTranslator).setRuleRepositoryService(ruleRepositoryService);
-        ((RepositoryToEngineTranslatorImpl)repositoryToEngineTranslator).setTypeRepositoryService(krmsTypeRepository);
-        ((RepositoryToEngineTranslatorImpl)repositoryToEngineTranslator).setTypeResolver(typeResolver);
 
-        contextProvider = new RuleRepositoryContextProvider();
-        contextProvider.setRuleRepositoryService(ruleRepositoryService);
-        contextProvider.setRepositoryToEngineTranslator(repositoryToEngineTranslator);
+    @Transactional
+    @Test
+    public void testSelectMultipleAgendasByAttribute() {
+        Map<String,String> contextQualifiers = new HashMap<String,String>();
+        contextQualifiers.put(NAMESPACE_CODE, NAMESPACE2);
+        contextQualifiers.put(NAME, CONTEXT2);
+        contextQualifiers.put(CONTEXT2_QUALIFIER, CONTEXT2_QUALIFIER_VALUE);
 
-        engine = new ProviderBasedEngine();
-        engine.setContextProvider(contextProvider);
+        Map<String,String> agendaQualifiers = new HashMap<String,String>();
+        agendaQualifiers.put(AgendaDefinition.Constants.EVENT, EARTHQUAKE_EVENT);
 
-	}
+        DateTime now = new DateTime();
 
-    private ContextDefinition createContextDefinition(String nameSpace) {
-        // Attribute Defn for context;
-        KrmsAttributeDefinition.Builder contextTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Context1Qualifier", nameSpace);
-        contextTypeAttributeDefnBuilder.setLabel("Context 1 Qualifier");
-        KrmsAttributeDefinition contextTypeAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(contextTypeAttributeDefnBuilder.build());
+        SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
-        // Attr for context;
-        KrmsTypeAttribute.Builder krmsTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, contextTypeAttributeDefinition.getId(), 1);
+        Facts.Builder factsBuilder2 = Facts.Builder.create();
+        factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");
+        factsBuilder2.addFact(PREREQ_TERM_NAME, PREREQ_TERM_VALUE);
+
+        ExecutionOptions xOptions2 = new ExecutionOptions();
+        xOptions2.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+
+
+        PerformanceLogger perfLog = new PerformanceLogger();
+        perfLog.log("starting rule execution 1");
+        EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(selectionCriteria, factsBuilder2.build(), xOptions2);
+        perfLog.log("finished rule execution 1");
+        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+
+        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
+
+        selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
+
+        assertEquals("6 rules should have been evaluated", 6, ruleEvaluationResults1.size());
+
+        assertAgendaDidNotExecute(AGENDA1);
+
+        // ONLY agendas 2 & 3 should have been selected
+
+        assertTrue(TestActionTypeService.actionFired("Agenda2::Rule1::TestAction"));
+        assertFalse(TestActionTypeService.actionFired("Agenda2::Rule2::TestAction"));
+        assertTrue(TestActionTypeService.actionFired("Agenda2::Rule3::TestAction"));
+
+        assertTrue(TestActionTypeService.actionFired("Agenda3::Rule1::TestAction"));
+        assertFalse(TestActionTypeService.actionFired("Agenda3::Rule2::TestAction"));
+        assertTrue(TestActionTypeService.actionFired("Agenda3::Rule3::TestAction"));
+
+        assertAgendaDidNotExecute(AGENDA4);
+    }
+
+    private void assertAgendaDidNotExecute(String agendaName) {
+        assertFalse(TestActionTypeService.actionFired(agendaName+"::Rule1::TestAction"));
+        assertFalse(TestActionTypeService.actionFired(agendaName+"::Rule2::TestAction"));
+        assertFalse(TestActionTypeService.actionFired(agendaName+"::Rule3::TestAction"));
+    }
+
+    private ContextDefinition createContextDefinition(String nameSpace, String name, Map<String, String> contextAttributes) {
+        // Attributes for context;
+        List<KrmsTypeAttribute.Builder> contextAttributeBuilders = new ArrayList<KrmsTypeAttribute.Builder>();
+        int contextAttrSequenceIndex = 0;
+
+        List<KrmsAttributeDefinition> attributeDefintions = new ArrayList<KrmsAttributeDefinition>();
+        
+        if (contextAttributes != null) for (Map.Entry<String,String> entry : contextAttributes.entrySet()) {
+            KrmsAttributeDefinition.Builder contextTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, entry.getKey(), nameSpace);
+            contextTypeAttributeDefnBuilder.setLabel(entry.getKey() + " attribute label");
+            KrmsAttributeDefinition contextTypeAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(contextTypeAttributeDefnBuilder.build());
+            attributeDefintions.add(contextTypeAttributeDefinition);
+
+            // Attr for context;
+            contextAttributeBuilders.add(KrmsTypeAttribute.Builder.create(null, contextTypeAttributeDefinition.getId(),
+                    contextAttrSequenceIndex));
+            contextAttrSequenceIndex += 1;
+        }
 
         // KrmsType for context
         KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
-        krmsContextTypeDefnBuilder.setAttributes(Collections.singletonList(krmsTypeAttrBuilder));
+        krmsContextTypeDefnBuilder.setAttributes(contextAttributeBuilders);
         KrmsTypeDefinition krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
         krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
 
         // Context
-        ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(nameSpace, "Context1");
+        ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(nameSpace, name);
         contextBuilder.setTypeId(krmsContextTypeDefinition.getId());
         ContextDefinition contextDefinition = contextBuilder.build();
         contextDefinition = contextRepository.createContext(contextDefinition);
 
         // Context Attribute
         // TODO: do this fur eel
-        ContextAttributeBo contextAttribute = new ContextAttributeBo();
-        contextAttribute.setAttributeDefinitionId(contextTypeAttributeDefinition.getId());
-        contextAttribute.setContextId(contextDefinition.getId());
-        contextAttribute.setValue("BLAH");
-        getBoService().save(contextAttribute);
+        for (KrmsAttributeDefinition contextTypeAttributeDefinition : attributeDefintions) {
+            ContextAttributeBo contextAttribute = new ContextAttributeBo();
+            contextAttribute.setAttributeDefinitionId(contextTypeAttributeDefinition.getId());
+            contextAttribute.setContextId(contextDefinition.getId());
+            contextAttribute.setValue(contextAttributes.get(contextTypeAttributeDefinition.getName()));
+            getBoService().save(contextAttribute);
+        }
 
         return contextDefinition;
     }
 
-    private void createAgendaDefinition(ContextDefinition contextDefinition, String eventName, String nameSpace ) {
+    private void createAgendaDefinition(String agendaName, ContextDefinition contextDefinition, String eventName, String nameSpace ) {
         KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace, "testAgendaTypeService");
 
         AgendaDefinition agendaDef =
-            AgendaDefinition.Builder.create(null, "testAgenda", krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
+            AgendaDefinition.Builder.create(null, agendaName, krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
         agendaDef = agendaBoService.createAgenda(agendaDef);
 
         AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        agendaItemBuilder1.setRuleId(createRuleDefinition1(contextDefinition, nameSpace).getId());
+        agendaItemBuilder1.setRuleId(createRuleDefinition1(contextDefinition, agendaName, nameSpace).getId());
 
+        AgendaItemDefinition.Builder agendaItemBuilder2 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
+        agendaItemBuilder1.setAlways(agendaItemBuilder2);
+        agendaItemBuilder2.setRuleId(createRuleDefinition2(contextDefinition, agendaName, nameSpace).getId());
+
+        AgendaItemDefinition.Builder agendaItemBuilder3 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
+        agendaItemBuilder2.setAlways(agendaItemBuilder3);
+        agendaItemBuilder3.setRuleId(createRuleDefinition3(contextDefinition, agendaName, nameSpace).getId());
+
+        // String these puppies together.  Kind of a PITA because you need the id from the next item before you insert the previous one
+        AgendaItemDefinition agendaItem3 = agendaBoService.createAgendaItem(agendaItemBuilder3.build());
+        agendaItemBuilder2.setAlwaysId(agendaItem3.getId());
+        AgendaItemDefinition agendaItem2 = agendaBoService.createAgendaItem(agendaItemBuilder2.build());
+        agendaItemBuilder1.setAlwaysId(agendaItem2.getId());
         AgendaItemDefinition agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
 
         AgendaDefinition.Builder agendaDefBuilder1 = AgendaDefinition.Builder.create(agendaDef);
@@ -229,115 +393,120 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         agendaBoService.updateAgenda(agendaDef);
     }
 
-    private KrmsTypeDefinition createKrmsCampusTypeDefinition(String nameSpace) {
-	    // KrmsType for campus svc
-        KrmsTypeDefinition.Builder krmsCampusTypeDefnBuilder = KrmsTypeDefinition.Builder.create("CAMPUS", nameSpace);
-        KrmsTypeDefinition krmsCampusTypeDefinition = krmsTypeRepository.createKrmsType(krmsCampusTypeDefnBuilder.build());
-        return krmsCampusTypeDefinition;
-    }
-
     private KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
-        KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsActionResolverType", nameSpace);
-        krmsActionTypeDefnBuilder.setServiceName("testActionTypeService");
-        KrmsTypeDefinition krmsActionTypeDefinition = krmsTypeRepository.createKrmsType(krmsActionTypeDefnBuilder.build());
+        String ACTION_TYPE_NAME = "KrmsActionResolverType";
+        KrmsTypeDefinition krmsActionTypeDefinition =  krmsTypeRepository.getTypeByName(nameSpace, ACTION_TYPE_NAME);
+
+        if (krmsActionTypeDefinition == null) {
+            KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create(ACTION_TYPE_NAME, nameSpace);
+            krmsActionTypeDefnBuilder.setServiceName("testActionTypeService");
+            krmsActionTypeDefinition = krmsTypeRepository.createKrmsType(krmsActionTypeDefnBuilder.build());
+        }
 
         return krmsActionTypeDefinition;
     }
 
-    private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace) {
-        return createKrmsGenericTypeDefinition(nameSpace, null);
-    }
-    
-    
 
-        private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace, String serviceName) {
-	    // Attribute Defn for generic type;
-        KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Event", nameSpace);
-        genericTypeAttributeDefnBuilder.setLabel("event name");
-        KrmsAttributeDefinition genericTypeAttributeDefinition1 = krmsAttributeDefinitionService.createAttributeDefinition(genericTypeAttributeDefnBuilder.build());
+    private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace, String serviceName) {
+        KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepository.getTypeByName(nameSpace, "KrmsTestGenericType");
 
-        // Attr for generic type;
-        KrmsTypeAttribute.Builder genericTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, genericTypeAttributeDefinition1.getId(), 1);
+        if (null == krmsGenericTypeDefinition) {
 
-		// Can use this generic type for KRMS bits that don't actually rely on services on the bus at this point in time
-	    KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestGenericType", nameSpace);
-        krmsGenericTypeDefnBuilder.setServiceName(serviceName);
-	    krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
-	    KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepository.createKrmsType(krmsGenericTypeDefnBuilder.build());
+            // Attribute Defn for generic type;
+            KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Event", nameSpace);
+            genericTypeAttributeDefnBuilder.setLabel("event name");
+            KrmsAttributeDefinition genericTypeAttributeDefinition1 = krmsAttributeDefinitionService.createAttributeDefinition(genericTypeAttributeDefnBuilder.build());
+
+            // Attr for generic type;
+            KrmsTypeAttribute.Builder genericTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, genericTypeAttributeDefinition1.getId(), 1);
+
+            // Can use this generic type for KRMS bits that don't actually rely on services on the bus at this point in time
+            KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestGenericType", nameSpace);
+            krmsGenericTypeDefnBuilder.setServiceName(serviceName);
+            krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
+            krmsGenericTypeDefinition = krmsTypeRepository.createKrmsType(krmsGenericTypeDefnBuilder.build());
+
+        }
 
         return krmsGenericTypeDefinition;
     }
 
-    @Transactional
-    @Test
-    public void createAndExecuteTest1() {
-        String nameSpace = "KRMS_TEST";
-        ContextDefinition contextDefinition = createContextDefinition(nameSpace);
-        createAgendaDefinition(contextDefinition, "Tsunami", nameSpace);
 
-        Map<String,String> contextQualifiers = new HashMap<String,String>();
-        contextQualifiers.put("namespaceCode", nameSpace);
-        contextQualifiers.put("name", "Context1");
-        contextQualifiers.put("Context1Qualifier", "BLAH");
-        DateTime now = new DateTime();
+    private RuleDefinition createRuleDefinition(String nameSpace, String ruleName, ContextDefinition contextDefinition,
+            LogicalOperator operator, PropositionParametersBuilder ... pbs) {
+        RuleDefinition.Builder ruleDefBuilder =
+                RuleDefinition.Builder.create(null, ruleName, nameSpace, null, null);
+        RuleDefinition ruleDef1 = ruleBoService.createRule(ruleDefBuilder.build());
 
-        SelectionCriteria sc1 = SelectionCriteria.createCriteria(now, contextQualifiers,
-                Collections.singletonMap(AgendaDefinition.Constants.EVENT, "Tsunami"));
+        PropositionDefinition.Builder parentProposition =
+                PropositionDefinition.Builder.create(null, PropositionType.COMPOUND.getCode(), ruleDef1.getId(), null, null);
+        parentProposition.setCompoundComponents(new ArrayList<PropositionDefinition.Builder>());
 
-        Facts.Builder factsBuilder1 = Facts.Builder.create();
-        factsBuilder1.addFact(CAMPUS_CODE_TERM_NAME, "BL");
+        if (operator != null ) { parentProposition.setCompoundOpCode(operator.getCode()); }
 
-        ExecutionOptions xOptions1 = new ExecutionOptions();
-        xOptions1.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+        ruleDefBuilder = RuleDefinition.Builder.create(ruleDef1);
 
-        PerformanceLogger perfLog = new PerformanceLogger();
-        perfLog.log("starting rule execution");
-        EngineResults eResults1 = engine.execute(sc1, factsBuilder1.build(), xOptions1);
-        perfLog.log("finished rule execution", true);
-        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+        for (PropositionParametersBuilder params : pbs) {
 
-        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
+            StringBuilder propositionNameBuilder = new StringBuilder(ruleName);
 
-        assertEquals(1, ruleEvaluationResults1.size());
-        assertTrue("rule should have evaluated to true", ruleEvaluationResults1.get(0).getResult());
-    }
+            propositionNameBuilder.append("::");
+            for (Object[] param : params.params) {
+                propositionNameBuilder.append(param[0].toString());
+                propositionNameBuilder.append("--");
+            }
 
-    private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String nameSpace) {
-        // Rule 1
-        RuleDefinition.Builder ruleDefBuilder1 =
-            RuleDefinition.Builder.create(null, "Rule1", nameSpace, null, null);
-        RuleDefinition ruleDef1 = ruleBoService.createRule(ruleDefBuilder1.build());
+            PropositionDefinition.Builder propositionBuilder =
+                    createPropositionDefinition(propositionNameBuilder.toString(), params, ruleDef1);
 
+            if (pbs.length > 1) {
+                // add it to the compound prop
+                parentProposition.getCompoundComponents().add(propositionBuilder);
+            } else {
+                // if there is only one proposition to build, make it the parent
+                parentProposition = propositionBuilder;
+            }
+        }
 
-        ruleDefBuilder1 = RuleDefinition.Builder.create(ruleDef1);
-        ruleDefBuilder1.setProposition(createPropositionDefinition1(contextDefinition, ruleDef1));
-        ruleDef1 = ruleDefBuilder1.build();
+        ruleDefBuilder.setProposition(parentProposition);
+        ruleDef1 = ruleDefBuilder.build();
         ruleBoService.updateRule(ruleDef1);
 
         // Action
-        ActionDefinition.Builder actionDefBuilder1 = ActionDefinition.Builder.create(null, "testAction1", nameSpace, createKrmsActionTypeDefinition(nameSpace).getId(), ruleDef1.getId(), 1);
+        ActionDefinition.Builder actionDefBuilder1 = ActionDefinition.Builder.create(null, ruleName + "::TestAction", nameSpace, createKrmsActionTypeDefinition(nameSpace).getId(), ruleDef1.getId(), 1);
         ActionDefinition actionDef1 = actionBoService.createAction(actionDefBuilder1.build());
 
         return ruleDef1;
     }
 
-    private PropositionDefinition.Builder createPropositionDefinition1(ContextDefinition contextDefinition, RuleDefinition ruleDef1) {
-        // Proposition for rule 1
-        PropositionDefinition.Builder propositionDefBuilder1 =
-            PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), ruleDef1.getId(), null /* type code is only for custom props */, Collections.<PropositionParameter.Builder>emptyList());
-        propositionDefBuilder1.setDescription("is campus bloomington");
 
-        // PropositionParams for rule 1
-        List<PropositionParameter.Builder> propositionParams1 = new ArrayList<PropositionParameter.Builder>();
-        propositionParams1.add(
-                PropositionParameter.Builder.create(null, null, createTermDefinition1(contextDefinition).getId(), PropositionParameterType.TERM.getCode(), 1)
-        );
-        propositionParams1.add(
-                PropositionParameter.Builder.create(null, null, "BL", PropositionParameterType.CONSTANT.getCode(), 2)
-        );
-        propositionParams1.add(
-                PropositionParameter.Builder.create(null, null, "=", PropositionParameterType.OPERATOR.getCode(), 3)
-        );
+
+    private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+
+        PropositionParametersBuilder params1 = new PropositionParametersBuilder();
+        params1.add(createTermDefinition(CAMPUS_CODE_TERM_NAME, String.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params1.add("QC", PropositionParameterType.CONSTANT);
+        params1.add("=", PropositionParameterType.OPERATOR);
+
+        PropositionParametersBuilder params2 = new PropositionParametersBuilder();
+        params2.add(createTermDefinition(CAMPUS_CODE_TERM_NAME, String.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params2.add("BL", PropositionParameterType.CONSTANT);
+        params2.add("=", PropositionParameterType.OPERATOR);
+
+        return createRuleDefinition(nameSpace, agendaName+"::Rule1", contextDefinition, LogicalOperator.OR, params1, params2);
+    }
+
+
+    private PropositionDefinition.Builder createPropositionDefinition(String propDescription, PropositionParametersBuilder params, RuleDefinition parentRule) {
+        // Proposition for rule 2
+        PropositionDefinition.Builder propositionDefBuilder1 =
+                PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), parentRule.getId(),
+                        null /* type code is only for custom props */, Collections.<PropositionParameter.Builder>emptyList());
+        propositionDefBuilder1.setDescription(propDescription);
+
+        // PropositionParams for rule 2
+        List<PropositionParameter.Builder> propositionParams1 = params.build();
+
 
         // set the parent proposition so the builder will not puke
         for (PropositionParameter.Builder propositionParamBuilder : propositionParams1) {
@@ -348,123 +517,101 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         return propositionDefBuilder1;
     }
+    
+    
+    
+    private TermDefinition createTermDefinition(String termName, Class termValueType, ContextDefinition contextDefinition) {
 
-    private TermDefinition createTermDefinition1(ContextDefinition contextDefinition) {
+        // this may be called more than once, we only want to create one though
+        Map<String, String> queryArgs = new HashMap<String, String>();
+        queryArgs.put("specification.namespace", contextDefinition.getNamespace());
+        queryArgs.put("specification.name", termName);
+        TermBo termBo = getBoService().findByPrimaryKey(TermBo.class, queryArgs);
+        if (termBo != null) {
+            return TermBo.to(termBo);
+        }
+        
         // campusCode TermSpec
-        TermSpecificationDefinition campusCodeTermSpec =
-            TermSpecificationDefinition.Builder.create(null, "campusCodeTermSpec", contextDefinition.getId(),
-                    "java.lang.String").build();
-        campusCodeTermSpec = termBoService.createTermSpecification(campusCodeTermSpec);
+        TermSpecificationDefinition termSpec =
+            TermSpecificationDefinition.Builder.create(null, termName, contextDefinition.getNamespace(),
+                    termValueType.getCanonicalName()).build();
 
+        termSpec = termBoService.createTermSpecification(termSpec);
+        
         // Term 1
-        TermDefinition termDefinition1 =
-            TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(campusCodeTermSpec), null).build();
-        termDefinition1 = termBoService.createTermDefinition(termDefinition1);
+        TermDefinition termDefinition =
+            TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(termSpec), null).build();
+        termDefinition = termBoService.createTermDefinition(termDefinition);
 
-        return termDefinition1;
+        return termDefinition;
     }
 
 
-    @Transactional
-    @Test
-    public void createAndExecuteTest2() {
-        String nameSpace = "KRMS_TEST_2";
-        ContextDefinition contextDefinition = createContextDefinition(nameSpace);
-        createAgendaDefinition(contextDefinition, "Earthquake", nameSpace);
+    private RuleDefinition createRuleDefinition2(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
-        Map<String,String> contextQualifiers = new HashMap<String,String>();
-        contextQualifiers.put("namespaceCode", nameSpace);
-        contextQualifiers.put("name", "Context1");
-        contextQualifiers.put("Context1Qualifier", "BLAH");
-        Map<String,String> agendaQualifiers = new HashMap<String,String>();
-        agendaQualifiers.put(AgendaDefinition.Constants.EVENT, "Earthquake");
-        DateTime now = new DateTime();
+        PropositionParametersBuilder params1 = new PropositionParametersBuilder();
+        params1.add(createTermDefinition2(contextDefinition, nameSpace).getId(), PropositionParameterType.TERM);
+        params1.add("RESULT1", PropositionParameterType.CONSTANT);
+        params1.add("=", PropositionParameterType.OPERATOR);
 
-	    SelectionCriteria sc2 = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
+        PropositionParametersBuilder params2 = new PropositionParametersBuilder();
+        params2.add(createTermDefinition2(contextDefinition, nameSpace).getId(), PropositionParameterType.TERM);
+        params2.add("NotGonnaBeEqual", PropositionParameterType.CONSTANT);
+        params2.add("=", PropositionParameterType.OPERATOR);
 
-	    Facts.Builder factsBuilder2 = Facts.Builder.create();
-        factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");
-        factsBuilder2.addFact("prereqTermSpec", "prereqValue");
-
-	    ExecutionOptions xOptions2 = new ExecutionOptions();
-	    xOptions2.setFlag(ExecutionFlag.LOG_EXECUTION, true);
-
-
-        PerformanceLogger perfLog = new PerformanceLogger();
-        perfLog.log("starting rule execution");
-	    EngineResults eResults2 = engine.execute(sc2, factsBuilder2.build(), xOptions2);
-        perfLog.log("finished rule execution", true);
-
-        List<ResultEvent> rEvents2 = eResults2.getAllResults();
-
-	    List<ResultEvent> ruleEvaluationResults2 = eResults2.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
-
-	    assertEquals(1, ruleEvaluationResults2.size());
-	    assertTrue("rule should have evaluated to true", ruleEvaluationResults2.get(0).getResult());
-	    assertTrue("testAction (from type service configured in KRMSTestHarnessSpringBeans.xml) didn't fire",
-	            TestActionTypeService.actionFired("testAction"));
-	}
-
-    private RuleDefinition createRuleDefinition2(ContextDefinition contextDefinition, String nameSpace) {
-        KrmsTypeDefinition krmsActionTypeDefinition = createKrmsActionTypeDefinition(nameSpace);
-
-        // Rule 2
-        RuleDefinition.Builder ruleDefBuilder2 =
-            RuleDefinition.Builder.create(null, "Rule2", nameSpace, krmsActionTypeDefinition.getId(), null);
-        RuleDefinition ruleDef2 = ruleBoService.createRule(ruleDefBuilder2.build());
-
-
-        ruleDefBuilder2 = RuleDefinition.Builder.create(ruleDef2);
-        ruleDefBuilder2.setProposition(createPropositionDefinition2(contextDefinition, ruleDef2, nameSpace));
-        ruleDef2 = ruleDefBuilder2.build();
-        ruleBoService.updateRule(ruleDef2);
-
-        // Action
-        ActionDefinition.Builder actionDefBuilder2 = ActionDefinition.Builder.create(null, "testAction2", nameSpace, krmsActionTypeDefinition.getId(), ruleDef2.getId(), 1);
-        ActionDefinition actionDef2 = actionBoService.createAction(actionDefBuilder2.build());
-
-        return ruleDef2;
+        return createRuleDefinition(nameSpace, agendaName+"::Rule2", contextDefinition, LogicalOperator.AND, params1, params2);
     }
 
-    private PropositionDefinition.Builder createPropositionDefinition2(ContextDefinition contextDefinition, RuleDefinition ruleDef2, String nameSpace) {
+    private RuleDefinition createRuleDefinition3(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
-        // Proposition
-        PropositionDefinition.Builder propositionDefBuilder2 =
-            PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), ruleDef2.getId(), null /* type code is only for custom props */, Collections.<PropositionParameter.Builder>emptyList());
-        propositionDefBuilder2.setDescription("is campus bloomington");
+        FunctionDefinition gcdFunction = functionBoService.getFunctionByNameAndNamespace("gcd", contextDefinition.getNamespace());
 
-        // PropositionParams
-        List<PropositionParameter.Builder> propositionParams2 = new ArrayList<PropositionParameter.Builder>();
-        propositionParams2.add(
-                PropositionParameter.Builder.create(null, null, createTermDefinition2(contextDefinition, nameSpace).getId(), PropositionParameterType.TERM.getCode(), 1)
-        );
-        propositionParams2.add(
-                PropositionParameter.Builder.create(null, null, "RESULT1", PropositionParameterType.CONSTANT.getCode(), 2)
-        );
-        propositionParams2.add(
-                PropositionParameter.Builder.create(null, null, "=", PropositionParameterType.OPERATOR.getCode(), 3)
-        );
+        if (null == gcdFunction) {
+            // better configure a custom fuction for this
+            // KrmsType for custom function
+            KrmsTypeDefinition.Builder krmsFunctionTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestFunctionType", nameSpace);
+            krmsFunctionTypeDefnBuilder.setServiceName("testFunctionTypeService");
+            KrmsTypeDefinition krmsFunctionTypeDefinition = krmsTypeRepository.createKrmsType(krmsFunctionTypeDefnBuilder.build());
 
-        // set the parent proposition so the builder will not puke
-        for (PropositionParameter.Builder propositionParamBuilder : propositionParams2) {
-            propositionParamBuilder.setProposition(propositionDefBuilder2);
+            FunctionDefinition.Builder functionBuilder =
+                    FunctionDefinition.Builder.create(contextDefinition.getNamespace(), "gcd", Integer.class.getName(), krmsFunctionTypeDefinition.getId());
+
+            functionBuilder.getParameters().add(FunctionParameterDefinition.Builder.create("arg0", Integer.class.getName(), 0));
+            functionBuilder.getParameters().add(FunctionParameterDefinition.Builder.create("arg1", Integer.class.getName(), 1));
+            functionBuilder.setReturnType(Integer.class.getName());
+
+            gcdFunction = functionBoService.createFunction(functionBuilder.build());
         }
 
-        propositionDefBuilder2.setParameters(propositionParams2);
+        PropositionParametersBuilder params = new PropositionParametersBuilder();
 
-        return propositionDefBuilder2;
+        // leverage our stack based evaluation in reverse polish notation
+        params.add("1024", PropositionParameterType.CONSTANT);
+        params.add("768", PropositionParameterType.CONSTANT);
+        params.add(gcdFunction.getId(), PropositionParameterType.FUNCTION); // this should evaluate first: gcd(1024, 768)
+        params.add("256", PropositionParameterType.CONSTANT);
+        params.add("=", PropositionParameterType.OPERATOR); // this should evaluate second: gcdResult == 256
+
+        return createRuleDefinition(nameSpace, agendaName+"::Rule3", contextDefinition, null, params);
     }
 
     private TermDefinition createTermDefinition2(ContextDefinition contextDefinition, String nameSpace) {
+
+        Map<String, String> queryArgs = new HashMap<String, String>();
+        queryArgs.put("specification.namespace", contextDefinition.getNamespace());
+        queryArgs.put("specification.name", "outputTermSpec");
+        TermBo result = getBoService().findByPrimaryKey(TermBo.class, queryArgs);
+        if (result != null) return TermBo.to(result);
+
         // output TermSpec
         TermSpecificationDefinition outputTermSpec =
-            TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getId(),
+            TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getNamespace(),
                     "java.lang.String").build();
         outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
 
         // prereq TermSpec
         TermSpecificationDefinition prereqTermSpec =
-            TermSpecificationDefinition.Builder.create(null, "prereqTermSpec", contextDefinition.getId(),
+            TermSpecificationDefinition.Builder.create(null, PREREQ_TERM_NAME, contextDefinition.getNamespace(),
                     "java.lang.String").build();
         prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
 
@@ -479,13 +626,13 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
 		// KrmsType for TermResolver
 		KrmsTypeDefinition.Builder krmsTermResolverTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestResolverType", nameSpace);
-		krmsTermResolverTypeDefnBuilder.setServiceName("testResolverTypeService1");
+		krmsTermResolverTypeDefnBuilder.setServiceName("testTermResolverTypeService");
 
 		KrmsTypeDefinition krmsTermResolverTypeDefinition = krmsTypeRepository.createKrmsType(krmsTermResolverTypeDefnBuilder.build());
 
         // TermResolver
 		TermResolverDefinition termResolverDef =
-			TermResolverDefinition.Builder.create(null, nameSpace, "testResolver1", krmsTermResolverTypeDefinition.getId(),
+			TermResolverDefinition.Builder.create(null, contextDefinition.getNamespace(), "testResolver1", krmsTermResolverTypeDefinition.getId(),
 					TermSpecificationDefinition.Builder.create(outputTermSpec),
 					Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)),
 					null,
@@ -493,6 +640,30 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 		termResolverDef = termBoService.createTermResolver(termResolverDef);
 
         return termDefinition2;
+    }
+
+    private static class PropositionParametersBuilder {
+        
+        // poor OOD but this is quick and dirty :-P
+        private List<Object[]> params = new ArrayList<Object[]>();
+        
+        public PropositionParametersBuilder add(String value, PropositionParameterType type) {
+            if (type == null) throw new IllegalArgumentException("type must not be null");
+            params.add(new Object[]{value, type});
+            return this;
+        }
+        
+        public List<PropositionParameter.Builder> build() {
+            int seqCounter = 0;
+            
+            List<PropositionParameter.Builder> results = new ArrayList<PropositionParameter.Builder>();
+            
+            for (Object[] param : params) {
+                results.add(PropositionParameter.Builder.create(null, null, (String)param[0], ((PropositionParameterType)param[1]).getCode(), seqCounter++));
+            }
+
+            return results;
+        }
     }
 
 }

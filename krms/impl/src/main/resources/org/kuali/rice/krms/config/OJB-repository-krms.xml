@@ -379,8 +379,10 @@
         <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR"
             conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.FunctionParameterBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object">
-            <inverse-foreignkey field-ref="termId" />
+        <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.FunctionParameterBo"
+                               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+                               auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+            <inverse-foreignkey field-ref="functionId" />
         </collection-descriptor>
         <collection-descriptor name="categories" element-class-ref="org.kuali.rice.krms.impl.repository.CategoryBo"
                 collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
@@ -397,7 +399,7 @@
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="parameterType" column="TYP" jdbc-type="VARCHAR"  />
         <field-descriptor name="functionId" column="FUNC_ID" jdbc-type="VARCHAR"  />
-        <field-descriptor name="sequenceNumber" column="SEQ_NBR" jdbc-type="INTEGER" />
+        <field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER" />
     </class-descriptor>
 
     <class-descriptor class="org.kuali.rice.krms.impl.repository.CategoryBo" table="KRMS_CTGRY_T">

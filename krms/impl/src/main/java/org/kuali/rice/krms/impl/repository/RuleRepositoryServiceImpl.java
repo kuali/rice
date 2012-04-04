@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
@@ -66,12 +67,12 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 
     	//assuming 1 ?
     	ContextDefinition result = null;
-    	if (resultBos != null) {
+    	if (!CollectionUtils.isEmpty(resultBos)) {
     		if (resultBos.size() == 1) {
     			ContextBo bo = resultBos.iterator().next();
     			return ContextBo.to(bo);
     		}
-    		else throw new IllegalArgumentException("ambiguous qualifiers");
+    		else throw new IllegalArgumentException("Ambiguous context qualifiers, can not select more than one context.");
     	}
     	return result;
     }

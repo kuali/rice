@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermBoService;
@@ -36,8 +37,26 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
         TermBo term = (TermBo) document.getNewMaintainableObject().getDataObject();
         isValid &= validateId(term);
         isValid &= validateDescriptionNamespace(term);
+        isValid &= validateTermSpecId(term);
 
         return isValid;
+    }
+
+    private boolean validateTermSpecId(TermBo term) {
+        if (StringUtils.isBlank(term.getSpecificationId())) {
+            this.putFieldError(KRMSPropertyConstants.Term.TERM_SPECIFICATION_ID, "error.term.invalidTermSpecification");
+            return false;
+        }
+
+        TermSpecificationDefinition termSpec =
+                KrmsRepositoryServiceLocator.getTermBoService().getTermSpecificationById(term.getSpecificationId());
+
+        if (termSpec == null) {
+            this.putFieldError(KRMSPropertyConstants.Term.TERM_SPECIFICATION_ID, "error.term.invalidTermSpecification");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean validateId(TermBo term) {

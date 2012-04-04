@@ -137,14 +137,5 @@ public interface KrmsAttributeDefinitionService {
 	 */
 	public KrmsAttributeDefinitionBo getKrmsAttributeBo( String attributeName, String namespace);
 
-	/**
-	 * This method clears the cache of AttributeDefinitionBo objects.
-	 * <p>
-	 * Since searching for attribute definitions is a common operation,
-	 * the attribute definitions fetched from the database are cached to
-	 * improve performance.
-	 * <p>
-	 */
-	public void clearCache();
 	
 }

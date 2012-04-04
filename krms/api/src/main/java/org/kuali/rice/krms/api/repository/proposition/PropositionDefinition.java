@@ -406,10 +406,10 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
          */
 		public void setCompoundComponents(List<PropositionDefinition.Builder> components){
 			if (components == null || components.isEmpty()){
-				this.compoundComponents = Collections.unmodifiableList(new ArrayList<PropositionDefinition.Builder>());
+				this.compoundComponents = new ArrayList<PropositionDefinition.Builder>();
 				return;
 			}
-			this.compoundComponents = Collections.unmodifiableList(components);
+			this.compoundComponents = new ArrayList<PropositionDefinition.Builder>(components);
 		}
 
         /**

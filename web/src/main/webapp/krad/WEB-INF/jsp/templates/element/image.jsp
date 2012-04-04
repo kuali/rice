@@ -36,7 +36,8 @@
 </c:if>
 
 <img id="${element.id}" src="${element.source}" alt="${element.altText}"
-${height} ${style} ${styleClass} ${title} ${element.simpleDataAttributes} />
+${height} ${style} ${styleClass} ${title} ${element.simpleDataAttributes}
+${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}/>
 
 <%-- render caption header below --%>
 <c:if test="${!empty element.captionHeader.headerText && !element.captionHeaderAboveImage}">
@@ -47,3 +48,4 @@ ${height} ${style} ${styleClass} ${title} ${element.simpleDataAttributes} />
 <c:if test="${!empty element.cutline.messageText}">
   <krad:template component="${element.cutline}"/>
 </c:if>
+

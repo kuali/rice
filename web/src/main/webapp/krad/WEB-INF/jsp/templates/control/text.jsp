@@ -28,7 +28,8 @@
 <form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
             size="${control.size}" maxlength="${control.maxLength}" readonly="${control.readOnly}"
             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-            tabindex="${control.tabIndex}" minLength="${control.minLength}"/>
+            tabindex="${control.tabIndex}" minLength="${control.minLength}"
+            data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>
 <%--
 Use double quotes around watermark text to avoid apostrophe trouble
 credit - http://rayaspnet.blogspot.com/2011/03/how-to-handle-apostrophe-in-javascript.html
@@ -43,6 +44,3 @@ credit - http://rayaspnet.blogspot.com/2011/03/how-to-handle-apostrophe-in-javas
 <c:if test="${control.textExpand}">
 	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
 </c:if>
-
-<%-- write all data attributes to script --%>
-<krad:script component="${control}" role="dataScript" value="${control.allDataAttributesJs}"/>

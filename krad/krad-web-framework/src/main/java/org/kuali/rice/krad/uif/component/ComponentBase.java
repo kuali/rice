@@ -133,6 +133,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<PropertyReplacer> propertyReplacers;
     
     private Map<String,String> dataAttributes;
+    private String dataRoleAttribute;
+    private String dataTypeAttribute;
+    private String dataMetaAttribute;
 
     private Tooltip toolTip;
 
@@ -1567,6 +1570,54 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
+     *  the data role - used as a html5 data attribute (data-role) to specify the role
+     * @return the data role attribute value
+     */
+    public String getDataRoleAttribute() {
+        return dataRoleAttribute;
+    }
+
+    /**
+     * set the value of data-role attribute
+     * @param dataRoleAttribute the data role value
+     */
+    public void setDataRoleAttribute(String dataRoleAttribute) {
+        this.dataRoleAttribute = dataRoleAttribute;
+    }
+
+    /**
+     *  the data type - used as a html5 data attribute (data-type)
+     * @return the data type attribute value
+     */
+    public String getDataTypeAttribute() {
+        return dataTypeAttribute;
+    }
+
+    /**
+     * set the value of data-type attribute
+     * @param dataTypeAttribute the data type value
+     */
+    public void setDataTypeAttribute(String dataTypeAttribute) {
+        this.dataTypeAttribute = dataTypeAttribute;
+    }
+
+    /**
+     *  the data meta - used as a html5 data attribute (data-meta) for custom information
+     * @return the data meta attribute value
+     */
+    public String getDataMetaAttribute() {
+        return dataMetaAttribute;
+    }
+
+    /**
+     * set the value of data-meta attribute
+     * @param dataMetaAttribute the data meta value
+     */
+    public void setDataMetaAttribute(String dataMetaAttribute) {
+        this.dataMetaAttribute = dataMetaAttribute;
+    }
+
+    /**
      * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
      * The attributes that are complex objects (contain {}) they will be written through script.
      * The attritubes that are simple (contain no objects) will be written directly to the html of the
@@ -1618,6 +1669,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     @Override
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAllDataAttributesJs()
+     */
     public String getAllDataAttributesJs() {
         String js = "";
         if (getDataAttributes() == null) {

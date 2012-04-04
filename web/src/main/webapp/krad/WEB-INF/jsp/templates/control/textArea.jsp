@@ -28,7 +28,8 @@
 <form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                rows="${control.rows}" cols="${control.cols}" readonly="${control.readOnly}"
                cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
-               tabindex="${control.tabIndex}" maxLength="${control.maxLength}" minLength="${control.minLength}"/>
+               tabindex="${control.tabIndex}" maxLength="${control.maxLength}" minLength="${control.minLength}"
+               data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>
                
 <c:if test="${(!empty control.watermarkText)}">
 	<krad:script value="createWatermark('${control.id}', '${control.watermarkText}');" />
@@ -37,6 +38,3 @@
 <c:if test="${control.textExpand}">
 	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
 </c:if>
-
-<%-- write all data attributes to script --%>
-<krad:script component="${control}" role="dataScript" value="${control.allDataAttributesJs}"/>

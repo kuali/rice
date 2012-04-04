@@ -44,7 +44,9 @@
     </c:if>
 
     <a id="${field.id}" href="${field.hrefText}" target="${field.target}" title="${field.title}"
-      ${style} ${styleClass} ${tabindex} ${field.simpleDataAttributes} >${body}</a>
+      ${style} ${styleClass} ${tabindex} ${field.simpleDataAttributes}
+      ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>
+       ${body}</a>
 
   </krad:fieldLabel>
 

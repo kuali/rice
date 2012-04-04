@@ -21,5 +21,7 @@
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.InputField"/>
 
 <form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" type="file" disabled="${control.disabled}"
-            size="${control.size}" class="${control.styleClassesAsString}" tabIndex="${control.tabIndex}"/>
+            size="${control.size}" class="${control.styleClassesAsString}" tabIndex="${control.tabIndex}"
+            data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>
+
  

@@ -170,6 +170,4 @@ public class TextAreaControl extends ControlBase {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
-
-
 }

@@ -24,11 +24,20 @@ package org.kuali.rice.krad.uif.component;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.krad.uif.control.FileControl;
+import org.kuali.rice.krad.uif.control.TextAreaControl;
+import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.control.UserControl;
+import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.LinkField;
+import org.kuali.rice.krad.uif.field.MessageField;
 
 import java.util.HashMap;
 import java.util.TreeMap;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -37,6 +46,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ComponentBaseTest {
     private Component component;
+    private TreeMap<String, String> dataAttributes;
 
     @Before
     public void setUp() throws Exception {
@@ -44,7 +54,7 @@ public class ComponentBaseTest {
         component = new ActionField();
         component.setId("action1");
         // used a TreeMap since it makes specific guarantees as to the order of entries
-        TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
+        dataAttributes = new TreeMap<String, String>();
         // set data attributes - for testing purposes only - they do not have any functional significance
         dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
         dataAttributes.put("transitions", "3");
@@ -112,5 +122,27 @@ public class ComponentBaseTest {
     public void testGetAllDataAttributesJsWhenNull() throws Exception {
         component.setDataAttributes(null);
         assertEquals("simple attributes did not match", "", component.getAllDataAttributesJs());
+    }
+
+    /**
+     * test that controls that need to override getComplexAttributes work as expected
+     */
+    @Test
+    public void testGetComplexAttributesOverridingControls() {
+        Component[] overridingControls = {new TextControl(), new TextAreaControl(), new FileControl(), new UserControl()};
+        for (int i=0; i<overridingControls.length; i++) {
+            overridingControls[i].setDataAttributes(dataAttributes);
+            assertTrue(overridingControls[i].getClass() + " does not override getComplexAttributes",
+                    overridingControls[i].getAllDataAttributesJs().equalsIgnoreCase(
+                            overridingControls[i].getComplexDataAttributesJs()));
+        }
+        // other controls should have a different value for
+        Component[] nonOverridingControls = {new Image(), new ActionField(), new LinkField(), new MessageField()};
+        for (Component component: nonOverridingControls) {
+            component.setDataAttributes(dataAttributes);
+            assertFalse(component.getClass() + " should not override getComplexAttributes",
+                    component.getAllDataAttributesJs().equalsIgnoreCase(
+                            component.getComplexDataAttributesJs()));
+        }
     }
 }

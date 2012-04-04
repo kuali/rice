@@ -45,30 +45,7 @@
     </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
-   
-  <!-- base beans to hold data attributes -->
 
-  <bean id="Uif-InputField-LabelTop-with-test-data-attributes" parent="Uif-InputField-LabelTop" abstract="true">
-    <property name="dataAttributes">
-      <map>
-        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
-        <entry key="transitions" value="3"/>
-        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
-        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
-      </map>
-    </property>
-  </bean>
-
-  <bean id="Uif-InputField-with-test-data-attributes" parent="Uif-InputField" abstract="true">
-    <property name="dataAttributes">
-      <map>
-        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
-        <entry key="transitions" value="3"/>
-        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
-        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
-      </map>
-    </property>
-  </bean>
   <!--
   ********************************************************************************************************************
                                            Data Attributes View Menu
@@ -77,13 +54,13 @@
   <bean id="dataAttributesView-Menu" parent="Uif-TabNavigationGroup">
     <property name="items">
       <list>
-         <ref bean="navigationLink"/>
+         <ref bean="navigationLink_attrs"/>
       </list>
     </property>
   </bean>
 
   <!-- -->
-  <bean id="navigationLink" parent="Uif-NavigationActionLink" p:navigateToPageId="dataAttributesView-Page1"
+  <bean id="navigationLink_attrs" parent="Uif-NavigationActionLink" p:navigateToPageId="dataAttributesView-Page1"
         p:actionLabel="Page 1">
     <property name="dataAttributes">
       <map>
@@ -93,6 +70,9 @@
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
       </map>
     </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <!--
@@ -108,12 +88,12 @@
       <ref bean="textInputField_attrs"/>
       <ref bean="textAreaInputField_attrs"/>
       <ref bean="dropDown_attrs"/>
-      <ref bean="datePicker"/>
-      <ref bean="checkBox"/>
-      <ref bean="radioButton"/>
-      <ref bean="fileUpload"/>
-      <ref bean="userControl"/>
-      <ref bean="spinnerControl"/>
+      <ref bean="datePicker_attrs"/>
+      <ref bean="checkBox_attrs"/>
+      <ref bean="radioButton_attrs"/>
+      <ref bean="fileUpload_attrs"/>
+      <ref bean="userControl_attrs"/>
+      <ref bean="spinnerControl_attrs"/>
       </list>
     </property>
   </bean>
@@ -128,17 +108,17 @@
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
       <list>
-        <ref bean="imageField"/>
-        <ref bean="actionLink-noImage"/>
-        <ref bean="actionLink-imageRight"/>
-        <ref bean="actionLink-imageLeft"/>
+        <ref bean="imageField_attrs"/>
+        <ref bean="actionLink-noImage_attrs"/>
+        <ref bean="actionLink-imageRight_attrs"/>
+        <ref bean="actionLink-imageLeft_attrs"/>
         <ref bean="imageAction"/>
         <ref bean="buttonImageOnly"/>
         <ref bean="buttonImageBottom"/>
         <ref bean="buttonImageLeft"/>
         <ref bean="buttonImageRight"/>
         <ref bean="buttonImageTop"/>
-        <ref bean="linkField"/>
+        <ref bean="linkField_attrs"/>
         <ref bean="messageField"/>
       </list>
     </property>
@@ -146,7 +126,7 @@
 
   <!--
   ********************************************************************************************************************
-                                           All controls and widgets should be added below and their data attributes configured
+         All controls should be added below and their data attributes configured
   ********************************************************************************************************************
   -->
 
@@ -164,12 +144,15 @@
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
           </map>
         </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
 
   <!-- text area -->
-  <bean id="textAreaInputField_attrs" parent="Uif-InputField-with-test-data-attributes"
+  <bean id="textAreaInputField_attrs" parent="Uif-InputField"
         p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false"
@@ -185,6 +168,9 @@
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
           </map>
         </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
        </bean>
     </property>
   </bean>
@@ -200,12 +186,23 @@
             <bean parent="Uif-KeyLabelPair" p:key="None" p:value="none"/>
           </list>
         </property>
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
   
   <!-- date picker -->
-  <bean id="datePicker" parent="Uif-InputField-LabelTop-with-test-data-attributes" p:propertyName="field3" p:label="Date 2"
+  <bean id="datePicker_attrs" parent="Uif-InputField" p:propertyName="field3" p:label="Date 2"
         p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
     <property name="control">
       <bean parent="Uif-DateControl">
@@ -221,20 +218,40 @@
             <entry key="numberOfMonths" value="2"/>
           </map>
         </property>
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
 
   <!-- checkbox -->
-  <bean id="checkBox" parent="Uif-InputField-with-test-data-attributes" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+  <bean id="checkBox_attrs" parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
         p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
     <property name="control">
-      <bean parent="Uif-CheckboxControl"/>
+      <bean parent="Uif-CheckboxControl">
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+      </bean>
     </property>
   </bean>
 
   <!-- radio button -->
-  <bean id="radioButton" parent="Uif-InputField-with-test-data-attributes" p:propertyName="field5" p:label="Radio 2" p:width="auto"
+  <bean id="radioButton_attrs" parent="Uif-InputField" p:propertyName="field5" p:label="Radio 2" p:width="auto"
         p:instructionalText="RadioGroupControl using explicitly defined key-value pairs from the DD">
     <property name="control">
       <bean parent="Uif-VerticalRadioControl">
@@ -249,34 +266,70 @@
   </bean>
 
   <!-- file upload -->
-  <bean id="fileUpload" parent="Uif-InputField-with-test-data-attributes" p:propertyName="fileUpload" p:label="File Control">
+  <bean id="fileUpload_attrs" parent="Uif-InputField" p:propertyName="fileUpload" p:label="File Control">
     <property name="instructionalText" value="Use to upload files"/>
     <property name="control">
-      <bean parent="Uif-FileControl" p:size="30"/>
+      <bean parent="Uif-FileControl" p:size="30">
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
+      </bean>
     </property>
   </bean>
 
   <!-- user control -->
-  <bean id="userControl" parent="Uif-InputField-with-test-data-attributes" p:propertyName="testPerson.principalName" p:label="User Control">
+  <bean id="userControl_attrs" parent="Uif-InputField" p:propertyName="testPerson.principalName" p:label="User Control">
     <property name="instructionalText"
               value="Type user id and user full name will display after tabbing, or use lookup to select a person"/>
     <property name="control">
       <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="testPersonId"
-            p:personNamePropertyName="testPerson.name"/>
+            p:personNamePropertyName="testPerson.name">
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
+      </bean>
     </property>
   </bean>
 
   <!-- spinner control -->
-  <bean id="spinnerControl" parent="Uif-InputField-with-test-data-attributes" p:propertyName="field131" p:label="Spinner Control">
+  <bean id="spinnerControl_attrs" parent="Uif-InputField" p:propertyName="field131" p:label="Spinner Control">
     <property name="instructionalText"
               value="Click the arrows on the right side of the control to increment/decrement the value"/>
     <property name="control">
-      <bean parent="Uif-SpinnerControl"/>
+      <bean parent="Uif-SpinnerControl">
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
+      </bean>
     </property>
   </bean>
   
   <!-- image field -->
-  <bean id="imageField" parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
+  <bean id="imageField_attrs" parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
         p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
     <!-- set simple attributes on image -->
@@ -284,17 +337,15 @@
       <map>
         <entry key="iconTemplateName" value="cool-icon-%s.png"/>
         <entry key="transitions" value="3"/>
-      </map>
-    </property>
-    <!-- to get the selenium test to pass - but is meant to be initialized to a generated value by krad -->
-    <property name="image.id" value="imageField"/>
-    <!-- set complex attributes on image field since it has a wrapping div - where they can be set -->
-    <property name="dataAttributes">
-      <map>
         <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
       </map>
     </property>
+    <!-- to allow the selenium test to select the image - the default is that a generated value is set by krad -->
+    <property name="image.id" value="imageField_attrs_control"/>
+    <property name="image.dataRoleAttribute" value="role"/>
+    <property name="image.dataMetaAttribute" value="meta"/>
+    <property name="image.dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- action link base bean with data attributes -->
@@ -307,13 +358,16 @@
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
       </map>
     </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- action link no image -->
-  <bean id="actionLink-noImage" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');"/>
+  <bean id="actionLink-noImage_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');"/>
   
   <!-- action link with image right -->
-  <bean id="actionLink-imageRight" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image right" p:actionImageLocation="RIGHT"
+  <bean id="actionLink-imageRight_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image right" p:actionImageLocation="RIGHT"
         p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
@@ -322,7 +376,7 @@
   </bean>
 
   <!-- action link with image left -->
-  <bean id="actionLink-imageLeft" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image left (default)"
+  <bean id="actionLink-imageLeft_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image left (default)"
         p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
@@ -387,7 +441,7 @@
   </bean>
 
   <!-- link field -->
-  <bean id="linkField" parent="Uif-LinkField" p:linkLabel="Kuali Website"
+  <bean id="linkField_attrs" parent="Uif-LinkField" p:linkLabel="Kuali Website"
         p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links">
     <property name="dataAttributes">
       <map>
@@ -397,6 +451,9 @@
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
       </map>
     </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- message field -->

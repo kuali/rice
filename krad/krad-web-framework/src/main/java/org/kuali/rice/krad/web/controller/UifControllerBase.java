@@ -442,7 +442,6 @@ public abstract class UifControllerBase {
                 requestedComponentId);
 
         //Regenerate server message content for page
-        postedView.getCurrentPage().getValidationMessages().setDisplayNestedMessages(true);
         postedView.getCurrentPage().getValidationMessages().generateMessages(false, postedView, form,
                 postedView.getCurrentPage());
 

@@ -53,6 +53,56 @@
             </list>
           </property>
         </bean>
+        <bean id="Demo-ValidationLayout-SectionsPage-NoTooltip" 
+              parent="Uif-Page" p:title="Standard Sections Page - No tooltip">
+          <property name="items">
+            <list>
+              <ref bean="Demo-ValidationLayout-Section1-NoTooltip"/>
+              <ref bean="Demo-ValidationLayout-Section2-NoTooltip"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-ValidationLayout-SectionsPage-NoSectionMessages"
+                      parent="Uif-Page" p:title="Standard Sections Page - displayMessages off for Sections">
+          <property name="items">
+            <list>
+              <bean id="Demo-ValidationLayout-Section1-NoMessages" parent="Demo-ValidationLayout-Section1">
+                <property name="validationMessages.displayMessages" value="false"/>
+              </bean>
+              <bean id="Demo-ValidationLayout-Section2-NoMessages" parent="Demo-ValidationLayout-Section2">
+                <property name="validationMessages.displayMessages" value="false"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-ValidationLayout-SectionsPage-NoLabels"
+                              parent="Uif-Page" p:title="Standard Sections Page - displayFieldLabelWithMessages
+                               off for Sections">
+          <property name="items">
+            <list>
+              <bean id="Demo-ValidationLayout-Section1-NoLabels" parent="Demo-ValidationLayout-Section1">
+                <property name="validationMessages.displayFieldLabelWithMessages" value="false"/>
+              </bean>
+              <bean id="Demo-ValidationLayout-Section2-NoLabels" parent="Demo-ValidationLayout-Section2">
+                <property name="validationMessages.displayFieldLabelWithMessages" value="false"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-ValidationLayout-SectionsPage-NoCollapse"
+                                      parent="Uif-Page" p:title="Standard Sections Page - displayFieldLabelWithMessages
+                                       off for Sections">
+          <property name="items">
+            <list>
+              <bean id="Demo-ValidationLayout-Section1-NoCollapse" parent="Demo-ValidationLayout-Section1">
+                <property name="validationMessages.collapseAdditionalFieldLinkMessages" value="false"/>
+              </bean>
+              <bean id="Demo-ValidationLayout-Section2-NoCollapse" parent="Demo-ValidationLayout-Section2">
+                <property name="validationMessages.collapseAdditionalFieldLinkMessages" value="false"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
         <bean id="Demo-ValidationLayout-NoSectionsPage" parent="Uif-Page">
           <property name="items">
             <list>
@@ -109,9 +159,19 @@
   <bean id="Demo-ValidationLayout-NavMenu" parent="Uif-MenuNavigationGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+        <bean parent="Uif-HeaderTwo" p:headerText="Options"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPage"
-              p:actionLabel="Sections"/>
+              p:actionLabel="Sections - Default"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPage-NoTooltip"
+              p:actionLabel="No Tooltips"/>
+        <bean parent="Uif-NavigationActionLink"
+              p:navigateToPageId="Demo-ValidationLayout-SectionsPage-NoSectionMessages"
+              p:actionLabel="Section Messages off"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPage-NoLabels"
+              p:actionLabel="Labels off"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPage-NoCollapse"
+              p:actionLabel="Collapse off"/>
+        <bean parent="Uif-HeaderTwo" p:headerText="Specific Layouts"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-NoSectionsPage"
                       p:actionLabel="No Sections"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SubSectionsPage"
@@ -360,6 +420,95 @@
     </list>
     </property>
   </bean>
+  
+  <bean id="Demo-ValidationLayout-NoTooltipField" p:validationMessages.useTooltip="false" 
+        parent="Uif-InputField-LabelTop"/>
+
+  <bean id="Demo-ValidationLayout-Section1-NoTooltip" parent="Uif-Disclosure-HorizontalBoxSection">
+      <property name="title" value="Section 1 Title"/>
+      <property name="instructionalText" value="Fields are direct children of this section"/>
+      <property name="items">
+        <list>
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field1" p:label="Field 1">
+            <property name="control">
+              <bean parent="Uif-TextAreaControl"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field2" p:label="Field 2">
+            <property name="control">
+              <bean parent="Uif-TextControl"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field3" p:label="Field 3">
+            <property name="control">
+              <bean parent="Uif-DropdownControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field4" p:label="Field 4">
+            <property name="control">
+              <bean parent="Uif-MultiSelectControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field117" p:label="Radio 1" p:width="auto"
+                p:instructionalText="RadioGroupControl using an optionsFinder">
+            <property name="control">
+              <bean parent="Uif-VerticalRadioControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+                p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
+            <property name="control">
+              <bean parent="Uif-CheckboxControl"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field114" p:label="Checkboxes 1"
+                p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto">
+            <property name="control">
+              <bean parent="Uif-VerticalCheckboxesControl"/>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+            </property>
+          </bean>
+
+        </list>
+      </property>
+    </bean>
+
+    <bean id="Demo-ValidationLayout-Section2-NoTooltip" parent="Uif-VerticalBoxSection">
+      <property name="title" value="Section 1 Title"/>
+      <property name="instructionalText" value="Fields are direct children of this section"/>
+      <property name="items">
+        <list>
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field5" p:label="Field 5">
+            <property name="control">
+              <bean parent="Uif-TextAreaControl"/>
+            </property>
+          </bean>
+
+          <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="field6" p:label="Field 6">
+            <property name="control">
+              <bean parent="Uif-TextControl"/>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
 
 
 </beans>

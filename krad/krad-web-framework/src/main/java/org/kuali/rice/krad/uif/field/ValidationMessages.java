@@ -61,15 +61,11 @@ public class ValidationMessages extends FieldBase {
     // Message construction variables
     private boolean displayFieldLabelWithMessages;
 
-    // Message display flags
-    private boolean displayNestedMessages;
-    private boolean allowMessageRepeat;
+    private boolean collapseAdditionalFieldLinkMessages;
 
     private boolean displayMessages;
-    private boolean displayErrorMessages;
-    private boolean displayInfoMessages;
-    private boolean displayWarningMessages;
-    private boolean displayCounts;
+
+    private boolean useTooltip;
 
     // Error messages
     private List<String> errors;
@@ -80,9 +76,6 @@ public class ValidationMessages extends FieldBase {
     private int errorCount;
     private int warningCount;
     private int infoCount;
-    
-    //isInputField
-    private boolean onInputField;
 
     // not used
     private boolean displayLockMessages;
@@ -133,19 +126,16 @@ public class ValidationMessages extends FieldBase {
 
         // TODO: need constants
         if (!displayFieldLabelWithMessages) {
-            this.addStyleClass("noLabels");
+            this.addStyleClass("uif-noLabels");
         }
 
-        if (displayMessages) {
+        for (String key : masterKeyList) {
 
-            for (String key : masterKeyList) {
+            errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
 
-                errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
+            warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
 
-                warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
-
-                infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
-            }
+            infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
         }
 
         //Check for errors that are not matched on the page(only applies when parent is page)
@@ -166,12 +156,11 @@ public class ValidationMessages extends FieldBase {
         this.addDataAttribute("messagesFor", parent.getId());
 
         if(parent instanceof InputField){
-            this.onInputField = true;
             
             parent.addDataAttribute("parent", parentContainerId);
             parent.addDataAttribute("validationMessages", "{"
-                    + "displayIcon:" + true + ","
-                    + "displayTooltip:"+ true + ","
+                    + "displayMessages:" + displayMessages + ","
+                    + "useTooltip:"+ useTooltip + ","
                     + "serverErrors:" + convertStringListToJsArray(errors) + ","
                     + "serverWarnings:" + convertStringListToJsArray(warnings) + ","
                     + "serverInfo:" + convertStringListToJsArray(infos)
@@ -210,9 +199,9 @@ public class ValidationMessages extends FieldBase {
 
             parent.addDataAttribute("validationMessages", "{"
                     + "summarize:" + true + ","
-                    + "displayErrors:" + true + ","
-                    + "displayWarnings:" + true + ","
-                    + "displayInfo:" + true + ","
+                    + "displayMessages:" + displayMessages + ","
+                    + "collapseFieldMessages:" + collapseAdditionalFieldLinkMessages + ","
+                    + "displayLabel:" + displayFieldLabelWithMessages + ","
                     + "pageLevel:" + pageLevel + ","
                     + "forceShow:" + forceShow + ","
                     + "sections:" + convertStringListToJsArray(sectionIds) + ","
@@ -222,7 +211,6 @@ public class ValidationMessages extends FieldBase {
                     + "serverInfo:" + convertStringListToJsArray(infos)
                     + "}");
         }
-        //TODO add fieldGroup check if necessary
 
         this.setStyle("display: none;");
     }
@@ -361,51 +349,12 @@ public class ValidationMessages extends FieldBase {
                 ef = ((ContainerBase) c).getValidationMessages();
             }
             if (ef != null) {
-                if (!allowMessageRepeat) {
-                    ef.setDisplayMessages(false);
-                }
                 keyList.addAll(ef.getKeys(c));
                 addNestedKeys(keyList, c);
             }
         }
     }
 
-    /**
-     * If displayErrorMessages is true, error messages will be displayed,
-     * otherwise they will not. Unlike many of the options contained on
-     * ValidationMessages, this will not effect client side validations; ie this will
-     * not turn off errorMessage display for client side validation, as it may
-     * prevent a user from completing a form. To turn off client side validation
-     * AND its messaging use the applyClientSide flag on the Constraint itself.
-     *
-     * TODO this may be changed to: if this is set on a field it will attempt
-     * show client side validation errors in the closest parent container error
-     * container
-     *
-     * @return
-     */
-    public boolean isDisplayErrorMessages() {
-        return this.displayErrorMessages;
-    }
-
-    public void setDisplayErrorMessages(boolean displayErrorMessages) {
-        this.displayErrorMessages = displayErrorMessages;
-    }
-
-    /**
-     * If displayInfoMessages is true, info messages will be displayed,
-     * otherwise they will not. Client side validation has no concept of warning
-     * or info messages, so this will not effect client side functionality.
-     *
-     * @return
-     */
-    public boolean isDisplayInfoMessages() {
-        return this.displayInfoMessages;
-    }
-
-    public void setDisplayInfoMessages(boolean displayInfoMessages) {
-        this.displayInfoMessages = displayInfoMessages;
-    }
 
     public boolean isDisplayLockMessages() {
         return this.displayLockMessages;
@@ -420,20 +369,6 @@ public class ValidationMessages extends FieldBase {
         this.displayLockMessages = displayLockMessages;
     }
 
-    /**
-     * If displayWarningMessages is true, warning messages will be displayed,
-     * otherwise they will not. Client side validation has no concept of warning
-     * or info messages, so this will not effect client side functionality.
-     *
-     * @return
-     */
-    public boolean isDisplayWarningMessages() {
-        return this.displayWarningMessages;
-    }
-
-    public void setDisplayWarningMessages(boolean displayWarningMessages) {
-        this.displayWarningMessages = displayWarningMessages;
-    }
 
     /**
      * AdditionalKeysToMatch is an additional list of keys outside of the
@@ -504,64 +439,6 @@ public class ValidationMessages extends FieldBase {
         this.displayMessages = displayMessages;
     }
 
-    /**
-     * If true, this ValidationMessages will show messages related to the nested
-     * components of its parent component, and not just those related only to
-     * its parent component. Otherwise, it will be up to the individual
-     * components to display their messages, if any, in their ValidationMessages.
-     *
-     * @return the displayNestedMessages
-     */
-    public boolean isDisplayNestedMessages() {
-        return this.displayNestedMessages;
-    }
-
-    /**
-     * @param displayNestedMessages the displayNestedMessages to set
-     */
-    public void setDisplayNestedMessages(boolean displayNestedMessages) {
-        this.displayNestedMessages = displayNestedMessages;
-    }
-
-    /**
-     * If true, when this is set on an ValidationMessages whose parentComponent has
-     * nested Containers or AttributeFields, it will allow those fields to also
-     * show their ValidationMessages messages. Otherwise, it will turn off the the
-     * display of those messages. This can be used to avoid repeating
-     * information to the user per field, if errors are already being displayed
-     * at the parent's level. This flag has no effect if displayNestedMessages
-     * is false on this ValidationMessages.
-     *
-     * @return the allowMessageRepeat
-     */
-    public boolean isAllowMessageRepeat() {
-        return this.allowMessageRepeat;
-    }
-
-    /**
-     * @param allowMessageRepeat the allowMessageRepeat to set
-     */
-    public void setAllowMessageRepeat(boolean allowMessageRepeat) {
-        this.allowMessageRepeat = allowMessageRepeat;
-    }
-
-    /**
-     * displayCounts is true if the counts of errors, warning, and info messages
-     * within this ValidationMessages should be displayed (includes count of nested
-     * messages if displayNestedMessages is true).
-     *
-     * @return
-     */
-    public boolean isDisplayCounts() {
-        return this.displayCounts;
-    }
-
-    /**
-     * @param displayCounts the displayCounts to set
-     */
-    public void setDisplayCounts(boolean displayCounts) {
-        this.displayCounts = displayCounts;
-    }
 
     /**
      * The list of error messages found for the keys that were matched on this
@@ -591,36 +468,6 @@ public class ValidationMessages extends FieldBase {
      */
     public List<String> getInfos() {
         return this.infos;
-    }
-
-    /**
-     * The count of error messages found for the keys that were matched on this
-     * ValidationMessages This is generated and cannot be set
-     *
-     * @return the errorCount
-     */
-    public int getErrorCount() {
-        return this.errorCount;
-    }
-
-    /**
-     * The count of warning messages found for the keys that were matched on
-     * this ValidationMessages This is generated and cannot be set
-     *
-     * @return the warningCount
-     */
-    public int getWarningCount() {
-        return this.warningCount;
-    }
-
-    /**
-     * The count of info messages found for the keys that were matched on this
-     * ValidationMessages This is generated and cannot be set
-     *
-     * @return the infoCount
-     */
-    public int getInfoCount() {
-        return this.infoCount;
     }
 
     private String getGrowlScript(View view) {
@@ -694,11 +541,39 @@ public class ValidationMessages extends FieldBase {
         return growlScript;
     }
 
-    public boolean isOnInputField() {
-        return onInputField;
+    /**
+     * When collapseAdditionalFieldLinkMessages is set to true, the messages generated on field links will be
+     * summarized to limit the space they take up with an appendage similar to [+n message type] appended for additional
+     * messages that are omitted.  When this flag is false, all messages will be part of the link separated by
+     * a comma.
+     * @return if field link messages are being collapsed
+     */
+    public boolean isCollapseAdditionalFieldLinkMessages() {
+        return collapseAdditionalFieldLinkMessages;
     }
 
-    public void setOnInputField(boolean onInputField) {
-        this.onInputField = onInputField;
+    /**
+     * Set collapseAdditionalFieldLinkMessages
+     * @param collapseAdditionalFieldLinkMessages - true if field link messages are being collapsed
+     */
+    public void setCollapseAdditionalFieldLinkMessages(boolean collapseAdditionalFieldLinkMessages) {
+        this.collapseAdditionalFieldLinkMessages = collapseAdditionalFieldLinkMessages;
+    }
+
+    /**
+     * When true, use the tooltip on fields to display their relevant messages.  When false, these messages
+     * will appear directly below the control.
+     * @return true if using tooltips for messages, false to display below control
+     */
+    public boolean isUseTooltip() {
+        return useTooltip;
+    }
+
+    /**
+     * Set the useTooltip flag
+     * @param useTooltip - if true show tooltip, otherwise show messages below field control
+     */
+    public void setUseTooltip(boolean useTooltip) {
+        this.useTooltip = useTooltip;
     }
 }

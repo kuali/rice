@@ -218,54 +218,43 @@ function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement
  * @param change forces the tooltip show call to deal with placement issues when changing internal content
  */
 function showMessageTooltip(fieldId, showAndClose, change) {
-    var elementInfo = getHoverElement(fieldId);
-    var tooltipElement = jQuery(elementInfo.element);
-    if (elementInfo.type == "fieldset") {
-        tooltipElement = tooltipElement.filter("label:first");
-    }
-
-    var options = {
-        position:"top",
-        align:"left",
-        divStyle:{margin:getTooltipMargin(tooltipElement)},
-        distance:0,
-        manageMouseEvents:false,
-        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
-        alwaysVisible:false,
-        tail:{align:"left"}
-    };
-
-    if (elementInfo.themeMargins) {
-        options.themeMargins = elementInfo.themeMargins;
-    }
-
-    var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
     var data = jQuery("#" + fieldId).data("validationMessages");
-
-    if (hasMessages) {
-        if (data.tooltipTimer) {
-            //if there is a timer for this field in place, stop the timer from completing, to handle the new
-            //show logic
-            clearTimeout(data.tooltipTimer);
+    if(data.useTooltip){
+        var elementInfo = getHoverElement(fieldId);
+        var tooltipElement = jQuery(elementInfo.element);
+        if (elementInfo.type == "fieldset") {
+            tooltipElement = tooltipElement.filter("label:first");
         }
 
-        options.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
-        options.themeName = data.tooltipTheme;
-        //options.afterShown
+        var options = {
+            position:"top",
+            align:"left",
+            divStyle:{margin:getTooltipMargin(tooltipElement)},
+            distance:0,
+            manageMouseEvents:false,
+            themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
+            alwaysVisible:false,
+            tail:{align:"left"}
+        };
 
-        if (!tooltipElement.IsBubblePopupOpen()) {
-            //timer to get around bizarre interactions with the iframe resize logic
-            data.showTimer = setTimeout(function () {
-                tooltipElement.SetBubblePopupOptions(options, true);
-                tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
-                tooltipElement.ShowBubblePopup()
-            }, 250);
+        if (elementInfo.themeMargins) {
+            options.themeMargins = elementInfo.themeMargins;
         }
-        else if (tooltipElement.IsBubblePopupOpen()) {
-            console.log("change");
-            if (change) {
-                //if the messages shown were changed, reshow to get around placement issues
 
+        var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
+
+        if (hasMessages) {
+            if (data.tooltipTimer) {
+                //if there is a timer for this field in place, stop the timer from completing, to handle the new
+                //show logic
+                clearTimeout(data.tooltipTimer);
+            }
+
+            options.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+            options.themeName = data.tooltipTheme;
+            //options.afterShown
+
+            if (!tooltipElement.IsBubblePopupOpen()) {
                 //timer to get around bizarre interactions with the iframe resize logic
                 data.showTimer = setTimeout(function () {
                     tooltipElement.SetBubblePopupOptions(options, true);
@@ -273,17 +262,30 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                     tooltipElement.ShowBubblePopup()
                 }, 250);
             }
-        }
+            else if (tooltipElement.IsBubblePopupOpen()) {
+                console.log("change");
+                if (change) {
+                    //if the messages shown were changed, reshow to get around placement issues
 
-        if (showAndClose) {
-            //setup a timer to close the tooltip automatically
-            data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
-            jQuery("#" + fieldId).data("validationMessages", data);
-        }
+                    //timer to get around bizarre interactions with the iframe resize logic
+                    data.showTimer = setTimeout(function () {
+                        tooltipElement.SetBubblePopupOptions(options, true);
+                        tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
+                        tooltipElement.ShowBubblePopup()
+                    }, 250);
+                }
+            }
 
-    }
-    else {
-        hideMessageTooltip(fieldId);
+            if (showAndClose) {
+                //setup a timer to close the tooltip automatically
+                data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
+                jQuery("#" + fieldId).data("validationMessages", data);
+            }
+
+        }
+        else {
+            hideMessageTooltip(fieldId);
+        }
     }
 }
 
@@ -297,122 +299,129 @@ function writeMessagesAtField(id) {
 
     var data = jQuery("#" + id).data("validationMessages");
 
-    //initialize data if not present
-    if (!data.errors) {
-        data.errors = [];
-    }
-    if (!data.warnings) {
-        data.warnings = [];
-    }
-    if (!data.info) {
-        data.info = [];
-    }
-
-    var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
-    //ensure the messagesDiv is hidden and empty
-    jQuery(messagesDiv).hide();
-    jQuery(messagesDiv).empty();
-
-    //generate client side based messages
-    var clientMessages = jQuery("<div class='uif-clientMessageItems'><ul>"
-            + generateListItems(data.errors, "uif-errorMessageItem-field", 0, false, errorImage)
-            + generateListItems(data.warnings, "uif-warningMessageItem-field", 0, false, warningImage)
-            + generateListItems(data.info, "uif-infoMessageItem-field", 0, false, infoImage) + "</ul></div>");
-
-    //generate server side based messages
-    var serverMessages = jQuery("<div class='uif-serverMessageItems'><ul>"
-            + generateListItems(data.serverErrors, "uif-errorMessageItem-field", 0, false, errorImage)
-            + generateListItems(data.serverWarnings, "uif-warningMessageItem-field", 0, false, warningImage)
-            + generateListItems(data.serverInfo, "uif-infoMessageItem-field", 0, false, infoImage) + "</ul></div>");
-
-    var hasServerMessages = false;
-    //only append if messages exist
-    if (jQuery(clientMessages).find("ul").children().length) {
-        jQuery(clientMessages).appendTo(messagesDiv);
-    }
-
-    if (jQuery(serverMessages).find("ul").children().length) {
-        jQuery(serverMessages).appendTo(messagesDiv);
-        hasServerMessages = true;
-    }
-
-    var showImage = true;
-    //do not show the message icon next to field if this field is in a table layout
-    if (jQuery("#" + id).parent().is("td")) {
-        showImage = false;
-    }
-
-    //remove any image that may already be present
-    jQuery("#" + id + " > .uif-validationImage").remove();
-
-    //show appropriate icons/styles based on message severity level
-    if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
-        if (data.errors.length) {
-            jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientErrorDiv");
+    if(data.displayMessages){
+        //initialize data if not present
+        if (!data.errors) {
+            data.errors = [];
         }
-        jQuery("#" + id).addClass("uif-hasError");
-        if (showImage) {
-            jQuery(messagesDiv).before(errorImage);
+        if (!data.warnings) {
+            data.warnings = [];
+        }
+        if (!data.info) {
+            data.info = [];
         }
 
-        if (hasServerMessages) {
-            data.tooltipTheme = "kr-error-ss";
+        var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
+        //ensure the messagesDiv is hidden and empty
+        if(data.useTooltip){
+            messagesDiv.hide();
+        }
+        else{
+            messagesDiv.show();
+        }
+        messagesDiv.empty();
+
+        //generate client side based messages
+        var clientMessages = jQuery("<div class='uif-clientMessageItems'><ul>"
+                + generateListItems(data.errors, "uif-errorMessageItem-field", 0, false, errorImage)
+                + generateListItems(data.warnings, "uif-warningMessageItem-field", 0, false, warningImage)
+                + generateListItems(data.info, "uif-infoMessageItem-field", 0, false, infoImage) + "</ul></div>");
+
+        //generate server side based messages
+        var serverMessages = jQuery("<div class='uif-serverMessageItems'><ul>"
+                + generateListItems(data.serverErrors, "uif-errorMessageItem-field", 0, false, errorImage)
+                + generateListItems(data.serverWarnings, "uif-warningMessageItem-field", 0, false, warningImage)
+                + generateListItems(data.serverInfo, "uif-infoMessageItem-field", 0, false, infoImage) + "</ul></div>");
+
+        var hasServerMessages = false;
+        //only append if messages exist
+        if (jQuery(clientMessages).find("ul").children().length) {
+            jQuery(clientMessages).appendTo(messagesDiv);
+        }
+
+        if (jQuery(serverMessages).find("ul").children().length) {
+            jQuery(serverMessages).appendTo(messagesDiv);
+            hasServerMessages = true;
+        }
+
+        var showImage = true;
+        //do not show the message icon next to field if this field is in a table layout
+        if (jQuery("#" + id).parent().is("td")) {
+            showImage = false;
+        }
+
+        //remove any image that may already be present
+        jQuery("#" + id + " > .uif-validationImage").remove();
+
+        //show appropriate icons/styles based on message severity level
+        if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
+            if (data.errors.length) {
+                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientErrorDiv");
+            }
+            jQuery("#" + id).addClass("uif-hasError");
+            if (showImage) {
+                jQuery(messagesDiv).before(errorImage);
+            }
+
+            if (hasServerMessages) {
+                data.tooltipTheme = "kr-error-ss";
+            }
+            else {
+                data.tooltipTheme = "kr-error-cs"
+            }
+
+            handleTabStyle(id, true, false, false);
+        }
+        else if (jQuery(messagesDiv).find(".uif-warningMessageItem-field").length) {
+            if (data.warnings.length) {
+                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientWarningDiv");
+            }
+            jQuery("#" + id).addClass("uif-hasWarning");
+            if (showImage) {
+                jQuery(messagesDiv).before(warningImage);
+            }
+
+            if (hasServerMessages) {
+                data.tooltipTheme = "kr-warning-ss";
+            }
+            else {
+                data.tooltipTheme = "kr-warning-cs"
+            }
+
+            handleTabStyle(id, false, true, false);
+        }
+        else if (jQuery(messagesDiv).find(".uif-infoMessageItem-field").length) {
+            if (data.info.length) {
+                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientInfoDiv");
+            }
+            jQuery("#" + id).addClass("uif-hasInfo");
+            if (showImage) {
+                jQuery(messagesDiv).before(infoImage);
+            }
+
+            if (hasServerMessages) {
+                data.tooltipTheme = "kr-info-ss";
+            }
+            else {
+                data.tooltipTheme = "kr-info-cs"
+            }
+
+            handleTabStyle(id, false, false, true);
         }
         else {
-            data.tooltipTheme = "kr-error-cs"
+            messagesDiv.hide();
+            jQuery("#" + id).removeClass("uif-hasError");
+            jQuery("#" + id).removeClass("uif-hasWarning");
+            jQuery("#" + id).removeClass("uif-hasInfo");
+            handleTabStyle(id, false, false, false);
         }
 
-        handleTabStyle(id, true, false, false);
+        //initialize mouse handlers for tooltips
+        if (!data.init && data.useTooltip) {
+            initMessageTooltip(id);
+            data.init = true;
+        }
     }
-    else if (jQuery(messagesDiv).find(".uif-warningMessageItem-field").length) {
-        if (data.warnings.length) {
-            jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientWarningDiv");
-        }
-        jQuery("#" + id).addClass("uif-hasWarning");
-        if (showImage) {
-            jQuery(messagesDiv).before(warningImage);
-        }
-
-        if (hasServerMessages) {
-            data.tooltipTheme = "kr-warning-ss";
-        }
-        else {
-            data.tooltipTheme = "kr-warning-cs"
-        }
-
-        handleTabStyle(id, false, true, false);
-    }
-    else if (jQuery(messagesDiv).find(".uif-infoMessageItem-field").length) {
-        if (data.info.length) {
-            jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientInfoDiv");
-        }
-        jQuery("#" + id).addClass("uif-hasInfo");
-        if (showImage) {
-            jQuery(messagesDiv).before(infoImage);
-        }
-
-        if (hasServerMessages) {
-            data.tooltipTheme = "kr-info-ss";
-        }
-        else {
-            data.tooltipTheme = "kr-info-cs"
-        }
-
-        handleTabStyle(id, false, false, true);
-    }
-    else {
-        jQuery("#" + id).removeClass("uif-hasError");
-        jQuery("#" + id).removeClass("uif-hasWarning");
-        jQuery("#" + id).removeClass("uif-hasInfo");
-        handleTabStyle(id, false, false, false);
-    }
-
-    //initialize mouse handlers for tooltips
-    if (!data.init) {
-        initMessageTooltip(id);
-        data.init = true;
-    }
-
     jQuery("#" + id).data("validationMessages", data);
 }
 
@@ -505,7 +514,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
             }
         }
 
-        if (showMessages && (data.displayErrors || data.displayWarnings || data.displayInfo)) {
+        if (showMessages) {
 
             var newList = jQuery("<ul class='uif-validationMessagesList'></ul>");
             newList = generateSectionLevelMessages(id, data, newList);
@@ -516,7 +525,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
             else {
                 //if not generating summaries just output field links
                 for (var key in messageMap) {
-                    var link = generateFieldLink(messageMap[key], key);
+                    var link = generateFieldLink(messageMap[key], key, data.collapseFieldMessages, data.displayLabel);
                     newList = writeMessageItemToList(link, newList);
                 }
             }
@@ -567,6 +576,16 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
 
     if (!pageLevel && parent) {
         handleMessagesAtGroup(parent, fieldId, fieldData);
+    }
+}
+
+function cascadeOptions(id, isGroup){
+    var parent = jQuery("#" + id).data("parent");
+    if(isGroup){
+
+    }
+    else{
+        cascade
     }
 }
 
@@ -742,11 +761,16 @@ function clearMessages(messagesForId) {
  * @param newList - the new content to write
  */
 function writeMessages(messagesForId, newList) {
+    var data = jQuery("#" + messagesForId).data("validationMessages");
     var messagesDiv = jQuery("[data-messagesFor='" + messagesForId + "']");
-    if (newList.children().length) {
+    if (newList.children().length && data.displayMessages) {
         jQuery(messagesDiv).show();
         jQuery(newList).appendTo(messagesDiv);
         messageSummariesShown = true;
+    }
+    else if(newList.children().length && !data.displayMessages){
+        jQuery(messagesDiv).hide();
+        jQuery(newList).appendTo(messagesDiv);
     }
     else {
         jQuery(messagesDiv).hide();
@@ -804,10 +828,11 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
  * @param newList - the ul being built by this call
  */
 function generateSummaries(id, messageMap, sections, order, newList) {
+    var data = jQuery("#" + id).data("validationMessages");
     //if no nested sections just output the fieldLinks
     if (sections.length == 0) {
         for (var key in messageMap) {
-            var link = generateFieldLink(messageMap[key], key);
+            var link = generateFieldLink(messageMap[key], key, data.collapseFieldMessages, data.displayLabel);
             newList = writeMessageItemToList(link, newList);
         }
     }
@@ -833,7 +858,7 @@ function generateSummaries(id, messageMap, sections, order, newList) {
                 }
                 else {
                     currentSectionId = sectionId;
-                    var sublist = generateFieldLinkSublist(currentFields, messageMap, currentSectionId, true);
+                    var sublist = generateFieldLinkSublist(data, currentFields, messageMap, currentSectionId, true);
                     newList = writeMessageItemToList(sublist, newList);
                     var summaryLink = generateSummaryLink(currentSectionId);
                     newList = writeMessageItemToList(summaryLink, newList);
@@ -857,10 +882,14 @@ function generateSummaries(id, messageMap, sections, order, newList) {
  * @param messageData - messageData for this field
  * @param fieldId - id of the field to be linked to
  */
-function generateFieldLink(messageData, fieldId) {
+function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
     var link = null;
 
     if (messageData != null) {
+        //if messages aren't displayed at the field level - force uncollapse
+        if(!messageData.displayMessages){
+            collapseMessages = false;
+        }
         var linkType;
         var highlight;
         var collapse = false;
@@ -880,7 +909,7 @@ function generateFieldLink(messageData, fieldId) {
             linkType = "uif-errorMessageItem";
             highlight = "uif-errorHighlight";
             if (messageData.errors.length) {
-                linkText = "<span class='uif-validationMessageLink-client'>" + messageData.errors[0] + "</span>";
+                linkText = messageData.errors[0];
                 if (messageData.errors.length > 1) {
                     collapsedErrors.exist = true;
                     collapsedErrors.errorIndex = 1;
@@ -890,8 +919,7 @@ function generateFieldLink(messageData, fieldId) {
                 if (linkText) {
                     separator = ", ";
                 }
-                linkText = linkText + "<span class='uif-validationMessageLink-server'>"
-                        + separator + messageData.serverErrors[0] + "</span>";
+                linkText = linkText + separator + messageData.serverErrors[0];
                 if (messageData.serverErrors.length > 1) {
                     collapsedErrors.exist = true;
                     collapsedErrors.serverErrorIndex = 1;
@@ -915,7 +943,7 @@ function generateFieldLink(messageData, fieldId) {
                 linkType = "uif-warningMessageItem";
                 highlight = "uif-warningHighlight";
                 if (messageData.warnings.length) {
-                    linkText = "<span class='uif-validationMessageLink-client'>" + messageData.warnings[0] + "</span>";
+                    linkText = messageData.warnings[0];
                     if (messageData.warnings.length > 1) {
                         collapsedWarnings.exist = true;
                         collapsedWarnings.warningIndex = 1;
@@ -925,8 +953,7 @@ function generateFieldLink(messageData, fieldId) {
                     if (linkText) {
                         separator = ", ";
                     }
-                    linkText = linkText + "<span class='uif-validationMessageLink-server'>"
-                            + separator + messageData.serverWarnings[0] + "</span>";
+                    linkText = linkText + separator + messageData.serverWarnings[0];
                     if (messageData.serverWarnings.length > 1) {
                         collapsedWarnings.exist = true;
                         collapsedWarnings.serverWarningIndex = 1;
@@ -951,7 +978,7 @@ function generateFieldLink(messageData, fieldId) {
                 linkType = "uif-infoMessageItem";
                 highlight = "uif-infoHighlight";
                 if (messageData.info.length) {
-                    linkText = "<span class='uif-validationMessageLink-client'>" + messageData.info[0] + "</span>";
+                    linkText = messageData.info[0];
                     if (messageData.info.length > 1) {
                         collapsedInfo.exist = true;
                         collapsedInfo.infoIndex = 1;
@@ -961,8 +988,8 @@ function generateFieldLink(messageData, fieldId) {
                     if (linkText) {
                         separator = ", ";
                     }
-                    linkText = linkText + "<span class='uif-validationMessageLink-server'>"
-                            + separator + messageData.serverInfo[0] + "</span>";
+                    linkText = linkText
+                            + separator + messageData.serverInfo[0];
                     if (messageData.serverInfo.length > 1) {
                         collapsedInfo.exist = true;
                         collapsedInfo.serverInfoIndex = 1;
@@ -974,7 +1001,7 @@ function generateFieldLink(messageData, fieldId) {
         if (linkText != "") {
             //generate collapsed information - messages that are present but not being shown at this level
             var collapsedElements = "";
-            if (collapsedErrors.exist) {
+            if (collapsedErrors.exist && collapseMessages) {
                 var count = 0;
                 if (collapsedErrors.errorIndex != undefined && collapsedErrors.errorIndex >= 0) {
                     count = count + messageData.errors.length - collapsedErrors.errorIndex;
@@ -984,15 +1011,29 @@ function generateFieldLink(messageData, fieldId) {
                 }
 
                 if (count > 1) {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedErrors'>[+"
+                    collapsedElements = collapsedElements + "<span class='uif-collapsedErrors'> [+"
                             + count + " errors]</span>";
                 }
                 else {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedErrors'>[+"
+                    collapsedElements = collapsedElements + "<span class='uif-collapsedErrors'> [+"
                             + count + " error]</span>";
                 }
             }
-            if (collapsedWarnings.exist) {
+            else if(collapsedErrors.exist && !collapseMessages){
+                if(collapsedErrors.errorIndex != undefined){
+                    for(var i = collapsedErrors.errorIndex; i < messageData.errors.length; i++){
+                        collapsedElements = collapsedElements + ", " + messageData.errors[i];
+                    }
+                }
+                if(collapsedErrors.serverErrorIndex != undefined){
+                    for(var i = collapsedErrors.serverErrorIndex; i < messageData.serverErrors.length; i++){
+                        collapsedElements = collapsedElements + ", " + messageData.serverErrors[i];
+                    }
+                }
+            }
+
+            //collapsed warning handling
+            if (collapsedWarnings.exist && collapseMessages) {
                 var count = 0;
                 if (collapsedWarnings.warningIndex != undefined && collapsedWarnings.warningIndex >= 0) {
                     count = count + messageData.warnings.length - collapsedWarnings.warningIndex;
@@ -1002,15 +1043,30 @@ function generateFieldLink(messageData, fieldId) {
                 }
 
                 if (count > 1) {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedWarnings'>[+"
+                    collapsedElements = collapsedElements + "<span class='uif-collapsedWarnings'> [+"
                             + count + " warnings]</span>";
                 }
                 else {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedWarnings'>[+"
+                    collapsedElements = collapsedElements + "<span class='uif-collapsedWarnings'> [+"
                             + count + " warning]</span>";
                 }
             }
-            if (collapsedInfo.exist) {
+            else if(collapsedWarnings.exist && !collapseMessages){
+                if(collapsedWarnings.warningIndex != undefined){
+                    for(var i = collapsedWarnings.warningIndex; i < messageData.warnings.length; i++){
+                        collapsedElements = collapsedElements + ", " + messageData.warnings[i];
+                    }
+                }
+                if(collapsedWarnings.serverWarningIndex != undefined){
+                    for(var i = collapsedWarnings.serverWarningIndex; i < messageData.serverWarnings.length; i++){
+                        collapsedElements = collapsedElements + ", " + messageData.serverWarnings[i];
+                    }
+                }
+            }
+            
+
+            //collapsed information handling
+            if (collapsedInfo.exist && collapseMessages) {
                 var count = 0;
                 if (collapsedInfo.infoIndex != undefined && collapsedInfo.infoIndex >= 0) {
                     count = count + messageData.info.length - collapsedInfo.infoIndex;
@@ -1020,26 +1076,45 @@ function generateFieldLink(messageData, fieldId) {
                 }
 
                 if (count > 1) {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedInfo'>[+"
+                    collapsedElements = collapsedElements + "<span class='uif-collapsedInfo'> [+"
                             + count + " messages]</span>";
                 }
                 else {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedInfo'>[+"
+                    collapsedElements = collapsedElements + "<span class='uif-collapsedInfo'> [+"
                             + count + " message]</span>";
+                }
+            }
+            else if(collapsedInfo.exist && !collapseMessages){
+                if(collapsedInfo.infoIndex != undefined){
+                    for(var i = collapsedInfo.infoIndex; i < messageData.info.length; i++){
+                        collapsedElements = collapsedElements + ", " + messageData.info[i];
+                    }
+                }
+                if(collapsedInfo.serverInfoIndex != undefined){
+                    for(var i = collapsedInfo.serverInfoIndex; i < messageData.serverInfo.length; i++){
+                        collapsedElements = collapsedElements + ", " + messageData.serverInfo[i];
+                    }
                 }
             }
 
             var name = jQuery("#" + fieldId).data("label");
-            if (name) {
-                name = name + ": ";
+
+            if (name && showLabel) {
+                name = name.trim();
+                if(name.indexOf(":") == name.length - 1){
+                    name = name + " ";
+                }
+                else{
+                    name = name + ": ";
+                }
+
             }
             else {
                 name = "";
             }
 
             link = jQuery("<li data-messageItemFor='" + fieldId + "'><a href='#'>"
-                    + name + linkText
-                    + " " + collapsedElements + "</a> </li>");
+                    + name + linkText + collapsedElements + "</a> </li>");
             jQuery(link).addClass(linkType);
             jQuery(link).find("a").click(function () {
                 var control = jQuery("#" + fieldId + "_control");
@@ -1074,13 +1149,14 @@ function generateFieldLink(messageData, fieldId) {
  * of this li will be similar to: "3 errors before 'Section Name' section" (actual text dependant on what messages
  * are present) followed by an ul - the sublist - of field link items for each field specified in currentFields.
  *
+ * @param parentSectionData - the data of the section this sublist will be provided for
  * @param currentFields - the fields to generate field links for by id
  * @param messageMap - map of the messageData associated with the fields; currentFields specifies a subset of these
  * @param sectionId - the id of the section that occurs after (or in some cases) before the fields to be contained in
  * the sublist
  * @param before - true if these field are before the section specified by id, false otherwise
  */
-function generateFieldLinkSublist(currentFields, messageMap, sectionId, before) {
+function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, sectionId, before) {
 
     var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label").html();
     var sectionType = "section";
@@ -1110,7 +1186,8 @@ function generateFieldLinkSublist(currentFields, messageMap, sectionId, before) 
                 warningCount = warningCount + messageData.serverWarnings.length + messageData.warnings.length;
                 infoCount = infoCount + messageData.serverInfo.length + messageData.info.length;
 
-                var link = generateFieldLink(messageData, fieldId);
+                var link = generateFieldLink(messageData, fieldId, parentSectionData.collapseFieldMessages,
+                        parentSectionData.displayLabel);
                 if (link != null) {
                     links.push(link);
                 }
@@ -1205,11 +1282,10 @@ function generateSummaryLink(sectionId) {
         }
         summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a href='#'>"
                 + summaryMessage + "</a></li>");
-        jQuery(summaryLink).find(".uif-messageCount").remove();
-        jQuery(summaryLink).find("img").remove();
-        //jQuery(summaryLink).prepend(image);
+        summaryLink.find(".uif-messageCount").remove();
+        summaryLink.find("img").remove();
 
-        jQuery(summaryLink).find("a").click(function () {
+        summaryLink.find("a").click(function () {
             var header = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");
             jumpToElementById(sectionId);
             if (header.length) {
@@ -1233,19 +1309,27 @@ function generateSummaryLink(sectionId) {
             }
         });
 
-        jQuery(summaryLink).find("a").focus(function () {
+        summaryLink.find("a").focus(function () {
             jQuery("#" + sectionId).addClass(highlight);
         });
-        jQuery(summaryLink).find("a").blur(function () {
+        summaryLink.find("a").blur(function () {
             jQuery("#" + sectionId).removeClass(highlight);
         });
-        jQuery(summaryLink).find("a").hover(
+        summaryLink.find("a").hover(
                 function () {
                     jQuery("#" + sectionId).addClass(highlight);
                 },
                 function () {
                     jQuery("#" + sectionId).removeClass(highlight);
                 });
+
+        //case where this section is not showing its own messages, add them as a sublist of this li
+        if(!sectionData.displayMessages){
+            var sectionLinks = jQuery("[data-messagesfor='" + sectionId + "']");
+            sectionLinks.removeAttr("class");
+            summaryLink.append(sectionLinks);
+            sectionLinks.show();
+        }
     }
     return summaryLink;
 }

@@ -1219,3 +1219,7 @@ li.uif-infoMessageItem:before {
 .jquerybubblepopup-kr-info-ss  .jquerybubblepopup-innerHtml{
 	background-color: white;
 }
+
+.jquerybubblepopup-ie{
+    filter: none !important;
+}

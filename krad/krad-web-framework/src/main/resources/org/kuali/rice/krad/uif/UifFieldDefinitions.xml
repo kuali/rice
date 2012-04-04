@@ -194,16 +194,10 @@
         <value>uif-validationMessages</value>
       </list>
     </property>
-    <property name="displayFieldLabelWithMessages" value="true"/>
-    <property name="displayNestedMessages" value="false"/>
     <property name="displayMessages" value="true"/>
-    <property name="displayErrorMessages" value="true"/>
-    <property name="displayWarningMessages" value="true"/>
-    <!-- Note that we are not displaying Info messages because they are shown through growls by default
-     if Growls are turned off, info messages needs to be turned back on
-     (optional for fields, but should be true at least on the page level) -->
-    <property name="displayInfoMessages" value="false"/>
-    <property name="displayCounts" value="false"/>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="useTooltip" value="true"/>
+    <property name="collapseAdditionalFieldLinkMessages" value="true"/>
   </bean>
 
   <bean id="Uif-FieldValidationMessages" parent="Uif-FieldValidationMessages-parentBean"/>
@@ -217,11 +211,6 @@
         <value>uif-groupValidationMessages</value>
       </list>
     </property>
-    <property name="displayNestedMessages" value="true"/>
-    <!--note global display flag is false by default for groups, but others are true by default,
-     no messages will be displayed by default in groups, but all can easily be turned on-->
-    <property name="displayMessages" value="false"/>
-    <property name="displayCounts" value="true"/>
   </bean>
 
   <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
@@ -239,9 +228,6 @@
       </list>
     </property>
     <property name="fireGrowlsForMessages" value="true"/>
-    <property name="displayNestedMessages" value="true"/>
-    <property name="displayMessages" value="true"/>
-    <property name="displayCounts" value="true"/>
   </bean>
 
   <bean id="Uif-ActionFieldBase" parent="Uif-ActionFieldBase-parentBean"/>

@@ -1583,6 +1583,24 @@
                     except that the Superuser does not need to have a pending request to perform the
                     action.</para>
             </sect3>
+            <sect3>
+                <title>Superuser Quick Action's Tab</title>
+                <para>With the relese of Rice 2.1 a new option is avaialbe for applications to enable. 
+                    Superuser's can now access documents directly from the standard document search 
+                    and quickly perform approval, acknowledgment, FYI, or disapproval actions from this 
+                    new tab on the document. This streamlined version of the still available superuser 
+                    form of document search will allow for common actions to be taken in a more user 
+                    friendly fashion. Pending actions are displayed in a list that the super user can 
+                    check off and take the actions necessary all at once (see example below). 
+                    Before actions can be taken, a annotation must be provided.</para>
+                <figure><title>New Superuser Tab Example</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/new_superuser_tab.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect3>
         </sect2>    
     </sect1>
     <sect1>

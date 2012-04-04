@@ -231,31 +231,31 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				document.getOldMaintainableObject().prepareBusinessObject(oldBusinessObject);
             	oldBusinessObject = document.getOldMaintainableObject().getBusinessObject();
 			}
-
+             //KULRICE-6985 Commented out because of StringIndexOutOfBoundsException for some classnames and since we are not using JPA at the moment.
 			// Temp solution for loading extension objects - need to find a better way
-			final String TMP_NM = oldBusinessObject.getClass().getName();
-			final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-			if ( ( OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) &&
-					OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && oldBusinessObject.getExtension() != null && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
-				if (oldBusinessObject.getExtension() != null) {
-					PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
-					EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
-					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
-					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
-						try {
-							Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
-							field.setAccessible(true);
-							extensionCriteria.eq(fieldDescriptor.getName(), field.get(oldBusinessObject));
-						} catch (Exception e) {
-							LOG.error(e.getMessage(),e);
-						}
-					}				
-					try {
-						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
-					} catch (PersistenceException e) {}
-					oldBusinessObject.setExtension(boe);
-				}
-			}
+//			final String TMP_NM = oldBusinessObject.getClass().getName();
+//			final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+//			if ( ( OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) &&
+//					OrmUtils.isJpaAnnotated(oldBusinessObject.getClass()) && oldBusinessObject.getExtension() != null && OrmUtils.isJpaAnnotated(oldBusinessObject.getExtension().getClass())) {
+//				if (oldBusinessObject.getExtension() != null) {
+//					PersistableBusinessObjectExtension boe = oldBusinessObject.getExtension();
+//					EntityDescriptor entity = MetadataManager.getEntityDescriptor(oldBusinessObject.getExtension().getClass());
+//					Criteria extensionCriteria = new Criteria(boe.getClass().getName());
+//					for (FieldDescriptor fieldDescriptor : entity.getPrimaryKeys()) {
+//						try {
+//							Field field = oldBusinessObject.getClass().getDeclaredField(fieldDescriptor.getName());
+//							field.setAccessible(true);
+//							extensionCriteria.eq(fieldDescriptor.getName(), field.get(oldBusinessObject));
+//						} catch (Exception e) {
+//							LOG.error(e.getMessage(),e);
+//						}
+//					}
+//					try {
+//						boe = (PersistableBusinessObjectExtension) new QueryByCriteria(getEntityManagerFactory().createEntityManager(), extensionCriteria).toQuery().getSingleResult();
+//					} catch (PersistenceException e) {}
+//					oldBusinessObject.setExtension(boe);
+//				}
+//			}
 
 			PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) ObjectUtils.deepCopy(oldBusinessObject);
 

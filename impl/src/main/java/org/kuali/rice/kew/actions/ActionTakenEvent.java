@@ -294,7 +294,7 @@ public abstract class ActionTakenEvent {
 		return getActionRequestService().findDelegator(actionRequests);
 	}
 
-	protected String getActionTakenCode() {
+	public String getActionTakenCode() {
 		return actionTakenCode;
 	}
 

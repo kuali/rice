@@ -567,10 +567,25 @@ public class QuickFinder extends WidgetBase {
         this.autoSearch = autoSearch;
     }
 
+    /**
+     * Indicates whether the lookup criteria (search group) should be enabled on the invoked lookup view
+     * 
+     * <p>
+     * Setting the this to false will not display the lookup criteria but only the results. Therefore this is only
+     * useful when setting {@link #getAutoSearch()} to true and passing in criteria
+     * </p>
+     *
+     * @return true if lookup criteria should be displayed, false if not
+     */
     public Boolean getLookupCriteriaEnabled() {
         return this.lookupCriteriaEnabled;
     }
 
+    /**
+     * Setter for enabling the lookup criteria group
+     *
+     * @param lookupCriteriaEnabled
+     */
     public void setLookupCriteriaEnabled(Boolean lookupCriteriaEnabled) {
         this.lookupCriteriaEnabled = lookupCriteriaEnabled;
     }

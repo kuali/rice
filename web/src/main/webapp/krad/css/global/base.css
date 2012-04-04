@@ -16,6 +16,12 @@
 @charset "UTF-8";
 /* CSS Document */
 
+/*This exists to fix a bug with iframe resizing - do not change */
+body {
+    margin-right: 0px !important;
+    padding-right: 15px !important;
+}
+
 /* GENERAL - applies to all look and feel (KNS and KS)********************/
 ul li{
     list-style: none;

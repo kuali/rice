@@ -105,7 +105,8 @@
       if ((url.indexOf("http") != 0 && url.indexOf("ftp") != 0) || url.match(regex)[1].toString() === window.location.host) {
         sameDomain = true;
         if (!browserIsIE8 && thisIframe[0] && thisIframe[0].contentWindow.document.body) {
-          if_height = thisIframe[0].contentWindow.document.body.scrollHeight;
+          //if_height = thisIframe[0].contentWindow.document.body.height;
+          if_height = jQuery(thisIframe[0].contentWindow.document.body).outerHeight();
             thisIframe.height(if_height);
         }
       }

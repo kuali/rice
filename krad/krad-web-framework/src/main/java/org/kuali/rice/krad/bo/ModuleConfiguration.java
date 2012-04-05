@@ -32,17 +32,25 @@ import java.util.Map;
 
 /**
  * This class contains various configuration properties for a Rice module.
+ *
  * <p>
- * The Rice framework is composed of several separate modules each of which is
+ * The Rice framework is  composed of several separate modules, each of which is
  * responsible for providing a set of functionality. These include:
- *      KEW - an enterprise workflow module
- *      KIM - an identity management module
- *      KRAD - an rapid application development module
- *      as well as several others. Refer to the Rice documentation for a complete list.
- * Applications will also have their own module configurations.
- * Each module has its own namespace and application context. And may define its own data source, entity manager, data dictionary service,
- * and other properties.
- * The ModuleConfiguration is created during Spring initialization.
+ * <ul>
+ *      <li>KEW - the Rice enterprise workflow module
+ *      <li>KIM - the Rice identity management module
+ *      <li>KSB - the Rice service bus
+ *      <li>KRAD - the Rice rapid application development module
+ *      <li>KRMS - the Rice business rules management syste
+ *      <li>eDocLite - a Rice framework for creating simple documents quickly
+ *      <li>...as well as several others. Refer to the Rice documentation for a complete list.
+ * </ul>
+ * <br>
+ * Client Applications will also have their own module configurations. A client application could create a single
+ * module or multiple modules, depending on how it is organized.
+ * <br>
+ * This ModuleConfiguration object is created during Spring initialization. The properties of this ModuleConfiguration
+ * are specified in the module's SpringBean definition XML configuration file.
  *</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -52,13 +60,29 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	//protected static Logger LOG = Logger.getLogger(ModuleConfiguration.class);
 
+    /**
+     * the module's namespace.
+     */
 	protected String namespaceCode;
 	protected ApplicationContext applicationContext;
 
+    /**
+     * the package name prefixes for classes used in this module
+     */
 	protected List<String> packagePrefixes;
 
+    /**
+     * a list of entity description files to be loaded during initialization of the persistence service.
+     * <p>
+     * Currently only used by OJB repository service implementation.
+     * </p>
+     */
 	protected List<String> databaseRepositoryFilePaths;
 
+    /**
+     * the list of data dictionary packages to be loaded for this module by the data dictionary service during system
+     * startup.
+     */
 	protected List<String> dataDictionaryPackages;
 
 	protected List<String> scriptConfigurationFilePaths;
@@ -79,11 +103,17 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	protected PersistenceService persistenceService;
 
+    /**
+     * the implementation of the data dictionary service to use for this module.
+     */
 	protected DataDictionaryService dataDictionaryService;
 
     /**
      *  Constructor for a ModuleConfiguration.
-     *  Initializes the arrays to empty ArrayLists.
+     *
+     *  <p>
+     *  Initializes the arrays of this ModuleConfiguration to empty ArrayLists.
+     *  </p>
      */
 	public ModuleConfiguration() {
 		databaseRepositoryFilePaths = new ArrayList<String>();
@@ -94,9 +124,14 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	}
 
 	/**
-     * Retrieves the database repository file paths configured for this module.
+     * Retrieves the database repository file paths to be used by the persistence service configured for this module.
+     *
+     * <p>
+     * Used by the OBJ persistence service to load entity descriptors.
      * The file paths are returned as a List of Strings. If no file paths are configured,
      * an empty list is returned.  This method should never return null.
+     * </p>
+     *
 	 * @return a List containing the databaseRepositoryFilePaths
 	 */
 	public List<String> getDatabaseRepositoryFilePaths() {
@@ -104,8 +139,14 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	}
 
 	/**
-     * Sets the List of database repository file paths.
-	 * @param databaseRepositoryFilePaths the List of databaseRepositoryFilePaths to set
+     * Initializes the list of database repository files to load during persistence service initialization.
+     *
+     * <p>
+     * The repository file names are listed in the module's Spring bean configuration file.
+     * This property is set during Spring initialization.
+     * </p>
+     *
+	 * @param databaseRepositoryFilePaths the List of entity descriptor files to load.
 	 */
 	public void setDatabaseRepositoryFilePaths(
 			List<String> databaseRepositoryFilePaths) {
@@ -115,16 +156,26 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	/**
      * Returns a list of data dictionary packages configured for this ModuleConfiguration.
+     *
+     * <p>
      * If no data dictionary packages are defined, will return an empty list.
      * Should never return null.
-	 * @return a List of Strings containingthe names of the dataDictionaryPackages
+     * </p>
+     *
+	 * @return a List of Strings containing the names of the dataDictionaryPackages
 	 */
 	public List<String> getDataDictionaryPackages() {
 		return this.dataDictionaryPackages;
 	}
 
 	/**
-     * Sets the list of data dictionary packages associated with this ModuleConfiguration.
+     * Initializes the list of data dictionary packages associated with this ModuleConfiguration.
+     *
+     * <p>
+     * The data dictionary packages are listed in the module's Spring bean configuration file.
+     * This property is set during Spring initialization.
+     * </p>
+     *
 	 * @param dataDictionaryPackages a List of Strings containing the dataDictionaryPackages.
 	 */
 	public void setDataDictionaryPackages(List<String> dataDictionaryPackages) {

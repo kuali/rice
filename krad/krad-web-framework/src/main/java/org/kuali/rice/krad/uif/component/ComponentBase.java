@@ -1543,19 +1543,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return skipInTabOrder;
     }
 
-
-    public Tooltip getToolTip() {
-        return toolTip;
-    }
-
-    public void setToolTip(Tooltip toolTip) {
-        this.toolTip = toolTip;
-    }
-    
-    public void setToolTipText(String tooltTipText) {
-        getToolTip().setTooltipContentHTML(tooltTipText);
-    }
-
     /**
      * Add a data attribute to the dataAttributes map
      * @param key
@@ -1683,6 +1670,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             }
             return js;
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getToolTip()
+     */
+    public Tooltip getToolTip() {
+        return toolTip;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setToolTip(Tooltip)
+     */
+    public void setToolTip(Tooltip toolTip) {
+        this.toolTip = toolTip;
     }
 
 }

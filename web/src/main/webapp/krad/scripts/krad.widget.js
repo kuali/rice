@@ -602,16 +602,25 @@ function createSpinner(id, options) {
 function createTooltip(id, text, options, onFocusFlag) {
     options['innerHtml'] = text;
     if (onFocusFlag) {
-        jq("#" + id).focus(function() {
-            jq("#" + id).CreateBubblePopup(options);
-            jq("#" + id).ShowBubblePopup();
+//        ;
+        jQuery("#" + id).focus(function() {
+            jQuery("#" + id).SetBubblePopupOptions(options, true);
+            jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
+            jQuery("#" + id).ShowBubblePopup();
         });
-        jq("#" + id).blur(function() {
-            jq("#" + id).HideBubblePopup();
-            jq("#" + id).RemoveBubblePopup();
+        jQuery("#" + id).blur(function() {
+            jQuery("#" + id).HideBubblePopup();
         });
     } else {
-        jq("#" + id).CreateBubblePopup(options);
+        options['manageMouseEvents'] = false;
+        jQuery("#" + id).mouseenter(function() {
+            jQuery("#" + id).SetBubblePopupOptions(options, true);
+            jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
+            jQuery("#" + id).ShowBubblePopup();
+        });
+        jQuery("#" + id).mouseleave(function() {
+            jQuery("#" + id).HideBubblePopup();
+        });
     }
 }
 

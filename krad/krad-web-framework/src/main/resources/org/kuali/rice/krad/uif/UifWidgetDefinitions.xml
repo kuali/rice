@@ -273,11 +273,6 @@
         <entry key="selectable" value="true"/>
       </map>
     </property>
-    <property name="errorTemplateOptions">
-      <map>
-        <entry key="themeName" value="orange"/>
-      </map>
-    </property>
     <property name="focusTemplateOptions">
       <map>
         <entry key="manageMouseEvents" value="false"/>

@@ -61,7 +61,7 @@
     <property name="header">
       <bean parent="Uif-SectionHeader">
         <property name="toolTip">
-          <bean parent="Uif-Tooltip" p:tooltipContentHTML="This is header tooltip"/>
+          <bean parent="Uif-Tooltip" p:tooltipContentHTML="This is a header tooltip"/>
         </property>
       </bean>
     </property>

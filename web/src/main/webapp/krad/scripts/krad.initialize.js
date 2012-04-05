@@ -235,6 +235,9 @@ function initBubblePopups() {
             + " label").CreateBubblePopup(
             {   manageMouseEvents:false,
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+    jq(".uif-tooltip").CreateBubblePopup(
+            {   manageMouseEvents:false,
+                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 }
 
 //sets up the validator with the necessary default settings and methods

@@ -33,12 +33,9 @@ public class Tooltip extends WidgetBase {
 
     private boolean onFocusFlag;
 
-    private boolean errorFlag;
-
     private boolean helpFlag;
 
     private Map<String, String> helpTemplateOptions;
-    private Map<String, String> errorTemplateOptions;
     private Map<String, String> focusTemplateOptions;
 
     public Tooltip() {
@@ -50,24 +47,64 @@ public class Tooltip extends WidgetBase {
         super.performFinalize(view, model, parent);
     }
 
+    /**
+     * Plain text or HTML string that will be used to render the tooltip div.
+     *
+     * @return String
+     */
     public String getTooltipContentHTML() {
         return tooltipContentHTML;
     }
 
+    /**
+     * Setter for the tooltip content HTML text
+     *
+     * @param tooltipContentHTML
+     */
     public void setTooltipContentHTML(String tooltipContentHTML) {
         this.tooltipContentHTML = tooltipContentHTML;
     }
 
-
+    /**
+     * Flag that indicates the tooltip should be triggered by focus/blur in stead of default mouse trigger
+     *
+     * @return boolean
+     */
     public boolean isOnFocusFlag() {
         return onFocusFlag;
     }
 
+    /**
+     * Setter for the onFocusFlag
+     *
+     * @param onFocusFlag
+     */
     public void setOnFocusFlag(boolean onFocusFlag) {
         if (onFocusFlag) {
             getTemplateOptions().putAll(focusTemplateOptions);
         }
         this.onFocusFlag = onFocusFlag;
+    }
+
+    /**
+     * Flag that indicates the tooltip should be using help framework component options
+     *
+     * @return boolean
+     */
+    public boolean isHelpFlag() {
+        return helpFlag;
+    }
+
+    /**
+     * Setter for the helpFlag
+     *
+     * @param helpFlag
+     */
+    public void setHelpFlag(boolean helpFlag) {
+        if (helpFlag) {
+            getTemplateOptions().putAll(helpTemplateOptions);
+        }
+        this.helpFlag = helpFlag;
     }
 
     /**
@@ -79,44 +116,13 @@ public class Tooltip extends WidgetBase {
         return helpTemplateOptions;
     }
 
-
+    /**
+     * Setter for helpTemplateOptions
+     *
+     * @param helpTemplateOptions
+     */
     public void setHelpTemplateOptions(Map<String, String> helpTemplateOptions) {
         this.helpTemplateOptions = helpTemplateOptions;
-    }
-
-    /**
-     * Template options that changes the style to error
-     *
-     * @return Map of focus template options
-     */
-    public Map<String, String> getErrorTemplateOptions() {
-        return errorTemplateOptions;
-    }
-
-    public void setErrorTemplateOptions(Map<String, String> errorTemplateOptions) {
-        this.errorTemplateOptions = errorTemplateOptions;
-    }
-
-    public boolean isErrorFlag() {
-        return errorFlag;
-    }
-
-    public void setErrorFlag(boolean errorFlag) {
-        if (errorFlag) {
-            getTemplateOptions().putAll(errorTemplateOptions);
-        }
-        this.errorFlag = errorFlag;
-    }
-
-    public boolean isHelpFlag() {
-        return helpFlag;
-    }
-
-    public void setHelpFlag(boolean helpFlag) {
-        if (helpFlag) {
-            getTemplateOptions().putAll(helpTemplateOptions);
-        }
-        this.helpFlag = helpFlag;
     }
 
     /**
@@ -130,6 +136,7 @@ public class Tooltip extends WidgetBase {
 
     /**
      * Setter for focusTemplateOptions
+     *
      * @param focusTemplateOptions
      */
     public void setFocusTemplateOptions(Map<String, String> focusTemplateOptions) {

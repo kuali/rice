@@ -596,3 +596,20 @@ function setRouteLogIframeDimensions() {
 function resizeTheRouteLogFrame() {
     setRouteLogIframeDimensions();
 }
+
+/**
+ * Adds or adds value to the attribute on the element.
+ *
+ * @param id - element id
+ * @param attributeName - name of the attribute to add/add to
+ * @param attributeValue - value of the attribute
+ * @param concatFlag - indicate if value should be added to current value
+ */
+function addAttribute(id, attributeName, attributeValue, concatFlag) {
+    hasAttribute = jq("#" + id).is('[' + attributeName + ']');
+    if (concatFlag && hasAttribute) {
+        jq("#" + id).attr(attributeName, jq("#" + id).attr(attributeName) + " " + attributeValue);
+    }else{
+        jq("#" + id).attr(attributeName, attributeValue);
+    }
+}

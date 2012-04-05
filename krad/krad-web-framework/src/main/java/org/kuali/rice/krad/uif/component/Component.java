@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.component;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 
 import java.io.Serializable;
 import java.util.List;
@@ -909,5 +910,18 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      */
     public String getAllDataAttributesJs();
 
+    /**
+     * Tooltip widget that should decorate the element
+     *
+     * @return Tooltip
+     */
+    public Tooltip getToolTip();
+
+    /**
+     * Setter for the component tooltip widget instance
+     *
+     * @param toolTip
+     */
+    public void setToolTip(Tooltip toolTip);
 
 }

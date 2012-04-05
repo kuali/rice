@@ -179,7 +179,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Set nodeNames) throws InvalidActionTakenException {
 		Principal principal = loadPrincipal(principalId);
 		BlanketApproveAction action = new BlanketApproveAction(routeHeader, principal, annotation, nodeNames);
-		action.recordAction();
+		action.performAction();
 
 		return finish(routeHeader);
 	}
@@ -188,7 +188,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		// init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
 		CancelAction action = new CancelAction(routeHeader, principal, annotation);
-		action.recordAction();
+		action.performAction();
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
@@ -218,7 +218,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		// init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
 		ClearFYIAction action = new ClearFYIAction(routeHeader, principal, annotation);
-		action.recordAction();
+		action.performAction();
 		return finish(routeHeader);
 	}
 
@@ -275,7 +275,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue disapproveDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
 		Principal principal = loadPrincipal(principalId);
 		DisapproveAction action = new DisapproveAction(routeHeader, principal, annotation);
-		action.recordAction();
+		action.performAction();
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
@@ -360,7 +360,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public void logDocumentAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
 		Principal principal = loadPrincipal(principalId);
 		LogDocumentActionAction action = new LogDocumentActionAction(routeHeader, principal, annotation);
-		action.recordAction();
+		action.performAction();
 	}
 
 	public DocumentRouteHeaderValue moveDocument(String principalId, DocumentRouteHeaderValue routeHeader, MovePoint movePoint, String annotation) throws InvalidActionTakenException {
@@ -375,7 +375,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
 		SuperUserActionRequestApproveEvent suActionRequestApprove = new SuperUserActionRequestApproveEvent(routeHeader, principal, actionRequestId, annotation, runPostProcessor);
-		suActionRequestApprove.recordAction();
+		suActionRequestApprove.performAction();
 		// suActionRequestApprove.queueDocument();
 		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
 		indexForSearchAfterActionIfNecessary(routeHeader);
@@ -395,7 +395,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue superUserApprove(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
-		new SuperUserApproveEvent(routeHeader, principal, annotation, runPostProcessor).recordAction();
+		new SuperUserApproveEvent(routeHeader, principal, annotation, runPostProcessor).performAction();
 		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
@@ -404,7 +404,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue superUserCancelAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
-		new SuperUserCancelEvent(routeHeader, principal, annotation, runPostProcessor).recordAction();
+		new SuperUserCancelEvent(routeHeader, principal, annotation, runPostProcessor).performAction();
 		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
@@ -413,7 +413,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue superUserDisapproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean runPostProcessor) throws InvalidActionTakenException {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
-		new SuperUserDisapproveEvent(routeHeader, principal, annotation, runPostProcessor).recordAction();
+		new SuperUserDisapproveEvent(routeHeader, principal, annotation, runPostProcessor).performAction();
 		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
@@ -422,7 +422,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	public DocumentRouteHeaderValue superUserNodeApproveAction(String principalId, DocumentRouteHeaderValue routeHeader, String nodeName, String annotation, boolean runPostProcessor) throws InvalidActionTakenException {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
-		new SuperUserNodeApproveEvent(routeHeader, principal, annotation, runPostProcessor, nodeName).recordAction();
+		new SuperUserNodeApproveEvent(routeHeader, principal, annotation, runPostProcessor, nodeName).performAction();
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);
 	}
@@ -452,7 +452,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		init(routeHeader);
 		Principal principal = loadPrincipal(principalId);
 		SuperUserReturnToPreviousNodeAction action = new SuperUserReturnToPreviousNodeAction(routeHeader, principal, annotation, runPostProcessor, nodeName);
-		action.recordAction();
+		action.performAction();
 		RouteContext.getCurrentRouteContext().requestSearchIndexingForContext(); // make sure indexing is requested
 		indexForSearchAfterActionIfNecessary(routeHeader);
 		return finish(routeHeader);

@@ -189,7 +189,10 @@ public class LookupController extends UifControllerBase {
 
         lookupForm.setSearchResults(displayList);
 
-        return updateComponent(lookupForm, result, request, response);
+        // TODO: put back once KULRICE-7061 is resolved
+        //return updateComponent(lookupForm, result, request, response);
+
+        return getUIFModelAndView(lookupForm);
     }
 
     /**

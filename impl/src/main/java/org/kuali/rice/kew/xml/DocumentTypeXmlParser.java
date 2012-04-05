@@ -27,7 +27,6 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
 import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
@@ -1355,7 +1354,7 @@ public class DocumentTypeXmlParser {
             policy.setDocumentType(documentType);
             try {
                 String policyName = (String) getXPath().evaluate("./name", documentTypePolicies.item(i), XPathConstants.STRING);
-                policy.setPolicyName(DocumentTypePolicyEnum.lookup(policyName).getName().toUpperCase());
+                policy.setPolicyName(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policyName).getCode().toUpperCase());
             } catch (XPathExpressionException xpee) {
                 LOG.error("Error obtaining document type policy name", xpee);
                 throw xpee;
@@ -1376,7 +1375,7 @@ public class DocumentTypeXmlParser {
             		policy.setPolicyStringValue(policyStringValue.toUpperCase());
             		policy.setPolicyValue(Boolean.TRUE);
             		// if DocumentStatusPolicy, check against allowable values
-            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()).getCode())){
             			boolean found = false;
             			for (int index=0; index<KewApiConstants.DOCUMENT_STATUS_POLICY_VALUES.length; index++) {
             				if (KewApiConstants.DOCUMENT_STATUS_POLICY_VALUES[index].equalsIgnoreCase(policyStringValue)){
@@ -1391,7 +1390,7 @@ public class DocumentTypeXmlParser {
             		
             	} else {
             		//DocumentStatusPolicy requires a <stringValue> tag
-            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()).getCode())){
             			throw new XmlException("Application Document Status Policy requires a <stringValue>");
             		}
 

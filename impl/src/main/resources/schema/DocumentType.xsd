@@ -314,7 +314,7 @@
     </attribute>
   </complexType>
 
-  <!-- Defined in DocumentTypePolicyEnum class -->
+  <!-- Defined in DocumentTypePolicy class -->
   <simpleType name="BlanketApprovePolicyType">
     <restriction base="string">
       <enumeration value="NONE"/>
@@ -445,7 +445,7 @@
     </complexType>
   </element>
 
-  <!-- Defined in DocumentTypePolicyEnum class -->
+  <!-- Defined in DocumentTypePolicy class -->
   <simpleType name="PolicyNameType">
     <restriction base="string">
       <enumeration value="DISAPPROVE"/>
@@ -1015,7 +1015,7 @@ Definitions are applied to the names in the routeNodes section.
     </complexContent>
   </complexType>
 
-  <!-- Defined in DocumentTypePolicyEnum class -->
+  <!-- Defined in ActivationTypeEnum class -->
   <simpleType name="ActivationTypeType">
     <restriction base="string">
       <enumeration value="S"/>

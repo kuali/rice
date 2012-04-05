@@ -53,20 +53,22 @@
 
         <input type="image" id="${tagId}" ${disabled}
                src="${field.actionImage.source}"
-               alt="${field.actionImage.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} ${field.simpleDataAttributes} />
+               alt="${field.actionImage.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex}
+               ${field.simpleDataAttributes} data-role="${field.dataRoleAttribute}" data-type="${field.dataTypeAttribute}"
+               data-meta="${field.dataMetaAttribute}"/>
 
       </krad:fieldLabel>
     </span>
   </c:when>
   <c:otherwise>
     <krad:attributeBuilder component="${field}"/>
+    <c:set var="dataAttributes" value="${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}"/>
 
     <c:choose>
       <c:when test="${not empty field.actionImageLocation && (field.actionImage != null) && field.actionImage.render}">
-
         <c:choose>
           <c:when test="${(field.actionImageLocation eq 'TOP')}">
-            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes}><span
+            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}><span
                     class="topBottomSpan"><img ${height} ${width}
                     class="actionImage topActionImage ${field.actionImage.styleClassesAsString}"
                     style="${field.actionImage.style}"
@@ -75,7 +77,8 @@
             </button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'BOTTOM')}">
-            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes}>${field.actionLabel}<span
+            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
+            ${field.actionLabel}<span
                     class="topBottomSpan"><img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage bottomActionImage ${field.actionImage.styleClassesAsString}"
@@ -83,13 +86,15 @@
                     alt="${field.actionImage.altText}"/></span></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'RIGHT')}">
-            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes}>${field.actionLabel}<img ${height} ${width}
+            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
+            ${field.actionLabel}<img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}"
                     src="${field.actionImage.source}" alt="${field.actionImage.altText}"/></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'LEFT')}">
-            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes}><img ${height} ${width}
+            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
+              <img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}"
                     src="${field.actionImage.source}"
@@ -97,12 +102,14 @@
             </button>
           </c:when>
           <c:otherwise>
-            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes}>${field.actionLabel}</button>
+            <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
+            ${field.actionLabel}</button>
           </c:otherwise>
         </c:choose>
       </c:when>
       <c:otherwise>
-        <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes}>${field.actionLabel}</button>
+        <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
+        ${field.actionLabel}</button>
       </c:otherwise>
     </c:choose>
 

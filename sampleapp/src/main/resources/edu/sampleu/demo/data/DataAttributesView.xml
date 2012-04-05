@@ -94,6 +94,7 @@
       <ref bean="fileUpload_attrs"/>
       <ref bean="userControl_attrs"/>
       <ref bean="spinnerControl_attrs"/>
+      <ref bean="hiddenControl_attrs"/>
       </list>
     </property>
   </bean>
@@ -112,14 +113,17 @@
         <ref bean="actionLink-noImage_attrs"/>
         <ref bean="actionLink-imageRight_attrs"/>
         <ref bean="actionLink-imageLeft_attrs"/>
-        <ref bean="imageAction"/>
-        <ref bean="buttonImageOnly"/>
-        <ref bean="buttonImageBottom"/>
-        <ref bean="buttonImageLeft"/>
-        <ref bean="buttonImageRight"/>
-        <ref bean="buttonImageTop"/>
+        <ref bean="imageAction_attrs"/>
+        <ref bean="buttonTextOnly_attrs"/>
+        <ref bean="buttonImageBottom_attrs"/>
+        <ref bean="buttonImageLeft_attrs"/>
+        <ref bean="buttonImageRight_attrs"/>
+        <ref bean="buttonImageTop_attrs"/>
         <ref bean="linkField_attrs"/>
-        <ref bean="messageField"/>
+        <ref bean="messageField_attrs"/>
+        <ref bean="spaceField_attrs"/>
+        <ref bean="iframe_attrs"/>
+        <ref bean="linkElement_attrs"/>
       </list>
     </property>
   </bean>
@@ -149,6 +153,17 @@
         <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
+    <property name="fieldLabel.dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+    <property name="fieldLabel.dataRoleAttribute" value="role"/>
+    <property name="fieldLabel.dataMetaAttribute" value="meta"/>
+    <property name="fieldLabel.dataTypeAttribute" value="type"/>
   </bean>
 
   <!-- text area -->
@@ -246,6 +261,9 @@
             <entry key="intervals" value="{short:2, medium:5, long:13}"/>
           </map>
         </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>
@@ -342,7 +360,7 @@
       </map>
     </property>
     <!-- to allow the selenium test to select the image - the default is that a generated value is set by krad -->
-    <property name="image.id" value="imageField_attrs_control"/>
+    <property name="image.id" value="imageField_image_attrs"/>
     <property name="image.dataRoleAttribute" value="role"/>
     <property name="image.dataMetaAttribute" value="meta"/>
     <property name="image.dataTypeAttribute" value="type"/>
@@ -394,10 +412,13 @@
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
       </map>
     </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
    </bean>
 
   <!-- action button - rendered as an image -->
-  <bean id="imageAction" parent="Uif-PrimaryActionButton-with-data-attributes" p:clientSideJs="alert('You clicked a button');">
+  <bean id="imageAction_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
             p:altText="ActionImageField demonstration"/>
@@ -406,10 +427,10 @@
   </bean>
 
   <!-- action button - no image - text only -->
-  <bean id="buttonImageOnly" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField" p:clientSideJs="alert('You clicked a button');"/>
+  <bean id="buttonTextOnly_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField" p:clientSideJs="alert('You clicked a button');"/>
 
   <!-- action button - image bottom -->
-  <bean id="buttonImageBottom" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
+  <bean id="buttonImageBottom_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
         p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -417,7 +438,7 @@
   </bean>
 
   <!-- action button - image top -->
-  <bean id="buttonImageTop" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image TOP" p:actionImageLocation="TOP"
+  <bean id="buttonImageTop_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image TOP" p:actionImageLocation="TOP"
         p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -425,7 +446,7 @@
   </bean>
 
   <!-- button image left -->
-  <bean id="buttonImageLeft" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image LEFT" p:actionImageLocation="LEFT"
+  <bean id="buttonImageLeft_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image LEFT" p:actionImageLocation="LEFT"
         p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -433,7 +454,7 @@
   </bean>
 
   <!-- button image right -->
-  <bean id="buttonImageRight" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image RIGHT" p:actionImageLocation="RIGHT"
+  <bean id="buttonImageRight_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image RIGHT" p:actionImageLocation="RIGHT"
         p:clientSideJs="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
@@ -457,7 +478,7 @@
   </bean>
 
   <!-- message field -->
-  <bean id="messageField" parent="Uif-MessageField" p:messageText="Welcome"
+  <bean id="messageField_attrs" parent="Uif-MessageField" p:messageText="Welcome"
         p:styleClasses="fl-font-size-150,fl-input-outline">
     <property name="dataAttributes">
       <map>
@@ -467,5 +488,70 @@
         <entry key="intervals" value="{short:2, medium:5, long:13}"/>
       </map>
     </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
    </bean>
+
+  <bean id="hiddenControl_attrs" parent="Uif-InputField" p:propertyName="field6" p:showLabel="false" p:render="true">
+    <property name="control">
+      <bean parent="Uif-HiddenControl">
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="spaceField_attrs" parent="Uif-SpaceField">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
+  </bean>
+
+  <bean id="iframe_attrs" parent="Uif-Iframe" p:width="800px" p:height="550px" p:source="http://www.kuali.org">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
+  </bean>
+  
+  <bean id="linkElement_attrs" parent="Uif-Link" p:hrefText="http://wiki.kuali.org" p:target="_blank" p:linkLabel="Kuali Wiki"
+          p:title="opens in new window">
+    <property name="dataAttributes">
+      <map>
+        <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+        <entry key="transitions" value="3"/>
+        <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+        <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+      </map>
+    </property>
+    <property name="dataRoleAttribute" value="role"/>
+    <property name="dataMetaAttribute" value="meta"/>
+    <property name="dataTypeAttribute" value="type"/>
+  </bean>
+
 </beans>

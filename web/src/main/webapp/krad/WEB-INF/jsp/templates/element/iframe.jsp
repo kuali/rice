@@ -23,7 +23,9 @@
     Standard HTML Iframe element
     
  --%>
+<krad:attributeBuilder component="${element}"/>
 
 <iframe id="${element.id}" src="${element.source}" width="${element.width}" height="${element.height}"
-        frameborder="${element.frameborder}" title="${element.title}">
+        frameborder="${element.frameborder}" title="${element.title}" ${element.simpleDataAttributes}
+        ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>
 </iframe>

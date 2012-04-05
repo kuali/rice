@@ -26,4 +26,5 @@
  --%>
 
 <form:hidden id="${control.id}" path="${field.bindingInfo.bindingPath}"
-             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"/>
+             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
+             data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>

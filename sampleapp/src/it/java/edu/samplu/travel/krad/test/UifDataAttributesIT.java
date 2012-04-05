@@ -46,76 +46,6 @@ public class UifDataAttributesIT {
         selenium.start();
     }
 
-    /*@Test
-    @Ignore("test was created in the process of clarifying implementation details")*/
-    /**
-     * Tests that the data attributes are rendered as expected for all controls
-     */
-    public void testDataAttributesPresent() throws Exception {
-
-        selenium.open(System.getProperty("remote.public.url"));
-        assertEquals("Login", selenium.getTitle());
-        selenium.type("__login_user", "admin");
-        selenium.click("//input[@value='Login']");
-        selenium.waitForPageToLoad("50000");
-        assertEquals("Kuali Portal Index", selenium.getTitle());
-        selenium.open(
-                "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
-        selenium.waitForPageToLoad("50000");
-
-        //create a map that will specify in which html tag to look for simple attributes
-        Map<String, String[]> tagAndElements = new HashMap<String, String[]>();
-        // elements whose simple attributes are set in the wrapping div
-        String[] divWrappedElements = {"textInputField", "textAreaInputField", "datePicker", "checkBox", "radioButton", "fileUpload"};
-        // elements whose simple attributes are set in an anchor tag
-        String[] anchorElements = {"navigationLink", "actionLink-noImage", "actionLink-imageRight", "actionLink-imageLeft", "linkField"};
-        // elements whose simple attributes are set in an img tag
-        String[] imgElements = {"imageField"};
-        // elements whose simple attributes are set in button tag
-        String[] buttonElements = {"buttonImageOnly", "buttonImageBottom", "buttonImageLeft", "buttonImageTop", "buttonImageRight"};
-        // elements whose simple attributes are set in an input tag
-        String[] inputElements = {"imageAction"};
-        // elements whose simple attributes are set in a span tag
-        String[] spanElements = {"messageField"};
-        
-        tagAndElements.put("div", divWrappedElements);
-        tagAndElements.put("a", anchorElements);
-        tagAndElements.put("img", imgElements);
-        tagAndElements.put("button", buttonElements);
-        tagAndElements.put("input", inputElements);
-        tagAndElements.put("span", spanElements);
-
-        // a map to hold the tags where the simple attributes are affixed
-        // if a tag is not here, a empty string will be used for the suffix
-        Map<String, String> simpleTagIdSuffix = new HashMap<String, String>();
-        simpleTagIdSuffix.put("a", "_link");
-        simpleTagIdSuffix.put("button", "_button");
-        simpleTagIdSuffix.put("span", "_span");
-
-
-        for (String tag: tagAndElements.keySet()) {
-            String[] elementIds = tagAndElements.get(tag);
-            for (int i=0; i<elementIds.length; i++) {
-                String tagId = elementIds[i];
-                // String controlId = beanIds[i] + UifConstants.IdSuffixes.CONTROL;
-                // check for complex attributes
-                assertTrue(tagId + ": script does not contain expected code", verifyComplexAttributes(tagId, ""));
-
-                // check for simple attributes
-                // determine whether we are using a tag id suffix for the simple attributes
-                String tagIdSuffix = "";
-                if (simpleTagIdSuffix.containsKey(tag)) {
-                    tagIdSuffix = simpleTagIdSuffix.get(tag);
-                    // link field has no suffix
-                    if (tagId.equalsIgnoreCase("linkField")) {
-                        tagIdSuffix = "";
-                    }
-                }
-                verifySimpleAttributes(tag, tagId, tagIdSuffix);
-            }
-        }
-    }
-
     /**
      * verify that a tag has simple data attributes
      * @param tag - html tag e.g. img or a
@@ -140,18 +70,23 @@ public class UifDataAttributesIT {
      * @param tagId - the expected tag id
      * @param suffix - the expected suffix e.g. _button
      */
-    private boolean verifyComplexAttributes(String tagId, String suffix) {
+    private void verifyComplexAttributes(String tagId, String suffix) {
         tagId = tagId + suffix;
-        String complexAttributesXpath="//input[(@type='hidden') and (@data-for='"+ tagId +  "')]";
+        String complexAttributesXpath="//input[(@type='hidden') and (@data-role='dataScript') and (@data-for='"+ tagId +  "')]";
         assertTrue(tagId + ": complex data attributes script not found", selenium.isElementPresent(complexAttributesXpath));
 
         // the message field does not support complex attributes
         //if (!tagId.equalsIgnoreCase("messageField")) {
             String scriptValue = selenium.getAttribute(complexAttributesXpath + "@value");
             assertNotNull("script value is null",scriptValue);
-            // log.info("scriptValue for " + divId + " is " + scriptValue);
-            return scriptValue.contains("jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});")
-                    && scriptValue.contains("jQuery('#" + tagId + "').data('intervals', {short:2, medium:5, long:13});");
+        boolean ok = scriptValue.contains(
+                "jQuery('#" + tagId + "').data('capitals', {kenya:'nairobi', uganda:'kampala', tanzania:'dar'});")
+                && scriptValue.contains("jQuery('#" + tagId + "').data('intervals', {short:2, medium:5, long:13});");
+        if (!ok) {
+            log.info("scriptValue for " + tagId + " is " + scriptValue);
+        }
+        // check for complex attributes
+        assertTrue(tagId + ": complex attributes script does not contain expected code", ok);
         //}
     }
 
@@ -191,48 +126,70 @@ public class UifDataAttributesIT {
         selenium.open(
                 "/kr-dev/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
         selenium.waitForPageToLoad("50000");
+
+        // custom suffix to mark  test bean ids
+        String testIdSuffix = "_attrs";
         // input fields, whose controls are implemented as spring form tags, will have both simple and complex attributes set via a script
-        String[] inputControls = {"textInputField", "textAreaInputField", "dropDown", "datePicker", "fileUpload", "userControl", "spinnerControl"};//"checkBox", "radioButton",
+        String[] inputControls = {"textInputField", "textAreaInputField", "dropDown", "datePicker", "fileUpload", "userControl",
+                "spinnerControl", "hiddenControl", "checkBox"};//, "radioButton",
         for (int i=0; i<inputControls.length; i++) {
-            assertTrue(inputControls[i] + ": script does not contain expected code", verifyAllAttributesInScript(inputControls[i], "_attrs_control"));
+            assertTrue(inputControls[i] + ": script does not contain expected code",
+                    verifyAllAttributesInScript(inputControls[i], testIdSuffix + "_control"));
         }
         // these controls allow for simple attributes on the tag and complex attributes via js
         Map<String, String[]> otherControlsMap = new HashMap<String, String[]>();
-        // elements whose simple attributes are set in an img tag
-        String[] imgControls = {"imageField_attrs_control"};
-        // elements whose simple attributes are set in an anchor tag
-        String[] anchorFields = {"navigationLink", "actionLink-noImage", "actionLink-imageRight", "actionLink-imageLeft", "linkField"};
-
+        // controls whose simple attributes are set in an img tag
+        String[] imgControls = {"imageField_image"};
+        // fields whose simple attributes are set in an anchor tag
+        String[] anchorFields = {"navigationLink", "actionLink-noImage", "actionLink-imageRight", "actionLink-imageLeft",
+                "linkField", "linkElement"};
+        // fields whose simple attributes are set in a span tag
+        String[] spanFields = {"messageField", "spaceField"};
+        // fields whose simple attributes are set in an input tag
+        String[] inputFields = {"imageAction"};
+        // fields whose simple attributes are set in button tag
+        String[] buttonElements = {"buttonTextOnly", "buttonImageBottom", "buttonImageLeft", "buttonImageTop", "buttonImageRight"};
+        // iframe field
+        String[] iframeField = {"iframe"};
+        
         otherControlsMap.put("img", imgControls);
         otherControlsMap.put("a", anchorFields);
+        otherControlsMap.put("span", spanFields);
+        otherControlsMap.put("input", inputFields);
+        otherControlsMap.put("button", buttonElements);
+        otherControlsMap.put("iframe", iframeField);
 
         // a map to hold the tags where the simple attributes are affixed
         // if a tag is not here, a empty string will be used for the suffix
         Map<String, String> simpleTagIdSuffix = new HashMap<String, String>();
-        simpleTagIdSuffix.put("a", "_attrs");
-        simpleTagIdSuffix.put("button", "_button");
         simpleTagIdSuffix.put("span", "_span");
+        
 
         for (String tag: otherControlsMap.keySet()) {
             String[] controlIds = otherControlsMap.get(tag);
             for (int i=0; i<controlIds.length; i++) {
                 String tagId = controlIds[i];
 
-                // determine whether we are using a tag id suffix for the simple attributes
-                String tagIdSuffix = "";
-                if (simpleTagIdSuffix.containsKey(tag)) {
-                    tagIdSuffix = simpleTagIdSuffix.get(tag);
-                    // link field has no suffix
-                    /*if (tagId.equalsIgnoreCase("linkField")) {
-                        tagIdSuffix = "";
-                    }*/
-                }
                 // check for complex attributes
-                assertTrue(tagId + ": script does not contain expected code", verifyComplexAttributes(tagId, tagIdSuffix));
+                verifyComplexAttributes(tagId, testIdSuffix);
+
+                // determine whether we are using a tag id suffix for the simple attributes
+                String tagIdSuffix = testIdSuffix;
+                if (simpleTagIdSuffix.containsKey(tag)) {
+                    tagIdSuffix = tagIdSuffix + simpleTagIdSuffix.get(tag);
+                }
 
                 // check for simple attributes
                 verifySimpleAttributes(tag, tagId, tagIdSuffix);
             }
+            
+            // test label field - which uses the tagId suffix for both the simple attributes and complex
+            String tagId = "textInputField";
+            String tagIdSuffix = testIdSuffix + "_label";
+            // check for complex attributes
+            verifyComplexAttributes(tagId, tagIdSuffix);
+            // check for simple attributes
+            verifySimpleAttributes("label", tagId, tagIdSuffix);
         }
     }
 
@@ -240,6 +197,4 @@ public class UifDataAttributesIT {
     public void tearDown() throws Exception {
         selenium.stop();
     }
-    
-
 }

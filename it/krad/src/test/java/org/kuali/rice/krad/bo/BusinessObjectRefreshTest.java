@@ -32,6 +32,9 @@ import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KRADTestCase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Tests how refreshing works for Business Objects 
  * 
@@ -110,11 +113,18 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 	
 	@Test
 	public void testEagerRefreshField() {
-		final CountyId countyId = new CountyId("COCONINO", "US", "AZ");
-		CountyBo county = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(CountyBo.class, countyId);
-		
-		final StateId arizonaStateId = new StateId("US", "AZ");
-		final StateBo arizonaState = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateBo.class, arizonaStateId);
+        Map<String, String> primaryKeys = new HashMap<String, String>();
+        primaryKeys.put("code", "COCONINO");
+        primaryKeys.put("countryCode", "US");
+        primaryKeys.put("stateCode","AZ");
+		//final CountyId countyId = new CountyId("COCONINO", "US", "AZ");
+		CountyBo county = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(CountyBo.class, primaryKeys);
+
+        primaryKeys.clear();
+        primaryKeys.put("countryCode","US");
+        primaryKeys.put("code","AZ");
+		//final StateId arizonaStateId = new StateId("US", "AZ");
+		final StateBo arizonaState = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
 		
 		Assert.assertEquals("On retrieval from database, state code should be AZ", arizonaState.getCode(), county.getState().getCode());
 		Assert.assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getName(), county.getState().getName());
@@ -123,8 +133,11 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 		county.setCode("VENTURA");
 		county.refresh();
 		
-		final StateId californiaStateId = new StateId("US", "CA");
-		final StateBo californiaState = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateBo.class, californiaStateId);
+		//final StateId californiaStateId = new StateId("US", "CA");
+        primaryKeys.clear();
+        primaryKeys.put("countryCode","US");
+        primaryKeys.put("code","CA");
+		final StateBo californiaState = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(StateBo.class, primaryKeys);
 		
 		Assert.assertEquals("Does eager fetching automatically refresh?", californiaState.getCode(), county.getState().getCode());
 		Assert.assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getName(), county.getState().getName());

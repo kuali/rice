@@ -119,6 +119,12 @@ public final class DocumentTypePolicyEnum {
      * @see https://jira.kuali.org/browse/KULRICE-5931
      */
     public static final DocumentTypePolicyEnum RECALL_NOTIFICATION = new DocumentTypePolicyEnum(KewApiConstants.RECALL_NOTIFICATION_POLICY);
+    /**
+     * Specifies whether to send acknowledgements on a super user disapprove action
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-7056
+     */
+    public static final DocumentTypePolicyEnum SEND_NOTIFICATION_ON_SU_DISAPPROVE = new DocumentTypePolicyEnum(KewApiConstants.SEND_NOTIFICATION_ON_SU_DISAPPROVE_POLICY);
 
     private final String name;
 
@@ -178,6 +184,8 @@ public final class DocumentTypePolicyEnum {
             return NOTIFY_COMPLETED_ON_RETURN;
         } else if(RECALL_NOTIFICATION.name.equalsIgnoreCase(name)) {
             return RECALL_NOTIFICATION;
+        } else if (SEND_NOTIFICATION_ON_SU_DISAPPROVE.name.equalsIgnoreCase(name)) {
+            return SEND_NOTIFICATION_ON_SU_DISAPPROVE;
         } else {
             throw new IllegalArgumentException("Invalid Document type policy: '" + name + "'");
         }

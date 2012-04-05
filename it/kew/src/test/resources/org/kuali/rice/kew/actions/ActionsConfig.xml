@@ -498,6 +498,17 @@
       </policies>
     </documentType>
 
+    <documentType>
+      <name>SUDisapproveWithNotificationTest</name>
+      <parent>NotificationTest</parent>
+      <label>SUDisapproveWithNotificationTest</label>
+      <policies>
+        <policy>
+          <name>SEND_NOTIFICATION_ON_SU_DISAPPROVE</name>
+          <value>true</value>
+        </policy>
+      </policies>
+    </documentType>
 
     <documentType>
 			<name>BlanketApproveMandatoryNodeTest</name>

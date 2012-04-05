@@ -70,8 +70,6 @@ import java.util.Set;
 public class RecallAction extends ReturnToPreviousNodeAction {
     private static final Logger LOG = Logger.getLogger(RecallAction.class);
 
-    // ReturnToPrevious returns to initial node when sent a null node name
-    private static final String INITIAL_NODE_NAME = null;
     protected final boolean cancel;
     protected final Collection<Recipient> notificationRecipients;
 

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -58,80 +59,45 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReturnToPreviousNodeAction extends ActionTakenEvent {
+    protected static final Logger LOG = Logger.getLogger(ReturnToPreviousNodeAction.class);
 
-    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
+    // ReturnToPrevious returns to initial node when sent a null node name
+    protected static final String INITIAL_NODE_NAME = null;
+    protected static final boolean DEFAULT_SEND_NOTIFICATIONS = true;
 
-    private RouteHelper helper = new RouteHelper();
+    private final RouteHelper helper = new RouteHelper();
     protected final String nodeName;
     private boolean superUserUsage;
-    private boolean sendNotifications = true;
-    protected final boolean sendNotificationsForPreviousRequests;
+    private final boolean sendNotifications;
+    private final boolean sendNotificationsForPreviousRequests;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
-        this.nodeName = null;
-        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
-        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
+        this(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader,  principal, DEFAULT_ANNOTATION, INITIAL_NODE_NAME, DEFAULT_SEND_NOTIFICATIONS);
     }
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
-        super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation);
-        this.nodeName = nodeName;
-        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
-        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
+        this(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, nodeName, sendNotifications);
     }
     
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
-        super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessorLogic);
-        this.nodeName = nodeName;
-        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
-        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
+        this(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, nodeName, sendNotifications, runPostProcessorLogic);
     }
 
     /**
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
     protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
-        super(overrideActionTakenCode, routeHeader, principal, annotation);
-        this.nodeName = nodeName;
-        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
-        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
+        this(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, nodeName, sendNotifications, DEFAULT_RUN_POSTPROCESSOR_LOGIC);
     }
     
     /**
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
-    public ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
+    protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
         super(overrideActionTakenCode, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
-        this.sendNotifications = shouldSendNotifications(sendNotifications, routeHeader.getDocumentType());
-        this.sendNotificationsForPreviousRequests = shouldSendNotificationsForPreviousRequests(routeHeader.getDocumentType());
-    }
-
-    /**
-     * Determines whether notifications should be sent to recipients of outstanding actionrequests.
-     * Consults the NOTIFY_PENDING_ON_RETURN document type policy which overrides the constructor value.
-     * @param initialValue the constructor value
-     * @param docType the document type
-     * @return whether notifications should be sent to recipients of outstanding actionrequests
-     */
-    protected static boolean shouldSendNotifications(boolean initialValue, DocumentType docType) {
-        String val = docType.getPolicies().get(DocumentTypePolicy.NOTIFY_PENDING_ON_RETURN);
-        if (val == null) {
-            return initialValue;
-        } else {
-            return Boolean.parseBoolean(val);
-        }
-    }
-
-    /**
-     * Checks to see whether the NOTIFY_COMPLETED_ON_RETURN policy has been set (to true)
-     * @param docType the DocumentType
-     * @return whether the NOTIFY_COMPLETED_ON_RETURN policy has been set (to true)
-     */
-    protected static boolean shouldSendNotificationsForPreviousRequests(DocumentType docType) {
-        String val = docType.getPolicies().get(DocumentTypePolicy.NOTIFY_COMPLETED_ON_RETURN);
-        return Boolean.parseBoolean(val);
+        this.sendNotifications = isPolicySet(routeHeader.getDocumentType(), DocumentTypePolicy.NOTIFY_PENDING_ON_RETURN, sendNotifications);
+        this.sendNotificationsForPreviousRequests = isPolicySet(routeHeader.getDocumentType(), DocumentTypePolicy.NOTIFY_COMPLETED_ON_RETURN);
     }
 
     /**

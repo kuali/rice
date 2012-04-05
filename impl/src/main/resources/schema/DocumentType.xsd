@@ -488,6 +488,8 @@
       <enumeration value="notify_completed_on_return"/>
       <enumeration value="RECALL_NOTIFICATION"/>
       <enumeration value="recall_notification"/>
+      <enumeration value="SEND_NOTIFICATION_ON_SU_DISAPPROVE"/>
+      <enumeration value="send_notification_on_su_disapprove"/>
     </restriction>
   </simpleType>
 

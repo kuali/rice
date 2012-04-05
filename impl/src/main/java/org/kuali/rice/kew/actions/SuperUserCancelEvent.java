@@ -31,13 +31,11 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     
     public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal);
-        this.superUserAction = KewApiConstants.SUPER_USER_CANCEL;
+        super(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, KewApiConstants.SUPER_USER_CANCEL, routeHeader, principal);
     }
 
     public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
-        super(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KewApiConstants.SUPER_USER_CANCEL;
+        super(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, KewApiConstants.SUPER_USER_CANCEL, routeHeader, principal, annotation, runPostProcessor);
     }
 
     protected void markDocument() throws WorkflowException {

@@ -130,7 +130,13 @@ public enum DocumentTypePolicy implements Coded {
      * @since 2.1
      * @see https://jira.kuali.org/browse/KULRICE-5931
      */
-    @XmlEnumValue(Codes.RECALL_NOTIFICATION) RECALL_NOTIFICATION(Codes.RECALL_NOTIFICATION);
+    @XmlEnumValue(Codes.RECALL_NOTIFICATION) RECALL_NOTIFICATION(Codes.RECALL_NOTIFICATION),
+    /**
+     * Specifies whether to send acknowledgements on a super user disapprove action
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-7056
+     */
+    @XmlEnumValue(Codes.SEND_NOTIFICATION_ON_SU_DISAPPROVE) SEND_NOTIFICATION_ON_SU_DISAPPROVE(Codes.SEND_NOTIFICATION_ON_SU_DISAPPROVE);
     
     private final String code;
 
@@ -176,6 +182,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String NOTIFY_PENDING_ON_RETURN = "NOTIFY_PENDING_ON_RETURN";
         private static final String NOTIFY_COMPLETED_ON_RETURN = "NOTIFY_COMPLETED_ON_RETURN";
         private static final String RECALL_NOTIFICATION = "RECALL_NOTIFICATION";
+        private static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
     }
     
 }

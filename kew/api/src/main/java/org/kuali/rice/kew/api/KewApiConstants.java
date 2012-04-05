@@ -144,6 +144,7 @@ public final class KewApiConstants {
     public static final String NOTIFY_PENDING_ON_RETURN_POLICY = "NOTIFY_PENDING_ON_RETURN";
     public static final String NOTIFY_COMPLETED_ON_RETURN_POLICY = "NOTIFY_COMPLETED_ON_RETURN";
     public static final String RECALL_NOTIFICATION_POLICY = "RECALL_NOTIFICATION";
+    public static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE_POLICY = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";

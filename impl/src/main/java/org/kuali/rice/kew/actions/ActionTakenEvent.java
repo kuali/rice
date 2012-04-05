@@ -15,31 +15,43 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 /**
  * Super class containing mostly often used methods by all actions. Holds common
@@ -151,6 +163,33 @@ public abstract class ActionTakenEvent {
 	protected boolean isActionValid() {
 		return org.apache.commons.lang.StringUtils.isEmpty(validateActionRules());
 	}
+
+
+    /**
+     * Determines whether a specific policy is set on the document type.
+     * @param docType the document type
+     * @param policy the DocumentTypePolicy
+     * @param deflt the default value if the policy is not present
+     * @return the policy value or deflt if missing
+     */
+    protected static boolean isPolicySet(DocumentType docType, DocumentTypePolicy policy, boolean deflt) {
+        String val = docType.getPolicies().get(policy);
+        if (val == null) {
+            return deflt;
+        } else {
+            return Boolean.parseBoolean(val);
+        }
+    }
+
+    /**
+     * Determines whether a specific policy is set on the document type.
+     * @param docType the document type
+     * @param policy the DocumentTypePolicy
+     * @return the policy value or false if missing
+     */
+    protected static boolean isPolicySet(DocumentType docType, DocumentTypePolicy policy) {
+        return isPolicySet(docType, policy, false);
+    }
 
 	/**
 	 * Placeholder for validation rules for each action
@@ -328,4 +367,56 @@ public abstract class ActionTakenEvent {
         }
         throw new WorkflowRuntimeException(e);
 	}
+
+    /**
+     * Utility for generating Acknowledgements to previous document action takers.  Note that in constrast with other
+     * notification-generation methods (such as those in ActionRequestFactory) this method determines its recipient list
+     * from ActionTakenValues, not from outstanding ActionRequests.
+     * @see ActionRequestFactory#generateNotifications(java.util.List, org.kuali.rice.kim.api.identity.principal.PrincipalContract, org.kuali.rice.kew.actionrequest.Recipient, String, String)
+     * @see ActionRequestFactory#generateNotifications(org.kuali.rice.kew.actionrequest.ActionRequestValue, java.util.List, org.kuali.rice.kim.api.identity.principal.PrincipalContract, org.kuali.rice.kew.actionrequest.Recipient, String, String, org.kuali.rice.kim.api.group.Group)
+     * @param notificationNodeInstance the node instance with which generated actionrequests will be associated
+     */
+    protected void generateAcknowledgementsToPreviousActionTakers(RouteNodeInstance notificationNodeInstance)
+    {
+        String groupName = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
+                KewApiConstants.KEW_NAMESPACE,
+                KRADConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
+                KewApiConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
+
+        Set<String> systemPrincipalIds = new HashSet<String>();
+
+        if( !StringUtils.isBlank(groupName))
+        {
+            Group systemUserWorkgroup = KimApiServiceLocator.getGroupService().
+                    getGroupByNamespaceCodeAndName(Utilities.parseGroupNamespaceCode(groupName),
+                            Utilities.parseGroupName(groupName));
+
+            List<String> principalIds = KimApiServiceLocator.
+                    getGroupService().getMemberPrincipalIds( systemUserWorkgroup.getId());
+
+            if (systemUserWorkgroup != null)
+            {
+                for( String id : principalIds)
+                {
+                    systemPrincipalIds.add(id);
+                }
+            }
+        }
+        ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
+        Collection<ActionTakenValue> actions = KEWServiceLocator.getActionTakenService().findByDocumentId(getDocumentId());
+        //one notification per person
+        Set<String> usersNotified = new HashSet<String>();
+        for (ActionTakenValue action : actions)
+        {
+            if ((action.isApproval() || action.isCompletion()) && !usersNotified.contains(action.getPrincipalId()))
+            {
+                if (!systemPrincipalIds.contains(action.getPrincipalId()))
+                {
+                    ActionRequestValue request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
+                    KEWServiceLocator.getActionRequestService().activateRequest(request);
+                    usersNotified.add(request.getPrincipalId());
+                }
+            }
+        }
+    }
 }

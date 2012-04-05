@@ -59,7 +59,7 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 		try {
 			GenericPermissionBo perm = (GenericPermissionBo)getNewBo();
 			rulesPassed &= validateDetailValuesFormat(perm.getDetailValues());
-            if(StringUtils.isNotBlank(perm.getNamespaceCode()) && StringUtils.isNotBlank(perm.getName())){
+            if(StringUtils.isNotBlank(perm.getNamespaceCode()) && StringUtils.isNotBlank(perm.getName()) && StringUtils.isBlank(perm.getId())){
                 rulesPassed &= validateNamespaceCodeAndName(perm.getNamespaceCode(), perm.getName());
             }
 			// detailValues

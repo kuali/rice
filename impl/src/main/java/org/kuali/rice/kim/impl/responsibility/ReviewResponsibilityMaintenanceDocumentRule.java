@@ -58,7 +58,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
 				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
 				rulesPassed &= false;
 			}
-             if(StringUtils.isNotBlank(resp.getNamespaceCode()) && StringUtils.isNotBlank(resp.getName())){
+             if(StringUtils.isNotBlank(resp.getNamespaceCode()) && StringUtils.isNotBlank(resp.getName()) && StringUtils.isBlank(resp.getId())){
                 rulesPassed &=validateNamespaceCodeAndName(resp.getNamespaceCode(),resp.getName());
              }
         } finally {

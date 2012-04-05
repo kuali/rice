@@ -1220,6 +1220,9 @@
         <unique name="KREW_RULE_ATTR_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
+        <unique name="KREW_RULE_ATTR_TC1">
+            <unique-column name="NM"/>
+        </unique>
     </table>
     <table name="KREW_RULE_EXPR_T">
         <column name="RULE_EXPR_ID" primaryKey="true" size="40" type="VARCHAR"/>

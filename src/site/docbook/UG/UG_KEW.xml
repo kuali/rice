@@ -453,6 +453,11 @@
                                         these documents. No changes are allowed to a document
                                         that is in Final status. </para>
                                 </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Recalled</emphasis>: The document has 
+                                        been recalled after being submitted and canceled. No changes 
+                                        are allowed to a document that is in Recalled status. </para>
+                                </listitem>                                
                             </itemizedlist></para>
                     </listitem>
                     <listitem>
@@ -1362,6 +1367,9 @@
                         <para>Save </para>
                     </listitem>
                     <listitem>
+                        <para>Recall </para>
+                    </listitem>
+                    <listitem>
                         <para>Superuser Actions <itemizedlist>
                                 <listitem>
                                     <para>Superuser Approve Document </para>
@@ -1523,6 +1531,14 @@
                     request for the document’s initiator and then changes the document’s status to
                     Saved.</para>
             </sect3>
+            <sect3>
+                <title>Recall</title>
+                <para>Use this action to recall a doucment that has been submitted to your action list. 
+                    You can only use this action on a document if you have a specific role for the application
+                    and/or document you are trying to recall. When you use this action, you are given the option 
+                    to recall the document to your action list for updating or you can recall and cancel the doucment
+                    with one action if it is no longer needed.</para>
+            </sect3>            
             <sect3>
                 <title>Superuser Actions </title>
                 <para>Superuser actions let you move a document past workflow nodes where it may be

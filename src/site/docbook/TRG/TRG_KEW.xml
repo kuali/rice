@@ -5174,6 +5174,45 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 &lt;/policies>
 </programlisting>
             </sect3>
+            <sect3>
+                <title>Recall From Routing</title>
+                <para>Three Document Type policies affect Recall behavior. These policies are defined in the respective the DocumentType XML.
+                    
+                    The following two policies apply to Return-To-Previous actions as well as Recall actions:</para>
+                <para><emphasis role="bold">NOTIFY_COMPLETED_ON_RETURN - Default: false</emphasis> toggles whether to notify 
+                    previous router log participants with FYIs when a document is recalled. This does not affect notifications 
+                    to pending approvers which are always sent.</para>
+                <para>Example:</para>
+                <programlisting>
+&lt;policy>
+    &lt;name>NOTIFY_COMPLETED_ON_RETURN&lt;/name>
+    &lt;value>true&lt;/value>
+&lt;/policy>
+                </programlisting>
+                <para><emphasis role="bold">NOTIFY_PENDING_ON_RETURN - Default: true</emphasis> toggles whether to notify pending 
+                    approvers with FYIs when a document is recalled. This does not affect notifications to prior approvers.</para>
+                <para>Example:</para>
+                <programlisting>
+&lt;policy>
+    &lt;name>NOTIFY_PENDING_ON_RETURN&lt;/name>
+    &lt;value>true&lt;/value>
+&lt;/policy>                    
+                </programlisting>
+                <para>The following policy is Recall-specific:</para>
+                <para><emphasis role="bold"></emphasis> RECALL_NOTIFICATION - Default: false/none</para>
+                <para>Example:</para>
+                <programlisting>
+&lt;policy>
+    &lt;name>RECALL_NOTIFICATION&lt;/name>
+    &lt;value>true&lt;/value>
+    &lt;recipients xmlns:r="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule" xmlns:dt="ns:workflow/DocumentType">
+      &lt;r:principalName>quickstart&lt;/r:principalName>
+      &lt;r:user>quickstart&lt;/r:user>
+      &lt;role namespace="KR-SYS" name="Technical Administrator"/>
+    &lt;/recipients>
+&lt;/policy>                    
+                </programlisting>
+            </sect3>
         </sect2>
         <sect2>
             <title>Inheritance</title>

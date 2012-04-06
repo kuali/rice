@@ -295,9 +295,9 @@ public class ActionListAction extends KualiAction {
                 }else if (refreshList(request,principalId)){
                      actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                    List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
-                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
-                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
+//                    List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
+//                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
+//                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
                 } else {
                 	Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
                 	if (update == null || !update) {
@@ -371,8 +371,12 @@ public class ActionListAction extends KualiAction {
         int previousCount = Integer.parseInt(request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY).toString());
         int previousMaxActionItemId = Integer.parseInt(request.getSession().getAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY).toString());
        if(previousCount!= count){
+           request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, maxActionItemId);
+           request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
            return true;
        }else if(previousMaxActionItemId!= maxActionItemId){
+           request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, maxActionItemId);
+           request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, count);
            return true;
        } else{
            return false;

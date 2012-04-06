@@ -689,6 +689,19 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 		return PrincipalBo.to(principal);
 	}
+
+    @Override
+    public List<Principal> getPrincipals (List<String> principalIds) {
+        List<Principal>  ret = new ArrayList<Principal>();
+        for(String p: principalIds) {
+            Principal principalInfo = getPrincipal(p);
+
+            if (principalInfo != null) {
+                ret.add(principalInfo) ;
+            }
+        }
+        return ret;
+    }
 	
 	private PrincipalBo getPrincipalBo(String principalId) {
 		Map<String,String> criteria = new HashMap<String,String>(1);

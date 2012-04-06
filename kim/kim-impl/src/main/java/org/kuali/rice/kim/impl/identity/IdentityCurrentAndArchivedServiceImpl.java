@@ -46,6 +46,7 @@ import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.jws.WebParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -428,6 +429,33 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	public Principal getPrincipal(String principalId) {
 		return getInnerIdentityService().getPrincipal(principalId);
 	}
+
+    /**
+     * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from a string list of principalId.
+     *
+     * <p>
+     * This method will only return principals that exist.  It will return null if the none of the principals exist.
+     * </p>
+     *
+     * @param principalIds the unique id to retrieve the principal by. cannot be null.
+     * @return a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} or null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the principalId is blank
+     */
+    @Override
+    public List<Principal> getPrincipals(@WebParam(name = "principalIds") List<String> principalIds) {
+        List<Principal> ret = new ArrayList<Principal>();
+        for(String p: principalIds) {
+            Principal principalInfo = getPrincipal(p);
+
+            if (principalInfo != null) {
+                ret.add(principalInfo) ;
+            }
+            else {
+                return null;
+            }
+        }
+        return ret;
+    }
 
     @Override
 	public Principal getPrincipalByPrincipalName(String principalName) {

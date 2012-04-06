@@ -67,6 +67,15 @@ public class IdentityServiceTest extends KIMTestCase {
 		assertEquals("Principal name did not match expected result","kuluser", principal.getPrincipalName());
 	}
 
+    @Test
+    public void testGetPrincipals() {
+        List<String> principalIds = new ArrayList<String>();
+        principalIds.add("KULUSER");
+        List<Principal> validPrincipals = identityService.getPrincipals(principalIds);
+        assertNotNull("validPrincipals must not be null", validPrincipals);
+        assertEquals("validPrincipals name did not match expected result","kuluser", validPrincipals.get(0).getPrincipalName());
+    }
+
 	@Test
 	public void testGetPrincipalByPrincipalName() {
 		Principal principal = identityService.getPrincipalByPrincipalName("kuluser");

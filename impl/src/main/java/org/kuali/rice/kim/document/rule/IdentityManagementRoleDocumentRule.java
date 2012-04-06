@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
@@ -127,6 +128,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         valid &= validDuplicateRoleName(roleDoc);
         valid &= validPermissions(roleDoc);
         valid &= validResponsibilities(roleDoc);
+        //KULRICE-6858 Validate group members are in identity system
+        valid &= validRoleMemberPrincipalIDs(roleDoc.getMembers());
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
         if(validateRoleAssigneesAndDelegations){
@@ -165,6 +168,33 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		}
 		return rulePassed;
 	}
+
+    protected boolean validRoleMemberPrincipalIDs(List<KimDocumentRoleMember> roleMembers) {
+        boolean valid = true;
+        List<String> principalIds = new ArrayList<String>();
+        for(KimDocumentRoleMember roleMember: roleMembers) {
+            if (StringUtils.equals(roleMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()) ) {
+                principalIds.add(roleMember.getMemberId());
+            }
+        }
+        if(!principalIds.isEmpty())       {
+            List<Principal> validPrincipals = getIdentityService().getPrincipals(principalIds);
+            for(KimDocumentRoleMember roleMember: roleMembers) {
+                boolean validPrincipalId = false;
+                for(Principal validPrincipal: validPrincipals) {
+                    if(roleMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
+                        validPrincipalId = true;
+                    }
+                }
+                if(!validPrincipalId) {
+                    GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+                            new String[] {roleMember.getMemberId()});
+                    valid = false;
+                }
+            }
+        }
+        return valid;
+    }
 
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){

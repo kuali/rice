@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.IdentityService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
@@ -79,6 +81,8 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validateGroupQualifier(groupDoc.getQualifiers(), groupDoc.getKimType());
         valid &= validGroupMemberActiveDates(groupDoc.getMembers());
+        //KULRICE-6858 Validate group members are in identity system
+        valid &= validGroupMemberPrincipalIDs(groupDoc.getMembers());
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
@@ -131,6 +135,33 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     		i++;
     	}
     	return valid;
+    }
+
+    protected boolean validGroupMemberPrincipalIDs(List<GroupDocumentMember> groupMembers) {
+        boolean valid = true;
+        List<String> principalIds = new ArrayList<String>();
+        for(GroupDocumentMember groupMember: groupMembers) {
+            if (StringUtils.equals(groupMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()) ) {
+                principalIds.add(groupMember.getMemberId());
+            }
+        }
+        if(!principalIds.isEmpty())       {
+            List<Principal> validPrincipals = getIdentityService().getPrincipals(principalIds);
+            for(GroupDocumentMember groupMember: groupMembers) {
+                boolean validPrincipalId = false;
+                for(Principal validPrincipal: validPrincipals) {
+                    if(groupMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
+                        validPrincipalId = true;
+                    }
+                }
+                if(!validPrincipalId) {
+                    GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+                            new String[] {groupMember.getMemberId()});
+                    valid = false;
+                }
+            }
+        }
+        return valid;
     }
 
     protected boolean validateGroupQualifier(List<GroupDocumentQualifier> groupQualifiers, KimType kimType){

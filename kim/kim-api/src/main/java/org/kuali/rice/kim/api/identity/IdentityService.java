@@ -300,6 +300,23 @@ public interface IdentityService {
     @Cacheable(value= Principal.Cache.NAME, key="'principalId=' + #p0")
     Principal getPrincipal( @WebParam(name="principalId") String principalId )  throws RiceIllegalArgumentException;
 
+
+    /**
+     * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from a string list of principalId.
+     *
+     * <p>
+     *   This method will only return principals that exist.
+     * </p>
+     *
+     * @param principalIds the unique id to retrieve the principal by. cannot be null.
+     * @return a list of {@link org.kuali.rice.kim.api.identity.principal.Principal}
+     * @throws RiceIllegalArgumentException if the principalId is blank
+     */
+    @WebMethod(operationName = "getPrincipals")
+    @WebResult(name = "ret")
+    List<Principal> getPrincipals( @WebParam(name="principalIds") List<String> principalIds)  ;
+
+
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.principal.Principal} from an principalName.
      *
@@ -309,7 +326,6 @@ public interface IdentityService {
      *
      * @param principalName the unique id to retrieve the principal by. cannot be null.
      * @return a {@link org.kuali.rice.kim.api.identity.principal.Principal} or null
-     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @WebMethod(operationName = "getPrincipalByPrincipalName")
     @WebResult(name = "principal")

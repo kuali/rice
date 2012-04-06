@@ -2705,6 +2705,62 @@
                     <emphasis role="bold">Permission Lookup</emphasis> section of this
                 document.</para>
         </sect2>
+        <sect2>
+            <title>Delivered Permission Templates</title>
+            <para>Rice is delivered with a number of permission templates.  Below is a listing of each
+            along with a brief description of their use.</para>
+            <para>
+                <table frame="none">
+                    <title>Delivered Permission Templates</title>
+                    <tgroup cols="5">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                        <colspec colname="c4" colnum="4" colwidth="1.0*"/>  
+                        <colspec colname="c5" colnum="5" colwidth="1.0*"/>                        
+                        <thead>
+                            <row>
+                                <entry>Template ID</entry>
+                                <entry>Template Namespace</entry>
+                                <entry>Template Name</entry>
+                                <entry>Permission Template Description</entry>
+                                <entry>Permission Detailas</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>1</entry>
+                                <entry>KUALI</entry>
+                                <entry>Default</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>2</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Copy Document</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>3</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Administer Routing for Document</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>4</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Blanket Approve Document</entry>
+                                <entry>Authorizes user to bypass specified approval route nodes</entry>
+                                <entry></entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </para>
+        </sect2>
     </sect1>
     <sect1>
         <title>Locations</title>

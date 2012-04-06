@@ -291,7 +291,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
 
 /**
  * Writes the any messages in the client or server side message arrays at the field level, applies the correct style
- * classes, and displays icons as necessary.  TODO These messages are hidden content unless tooltips for messages are
+ * classes, and displays icons as necessary.  These messages are hidden content unless tooltips for messages are
  * turned off.
  * @param id id of the field to write messages to
  */

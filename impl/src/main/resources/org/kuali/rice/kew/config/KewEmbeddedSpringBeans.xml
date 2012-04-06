@@ -145,19 +145,10 @@
     </property>
   </bean>
 
-  <bean id="reloadActionListDAO" class="org.kuali.rice.kew.useroptions.dao.impl.ReloadActionListDaoJdbcImpl">
-    <constructor-arg>
-      <ref bean="kewNonTransactionalDataSource"/>
-    </constructor-arg>
-  </bean>
-
   <!--  UserOptionsService -->
   <bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
     <property name="userOptionsDAO">
       <ref bean="enUserOptionsDAO"/>
-    </property>
-    <property name="reloadActionListDAO">
-      <ref bean="reloadActionListDAO"/>
     </property>
   </bean>
 

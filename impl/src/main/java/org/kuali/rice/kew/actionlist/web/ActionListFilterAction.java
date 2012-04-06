@@ -101,7 +101,6 @@ public class ActionListFilterAction extends KualiAction {
         	alFilter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
         }
         uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             return mapping.findForward("viewActionList");
         } 
@@ -118,7 +117,6 @@ public class ActionListFilterAction extends KualiAction {
         filterForm.setDocTypeFullName("");
         UserSession session = getUserSession();
         session.removeObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
         return mapping.findForward("viewFilter");
     }
 

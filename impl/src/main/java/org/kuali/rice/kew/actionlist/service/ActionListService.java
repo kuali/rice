@@ -44,8 +44,6 @@ public interface ActionListService {
 
     public Collection<Recipient> findUserPrimaryDelegations(String principalId);
 
-    public boolean refreshActionList(String principalId);
-
     public void saveActionItem(ActionItem actionItem);
 
     public void deleteActionItem(ActionItem actionItem);
@@ -73,7 +71,12 @@ public interface ActionListService {
      */
     public int getCount(String principalId);
 
-    public void saveRefreshUserOption(String principalId);
+    /**
+     * Retrieves the max action item Id  and the total number of action items for the given user's primary Action List
+     * (does not include secondary delegations)
+     * @param principalId
+     */
+    public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);
 
     public Collection<ActionItem> findByActionRequestId(String actionRequestId);
     

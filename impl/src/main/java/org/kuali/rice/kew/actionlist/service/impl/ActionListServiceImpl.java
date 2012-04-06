@@ -84,20 +84,11 @@ public class ActionListServiceImpl implements ActionListService {
         return actionListDAO;
     }
 
-    public boolean refreshActionList(String principalId) {
-        return KEWServiceLocator.getUserOptionsService().refreshActionList(principalId);
-    }
-
     public void deleteActionItem(ActionItem actionItem) {
     	deleteActionItem(actionItem, false);
     }
     
     public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox) {
-        try {
-            KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
-        } catch (Exception e) {
-            LOG.error("error saving refreshUserOption", e);
-        }
         getActionItemDAO().deleteActionItem(actionItem);
         // remove notification from KCB
         KEWServiceLocator.getNotificationService().removeNotification(Collections.singletonList(ActionItem.to(actionItem)));
@@ -105,15 +96,6 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void deleteByDocumentId(String documentId) {
-        Collection<ActionItem> actionItems = findByDocumentId(documentId);
-        for (Iterator<ActionItem> iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = iter.next();
-            try {
-                KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
-            } catch (Exception e) {
-                LOG.error("error saving refreshUserOption", e);
-            }
-        }
         getActionItemDAO().deleteByDocumentId(documentId);
     }
 
@@ -174,7 +156,6 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void saveActionItem(ActionItem actionItem) {
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
         getActionItemDAO().saveActionItem(actionItem);
     }
 
@@ -287,8 +268,8 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionListDAO().getCount(principalId);
     }
 
-    public void saveRefreshUserOption(String principalId) {
-        KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(principalId);
+    public List<Integer> getMaxActionItemIdAndCountForUser(String principalId) {
+        return getActionListDAO().getMaxActionItemIdAndCountForUser(principalId);
     }
 
     /**

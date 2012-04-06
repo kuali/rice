@@ -33,7 +33,9 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
 public interface ActionListDAO {
     public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
     public Collection<ActionItem> getActionListForSingleDocument(String documentId);
-    public int getCount(String workflowId);
+   public int getCount(String workflowId);
+    //KULRICE-6849
+    public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);
 
     /**
      *

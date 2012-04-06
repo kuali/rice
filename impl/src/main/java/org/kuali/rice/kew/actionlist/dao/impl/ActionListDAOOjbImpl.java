@@ -39,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -572,6 +573,56 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     throw new WorkflowRuntimeException("Error determining Action List Count.", e);
                 } catch (LookupException e) {
                     throw new WorkflowRuntimeException("Error determining Action List Count.", e);
+                } finally {
+                    if (statement != null) {
+                        try {
+                            statement.close();
+                        } catch (SQLException e) {}
+                    }
+                    if (resultSet != null) {
+                        try {
+                            resultSet.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+            }
+        });
+    }
+
+    private static final String ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY = "select to_number(max(actn_itm_id))as max_id, count(distinct(doc_hdr_id)) as total_records"
+            + "  from ("
+            + "       select actn_itm_id,doc_hdr_id  "
+            + "         from KREW_ACTN_ITM_T   where    prncpl_id=? and (dlgn_typ is null or dlgn_typ = 'P')"
+            + "         group by  actn_itm_id,doc_hdr_id "
+            + "       )";
+    /**
+     * Gets the max action item id and count doe a given user.
+     *
+     * @return A List with the first value being the maxActionItemId and the second value being the count
+     */
+    public List<Integer> getMaxActionItemIdAndCountForUser(final String principalId){
+        return (List<Integer>)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+            public Object doInPersistenceBroker(PersistenceBroker broker) {
+                PreparedStatement statement = null;
+                ResultSet resultSet = null;
+                List<Integer> result = new ArrayList<Integer>();
+                try {
+                    Connection connection = broker.serviceConnectionManager().getConnection();
+                    statement = connection.prepareStatement(ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY);
+                    statement.setString(1, principalId);
+                    resultSet = statement.executeQuery();
+                    if (!resultSet.next()) {
+                        throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.");
+                    }
+                    else{
+                        result.add(resultSet.getInt(1));
+                        result.add(resultSet.getInt(2));
+                    }
+                    return result;
+                } catch (SQLException e) {
+                    throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.", e);
+                } catch (LookupException e) {
+                    throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.", e);
                 } finally {
                     if (statement != null) {
                         try {

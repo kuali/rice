@@ -447,12 +447,32 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from krew_actn_itm_t ai where ai.PRNCPL_ID = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
 
     public int getCount(final String workflowId) {
-    	
+
     	javax.persistence.Query q = entityManager.createNativeQuery(ACTION_LIST_COUNT_QUERY);
     	q.setParameter(1, workflowId);
     	Number result = (Number)q.getSingleResult();
     	return result.intValue();
     }
+
+    private static final String ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY = "select to_number(max(actn_itm_id))as max_id, count(distinct(doc_hdr_id)) as total_records"
+             + "  from ("
+            + "       select actn_itm_id,doc_hdr_id  "
+            + "         from KREW_ACTN_ITM_T   where    prncpl_id=? and (dlgn_typ is null or dlgn_typ = 'P')"
+            + "         group by  actn_itm_id,doc_hdr_id "
+            + "       )";
+     /**
+     * Gets the max action item id and count doe a given user.
+     *
+     * @return A List with the first value being the maxActionItemId and the second value being the count
+     */
+    public List<Integer> getMaxActionItemIdAndCountForUser(final String principalId) {
+        javax.persistence.Query q = entityManager.createNativeQuery(ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY);
+        q.setParameter(1, principalId);
+        return q.getResultList();
+
+    }
+
+
 
     /**
      * Creates an Action List from the given collection of Action Items.  The Action List should

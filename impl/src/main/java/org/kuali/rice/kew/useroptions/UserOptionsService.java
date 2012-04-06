@@ -35,7 +35,5 @@ public interface UserOptionsService {
     void deleteUserOptions(UserOptions userOptions);
     UserOptions findByOptionId(String optionId, String principalId);
     Collection<UserOptions> findByOptionValue(String optionId, String optionValue);
-    boolean refreshActionList(String principalId);
-    void saveRefreshUserOption(String principalId);
     List<UserOptions> retrieveEmailPreferenceUserOptions(String emailSetting);
 }

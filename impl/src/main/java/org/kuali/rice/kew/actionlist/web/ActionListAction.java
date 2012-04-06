@@ -95,6 +95,9 @@ public class ActionListAction extends KualiAction {
     private static final String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static final String ACTION_LIST_USER_KEY = "actionList.user";
     private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";
+    //KULRICE-6849
+    private static final String ACTION_ITEM_COUNT_FOR_USER_KEY = "actionList.count";
+    private static final String MAX_ACTION_ITEM_ID_FOR_USER_KEY = "actionList.maxActionItemId";
 
     private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
     private static final String CUSTOMACTIONLIST_PROP = "customActionList";
@@ -274,18 +277,27 @@ public class ActionListAction extends KualiAction {
         	    form.setOutBoxEmpty(actionList.isEmpty());
             } else {
                 if (actionList == null) {
-                	//clear out old User Option records if they exist
-                	actionListSrv.refreshActionList(getUserSession().getPerson().getPrincipalId());
+                	List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
                 	// fetch the action list
                     actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else if (forceListRefresh) {
                 	// force a refresh... usually based on filter change or parameter specifying refresh needed
                     actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                } else if (actionListSrv.refreshActionList(getUserSession().getPerson().getPrincipalId())) {
-                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+                     List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
+
+                }else if (refreshList(request,principalId)){
+                     actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                    List<Integer> countAndMaxId = actionListSrv.getMaxActionItemIdAndCountForUser(principalId);
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY, countAndMaxId.get(0));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, countAndMaxId.get(1));
                 } else {
                 	Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
                 	if (update == null || !update) {
@@ -350,6 +362,23 @@ public class ActionListAction extends KualiAction {
         return mapping.findForward("viewActionList");
     }
 
+    private boolean refreshList(HttpServletRequest request,String principalId ){
+       int count = 0;
+       int maxActionItemId = 0;
+       List<Integer> countAndMaxActionItemId = KEWServiceLocator.getActionListService().getMaxActionItemIdAndCountForUser(principalId);
+        maxActionItemId = countAndMaxActionItemId.get(0);
+        count = countAndMaxActionItemId.get(1);
+        int previousCount = Integer.parseInt(request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY).toString());
+        int previousMaxActionItemId = Integer.parseInt(request.getSession().getAttribute(MAX_ACTION_ITEM_ID_FOR_USER_KEY).toString());
+       if(previousCount!= count){
+           return true;
+       }else if(previousMaxActionItemId!= maxActionItemId){
+           return true;
+       } else{
+           return false;
+       }
+
+    }
     private SortOrderEnum parseSortOrder(String dir) throws WorkflowException {
     	if ("asc".equals(dir)) {
     		return SortOrderEnum.ASCENDING;
@@ -727,7 +756,6 @@ public class ActionListAction extends KualiAction {
         final org.kuali.rice.krad.UserSession commonUserSession = getUserSession();
         commonUserSession.removeObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(commonUserSession.getPrincipalId());
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }

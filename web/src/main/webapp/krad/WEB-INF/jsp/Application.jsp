@@ -32,7 +32,7 @@
        <s:nestedPath path="KualiForm">
        	 <krad:template component="${KualiForm.view.breadcrumbs}"/>
 
-         <div id="viewpage_div">
+         <div id="viewpage_div" class="uif-pageContentWrapper">
             <krad:template component="${KualiForm.view.currentPage}"/>
         
             <c:if test="${KualiForm.view.renderForm}">

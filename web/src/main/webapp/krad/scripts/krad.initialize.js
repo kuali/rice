@@ -75,7 +75,11 @@ jq(document).ready(function () {
 function initFieldHandlers() {
     //when these fields are focus store what the current errors are if any and show the messageTooltip
     jq(document).on("focus",
-            "[data-role='InputField'] input, "
+            "[data-role='InputField'] input:text, "
+                    + "[data-role='InputField'] input:password, "
+                    + "[data-role='InputField'] input:file, "
+                    + "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio,"
                     + "[data-role='InputField'] select, "
                     + "[data-role='InputField'] textarea, "
                     + "[data-role='InputField'] option",
@@ -232,10 +236,7 @@ function initBubblePopups() {
     //will cause a severe loss of functionality and buggy behavior
     //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
     jq("input, select, textarea, "
-            + " label").CreateBubblePopup(
-            {   manageMouseEvents:false,
-                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
-    jq(".uif-tooltip").CreateBubblePopup(
+            + " label, .uif-tooltip").CreateBubblePopup(
             {   manageMouseEvents:false,
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 }
@@ -255,6 +256,11 @@ function setupPage(validate) {
 
     //flag to turn off and on validation mechanisms on the client
     validateClient = validate;
+
+    //select current page
+    var pageId = jq("[name='pageId']").val();
+    jq("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
+    jq("ul.uif-tabMenu").selectTab({selectPage : pageId});
 
     //Handle messages at field, if any
     jq("[data-role='InputField']").each(function () {
@@ -316,7 +322,8 @@ function setupPage(validate) {
                     else {
                         writeMessagesAtField(id);
                     }
-                    if(!(data.warnings || data.info || data.serverErrors || data.serverWarnings || data.serverInfo)){
+                    if(!(data.warnings.length || data.info.length || data.serverErrors.length
+                            || data.serverWarnings.length || data.serverInfo.length)){
                         hideMessageTooltip(id);
                     }
 

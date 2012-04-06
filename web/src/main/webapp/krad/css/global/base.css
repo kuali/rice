@@ -16,10 +16,18 @@
 @charset "UTF-8";
 /* CSS Document */
 
-/*This exists to fix a bug with iframe resizing - do not change */
+/*This exists to fix a bug with iframe resizing*/
+/*DO NOT CHANGE */
 body {
     margin-right: 0px !important;
-    padding-right: 15px !important;
+    padding-right: 25px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 20px !important;
+}
+/*DO NOT CHANGE*/
+
+.uif-viewHeader{
+    margin-left: 15px;
 }
 
 /* GENERAL - applies to all look and feel (KNS and KS)********************/
@@ -61,14 +69,6 @@ th, td {
 
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
-
-
-#viewpage_div {
-    margin-left: 25px;
-    margin-right: 20px;
-    /*width: 760px;   */
-	/*float:left;        are we removing this? (David) */
-}
 
 .uif-constraintMessage {                  /* NOT RENAMED - changing this classname will break some javascript functionality  */
 	font-size:0.813em;
@@ -127,8 +127,10 @@ h4 img.expand_collapse-buttons {
 td.kr-clientError {
     overflow: visible;
 }
-.uif-inputField img {
-    margin-left:7px;
+.uif-inputField > img, .uif-inputField > a > img, .uif-inputField > fieldset > img, .uif-inputField input[type="image"]{
+    margin-left: 3px;
+    vertical-align: top;
+    margin-top: 6px;
 }
 .uif-inputField .uif-labelTop label {   /* was .field_attribute .uif-labelTop label */  /* renamed in xml and/or jsp */
 	margin: 5px 5px 0px 0px;  /* field top labels should not have left-margins  -David */
@@ -273,7 +275,7 @@ li label.kr-error {
     display: block;
     width: 100%;
     letter-spacing: 0.02em;
-    padding: 3px 0 3px 25px;
+    padding: 3px 0 3px 15px;
  }
 
  .uif-breadcrumbs a {
@@ -513,178 +515,7 @@ button img.rightActionImage, a img.rightActionImage{
 	clear: none;
 }
 
- /* TEMPORARY JQUERY STYLES (until jquery-ui-1.8.11.css is included) */
-/*
- * jQuery UI CSS Framework 1.8.11
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Theming/API
- */
-
-/*Navigation Menu*/
-
-.navigation-parent-div{
-	margin-left: 225px;
-}
-
-.navigation-div{
-	margin-left: -225px;
-}
-
-.navigation-block {
-   float: left;
-   width: 219px;
-}
-/* Navigation Menu*/
-
-.slideLink {
-    font-size: .9em;
-}
-.collapseLink {
-
-	font-size: .9em;
-	color: #666;
-}
-ul.basic-navigation {
-	list-style: none outside none;
-	padding: 0;
-	margin-top: 0px;
-    margin-left:15px;
-}
-ul.basic-navigation li {
-	padding: 0;
-}
-li.basic-element span.uif-actionLink, li.basic-element a.uif-actionLink {
-    margin-bottom:0;
-}
-ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
-	color: #333333;
-	display: inline-block;
-	margin-bottom: 0;
-	padding: 0 20px 0 3px;
-	width: 170px;
-	font-weight: bold;
-	font-family:arial, sans-serif;
-	text-transform:uppercase;
-	border-top: 2px solid #000;
-	border-bottom: 1px solid #bbb;
-    border-left: none;
-    border-right: none;
-}
-li.basic-element h2 {
-    font-size: 0.923077em !important;
-}
-ul.basic-navigation li.basic-element a {
-	background-color: #fff;
-	display: inline-block;
-    height: 1%;
-	/*
-	Changing the padding here will require updating the script to correct return padding (pad_in)
-	*/
-    padding: 5px 20px 5px 3px;
-	width: 170px;
-	color: #3F7826;
-	text-decoration: none;
-	border-bottom: 1px solid #bbb;
-	font-size:.92307692em;
-}
-* html ul.basic-navigation li.basic-element a {
-    \width: 193px; /* for IE5 and IE6 in quirks mode */
-    w\idth: 170px; /* for IE6 in standards mode */
-  }
-ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-	background: #07662a; /* Old browsers */
-
-background: -moz-linear-gradient(top,  #07662a 0%, #044d1f 100%); /* FF3.6+ */
-
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#07662a), color-stop(100%,#044d1f)); /* Chrome,Safari4+ */
-
-background: -webkit-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Chrome10+,Safari5.1+ */
-
-background: -o-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Opera 11.10+ */
-
-background: -ms-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* IE10+ */
-
-background: linear-gradient(top,  #07662a 0%,#044d1f 100%); /* W3C */
-
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', endColorstr='#044d1f',GradientType=0 ); /* IE6-9 */
-
-
-	color: white;
-}
-ul.basic-navigation li.basic-element a.current {
-	background-color:#636D05;
-	padding-left: 25px !important;
-	color: white;
-}
-.slideLink{
-	padding-left: .5em;
-	font-size: .9em;
-	float: left;
-}
-
-.collapseLink{
-	float: right;
-	font-size: .9em;
-	padding-bottom: 5px;
-}
-
-a#controlbtn {
-	text-decoration: none;
-	display: inline-block;
-	padding-left: 5px;
-}
-
-#controlbtn.slideLink {
-	/*background:  url(../../images/icon_navCollapse.jpg) left no-repeat;  Leaving out until IE text visibility is resolved */
-	color: #666;
-}
-#controlbtn.closed {
-	/*background: url(../../images/icon_navExpand.jpg) right no-repeat;   Leaving out until IE text visibility is resolved */
-}
-.basic-navigation h2.fl-font-serif {
-	font-family:arial, sans-serif; /* overrides the h2 to a sans-serif */
-}
-
-ul.basic-navigation li.basic-element a {
-	background-color: #fff;
-	width: 170px;
-	color: #3F7826;
-    border: none;
-	border-bottom: 1px solid #bbb;
-}
-ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-	background: #07662a; /* Old browsers */
-
-background: -moz-linear-gradient(top,  #07662a 0%, #044d1f 100%); /* FF3.6+ */
-
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#07662a), color-stop(100%,#044d1f)); /* Chrome,Safari4+ */
-
-background: -webkit-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Chrome10+,Safari5.1+ */
-
-background: -o-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Opera 11.10+ */
-
-background: -ms-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* IE10+ */
-
-background: linear-gradient(top,  #07662a 0%,#044d1f 100%); /* W3C */
-
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', endColorstr='#044d1f',GradientType=0 ); /* IE6-9 */
-
-
-	background-color:#060;
-	color: white;
-}
-ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-element a.current:hover {
-	background-color:#000;
-	background-image:none;
-	padding-left: 3px !important;
-	color: white;
-}
-
-/* accessibility */
+/* Accessibility */
 
 .offScreen{
     position: absolute;
@@ -830,195 +661,8 @@ fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"]{
     padding-left: 0.5em;
 }
 
-/** Validation Messages framework css **/
-.uif-clientMessageItems{
-    max-width: 250px;
-    padding: 1px;
-}
+/** Radio and Checkbox Groups (Fieldsets) **/
 
-.uif-clientMessageItems ul{
-    margin-left: 1em;
-}
-
-.uif-serverMessageItems{
-    max-width: 250px;
-}
-
-.uif-serverMessageItems ul{
-    margin-left: 1em;
-}
-
-.uif-validationMessages{
-    background-color: #F5F5DC;
-    border: 1px solid gray;
-    padding-top: .5em;
-    padding-bottom: .5em;
-}
-
-.uif-validationMessages, .uif-clientMessageItems, .uif-serverMessageItems{
-    color: black;
-}
-
-.uif-validationMessages ul {
-	list-style: none outside none;
-	margin: 0;
-    margin-left: 1.5em;
-}
-
-.uif-validationMessages li {
-	list-style: none outside none;
-	margin-left: 0;
-	line-height: 1.3em;
-    margin-bottom: .3em;
-    display:block;
-}
-
-.uif-validationMessages ul > li > ul{
-    margin-left: 2em;
-}
-
-.uif-pageValidationHeader{
-    margin: .5em;
-    padding: .5em;
-    border: 1px solid black;
-}
-
-.uif-pageValidationHeader-error{
-    background-color: #FFE1E9;
-}
-
-.uif-pageValidationHeader-warning{
-    background-color: #FFFEDA;
-}
-
-.uif-pageValidationHeader-info{
-    background-color: #E7F3FE;
-}
-
-.uif-hasError > .uif-control{
-    border: 2px solid red;
-}
-
-.uif-hasError > fieldset{
-    border: 1px dotted red;
-}
-
-.uif-hasWarning > .uif-control{
-
-}
-
-.uif-hasWarning > fieldset{
-    border: 1px dotted gray;
-}
-
-.uif-hasInfo > .uif-control{
-
-}
-
-.uif-hasInfo > fieldset{
-    border: 1px dotted gray;
-}
-
-.uif-validationMessages li a{
-    color: #000088;
-}
-
-.uif-validationMessages li a:hover, .uif-validationMessages li a:focus{
-    color: #0044ff;
-}
-
-li.uif-errorMessageItem:before {
-  /* For a round bullet */
-  content:'\2022';
-  display: block;
-  position: relative;
-  max-width: 0px;
-  max-height: 0px;
-  left: -10px;
-  top: -0px;
-  color: red;
-  font-size: 20px;
-}
-
-li.uif-warningMessageItem:before {
-  /* For a round bullet */
-  content:'\2022';
-  display: block;
-  position: relative;
-  max-width: 0px;
-  max-height: 0px;
-  left: -10px;
-  top: -0px;
-  color: #ffd700;
-  font-size: 20px;
-}
-
-li.uif-infoMessageItem:before {
-  /* For a round bullet */
-  content:'\2022';
-  display: block;
-  position: relative;
-  max-width: 0px;
-  max-height: 0px;
-  left: -10px;
-  top: -0px;
-  color: black;
-  font-size: 20px;
-}
-
-.uif-errorHighlight-section > .uif-header .uif-headerText{
-    background-color: #FFE1E9;
-}
-
-.uif-warningHighlight-section > .uif-header .uif-headerText{
-    background-color: #FFFEDA;
-}
-
-.uif-infoHighlight-section > .uif-header .uif-headerText{
-    background-color: #E7F3FE;
-}
-
-.uif-errorHighlight > .uif-control, .uif-errorHighlight > fieldset{
-    background-color: #FFE1E9;
-}
-
-.uif-warningHighlight > .uif-control, .uif-warningHighlight > fieldset{
-    background-color: #FFFEDA;
-}
-
-.uif-infoHighlight > .uif-control, .uif-infoHighlight > fieldset{
-    background-color: #E7F3FE;
-}
-
-.uif-clientErrorDiv{
-    background-color: #FFE1E9;
-}
-
-.uif-clientWarningDiv{
-    background-color: #FFFEDA;
-}
-
-.uif-clientInfoDiv{
-    background-color: #E7F3FE;
-}
-
-.jquerybubblepopup-kr-error-cs  .jquerybubblepopup-innerHtml{
-    background-color:#FFE1E9
-}
-
-.jquerybubblepopup-kr-warning-cs  .jquerybubblepopup-innerHtml{
-    background-color:#FFFEDA
-}
-
-.jquerybubblepopup-kr-info-cs  .jquerybubblepopup-innerHtml{
-    background-color:#E7F3FE
-}
-
-.jquerybubblepopup-kr-error-ss  .jquerybubblepopup-innerHtml,
-.jquerybubblepopup-kr-warning-ss  .jquerybubblepopup-innerHtml,
-.jquerybubblepopup-kr-info-ss  .jquerybubblepopup-innerHtml{
-	background-color: white;
-}
 
 fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"]{
     display: inline;
@@ -1036,7 +680,111 @@ fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"]{
     padding-left: 0.5em;
 }
 
-/** Validation Messages framework css **/
+.uif-pageContentWrapper{
+    /** Note when the navigation plugin is in use, this margin will added to the required margin automatically
+    so this value represents both the margin from the navigation menu when in use, AND the margin when no menu is
+    in use!**/
+    margin-left: 15px;
+}
+
+/** Navigation Menu ********************************************************/
+
+.uif-navigation{
+    position: absolute;
+    width: 210px;
+}
+
+.uif-collapseLink{
+    float: right;
+    font-size: .9em;
+    margin-bottom: 2px;
+}
+
+ul.uif-navigationMenu {
+	list-style: none outside none;
+	padding: 0;
+	margin-top: 0px;
+    margin-left:15px;
+}
+ul.uif-navigationMenu li {
+	padding: 0;
+}
+li.uif-navigationItem span.uif-actionLink, li.uif-navigationItem a.uif-actionLink {
+    margin-bottom:0;
+}
+li.uif-navigationItem h3, li.uif-navigationItem h2 {
+	color: #333333;
+	margin-bottom: 0;
+	padding: 0 20px 0 3px;
+	width: 170px;
+	font-weight: bold;
+	font-family:arial, sans-serif;
+	text-transform:uppercase;
+	border-top: 2px solid #000;
+	border-bottom: 1px solid #bbb;
+    border-left: none;
+    border-right: none;
+}
+
+li.uif-navigationItem h2 {
+    font-size: 0.92em !important;
+}
+
+li.uif-navigationItem a {
+	background-color: #fff;
+	display: inline-block;
+    height: 1%;
+    padding: 5px 20px 5px 3px;
+	width: 170px;
+	color: #3F7826;
+	text-decoration: none;
+	border-bottom: 1px solid #bbb;
+	font-size: .92em;
+}
+
+#controlbtn.slideLink {
+	/*background:  url(../../images/icon_navCollapse.jpg) left no-repeat;  Leaving out until IE text visibility is resolved */
+	color: #666;
+}
+
+#controlbtn.closed {
+	/*background: url(../../images/icon_navExpand.jpg) right no-repeat;   Leaving out until IE text visibility is resolved */
+}
+
+.uif-navigationMenu h2.fl-font-serif {
+	font-family: arial, sans-serif; /* overrides the h2 to a sans-serif */
+}
+
+li.uif-navigationItem a {
+	background-color: #fff;
+	width: 170px;
+	color: #3F7826;
+    border: none;
+	border-bottom: 1px solid #bbb;
+}
+li.uif-navigationItem a:hover, li.uif-navigationItem a:focus {
+	background: #07662a; /* Old browsers */
+    background: -moz-linear-gradient(top,  #07662a 0%, #044d1f 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#07662a), color-stop(100%,#044d1f)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* IE10+ */
+    background: linear-gradient(top,  #07662a 0%,#044d1f 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', endColorstr='#044d1f',GradientType=0 ); /* IE6-9 */
+
+	background-color:#060;
+	color: white;
+}
+
+li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
+	background-color:#000;
+	background-image:none;
+	padding-left: 3px !important;
+	color: white;
+}
+
+
+/** Validation Messages Framework ********************************************************/
 .uif-clientMessageItems{
     max-width: 250px;
     padding: 1px;

@@ -108,10 +108,7 @@ td.col2, td.col4, th.col1, th.col3 {
 
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
-#viewpage_div {
-    float:left;
-		_float:none;   /* ie hack - should be removed once the collapsable left nav issue resolved. */
-}
+
 .uif-rightAligned-headerFieldGroup{
     float:right;
 }

@@ -426,7 +426,7 @@ function checkDirty(event){
 			if (ul.length > 0)
 			{
 				var pageId = jq("[name='pageId']").val();
-				if(ul.hasClass("tabMenu")){
+				if(ul.hasClass("uif-tabMenu")){
 					jq("#" + ul.attr("id")).selectTab({selectPage : pageId});
 				}
 				else{

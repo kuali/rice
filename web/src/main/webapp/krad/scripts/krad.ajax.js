@@ -161,7 +161,7 @@ function replacePage(contentDiv){
     page.hide();
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#Uif-ViewContentWrapper > #viewpage_div";
-	jq(pageInLayout).replaceWith(page);
+	jq(pageInLayout).empty().append(page.children());
 
 	setPageBreadcrumb();
 

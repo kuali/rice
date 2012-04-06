@@ -2724,7 +2724,7 @@
                                 <entry>Template Namespace</entry>
                                 <entry>Template Name</entry>
                                 <entry>Permission Template Description</entry>
-                                <entry>Permission Detailas</entry>
+                                <entry>Permission Details</entry>
                             </row>
                         </thead>
                         <tbody>
@@ -2740,22 +2740,391 @@
                                 <entry>KR-NS</entry>
                                 <entry>Copy Document</entry>
                                 <entry></entry>
-                                <entry></entry>
+                                <entry><code>documentTypeName=</code></entry>
                             </row>
                             <row>
                                 <entry>3</entry>
                                 <entry>KR-WKFLW</entry>
                                 <entry>Administer Routing for Document</entry>
                                 <entry></entry>
-                                <entry></entry>
+                                <entry><code>documentTypeName=</code></entry>
                             </row>
                             <row>
                                 <entry>4</entry>
                                 <entry>KR-WKFLW</entry>
                                 <entry>Blanket Approve Document</entry>
                                 <entry>Authorizes user to bypass specified approval route nodes</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>
+                            <row>
+                                <entry>5</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Route Document</entry>
+                                <entry>Authorizes user to route a doucment from their action list</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>
+                            <row>
+                                <entry>8</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Take Requested Action</entry>
+                                <entry>Authorizes user to take applicable actions (approve, disapprove, acknowledge, etc.) on documents
+                                in their action list.</entry>
+                                <entry><code>actionRequestCd=</code></entry>
+                            </row>
+                            <row>
+                                <entry>9</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Ad Hoc Review Document</entry>
+                                <entry>Authorizes user to review a doucment that has been sent to them via an Ad Hoc Request</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>                            
+                            <row>
+                                <entry>10</entry>
+                                <entry>KR-SYS</entry>
+                                <entry>Initiate Document</entry>
+                                <entry>Authorizes user to create a new document</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>                            
+                            <row>
+                                <entry>14</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Cancel Document</entry>
+                                <entry>Authorizes users to cancel a document prior to it being submitted for routing.</entry>
+                                <entry><para><code>documentTypeName=</code></para>
+                                       <para><code>routeNodeName=</code></para></entry>
+                            </row>                            
+                            <row>
+                                <entry>15</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Save Document</entry>
+                                <entry>Authorizes user to save a document that has been initiated or routed to them for action
+                                back to their action list</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>                       
+                            <row>
+                                <entry>16</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Edit Document</entry>
+                                <entry></entry>
+                                <entry><para><code>documentTypeName=</code></para>
+                                       <para><code>routeStatusCode=</code></para>
+                                       <para><code>routeNodeName=</code></para></entry>
+                            </row>
+                            <row>
+                                <entry>23</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Look Up Records</entry>
+                                <entry></entry>
+                                <entry><para><code>namespaceCode=</code></para>
+                                       <para><code>componentName=</code></para></entry>
+                            </row>
+                            <row>
+                                <entry>24</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Inquire Into Records</entry>
+                                <entry></entry>
+                                <entry>
+                                    <para><code>namespaceCode=</code></para>
+                                    <para><code>componentName=</code></para>
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>25</entry>
+                                <entry>KR-NS</entry>
+                                <entry>View Inquiry or Maintenance Document Field</entry>
+                                <entry></entry>
+                                <entry/>
+                            </row>
+                            <row>
+                                <entry>26</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Modify Maintenance Document Field</entry>
+                                <entry></entry>
                                 <entry></entry>
                             </row>
+                            <row>
+                                <entry>27</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Full Unmask Field</entry>
+                                <entry></entry>
+                                <entry>
+                                    <para><code>propertyName=</code></para>
+                                    <para><code>componentName=</code></para>
+                                </entry>
+                            </row>                      
+                            <row>
+                                <entry>28</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Partial Unmask Field</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>29</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Use Screen</entry>
+                                <entry></entry>
+                                <entry><para><code>actionClass=</code></para>
+                                       <para><code>namespaceCode=</code></para></entry>
+                            </row>
+                            <row>
+                                <entry>30</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Perform Custom Maintenance Document Function</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>31</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Use Transactional Document</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>                             
+                            <row>
+                                <entry>32</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Modify Batch Job</entry>
+                                <entry></entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>                     
+                            <row>
+                                <entry>33</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Upload Batch Input File(s)</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>                             
+                            <row>
+                                <entry>34</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Maintain System Parameter</entry>
+                                <entry></entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>
+                            <row>
+                                <entry>35</entry>
+                                <entry>KR-IDM</entry>
+                                <entry>Assign Role</entry>
+                                <entry></entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>
+                            <row>
+                                <entry>36</entry>
+                                <entry>KR-IDM</entry>
+                                <entry>Grant Permission</entry>
+                                <entry></entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>
+                            <row>
+                                <entry>37</entry>
+                                <entry>KR-IDM</entry>
+                                <entry>Grant Responsibility</entry>
+                                <entry></entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>
+                            <row>
+                                <entry>38</entry>
+                                <entry>KR-IDM</entry>
+                                <entry>Populate Group</entry>
+                                <entry></entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>
+                            <row>
+                                <entry>40</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Open Document</entry>
+                                <entry></entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>
+                            <row>
+                                <entry>42</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Create / Maintain Record(s)</entry>
+                                <entry></entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>                            
+                            <row>
+                                <entry>43</entry>
+                                <entry>KR-NS</entry>
+                                <entry>View Inquiry or Maintenance Document Section</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row> 
+                            <row>
+                                <entry>44</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Modify Maintenance Document Section</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>45</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Add Note / Attachment</entry>
+                                <entry>Authorizes a user to add a note / attachment to a document</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>
+                            <row>
+                                <entry>46</entry>
+                                <entry>KR-NS</entry>
+                                <entry>View Note / Attachment</entry>
+                                <entry>Authorizes a user to view notes and download attachments that have been 
+                                added to a document</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>
+                            <row>
+                                <entry>47</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Delete Note / Attachment</entry>
+                                <entry>Authorizes a user to remove notes and attachments that have been added
+                                to a document</entry>
+                                <entry><para><code>documentTypeName=</code></para>
+                                       <para><code>createdBySelfOnly</code></para></entry>
+                            </row>
+                            <row>
+                                <entry>49</entry>
+                                <entry>KR-NS</entry>
+                                <entry>Send Ad Hoc Request</entry>
+                                <entry>Authorizes a user to create an action reques to user(s) outside the 
+                                normal route chain</entry>
+                                <entry><para><code>actionRequestCd=</code></para>
+                                       <para><code>documentTypeName=</code></para></entry>
+                            </row>
+                            <row>
+                                <entry>51</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Add Message to Route Log</entry>
+                                <entry>Authorizes user to add annotations to a document that appear in the 
+                                Route Log of a document</entry>
+                                <entry><code>documentTypeName=</code></entry>
+                            </row>
+                            <row>
+                                <entry>52</entry>
+                                <entry>KR-RULE</entry>
+                                <entry>KRMS Agenda Permission</entry>
+                                <entry>Authorizes user to view and edit KRMS agendas</entry>
+                                <entry><code>namespaceCode=</code></entry>
+                            </row>
+                            <row>
+                                <entry>53</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Open View</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>54</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Edit View</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>55</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Use View</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>56</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>View Field</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>57</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Edit Field</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>58</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>View Group</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>59</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Edit Group</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>60</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>View Widget</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>                
+                            <row>
+                                <entry>61</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Edit Widget</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>                
+                            <row>
+                                <entry>62</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Perform Action</entry>
+                                <entry></entry>
+                                <entry></entry>
+                            </row>                   
+                            <row>
+                                <entry>63</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>View Line</entry>
+                                <entry>Authorizes a user to view the lines in a collection</entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>64</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Edit Line</entry>
+                                <entry>Authorizes a user to edit the lines in a collection</entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>65</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>View Line Field</entry>
+                                <entry>Authorizes a user to view the individual fields in the lines of a 
+                                collection</entry>
+                                <entry></entry>
+                            </row>        
+                            <row>
+                                <entry>66</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Edit Line Field</entry>
+                                <entry>Authorizes a user to edit the individual fields in the lines of a 
+                                collection</entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>67</entry>
+                                <entry>KR-KRAD</entry>
+                                <entry>Perform Line Action</entry>
+                                <entry>Authorizes a user to take actions (add, delete, edit, etc.) to the 
+                                lines of a collection</entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>68</entry>
+                                <entry>KR-WKFLW</entry>
+                                <entry>Recall Document</entry>                                
+                                <entry>Authorizes a user to recall a submitted document to their action 
+                                    list for edit and resubmission or cancellation</entry>
+                                <entry><para><code>documentTypeName=</code></para>
+                                       <para><code>routeNodeName=</code></para>
+                                       <para><code>routeStatusCode=</code></para>
+                                       <para><code>appDocStatus=</code></para></entry>
+                            </row>                            
                         </tbody>
                     </tgroup>
                 </table>

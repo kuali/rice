@@ -133,6 +133,9 @@ function createLightBoxLink(controlId, options) {
         // Check if this is called within a light box
         if (!jq("#fancybox-frame", parent.document).length) {
 
+            // Perform cleanup when lightbox is closed
+            options['onCleanup'] = cleanupClosedLightboxForms;
+
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
             if (top == self) {
@@ -205,6 +208,8 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                 jq("#kualiForm").ajaxSubmit({
 
                             success: function(data) {
+                                // Perform cleanup when lightbox is closed
+                                options['onCleanup'] = cleanupClosedLightboxForms;
 
                                 // Add the returned URL to the FancyBox href setting
                                 options['href'] = data;
@@ -298,7 +303,11 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
     if (showLightBox) {
 
+        // Check if this is called within a light box
         if (!jq("#fancybox-frame", parent.document).length) {
+
+            // Perform cleanup when lightbox is closed
+            lightBoxOptions['onCleanup'] = cleanupClosedLightboxForms;
 
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
@@ -327,6 +336,17 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 */
 function closeLightbox() {
     top.jQuery.fancybox.close();
+}
+
+/**
+ * Cleanup form data from server when lightbox window is closed
+ */
+function cleanupClosedLightboxForms() {
+    // get the formKey of the lightbox (fancybox)
+    var context = getContext();
+    var formKey = context('iframe#fancybox-frame').contents().find('input#formKey').val();
+
+    clearServerSideForm(formKey);
 }
 
 /**

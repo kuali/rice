@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
@@ -70,8 +71,20 @@ public class UifFormManager implements Serializable {
         removeFormByKey(form.getFormKey());
     }
 
+    /**
+     * Removes the stored form data from the server.
+     *
+     * <p>The forms from the breadcrumb history are also removed.</p>
+     *
+     * @param formKey of the form to be removed
+     */
     public void removeFormByKey(String formKey) {
         if (uifForms.containsKey(formKey)) {
+            // Remove forms from breadcrumb history as well
+            for (HistoryEntry historyEntry : uifForms.get(formKey).getFormHistory().getHistoryEntries()) {
+                uifForms.remove(historyEntry.getFormKey());
+            }
+
             uifForms.remove(formKey);
         }
 

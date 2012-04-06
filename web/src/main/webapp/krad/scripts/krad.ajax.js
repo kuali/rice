@@ -461,31 +461,26 @@ function hiddenInputValidationToggle(id){
 }
 
 /**
- * Makes an get request to the server so that the form for the page we are leaving will
+ * Makes an get request to the server so that the form with the specified formKey will
  * be cleared server side
  */
-function clearServerSideForm() {
-    // make sure we are actually leaving the page and not submitting the form (in which case
-    // the methodToCall hidden will be set
-    var methodToCall = jq("[name='methodToCall']").val();
-    if (methodToCall == null) {
-        var queryData = {};
+function clearServerSideForm(formKey) {
+    var queryData = {};
 
-        queryData.methodToCall = 'clearForm';
-        queryData.skipViewInit = 'true';
-        queryData.formKey = jq("input#formKey").val();
+    queryData.methodToCall = 'clearForm';
+    queryData.skipViewInit = 'true';
+    queryData.formKey = formKey;
 
-        var postUrl = getConfigParam("kradUrl") + "/listener";
+    var postUrl = getConfigParam("kradUrl") + "/listener";
 
-        jq.ajax({
-            url:postUrl,
-            dataType:"json",
-            data:queryData,
-            async:false,
-            beforeSend:null,
-            complete:null,
-            error:null,
-            success:null
-        });
-    }
+    jq.ajax({
+        url:postUrl,
+        dataType:"json",
+        data:queryData,
+        async:false,
+        beforeSend:null,
+        complete:null,
+        error:null,
+        success:null
+    });
 }

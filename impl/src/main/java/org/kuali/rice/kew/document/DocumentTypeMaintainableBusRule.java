@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kew.document;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
@@ -24,10 +25,21 @@ import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 public class DocumentTypeMaintainableBusRule extends MaintenanceDocumentRuleBase {
 
     @Override
+    protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
+        boolean result = super.processCustomSaveDocumentBusinessRules(document);
+
+        result &= checkDoctypeName(document);
+        result &= checkDoctypeLabel(document);
+
+        return result;
+    }
+
+    @Override
     protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
         boolean result = super.processCustomRouteDocumentBusinessRules(document);
 
         result &= checkDoctypeName(document);
+        result &= checkDoctypeLabel(document);
 
         return result;
     }
@@ -52,5 +64,24 @@ public class DocumentTypeMaintainableBusRule extends MaintenanceDocumentRuleBase
             putFieldError("name", "documenttype.name.empty");
         }
         return result;
+    }
+
+    /**
+     * Checks that the doctype label is specified.
+     *
+     * @param document
+     * @return false if doctype label is blank, otherwise true.
+     */
+    public boolean checkDoctypeLabel(MaintenanceDocument document) {
+        boolean isValid = true;
+        DocumentType bo = (DocumentType) document.getNewMaintainableObject().getDataObject();
+
+        isValid = !StringUtils.isBlank(bo.getLabel());
+
+        if (!isValid) {
+                putFieldError("label", "documenttype.label.empty");
+        }
+
+        return isValid;
     }
 }

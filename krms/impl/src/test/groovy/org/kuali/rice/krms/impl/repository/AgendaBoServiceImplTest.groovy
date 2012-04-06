@@ -296,7 +296,6 @@ class AgendaBoServiceImplTest {
   @Test
   void test_createAgenda_success() {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-        mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { Class clazz, Object obj -> CONTEXT1 }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 
@@ -344,7 +343,6 @@ class AgendaBoServiceImplTest {
   @Test
   void test_updateAgenda_success() {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_AGENDA_BO}
-        mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { Class clazz, Object obj -> CONTEXT1 }
 		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 

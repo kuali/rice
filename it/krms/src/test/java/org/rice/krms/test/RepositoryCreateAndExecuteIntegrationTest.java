@@ -91,6 +91,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     static final String PREREQ_TERM_NAME = "prereqTermSpec";
     static final String PREREQ_TERM_VALUE = "prereqValue";
     static final String NAMESPACE_CODE = "namespaceCode";
+    static final String BOOL1 = "bool1";
+    static final String BOOL2 = "bool2";
 
     // Services needed for creation:
 	private TermBoService termBoService;
@@ -179,6 +181,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         Facts.Builder factsBuilder1 = Facts.Builder.create();
         factsBuilder1.addFact(CAMPUS_CODE_TERM_NAME, "BL");
+        factsBuilder1.addFact(BOOL1, "true");
+        factsBuilder1.addFact(BOOL2, Boolean.TRUE);
         factsBuilder1.addFact(PREREQ_TERM_NAME, PREREQ_TERM_VALUE);
 
         ExecutionOptions xOptions1 = new ExecutionOptions();
@@ -192,7 +196,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
-        assertEquals("3 rules should have been evaluated", 3, ruleEvaluationResults1.size());
+        assertEquals("4 rules should have been evaluated", 4, ruleEvaluationResults1.size());
 
         assertTrue("rule 0 should have evaluated to true", ruleEvaluationResults1.get(0).getResult());
         assertFalse("rule 1 should have evaluated to false", ruleEvaluationResults1.get(1).getResult());
@@ -229,6 +233,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
         Facts.Builder factsBuilder2 = Facts.Builder.create();
+        factsBuilder2.addFact(BOOL1, "true");
+        factsBuilder2.addFact(BOOL2, Boolean.TRUE);
         factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");
         factsBuilder2.addFact(PREREQ_TERM_NAME, PREREQ_TERM_VALUE);
 
@@ -246,7 +252,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
-        assertEquals("3 rules should have been evaluated", 3, ruleEvaluationResults1.size());
+        assertEquals("4 rules should have been evaluated", 4, ruleEvaluationResults1.size());
 
         assertAgendaDidNotExecute(AGENDA1);
         assertAgendaDidNotExecute(AGENDA2);
@@ -276,6 +282,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
         Facts.Builder factsBuilder2 = Facts.Builder.create();
+        factsBuilder2.addFact(BOOL1, "true");
+        factsBuilder2.addFact(BOOL2, Boolean.TRUE);
         factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");
         factsBuilder2.addFact(PREREQ_TERM_NAME, PREREQ_TERM_VALUE);
 
@@ -293,7 +301,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         selectionCriteria = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
-        assertEquals("6 rules should have been evaluated", 6, ruleEvaluationResults1.size());
+        assertEquals("8 rules should have been evaluated", 8, ruleEvaluationResults1.size());
 
         assertAgendaDidNotExecute(AGENDA1);
 
@@ -378,7 +386,13 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         agendaItemBuilder2.setAlways(agendaItemBuilder3);
         agendaItemBuilder3.setRuleId(createRuleDefinition3(contextDefinition, agendaName, nameSpace).getId());
 
+        AgendaItemDefinition.Builder agendaItemBuilder4 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
+        agendaItemBuilder3.setAlways(agendaItemBuilder4);
+        agendaItemBuilder4.setRuleId(createRuleDefinition4(contextDefinition, agendaName, nameSpace).getId());
+
         // String these puppies together.  Kind of a PITA because you need the id from the next item before you insert the previous one
+        AgendaItemDefinition agendaItem4 = agendaBoService.createAgendaItem(agendaItemBuilder4.build());
+        agendaItemBuilder3.setAlwaysId(agendaItem4.getId());
         AgendaItemDefinition agendaItem3 = agendaBoService.createAgendaItem(agendaItemBuilder3.build());
         agendaItemBuilder2.setAlwaysId(agendaItem3.getId());
         AgendaItemDefinition agendaItem2 = agendaBoService.createAgendaItem(agendaItemBuilder2.build());
@@ -594,6 +608,23 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         return createRuleDefinition(nameSpace, agendaName+"::Rule3", contextDefinition, null, params);
     }
+
+
+    private RuleDefinition createRuleDefinition4(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+
+        PropositionParametersBuilder params1 = new PropositionParametersBuilder();
+        params1.add(createTermDefinition(BOOL1, Boolean.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params1.add(createTermDefinition(BOOL2, Boolean.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params1.add("=", PropositionParameterType.OPERATOR);
+
+        PropositionParametersBuilder params2 = new PropositionParametersBuilder();
+        params2.add(createTermDefinition(BOOL2, Boolean.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params2.add(createTermDefinition(BOOL1, Boolean.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params2.add("=", PropositionParameterType.OPERATOR);
+
+        return createRuleDefinition(nameSpace, agendaName+"::Rule4", contextDefinition, LogicalOperator.AND, params1, params2);
+    }
+
 
     private TermDefinition createTermDefinition2(ContextDefinition contextDefinition, String nameSpace) {
 

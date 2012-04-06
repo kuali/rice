@@ -344,8 +344,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     private Set<AgendaAttributeBo> buildAgendaAttributeBo(AgendaDefinition im) {
         Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
 
-        ContextBo context = getBusinessObjectService().findBySinglePrimaryKey(ContextBo.class, im.getContextId());
-
         // build a map from attribute name to definition
         Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
 

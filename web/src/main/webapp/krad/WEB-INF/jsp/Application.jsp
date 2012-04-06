@@ -18,8 +18,51 @@
 <c:choose>
   <c:when test="${KualiForm.renderFullView}">
 
-     <%-- render full view --%>
-     <krad:template component="${KualiForm.view}"/>
+    <krad:html view="${KualiForm.view}">
+
+      <c:if test="${!KualiForm.view.dialogMode}">
+        <krad:script value="
+          jq(function(){
+            publishHeight();
+            window.onresize = publishHeight;
+            window.setInterval(publishHeight, 500);
+          });
+      "/>
+      </c:if>
+
+      <div id="Uif-Application" style="display:none;" class="uif-application">
+
+        <!-- APPLICATION HEADER -->
+        <krad:template component="${KualiForm.view.applicationHeader}"/>
+        <krad:backdoor/>
+
+        <c:set var="postUrl" value="${KualiForm.view.formPostUrl}"/>
+        <c:if test="${empty postUrl}">
+          <c:set var="postUrl" value="${KualiForm.formPostUrl}"/>
+        </c:if>
+
+        <krad:form render="${KualiForm.view.renderForm}"
+                   postUrl="${postUrl}"
+                   onSubmitScript="${KualiForm.view.onSubmitScript}">
+
+          <c:if test="${KualiForm.view.renderForm}">
+            <%-- write out view, page id as hidden so the view can be reconstructed if necessary --%>
+            <form:hidden path="viewId"/>
+            <%-- all forms will be stored in session, this is the conversation key --%>
+            <form:hidden path="formKey"/>
+            <%-- Based on its value, form elements will be checked for dirtyness --%>
+            <form:hidden path="validateDirty"/>
+          </c:if>
+          <%-- render full view --%>
+          <krad:template component="${KualiForm.view}"/>
+
+        </krad:form>
+      </div>
+
+      <!-- APPLICATION FOOTER -->
+      <krad:template component="${KualiForm.view.applicationFooter}"/>
+
+    </krad:html>
 
   </c:when>
   <c:otherwise>
@@ -32,7 +75,7 @@
        <s:nestedPath path="KualiForm">
        	 <krad:template component="${KualiForm.view.breadcrumbs}"/>
 
-         <div id="viewpage_div" class="uif-pageContentWrapper">
+         <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
             <krad:template component="${KualiForm.view.currentPage}"/>
         
             <c:if test="${KualiForm.view.renderForm}">

@@ -51,7 +51,7 @@ function publishHeight(){
         parentUrl = decodeURIComponent(parentUrl);
     }
 
-    var height = jQuery('#view_div:first').outerHeight();
+    var height = jQuery('#Uif-Application:first').outerHeight();
     if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
         jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;

@@ -55,7 +55,7 @@ jq(document).ready(function () {
     });
 
     runHiddenScripts("");
-    jq("#view_div").show();
+    jq("#Uif-Application").show();
     createLoading(false);
 
     // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
@@ -621,8 +621,8 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) 
 window.onerror = errorHandler;
 
 function errorHandler(msg, url, lno) {
-    jq("#view_div").show();
-    jq("#viewpage_div").show();
+    jq("#Uif-Application").show();
+    jq("#Uif-PageContentWrapper").show();
     var context = getContext();
     context.unblockUI();
     showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');

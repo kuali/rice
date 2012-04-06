@@ -103,7 +103,7 @@ function publishHeight(){
         parentUrl = decodeURIComponent(parentUrl);
     }
 
-    var height = jQuery('#view_div:first').outerHeight();
+    var height = jQuery('#Uif-Application:first').outerHeight();
     if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
         jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
@@ -143,7 +143,7 @@ jQuery(function(){
 			</c:if>
 		</c:if>
 		">
-    <div id="view_div">
+    <div id="Uif-Application">
 		<kul:backdoor />
 
 			<c:if
@@ -176,7 +176,7 @@ jQuery(function(){
 		</c:if>
 		<body onload="if ( !restoreScrollPosition() ) { ${anchorScript} }"
 			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
-    <div id="view_div">
+    <div id="Uif-Application">
 			<kul:backdoor />
 			${headerMenuBar}
 	</c:otherwise>

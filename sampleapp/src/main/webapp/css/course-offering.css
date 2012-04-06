@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#view_div {
+#Uif-Application {
     margin: 0 auto;
     width: 95%;
 }
 
-#viewpage_div {
+#Uif-PageContentWrapper {
     margin: 0 auto;
     width: 95%;
 }

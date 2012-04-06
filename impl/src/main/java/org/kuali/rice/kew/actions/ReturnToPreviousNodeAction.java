@@ -87,7 +87,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * Constructor used to override the action taken code...e.g. when being performed as part of a Move action
      */
     protected ReturnToPreviousNodeAction(String overrideActionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
-        this(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, nodeName, sendNotifications, DEFAULT_RUN_POSTPROCESSOR_LOGIC);
+        this(overrideActionTakenCode, routeHeader, principal, annotation, nodeName, sendNotifications, DEFAULT_RUN_POSTPROCESSOR_LOGIC);
     }
     
     /**

@@ -154,7 +154,7 @@ public enum DocumentTypePolicy implements Coded {
             return null;
         }
         for (DocumentTypePolicy policy : values()) {
-            if (policy.code.equals(code)) {
+            if (policy.code.equalsIgnoreCase(code)) {
                 return policy;
             }
         }

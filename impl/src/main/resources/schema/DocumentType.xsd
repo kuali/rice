@@ -490,6 +490,8 @@
       <enumeration value="recall_notification"/>
       <enumeration value="SEND_NOTIFICATION_ON_SU_DISAPPROVE"/>
       <enumeration value="send_notification_on_su_disapprove"/>
+      <enumeration value="ALLOW_SU_FINAL_APPROVAL"/>
+      <enumeration value="allow_su_final_approval"/>
     </restriction>
   </simpleType>
 

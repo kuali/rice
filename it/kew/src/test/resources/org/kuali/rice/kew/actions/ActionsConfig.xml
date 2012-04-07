@@ -511,6 +511,18 @@
     </documentType>
 
     <documentType>
+      <name>SUApproveFinalNodeDisallowed</name>
+      <parent>NotificationTest</parent>
+      <label>SUApproveFinalNodeDisallowed</label>
+      <policies>
+        <policy>
+          <name>ALLOW_SU_FINAL_APPROVAL</name>
+          <value>false</value>
+        </policy>
+      </policies>
+    </documentType>
+
+    <documentType>
 			<name>BlanketApproveMandatoryNodeTest</name>
 			<parent>BlanketApproveTest</parent>
 			<description>BlanketApproveMandatoryNodeTest</description>

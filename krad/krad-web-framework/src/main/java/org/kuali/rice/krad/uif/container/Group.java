@@ -256,4 +256,22 @@ public class Group extends ContainerBase {
 		this.items = items;
 	}
 
+    /**
+     * Groups support user defined onClick scripts.
+     *
+     * <p>
+     * Groups may have onClick scripts defined in the data dictionary. To enable eventScript.tag to generate
+     * the HTML for this script, this component must implement this method and return true.
+     * </p>
+     *
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
+     *
+     * @return true
+     */
+    @Override
+    public boolean getSupportsOnClick() {
+        return true;
+    }
+
+
 }

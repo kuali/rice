@@ -120,8 +120,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 					}
                 }
                 methods.add(readMethod);
-                currentObj = readMethod.invoke(currentObj, (Object[])null);
-                currentObjClass = currentObj.getClass();
+                currentObjClass = readMethod.getReturnType();
             }
             synchronized (cache) {
                 cache.put(propertyName + obj.getClass().getName(), methods);

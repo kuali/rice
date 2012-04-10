@@ -347,9 +347,9 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
-              p:fieldLabel.renderColon="false" p:instructionalText="With watermark text, and size=&quot;30&quot;">
+              p:fieldLabel.renderColon="false" p:instructionalText="With watermark text, size=&quot;30&quot;, and maxLength=&quot;40&quot;">
           <property name="control">
-            <bean parent="Uif-TextControl" p:size="30" p:watermarkText="It's watermarked"/>
+            <bean parent="Uif-TextControl" p:size="30" p:maxLength="40" p:watermarkText="It's watermarked"/>
           </property>
         </bean>
 

@@ -1713,7 +1713,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (root.getChildren().isEmpty()){
                 PropositionBo blank = PropositionBo.createSimplePropositionBoStub(null,PropositionType.SIMPLE.getCode());
                 blank.setRuleId(rule.getId());
-                blank.setTypeId(rule.getTypeId());  // ?? bug
                 rule.setPropId(blank.getId());
                 rule.setProposition(blank);
                 rule.refreshPropositionTree(true);

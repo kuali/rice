@@ -206,7 +206,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
        * three parameters:  a term type paramter (value not assigned)
        *                    a operation parameter
        *                    a constant parameter (value set to empty string)
-       * The returned PropositionBo has an generatedId. The type code, ruleId and TypeId properties are assigned the
+       * The returned PropositionBo has an generatedId. The type code and ruleId properties are assigned the
        * same value as the sibling param passed in.
        * Each PropositionParameter has the id generated, and type, sequenceNumber,
        * propId default values set. The value is set to "".
@@ -224,7 +224,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
           prop.setEditMode(true);
           if (sibling != null){
               prop.setRuleId(sibling.getRuleId());
-              prop.setTypeId(sibling.getTypeId());
           }
 
           // create blank proposition parameters
@@ -269,7 +268,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         prop.setEditMode(true);
         if (existing != null){
             prop.setRuleId(existing.getRuleId());
-            prop.setTypeId(existing.getTypeId());
         }
 
         List <PropositionBo> components = new ArrayList<PropositionBo>(2);
@@ -292,7 +290,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         prop.setId(getNewPropId());
         prop.setPropositionTypeCode(PropositionType.COMPOUND.code);
         prop.setRuleId(existing.getRuleId());
-        prop.setTypeId(existing.getTypeId());
         prop.setCompoundOpCode(LogicalOperator.AND.code);  // default to and
         prop.setDescription("");
         prop.setEditMode(true);

@@ -38,7 +38,7 @@ public class UifClientListener extends UifControllerBase {
             HttpServletResponse response) {
 
         // clear form from session
-        GlobalVariables.getUifFormManager().removeFormByKey(formKey);
+        GlobalVariables.getUifFormManager().removeFormWithHistoryFormsByKey(formKey);
 
         return "{status:success}";
     }

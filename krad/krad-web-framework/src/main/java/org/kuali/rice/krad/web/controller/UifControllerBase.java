@@ -103,7 +103,12 @@ public abstract class UifControllerBase {
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isNotBlank(formKeyParam)) {
             form = uifFormManager.getForm(formKeyParam);
-        } 
+        }
+
+        // if form exist, remove unused forms from breadcrumb history
+        if (form != null) {
+            removeUnusedBreadcrumbs(uifFormManager, form.getFormKey(), request.getParameter(UifConstants.UrlParams.LAST_FORM_KEY));
+        }
 
         // if form not in manager, create a new form
         if (form == null) {
@@ -113,6 +118,37 @@ public abstract class UifControllerBase {
         uifFormManager.setCurrentForm(form);
 
         return form;
+    }
+
+    /**
+     * Remove unused forms from breadcrumb history
+     * <p>
+     * When going back in the breadcrumb history some forms become unused in the breadcrumb history.  Here the unused
+     * forms are being determine and removed from the server to free memory.
+     * </p>
+     * @param uifFormManager
+     * @param formKey of the current form
+     * @param lastFormKey of the last form
+     */
+    private void removeUnusedBreadcrumbs(UifFormManager uifFormManager, String formKey, String lastFormKey) {
+        if (StringUtils.isBlank(formKey) || StringUtils.isBlank(lastFormKey) || StringUtils.equals(formKey, lastFormKey)) {
+            return;
+        }
+
+        UifFormBase previousForm = uifFormManager.getForm(lastFormKey);
+
+        boolean cleanUpRemainingForms = false;
+        for (HistoryEntry historyEntry : previousForm.getFormHistory().getHistoryEntries()) {
+            if (cleanUpRemainingForms) {
+                uifFormManager.removeFormByKey(historyEntry.getFormKey());
+            } else {
+                if (StringUtils.equals(formKey, historyEntry.getFormKey())) {
+                    cleanUpRemainingForms = true;
+                }
+            }
+        }
+
+        uifFormManager.removeFormByKey(lastFormKey);
     }
 
     /**

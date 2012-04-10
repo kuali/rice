@@ -188,6 +188,7 @@ public class UifConstants {
         public static final String FORM_KEY = "formKey";
         public static final String PAGE_ID = "pageId";
         public static final String HISTORY = "history";
+        public static final String LAST_FORM_KEY = "lastFormKey";
     }
 
     public static class Messages {

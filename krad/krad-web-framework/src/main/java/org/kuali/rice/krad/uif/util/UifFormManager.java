@@ -63,33 +63,47 @@ public class UifFormManager implements Serializable {
         return null;
     }
 
+    /**
+     * Removes the stored form data and the forms from the breadcrumb history from the server.
+     *
+     * @param form to be removed
+     */
     public void removeForm(UifFormBase form) {
         if (form == null) {
             return;
         }
 
-        removeFormByKey(form.getFormKey());
+        removeFormWithHistoryFormsByKey(form.getFormKey());
     }
 
     /**
      * Removes the stored form data from the server.
      *
-     * <p>The forms from the breadcrumb history are also removed.</p>
-     *
      * @param formKey of the form to be removed
      */
     public void removeFormByKey(String formKey) {
+        if (uifForms.containsKey(formKey)) {
+            uifForms.remove(formKey);
+        }
+
+        if ((currentForm != null) && StringUtils.equals(currentForm.getFormKey(), formKey)) {
+            currentForm = null;
+        }
+    }
+
+    /**
+     * Removes the stored form data and the forms from the breadcrumb history from the server.
+     *
+     * @param formKey of the form to be removed
+     */
+    public void removeFormWithHistoryFormsByKey(String formKey) {
         if (uifForms.containsKey(formKey)) {
             // Remove forms from breadcrumb history as well
             for (HistoryEntry historyEntry : uifForms.get(formKey).getFormHistory().getHistoryEntries()) {
                 uifForms.remove(historyEntry.getFormKey());
             }
 
-            uifForms.remove(formKey);
-        }
-
-        if ((currentForm != null) && StringUtils.equals(currentForm.getFormKey(), formKey)) {
-            currentForm = null;
+            removeFormByKey(formKey);
         }
     }
 }

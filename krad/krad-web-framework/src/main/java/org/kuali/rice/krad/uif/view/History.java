@@ -197,7 +197,8 @@ public class History implements Serializable {
      * method appends the appropriate history information on the HistoryEntry url variables so when a view is requested
      * its history can be regenerated for use in its breadcrumbs.  It also sets the the passed showHome variable to
      * false to prevent showing the homeward path more than once (as it is passed through the history
-     * variable backwards). This does not include the current HistoryEntry as a breadcrumb.
+     * variable backwards). This does not include the current HistoryEntry as a breadcrumb but adds the formKey as the
+     * LAST_FORM_KEY to assist with server side form cleanup.
      *
      * @return
      */
@@ -221,9 +222,11 @@ public class History implements Serializable {
 
                 String url = "";
                 if (breadcrumb.getUrl().contains("?")) {
-                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
+                    url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam
+                            + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();
                 } else {
-                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam;
+                    url = breadcrumb.getUrl() + "?" + UifConstants.UrlParams.HISTORY + "=" + historyParam
+                            + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();
                 }
 
                 breadcrumb.setUrl(url);

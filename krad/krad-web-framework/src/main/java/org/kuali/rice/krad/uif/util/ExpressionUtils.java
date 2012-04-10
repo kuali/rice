@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -35,17 +37,17 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExpressionUtils {
-
+     static Log LOG = LogFactory.getLog(ExpressionUtils.class);
     /**
      * Adjusts the property expressions for a given object. Any nested properties are moved to the parent
      * object. Binding adjust prefixes are replaced with the correct values.
      *
      * <p>
-     * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
+     * The {@link org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX} prefix will be removed
      * as this is a placeholder indicating that the property is directly on the form.
-     * The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
+     * The {@link org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX} prefix will be replaced by
      * the object's field path - this is only applicable to DataFields. The
-     * org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
+     * {@link org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX} prefix will be replaced
      * by the view's default path if it is set.
      * </p>
      *
@@ -97,11 +99,11 @@ public class ExpressionUtils {
      * Adjusts the property expressions for a given object
      *
      * <p>
-     * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
+     * The {@link org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX}  prefix will be removed
      * as this is a placeholder indicating that the property is directly on the form.
-     * The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
+     * The {@link org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX} prefix will be replaced by
      * the object's field path - this is only applicable to DataFields. The
-     * org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
+     * {@link org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX} prefix will be replaced
      * by the view's default path if it is set.
      * </p>
      *
@@ -164,7 +166,7 @@ public class ExpressionUtils {
     }
 
     /**
-     * Determines the value for the org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX binding prefix
+     * Determines the value for the {@link org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX} binding prefix
      * based on collection group found in the component context
      *
      * @param component - component instance for which the prefix is configured on
@@ -176,6 +178,7 @@ public class ExpressionUtils {
         CollectionGroup collectionGroup = (CollectionGroup) (component.getContext().get(
                 UifConstants.ContextVariableNames.COLLECTION_GROUP));
         if (collectionGroup == null) {
+            LOG.warn("collection group not found for " + component.getId());
             return linePath;
         }
 

@@ -183,6 +183,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<TimeInfo> listTimeInfo = new ArrayList<TimeInfo>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
@@ -2084,5 +2085,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setFileUpload(MultipartFile fileUpload) {
         this.fileUpload = fileUpload;
+    }
+
+    public List<TimeInfo> getListTimeInfo() {
+        return listTimeInfo;
+    }
+
+    public void setListTimeInfo(List<TimeInfo> listTimeInfo) {
+        this.listTimeInfo = listTimeInfo;
     }
 }

@@ -228,6 +228,7 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         // TODO: is this necessary to call again?
+        // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
         pushCollectionGroupToReference();
     }
 
@@ -236,7 +237,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        List<Component> components = this.getComponentsForLifecycle();
+        List<Component> components = this.getComponentsForLifecycle(true);
 
         ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
@@ -270,20 +271,35 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
+        return getComponentsForLifecycle(false);
+    }
+
+    /**
+     * Retrieve list of components that are contained within the component and should be sent through
+     * the lifecycle
+     * 
+     * <p>The items need to be included when an object is being copied to all the groups nested components
+     * @see #pushCollectionGroupToReference()
+     * The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
+     * @param includeItems - whether the components items should be included. 
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
+     */
+    public List<Component> getComponentsForLifecycle(boolean includeItems) {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(addLineLabel);
         components.add(collectionLookup);
 
-        // remove the containers items because we don't want them as children
-        // (they will become children of the layout manager as the rows are
-        // created)
-        for (Component item : getItems()) {
-            if (components.contains(item)) {
-                components.remove(item);
+        if (!includeItems) {
+            // remove the containers items because we don't want them as children
+            // (they will become children of the layout manager as the rows are
+            // created)
+            for (Component item : getItems()) {
+                if (components.contains(item)) {
+                    components.remove(item);
+                }
             }
         }
-
         return components;
     }
 

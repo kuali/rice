@@ -35,11 +35,17 @@ public class SpelTest {
         parser = new SpelExpressionParser();
     }
 
-    @Test
+    /**
+     * an expression prefixed by a period will cause an exception
+     */
+    @Test(expected = NullPointerException.class)
     public void testSpelWithDotPrefix() {
         Expression expression = parser.parseExpression(".field88 eq 'none'");
     }
 
+    /**
+     * n
+     */
     @Test
     public void testSpelWithoutDotPrefix() {
         Expression expression = parser.parseExpression("field88 eq 'none'");
@@ -47,6 +53,6 @@ public class SpelTest {
 
     @Test
     public void testSpelWithObjectPrefix() {
-        Expression expression = parser.parseExpression("form.field88 eq 'none'");
+        Expression expression = parser.parseExpression("#form.field88 eq 'none'");
     }
 }

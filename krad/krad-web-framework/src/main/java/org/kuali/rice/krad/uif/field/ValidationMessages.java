@@ -18,12 +18,10 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -31,11 +29,15 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.util.AutoPopulatingList;
 
+import java.beans.PropertyEditor;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Field that displays error, warning, and info messages for the keys that are
@@ -50,7 +52,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ValidationMessages extends FieldBase {
+public class ValidationMessages extends ContentElementBase {
     private static final long serialVersionUID = 780940788435330077L;
 
     private List<String> additionalKeysToMatch;
@@ -58,31 +60,12 @@ public class ValidationMessages extends FieldBase {
     private boolean fireGrowlsForMessages;
     private String growlScript = "";
 
-    // Message construction variables
-    private boolean displayFieldLabelWithMessages;
-
-    private boolean collapseAdditionalFieldLinkMessages;
-
     private boolean displayMessages;
-
-    private boolean useTooltip;
 
     // Error messages
     private List<String> errors;
     private List<String> warnings;
     private List<String> infos;
-
-    // Counts
-    private int errorCount;
-    private int warningCount;
-    private int infoCount;
-
-    // not used
-    private boolean displayLockMessages;
-
-    public ValidationMessages() {
-        super();
-    }
 
     /**
      * PerformFinalize will generate the messages and counts used by the
@@ -101,169 +84,73 @@ public class ValidationMessages extends FieldBase {
         generateMessages(true, view, model, parent);
     }
 
+    /**
+     *
+     * @param reset - true to reset the errors, warnings, and info lists
+     * @param view - the current View
+     * @param model - the current model
+     * @param parent - the parent of this ValidationMessages
+     */
     public void generateMessages(boolean reset, View view, Object model, Component parent) {
         if (reset) {
             errors = new ArrayList<String>();
             warnings = new ArrayList<String>();
             infos = new ArrayList<String>();
-            errorCount = 0;
-            warningCount = 0;
-            infoCount = 0;
         }
 
         List<String> masterKeyList = getKeys(parent);
         MessageMap messageMap = GlobalVariables.getMessageMap();
-        
+
         String parentContainerId = "";
         Object parentContainer = parent.getContext().get("parent");
-        if(parentContainer != null && (parentContainer instanceof Container || parentContainer instanceof FieldGroup)){
-            parentContainerId = ((Component)parentContainer).getId();
-        }
-        
-        if(parentContainer != null && parentContainer instanceof FieldGroup){
-            masterKeyList.add(((Component)parentContainer).getId());
+        if (parentContainer != null && (parentContainer instanceof Container
+                || parentContainer instanceof FieldGroup)) {
+            parentContainerId = ((Component) parentContainer).getId();
         }
 
-        // TODO: need constants
-        if (!displayFieldLabelWithMessages) {
-            this.addStyleClass("uif-noLabels");
+        //Add identifying data attributes
+        this.addDataAttribute("messagesFor", parent.getId());
+        parent.addDataAttribute("parent", parentContainerId);
+
+        //Handle the special FieldGroup case - adds the FieldGroup itself to ids handled by this group (this must
+        //be a group if its parent is FieldGroup)
+        if (parentContainer != null && parentContainer instanceof FieldGroup) {
+            masterKeyList.add(parentContainerId);
+        }
+
+        //Check for message keys that are not matched anywhere on the page - these unmatched messages must still be
+        //displayed at the page level
+        if (parent instanceof PageGroup) {
+            Map<String, PropertyEditor> propertyEditors = view.getViewIndex().getFieldPropertyEditors();
+            Map<String, PropertyEditor> securePropertyEditors = view.getViewIndex().getSecureFieldPropertyEditors();
+            List<String> allPossibleKeys = new ArrayList<String>(propertyEditors.keySet());
+            allPossibleKeys.addAll(securePropertyEditors.keySet());
+
+            this.addNestedGroupKeys(allPossibleKeys, parent);
+
+            Set<String> messageKeys = new HashSet<String>();
+            messageKeys.addAll(messageMap.getAllPropertiesWithErrors());
+            messageKeys.addAll(messageMap.getAllPropertiesWithWarnings());
+            messageKeys.addAll(messageMap.getAllPropertiesWithInfo());
+
+            messageKeys.removeAll(allPossibleKeys);
+
+            masterKeyList.addAll(messageKeys);
         }
 
         for (String key : masterKeyList) {
-
             errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
-
             warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
-
             infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
         }
 
-        //Check for errors that are not matched on the page(only applies when parent is page)
-        if (parent instanceof PageGroup) {
-            //TODO add logic to check for keys not matched on anything
-        }
-
+        //set up growl script
         if (fireGrowlsForMessages) {
-            //set up growl script
             growlScript = getGrowlScript(view);
         }
 
-        //Remove any textual duplicates that may have snuck in, by converting to set and back to list
-/*        errors = new ArrayList<String>(new LinkedHashSet<String>(errors));
-        warnings = new ArrayList<String>(new LinkedHashSet<String>(warnings));
-        infos = new ArrayList<String>(new LinkedHashSet<String>(infos));*/
-
-        this.addDataAttribute("messagesFor", parent.getId());
-
-        if(parent instanceof InputField){
-            
-            parent.addDataAttribute("parent", parentContainerId);
-            parent.addDataAttribute("validationMessages", "{"
-                    + "displayMessages:" + displayMessages + ","
-                    + "useTooltip:"+ useTooltip + ","
-                    + "serverErrors:" + convertStringListToJsArray(errors) + ","
-                    + "serverWarnings:" + convertStringListToJsArray(warnings) + ","
-                    + "serverInfo:" + convertStringListToJsArray(infos)
-                    + "}");
-        }
-        else if(parent instanceof Container){
-
-            List<? extends Component> items = ((Container)parent).getItems();
-            boolean skipSections = false;
-            if(parent instanceof CollectionGroup){
-                if(((CollectionGroup)parent).getLayoutManager() instanceof StackedLayoutManager){
-                    items = ((StackedLayoutManager)((CollectionGroup)parent).getLayoutManager()).getStackedGroups();
-                }
-                else if(((CollectionGroup)parent).getLayoutManager() instanceof TableLayoutManager){
-                    items = ((TableLayoutManager)((CollectionGroup)parent).getLayoutManager()).getDataFields();
-                    skipSections = true;
-                }
-            }
-
-            List<String> sectionIds = new ArrayList<String>();
-            List<String> fieldOrder = new ArrayList<String>();
-            collectIdsFromItems(items, sectionIds, fieldOrder, skipSections);
-            
-            parent.addDataAttribute("parent", parentContainerId);
-
-            boolean pageLevel = false;
-            boolean forceShow = false;
-            if(parent instanceof PageGroup){
-                pageLevel = true;
-                forceShow = true;
-            }
-            else if(parentContainer instanceof FieldGroup) {
-                //note this means container of the parent is a FieldGroup
-                forceShow = true;
-            }
-
-            parent.addDataAttribute("validationMessages", "{"
-                    + "summarize:" + true + ","
-                    + "displayMessages:" + displayMessages + ","
-                    + "collapseFieldMessages:" + collapseAdditionalFieldLinkMessages + ","
-                    + "displayLabel:" + displayFieldLabelWithMessages + ","
-                    + "pageLevel:" + pageLevel + ","
-                    + "forceShow:" + forceShow + ","
-                    + "sections:" + convertStringListToJsArray(sectionIds) + ","
-                    + "order:" + convertStringListToJsArray(fieldOrder) + ","
-                    + "serverErrors:" + convertStringListToJsArray(errors) + ","
-                    + "serverWarnings:" + convertStringListToJsArray(warnings) + ","
-                    + "serverInfo:" + convertStringListToJsArray(infos)
-                    + "}");
-        }
-
+        //insure by default validationMessages container is not displayed - display is handled by the js
         this.setStyle("display: none;");
-    }
-
-    private void collectIdsFromItems(List<? extends Component> items, List<String> sectionIds, List<String> order, boolean skipSections){
-
-        if(items != null){
-            for(Component c: items){
-                if(c instanceof Container || c instanceof FieldGroup){
-                    if(c instanceof FieldGroup){
-                        if(!skipSections &&
-                            ((FieldGroup)c).getFieldLabel().isRender() &&
-                            !((FieldGroup)c).getFieldLabel().isHidden() &&
-                            (StringUtils.isNotEmpty(((FieldGroup)c).getLabel()) ||
-                            StringUtils.isNotEmpty(((FieldGroup)c).getFieldLabel().getLabelText()))){
-                            sectionIds.add(c.getId());
-                            order.add("f$" + c.getId());
-                            continue;
-                        }
-                        else{
-                            c = ((FieldGroup) c).getGroup();
-                            if(c == null){
-                                continue;
-                            }
-                        }
-                    }
-                    //TODO possibly find a better way to identify a section/subsection but this may work
-                    if(!skipSections && ((Container) c).getHeader() != null && ((Container) c).getHeader().isRender() &&
-                            (StringUtils.isNotBlank(((Container) c).getHeader().getHeaderText())
-                            || StringUtils.isNotBlank(c.getTitle()))){
-                        sectionIds.add(c.getId());
-                        //TODO make constant for section token
-                        order.add("s$" + c.getId());
-                    }
-                    else{
-                        collectIdsFromItems(((Container) c).getItems(), sectionIds, order, skipSections);
-                    }
-                }
-                else if(c instanceof InputField){
-                    order.add(c.getId());    
-                }
-            }
-        }
-    }
-    
-    private String convertStringListToJsArray(List<String> list){
-        String array = "[";
-        for(String s: list){
-            array = array + "'" + s + "',";
-        }
-        array = StringUtils.removeEnd(array, ",");
-        array = array + "]";
-        return array;
     }
 
     /**
@@ -296,7 +183,6 @@ public class ValidationMessages extends FieldBase {
                     }
 
                     result.add(message);
-
                 }
             }
         }
@@ -332,43 +218,26 @@ public class ValidationMessages extends FieldBase {
     }
 
     /**
-     * Adds all the nestedKeys of this component by calling getKeys on each of
-     * its nestedComponents' ErrorsFields and adding them to the list. If
-     * allowMessageRepeat is false, it will also turn off error display for its
-     * parent's nestedComponents' ErrorsFields.
+     * Adds all group keys of this component (starting from this component itself) by calling getKeys on each of
+     * its nested group's ValidationMessages and adding them to the list.
      *
      * @param keyList
      * @param component
      */
-    private void addNestedKeys(List<String> keyList, Component component) {
+    private void addNestedGroupKeys(Collection<String> keyList, Component component) {
         for (Component c : component.getComponentsForLifecycle()) {
             ValidationMessages ef = null;
-            if (c instanceof InputField) {
-                ef = ((InputField) c).getValidationMessages();
-            } else if (c instanceof ContainerBase) {
+            if (c instanceof ContainerBase) {
                 ef = ((ContainerBase) c).getValidationMessages();
+            } else if (c instanceof FieldGroup) {
+                ef = ((FieldGroup) c).getGroup().getValidationMessages();
             }
             if (ef != null) {
                 keyList.addAll(ef.getKeys(c));
-                addNestedKeys(keyList, c);
+                addNestedGroupKeys(keyList, c);
             }
         }
     }
-
-
-    public boolean isDisplayLockMessages() {
-        return this.displayLockMessages;
-    }
-
-    /**
-     * This has no use - needs to be removed(?)
-     *
-     * @param displayLockMessages
-     */
-    public void setDisplayLockMessages(boolean displayLockMessages) {
-        this.displayLockMessages = displayLockMessages;
-    }
-
 
     /**
      * AdditionalKeysToMatch is an additional list of keys outside of the
@@ -402,29 +271,15 @@ public class ValidationMessages extends FieldBase {
     }
 
     /**
-     * If true, the error messages will display the an InputField's title
-     * alongside the error, warning, and info messages related to it. This
-     * setting has no effect on messages which do not relate directly to a
-     * single InputField.
-     *
-     * @return the displayFieldLabelWithMessages
-     */
-    public boolean isDisplayFieldLabelWithMessages() {
-        return this.displayFieldLabelWithMessages;
-    }
-
-    /**
-     * @param displayFieldLabelWithMessages the displayFieldLabelWithMessages to set
-     */
-    public void setDisplayFieldLabelWithMessages(boolean displayFieldLabelWithMessages) {
-        this.displayFieldLabelWithMessages = displayFieldLabelWithMessages;
-    }
-
-    /**
-     * If true, error, warning, and info messages will be displayed (provided
+     * <p>If true, error, warning, and info messages will be displayed (provided
      * they are also set to display). Otherwise, no messages for this
      * ValidationMessages container will be displayed (including ones set to display).
-     * This is a global display on/off switch for all messages.
+     * This is a global display on/off switch for all messages.</p>
+     *
+     * <p>Other areas of the screen react to
+     * a display flag being turned off at a certain level, if display is off for a field, the next
+     * level up will display that fields full message text, and if display is off at a section the
+     * next section up will display those messages nested in a sublist.</p>
      *
      * @return the displayMessages
      */
@@ -438,7 +293,6 @@ public class ValidationMessages extends FieldBase {
     public void setDisplayMessages(boolean displayMessages) {
         this.displayMessages = displayMessages;
     }
-
 
     /**
      * The list of error messages found for the keys that were matched on this
@@ -469,6 +323,11 @@ public class ValidationMessages extends FieldBase {
     public List<String> getInfos() {
         return this.infos;
     }
+
+    /**
+     * TODO below needs to be reevaluated and removed/moved/fixed - growls should no longer live here or be used in this
+     * way
+     */
 
     private String getGrowlScript(View view) {
         // growls are setup here because they are relevant to the current page, but their
@@ -541,39 +400,4 @@ public class ValidationMessages extends FieldBase {
         return growlScript;
     }
 
-    /**
-     * When collapseAdditionalFieldLinkMessages is set to true, the messages generated on field links will be
-     * summarized to limit the space they take up with an appendage similar to [+n message type] appended for additional
-     * messages that are omitted.  When this flag is false, all messages will be part of the link separated by
-     * a comma.
-     * @return if field link messages are being collapsed
-     */
-    public boolean isCollapseAdditionalFieldLinkMessages() {
-        return collapseAdditionalFieldLinkMessages;
-    }
-
-    /**
-     * Set collapseAdditionalFieldLinkMessages
-     * @param collapseAdditionalFieldLinkMessages - true if field link messages are being collapsed
-     */
-    public void setCollapseAdditionalFieldLinkMessages(boolean collapseAdditionalFieldLinkMessages) {
-        this.collapseAdditionalFieldLinkMessages = collapseAdditionalFieldLinkMessages;
-    }
-
-    /**
-     * When true, use the tooltip on fields to display their relevant messages.  When false, these messages
-     * will appear directly below the control.
-     * @return true if using tooltips for messages, false to display below control
-     */
-    public boolean isUseTooltip() {
-        return useTooltip;
-    }
-
-    /**
-     * Set the useTooltip flag
-     * @param useTooltip - if true show tooltip, otherwise show messages below field control
-     */
-    public void setUseTooltip(boolean useTooltip) {
-        this.useTooltip = useTooltip;
-    }
 }

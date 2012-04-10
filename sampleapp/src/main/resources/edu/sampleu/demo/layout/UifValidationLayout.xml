@@ -53,6 +53,10 @@
             </list>
           </property>
         </bean>
+        <bean id="Demo-ValidationLayout-SectionsPageSectionMessages" parent="Demo-ValidationLayout-SectionsPage" p:title="Section Level Messages">
+        </bean>
+        <bean id="Demo-ValidationLayout-SectionsPageUnmatched" parent="Demo-ValidationLayout-SectionsPage" p:title="Unmatched Messages">
+        </bean>
         <bean id="Demo-ValidationLayout-SectionsPage-NoTooltip" 
               parent="Uif-Page" p:title="Standard Sections Page - No tooltip">
           <property name="items">
@@ -162,6 +166,10 @@
         <bean parent="Uif-HeaderTwo" p:headerText="Options"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPage"
               p:actionLabel="Sections - Default"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPageSectionMessages"
+                      p:actionLabel="Section Level Messages"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPageUnmatched"
+                      p:actionLabel="Unmatched Messages"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="Demo-ValidationLayout-SectionsPage-NoTooltip"
               p:actionLabel="No Tooltips"/>
         <bean parent="Uif-NavigationActionLink"

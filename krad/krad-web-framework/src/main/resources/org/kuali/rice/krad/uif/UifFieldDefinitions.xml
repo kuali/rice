@@ -84,7 +84,8 @@
   </bean>
 
   <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
-  <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField" parent="Uif-DataField"
+  <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"
+        parent="Uif-DataField"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
     <property name="styleClasses">
@@ -175,7 +176,8 @@
   </bean>
 
   <bean id="Uif-LookupCriteriaInputField" parent="Uif-LookupCriteriaInputField-parentBean"/>
-  <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupInputField"
+  <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.LookupInputField"
         parent="Uif-InputField">
     <property name="styleClasses">
       <list merge="true">
@@ -186,7 +188,8 @@
   </bean>
 
   <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
-  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ValidationMessages"
+  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.ValidationMessages"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
     <property name="styleClasses">
@@ -195,26 +198,29 @@
       </list>
     </property>
     <property name="displayMessages" value="true"/>
-    <property name="displayFieldLabelWithMessages" value="true"/>
-    <property name="useTooltip" value="true"/>
-    <property name="collapseAdditionalFieldLinkMessages" value="true"/>
   </bean>
 
   <bean id="Uif-FieldValidationMessages" parent="Uif-FieldValidationMessages-parentBean"/>
-  <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase">
+  <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
+        class="org.kuali.rice.krad.uif.field.FieldValidationMessages">
+    <property name="useTooltip" value="true"/>
   </bean>
 
   <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
-  <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase">
+  <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
+        class="org.kuali.rice.krad.uif.field.GroupValidationMessages">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-groupValidationMessages</value>
       </list>
     </property>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="collapseAdditionalFieldLinkMessages" value="true"/>
   </bean>
 
   <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
-  <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages">
+  <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages"
+        class="org.kuali.rice.krad.uif.field.PageValidationMessages">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-pageValidationMessages</value>
@@ -478,7 +484,8 @@ perform page navigation-->
     </property>
   </bean>
 
-  <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:clientSideJs="collapseDisclosures();"
+  <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
+        p:clientSideJs="collapseDisclosures();"
         p:actionLabel="Collapse All">
     <property name="styleClasses">
       <list merge="true">
@@ -524,7 +531,8 @@ perform page navigation-->
     </property>
   </bean>
 
-  <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small" p:methodToCall="toggleInactiveRecordDisplay"
+  <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
+        p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive"
         p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
     <property name="styleClasses">
@@ -534,7 +542,8 @@ perform page navigation-->
     </property>
   </bean>
 
-  <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small" p:methodToCall="toggleInactiveRecordDisplay"
+  <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
+        p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="hide inactive"
         p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
     <property name="styleClasses">

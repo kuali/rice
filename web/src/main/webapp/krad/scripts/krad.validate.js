@@ -624,12 +624,12 @@ function handleTabStyle(id, error, warning, info) {
 function generateSectionLevelMessages(id, data, newList) {
     if (data != undefined && data != null) {
         //Write all message items for section
-        var errors = jQuery(generateListItems(data.errors, "uif-errorMessageItem", 0, true, errorImage)
-                + generateListItems(data.serverErrors, "uif-errorMessageItem", 0, true, errorImage));
-        var warnings = jQuery(generateListItems(data.warnings, "uif-warningMessageItem", 0, true, warningImage)
-                + generateListItems(data.serverWarnings, "uif-warningMessageItem", 0, true, warningImage));
-        var info = jQuery(generateListItems(data.info, "uif-infoMessageItem", 0, true, infoImage)
-                + generateListItems(data.serverInfo, "uif-infoMessageItem", 0, true, infoImage));
+        var errors = jQuery(generateListItems(data.errors, "uif-errorMessageItem", 0, true)
+                + generateListItems(data.serverErrors, "uif-errorMessageItem", 0, true));
+        var warnings = jQuery(generateListItems(data.warnings, "uif-warningMessageItem", 0, true)
+                + generateListItems(data.serverWarnings, "uif-warningMessageItem", 0, true));
+        var info = jQuery(generateListItems(data.info, "uif-infoMessageItem", 0, true)
+                + generateListItems(data.serverInfo, "uif-infoMessageItem", 0, true));
 
         //Write all items to the list
         newList = writeMessageItemToList(errors, newList);

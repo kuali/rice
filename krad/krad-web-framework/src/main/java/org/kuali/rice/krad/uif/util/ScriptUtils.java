@@ -117,4 +117,20 @@ public class ScriptUtils {
         name = name.replace("'", "\\'");
         return name;
     }
+
+    /**
+     * Converts a list of string to a valid js string array
+     *
+     * @param list - list of Strings to be converted
+     * @return String representing the js array
+     */
+    public static String convertStringListToJsArray(List<String> list) {
+        String array = "[";
+        for (String s : list) {
+            array = array + "'" + s + "',";
+        }
+        array = StringUtils.removeEnd(array, ",");
+        array = array + "]";
+        return array;
+    }
 }

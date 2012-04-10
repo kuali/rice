@@ -28,6 +28,7 @@ var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
 
 var errorImage;
+var errorGreyImage;
 var warningImage;
 var infoImage;
 
@@ -132,6 +133,22 @@ function initFieldHandlers() {
                     jq(this).valid();
                     dependsOnCheck(this, new Array());
                 }
+            });
+
+    //Greying out functionality
+    jq(document).on("change",
+            "[data-role='InputField'] input:text, "
+                    + "[data-role='InputField'] input:password, "
+                    + "[data-role='InputField'] input:file, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea, "
+                    + "[data-role='InputField'] input:checkbox, "
+                    + "[data-role='InputField'] input:radio",
+            function () {
+                var id = getAttributeId(jQuery(this).attr('id'));
+                var data = jQuery("#" + id).data("validationMessages");
+                data.fieldModified = true;
+                jQuery("#" + id).data("validationMessages", data);
             });
 
     //special radio and checkbox control handling for click events
@@ -247,6 +264,7 @@ function setupPage(validate) {
     jq('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
 
     errorImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error.png' alt='Error' /> ";
+    errorGreyImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
     warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
     infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
 

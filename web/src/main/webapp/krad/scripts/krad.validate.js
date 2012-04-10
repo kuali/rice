@@ -345,8 +345,8 @@ function writeMessagesAtField(id) {
         }
 
         var showImage = true;
-        //do not show the message icon next to field if this field is in a table layout
-        if (jQuery("#" + id).parent().is("td")) {
+        //do not show the message icon next to field if this field is in a table collection layout
+        if (jQuery("#" + id).parents(".uif-tableCollectionLayout").length) {
             showImage = false;
         }
 
@@ -360,7 +360,12 @@ function writeMessagesAtField(id) {
             }
             jQuery("#" + id).addClass("uif-hasError");
             if (showImage) {
-                jQuery(messagesDiv).before(errorImage);
+                if(data.fieldModified && data.errors.length == 0){
+                    jQuery(messagesDiv).before(errorGreyImage);
+                }
+                else{
+                    jQuery(messagesDiv).before(errorImage);
+                }
             }
 
             if (hasServerMessages) {
@@ -546,26 +551,29 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
                             + "id='pageValidationHeader'>The Page submission has " + countMessage + "</h3>");
 
                     pageValidationHeader.find(".uif-validationImage").remove();
+                    var pageSummaryClass = "";
                     if (data.errorTotal) {
-                        pageValidationHeader.addClass("uif-pageValidationHeader-error");
+                        pageSummaryClass = "uif-pageValidationMessages-error";
                         pageValidationHeader.prepend(errorImage);
 
                     }
                     else if (data.warningTotal) {
-                        pageValidationHeader.addClass("uif-pageValidationHeader-warning");
+                        pageSummaryClass = "uif-pageValidationMessages-warning";
                         pageValidationHeader.prepend(warningImage);
                     }
                     else if (data.infoTotal) {
-                        pageValidationHeader.addClass("uif-pageValidationHeader-info");
+                        pageSummaryClass = "uif-pageValidationMessages-info";
                         pageValidationHeader.prepend(infoImage);
-                    }
-                    else {
-                        pageValidationHeader.removeClass("uif-pageValidationHeader-error");
-                        pageValidationHeader.removeClass("uif-pageValidationHeader-warning");
-                        pageValidationHeader.removeClass("uif-pageValidationHeader-info");
                     }
 
                     messagesDiv.prepend(pageValidationHeader);
+
+                    //Handle special classes
+                    pageValidationHeader.parent().removeClass("uif-pageValidationMessages-error");
+                    pageValidationHeader.parent().removeClass("uif-pageValidationMessages-warning");
+                    pageValidationHeader.parent().removeClass("uif-pageValidationMessages-info");
+                    pageValidationHeader.parent().addClass(pageSummaryClass);
+
                     messagesDiv.find(".uif-validationMessagesList").attr("id", "pageValidationList");
                     messagesDiv.find(".uif-validationMessagesList").attr("aria-labelledby",
                             "pageValidationHeader");
@@ -1115,6 +1123,10 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
             link = jQuery("<li data-messageItemFor='" + fieldId + "'><a href='#'>"
                     + name + linkText + collapsedElements + "</a> </li>");
+
+            if(messageData.fieldModified){
+                jQuery(link).find("a").prepend("<span class='modified'>(Modified) </span>");
+            }
             jQuery(link).addClass(linkType);
             jQuery(link).find("a").click(function () {
                 var control = jQuery("#" + fieldId + "_control");

@@ -358,6 +358,7 @@
       <list>
         <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 1">
         <property name="group.instructionalText" value="Field group with vertical layout and group/field labels"/>
+
         <property name="items">
           <list>
             <bean parent="Uif-InputField" p:required="true" p:propertyName="field80" p:label="Field 1">
@@ -394,7 +395,7 @@
         </property>
       </bean>
         
-        <bean parent="Uif-TabSection">
+        <bean parent="Uif-TabSubSection">
           <property name="title" value="Tabs"/>
           <property name="items">
             <list>

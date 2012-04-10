@@ -34,19 +34,37 @@ public class UifFormManager implements Serializable {
     private UifFormBase currentForm;
     private Map<String, UifFormBase> uifForms;
 
+    /**
+     * Create a new form manager with an empty list of forms for the session.
+     */
     public UifFormManager() {
         this.uifForms = new HashMap<String, UifFormBase>();
     }
 
+    /**
+     * Get the current form of the session.
+     *
+     * @return UifFormBase
+     */
     public UifFormBase getCurrentForm() {
         return currentForm;
     }
 
+    /**
+     * Sets the current form of the session.
+     *
+     * @param currentForm
+     */
     public void setCurrentForm(UifFormBase currentForm) {
         this.currentForm = currentForm;
         addForm(currentForm);
     }
 
+    /**
+     * Add a form to the session.
+     *
+     * @param form to be added to the session
+     */
     public void addForm(UifFormBase form) {
         if (form == null) {
             return;
@@ -55,6 +73,12 @@ public class UifFormManager implements Serializable {
         uifForms.put(form.getFormKey(), form);
     }
 
+    /**
+     * Retrieve a form from the session.
+     *
+     * @param formKey of the form to retrieve from the session
+     * @return UifFormBase
+     */
     public UifFormBase getForm(String formKey) {
         if (uifForms.containsKey(formKey)) {
             return uifForms.get(formKey);
@@ -64,7 +88,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data and the forms from the breadcrumb history from the server.
+     * Removes the stored form data and the forms from the breadcrumb history from the session.
      *
      * @param form to be removed
      */
@@ -77,7 +101,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data from the server.
+     * Removes the stored form data from the session.
      *
      * @param formKey of the form to be removed
      */
@@ -92,7 +116,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data and the forms from the breadcrumb history from the server.
+     * Removes the stored form data and the forms from the breadcrumb history from the session.
      *
      * @param formKey of the form to be removed
      */

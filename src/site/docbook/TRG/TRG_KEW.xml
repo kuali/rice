@@ -5042,6 +5042,21 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <listitem>
                         <para>ALLOW_SU_POST_PROCESSOR_OVERIDE</para>
                     </listitem>
+                    <listitem>
+                      <para>NOTIFY_COMPLETED_ON_RETURN</para>
+                    </listitem>
+                    <listitem>
+                      <para>NOTIFY_PENDING_ON_RETURN</para>
+                    </listitem>
+                    <listitem>
+                      <para>RECALL_NOTIFICATION</para>
+                    </listitem>
+                    <listitem>
+                      <para>ALLOW_SU_FINAL_APPROVAL</para>
+                    </listitem>
+                    <listitem>
+                      <para>SEND_NOTIFICATION_ON_SU_DISAPPROVE</para>
+                    </listitem>
                 </itemizedlist></para>
             <para>Document Type Policies defined in the Document Type XML have this
                 structure:</para>
@@ -5213,6 +5228,35 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 &lt;/policy>                    
                 </programlisting>
             </sect3>
+
+
+          <sect3>
+            <title>ALLOW_SU_FINAL_APPROVAL</title>
+            <para>Setting this policy to false disallows Super User approval on final nodes of the document.</para>
+            <programlisting>&lt;policies>
+              &lt;policy>
+              &lt;name>ALLOW_SU_FINAL_APPROVAL&lt;/name>
+              &lt;value>false&lt;/value>
+              &lt;/policy>
+              &lt;/policies>
+            </programlisting>
+          </sect3>
+
+
+          <sect3>
+            <title>SEND_NOTIFICATION_ON_SU_DISAPPROVE</title>
+            <para>By default, acknowledgedments are not sent on Super User Disapproval like they are for normal Disapprove actions.
+                  This policy can be used to enable sending of acknowledgements upon Super User Disapproval.</para>
+            <programlisting>&lt;policies>
+              &lt;policy>
+              &lt;name>SEND_NOTIFICATION_ON_SU_DISAPPROVE&lt;/name>
+              &lt;value>true&lt;/value>
+              &lt;/policy>
+              &lt;/policies>
+            </programlisting>
+          </sect3>
+
+
         </sect2>
         <sect2>
             <title>Inheritance</title>

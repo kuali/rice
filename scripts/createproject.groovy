@@ -171,7 +171,7 @@ ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/Rice
 	tofile:PROJECT_PATH + "/src/main/resources/RiceJTASpringBeans.xml")
 
 // Adding log4j.proprties file
-ant.copy(file:RICE_DIR + "sampleapp/src/main/resources/log4j.properties",
+ant.copy(file:RICE_DIR + "/sampleapp/src/main/resources/log4j.properties",
 	tofile:PROJECT_PATH + "/src/main/resources/log4j.properties")
 
 

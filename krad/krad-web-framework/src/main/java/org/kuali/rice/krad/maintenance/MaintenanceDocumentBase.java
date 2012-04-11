@@ -458,7 +458,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
 
         // unlock the document when its canceled or disapproved
-        if (workflowDocument.isCanceled() || workflowDocument.isDisapproved()) {
+        if (workflowDocument.isCanceled() || workflowDocument.isDisapproved() || workflowDocument.isRecalled()) {
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();
 

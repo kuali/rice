@@ -803,8 +803,9 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 }
 
 .uif-validationMessages{
-    background-color: #F5F5DC;
-    border: 1px solid gray;
+    background-image:url(../../images/validation/normal-stripe.png);
+    background-repeat: repeat;
+    border: 1px solid #cbcbcb;
     padding-top: .5em;
     padding-bottom: .5em;
 }
@@ -831,54 +832,66 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     margin-left: 2em;
 }
 
+.uif-pageValidationMessages-error{
+    background-image:url(../../images/validation/error-stripe.png);
+    background-repeat: repeat;
+    border: 1px solid #ffa09c;
+}
+
+.uif-pageValidationMessages-warning{
+    background-image:url(../../images/validation/warn-stripe.png);
+    background-repeat: repeat;
+    border: 1px solid #FF9900;
+}
+
+.uif-pageValidationMessages-info{
+    background-image:url(../../images/validation/info-stripe.png);
+    background-repeat: repeat;
+    border: 1px solid #3366CC;
+}
+
 .uif-pageValidationHeader{
     margin: .5em;
-    padding: .5em;
-    border: 1px solid black;
-}
-
-.uif-pageValidationHeader-error{
-    background-color: #FFE1E9;
-}
-
-.uif-pageValidationHeader-warning{
-    background-color: #FFFEDA;
-}
-
-.uif-pageValidationHeader-info{
-    background-color: #E7F3FE;
-}
-
-.uif-hasError > .uif-control{
-    border: 2px solid red;
-}
-
-.uif-hasError > fieldset{
-    border: 1px dotted red;
-}
-
-.uif-hasWarning > .uif-control{
-
-}
-
-.uif-hasWarning > fieldset{
-    border: 1px dotted gray;
-}
-
-.uif-hasInfo > .uif-control{
-
 }
 
 .uif-hasInfo > fieldset{
-    border: 1px dotted gray;
+    border: 1px solid gray;
+}
+
+.uif-tableCollectionLayout .uif-hasInfo > .uif-control{
+    border: 2px solid #3366CC;
+}
+
+.uif-tableCollectionLayout .uif-hasInfo > fieldset{
+    border: 2px solid #3366CC;
+}
+
+.uif-hasWarning > fieldset{
+    border: 1px solid gray;
+}
+
+.uif-tableCollectionLayout .uif-hasWarning > .uif-control{
+    border: 2px solid #FF9900;
+}
+
+.uif-tableCollectionLayout .uif-hasWarning > fieldset{
+    border: 2px solid #FF9900;
+}
+
+.uif-hasError > .uif-control{
+    border: 2px solid #ff2300;
+}
+
+.uif-hasError > fieldset{
+    border: 2px solid #ff2300;
 }
 
 .uif-validationMessages li a{
-    color: #000088;
+    /*color: #000088;*/
 }
 
 .uif-validationMessages li a:hover, .uif-validationMessages li a:focus{
-    color: #0044ff;
+    /*color: #0044ff;*/
 }
 
 li.uif-errorMessageItem:before {
@@ -916,20 +929,20 @@ li.uif-infoMessageItem:before {
   max-height: 0px;
   left: -10px;
   top: -0px;
-  color: black;
+  color: #3366CC;
   font-size: 20px;
 }
 
 .uif-errorHighlight-section > .uif-header .uif-headerText{
-    background-color: #FFE1E9;
+   /* background-color: #FFE1E9;*/
 }
 
 .uif-warningHighlight-section > .uif-header .uif-headerText{
-    background-color: #FFFEDA;
+    /*background-color: #FFFEDA;*/
 }
 
 .uif-infoHighlight-section > .uif-header .uif-headerText{
-    background-color: #E7F3FE;
+    /*background-color: #E7F3FE;*/
 }
 
 .uif-errorHighlight > .uif-control, .uif-errorHighlight > fieldset{

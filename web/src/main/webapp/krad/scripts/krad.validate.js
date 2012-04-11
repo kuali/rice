@@ -352,7 +352,9 @@ function writeMessagesAtField(id) {
 
         //remove any image that may already be present
         jQuery("#" + id + " > .uif-validationImage").remove();
-
+        jQuery("#" + id).removeClass("uif-hasError");
+        jQuery("#" + id).removeClass("uif-hasWarning");
+        jQuery("#" + id).removeClass("uif-hasInfo");
         //show appropriate icons/styles based on message severity level
         if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
             if (data.errors.length) {
@@ -415,9 +417,7 @@ function writeMessagesAtField(id) {
         }
         else {
             messagesDiv.hide();
-            jQuery("#" + id).removeClass("uif-hasError");
-            jQuery("#" + id).removeClass("uif-hasWarning");
-            jQuery("#" + id).removeClass("uif-hasInfo");
+
             handleTabStyle(id, false, false, false);
         }
 

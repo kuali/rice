@@ -207,12 +207,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getFactoryId(), "");
-
-        // remove attribute suffix since that gets added in lifecycle
-        /*if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
-            suffix = StringUtils.removeEnd(suffix, UifConstants.IdSuffixes.ATTRIBUTE);
-        }
-        ComponentUtils.updateIdWithSuffix(component, suffix);*/
+        ComponentUtils.updateIdWithSuffix(component, suffix);
 
         // binding path should stay the same
         if (component instanceof DataBinding) {
@@ -255,13 +250,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (component instanceof Group || component instanceof FieldGroup) {
             List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
             for (Component nestedComponent : nestedComponents) {
-                Component origNestedComponent = null;
-                if (nestedComponent instanceof DataField) {
-                    origNestedComponent = view.getViewIndex().getComponentById(
-                            nestedComponent.getId() + suffix); //+ UifConstants.IdSuffixes.ATTRIBUTE);
-                } else {
-                    origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
-                }
+                Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
 
                 if (origNestedComponent != null) {
                     // update binding

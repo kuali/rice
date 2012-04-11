@@ -71,42 +71,92 @@ public class LinkField extends FieldBase {
         return components;
     }
 
+    /**
+     *  Returns the <code>Link<code/> field.
+     *
+     * @return The Link field
+     */
     public Link getLink() {
         return link;
     }
 
+    /**
+     * Setter for the <code>Link<code/>  component.
+     *
+     * @param link
+     */
     public void setLink(Link link) {
         this.link = link;
     }
 
+    /**
+     *  Returns the label of the <code>Link<code/> field that will be used to render the label of the link.
+     *
+     * @return The link label
+     */
     public String getLinkLabel() {
         return link.getLinkLabel();
     }
 
+    /**
+     * Setter for the link label. Sets the value on the <code>Link<code/> field.
+     *
+     * @param linkLabel
+     */
     public void setLinkLabel(String linkLabel) {
         link.setLinkLabel(linkLabel);
     }
 
+    /**
+     *  Returns the target of the <code>Link<code/> field that will be used to specify where to open the href.
+     *
+     * @return The target
+     */
     public String getTarget() {
         return link.getTarget();
     }
 
+    /**
+     * Setter for the link target. Sets the value on the <code>Link<code/> field.
+     *
+     * @param target
+     */
     public void setTarget(String target) {
         link.setTarget(target);
     }
 
+    /**
+     *  Returns the href text of the <code>Link<code/> field.
+     *
+     * @return The href text
+     */
     public String getHrefText() {
         return link.getHrefText();
     }
 
+    /**
+     * Setter for the hrefText. Sets the value on the <code>Link<code/> field.
+     *
+     * @param hrefText
+     */
     public void setHrefText(String hrefText) {
         link.setHrefText(hrefText);
     }
 
+    /**
+     * Setter for the lightBox
+     *
+     * @param lightBox
+     */
     public void setLightBox(LightBox lightBox) {
         this.lightBox = lightBox;
     }
 
+    /**
+     *  Returns the <code>LightBox</code> used to open the link in
+     *
+     * @return The <code>LightBox</code>
+     */
     public LightBox getLightBox() {
         return lightBox;
     }

@@ -288,7 +288,7 @@
         <collection-descriptor name="contexts" element-class-ref="org.kuali.rice.krms.impl.repository.ContextBo"
               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
               indirection-table="KRMS_CNTXT_VLD_TERM_SPEC_T"
-              auto-retrieve="true" auto-update="link" auto-delete="none" proxy="true">
+              auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <fk-pointing-to-this-class    column="TERM_SPEC_ID" />
             <fk-pointing-to-element-class column="CNTXT_ID" />
         </collection-descriptor>

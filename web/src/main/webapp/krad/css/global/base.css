@@ -957,6 +957,8 @@ li.uif-infoMessageItem:before {
     background-color: #E7F3FE;
 }
 
+
+
 .uif-clientErrorDiv{
     background-color: #FFE1E9;
 }
@@ -967,6 +969,16 @@ li.uif-infoMessageItem:before {
 
 .uif-clientInfoDiv{
     background-color: #E7F3FE;
+}
+
+/** true when rendering outside tooltip **/
+.uif-validationMessages > .uif-clientMessageItems{
+    background-color: transparent;
+}
+
+/** true when rendering outside tooltip **/
+.uif-validationMessages > .uif-clientMessageItems ul{
+    border: 1px dashed black;
 }
 
 .jquerybubblepopup-kr-error-cs  .jquerybubblepopup-innerHtml{

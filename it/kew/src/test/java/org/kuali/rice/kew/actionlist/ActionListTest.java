@@ -19,10 +19,12 @@ import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -135,6 +137,59 @@ public class ActionListTest extends KEWTestCase {
                                 }
                                 Collection<ActionItem> actionList = getActionListService().findByPrincipalId(workflowId);
                                 assertEquals("ActionItemService returned incorrect number of ActionItems for user " + workflowId + " ActionList", emplIdCnt, actionList.size());
+                                ps1.close();
+                                rsWorkflowIdCnt.close();
+                            }
+                            rs.close();
+                            ps.close();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        return null;
+                    }
+                });
+            }
+        });
+    }
+
+    @Test
+    public void testActionListMaxActionItemAndCount() throws Exception {
+        setUpOldSchool();
+        TransactionTemplate transactionTemplate = getTransactionTemplate();
+        transactionTemplate.execute(new TransactionCallback() {
+            public Object doInTransaction(TransactionStatus status) {
+                return TestUtilities.getJdbcTemplate().execute(new StatementCallback() {
+                    public Object doInStatement(Statement stmt) {
+                        try {
+                            Connection conn = stmt.getConnection();
+                            PreparedStatement ps = conn.prepareStatement(
+                                    "select distinct PRNCPL_ID from krew_actn_itm_t");
+                            ResultSet rs = ps.executeQuery();
+                            int cnt = 0;
+                            int maxVal = 0;
+                            int loopCnt = 0;
+                            //do first 5 for time sake
+                            while (rs.next() && ++loopCnt < 6) {
+                                String workflowId = rs.getString(1);
+                                PreparedStatement ps1 = conn.prepareStatement(
+                                        "select cast((max(actn_itm_id))as decimal) as max_id, count(distinct(doc_hdr_id)) as total_records"
+                                                + "  from ("
+                                                + "  select actn_itm_id,doc_hdr_id "
+                                                + "  from KREW_ACTN_ITM_T   where    prncpl_id=? "
+                                                + "  group by  actn_itm_id,doc_hdr_id "
+                                                + "  ) T");
+                                ps1.setString(1, workflowId);
+                                ResultSet rsWorkflowIdCnt = ps1.executeQuery();
+                                if (rsWorkflowIdCnt.next()) {
+                                    maxVal = rsWorkflowIdCnt.getInt(1);
+                                    cnt = rsWorkflowIdCnt.getInt(2);
+                                } else {
+                                    throw new Exception(
+                                            "WorkflowId " + workflowId + " didn't return a result set.  Test SQL invalid.");
+                                }
+                                List<Integer> ls = getActionListService().getMaxActionItemIdAndCountForUser(workflowId);
+                                assertEquals((Integer) cnt, ls.get(1));
+                                assertEquals((Integer) maxVal, ls.get(0));
                                 ps1.close();
                                 rsWorkflowIdCnt.close();
                             }
@@ -415,6 +470,71 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 1, recipients.size());
     	WebFriendlyRecipient recipient = (WebFriendlyRecipient)recipients.iterator().next();
     	assertEquals("Wrong employee id of primary delegate", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
+    }
+
+    @Test
+    public void testCreateActionItemForActionRequest() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                "ActionListDocumentType");
+        document.route("");
+        List<ActionRequest> requests = document.getRootActionRequests();
+        assertTrue("there must be ActionRequestDTOs to test!", requests != null && requests.size() > 0);
+
+        for (ActionRequest reqDTO : requests) {
+            if (reqDTO.getParentActionRequestId() == null) {
+                ActionRequestValue reqVal = ActionRequestValue.from(reqDTO);
+
+                List<ActionItem> actionItems = new ArrayList<ActionItem>();
+                actionItems.add(getActionListService().createActionItemForActionRequest(reqVal));
+                assertTrue(actionItems.size() > 0);
+            }
+        }
+
+    }
+
+    @Test
+    public void testDeleteActionItem() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
+                "ActionListDocumentType");
+        document.route("");
+        Collection<ActionItem> actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"),
+                new ActionListFilter());
+        assertEquals("bmcgough should have 1 item in his action list.", 1, actionItems.size());
+        //delete one of the action items
+        ActionItem itm = null;
+        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+            ActionItem actionItem = iterator.next();
+            itm = getActionListService().findByActionItemId(actionItem.getId());
+            getActionListService().deleteActionItem(itm);
+            break;
+        }
+        actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"), new ActionListFilter());
+        assertEquals("bmcgough should have 0 item in his action list.", 0, actionItems.size());
+    }
+
+    @Test
+    public void testFindByDocumentTypeName() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
+                "ActionListDocumentType");
+        document.route("");
+        Collection<ActionItem> actionItems = getActionListService().findByDocumentTypeName("ActionListDocumentType");
+        assertEquals("There should be 10 action items", 10, actionItems.size());
+    }
+
+    @Test
+    public void testFindByActionRequestId() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
+                "ActionListDocumentType");
+        document.route("");
+        Collection<ActionRequest> actionRequests = document.getRootActionRequests();
+        for (Iterator<ActionRequest> iterator = actionRequests.iterator(); iterator.hasNext(); ) {
+            ActionRequest actionRequest = iterator.next();
+            if (actionRequest.getActionRequested().getCode().equals(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ)) {
+                Collection<ActionItem> actionItems = getActionListService().findByActionRequestId(
+                        actionRequest.getId());
+                assertTrue(actionItems.size() == 1);
+            }
+        }
     }
 
     private DocumentRouteHeaderValue generateDocRouteHeader() {

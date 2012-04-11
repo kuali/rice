@@ -17,6 +17,8 @@ package org.kuali.rice.kim.impl.permission;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
@@ -30,11 +32,13 @@ import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionQueryResults;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
@@ -56,6 +60,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public class PermissionServiceImpl implements PermissionService {
+    private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
+
 	private RoleService roleService;
     private PermissionTypeService defaultPermissionTypeService;
     private KimTypeInfoService kimTypeInfoService;
@@ -113,13 +119,25 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(permissionName, "permissionName");
         incomingParamCheck(qualification, "qualification");
 
+        if ( LOG.isDebugEnabled() ) {
+            logAuthorizationCheck("Permission", principalId, namespaceCode, permissionName, qualification);
+        }
         List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName );
     	if ( roleIds.isEmpty() ) {
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Result: false");
+    		}
     		return false;
     	}
 
-		return roleService.principalHasRole( principalId, roleIds, qualification);
-
+    	Boolean isAuthorized = roleService.principalHasRole( principalId, roleIds, qualification);
+        
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "Result: " + isAuthorized );
+        }
+        
+		return isAuthorized;
+		
     }
     @Override
     public boolean hasPermissionByTemplate(String principalId, String namespaceCode, String permissionTemplateName,
@@ -139,11 +157,26 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
         incomingParamCheck(qualification, "qualification");
 
+        if ( LOG.isDebugEnabled() ) {
+            logAuthorizationCheckByTemplate("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
+        }
+        
         List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug( "Result: false");
+            }
     		return false;
     	}
-    	return roleService.principalHasRole( principalId, roleIds, qualification);
+    		
+        Boolean isAuthorized = roleService.principalHasRole( principalId, roleIds, qualification);
+    
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "Result: " + isAuthorized );
+        }
+        
+		return isAuthorized;
+    	
     }
     @Override
     public List<Permission> getAuthorizedPermissions( String principalId,
@@ -653,7 +686,64 @@ public class PermissionServiceImpl implements PermissionService {
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
     }
-
+    
+    protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, Map<String, String> qualification ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(  '\n' );
+        sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
+        sb.append( "             Principal:  " ).append( principalId );
+        if ( principalId != null ) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            if ( principal != null ) {
+                sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
+            }
+        }
+        sb.append( '\n' );
+        sb.append( "             Qualifiers:\n" );
+        if ( qualification != null && !qualification.isEmpty() ) {
+            sb.append( qualification );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        if (LOG.isTraceEnabled()) {
+            LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
+        } else {
+            LOG.debug(sb.toString());
+        }
+    }
+    
+    protected void logAuthorizationCheckByTemplate(String checkType, String principalId, String namespaceCode, String permissionName, 
+                                                   Map<String, String> permissionDetails, Map<String, String> qualification ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(  '\n' );
+        sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
+        sb.append( "             Principal:  " ).append( principalId );
+        if ( principalId != null ) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            if ( principal != null ) {
+                sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
+            }
+        }
+        sb.append( '\n' );
+        sb.append( "             Details:\n" );
+        if ( permissionDetails != null ) {
+            sb.append( permissionDetails );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        sb.append( "             Qualifiers:\n" );
+        if ( qualification != null && !qualification.isEmpty() ) {
+            sb.append( qualification );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        if (LOG.isTraceEnabled()) {
+            LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
+        } else {
+            LOG.debug(sb.toString());
+        }
+    }
+    
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new RiceIllegalArgumentException(name + " was null");

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.role;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
@@ -29,6 +30,7 @@ import org.kuali.rice.core.api.mo.ModelObjectUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.DelegateMemberQueryResults;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
@@ -487,7 +489,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(roleIds, "roleIds");
 
-        return principalHasRole(principalId, roleIds, qualification, true);
+        if ( LOG.isDebugEnabled() ) {
+            logPrincipalHasRoleCheck(principalId, roleIds, qualification);
+        }
+        
+        Boolean hasRole = principalHasRole(principalId, roleIds, qualification, true);
+        
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "Result: " + hasRole );
+        }
+        
+        return hasRole;
     }
 
     @Override
@@ -1843,6 +1855,41 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 		}
 		getBusinessObjectService().delete(attributesToDelete);
 	}
+
+    protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, Map<String, String> roleQualifiers ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(  '\n' );
+        sb.append( "Has Role     : " ).append( roleIds ).append( '\n' );
+        if ( roleIds != null ) {
+            for ( String roleId : roleIds ) {
+                Role role = getRole( roleId );
+                if ( role != null ) {
+                    sb.append( "        Name : " ).append( role.getNamespaceCode() ).append( '/').append( role.getName() );
+                    sb.append( " (" ).append( roleId ).append( ')' );
+                    sb.append( '\n' );
+                }
+            }
+        }
+        sb.append( "   Principal : " ).append( principalId );
+        if ( principalId != null ) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            if ( principal != null ) {
+                sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
+            }
+        }
+        sb.append( '\n' );
+        sb.append( "     Details :\n" );
+        if ( roleQualifiers != null ) {
+            sb.append( roleQualifiers );
+        } else {
+            sb.append( "               [null]\n" );
+        }
+        if (LOG.isTraceEnabled()) { 
+            LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
+        } else {
+            LOG.debug(sb.toString());
+        }
+    }
 
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {

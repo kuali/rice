@@ -75,7 +75,7 @@
                 p:instructionalText="onClick for the checkbox group">
             <property name="control">
               <bean parent="Uif-VerticalCheckboxesControl">
-                <property name="onClickScript" value="alert('Clicked Checkboxes control');" />
+                <property name="onClickScript" value="alert('Checkboxes control onClick event fired');" />
                 <property name="options">
                   <list>
                     <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
@@ -90,16 +90,18 @@
           <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
                 p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
                 p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
-            <property name="onClickScript" value="alert('Clicked image field');" />
+            <property name="onClickScript" value="alert('image field onClick event fired');" />
           </bean>
+
           <bean parent="Uif-LinkField" p:linkLabel="Kuali Website"
                 p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links">
-            <property name="onClickScript" value="alert('Clicked Link field');" />
+            <property name="onClickScript" value="alert('Link field onClick event fired');" />
           </bean>
+
           <bean parent="Uif-LinkGroup" p:title="LinkGroup"
                 p:instructionalText="LinkGroup with | delimiter and [] begin and end delimiter"
                 p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
-            <property name="onClickScript" value="alert('Clicked LinkGroup');" />
+            <property name="onClickScript" value="alert('LinkGroup onClick event fired');" />
             <property name="items">
               <list>
                 <bean parent="Uif-ActionLink"
@@ -109,6 +111,60 @@
                 <bean parent="Uif-ActionLink"
                       p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 3"/>
               </list>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField" p:propertyName="field119" p:label="Select Control" p:width="auto"
+                p:instructionalText="SelectControl using an optionsFinder" p:defaultValue="4">
+            <property name="control">
+              <bean parent="Uif-DropdownControl">
+                <property name="onClickScript" value="alert('Select Control onClick event fired.');" />
+              </bean>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField" p:propertyName="field117" p:label="Radio 1" p:width="auto"
+              p:instructionalText="RadioGroupControl using an optionsFinder">
+            <property name="control">
+              <bean parent="Uif-VerticalRadioControl">
+                <property name="onClickScript" value="alert('Radio Control onClick event fired.');" />
+              </bean>
+            </property>
+            <property name="optionsFinder">
+              <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField" p:propertyName="fileUpload" p:label="File Control">
+            <property name="instructionalText" value="Use to upload files"/>
+            <property name="control">
+              <bean parent="Uif-FileControl" p:size="30">
+                <property name="onClickScript" value="alert('File Control onClick event fired.');" />
+              </bean>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField" p:propertyName="testPerson.principalName" p:label="User Control">
+            <property name="instructionalText"
+                      value="Type user id and user full name will display after tabbing, or use lookup to select a person"/>
+            <property name="control">
+              <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="testPersonId"
+                    p:personNamePropertyName="testPerson.name">
+                <property name="onClickScript" value="alert('User Control onClick event fired');" />
+              </bean>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField" p:propertyName="field131" p:label="Spinner Control">
+            <property name="instructionalText"
+                      value="Click the arrows on the right side of the control to increment/decrement the value"/>
+            <property name="control">
+              <bean parent="Uif-SpinnerControl">
+                <property name="onClickScript" value="alert('Spinner Control onClick event fired');" />
+              </bean>
             </property>
           </bean>
 

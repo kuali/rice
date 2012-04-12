@@ -171,7 +171,7 @@
         NMSPC_CD="KR-WKFLW" OBJ_ID="700AB6A6E23740D0B3E00E02A8FB6347"
         PARM_DESC_TXT="Default from email address for notifications."
         PARM_NM="FROM_ADDRESS" PARM_TYP_CD="CONFG"
-        VAL="quickstart@localhost" VER_NBR="1"/>
+        VAL=" rice.test@kuali.org" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Notification"
         EVAL_OPRTR_CD="D" NMSPC_CD="KR-WKFLW"
         OBJ_ID="08280F2575904F3586CF48BB97907506"

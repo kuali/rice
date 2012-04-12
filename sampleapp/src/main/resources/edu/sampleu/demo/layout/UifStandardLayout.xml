@@ -297,8 +297,14 @@
 
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
-              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+              p:required="true">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl">
+              <property name="onChangeScript" value="alert('checkbox clicked')"/>
+            </bean>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

@@ -259,7 +259,9 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                 data.showTimer = setTimeout(function () {
                     tooltipElement.SetBubblePopupOptions(options, true);
                     tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
-                    tooltipElement.ShowBubblePopup()
+                    tooltipElement.ShowBubblePopup();
+                    var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
+                    jQuery("#" + tooltipId).css("opacity", 1);
                 }, 250);
             }
             else if (tooltipElement.IsBubblePopupOpen()) {
@@ -271,7 +273,9 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                     data.showTimer = setTimeout(function () {
                         tooltipElement.SetBubblePopupOptions(options, true);
                         tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
-                        tooltipElement.ShowBubblePopup()
+                        tooltipElement.ShowBubblePopup();
+                        var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
+                        jQuery("#" + tooltipId).css("opacity", 1);
                     }, 250);
                 }
             }
@@ -1364,6 +1368,23 @@ function runValidationScript(scriptFunction) {
     }
 }
 
+function validateFieldValue(fieldControl){
+    //remove the ignore class if any due to a bug in the validate 
+    //plugin for direct validation on certain types
+    var hadIgnore = false;
+    if(jQuery(fieldControl).hasClass("ignoreValid")){
+        jQuery(fieldControl).removeClass("ignoreValid");
+        hadIgnore = true;
+    }
+    var valid = jq(fieldControl).valid();
+    dependsOnCheck(fieldControl, new Array());
+    if(hadIgnore){
+        jQuery(fieldControl).addClass("ignoreValid");
+    }
+
+    return valid;
+}
+
 //checks to see if any fields depend on the field being validated, if they do calls validate
 //on them as well which will either add errors or remove them
 //Note: with the way that validation work the field must have been previously validated (ie validated)
@@ -1390,9 +1411,21 @@ function dependsOnCheck(element, nameArray) {
         }
         elementName = escapeName(elementName);
 
+        //if it has one of these classes it means it was already visited by the user
         if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
             jq.watermark.hide(this);
+            
+            //remove the ignore class if any due to a bug in the validate plugin for direct validation on certain types
+            var hadIgnore = false;
+            if(jQuery(this).hasClass("ignoreValid")){
+                jQuery(this).removeClass("ignoreValid");
+                hadIgnore = true;
+            }
             var valid = jq(this).valid();
+            if(hadIgnore){
+                jQuery(this).addClass("ignoreValid");
+            }
+            
             if (valid) {
                 jq(element).removeAttr("aria-invalid");
             }

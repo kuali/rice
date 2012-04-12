@@ -108,10 +108,10 @@ function initFieldHandlers() {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data("validationMessages");
                 var hadError = data.focusedErrors.length;
+                var valid = true;
 
                 if (validateClient) {
-                    var valid = jq(this).valid();
-                    dependsOnCheck(this, new Array());
+                    valid = validateFieldValue(this);
                 }
 
                 if (!hadError && !valid) {
@@ -130,8 +130,7 @@ function initFieldHandlers() {
                     + "[data-role='InputField'] select",
             function () {
                 if (validateClient) {
-                    jq(this).valid();
-                    dependsOnCheck(this, new Array());
+                    validateFieldValue(this);
                 }
             });
 
@@ -202,10 +201,10 @@ function initFieldHandlers() {
                         //the fieldset is focused out - proceed
                         if (proceed) {
                             var hadError = parent.parent().find("input").hasClass("error");
+                            var valid = true;
 
                             if (validateClient) {
-                                var valid = jq(this).valid();
-                                dependsOnCheck(this, new Array());
+                                valid = validateFieldValue(this);
                             }
 
                             if (!hadError && !valid) {
@@ -230,10 +229,10 @@ function initFieldHandlers() {
                 //non-fieldset case
                 else if (!jQuery(this).parent().parent().is("fieldset")) {
                     var hadError = jq(this).hasClass("error");
+                    var valid = true;
                     //not in a fieldset - so validate directly
                     if (validateClient) {
-                        var valid = jq(this).valid();
-                        dependsOnCheck(this, new Array());
+                        valid = validateFieldValue(this);
                     }
 
                     if (!hadError && !valid) {
@@ -316,8 +315,7 @@ function setupPage(validate) {
 
                         //if this field previously had errors validate on key up
                         if (data.focusedErrors && data.focusedErrors.length) {
-                            jq(element).valid();
-                            dependsOnCheck(element, new Array());
+                            validateFieldValue(element);
                         }
                     }
                 },
@@ -394,7 +392,7 @@ function setupPage(validate) {
                         id = getAttributeId(htmlFor);
                     }
                     else {
-                        id = jQuery("[name='" + htmlFor + "']:first").attr("id");
+                        id = jQuery("[name='" + escapeName(htmlFor) + "']:first").attr("id");
                         id = getAttributeId(id);
                     }
 

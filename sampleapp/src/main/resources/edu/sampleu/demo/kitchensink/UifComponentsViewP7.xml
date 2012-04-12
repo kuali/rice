@@ -41,7 +41,14 @@
            </property>
          </bean>
          <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+         <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+               p:required="true">
+           <property name="control">
+             <bean parent="Uif-CheckboxControl">
+               <property name="onChangeScript" value="alert('checkbox clicked')"/>
+             </bean>
+           </property>
+         </bean>
        </list>
      </property>
    </bean>

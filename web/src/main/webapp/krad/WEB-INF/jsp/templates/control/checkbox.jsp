@@ -25,6 +25,6 @@
     
  --%>
 
-<form:checkbox id="${control.id}" path="${field.bindingInfo.bindingPath}" value="${control.value}" disabled="${control.disabled}"
+<form:checkbox id="${control.id}" label="${control.checkboxLabel}" path="${field.bindingInfo.bindingPath}" value="${control.value}" disabled="${control.disabled}"
             cssClass="${control.styleClassesAsString}" cssStyle="${field.style}" tabindex="${control.tabIndex}"
             data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>

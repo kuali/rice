@@ -246,7 +246,7 @@
         <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
               p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
           <property name="control">
-            <bean parent="Uif-CheckboxControl"/>
+            <bean parent="Uif-CheckboxControl" p:checkboxLabel="Checkbox Label"/>
           </property>
         </bean>
 
@@ -480,8 +480,8 @@
 
           <bean parent="Demo-ValidationLayout-NoTooltipField" p:required="true" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
                 p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
-            <property name="control">
-              <bean parent="Uif-CheckboxControl"/>
+            <property name="control" >
+              <bean parent="Uif-CheckboxControl" p:checkboxLabel="Checkbox Label"/>
             </property>
           </bean>
 

@@ -25,6 +25,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     private static final long serialVersionUID = -1397028958569144230L;
 
     private String value;
+    private String checkboxLabel;
 
     public CheckboxControl() {
        super();
@@ -52,5 +53,13 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getCheckboxLabel() {
+        return checkboxLabel;
+    }
+
+    public void setCheckboxLabel(String checkboxLabel) {
+        this.checkboxLabel = checkboxLabel;
     }
 }

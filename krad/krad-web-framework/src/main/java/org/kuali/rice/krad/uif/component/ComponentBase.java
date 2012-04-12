@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -1264,7 +1265,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             sb.append(optionKey);
             sb.append(":");
 
-            sb.append(KRADUtils.convertToJsValue(optionValue));
+            sb.append(ScriptUtils.convertToJsValue(optionValue));
         }
 
         sb.append("}");
@@ -1275,12 +1276,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     @Override
     public void setTemplateOptionsJSString(String templateOptionsJSString) {
         this.templateOptionsJSString = templateOptionsJSString;
-    }
-
-    public String getEventCode() {
-        String eventCode = "";
-
-        return eventCode;
     }
 
     /**
@@ -1666,7 +1661,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         } else {
             for(Map.Entry<String,String> data: getDataAttributes().entrySet()){
                 js = js + "jQuery('#" + this.getId() + "').data('" + data.getKey()
-                        +"', " + KRADUtils.convertToJsValue(data.getValue()) +");";
+                        +"', " + ScriptUtils.convertToJsValue(data.getValue()) +");";
             }
             return js;
         }

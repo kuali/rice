@@ -108,8 +108,51 @@ public class ScriptUtils {
     }
 
     /**
+     * Convert a string to a javascript value - especially for use for options used to initialize widgets such as the
+     * tree and rich table
+     *
+     * @param value - the string to be converted
+     * @return - the converted value
+     */
+    public static String convertToJsValue(String value) {
+        boolean isNumber = false;
+        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.trim().substring(0, 1)) || value.trim()
+                .substring(0, 1).equals("-"))) {
+            try {
+                Double.parseDouble(value.trim());
+                isNumber = true;
+            } catch (NumberFormatException e) {
+                isNumber = false;
+            }
+        }
+
+        // If an option value starts with { or [, it would be a nested value
+        // and it should not use quotes around it
+        if (StringUtils.startsWith(value, "{") || StringUtils.startsWith(value, "[")) {
+            return value;
+        }
+        // need to be the base boolean value "false" is true in js - a non
+        // empty string
+        else if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
+            return value;
+        }
+        // if it is a call back function, do not add the quotes
+        else if (StringUtils.startsWith(value, "function") && StringUtils.endsWith(value, "}")) {
+            return value;
+        }
+        // for numerics
+        else if (isNumber) {
+            return value;
+        } else {
+            // use single quotes since hidden scripts are placed in the value attribute which surrounds the script with double quotes
+            return "'" + value + "'";
+        }
+    }
+
+    /**
      * Escapes the ' character present in collection names so it can be properly used in js without causing
      * javascript errors due to an early completion of a ' string.
+     *
      * @param name
      * @return
      */

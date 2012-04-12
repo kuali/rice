@@ -189,7 +189,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
         // alternative could be to only authorize initiator if the permission is omitted
         // (i.e. exclude initiator if the initiator does not have the recall permission)
-        return authorizedByPermission || principalIsInitiator;
+        return authorizedByPermission;
     }
 	
 	public boolean canInitiate(String principalId, DocumentType documentType) {

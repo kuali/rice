@@ -210,7 +210,7 @@ public class RecallActionTest extends KEWTestCase {
     protected Permission createRecallPermission(String docType, String appDocStatus, String routeNode, String routeStatus) {
         Template permTmpl = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
         assertNotNull(permTmpl);
-        Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
+        Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION + " for test case");
         permission.setDescription("Recall");
         permission.setTemplate(Template.Builder.create(permTmpl));
         Map<String, String> attrs = new HashMap<String, String>();
@@ -236,8 +236,21 @@ public class RecallActionTest extends KEWTestCase {
         
         return perm;
     }
-    
+
+    // disable the existing Recall Permission assigned to Initiator Role for test purposes
+    protected void disableRecallPermission() {
+        Permission p = KimApiServiceLocator.getPermissionService().findPermByNamespaceCodeAndName("KR-WKFLW", "Recall Document");
+        Permission.Builder pb = Permission.Builder.create(p);
+        pb.setActive(false);
+        KimApiServiceLocator.getPermissionService().updatePermission(pb.build());
+    }
+
+    /**
+     * Tests that a new permission can be configured with the Recall Permission template and that matching works correctly
+     * against the new permission
+     */
     @Test public void testRecallPermissionMatching() {
+        disableRecallPermission();
         createRecallPermission(RECALL_TEST_DOC, PERM_APP_DOC_STATUS, ROUTE_NODE, ROUTE_STATUS);
 
         Map<String, String> details = new HashMap<String, String>();

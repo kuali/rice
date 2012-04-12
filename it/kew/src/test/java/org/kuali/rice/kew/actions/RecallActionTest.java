@@ -96,10 +96,10 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue("Document should be recalled", document.isRecalled());
 
         //verify that the document is truly dead - no more action requests or action items.
-        
+
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Should not have any active requests", 0, requests.size());
-        
+
         Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().findByDocumentId(document.getDocumentId());
         assertEquals("Should not have any action items", 0, actionItems.size());
     }
@@ -151,7 +151,7 @@ public class RecallActionTest extends KEWTestCase {
     public void testRecallInvalidWhenFinal() throws Exception {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(EWESTFAL, RECALL_TEST_DOC);
         document.route("");
-        
+
         for (String user: new String[] { JHOPF, EWESTFAL, RKIRKEND, NATJOHNS, BMCGOUGH }) {
             document = WorkflowDocumentFactory.loadDocument(user, document.getDocumentId());
             document.approve("");
@@ -208,10 +208,18 @@ public class RecallActionTest extends KEWTestCase {
     private static final String ROUTE_STATUS = "R";
 
     protected Permission createRecallPermission(String docType, String appDocStatus, String routeNode, String routeStatus) {
-        Template permTmpl = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION);
+        return createPermissionForTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION + " for test case", docType, appDocStatus, routeNode, routeStatus);
+    }
+
+    protected Permission createRouteDocumentPermission(String docType, String appDocStatus, String routeNode, String routeStatus) {
+        return createPermissionForTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.ROUTE_PERMISSION, KewApiConstants.KEW_NAMESPACE, KewApiConstants.ROUTE_PERMISSION + " for test case", docType, appDocStatus, routeNode, routeStatus);
+    }
+
+    protected Permission createPermissionForTemplate(String template_ns, String template_name, String permission_ns, String permission_name, String docType, String appDocStatus, String routeNode, String routeStatus) {
+        Template permTmpl = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName(template_ns, template_name);
         assertNotNull(permTmpl);
-        Permission.Builder permission = Permission.Builder.create(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION + " for test case");
-        permission.setDescription("Recall");
+        Permission.Builder permission = Permission.Builder.create(permission_ns, permission_name);
+        permission.setDescription(permission_name);
         permission.setTemplate(Template.Builder.create(permTmpl));
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, docType);
@@ -233,12 +241,12 @@ public class RecallActionTest extends KEWTestCase {
         assertEquals(appDocStatus, perm.getAttributes().get(KimConstants.AttributeConstants.APP_DOC_STATUS));
         assertEquals(routeNode, perm.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
         assertEquals(routeStatus, perm.getAttributes().get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
-        
+
         return perm;
     }
 
     // disable the existing Recall Permission assigned to Initiator Role for test purposes
-    protected void disableRecallPermission() {
+    protected void disableInitiatorRecallPermission() {
         Permission p = KimApiServiceLocator.getPermissionService().findPermByNamespaceCodeAndName("KR-WKFLW", "Recall Document");
         Permission.Builder pb = Permission.Builder.create(p);
         pb.setActive(false);
@@ -250,7 +258,7 @@ public class RecallActionTest extends KEWTestCase {
      * against the new permission
      */
     @Test public void testRecallPermissionMatching() {
-        disableRecallPermission();
+        disableInitiatorRecallPermission();
         createRecallPermission(RECALL_TEST_DOC, PERM_APP_DOC_STATUS, ROUTE_NODE, ROUTE_STATUS);
 
         Map<String, String> details = new HashMap<String, String>();
@@ -352,6 +360,48 @@ public class RecallActionTest extends KEWTestCase {
         testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC);
     }
 
+    // the three tests below test permutations of recall permission and derived role assignment
+    protected void assignRoutePermissionToTechAdmin() {
+        // assign Route Document permission to the Technical Administrator role
+        Permission routePerm = createRouteDocumentPermission(RECALL_TEST_DOC, null, null, null);
+        Role techadmin = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName("KR-SYS", "Technical Administrator");
+        KimApiServiceLocator.getRoleService().assignPermissionToRole(routePerm.getId(), techadmin.getId());
+    }
+    protected void assignRecallPermissionToDocumentRouters() {
+        // assign Recall permission to the Document Router derived role
+        Permission recallPerm = createRecallPermission(RECALL_TEST_DOC, null, null, null);
+        Role documentRouterDerivedRole = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName("KR-WKFLW", "Document Router");
+        KimApiServiceLocator.getRoleService().assignPermissionToRole(recallPerm.getId(), documentRouterDerivedRole.getId());
+    }
+    /**
+     * Tests that simply assigning the Route Document permission to the Technical Admin role *without* assigning the
+     * Recall permission to the Document Router derived role, is NOT sufficient to enable recall.
+     */
+    @Test public void testRoutePermissionAssignmentInsufficientForRouterToRecallDoc() throws Exception {
+        assignRoutePermissionToTechAdmin();
+        // recall as 'admin' (Tech Admin) user
+        testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC, false);
+    }
+    /**
+     * Tests that simply assigning the recall permission to the Document Router derived role *without* assigning the
+     * Route Document permission to the Technical Admin role, is NOT sufficient to enable recall.
+     */
+    @Test public void testRecallPermissionAssignmentInsufficientForRouterToRecallDoc() throws Exception {
+        assignRecallPermissionToDocumentRouters();
+        // recall as 'admin' (Tech Admin) user
+        testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC, false);
+    }
+    /**
+     * Tests that we can use the Route Document derived role to assign Recall permission to document routers.
+     */
+    @Test public void testRecallToActionListAsRouterDerivedRole() throws Exception {
+        // assign both! derived role works its magic
+        assignRoutePermissionToTechAdmin();
+        assignRecallPermissionToDocumentRouters();
+        // recall as 'admin' user (Tech Admin) user
+        testRecallToActionListAfterApprovals(EWESTFAL, getPrincipalIdForName("admin"), RECALL_TEST_DOC);
+    }
+
     protected void testRecallToActionListAsInitiatorAfterApprovals(String doctype) {
         testRecallToActionListAfterApprovals(EWESTFAL, EWESTFAL, doctype);
     }
@@ -359,6 +409,9 @@ public class RecallActionTest extends KEWTestCase {
     // Implements various permutations of recalls - with and without doctype policies/notifications of various sorts
     // and as initiator or a third party recaller
     protected void testRecallToActionListAfterApprovals(String initiator, String recaller, String doctype) {
+        testRecallToActionListAfterApprovals(initiator, recaller, doctype, true);
+    }
+    protected void testRecallToActionListAfterApprovals(String initiator, String recaller, String doctype, boolean expect_recall_success) {
         boolean notifyPreviousRecipients = !RECALL_TEST_DOC.equals(doctype);
         boolean notifyPendingRecipients = !RECALL_NO_PENDING_NOTIFY_TEST_DOC.equals(doctype);
         String[] thirdPartiesNotified = RECALL_NOTIFY_THIRDPARTY_TEST_DOC.equals(doctype) ? new String[] { "quickstart", "admin" } : new String[] {};
@@ -372,7 +425,12 @@ public class RecallActionTest extends KEWTestCase {
 
         document = WorkflowDocumentFactory.loadDocument(recaller, document.getDocumentId());
         System.err.println(document.getValidActions().getValidActions());
-        assertTrue("recaller '" + recaller + "' should be able to RECALL", document.getValidActions().getValidActions().contains(ActionType.RECALL));
+        if (expect_recall_success) {
+            assertTrue("recaller '" + recaller + "' should be able to RECALL", document.getValidActions().getValidActions().contains(ActionType.RECALL));
+        } else {
+            assertFalse("recaller '" + recaller + "' should NOT be able to RECALL", document.getValidActions().getValidActions().contains(ActionType.RECALL));
+            return;
+        }
         document.recall("recalling", false);
 
         assertTrue("Document should be saved", document.isSaved());

@@ -130,6 +130,11 @@
         p:permissionTemplateNamespace="KR-NS"
         p:permissionTemplateName="Open Document"/>
 
+  <bean id="documentRouterRoleTypeService"
+        class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl"
+        p:permissionTemplateNamespace="KR-WKFLW"
+        p:permissionTemplateName="Route Document"/>
+
   <bean id="documentTypeAndNodeOrStatePermissionTypeService"
         class="org.kuali.rice.krad.kim.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
 

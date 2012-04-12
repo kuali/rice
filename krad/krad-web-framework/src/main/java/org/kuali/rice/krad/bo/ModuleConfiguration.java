@@ -270,6 +270,17 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
 	}
 
+    /**
+     * Performs additional custom initialization after the bean is created and it's properties are set by the
+     * Spring framework.
+     *
+     * <p>
+     * Loads the data dictionary packages configured for this module.
+     * Also loads any OJB database repository files configured.
+     * </p>
+     *
+     * @throws Exception
+     */
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {

@@ -74,7 +74,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     @OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
-    List<ResponsibilityAttributeBo> attributeDetails = new AutoPopulatingList(ResponsibilityAttributeBo.class)
+    List<ResponsibilityAttributeBo> attributeDetails
 
     @OneToMany(targetEntity=RoleResponsibilityBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)

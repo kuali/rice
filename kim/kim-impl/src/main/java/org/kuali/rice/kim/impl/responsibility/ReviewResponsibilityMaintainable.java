@@ -97,7 +97,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         }
         //set attributes
         resp.setAttributes(details);
-        resp.setAttributeDetails(KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, details, resp.getTemplate().getKimTypeId()));
+        //resp.setAttributeDetails(KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, details, resp.getTemplate().getKimTypeId()));
 
         boolean responsibilityExists = false;
         if (resp.getId() != null) {

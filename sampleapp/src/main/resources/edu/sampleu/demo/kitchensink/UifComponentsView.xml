@@ -167,6 +167,19 @@
             </list>
           </property>
         </bean>
+
+        <bean id="UifCompView-Page11" parent="UifCompViewPageWithFooter" p:title="Script Events"
+              p:instructionalText="Examples for Script Events">
+          <property name="items">
+            <list>
+              <ref bean="UifCompView-WindowEventsGroup"/>
+              <ref bean="UifCompView-FormEventsGroup"/>
+              <ref bean="UifCompView-MouseEventsGroup"/>
+              <ref bean="UifCompView-KeyEventsGroup"/>
+              <ref bean="UifCompView-Html5EventsGroup"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="theme">
@@ -218,6 +231,8 @@
               p:actionLabel="Authorization"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page10"
               p:actionLabel="Other Examples"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page11"
+              p:actionLabel="Event Examples"/>
       </list>
     </property>
   </bean>

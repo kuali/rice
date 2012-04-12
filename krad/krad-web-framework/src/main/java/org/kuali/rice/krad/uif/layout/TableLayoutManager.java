@@ -80,9 +80,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private RichTable richTable;
 	private boolean headerAdded = false;
 
-    private Set<String> hiddenColumns;
-    private Set<String> sortableColumns;
-
 	public TableLayoutManager() {
 		useShortLabels = false;
 		repeatHeader = false;
@@ -751,14 +748,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * Widget associated with the table to add functionality such as sorting,
 	 * paging, and export
 	 * 
-	 * @return TableTools instance
+	 * @return RichTable instance
 	 */
 	public RichTable getRichTable() {
 		return this.richTable;
 	}
 
 	/**
-	 * Setter for the table tools widget
+	 * Setter for the rich table widget
 	 * 
 	 * @param richTable
 	 */
@@ -781,42 +778,42 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * Holds propertyNames for the ones meant to be hidden since columns are visible by default
-     *
-     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
-     *
-     * @return a set with propertyNames of columns to be hidden
+     * @see org.kuali.rice.krad.uif.widget.RichTable#getHiddenColumns()
      */
     public Set<String> getHiddenColumns() {
-        return hiddenColumns;
+        if (richTable != null) {
+            return richTable.getHiddenColumns();
+        }
+
+        return null;
     }
 
     /**
-     * Setter for the hidden columns set
-     *
-     * @param hiddenColumns - a set containing propertyNames
+     * @see org.kuali.rice.krad.uif.widget.RichTable#setHiddenColumns(java.util.Set<java.lang.String>)
      */
     public void setHiddenColumns(Set<String> hiddenColumns) {
-        this.hiddenColumns = hiddenColumns;
+        if (richTable != null) {
+            richTable.setHiddenColumns(hiddenColumns);
+        }
     }
 
     /**
-     * Holds the propertyNames for columns that are to be sorted
-     *  *
-     * <p>Duplicate entries are ignored and the order of entries is not significant</p>
-     *
-     * @return a set of propertyNames with for columns that will be sorted
+     * @see org.kuali.rice.krad.uif.widget.RichTable#getSortableColumns()
      */
     public Set<String> getSortableColumns() {
-        return sortableColumns;
+        if (richTable != null) {
+            return richTable.getSortableColumns();
+        }
+
+        return null;
     }
 
     /**
-     *  Setter for sortable columns
-     *
-     * @param sortableColumns - a set containing propertyNames of columns to be sorted
+     * @see org.kuali.rice.krad.uif.widget.RichTable#setSortableColumns(java.util.Set<java.lang.String>)
      */
     public void setSortableColumns(Set<String> sortableColumns) {
-        this.sortableColumns = sortableColumns;
+        if (richTable != null) {
+            richTable.setSortableColumns(sortableColumns);
+        }
     }
 }

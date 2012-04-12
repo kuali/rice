@@ -87,4 +87,31 @@
         parent="Uif-ContentElementBase" scope="prototype">
   </bean>
 
+  <bean id="Uif-DataTable" parent="Uif-DataTable-parentBean"/>
+  <bean id="Uif-DataTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DataTable"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/element/dataTable.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-tableCollectionLayout</value>
+        <value>uif-dataTable</value>
+      </list>
+    </property>
+    <property name="richTable">
+      <bean parent="Uif-PagedRichTable">
+        <property name="templateOptions">
+          <map>
+            <entry key="sDom" value="fTrtip"/>
+            <entry key="bRetrieve" value="true"/>
+            <entry key="bDeferRender" value="true"/>
+            <entry key="bAutoWidth" value="false"/>
+            <entry key="bProcessing" value="true"/>
+            <entry key="bScrollCollapse" value="true"/>
+            <entry key="bStateSave" value="true"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
 </beans>

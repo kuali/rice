@@ -590,6 +590,11 @@ public class QuickFinder extends WidgetBase {
         this.lookupCriteriaEnabled = lookupCriteriaEnabled;
     }
 
+    /**
+     * TODO: not implemented currently
+     *
+     * @return
+     */
     public Boolean getSupplementalActionsEnabled() {
         return this.supplementalActionsEnabled;
     }
@@ -598,6 +603,11 @@ public class QuickFinder extends WidgetBase {
         this.supplementalActionsEnabled = supplementalActionsEnabled;
     }
 
+    /**
+     * TODO: not implemented currently
+     *
+     * @return
+     */
     public Boolean getDisableSearchButtons() {
         return this.disableSearchButtons;
     }

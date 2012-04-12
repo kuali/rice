@@ -112,6 +112,35 @@
      </property>
    </bean>
 
+  <bean id="UifCompDataTable" parent="Uif-VerticalBoxSection" p:title="Data Table - Ajax Source">
+    <property name="instructionalText"
+              value="Standard section with a DataTable (builds table using Ajax source)"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-DataTable"
+              p:ajaxSource="@{#ConfigProperties['serviceServletUrl']}dataTableRestServiceTest/TableData">
+          <property name="richTable.templateOptions">
+            <map merge="true">
+              <entry key="aoColumns"
+                     value="[
+                                {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Course Name', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Credits', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Subject', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Dept', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Professor', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Days', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Fee', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},
+                                {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}
+                            ]"/>
+            </map>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
    <bean id="collection3" parent="Uif-Disclosure-StackedCollectionSection">
      <property name="title" value="Collection Group 3 - Stacked" />
      <property name="instructionalText"

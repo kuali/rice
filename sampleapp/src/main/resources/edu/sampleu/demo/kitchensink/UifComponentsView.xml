@@ -114,6 +114,7 @@
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Cause Server Messages" p:methodToCall="genCollectionServerMessages"/>
               <ref bean="collection1"/>
               <ref bean="collection2"/>
+              <ref bean="UifCompDataTable"/>
               <ref bean="collection6"/>
               <ref bean="collection3"/>
               <ref bean="collection4"/>

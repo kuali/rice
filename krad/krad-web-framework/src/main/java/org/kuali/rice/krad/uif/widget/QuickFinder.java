@@ -616,6 +616,11 @@ public class QuickFinder extends WidgetBase {
         this.disableSearchButtons = disableSearchButtons;
     }
 
+    /**
+     * TODO: not implemented currently
+     *
+     * @return
+     */
     public Boolean getHeaderBarEnabled() {
         return this.headerBarEnabled;
     }
@@ -624,10 +629,30 @@ public class QuickFinder extends WidgetBase {
         this.headerBarEnabled = headerBarEnabled;
     }
 
+    /**
+     * Indicates whether the maintenance action links should be rendered for the invoked lookup view
+     *
+     * <p>
+     * If a maintenance view exists for the data object associated with the lookup view, the framework will add
+     * links to initiate a new maintenance document. This flag can be used to disable the rendering of these links
+     * </p>
+     *
+     * <p>
+     * Note this serves similar purpose to {@link #getSuppressActions()} but the intent is to only remove the
+     * maintenance links in this situation, not the complete actions column TODO: this is not in place!
+     * </p>
+     *
+     * @return boolean true if maintenance links should be shown on the lookup view, false if not
+     */
     public Boolean getShowMaintenanceLinks() {
         return this.showMaintenanceLinks;
     }
 
+    /**
+     * Setter for the show maintenance links indicator
+     *
+     * @param showMaintenanceLinks
+     */
     public void setShowMaintenanceLinks(Boolean showMaintenanceLinks) {
         this.showMaintenanceLinks = showMaintenanceLinks;
     }

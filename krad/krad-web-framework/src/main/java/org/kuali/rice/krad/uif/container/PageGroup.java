@@ -36,7 +36,7 @@ import java.util.List;
 public class PageGroup extends Group {
     private static final long serialVersionUID = 7571981300587270274L;
 
-    private boolean autoFocus;
+    private boolean autoFocus = false;
 
     /**
      * Perform finalize here adds to its document ready script the
@@ -55,10 +55,10 @@ public class PageGroup extends Group {
         }
 
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true," + this.autoFocus +");");
         }
         else{
-            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false);");
+            this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(false,"+ this.autoFocus +");");
         }
     }
 
@@ -79,6 +79,14 @@ public class PageGroup extends Group {
      */
     public void setAutoFocus(boolean autoFocus) {
         this.autoFocus = autoFocus;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     */
+    @Override
+    public final String getComponentTypeName() {
+        return "pageGroup";
     }
 
 }

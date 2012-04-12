@@ -483,7 +483,7 @@ function performFocus(){
 		jq("#" + focusId).focus();
 	}
 	else{
-		jq("input:not(input[type='button'], input[type='submit']):visible:first", "#kualiForm").focus();
+		jq("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
 	}
 }
 

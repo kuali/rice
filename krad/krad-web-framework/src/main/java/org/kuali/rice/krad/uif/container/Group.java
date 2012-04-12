@@ -162,7 +162,7 @@ public class Group extends ContainerBase {
 	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
 	 */
 	@Override
-	public final String getComponentTypeName() {
+	public String getComponentTypeName() {
 		return "group";
 	}
 

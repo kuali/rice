@@ -257,15 +257,21 @@ function initBubblePopups() {
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 }
 
+function hideBubblePopups() {
+    jq("input, select, textarea, "
+            + " label, .uif-tooltip").HideAllBubblePopups();
+}
+
 //sets up the validator with the necessary default settings and methods
 //also sets up the dirty check and other page scripts
-function setupPage(validate) {
+function setupPage(validate, focusFirstField) {
     jq('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
 
     errorImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error.png' alt='Error' /> ";
     errorGreyImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
     warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
     infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
+
 
     //Reset summary state before processing each field - summaries are shown if server messages
     // or on client page validation
@@ -286,7 +292,9 @@ function setupPage(validate) {
     });
 
     //focus on pageValidation header if there are messages on this page
-    jQuery(".uif-pageValidationHeader").focus();
+    if(jQuery(".uif-pageValidationHeader").length){
+        jQuery(".uif-pageValidationHeader").focus();
+    }
 
     //Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
     jq(window).bind('beforeunload', function (evt) {
@@ -419,6 +427,9 @@ function setupPage(validate) {
     pageValidatorReady = true;
 
     jq.watermark.showAll();
+    if(focusFirstField){
+        performFocus();
+    }
 }
 
 /**

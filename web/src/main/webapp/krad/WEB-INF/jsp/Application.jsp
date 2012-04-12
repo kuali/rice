@@ -77,25 +77,8 @@
 
          <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
             <krad:template component="${KualiForm.view.currentPage}"/>
-        
-            <c:if test="${KualiForm.view.renderForm}">
-              <form:hidden path="pageId"/>
-              <c:if test="${!empty view.currentPage}">
-				        <form:hidden id="currentPageTitle" path="view.currentPage.title"/>
-			        </c:if>
-
-              <form:hidden path="jumpToId"/>
-          	  <form:hidden path="jumpToName"/>
-          	  <form:hidden path="focusId"/>
-          	  <form:hidden path="formHistory.historyParameterString"/>
-            </c:if>
-
-            <krad:script value="performJumpTo();"/>
-
-            <c:if test="${KualiForm.view.currentPage.autoFocus}">
-            	<krad:script value="performFocus();"/>
-            </c:if>
          </div>
+
        </s:nestedPath>
      </html>
      

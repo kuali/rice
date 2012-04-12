@@ -107,6 +107,8 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				}
 		};
 	}
+    //hide any tooltips that may be showing
+    hideBubblePopups();
 	
 	jq.extend(submitOptions, elementBlockingOptions);
 	var form = jq("#kualiForm");

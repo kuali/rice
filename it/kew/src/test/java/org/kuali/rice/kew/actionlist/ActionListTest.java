@@ -25,6 +25,8 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -535,6 +537,25 @@ public class ActionListTest extends KEWTestCase {
                 assertTrue(actionItems.size() == 1);
             }
         }
+    }
+    @Test
+    public void testUpdateActionItemForTitleChange() throws Exception {
+          setUpOldSchool();
+        Collection<ActionItem> actionItems;
+        actionItems = getActionListService().findByDocumentId(routeHeader1.getDocumentId());
+         for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+            ActionItem actionItem = iterator.next();
+            assertEquals("Test",actionItem.getDocTitle());
+         }
+        DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
+        builder.setTitle("NewTitle");
+        DocumentUpdate documentUpdate = builder.build();
+        routeHeader1.applyDocumentUpdate(documentUpdate);
+        actionItems = getActionListService().findByDocumentId(routeHeader1.getDocumentId());
+        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+            ActionItem actionItem = iterator.next();
+            assertEquals("NewTitle",actionItem.getDocTitle());
+         }
     }
 
     private DocumentRouteHeaderValue generateDocRouteHeader() {

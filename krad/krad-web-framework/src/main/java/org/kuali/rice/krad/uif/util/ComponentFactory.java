@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
@@ -129,6 +131,8 @@ public class ComponentFactory {
     protected static final String FOOTER = "Uif-FooterBase";
     protected static final String FOOTER_SAVECLOSECANCEL = "Uif-FormPageFooter";
 
+    private static Log LOG = LogFactory.getLog(ComponentFactory.class);
+
     /**
      * Gets a fresh copy of the component by the id passed in which used to look up the component in
      * the view index, then retrieve a new instance with initial state configured using the factory id
@@ -146,9 +150,11 @@ public class ComponentFactory {
 
         if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getFactoryId())) {
             component = view.getViewIndex().getInitialComponentStates().get(origComponent.getFactoryId());
+            LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
         } else {
             component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                     origComponent.getFactoryId());
+            LOG.debug("getNewInstanceForRefresh: id '" + id + "' was NOT found in initialStates. New one fetched from DD");
         }
 
         if (component != null) {

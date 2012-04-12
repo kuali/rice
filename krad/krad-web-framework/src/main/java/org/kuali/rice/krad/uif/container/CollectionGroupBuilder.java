@@ -17,6 +17,8 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -63,7 +65,7 @@ import java.util.Map;
  */
 public class CollectionGroupBuilder implements Serializable {
 	private static final long serialVersionUID = -4762031957079895244L;
-
+    private static Log LOG = LogFactory.getLog(CollectionGroupBuilder.class);
 	/**
 	 * Creates the <code>Field</code> instances that make up the table
 	 * 
@@ -242,6 +244,9 @@ public class CollectionGroupBuilder implements Serializable {
 
         boolean readOnlyLine = collectionGroup.isReadOnly();
 
+        // update contexts before add line fields are added to the index below
+        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
+
         // add special css styles to identify the add line client side
         if (lineIndex == -1) {
             for (Field f : lineFields) {
@@ -253,6 +258,13 @@ public class CollectionGroupBuilder implements Serializable {
                         control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
                         control.addStyleClass("ignoreValid");
                     }
+                    // add to index
+                    view.getViewIndex().indexComponent(f);
+                    // add to initial component state map - set the factory id to null to allow that
+                    String factoryId = f.getFactoryId();
+                    f.setFactoryId(null);
+                    view.getViewIndex().addInitialComponentStateIfNeeded(f);
+                    f.setFactoryId(factoryId);
                 }
             }
 
@@ -283,8 +295,6 @@ public class CollectionGroupBuilder implements Serializable {
                     readOnlyLine);
             ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE, readOnlyLine);
         }
-
-        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
 
         // check authorization for line fields
         applyLineFieldAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup, currentLine,

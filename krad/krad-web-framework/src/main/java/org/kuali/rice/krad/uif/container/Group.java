@@ -147,7 +147,7 @@ public class Group extends ContainerBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+	 * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
 	 */
 	@Override
 	public Set<Class<? extends Component>> getSupportedComponents() {
@@ -204,7 +204,7 @@ public class Group extends ContainerBase {
 	 * </p>
 	 * 
 	 * @return String model path to set
-	 * @see org.kuali.rice.krad.uif.BindingInfo.getBindingObjectPath()
+	 * @see org.kuali.rice.krad.uif.component.BindingInfo#getBindingObjectPath()
 	 */
 	public String getFieldBindingObjectPath() {
 		return this.fieldBindingObjectPath;

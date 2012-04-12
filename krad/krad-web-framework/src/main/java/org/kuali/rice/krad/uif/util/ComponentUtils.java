@@ -257,6 +257,7 @@ public class ComponentUtils {
 
     public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
         updateIdWithSuffix(component, idSuffix);
+        updateFactoryIdWithSuffix(component, idSuffix);
 
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -276,8 +277,26 @@ public class ComponentUtils {
         }        
     }
 
+    /**
+     * add a suffix to the id
+     * @param component - the component instance whose id will be changed
+     * @param idSuffix - the suffix to be appended
+     */
     public static void updateIdWithSuffix(Component component, String idSuffix) {
-        component.setId(component.getId() + idSuffix);
+        if (component != null && !StringUtils.isEmpty(idSuffix)) {
+            component.setId(component.getId() + idSuffix);
+        }
+    }
+
+    /**
+     * add a suffix to the factory id
+     * @param component - the component instance whose id will be changed
+     * @param idSuffix - the suffix to be appended
+     */
+    public static void updateFactoryIdWithSuffix(Component component, String idSuffix) {
+        if (component != null && !StringUtils.isEmpty(idSuffix)) {
+            component.setFactoryId(component.getFactoryId() + idSuffix);
+        }
     }
 
     public static void setComponentsPropertyDeep(List<? extends Component> components, String propertyPath,

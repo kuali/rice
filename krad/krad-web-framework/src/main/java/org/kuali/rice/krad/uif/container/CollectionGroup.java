@@ -532,6 +532,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * List of <code>Component</code> instances that should be rendered for the
      * collection add line (if enabled). If not set, the default group's items
      * list will be used
+     * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      *
      * @return List<? extends Component> add line field list
      */

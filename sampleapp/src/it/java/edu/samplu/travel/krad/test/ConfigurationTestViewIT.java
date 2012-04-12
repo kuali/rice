@@ -22,6 +22,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.view.View;
 
 import static junit.framework.Assert.*;
 
@@ -86,7 +88,7 @@ public class ConfigurationTestViewIT {
      * test adding a line to a collection which uses an add line that has spring expressions that are evaluated on refresh
      */
     @Test
-    public void testAddLineForCollectionWithSpringExpression() throws Exception{
+    public void testAddLine() throws Exception{
         openConfigurationTestView();
         
         String[] addLineIds = {"startTime", "startTimeAmPm", "allDay"};
@@ -106,6 +108,7 @@ public class ConfigurationTestViewIT {
         Thread.sleep(5000); //allow for ajax refresh
         selenium.click(allDayId);
         selenium.click("css=div#timeInfoCollection_test button");
+        Thread.sleep(5000); //allow for line to be added
 
         //confirm that line has been added
         assertTrue("line is not present",selenium.isElementPresent("//input[@value='7:06']"));

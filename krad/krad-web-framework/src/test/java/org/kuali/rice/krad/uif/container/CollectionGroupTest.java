@@ -20,8 +20,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.field.InputField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,27 +39,41 @@ import static junit.framework.Assert.assertTrue;
  */
 public class CollectionGroupTest {
     private CollectionGroup group;
+    private Control  innerControl;
 
     @Before
     public void setup() {
         group = new CollectionGroup();
         List<Component> items = new ArrayList<Component>();
-        items.add(new TextControl());
+        InputField field = new InputField();
+        innerControl = new SelectControl();
+        field.setControl(innerControl);
+        items.add(field);
         items.add(new TextAreaControl());
         group.setItems(items);
     }
 
     @Test
     /**
-     * test that the collection group is available in the nested components' contexts
+     * test that the collection group is set in all nested components' contexts
      */
     public void testPushCollectionGroupToReference() {
         group.pushCollectionGroupToReference();
         for (Component component: group.getItems()) {
-            assertTrue("The component does not have the collection group key in the context",
-                    component.getContext().containsKey(UifConstants.ContextVariableNames.COLLECTION_GROUP));
-            assertTrue("The collection group found is not the parent group",
-                    component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP) == group);
+            testForCollectionGroupInContext(component);
         }
+        testForCollectionGroupInContext(innerControl);
+
+    }
+
+    /**
+     * test that the collection group is available in the component's contexts
+     * @param component
+     */
+    private void testForCollectionGroupInContext(Component component) {
+        assertTrue("The component does not have the collection group key in the context",
+                component.getContext().containsKey(UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        assertTrue("The collection group found is not the parent group",
+                component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP) == group);
     }
 }

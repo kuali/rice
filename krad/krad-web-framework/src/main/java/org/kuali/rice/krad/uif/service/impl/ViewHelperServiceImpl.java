@@ -194,7 +194,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // necessary if we are getting a new component instance from the bean factory)
         Integer currentSequenceVal = view.getIdSequence();
         Integer startingSequenceVal = view.getViewIndex().getIdSequenceSnapshot().get(component.getId());
-        view.setIdSequence(startingSequenceVal);
+        // if the component was retrieved from the initial states map in ViewIndex, startingSequenceVal is null
+        if (startingSequenceVal != null) {
+            view.setIdSequence(startingSequenceVal);
+        }
 
         view.assignComponentIds(component);
 
@@ -698,9 +701,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
                 nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
+                performComponentApplyModel(view, nestedComponent, model);
             }
-
-            performComponentApplyModel(view, nestedComponent, model);
         }
     }
 

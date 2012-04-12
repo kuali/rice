@@ -37,7 +37,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ExpressionUtils {
-     static Log LOG = LogFactory.getLog(ExpressionUtils.class);
+     private static final Log LOG = LogFactory.getLog(ExpressionUtils.class);
     /**
      * Adjusts the property expressions for a given object. Any nested properties are moved to the parent
      * object. Binding adjust prefixes are replaced with the correct values.
@@ -178,7 +178,7 @@ public class ExpressionUtils {
         CollectionGroup collectionGroup = (CollectionGroup) (component.getContext().get(
                 UifConstants.ContextVariableNames.COLLECTION_GROUP));
         if (collectionGroup == null) {
-            LOG.warn("collection group not found for " + component.getId());
+            LOG.warn("collection group not found for " + component + "," + component.getId() + ", " + component.getComponentTypeName());
             return linePath;
         }
 

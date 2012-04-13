@@ -952,7 +952,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
      */
     public boolean getSupportsOnClick() {
-        return false;
+        return true;
     }
 
     /**
@@ -975,7 +975,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDblClick()
      */
     public boolean getSupportsOnDblClick() {
-        return false;
+        return true;
     }
 
     /**
@@ -1044,7 +1044,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyPress()
      */
     public boolean getSupportsOnKeyPress() {
-        return false;
+        return true;
     }
 
     /**
@@ -1067,7 +1067,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyUp()
      */
     public boolean getSupportsOnKeyUp() {
-        return false;
+        return true;
     }
 
     /**
@@ -1090,7 +1090,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyDown()
      */
     public boolean getSupportsOnKeyDown() {
-        return false;
+        return true;
     }
 
     /**
@@ -1113,7 +1113,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOver()
      */
     public boolean getSupportsOnMouseOver() {
-        return false;
+        return true;
     }
 
     /**
@@ -1136,7 +1136,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOut()
      */
     public boolean getSupportsOnMouseOut() {
-        return false;
+        return true;
     }
 
     /**
@@ -1159,7 +1159,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseUp()
      */
     public boolean getSupportsOnMouseUp() {
-        return false;
+        return true;
     }
 
     /**
@@ -1182,7 +1182,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseDown()
      */
     public boolean getSupportsOnMouseDown() {
-        return false;
+        return true;
     }
 
     /**
@@ -1205,7 +1205,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseMove()
      */
     public boolean getSupportsOnMouseMove() {
-        return false;
+        return true;
     }
 
     /**

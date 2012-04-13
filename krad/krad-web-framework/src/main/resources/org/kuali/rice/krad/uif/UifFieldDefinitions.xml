@@ -445,6 +445,9 @@ perform page navigation-->
         <value>uif-horizontalFieldGroup</value>
       </list>
     </property>
+    <property name="group">
+      <bean parent="Uif-HorizontalBoxGroup" p:fieldContainer="true"/>
+    </property>
   </bean>
 
   <!-- Common Fields -->

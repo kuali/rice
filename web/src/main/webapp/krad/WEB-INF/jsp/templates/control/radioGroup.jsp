@@ -27,7 +27,7 @@
           data-type="RadioSet" id="${field.id}">
   <legend style="display: none">${field.label}</legend>
   <form:radiobuttons id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
-                     items="${control.options}" itemValue="key" itemLabel="value"
-                     cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
-                     tabindex="${control.tabIndex}"/>
+       items="${control.options}" itemValue="key" itemLabel="value" cssClass="${control.styleClassesAsString}"
+       delimiter="${control.delimiter}" tabindex="${control.tabIndex}"
+       data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>
 </fieldset>

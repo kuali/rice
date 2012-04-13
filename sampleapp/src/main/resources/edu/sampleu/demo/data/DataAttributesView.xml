@@ -279,6 +279,17 @@
             <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
           </list>
         </property>
+        <property name="dataAttributes">
+          <map>
+            <entry key="iconTemplateName" value="cool-icon-%s.png"/>
+            <entry key="transitions" value="3"/>
+            <entry key="capitals" value="{kenya:'nairobi', uganda:'kampala', tanzania:'dar'}"/>
+            <entry key="intervals" value="{short:2, medium:5, long:13}"/>
+          </map>
+        </property>
+        <property name="dataRoleAttribute" value="role"/>
+        <property name="dataMetaAttribute" value="meta"/>
+        <property name="dataTypeAttribute" value="type"/>
       </bean>
     </property>
   </bean>

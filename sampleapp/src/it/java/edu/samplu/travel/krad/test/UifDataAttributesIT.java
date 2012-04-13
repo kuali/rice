@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.krad.uif.UifConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,8 +58,17 @@ public class UifDataAttributesIT {
         tagId = tagId + tagIdSuffix;
         String simpleAttributesXpath="//" + tag + "[(@id='" + tagId + "') and (@data-iconTemplateName='cool-icon-%s.png') and (@data-transitions='3')]";
         assertTrue(tagId + " does not have simple data attributes (via list) present", selenium.isElementPresent(simpleAttributesXpath));
+        verifyStaticDataAttributes(tag, tagId);
 
-        // test the attributes that are set via the data*Attribute properties
+    }
+
+    /**
+     * // test the attributes that are set via the data*Attribute properties
+     * @param tag - html tag e.g. img or a
+     * @param tagId - the html tag id - a combination of bean id and any suffix
+     */
+    private void verifyStaticDataAttributes(String tag, String tagId) {
+        final String simpleAttributesXpath;
         simpleAttributesXpath="//" + tag + "[(@id='" + tagId + "')"
                 + " and (@data-role='role') and (@data-type='type') and (@data-meta='meta')]";
         assertTrue(tagId + " does not have simple data attributes (via data*Attribute) properties present",
@@ -134,7 +144,14 @@ public class UifDataAttributesIT {
                 "spinnerControl", "hiddenControl", "checkBox"};//, "radioButton",
         for (int i=0; i<inputControls.length; i++) {
             assertTrue(inputControls[i] + ": script does not contain expected code",
-                    verifyAllAttributesInScript(inputControls[i], testIdSuffix + "_control"));
+                    verifyAllAttributesInScript(inputControls[i], testIdSuffix + UifConstants.IdSuffixes.CONTROL));
+            String tag = "input";
+            if (inputControls[i].equalsIgnoreCase("textAreaInputField")) {
+                tag = "textarea";
+            } else if (inputControls[i].equalsIgnoreCase("dropDown")) {
+                tag = "select";
+            }
+            verifyStaticDataAttributes(tag, inputControls[i] + testIdSuffix + UifConstants.IdSuffixes.CONTROL);
         }
         // these controls allow for simple attributes on the tag and complex attributes via js
         Map<String, String[]> otherControlsMap = new HashMap<String, String[]>();
@@ -190,6 +207,15 @@ public class UifDataAttributesIT {
             verifyComplexAttributes(tagId, tagIdSuffix);
             // check for simple attributes
             verifySimpleAttributes("label", tagId, tagIdSuffix);
+
+            //test that the radio buttons have the 3 data attributes that can appear in the tag
+            tagId = "radioButton" + testIdSuffix + UifConstants.IdSuffixes.CONTROL;
+            String[] radioButtonIds = {tagId + "1", tagId + "2"};
+            for (String id: radioButtonIds) {
+                verifyStaticDataAttributes("input", id);
+            }
+            //test that all complex and simple attributes set via the list are in a script
+            verifyAllAttributesInScript(tagId, "");
         }
     }
 

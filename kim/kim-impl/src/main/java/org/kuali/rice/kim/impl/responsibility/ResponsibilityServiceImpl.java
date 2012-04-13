@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
@@ -216,6 +217,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(responsibilityName, "responsibilityName");
         incomingParamCheck(qualification, "qualification");
+        
+        if ( LOG.isDebugEnabled() ) {
+            logResponsibilityCheck( namespaceCode, responsibilityName, qualification, Collections.<String, String>emptyMap() );
+        }
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
@@ -229,6 +234,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(respTemplateName, "respTemplateName");
         incomingParamCheck(qualification, "qualification");
+        
+        if ( LOG.isDebugEnabled() ) {
+            logResponsibilityCheck( namespaceCode, respTemplateName, qualification, responsibilityDetails );
+        }
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
@@ -245,6 +254,12 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         for (Responsibility r : applicableResponsibilities) {
             List<String> roleIds = getRoleIdsForResponsibility(r.getId());
             results.addAll(getActionsForResponsibilityRoles(r, roleIds, qualification));
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Found " + results.size() + " matching ResponsibilityAction objects");
+            if ( LOG.isTraceEnabled() ) {
+                LOG.trace( results );
+            }
         }
         return results;
     }
@@ -494,6 +509,30 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     public void setRoleService(final RoleService roleService) {
         this.roleService = roleService;
+    }
+
+    protected void logResponsibilityCheck(String namespaceCode, String responsibilityName, 
+                    Map<String, String> responsibilityDetails, Map<String, String> qualification ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(  '\n' );
+        sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
+        sb.append( "             Details:\n" );
+        if ( responsibilityDetails != null ) {
+            sb.append( responsibilityDetails );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        sb.append( "             Qualifiers:\n" );
+        if ( qualification != null ) {
+            sb.append( qualification );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        if (LOG.isTraceEnabled()) { 
+            LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
+        } else {
+            LOG.debug(sb.toString());
+        }
     }
 
     private void incomingParamCheck(Object object, String name) {

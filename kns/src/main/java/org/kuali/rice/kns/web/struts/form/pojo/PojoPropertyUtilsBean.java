@@ -16,15 +16,20 @@
 // begin Kuali Foundation modification
 package org.kuali.rice.kns.web.struts.form.pojo;
 
+import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.MappedPropertyDescriptor;
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.beanutils.WrapDynaBean;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.beans.IndexedPropertyDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -116,8 +121,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 					}
                 }
                 methods.add(readMethod);
-                currentObj = readMethod.invoke(currentObj, (Object[])null);
-                currentObjClass = currentObj.getClass();
+                currentObjClass = readMethod.getReturnType();
             }
             synchronized (cache) {
                 cache.put(propertyName + obj.getClass().getName(), methods);
@@ -133,6 +137,63 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         return obj;
     }
 	// end Kuali Foundation modification
+
+    /*
+     *  Kuali modification to make isWriteable work like it did in beanUtils 1.7.
+     *  Checking for nested nulls caused exceptions in rice 2.0.
+     */
+    @Override
+    public boolean isWriteable(Object bean, String name) {
+        // Validate method parameters
+        if (bean == null) {
+            throw new IllegalArgumentException("No bean specified");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("No name specified for bean class '" +
+                    bean.getClass() + "'");
+        }
+
+        // Remove any subscript from the final name value
+        name = getResolver().getProperty(name);
+
+        // Treat WrapDynaBean as special case - may be a read-only property
+        // (see Jira issue# BEANUTILS-61)
+        if (bean instanceof WrapDynaBean) {
+            bean = ((WrapDynaBean)bean).getInstance();
+        }
+
+        // Return the requested result
+        if (bean instanceof DynaBean) {
+            // All DynaBean properties are writeable
+            return (((DynaBean) bean).getDynaClass().getDynaProperty(name) != null);
+        } else {
+            try {
+                PropertyDescriptor desc =
+                        getPropertyDescriptor(bean, name);
+                if (desc != null) {
+                    Method writeMethod = desc.getWriteMethod();
+                    if (writeMethod == null) {
+                        if (desc instanceof IndexedPropertyDescriptor) {
+                            writeMethod = ((IndexedPropertyDescriptor) desc).getIndexedWriteMethod();
+                        } else if (desc instanceof MappedPropertyDescriptor) {
+                            writeMethod = ((MappedPropertyDescriptor) desc).getMappedWriteMethod();
+                        }
+                        writeMethod = MethodUtils.getAccessibleMethod(bean.getClass(), writeMethod);
+                    }
+                    return (writeMethod != null);
+                } else {
+                    return (false);
+                }
+            } catch (IllegalAccessException e) {
+                return (false);
+            } catch (InvocationTargetException e) {
+                return (false);
+            } catch (NoSuchMethodException e) {
+                return (false);
+            }
+        }
+
+    }
 
     /**
      * begin Kuali Foundation modification
@@ -514,5 +575,76 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             
         }
     }
+    
+    public Class getPropertyType(Object bean, String name)
+            throws IllegalAccessException, InvocationTargetException,
+            NoSuchMethodException {
 
+        if (bean == null) {
+            throw new IllegalArgumentException("No bean specified");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("No name specified for bean class '" +
+                    bean.getClass() + "'");
+        }
+
+        // Resolve nested references
+        while (getResolver().hasNested(name)) {
+            String next = getResolver().next(name);
+            Object nestedBean = getProperty(bean, next);
+            if (nestedBean == null) {
+            	Class<?>[] paramTypes = {};
+            	Method method = null;
+            	try {
+                    method = bean.getClass().getMethod("get" + next.substring(0, 1).toUpperCase() + next.substring(1), (Class[])null);
+                } catch (NoSuchMethodException e) {
+                    method = bean.getClass().getMethod("is" + next.substring(0, 1).toUpperCase() + next.substring(1), (Class[])null);
+                }
+            	try {
+					nestedBean = method.getReturnType().newInstance();
+				} catch (InstantiationException e) {
+					throw new NestedNullException
+                    ("Null property value for '" + next +
+                    "' on bean class '" + bean.getClass() + "'");
+				}
+            }
+            bean = nestedBean;
+            name = getResolver().remove(name);
+        }
+
+        // Remove any subscript from the final name value
+        name = getResolver().getProperty(name);
+
+        // Special handling for DynaBeans
+        if (bean instanceof DynaBean) {
+            DynaProperty descriptor =
+                    ((DynaBean) bean).getDynaClass().getDynaProperty(name);
+            if (descriptor == null) {
+                return (null);
+            }
+            Class type = descriptor.getType();
+            if (type == null) {
+                return (null);
+            } else if (type.isArray()) {
+                return (type.getComponentType());
+            } else {
+                return (type);
+            }
+        }
+
+        PropertyDescriptor descriptor =
+                getPropertyDescriptor(bean, name);
+        if (descriptor == null) {
+            return (null);
+        } else if (descriptor instanceof IndexedPropertyDescriptor) {
+            return (((IndexedPropertyDescriptor) descriptor).
+                    getIndexedPropertyType());
+        } else if (descriptor instanceof MappedPropertyDescriptor) {
+            return (((MappedPropertyDescriptor) descriptor).
+                    getMappedPropertyType());
+        } else {
+            return (descriptor.getPropertyType());
+        }
+
+    }
 }

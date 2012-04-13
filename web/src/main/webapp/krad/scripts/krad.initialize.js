@@ -288,8 +288,10 @@ function setupPage(validate, focusFirstField) {
     //Handle messages at field, if any
     jq("[data-role='InputField']").each(function () {
         var id = jQuery(this).attr('id');
-        handleMessagesAtField(id);
+        handleMessagesAtField(id, true);
     });
+    //Write the result of the validation messages
+    writeMessagesForPage();
 
     //focus on pageValidation header if there are messages on this page
     if(jQuery(".uif-pageValidationHeader").length){

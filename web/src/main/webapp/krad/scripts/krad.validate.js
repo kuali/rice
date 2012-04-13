@@ -469,8 +469,11 @@ function writeMessagesAtField(id) {
  * summary is already present
  * @param id - id of the field to handle messages
  */
-function handleMessagesAtField(id) {
+function handleMessagesAtField(id, skipGroupWrite) {
     var skip = jQuery("#" + id).data("vignore");
+    if(skipGroupWrite == undefined){
+        skipGroupWrite = false;
+    }
     if (!(skip == "yes")) {
         var data = jQuery("#" + id).data("validationMessages");
 
@@ -479,7 +482,7 @@ function handleMessagesAtField(id) {
         var parent = jQuery("#" + id).data("parent");
 
         if (parent) {
-            handleMessagesAtGroup(parent, id, data);
+            handleMessagesAtGroup(parent, id, data, skipGroupWrite);
         }
 
         data.processed = true;
@@ -495,13 +498,12 @@ function handleMessagesAtField(id) {
  * @param fieldId - the id of the field with message updates
  * @param fieldData - the new validation data for the field being updated
  */
-function handleMessagesAtGroup(id, fieldId, fieldData) {
+function handleMessagesAtGroup(id, fieldId, fieldData, skipWrite) {
     var data = jQuery("#" + id).data("validationMessages");
     var pageLevel = false;
     var parent = jQuery("#" + id).data("parent");
     if (data) {
-        var order = data.order;
-        var sections = data.sections;
+
         var messageMap = data.messageMap;
         pageLevel = data.pageLevel;
 
@@ -529,6 +531,26 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
 
         //update data
         jQuery("#" + id).data("validationMessages", data);
+
+        //write messages for this group
+        if(!skipWrite){
+            writeMessagesForGroup(id, data);
+        }
+    }
+
+    if (!pageLevel && parent) {
+        handleMessagesAtGroup(parent, fieldId, fieldData);
+    }
+}
+
+function writeMessagesForGroup(id, data){
+    var parent = jQuery("#" + id).data("parent");
+
+    if(data){
+        var messageMap = data.messageMap;
+        var pageLevel = data.pageLevel;
+        var order = data.order;
+        var sections = data.sections;
 
         //retrieve header for section
         var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label, "
@@ -566,9 +588,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
                     newList = writeMessageItemToList(link, newList);
                 }
             }
-        }
 
-        if (showMessages) {
             //clear and write the new list of summary items
             clearMessages(id);
             handleTabStyle(id, data.errorTotal, data.warningTotal, data.infoTotal);
@@ -613,20 +633,26 @@ function handleMessagesAtGroup(id, fieldId, fieldData) {
             }
         }
     }
-
-    if (!pageLevel && parent) {
-        handleMessagesAtGroup(parent, fieldId, fieldData);
-    }
 }
 
-function cascadeOptions(id, isGroup){
-    var parent = jQuery("#" + id).data("parent");
-    if(isGroup){
+function writeMessagesForPage(){
+    //TODO use a more permanent selector
+    var page = jQuery(".uif-page");
+    var pageId = page.attr("id");
+    var data = page.data("validationMessages");
+    writeMessagesForGroup(pageId, data);
+    writeMessagesForChildGroups(pageId);
+}
 
-    }
-    else{
-        cascade
-    }
+function writeMessagesForChildGroups(parentId){
+    jQuery("[data-parent='"+ parentId +"']").each(function(){
+        var id = jQuery(this).attr("id");
+        var data = jQuery(this).data("validationMessages");
+        if(!(jQuery(this).is("[data-role='InputField'"))){
+            writeMessagesForGroup(id, data);
+            writeMessagesForChildGroups(id);
+        }
+    });
 }
 
 /**

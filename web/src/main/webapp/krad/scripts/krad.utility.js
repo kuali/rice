@@ -232,9 +232,10 @@ function runHiddenScripts(id, isSelector){
         jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
             var data = jQuery(this).data("validationMessages");
             if(!data.processed){
-                handleMessagesAtField(jQuery(this).attr('id'));
+                handleMessagesAtField(jQuery(this).attr('id'), true);
             }
         });
+        writeMessagesForPage();
 	}
 	else{
         //run dataScript first always

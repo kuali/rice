@@ -373,25 +373,34 @@ function writeMessagesAtField(id) {
             showImage = false;
         }
 
-        //remove any image that may already be present
+        //remove any image and previous styles that may already be present
         jQuery("#" + id + " > .uif-validationImage").remove();
         jQuery("#" + id).removeClass("uif-hasError");
+        jQuery("#" + id).removeClass("uif-hasError-modified");
         jQuery("#" + id).removeClass("uif-hasWarning");
         jQuery("#" + id).removeClass("uif-hasInfo");
+
         //show appropriate icons/styles based on message severity level
         if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
             if (data.errors.length) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientErrorDiv");
             }
-            jQuery("#" + id).addClass("uif-hasError");
-            if (showImage) {
-                if(data.fieldModified && data.errors.length == 0){
+
+            if(data.fieldModified && data.errors.length == 0){
+                //This is to represent the field has been changed after a server error, but may or
+                //may not be fixed - greyed out image/border
+                jQuery("#" + id).addClass("uif-hasError-modified");
+                if (showImage) {
                     jQuery(messagesDiv).before(errorGreyImage);
                 }
-                else{
+            }
+            else{
+                jQuery("#" + id).addClass("uif-hasError");
+                if (showImage) {
                     jQuery(messagesDiv).before(errorImage);
                 }
             }
+
 
             if (hasServerMessages) {
                 data.tooltipTheme = "kr-error-ss";
@@ -1149,6 +1158,9 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
 
             if(messageData.fieldModified){
                 jQuery(link).find("a").prepend("<span class='modified'>(Modified) </span>");
+                if(!(messageData.errors.length)){
+                    jQuery(link).addClass("uif-errorMessageItem-modified");
+                }
             }
             jQuery(link).addClass(linkType);
             jQuery(link).find("a").click(function () {

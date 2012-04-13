@@ -886,6 +886,14 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     border: 2px solid #ff2300;
 }
 
+.uif-hasError-modified > .uif-control{
+    border: 2px solid gray;
+}
+
+.uif-hasError-modified > fieldset{
+    border: 2px solid gray;
+}
+
 .uif-validationMessages li a{
     /*color: #000088;*/
 }
@@ -903,7 +911,20 @@ li.uif-errorMessageItem:before {
   max-height: 0px;
   left: -10px;
   top: -0px;
-  color: red;
+  color: #ff2300;
+  font-size: 20px;
+}
+
+li.uif-errorMessageItem-modified:before {
+  /* For a round bullet */
+  content:'\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0px;
+  color: gray;
   font-size: 20px;
 }
 

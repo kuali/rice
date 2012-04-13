@@ -287,4 +287,7 @@
         ATTR_VAL="TermSpecificationMaintenanceDocument"
         KIM_ATTR_DEFN_ID="13" KIM_TYP_ID="56"
         OBJ_ID="d3e373ca-296b-4834-bd66-ba159ebe733a" PERM_ID="846" VER_NBR="1"/>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="887" ATTR_VAL="*"
+        KIM_ATTR_DEFN_ID="13" KIM_TYP_ID="8"
+        OBJ_ID="BD74D7B702AC02CEE0402E0AA9D75B2D" PERM_ID="847" VER_NBR="1"/>
 </dataset>

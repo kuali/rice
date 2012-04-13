@@ -348,4 +348,7 @@
         NM="Create TermSpecification Maintenance Document"
         NMSPC_CD="KR-NS" OBJ_ID="02bd9acd-48d9-4fec-acbd-6a441c5ea8c2"
         PERM_ID="846" PERM_TMPL_ID="42" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y" NM="Recall Document" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="BD74D7B702AB02CEE0402E0AA9D75B2D" PERM_ID="847"
+        PERM_TMPL_ID="68" VER_NBR="1"/>
 </dataset>

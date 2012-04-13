@@ -252,25 +252,24 @@ function showMessageTooltip(fieldId, showAndClose, change) {
 
             options.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
             options.themeName = data.tooltipTheme;
-            //options.afterShown
 
-            if (!tooltipElement.IsBubblePopupOpen()) {
-                //timer to get around bizarre interactions with the iframe resize logic
-                data.showTimer = setTimeout(function () {
-                    tooltipElement.SetBubblePopupOptions(options, true);
-                    tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
-                    tooltipElement.ShowBubblePopup();
-                    var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
-                    jQuery("#" + tooltipId).css("opacity", 1);
-                }, 250);
+            var show = true;
+            //only do a timed close if there are also server messages left - means you got a new client
+            //side error that has to be demonstrated visually to the user (it would have no visual indication
+            //if we just closed immediately)
+            if(showAndClose && !(data.serverErrors.length || data.serverWarnings.length || data.serverInfo.length)){
+                hideMessageTooltip(fieldId);
+                show = false;
             }
-            else if (tooltipElement.IsBubblePopupOpen()) {
-                console.log("change");
-                if (change) {
-                    //if the messages shown were changed, reshow to get around placement issues
 
+            if(show){
+                if (!tooltipElement.IsBubblePopupOpen()) {
                     //timer to get around bizarre interactions with the iframe resize logic
                     data.showTimer = setTimeout(function () {
+                        if(showAndClose){
+                            //close other bubble popups so we dont get too many during fast tabbing
+                            hideBubblePopups();
+                        }
                         tooltipElement.SetBubblePopupOptions(options, true);
                         tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
                         tooltipElement.ShowBubblePopup();
@@ -278,12 +277,32 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                         jQuery("#" + tooltipId).css("opacity", 1);
                     }, 250);
                 }
-            }
+                else if (tooltipElement.IsBubblePopupOpen()) {
+                    console.log("change");
+                    if (change) {
+                        //if the messages shown were changed, reshow to get around placement issues
 
-            if (showAndClose) {
-                //setup a timer to close the tooltip automatically
-                data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
-                jQuery("#" + fieldId).data("validationMessages", data);
+                        //timer to get around bizarre interactions with the iframe resize logic
+                        data.showTimer = setTimeout(function () {
+                            if(showAndClose){
+                                //close other bubble popups so we dont get too many during fast tabbing
+                                hideBubblePopups();
+                            }
+                            tooltipElement.SetBubblePopupOptions(options, true);
+                            tooltipElement.SetBubblePopupInnerHtml(options.innerHTML, true);
+                            tooltipElement.ShowBubblePopup();
+                            var tooltipId = jQuery(tooltipElement).GetBubblePopupID();
+                            jQuery("#" + tooltipId).css("opacity", 1);
+                        }, 250);
+                    }
+                }
+
+                if (showAndClose) {
+
+                    //setup a timer to close the tooltip automatically
+                    data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
+                    jQuery("#" + fieldId).data("validationMessages", data);
+                }
             }
 
         }

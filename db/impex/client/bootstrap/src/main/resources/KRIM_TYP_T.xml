@@ -124,6 +124,10 @@
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="75" NM="View Line Action"
         NMSPC_CD="KR-KRAD" OBJ_ID="B7DBFABEFD3E8CBFE0402E0AA9D757C9"
         SRVC_NM="viewLineActionPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="76"
+        NM="Derived Role: Permission (Route Document)"
+        NMSPC_CD="KR-WKFLW" OBJ_ID="BD82F716EFEEF706E0402E0AA9D70A27"
+        SRVC_NM="documentRouterRoleTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="8"
         NM="Document Type &amp; Routing Node or State" NMSPC_CD="KR-SYS"
         OBJ_ID="5ADF18B6D4C67954E0404F8189D85002"

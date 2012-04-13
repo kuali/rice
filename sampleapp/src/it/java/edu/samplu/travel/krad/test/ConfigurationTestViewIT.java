@@ -34,7 +34,7 @@ import static junit.framework.Assert.*;
  */
 public class ConfigurationTestViewIT {
     private DefaultSelenium selenium;
-
+    private String idPrefix = "ConfigurationTestView-ProgressiveRender-";
     @Before
 	public void setUp() throws Exception {
 		selenium = new DefaultSelenium("localhost", 4444, "*chrome", System.getProperty("remote.public.url"));
@@ -46,26 +46,28 @@ public class ConfigurationTestViewIT {
         openConfigurationTestView();
 
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
-        String styleValue = selenium.getAttribute("//span[@id='textInputField_config_label_span']@style");
+        String styleValue = selenium.getAttribute("//span[@id='" + idPrefix + "TextInputField_label_span']@style");
         // log.info("styleValue is " + styleValue);
-        Assert.assertTrue("textInputField label does not contain expected style", styleValue.replace(" ", "").contains(
+        Assert.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains(
                 "color:red"));
 
         // testing for refreshWhenChanged when using spel expressions
         selenium.selectFrame("iframeportlet");
         // get current list of options
-        String[] options1 = selenium.getSelectOptions("id=refreshTextField_control");
-        selenium.select("id=dropDown_control", "label=Vegetables");
+        String refreshTextSelectLocator = "id=" + idPrefix + "RefreshTextField_control";
+        String[] options1 = selenium.getSelectOptions(refreshTextSelectLocator);
+        String dropDownSelectLocator = "id=" + idPrefix + "DropDown_control";
+        selenium.select(dropDownSelectLocator, "label=Vegetables");
         selenium.click("//option[@value='Vegetables']");
         Thread.sleep(3000);
         //get list of options after change
-        String[] options2 = selenium.getSelectOptions("id=refreshTextField_control");
+        String[] options2 = selenium.getSelectOptions(refreshTextSelectLocator);
         //verify that the change has occurred
         assertFalse(options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         //confirm that control gets disabled
-        selenium.select("id=dropDown_control", "label=None");
+        selenium.select(dropDownSelectLocator, "label=None");
         Thread.sleep(3000);
-        assertEquals("true", selenium.getAttribute("id=refreshTextField_control@disabled"));
+        assertEquals("true", selenium.getAttribute(refreshTextSelectLocator+ "@disabled"));
 
 	}
 
@@ -90,24 +92,23 @@ public class ConfigurationTestViewIT {
     @Test
     public void testAddLine() throws Exception{
         openConfigurationTestView();
-        
-        String[] addLineIds = {"startTime", "startTimeAmPm", "allDay"};
-        String idSuffix = "InputField_test_add_control";
+        String[] addLineIds = {"StartTime", "StartTimeAmPm", "AllDay"};
+        String idSuffix = "InputField_add_control";
         for (String id: addLineIds) {
-            String tagId = "id=" + id + idSuffix;
+            String tagId = "id=" + idPrefix + id + idSuffix;
            assertTrue("Did not find id " + tagId, selenium.isElementPresent(tagId));
         }
 
-        String startTimeId = "id=startTime" + idSuffix;
+        String startTimeId = "id=" +idPrefix + "StartTime" + idSuffix;
         selenium.focus(startTimeId);
         String inputTime = "7:06";
         selenium.type(startTimeId, inputTime);
 
-        String allDayId = "allDay" + idSuffix;
+        String allDayId = "id=" + idPrefix + "AllDay" + idSuffix;
         selenium.focus(allDayId);
         Thread.sleep(5000); //allow for ajax refresh
         selenium.click(allDayId);
-        selenium.click("css=div#timeInfoCollection_test button");
+        selenium.click("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added
 
         //confirm that line has been added

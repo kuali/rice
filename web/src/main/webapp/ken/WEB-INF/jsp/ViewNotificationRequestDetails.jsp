@@ -41,7 +41,7 @@
 				<tr>
 					<td class="thnormal"><strong>Sent By:</strong></td>
 					<td class="thnormal">
-						<i> ${command.document.routeHeader.initiatorPrincipalId} on ${document.dateCreated} </i>
+						<i> ${command.document.initiatorPrincipalId} on ${command.document.dateCreated} </i>
 					</td>
 				</tr>
 				<tr>

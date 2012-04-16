@@ -15,14 +15,14 @@
 --
 
 -- KULRICE-7128 wire kim type attribute 'qualifierResolverProvidedIdentifier' to Responsibility type
-Insert into `krim_typ_attr_t`
-(`KIM_TYP_ATTR_ID`,
-`OBJ_ID`,
-`VER_NBR`,
-`SORT_CD`,
-`KIM_TYP_ID`,
-`KIM_ATTR_DEFN_ID`,
-`ACTV_IND`)
+Insert into krim_typ_attr_t
+(KIM_TYP_ATTR_ID,
+OBJ_ID,
+VER_NBR,
+SORT_CD,
+KIM_TYP_ID,
+KIM_ATTR_DEFN_ID,
+ACTV_IND)
 VALUES
   ((select (max(to_number(KIM_TYP_ATTR_ID)) + 1) from  krim_typ_attr_t where KIM_TYP_ATTR_ID is not NULL and to_number(KIM_TYP_ATTR_ID) < 10000),
   '69FA55ACC2EE2598E0404F8189D86880',

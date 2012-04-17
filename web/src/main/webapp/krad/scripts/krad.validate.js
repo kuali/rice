@@ -278,7 +278,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                     }, 250);
                 }
                 else if (tooltipElement.IsBubblePopupOpen()) {
-                    console.log("change");
+
                     if (change) {
                         //if the messages shown were changed, reshow to get around placement issues
 
@@ -869,7 +869,7 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
     if (!image) {
         image = "";
     }
-    if (messageArray.length) {
+    if (messageArray && messageArray.length) {
         for (var i = startIndex; i < messageArray.length; i++) {
             if (focusable) {
                 elements = elements + "<li tabindex='0' class='" + itemClass + "'>" + image + " " + messageArray[i] + "</li>";

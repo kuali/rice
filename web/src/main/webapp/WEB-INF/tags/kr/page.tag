@@ -103,8 +103,8 @@ function publishHeight(){
         parentUrl = decodeURIComponent(parentUrl);
     }
 
-    var height = jQuery('#Uif-Application:first').outerHeight();
-    if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
+    var height = jQuery("body").outerHeight();
+    if (parentUrl && !isNaN(height) && height > 0) {
         jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
     }
@@ -113,7 +113,7 @@ function publishHeight(){
 jQuery(function(){
   publishHeight();
   window.onresize = publishHeight;
-  window.setInterval(publishHeight, 500);
+  window.setInterval(publishHeight, 249);
 });
 </script>
 

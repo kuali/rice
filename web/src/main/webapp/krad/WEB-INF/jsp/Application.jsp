@@ -25,7 +25,7 @@
           jq(function(){
             publishHeight();
             window.onresize = publishHeight;
-            window.setInterval(publishHeight, 500);
+            window.setInterval(publishHeight, 249);
           });
       "/>
       </c:if>

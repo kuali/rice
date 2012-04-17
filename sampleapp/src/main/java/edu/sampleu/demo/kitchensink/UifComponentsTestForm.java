@@ -15,6 +15,7 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -231,11 +232,14 @@ public class UifComponentsTestForm extends UifFormBase {
         list5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
 
-        list6.add(new UITestObject("A", "B", "C", "D"));
-        list6.add(new UITestObject("1", "2", "3", "4"));
-        list6.add(new UITestObject("W", "X", "Y", "Z"));
-        list6.add(new UITestObject("a", "b", "c", "d"));
-        list6.add(new UITestObject("a", "s", "d", "f"));
+        for (int i=0; i<50; i++) {
+            list6.add(new UITestObject(RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1),
+                    RandomStringUtils.randomAlphanumeric(1)));
+        }
+        
+        
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");

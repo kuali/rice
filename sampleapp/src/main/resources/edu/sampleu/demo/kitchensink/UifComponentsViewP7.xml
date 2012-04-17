@@ -381,7 +381,7 @@
      p:layoutManager.numberOfColumns="4">
      <property name="title"
        value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
-     <property name="instructionalText" value="No sequence column rendering on, separate add line" />
+     <property name="instructionalText" value="No sequence column rendering on, separate add line, infinite scrolling" />
      <property name="collectionObjectClass"
        value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list6" />
@@ -414,6 +414,15 @@
          <bean parent="Uif-InputField" p:label="Add line field 4" p:propertyName="field4"
                p:required="true" />
        </list>
+     </property>
+     <property name="layoutManager.richTable.templateOptions">
+       <map>
+         <!-- infinite scrolling settings from http://datatables.net/examples/basic_init/scroll_y_infinite.html -->
+         <entry key="'bScrollInfinite'" value="true"/>
+         <entry key="'bScrollCollapse'" value="true"/>
+         <entry key="'sScrollY'" value="200px"/>
+         <!-- end of infinite scrolling settings -->
+       </map>
      </property>
    </bean>
 

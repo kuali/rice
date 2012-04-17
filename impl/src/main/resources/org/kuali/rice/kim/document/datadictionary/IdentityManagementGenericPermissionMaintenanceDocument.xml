@@ -53,7 +53,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="id"
             p:unconditionallyReadOnly="true" p:required="true" />
-        <bean parent="MaintainableFieldDefinition" p:required="true" p:noLookup="true" p:name="templateId"/>
+        <bean parent="MaintainableFieldDefinition" p:required="true" p:name="templateId"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="namespaceCode"/>
         <bean parent="MaintainableFieldDefinition" p:required="true" p:name="name" />
         <bean parent="MaintainableFieldDefinition" p:required="false" p:name="description"/>

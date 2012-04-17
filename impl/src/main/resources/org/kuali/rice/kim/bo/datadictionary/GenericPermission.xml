@@ -76,18 +76,11 @@
   </bean>
     
   <bean id="GenericPermissionBo-templateId" parent="GenericPermissionBo-templateId-parentBean"/>
-  <bean id="GenericPermissionBo-templateId-parentBean"
-        parent="AttributeDefinition"
-        abstract="true"
-        p:name="templateId"
-        p:label="Template Id"
-        p:shortLabel="Template Id"
-        p:required="true">
+  <bean id="GenericPermissionBo-templateId-parentBean" parent="AttributeDefinition" abstract="true" p:name="templateId" p:label="Template Id" p:shortLabel="Template Id" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.lookup.valuefinder.PermissionTemplateValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
-
 
   <bean id="GenericPermissionBo-active" parent="GenericPermissionBo-active-parentBean"/>
 	<bean id="GenericPermissionBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">

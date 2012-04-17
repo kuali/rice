@@ -77,6 +77,7 @@ import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krad.service.PersistenceService
 import org.kuali.rice.kim.impl.identity.IdentityServiceImpl
+import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
 import org.apache.log4j.LogManager
 import org.apache.log4j.Level
 

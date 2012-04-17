@@ -23,31 +23,32 @@
     <property name="items">
       <list>
         <ref bean="ConfigurationTestView-Help-Section1"/>
+        <ref bean="ConfigurationTestView-Help-Section2"/>
       </list>
     </property>
   </bean>
 
   <bean id="ConfigurationTestView-Help-Section1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Help Section"/>
-    <property name="instructionalText" value="For sections the help icon that opens a new browser window with the externalized help can be used."/>
-    <!--<property name="help">-->
-      <!--<bean parent="Uif-Help">-->
-        <!--<property name="helpDefinition">-->
-          <!--<bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_COMPONENT" p:parameterDetailType="TEST_PARM"/>-->
-        <!--</property>-->
-      <!--</bean>-->
-    <!--</property>-->
+    <property name="title" value="External Help"/>
+    <property name="instructionalText" value="The various ways an external help icon may be rendered."/>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="helpDefinition">
+          <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+        </property>
+      </bean>
+    </property>
     <property name="items">
       <list>
 
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
-          <!--<property name="help">-->
-            <!--<bean parent="Uif-Help">-->
-              <!--<property name="helpDefinition">-->
-                <!--<bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_COMPONENT" p:parameterDetailType="TEST_PARM"/>-->
-              <!--</property>-->
-            <!--</bean>-->
-          <!--</property>-->
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -55,13 +56,13 @@
 
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
               p:instructionalText="Label right with help">
-          <!--<property name="help">-->
-            <!--<bean parent="Uif-Help">-->
-              <!--<property name="helpDefinition">-->
-                <!--<bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_COMPONENT" p:parameterDetailType="TEST_PARM"/>-->
-              <!--</property>-->
-            <!--</bean>-->
-          <!--</property>-->
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -70,27 +71,88 @@
 
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="TOP"
               p:instructionalText="Label top with help">
-          <!--<property name="help">-->
-            <!--<bean parent="Uif-Help">-->
-              <!--<property name="helpDefinition">-->
-                <!--<bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_COMPONENT" p:parameterDetailType="TEST_PARM"/>-->
-              <!--</property>-->
-            <!--</bean>-->
-          <!--</property>-->
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-Label" p:labelText="Help widged not attached to any component" />
-        <!--<bean parent="Uif-Help">-->
-          <!--<property name="helpDefinition">-->
-            <!--<bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_COMPONENT" p:parameterDetailType="TEST_PARM" />-->
-          <!--</property>-->
-        <!--</bean>-->
+        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
+        <bean parent="Uif-Help">
+          <property name="helpDefinition">
+            <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT" />
+          </property>
+        </bean>
+
+        <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
+          <property name="title" value="Display only fields"/>
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="field102" p:label="Field Label" p:defaultValue="DataFieldValue">
+                <property name="help">
+                  <bean parent="Uif-Help">
+                    <property name="helpDefinition">
+                      <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
 
       </list>
   </property>
+  </bean>
+
+  <bean id="ConfigurationTestView-Help-Section2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+    <property name="title" value="Missing External Help"/>
+    <property name="instructionalText" value="This section has non-existing help specified. Help icons should not render"/>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="helpDefinition">
+          <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
+        <bean parent="Uif-Help">
+          <property name="helpDefinition">
+            <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT" />
+          </property>
+        </bean>
+
+      </list>
+    </property>
   </bean>
 
 </beans>

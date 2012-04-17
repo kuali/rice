@@ -34,7 +34,15 @@
 
 <krad:div component="${element}">
   <c:if test="${!empty element.headerLevel && !empty element.headerText && element.headerText != '&nbsp;'}">
-        ${headerOpenTag}${element.headerText}${headerCloseTag}
+    <c:set var="group" value="${element.context['parent']}"/>
+    <%-- render with out field help --%>
+    <c:if test="${empty group.help.externalHelpUrl}">
+      ${headerOpenTag}${element.headerText}${headerCloseTag}
+    </c:if>
+    <%-- render with field help --%>
+    <c:if test="${!empty group.help.externalHelpUrl}">
+      ${headerOpenTag}${element.headerText}${headerCloseTag}<krad:template component="${group.help}"/>
+    </c:if>
   </c:if>
   
   <%-- render header group --%>

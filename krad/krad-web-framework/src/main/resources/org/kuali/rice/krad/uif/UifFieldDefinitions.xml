@@ -567,4 +567,14 @@ perform page navigation-->
     </property>
   </bean>
 
+  <bean id="Uif-HelpImage" parent="Uif-ImageField"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}help.png"
+        p:altText="Help" p:title="Help">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-helpImage</value>
+      </list>
+    </property>
+  </bean>
+
 </beans>

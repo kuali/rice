@@ -283,5 +283,17 @@
     </property>
   </bean>
 
+  <bean id="Uif-Help" parent="Uif-Help-parentBean"/>
+  <bean id="Uif-Help-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Help" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/help.jsp"/>
+    <property name="helpActionField">
+      <bean parent="Uif-ActionImage">
+        <property name="actionImage">
+          <bean parent="Uif-HelpImage"/>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
 
 </beans>

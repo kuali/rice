@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -81,6 +82,7 @@ public class DataField extends FieldBase implements DataBinding {
 
     // widgets
     private Inquiry fieldInquiry;
+    private Help help;
 
     public DataField() {
         super();
@@ -313,6 +315,7 @@ public class DataField extends FieldBase implements DataBinding {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(fieldInquiry);
+        components.add(help);
 
         return components;
     }
@@ -617,8 +620,33 @@ public class DataField extends FieldBase implements DataBinding {
     }
 
     /**
+     * Help configuration object for the datafield
+     *
+     * <p>
+     * External help information can be configured for the datafield. The
+     * <code>Help</code> object can the configuration for rendering a link to
+     * that help information.
+     * </p>
+     *
+     * @return Help for datafield
+     */
+    public Help getHelp() {
+        return this.help;
+    }
+
+    /**
+     * Setter for the datafield help content
+     *
+     * @param help
+     */
+    public void setHelp(Help help) {
+        this.help = help;
+    }
+
+
+    /**
      * Additional display attribute name, which will be displayed next to the actual field value
-     * when the field is readonly with hypen inbetween like PropertyValue - AdditionalPropertyValue
+     * when the field is readonly with hyphen in between like PropertyValue - AdditionalPropertyValue
      *
      * @param additionalDisplayPropertyName - Name of the additional display property
      */

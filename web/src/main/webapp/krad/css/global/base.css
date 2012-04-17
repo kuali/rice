@@ -82,6 +82,10 @@ th, td {
 
 /* headers */
 
+.uif-header {
+    position: relative;
+}
+
 .uif-headerText{
    clear:both;
    text-align: left;
@@ -1022,4 +1026,10 @@ li.uif-infoMessageItem:before {
 
 .jquerybubblepopup-ie{
     filter: none !important;
+}
+
+.uif-header .uif-helpImage {
+    position: absolute;
+    right: 5px;
+    top: 7px;
 }

@@ -618,3 +618,31 @@ function addAttribute(id, attributeName, attributeValue, concatFlag) {
         jq("#" + id).attr(attributeName, attributeValue);
     }
 }
+
+/**
+ * Open new browser window for the specified help url
+ *
+ * The help window is positioned in the center of the screen and resized to 1/4th of the screen.
+ *
+ * Browsers don't allow one to modify windows of other domains.  Thus to ensure that only one help window exist
+ * and to guarantee it's placement, size and that the window is in the foreground the following process is performed:
+ *   1) open the help window - this ensures that we get a window handle to any existing help window
+ *   2) close the help window
+ *   3) open a new help window with the correct placement, size and url
+ *
+ * @param url - url of the help window content
+ */
+function openHelpWindow(url) {
+    var windowWidth =  screen.availWidth/2;
+    var windowHeight = screen.availHeight/2;
+    var windowPositionY = parseInt((screen.availWidth/2) - (windowWidth/2));
+    var windowPositionX = parseInt((screen.availHeight/2) - (windowHeight/2));
+
+    var windowUrl = url;
+    var windowName = 'HelpWindow';
+    var windowOptions = 'width=' + windowWidth + ',height=' + windowHeight + ',top=' + windowPositionX + ',left=' + windowPositionY + ',scrollbars=yes,resizable=yes';
+
+    var myWindow = window.open('', windowName);
+    myWindow.close()
+    myWindow = window.open(windowUrl, windowName, windowOptions);
+}

@@ -106,9 +106,7 @@
   </c:forEach>
 
   <%-- render field help --%>
-  <c:if test="${!empty field.help.externalHelpUrl}">
-    <krad:template component="${field.help}"/>
-  </c:if>
+  <krad:template component="${field.help}"/>
 
   <%-- render field suggest if field is editable --%>
   <c:if test="${!readOnly}">

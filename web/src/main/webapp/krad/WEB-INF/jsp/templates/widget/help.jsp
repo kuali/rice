@@ -17,9 +17,7 @@
 
 <tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Help"/>
 
-<%--
-    Renders an inquiry link for a field value
-    Check if the field is read only
-    Render the direct inquiry for editable fields
- --%>
-<krad:template component="${widget.helpActionField}" />
+<%-- only render external help if a Url is specified --%>
+<c:if test="${!empty widget.externalHelpUrl}">
+  <krad:template component="${widget.helpActionField}" />
+</c:if>

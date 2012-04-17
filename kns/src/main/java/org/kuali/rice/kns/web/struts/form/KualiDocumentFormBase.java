@@ -937,14 +937,22 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	}
 	
 	public boolean isStateAllowsSuperUserAction() {
-		DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
-		return !(StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
-				 StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()) ||
-				 StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()));
+         if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
+            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            return !(StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
+                     StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()) ||
+                     StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()));
+         } else {
+             return false;
+         }
 	}
 	
 	public boolean isSuperUserDocument() {
-		DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
-		return !(StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) || StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
+        if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
+            DocumentStatus status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            return !(StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) || StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
+        } else {
+            return false;
+        }
 	}
 }

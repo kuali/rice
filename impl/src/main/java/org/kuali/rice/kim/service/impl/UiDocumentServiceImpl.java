@@ -500,6 +500,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                         if (groupMember.getActiveToDate() != null) {
                                         	docGroup.setActiveToDate(groupMember.getActiveToDate() == null ? null : new Timestamp(groupMember.getActiveToDate().getMillis()));
                                         }
+                                        docGroup.setKimTypeId(group.getKimTypeId());
                                         docGroup.setEdit(true);
                                         docGroups.add(docGroup);
                                     }

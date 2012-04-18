@@ -62,9 +62,13 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
             // TODO: enhance to get term names for term type parameters.
             List<PropositionParameterBo> parameters = getParameters();
             if (parameters != null && parameters.size() == 3){
-                setParameterDisplayString(getParamValue(parameters.get(0))
-                        + " " + getParamValue(parameters.get(2))
-                        + " " + getParamValue(parameters.get(1)));
+                StringBuilder sb = new StringBuilder();
+                String valueDisplay = getParamValue(parameters.get(1));
+                sb.append(getParamValue(parameters.get(0))).append(" ").append(getParamValue(parameters.get(2)));
+                if (valueDisplay != null) { // !=null and =null operators values will be null and should not be displayed
+                    sb.append(" ").append(valueDisplay);
+                }
+                setParameterDisplayString(sb.toString())
             } else {
                 // should not happen
             }

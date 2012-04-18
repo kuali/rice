@@ -43,6 +43,7 @@ import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
+import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
@@ -363,6 +364,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             GlobalVariables.getMessageMap().putErrorForSectionId(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
+        }  else if (operator.endsWith("null")) { // ==null and !=null operators have blank values.
+            if (propConstant != null) {
+                proposition.getParameters().get(1).setValue(null);
+            }
         } else if (!StringUtils.isBlank(termId)) {
             // validate that the constant value is comparable against the term
             String termType = lookupTermType(termId);
@@ -375,8 +380,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     result &= false;
                 }
             }
-        } else if (operator.endsWith("null")) { // ==null and !=null operators have blank values.
-            propConstant = null;
         }
 
         if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {

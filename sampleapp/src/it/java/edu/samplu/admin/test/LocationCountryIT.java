@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests creating and cancelling new and edit Country maintenance screens 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,6 +40,9 @@ public class LocationCountryIT {
     }
 
     @Test
+    /**
+     * tests that a new Country maintenance document can be cancelled
+     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -65,6 +68,9 @@ public class LocationCountryIT {
     }
     
     @Test
+    /**
+     * tests that a Country maintenance document is created for an edit operation originating from a lookup screen
+     */
     public void testEditCountry() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());

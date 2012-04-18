@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user 'admin', on blanket approving a new Permission maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -56,9 +56,10 @@ public class IdentityPermissionBlanketAppIT {
         selenium.selectFrame("iframeportlet");
         selenium.click("//img[@alt='create new']");
         selenium.waitForPageToLoad("30000");
+        // selenium.setSpeed("2000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Permission");
-        selenium.type("//input[@id='document.newMaintainableObject.templateId']", "3333");
+        selenium.type("//input[@id='document.newMaintainableObject.templateId']", "10012");
         selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Systems");
         selenium.type("//input[@id='document.newMaintainableObject.name']", "Validation Test Permission1");
         selenium.click("methodToCall.blanketApprove");

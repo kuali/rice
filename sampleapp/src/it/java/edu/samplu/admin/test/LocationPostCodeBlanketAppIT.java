@@ -18,6 +18,8 @@ package edu.samplu.admin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +28,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user 'admin', on blanket approving a new Postal Code maintenance document, results in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,7 +42,12 @@ public class LocationPostCodeBlanketAppIT {
 
     @Test
     public void testPostalCode() throws Exception {
-        selenium.open(System.getProperty("remote.public.url"));
+        String remotePublicUrl = System.getProperty("remote.public.url");
+        // remove the trailing slash to allow for correction concatenation in locating the lookup buttons below
+        if (StringUtils.endsWith(remotePublicUrl, "/")) {
+            remotePublicUrl = StringUtils.removeEnd(remotePublicUrl, "/");
+        }
+        selenium.open(remotePublicUrl);
         assertEquals("Login", selenium.getTitle());
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");
@@ -57,16 +64,17 @@ public class LocationPostCodeBlanketAppIT {
         selenium.waitForPageToLoad("30000");
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
+        //selenium.setSpeed("2000");
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");        
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.type("code", "US");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
-        selenium.type("//input[@id='document.newMaintainableObject.code']", "PC1");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
+        selenium.type("//input[@id='document.newMaintainableObject.code']", RandomStringUtils.randomNumeric(5));
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + remotePublicUrl + "/kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

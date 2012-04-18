@@ -61,7 +61,6 @@ public class IdentityGroupBlanketAppIT {
         selenium.select("//select[@id='document.groupNamespace']", "label=Kuali Systems");
         selenium.waitForPageToLoad("30000");
         selenium.type("//input[@id='document.groupName']", "Validation Test Group1");
-        //selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.bo.impl.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");

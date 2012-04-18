@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests creating and cancelling new and edit Routing Rule Delegation maintenance screens
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,6 +40,9 @@ public class WorkFlowRouteRulesDelegationIT {
     }
 
     @Test
+    /**
+     * tests that a new Routing Rule Delegation maintenance document can be cancelled
+     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -54,6 +57,15 @@ public class WorkFlowRouteRulesDelegationIT {
         selenium.click("//img[@alt='create new']");        
         selenium.selectFrame("relative=up");        
         selenium.waitForPageToLoad("30000");
+        selenium.click("name=methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("css=td.infoline > input[name=\"methodToCall.search\"]");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("css=a[title=\"return valueRule Id=1046 \"]");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("name=parentResponsibilityId");
+        selenium.click("name=methodToCall.createDelegateRule");
+        selenium.waitForPageToLoad("30000");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.click("methodToCall.cancel");
         selenium.waitForPageToLoad("30000");
@@ -62,6 +74,9 @@ public class WorkFlowRouteRulesDelegationIT {
     }
 
     @Test
+    /**
+     * tests that a Routing Rule Delegation maintenance document is created for an edit operation originating from a lookup screen
+     */
     public void testEditRouteRulesDelegation() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -73,6 +88,7 @@ public class WorkFlowRouteRulesDelegationIT {
         selenium.waitForPageToLoad("30000");
         assertEquals("Kuali Portal Index", selenium.getTitle());
         selenium.selectFrame("iframeportlet");
+        selenium.setSpeed("2000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=edit");

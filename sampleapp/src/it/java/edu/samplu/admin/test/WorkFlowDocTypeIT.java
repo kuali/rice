@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.Selenium;
 
 
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests creating and cancelling new and edit Document Type maintenance screens 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -41,6 +41,9 @@ public class WorkFlowDocTypeIT {
     }
 
     @Test
+    /**
+     * tests that a new Document Type maintenance document can be cancelled
+     */
     public void testCreateNew() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -65,6 +68,9 @@ public class WorkFlowDocTypeIT {
     }
     
     @Test
+    /**
+     * tests that a Document Type maintenance document is created for an edit operation originating from a lookup screen
+     */
     public void testEditDocType() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());

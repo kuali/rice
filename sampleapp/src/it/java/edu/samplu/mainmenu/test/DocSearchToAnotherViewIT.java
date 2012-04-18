@@ -7,7 +7,13 @@ import org.junit.Test;
 import java.util.regex.Pattern;
 import static org.junit.Assert.assertTrue;
 
-public class DocSearchToAnotherView {
+/**
+ * test that after doc search, navigating to people flow maintenance view does not cause Javascript errors
+ * and therefore interfere with JS functionality like validation
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class DocSearchToAnotherViewIT {
     private Selenium selenium;
 
     @Before
@@ -22,9 +28,8 @@ public class DocSearchToAnotherView {
      * and therefore interfere with JS functionality like validation
      */
 	public void testDocSearchToAnotherView() throws Exception {
-        selenium.open("portal.do");
+        selenium.open(System.getProperty("remote.public.url"));
         selenium.waitForPageToLoad("30000");
-		selenium.selectWindow("null");
 		selenium.type("name=__login_user", "admin");
 		selenium.click("css=input[type=\"submit\"]");
 		selenium.waitForPageToLoad("30000");
@@ -36,6 +41,7 @@ public class DocSearchToAnotherView {
 		selenium.selectFrame("relative=up");
 		selenium.click("link=Main Menu");
 		selenium.waitForPageToLoad("30000");
+        selenium.setSpeed("2000");
 		selenium.click("link=People Flow");
 		selenium.waitForPageToLoad("30000");
 		selenium.selectFrame("iframeportlet");

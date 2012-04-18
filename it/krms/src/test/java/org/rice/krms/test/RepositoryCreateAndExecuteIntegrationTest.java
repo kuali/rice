@@ -42,16 +42,10 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.repository.ActionBoService;
 import org.kuali.rice.krms.impl.repository.AgendaBoService;
-import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
-import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
@@ -94,17 +88,13 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     static final String BOOL1 = "bool1";
     static final String BOOL2 = "bool2";
 
-    // Services needed for creation:
+//    // Services needed for creation:
 	private TermBoService termBoService;
-	private ContextBoService contextRepository;
-    private KrmsTypeRepositoryService krmsTypeRepository;
 
-//    private PropositionBoService propositionBoService;
     private RuleBoService ruleBoService;
     private AgendaBoService agendaBoService;
     private ActionBoService actionBoService;
     private FunctionBoServiceImpl functionBoService;
-    private KrmsAttributeDefinitionService krmsAttributeDefinitionService;
 
     /**
      *
@@ -324,52 +314,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         assertFalse(TestActionTypeService.actionFired(agendaName+"::Rule3::TestAction"));
     }
 
-    private ContextDefinition createContextDefinition(String nameSpace, String name, Map<String, String> contextAttributes) {
-        // Attributes for context;
-        List<KrmsTypeAttribute.Builder> contextAttributeBuilders = new ArrayList<KrmsTypeAttribute.Builder>();
-        int contextAttrSequenceIndex = 0;
-
-        List<KrmsAttributeDefinition> attributeDefintions = new ArrayList<KrmsAttributeDefinition>();
-        
-        if (contextAttributes != null) for (Map.Entry<String,String> entry : contextAttributes.entrySet()) {
-            KrmsAttributeDefinition.Builder contextTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, entry.getKey(), nameSpace);
-            contextTypeAttributeDefnBuilder.setLabel(entry.getKey() + " attribute label");
-            KrmsAttributeDefinition contextTypeAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(contextTypeAttributeDefnBuilder.build());
-            attributeDefintions.add(contextTypeAttributeDefinition);
-
-            // Attr for context;
-            contextAttributeBuilders.add(KrmsTypeAttribute.Builder.create(null, contextTypeAttributeDefinition.getId(),
-                    contextAttrSequenceIndex));
-            contextAttrSequenceIndex += 1;
-        }
-
-        // KrmsType for context
-        KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
-        krmsContextTypeDefnBuilder.setAttributes(contextAttributeBuilders);
-        KrmsTypeDefinition krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
-        krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
-
-        // Context
-        ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(nameSpace, name);
-        contextBuilder.setTypeId(krmsContextTypeDefinition.getId());
-        ContextDefinition contextDefinition = contextBuilder.build();
-        contextDefinition = contextRepository.createContext(contextDefinition);
-
-        // Context Attribute
-        // TODO: do this fur eel
-        for (KrmsAttributeDefinition contextTypeAttributeDefinition : attributeDefintions) {
-            ContextAttributeBo contextAttribute = new ContextAttributeBo();
-            contextAttribute.setAttributeDefinitionId(contextTypeAttributeDefinition.getId());
-            contextAttribute.setContextId(contextDefinition.getId());
-            contextAttribute.setValue(contextAttributes.get(contextTypeAttributeDefinition.getName()));
-            getBoService().save(contextAttribute);
-        }
-
-        return contextDefinition;
-    }
-
     private void createAgendaDefinition(String agendaName, ContextDefinition contextDefinition, String eventName, String nameSpace ) {
-        KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace, "testAgendaTypeService");
+        KrmsTypeDefinition krmsGenericTypeDefinition = createKrmsGenericTypeDefinition(nameSpace, "testAgendaTypeService", "event name", "Event");
 
         AgendaDefinition agendaDef =
             AgendaDefinition.Builder.create(null, agendaName, krmsGenericTypeDefinition.getId(), contextDefinition.getId()).build();
@@ -419,32 +365,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         return krmsActionTypeDefinition;
     }
-
-
-    private KrmsTypeDefinition createKrmsGenericTypeDefinition(String nameSpace, String serviceName) {
-        KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepository.getTypeByName(nameSpace, "KrmsTestGenericType");
-
-        if (null == krmsGenericTypeDefinition) {
-
-            // Attribute Defn for generic type;
-            KrmsAttributeDefinition.Builder genericTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Event", nameSpace);
-            genericTypeAttributeDefnBuilder.setLabel("event name");
-            KrmsAttributeDefinition genericTypeAttributeDefinition1 = krmsAttributeDefinitionService.createAttributeDefinition(genericTypeAttributeDefnBuilder.build());
-
-            // Attr for generic type;
-            KrmsTypeAttribute.Builder genericTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, genericTypeAttributeDefinition1.getId(), 1);
-
-            // Can use this generic type for KRMS bits that don't actually rely on services on the bus at this point in time
-            KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestGenericType", nameSpace);
-            krmsGenericTypeDefnBuilder.setServiceName(serviceName);
-            krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
-            krmsGenericTypeDefinition = krmsTypeRepository.createKrmsType(krmsGenericTypeDefnBuilder.build());
-
-        }
-
-        return krmsGenericTypeDefinition;
-    }
-
+    
 
     private RuleDefinition createRuleDefinition(String nameSpace, String ruleName, ContextDefinition contextDefinition,
             LogicalOperator operator, PropositionParametersBuilder ... pbs) {

@@ -323,8 +323,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     private void saveNewParameterizedTerms(PropositionBo propositionBo) {
         if (StringUtils.isBlank(propositionBo.getCompoundOpCode())) {
             // it is a simple proposition
-            String termId = propositionBo.getParameters().get(0).getValue();
-            if (termId.startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+             if (!propositionBo.getParameters().isEmpty() && propositionBo.getParameters().get(0).getValue().startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+                String termId = propositionBo.getParameters().get(0).getValue();
                 String termSpecId = termId.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
                 // create new term
                 TermBo newTerm = new TermBo();

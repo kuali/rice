@@ -20,11 +20,13 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="UifCompView-WindowEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
+  <bean id="UifCompView-WindowEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="true">
     <property name="title" value="Examples of Window Events on various components"/>
     <property name="items">
       <list>
-        <ref bean="UifCompView-WEG-Group1"/>
+        <ref bean="UifCompView-WindowEvents-Group1"/>
+        <ref bean="UifCompView-WindowEvents-Group2"/>
+        <ref bean="UifCompView-WindowEvents-Group3"/>
       </list>
     </property>
   </bean>
@@ -36,14 +38,18 @@
       </list>
     </property>
   </bean>
-  <bean id="UifCompView-MouseEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
+  <bean id="UifCompView-MouseEventsGroup" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Mouse Events"/>
     <property name="items">
       <list>
+        <ref bean="UifCompView-MouseEvents-Group1" />
+        <ref bean="UifCompView-MouseEvents-Group2" />
+        <ref bean="UifCompView-MouseEvents-Group4" />
+        <ref bean="UifCompView-MouseEvents-Group3" />
       </list>
     </property>
   </bean>
-  <bean id="UifCompView-KeyEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
+  <bean id="UifCompView-KeyEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="true">
     <property name="title" value="Key Events"/>
     <property name="items">
       <list>
@@ -58,9 +64,38 @@
     </property>
   </bean>
 
-  <bean id="UifCompView-WEG-Group1" parent="Uif-HorizontalBoxSection">
+  <bean id="UifCompView-WindowEvents-Group1" parent="Uif-HorizontalBoxSection" p:title="OnClick examples on various components">
       <property name="items">
         <list>
+          <bean parent="Uif-InputField" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"
+                p:instructionalText="Label top, with colon" p:fieldLabel.styleClasses="labelTop"
+                p:fieldLabel.renderColon="true">
+            <property name="control">
+              <bean parent="Uif-TextControl">
+                <property name="onClickScript" value="alert('Clicked Text Control');" />
+              </bean>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField-LabelTop" p:propertyName="field112" p:label="Date 1"
+                p:instructionalText="Default DateControl options">
+            <property name="control">
+              <bean parent="Uif-DateControl">
+                <property name="onClickScript" value="alert('Clicked Date Control');" />
+              </bean>
+            </property>
+          </bean>
+
+          <bean parent="Uif-InputField" p:propertyName="field110" p:label="Field Label" p:labelPlacement="TOP"
+                p:instructionalText="Focus Event"
+                p:fieldLabel.styleClasses="labelTop" p:fieldLabel.renderColon="false">
+            <property name="control">
+              <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="OnFocus Event Script Set...">
+                <property name="onFocusScript" value="alert('Clicked Text Area on Focus Event');" />
+              </bean>
+            </property>
+          </bean>
+
           <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
                 p:instructionalText="onClick">
             <property name="onClickScript" value="alert('Clicked Checkbox Input Field');" />
@@ -90,11 +125,7 @@
             <property name="onClickScript" value="
             var color = jq('input:radio:checked',this).val();
             if (color === undefined){color = 'white';};
-            if (color == 'xxx'){color = 'rgb('
-              + (Math.floor(Math.random() * 256)) + ','
-              + (Math.floor(Math.random() * 256)) + ','
-              + (Math.floor(Math.random() * 256)) + ')';
-            };
+            if (color == 'xxx'){color = 'rgb(' + (Math.floor(Math.random() * 256)) + ','+ (Math.floor(Math.random() * 256)) + ','+ (Math.floor(Math.random() * 256)) + ')';};
             jq(this).animate({backgroundColor: color },1000);
             " />
             <property name="control">
@@ -112,32 +143,6 @@
             </property>
           </bean>
 
-          <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
-                p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
-                p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
-            <property name="onClickScript" value="alert('image field onClick event fired');" />
-          </bean>
-
-          <bean parent="Uif-LinkField" p:linkLabel="Kuali Website"
-                p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links">
-            <property name="onClickScript" value="alert('Link field onClick event fired');" />
-          </bean>
-
-          <bean parent="Uif-LinkGroup" p:title="LinkGroup"
-                p:instructionalText="LinkGroup with | delimiter and [] begin and end delimiter"
-                p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
-            <property name="onClickScript" value="alert('LinkGroup onClick event fired');" />
-            <property name="items">
-              <list>
-                <bean parent="Uif-ActionLink"
-                      p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 1"/>
-                <bean parent="Uif-ActionLink"
-                      p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 2"/>
-                <bean parent="Uif-ActionLink"
-                      p:clientSideJs="alert('You clicked the link');" p:actionLabel="Link 3"/>
-              </list>
-            </property>
-          </bean>
 
           <bean parent="Uif-InputField" p:propertyName="field119" p:label="Select Control" p:width="auto"
                 p:instructionalText="SelectControl using an optionsFinder" p:defaultValue="4">
@@ -147,14 +152,6 @@
             </property>
             <property name="optionsFinder">
               <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
-            </property>
-          </bean>
-
-          <bean parent="Uif-InputField" p:propertyName="fileUpload" p:label="File Control">
-            <property name="onClickScript" value="alert('File Control Input Field onClick event fired.');" />
-            <property name="instructionalText" value="Use to upload files"/>
-            <property name="control">
-              <bean parent="Uif-FileControl" p:size="30"/>
             </property>
           </bean>
 
@@ -175,6 +172,146 @@
               <bean parent="Uif-SpinnerControl"/>
             </property>
           </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="UifCompView-WindowEvents-Group2" parent="Uif-HorizontalBoxSection">
+      <property name="items">
+        <list>
+          <bean parent="Uif-LinkField" p:linkLabel="Kuali Website"
+                p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links">
+            <property name="onClickScript" value="alert('Link field onClick event fired');" />
+          </bean>
+          <bean parent="Uif-InputField" p:propertyName="fileUpload" p:label="File Control">
+            <property name="onClickScript" value="alert('File Control Input Field onClick event fired.');" />
+            <property name="instructionalText" value="Use to upload files"/>
+            <property name="control">
+              <bean parent="Uif-FileControl" p:size="30"/>
+            </property>
+          </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="UifCompView-WindowEvents-Group3" parent="Uif-HorizontalBoxSection">
+      <property name="items">
+        <list>
+          <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
+                p:captionHeaderText="Click and Double Click on an Image" p:cutlineText="" p:styleClasses="kr-photo"
+                p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
+            <property name="onDblClickScript" value="jq(this).animate({marginLeft: '0px'}, 'slow', 'easeOutBounce');"/>
+            <property name="onClickScript" value="jq(this).animate({marginLeft: '+=80px'}, 'slow');"/>
+          </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="UifCompView-MouseEvents-Group1" parent="Uif-HorizontalBoxSection">
+      <property name="items">
+        <list>
+          <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+                p:instructionalText="Test on mouse over" p:style="border: 0px solid #999999; width:10%">
+            <property name="onMouseOverScript" value="jq(this).stop().animate({width: '50%',marginLeft: '',fontSize: '3em',borderWidth: '10px'}, 500 );"/>
+            <property name="onMouseOutScript" value="jq(this).stop().animate({width: '10%',marginLeft: '',fontSize: '1em',borderWidth: '0px'},200 );"/>
+            <property name="control">
+              <bean parent="Uif-CheckboxControl"/>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
+    <bean id="UifCompView-MouseEvents-Group2" parent="Uif-HorizontalBoxSection">
+      <property name="items">
+        <list>
+          <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
+                        p:captionHeaderText="Mouse Up and Down" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
+                        p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
+            <property name="onMouseDownScript" value="jq(this).stop().animate({opacity: '0.1',borderWidth: '10px'}, 500 );"/>
+            <property name="onMouseUpScript" value="jq(this).stop().animate({opacity: '1.0',borderWidth: '1px'}, 500 );"/>
+          </bean>
+          <bean parent="Uif-InputField" p:propertyName="field118" p:label="Radio OnClick Example" p:width="auto"
+                p:instructionalText="On Mouse Over">
+            <property name="onMouseOverScript" value="jq(this).stop().animate({backgroundColor:'pink'},{duration:20});
+            jq(this).stop().animate({backgroundColor:'black'},{duration:20});jq(this).stop().animate({backgroundColor:'pink'},{duration:20});
+            " />
+            <property name="onMouseOutScript" value="jq(this).stop().animate({backgroundColor:'white'},{duration:500});" />
+            <property name="control">
+              <bean parent="Uif-VerticalRadioControl">
+                <property name="options">
+                  <list>
+                    <bean parent="Uif-KeyLabelPair" p:key="blue" p:value="Blue"/>
+                    <bean parent="Uif-KeyLabelPair" p:key="red" p:value="Red"/>
+                    <bean parent="Uif-KeyLabelPair" p:key="green" p:value="Green"/>
+                  </list>
+                </property>
+              </bean>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
+  <bean id="UifCompView-MouseEvents-Group3" parent="Uif-HorizontalBoxSection" p:title="Groups and Sections may have events">
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSection" p:style="background-color:red;height:200px; width:300px">
+          <property name="onMouseOverScript" value="jq(this).stop().animate({backgroundColor:'pink'});" />
+          <property name="onMouseOutScript" value="jq(this).stop().animate({backgroundColor:'red'});" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="field112" p:label="Date 1"
+                    p:instructionalText="Default DateControl options" p:style="marginLeft:5px;">
+                <property name="control">
+                  <bean parent="Uif-DateControl">
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+                    p:instructionalText="onClick" p:style="marginLeft:5px;">
+                <property name="control">
+                  <bean parent="Uif-CheckboxControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="field131" p:style="marginLeft:5px;" p:label="Spinner Control">
+                <property name="control">
+                  <bean parent="Uif-SpinnerControl"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-HorizontalBoxSection" p:style="background-color:blue; height:200px; width:300px">
+          <property name="onMouseOverScript" value="jq(this).stop().animate({backgroundColor:'aqua'});" />
+          <property name="onMouseOutScript" value="jq(this).stop().animate({backgroundColor:'blue'});" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"
+                    p:instructionalText="Label top, with colon" p:fieldLabel.styleClasses="labelTop"
+                    p:fieldLabel.renderColon="true">
+                <property name="control">
+                  <bean parent="Uif-TextControl">
+                    <property name="onClickScript" value="alert('Clicked Text Control');" />
+                  </bean>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="UifCompView-MouseEvents-Group4" parent="Uif-HorizontalBoxSection" p:title="Mouse Events on Buttons">
+    <property name="items">
+      <list>
+        <bean parent="Uif-HorizontalBoxSection" p:style="background-color:grey; height:40px; width:900px">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Click Me!" p:style="margin-top:10px" p:clientSideJs="alert('You clicked a button');">
+                <property name="onMouseOverScript" value="
+                var n = parseInt(jq(this).css('margin-left'),10);
+                jq(this).animate({marginLeft: (n+300)&amp;800}, 'fast');"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

@@ -23,7 +23,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This is a description of what this class does - chang don't forget to fill this in. 
+ * tests PersistableAttachmentBase getters and setters
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -37,17 +37,15 @@ public class PersistableAttachmentBaseTest {
 		persistableAttachmentBase = new PersistableAttachmentBase();
 	}
 
-	/**
-	 * This method ...
-	 * 
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
-	persistableAttachmentBase = null;
+	    persistableAttachmentBase = null;
 	}
 	
 	@Test
+    /**
+     * tests attachmentContent getter and setter
+     */
 	public void testAttachmentContent(){
 		byte[] dummyByte = "dummy string".getBytes(); 
 		persistableAttachmentBase.setAttachmentContent(dummyByte);
@@ -55,12 +53,18 @@ public class PersistableAttachmentBaseTest {
 	}
 	
 	@Test
+    /**
+     * tests fileName getter and setter
+     */
 	public void testFileName(){
 		persistableAttachmentBase.setFileName("FileName");
 		assertEquals("Testing FileName in PersistableAttachmentBase.","FileName",persistableAttachmentBase.getFileName());
 	}
 	
 	@Test
+    /**
+     * tests contentType getter and setter
+     */
 	public void testContentType(){
 		persistableAttachmentBase.setContentType("contentType");
 		assertEquals("Testing FileName in PersistableAttachmentBase.","contentType",persistableAttachmentBase.getContentType());

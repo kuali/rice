@@ -165,12 +165,13 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
      * @return
      */
     public boolean validContextAgendaNamespace(AgendaEditor agendaEditor) {
-        // TODO validate through krms_cntxt_vld_agenda_t
-        if (StringUtils.isBlank(agendaEditor.getNamespace())) {
+        if (StringUtils.isNotBlank(agendaEditor.getNamespace()) &&
+                getContextBoService().getContextByNameAndNamespace(agendaEditor.getContextName(), agendaEditor.getNamespace()) != null) {
+            return true;
+        } else {
             this.putFieldError(KRMSPropertyConstants.Context.NAMESPACE, "error.context.invalidNamespace");
             return false;
         }
-        return true;
     }
 
     private boolean validAgendaTypeAndAttributes( AgendaEditor oldAgendaEditor, AgendaEditor newAgendaEditor) {

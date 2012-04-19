@@ -33,6 +33,7 @@ import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.SerializerService;
 import org.kuali.rice.krad.service.XmlObjectSerializerService;
+import org.kuali.rice.krad.util.DateTimeConverter;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertyType;
@@ -70,6 +71,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
         xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
         xstream.addDefaultImplementation(AutoPopulatingList.class, ListProxyDefaultImpl.class);
         xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
+        xstream.registerConverter(new DateTimeConverter());
     }
         
     public class ProxyConverter extends ReflectionConverter {

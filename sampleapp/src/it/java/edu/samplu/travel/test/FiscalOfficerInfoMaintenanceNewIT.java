@@ -23,7 +23,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 /**
- * TODO Administrator don't forget to fill this in. 
+ * tests that user 'admin', can initiate, save and submit a FiscalOfficerInfo maintenance document
+ * resulting in a final document
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -38,14 +39,17 @@ public class FiscalOfficerInfoMaintenanceNewIT {
     
     @Test
     public void testUntitled() throws Exception {
-        selenium.open("/portal.do?selectedTab=main");
+        selenium.open(System.getProperty("remote.public.url"));
         selenium.type("__login_user", "admin");
         selenium.click("//input[@value='Login']");     
-        selenium.waitForPageToLoad("50000");    
+        selenium.waitForPageToLoad("50000");
+        selenium.click("link=KRAD");
+        selenium.waitForPageToLoad("50000");
         selenium.click("//a[@title='FiscalOfficerInfo Maintenance (New)']");
         selenium.waitForPageToLoad("50000");
-        selenium.selectFrame("iframeportlet");       
-        String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
+        selenium.selectFrame("iframeportlet");
+        // String docId = selenium.getText("//span[contains(@id , '_attribute_span')][position()=1]");
+        String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         selenium.type("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");      
         selenium.type("//input[@name='document.newMaintainableObject.dataObject.id']", "5");      
         selenium.type("//input[@name='document.newMaintainableObject.dataObject.userName']", "Jigar");
@@ -112,9 +116,7 @@ public class FiscalOfficerInfoMaintenanceNewIT {
         //-----Step 3 verified that doc is final -------//      
      
     }
-    
-    
-    
+
     @After
     public void tearDown() throws Exception {
         selenium.stop();

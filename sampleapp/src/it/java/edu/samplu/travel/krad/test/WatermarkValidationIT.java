@@ -25,11 +25,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- *tests whether the watermarking is working ok
+ * tests whether the watermarks is work as expected even when they contain an apostrophe
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WatermarkValidation {
+public class WatermarkValidationIT {
     private Selenium selenium;
 
     @Before
@@ -53,16 +53,14 @@ public class WatermarkValidation {
 		selenium.click("link=Uif Components (Kitchen Sink)");
 		selenium.waitForPageToLoad("100000");
         selenium.selectFrame("iframeportlet");
-		//selenium.selectWindow("name=iframeportlet");
-        selenium.focus("id=257");
-		selenium.type("id=257", "something");
-        selenium.focus("id=371");
-        selenium.type("id=371", "something else");
-        assertEquals("something", selenium.getValue("xpath=//*[@id=\"257\"]"));
+        selenium.focus("id=u73_control");
+		selenium.type("id=u73_control", "something");
+        selenium.focus("id=u103_control");
+        selenium.type("id=u103_control", "something else");
+        assertEquals("something", selenium.getValue("xpath=//*[@id=\"u73_control\"]"));
 		selenium.chooseCancelOnNextConfirmation();
-		selenium.click("id=10");
-        //selenium.
-        //Thread.sleep(1000);
+        // 'cancel' link
+		selenium.click("id=u29");
 		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
     }
 

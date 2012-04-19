@@ -50,48 +50,51 @@ public class DirtyFieldsCheckIT {
 		selenium.waitForPageToLoad("30000");
 		selenium.selectFrame("iframeportlet");
         Thread.sleep(3000);
-		selenium.focus("id=u111");
-		selenium.type("id=u111", "test 1");
-		selenium.focus("id=u137");
-		selenium.type("id=u137", "test 2");
-		//selenium.click("id=u13");
-		selenium.click("id=u901");
+		selenium.focus("id=u73_control");
+		selenium.type("id=u73_control", "test 1");
+		selenium.focus("id=u103_control");
+		selenium.type("id=u103_control", "test 2");
+		// 'Other Fields' navigation link
+		selenium.click("id=u967");
         assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
         Thread.sleep(3000);
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u89")) break; } catch (Exception e) {}
+            try { if (selenium.isElementPresent("id=u51_control")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-		selenium.type("id=u89", "here");
-		selenium.type("id=u115", "there");
-		//selenium.click("id=u13");
-		selenium.click("id=u904");
+        selenium.focus("id=u51_control");
+		selenium.type("id=u51_control", "here");
+        selenium.focus("id=u81_control");
+		selenium.type("id=u81_control", "there");
+		// 'Validation' navigation link
+		selenium.click("id=u970");
         assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
         Thread.sleep(3000);
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u144")) break; } catch (Exception e) {}
+            try { if (selenium.isElementPresent("id=u114_control")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        selenium.focus("id=u144");
-		selenium.type("id=u144", "this");
-        selenium.focus("id=u170");
-		selenium.type("id=u170", "that");
-		//selenium.click("id=u13");
-		selenium.click("id=u907");
+        selenium.focus("id=u114_control");
+		selenium.type("id=u114_control", "this");
+        selenium.focus("id=u144_control");
+		selenium.type("id=u144_control", "that");
+		// 'Validation - Regex' navigation link
+		selenium.click("id=u973");
         assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
         Thread.sleep(2000);
         for (int second = 0;; second++) {
             if (second >= 60) fail("timeout");
-            try { if (selenium.isElementPresent("id=u82")) break; } catch (Exception e) {}
+            try { if (selenium.isElementPresent("id=u44_control")) break; } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        selenium.focus("id=u82");
-		selenium.type("id=u82", "1");
-        selenium.focus("id=u108");
-		selenium.type("id=u108", "2");
-		selenium.click("id=u913");
+        selenium.focus("id=u44_control");
+		selenium.type("id=u44_control", "1");
+        selenium.focus("id=u74_control");
+		selenium.type("id=u74_control", "2");
+        // 'Progressive Disclosure' navigation link
+		selenium.click("id=u976");
 		assertTrue(selenium.getConfirmation().matches("^Form has unsaved data\\. Do you want to leave anyway[\\s\\S]$"));
 	}
 

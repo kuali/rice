@@ -33,7 +33,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- *  Tests that the data attributes are rendered as expected for all controls and widgets
+ *  Tests that the data attributes are rendered as expected for all controls
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rice.krms.test;
+package org.kuali.rice.krms.test;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;

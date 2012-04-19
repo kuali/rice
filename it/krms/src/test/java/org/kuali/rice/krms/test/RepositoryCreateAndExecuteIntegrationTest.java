@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rice.krms.test;
+package org.kuali.rice.krms.test;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;

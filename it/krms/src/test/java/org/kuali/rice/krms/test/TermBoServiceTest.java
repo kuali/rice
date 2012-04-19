@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rice.krms.test;
+package org.kuali.rice.krms.test;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krms.impl.repository.TermBoService;

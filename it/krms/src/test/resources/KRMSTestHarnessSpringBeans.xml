@@ -102,7 +102,7 @@
     </bean>-->
 
 
-  <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService">
+  <bean id="testActionTypeService" class="org.kuali.rice.krms.test.TestActionTypeService">
       <constructor-arg><value>testAction</value></constructor-arg>
   </bean>
 

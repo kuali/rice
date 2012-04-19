@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.rice.krms.test;
+package org.kuali.rice.krms.test;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;

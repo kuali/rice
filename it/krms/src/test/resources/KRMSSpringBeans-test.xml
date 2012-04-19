@@ -56,11 +56,11 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService">
+  <bean id="testActionTypeService" class="org.kuali.rice.krms.test.TestActionTypeService">
       <constructor-arg><value>testAction</value></constructor-arg>
   </bean>
 
-  <bean id="customComparisonOperator" class="org.rice.krms.test.CustomComparisonOperator"/>
+  <bean id="customComparisonOperator" class="org.kuali.rice.krms.test.CustomComparisonOperator"/>
 
   <bean id="comparisonOperatorService"
         class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl"

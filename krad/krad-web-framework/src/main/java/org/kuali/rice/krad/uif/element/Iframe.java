@@ -56,12 +56,4 @@ public class Iframe extends ContentElementBase {
 		this.frameborder = frameborder;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
-	 */
-	@Override
-	public boolean getSupportsOnLoad() {
-		return true;
-	}
-
 }

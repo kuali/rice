@@ -1148,39 +1148,6 @@ public class View extends ContainerBase {
     }
 
     /**
-     * onSubmit script configured on the <code>View</code> gets placed on the
-     * form element
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnSubmit()
-     */
-    @Override
-    public boolean getSupportsOnSubmit() {
-        return true;
-    }
-
-    /**
-     * onLoad script configured on the <code>View</code> gets placed in a load
-     * call
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
-     */
-    @Override
-    public boolean getSupportsOnLoad() {
-        return true;
-    }
-
-    /**
-     * onDocumentReady script configured on the <code>View</code> gets placed in
-     * a document ready jQuery block
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
-     */
-    @Override
-    public boolean getSupportsOnDocumentReady() {
-        return true;
-    }
-
-    /**
      * Breadcrumb widget used for displaying homeward path and history
      *
      * @return the breadcrumbs

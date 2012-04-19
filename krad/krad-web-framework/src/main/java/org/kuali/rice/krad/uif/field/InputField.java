@@ -479,14 +479,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnLoad()
-     */
-    @Override
-    public boolean getSupportsOnLoad() {
-        return true;
-    }
-
-    /**
      * Lookup finder widget for the field
      *
      * <p>

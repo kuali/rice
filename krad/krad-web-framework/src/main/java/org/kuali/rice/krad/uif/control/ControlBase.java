@@ -91,31 +91,6 @@ public abstract class ControlBase extends ContentElementBase implements Control 
         this.disabledReason = disabledReason;
     }
 
-    @Override
-    public boolean getSupportsOnChange() {
-        return true;
-    }
-
-    @Override
-    public boolean getSupportsOnBlur() {
-        return true;
-    }
-
-    @Override
-    public boolean getSupportsOnClick() {
-        return true;
-    }
-
-    @Override
-    public boolean getSupportsOnDblClick() {
-        return true;
-    }
-
-    @Override
-    public boolean getSupportsOnFocus() {
-        return true;
-    }
-
     /**
      * Returns js that will add data to this component by the element which matches its id.
      *

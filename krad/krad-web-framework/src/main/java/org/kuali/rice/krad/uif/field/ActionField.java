@@ -460,14 +460,6 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getSupportsOnClick()
-     */
-    @Override
-    public boolean getSupportsOnClick() {
-        return true;
-    }
-
-    /**
      * Setter for the light box lookup widget
      * 
      * @param lightBoxLookup

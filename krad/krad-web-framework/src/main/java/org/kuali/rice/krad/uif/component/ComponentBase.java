@@ -811,13 +811,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnLoad()
-     */
-    public boolean getSupportsOnLoad() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnLoadScript()
      */
     public String getOnLoadScript() {
@@ -831,13 +824,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnLoadScript(String onLoadScript) {
         this.onLoadScript = onLoadScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDocumentReady()
-     */
-    public boolean getSupportsOnDocumentReady() {
-        return true;
     }
 
     /**
@@ -857,13 +843,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnUnload()
-     */
-    public boolean getSupportsOnUnload() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnUnloadScript()
      */
     public String getOnUnloadScript() {
@@ -877,13 +856,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnUnloadScript(String onUnloadScript) {
         this.onUnloadScript = onUnloadScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClose()
-     */
-    public boolean getSupportsOnClose() {
-        return false;
     }
 
     /**
@@ -903,13 +875,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnBlur()
-     */
-    public boolean getSupportsOnBlur() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnBlurScript()
      */
     public String getOnBlurScript() {
@@ -923,13 +888,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnBlurScript(String onBlurScript) {
         this.onBlurScript = onBlurScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnChange()
-     */
-    public boolean getSupportsOnChange() {
-        return false;
     }
 
     /**
@@ -949,13 +907,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
-     */
-    public boolean getSupportsOnClick() {
-        return true;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnClickScript()
      */
     public String getOnClickScript() {
@@ -969,13 +920,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnClickScript(String onClickScript) {
         this.onClickScript = onClickScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnDblClick()
-     */
-    public boolean getSupportsOnDblClick() {
-        return true;
     }
 
     /**
@@ -995,13 +939,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnFocus()
-     */
-    public boolean getSupportsOnFocus() {
-        return false;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnFocusScript()
      */
     public String getOnFocusScript() {
@@ -1015,13 +952,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnFocusScript(String onFocusScript) {
         this.onFocusScript = onFocusScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnSubmit()
-     */
-    public boolean getSupportsOnSubmit() {
-        return false;
     }
 
     /**
@@ -1041,13 +971,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyPress()
-     */
-    public boolean getSupportsOnKeyPress() {
-        return true;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyPressScript()
      */
     public String getOnKeyPressScript() {
@@ -1061,13 +984,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnKeyPressScript(String onKeyPressScript) {
         this.onKeyPressScript = onKeyPressScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyUp()
-     */
-    public boolean getSupportsOnKeyUp() {
-        return true;
     }
 
     /**
@@ -1087,13 +1003,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnKeyDown()
-     */
-    public boolean getSupportsOnKeyDown() {
-        return true;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyDownScript()
      */
     public String getOnKeyDownScript() {
@@ -1107,13 +1016,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnKeyDownScript(String onKeyDownScript) {
         this.onKeyDownScript = onKeyDownScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOver()
-     */
-    public boolean getSupportsOnMouseOver() {
-        return true;
     }
 
     /**
@@ -1133,13 +1035,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseOut()
-     */
-    public boolean getSupportsOnMouseOut() {
-        return true;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOutScript()
      */
     public String getOnMouseOutScript() {
@@ -1153,13 +1048,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnMouseOutScript(String onMouseOutScript) {
         this.onMouseOutScript = onMouseOutScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseUp()
-     */
-    public boolean getSupportsOnMouseUp() {
-        return true;
     }
 
     /**
@@ -1179,13 +1067,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseDown()
-     */
-    public boolean getSupportsOnMouseDown() {
-        return true;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseDownScript()
      */
     public String getOnMouseDownScript() {
@@ -1199,13 +1080,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOnMouseDownScript(String onMouseDownScript) {
         this.onMouseDownScript = onMouseDownScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnMouseMove()
-     */
-    public boolean getSupportsOnMouseMove() {
-        return true;
     }
 
     /**

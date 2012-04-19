@@ -71,10 +71,4 @@ public class Link extends ContentElementBase {
         this.hrefText = hrefText;
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getSupportsOnClick()
-     */
-    public boolean getSupportsOnClick() {
-        return true;
-    }
 }

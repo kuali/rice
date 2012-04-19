@@ -179,6 +179,12 @@ public class FieldBridge {
             		LOG.warn( "Unable to get principal ID or person name property in FieldBridge.", ex );
             	}
             }
+            if (fieldControl != null && fieldControl.isFile()) {
+                if (Field.FILE.equals(field.getFieldType())) {
+                    Object fileName = ObjectUtils.getNestedValue(bo, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+                    field.setPropertyValue(fileName);
+                }
+            }
             FieldUtils.setInquiryURL(field, bo, propertyName);
 		} catch (InstantiationException e) {
             LOG.error("Unable to get instance of KeyValuesFinder: " + e.getMessage());

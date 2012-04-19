@@ -283,6 +283,10 @@ drop table trv_doc_acct
 /
 drop table TRV_ACCT_USE_RT_T
 /
+drop table TRV_MULTI_ATT_SAMPLE
+/
+drop table TRV_ATT_SAMPLE
+/
 drop sequence trv_fo_id_s
 /
 

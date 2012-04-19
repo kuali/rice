@@ -60,7 +60,7 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	 * 
 	 * @see org.kuali.rice.krad.inquiry.Inquirable#getSections(org.kuali.rice.krad.bo.BusinessObject)
 	 */
-	public List getSections(BusinessObject bo) {
+	public List<Section> getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
 
 		return WebRuleUtils.customizeSections((RuleBaseValues)bo, sections, false);

@@ -296,6 +296,9 @@ public abstract class KualiAction extends DispatchAction {
         String parameterName = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
         if (StringUtils.isNotBlank(parameterName)) {
             String lineNumber = StringUtils.substringBetween(parameterName, ".line", ".");
+            if (StringUtils.isEmpty(lineNumber)) {
+                return selectedLine;
+            }
             selectedLine = Integer.parseInt(lineNumber);
         }
 

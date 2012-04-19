@@ -245,7 +245,7 @@ public final class WebRuleUtils {
 	}
 	
 
-	public static List customizeSections(RuleBaseValues rule, List<Section> sections, boolean delegateRule) {
+	public static List<Section> customizeSections(RuleBaseValues rule, List<Section> sections, boolean delegateRule) {
 
 		List<Section> finalSections = new ArrayList<Section>();
 		for (Section section : sections) {

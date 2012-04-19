@@ -48,7 +48,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class is the base action form for all maintenance documents.
@@ -66,6 +67,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     protected Map<String, String> oldMaintainableValues;
     protected Map<String, String> newMaintainableValues;
     protected String maintenanceAction;
+    private static final Pattern ELEMENT_IN_COLLECTION = Pattern.compile("(.*)(\\[)([0-9]*)(\\])(.*)");
+
 
 	/**
      * @see KualiDocumentFormBase#addRequiredNonEditableProperties()
@@ -154,7 +157,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
        }
         
         MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
-        
+
         //Handling the Multi-Part Attachment
         for ( Object obj : requestParameters.entrySet() ) {
             String parameter = (String)((Map.Entry)obj).getKey(); 
@@ -163,11 +166,20 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 Object propertyValue = requestParameters.get(parameter);
                 
                 if(propertyValue != null && propertyValue instanceof FormFile) {
-                      populateAttachmentFile(maintenanceDocument, propertyName, (FormFile) propertyValue);
-                    if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
-                        maintenanceDocument.setFileAttachment((FormFile) propertyValue);
+                    populateAttachmentFile(maintenanceDocument, propertyName, (FormFile) propertyValue);
+                    if (propertyName.startsWith(KRADConstants.MAINTENANCE_ADD_PREFIX)) {
+                        String parsedPropertyName = propertyName.substring(
+                                KRADConstants.MAINTENANCE_ADD_PREFIX.length());
+                        String collectionName = parseAddCollectionName(parseAddCollectionName(parsedPropertyName));
+                        maintenanceDocument.setAttachmentCollectionName(collectionName);
+                        maintenanceDocument.setAttachmentListPropertyName(propertyName.substring(KRADConstants.MAINTENANCE_ADD_PREFIX.length()).substring(collectionName.length() + 1));
+                    } else {
+                        //if property not part of collection
+                        Matcher matcher = ELEMENT_IN_COLLECTION.matcher(propertyName);
+                        if (!matcher.matches()) {
+                            maintenanceDocument.setAttachmentPropertyName(propertyName);
+                        }
                     }
-                    maintenanceDocument.setAttachmentPropertyName(propertyName);
                 }
             }
         }
@@ -177,23 +189,37 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
          if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
  	 	 	 PersistableBusinessObject boClass;
              String boPropertyName;
-             boClass = maintenanceDocument.getNewMaintainableObject().getBusinessObject();
-             boPropertyName = propertyName;
-             String className = boClass.getClass().getName();
-             try {
-                 PropertyUtils.setProperty(boClass, boPropertyName, propertyValue);
 
-             } catch (InvocationTargetException e) {
-                 throw new RuntimeException("no setter for property '" + className + "." + boPropertyName + "'", e);
-             } catch (NoSuchMethodException e) {
-                 throw new RuntimeException("no setter for property '" + className + "." + boPropertyName + "'", e);
-             } catch (IllegalAccessException e) {
-                 throw new RuntimeException("problem accessing property '" + className + "." + boPropertyName + "'", e);
+             if (propertyName.startsWith(KRADConstants.MAINTENANCE_ADD_PREFIX)) {
+                 String collectionName = parseAddCollectionName(propertyName.substring(KRADConstants.MAINTENANCE_ADD_PREFIX.length()));
+                 boClass = maintenanceDocument.getNewMaintainableObject().getNewCollectionLine(collectionName);
+                 boPropertyName = propertyName.substring(KRADConstants.MAINTENANCE_ADD_PREFIX.length()).substring(collectionName.length() + 1);
+                 setAttachmentProperty(boClass, boPropertyName, propertyValue);
+             } else {
+                 boClass = maintenanceDocument.getNewMaintainableObject().getBusinessObject();
+                 boPropertyName = propertyName;
+                 if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
+                     maintenanceDocument.setFileAttachment((FormFile) propertyValue);
+                 }
+                 setAttachmentProperty(boClass, boPropertyName, propertyValue);
+
              }
          }
     }
 
-             /**
+    private void setAttachmentProperty(PersistableBusinessObject boClass, String propertyName, Object propertyValue) {
+        try {
+            PropertyUtils.setProperty(boClass, propertyName, propertyValue);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("no setter for property '" + boClass.getClass().getName() + "." + propertyName + "'", e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("no setter for property '" + boClass.getClass().getName() + "." + propertyName + "'", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("problem accessing property '" + boClass.getClass().getName() + "." + propertyName + "'", e);
+        }
+    }
+
+    /**
      * Hook into populate so we can set the maintenance documents and feed the field values to its maintainables.
      */
     @Override
@@ -558,15 +584,18 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 		StringBuilder collectionNameBuilder = new StringBuilder();
 
 		boolean firstPathElement = true;
-		for (String pathElement : propertyName.split("\\.")) if (!StringUtils.isBlank(pathElement)) {
-			if (firstPathElement) {
-				firstPathElement = false;
-			} else {
-				collectionNameBuilder.append(".");
-			}
-			collectionNameBuilder.append(pathElement);
-			if (!(pathElement.endsWith("]") && pathElement.contains("["))) break; 
-		}
+        for (String pathElement : propertyName.split("\\.")) {
+            if (!StringUtils.isBlank(pathElement)) {
+                if (firstPathElement) {
+                    firstPathElement = false;
+                } else {
+                    collectionNameBuilder.append(".");
+                }
+                collectionNameBuilder.append(pathElement);
+                if (!(pathElement.endsWith("]") && pathElement.contains("[")))
+                    break;
+            }
+        }
 		String collectionName = collectionNameBuilder.toString();
 		return collectionName;
 	}

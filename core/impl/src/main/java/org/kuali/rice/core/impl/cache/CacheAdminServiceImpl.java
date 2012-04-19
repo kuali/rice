@@ -62,12 +62,12 @@ public class CacheAdminServiceImpl implements CacheAdminService, InitializingBea
     }
 
     protected void logCacheFlush(Collection<CacheTarget> cacheTargets) {
-        if (LOG.isInfoEnabled()) {
+        if (LOG.isDebugEnabled()) {
             List<String> cacheTargetLog = new ArrayList<String>(cacheTargets.size());
             for (CacheTarget cacheTarget : cacheTargets) {
                 cacheTargetLog.add(cacheTarget.toString());
             }
-            LOG.info("Performing local flush of cache targets [" + StringUtils.join(cacheTargetLog, ", ") + "]");
+            LOG.debug("Performing local flush of cache targets [" + StringUtils.join(cacheTargetLog, ", ") + "]");
         }
     }
 

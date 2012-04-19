@@ -126,6 +126,7 @@ public interface KrmsAttributeDefinitionService {
 	 * @param namespace - the namespace code of the attribute
 	 * @return - the attribute definition id 
 	 */
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'{ID}namespaceCode=' + #p0 + '|' + 'name=' + #p1")
 	public String getKrmsAttributeId( String attributeName, String namespace);
 	
 	/**

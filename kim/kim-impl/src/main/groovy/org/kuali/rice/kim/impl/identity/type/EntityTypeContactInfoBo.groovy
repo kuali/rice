@@ -26,21 +26,21 @@ import javax.persistence.JoinColumns
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
+
 import org.apache.commons.collections.CollectionUtils
 import org.hibernate.annotations.Type
 import org.kuali.rice.kim.api.identity.EntityUtils
 import org.kuali.rice.kim.api.identity.address.EntityAddress
-
+import org.kuali.rice.kim.api.identity.email.EntityEmail
 import org.kuali.rice.kim.api.identity.phone.EntityPhone
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault
 import org.kuali.rice.kim.impl.identity.EntityTypeBo
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault
-import org.kuali.rice.kim.api.identity.email.EntityEmail
 
 @Entity
 @IdClass(EntityTypeContactInfoId.class)

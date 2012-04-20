@@ -23,20 +23,19 @@ import javax.persistence.IdClass
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-import org.hibernate.annotations.Type
 
+import org.hibernate.annotations.Type
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.postalcode.PostalCode
-import org.kuali.rice.location.api.postalcode.PostalCodeContract
+import org.kuali.rice.location.framework.postalcode.PostalCodeEbo
 import org.kuali.rice.location.impl.country.CountryBo
 import org.kuali.rice.location.impl.county.CountyBo
 import org.kuali.rice.location.impl.state.StateBo
-import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 @IdClass(PostalCodeId.class)
 @Entity
 @Table(name = "KRLC_PSTL_CD_T")
-class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeContract, MutableInactivatable {
+class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEbo {
 
     @Id
     @Column(name = "POSTAL_CD")

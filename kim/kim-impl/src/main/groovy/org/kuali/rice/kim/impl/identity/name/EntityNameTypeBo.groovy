@@ -19,13 +19,14 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+
 import org.kuali.rice.kim.api.identity.CodedAttribute
-import org.kuali.rice.kim.api.identity.CodedAttributeContract
+import org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_ENT_NM_TYP_T")
-public class EntityNameTypeBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
+public class EntityNameTypeBo extends PersistableBusinessObjectBase implements EntityNameTypeEbo {
     @Id
     @Column(name="ENT_NM_TYP_CD")
     String code;

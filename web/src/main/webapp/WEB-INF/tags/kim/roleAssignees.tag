@@ -201,7 +201,7 @@
             	<c:set var="inquiryClass" value="org.kuali.rice.kim.impl.role.RoleBo" />
             	<c:set var="keyValue" value="id" />
             </c:if>
-              
+
               <tr>
                 <th rowspan="${rows}" class="infoline" valign="top">
                     <c:out value="${statusMember.index+1}" />
@@ -250,8 +250,13 @@
                     <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                     <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                     <c:set var="attrReadOnly" value="${(!canModifyAssignees || member.edit)}"/>
-                    <td align="left" valign="middle">
-                        <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+                    <c:set var="index" value="${statusMember.index}"/>
+                    <c:set var="kimAttrId" value="${qualifier.kimAttribute.id}"  />
+                  <td align="left" valign="middle">
+                        <div align="center">
+                          <c:if test="$(kfunc:matchingQualifierExists(KualiForm.document.members,index,kimAttrId) }">
+                            <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+                          </c:if>
                           <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                             <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                               <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">

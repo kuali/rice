@@ -30,6 +30,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,9 @@ import java.util.Map;
  *   <entry key="key2">value2</entry>
  * </...>
  * }
+ * </pre>
+ * 
+ * Note that this adapter isn't suitable for mutable attributes as it will unmarshal to an immutable form.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -63,22 +67,17 @@ public class MultiValuedStringMapAdapter extends XmlAdapter<MultiValuedStringMap
 	}
 
     @Override
-    public Map<String, List<String>> unmarshal(MultiValuedStringMapEntryList multiValuedStringMapEntryList) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-//    @Override
-//	public Map<String, List<String>> unmarshal(MultiValuedStringMapEntryList entryList) throws Exception {
-//		if (entryList == null || entryList.getEntries() == null) {
-//			return null;
-//		}
-//		List<MultiValuedStringMapEntry> entries = entryList.getEntries();
-//		Map<String, List<String>> resultMap = new HashMap<String, List<String>>(entries.size());
-//		for (MultiValuedStringMapEntry entry : entries) {
-//			resultMap.put(entry.getKey(), entry.getValues());
-//		}
-//		return Collections.unmodifiableMap(resultMap);
-//	}
+	public Map<String, List<String>> unmarshal(MultiValuedStringMapEntryList entryList) throws Exception {
+		if (entryList == null || entryList.getEntries() == null) {
+			return null;
+		}
+		List<MultiValuedStringMapEntry> entries = entryList.getEntries();
+		Map<String, List<String>> resultMap = new HashMap<String, List<String>>(entries.size());
+		for (MultiValuedStringMapEntry entry : entries) {
+			resultMap.put(entry.getKey(), entry.getValues());
+		}
+		return Collections.unmodifiableMap(resultMap);
+	}
 
     /**
     * Created by IntelliJ IDEA.
@@ -116,7 +115,7 @@ public class MultiValuedStringMapAdapter extends XmlAdapter<MultiValuedStringMap
 
         public MultiValuedStringMapEntry(Map.Entry<String, List<String>> entry) {
             this.key = entry.getKey();
-            this.values = new ArrayList<String>(entry.getValue());
+            this.values = Collections.unmodifiableList(new ArrayList<String>(entry.getValue()));
         }
 
         public String getKey() {

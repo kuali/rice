@@ -160,4 +160,12 @@
         <function-signature>java.lang.String getPrincipalDisplayName(java.lang.String)</function-signature>
         <example>${kfunc:getPrincpalDisplayName("1234")}</example>
     </function>
+    <function>
+      <description>Check to see if a matching qualifier exists</description>
+      <name>matchingQualifierExists</name>
+      <function-class>org.kuali.rice.kim.web.utils.KimWebUtils</function-class>
+      <function-signature>boolean matchingQualifierExists(java.util.List,java.lang.Integer, java.lang.String)</function-signature>
+      <example>${kfunc:matchingQualifierExists(member,index, atttrDefnId)}</example>
+  </function>
+
 </taglib>

@@ -56,13 +56,13 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService" />
+  <bean id="testActionTypeService" class="org.kuali.rice.krms.test.TestActionTypeService" />
 
-  <bean id="testTermResolverTypeService" class="org.rice.krms.test.TestTermResolverTypeService" />
+  <bean id="testTermResolverTypeService" class="org.kuali.rice.krms.test.TestTermResolverTypeService" />
 
-  <bean id="testFunctionTypeService" class="org.rice.krms.test.TestFunctionTypeService" />
+  <bean id="testFunctionTypeService" class="org.kuali.rice.krms.test.TestFunctionTypeService" />
 
-  <bean id="customComparisonOperator" class="org.rice.krms.test.CustomComparisonOperator"/>
+  <bean id="customComparisonOperator" class="org.kuali.rice.krms.test.CustomComparisonOperator"/>
 
   <bean id="comparisonOperatorService"
         class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl"

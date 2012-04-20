@@ -32,6 +32,7 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.XmlObjectSerializerService;
+import org.kuali.rice.krad.util.DateTimeConverter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -162,20 +163,4 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 		return persistenceService;
 	}
 
-    public class DateTimeConverter implements SingleValueConverter {
-        public boolean canConvert(Class clazz) {
-            return clazz.equals(DateTime.class);
-        }
-
-        @Override
-        public String toString(Object obj) {
-            return obj.toString();
-        }
-
-        @Override
-        public Object fromString(String value) {
-            return ISODateTimeFormat.dateTimeParser().parseDateTime(value);
-        }
-    }
-    
 }

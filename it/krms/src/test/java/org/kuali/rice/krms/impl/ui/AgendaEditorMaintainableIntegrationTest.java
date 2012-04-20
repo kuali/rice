@@ -40,7 +40,7 @@ import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
-import org.rice.krms.test.AbstractBoTest;
+import org.kuali.rice.krms.test.AbstractBoTest;
 
 import java.util.ArrayList;
 import java.util.Collections;

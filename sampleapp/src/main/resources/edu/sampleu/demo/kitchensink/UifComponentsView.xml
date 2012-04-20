@@ -168,15 +168,15 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page11" parent="UifCompViewPageWithFooter" p:title="Script Events"
-              p:instructionalText="Examples for Script Events">
+        <bean id="UifCompView-Page11" parent="UifCompViewPageWithFooter" p:title="Script Events">
           <property name="items">
             <list>
+              <bean parent="Uif-HeaderThree" p:headerText="KRAD supports JQuery event handlers for HTML events."/>
+              <bean parent="Uif-MessageField" p:messageText="This makes it easy for the page to respond to a users interactions with the browser." />
               <ref bean="UifCompView-WindowEventsGroup"/>
               <ref bean="UifCompView-FormEventsGroup"/>
               <ref bean="UifCompView-MouseEventsGroup"/>
               <ref bean="UifCompView-KeyEventsGroup"/>
-              <ref bean="UifCompView-Html5EventsGroup"/>
             </list>
           </property>
         </bean>

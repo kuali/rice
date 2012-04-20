@@ -76,13 +76,6 @@
     </property>
   </bean>
 
-  <bean id="UifCompView-FormEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Form Events"/>
-    <property name="items">
-      <list>
-      </list>
-    </property>
-  </bean>
   <bean id="UifCompView-MouseEventsGroup" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="title" value="Mouse Events"/>
     <property name="items">

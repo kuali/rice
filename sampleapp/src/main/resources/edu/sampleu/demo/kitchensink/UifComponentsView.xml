@@ -175,7 +175,6 @@
               <ref bean="UifCompView-WindowEventsGroup"/>
               <ref bean="UifCompView-MouseEventsGroup"/>
               <ref bean="UifCompView-KeyEventsGroup"/>
-              <ref bean="UifCompView-FormEventsGroup"/>
             </list>
           </property>
         </bean>

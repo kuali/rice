@@ -77,9 +77,6 @@ import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krad.service.PersistenceService
 import org.kuali.rice.kim.impl.identity.IdentityServiceImpl
-import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
-import org.apache.log4j.LogManager
-import org.apache.log4j.Level
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -235,14 +232,6 @@ class IdentityServiceImplTest {
         for (bo in [firstEntityBioDemographicsBo, secondEntityBioDemographicsBo]) {
             sampleEntityBioDemographics.put(bo.entityId, bo);
         }
-    }
-
-    // Hack to set log level above the threshold where IdentityService will need to be configured and available
-    // to the GlobalResourceLoader (see PermissionServiceImpl.logAuthorizationCheck & logAuthorizationCheckByTemplate)
-    // and thus break some of the tests in here.
-    @Before
-    void setLogLevel() {
-        LogManager.getLogger(PermissionServiceImpl.class).setLevel(Level.INFO);
     }
     
     @Before

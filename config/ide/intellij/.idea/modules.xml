@@ -76,6 +76,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-location-impl.iml" filepath="$PROJECT_DIR$/rice-location-impl.iml" group="rice-location and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-location-web.iml" filepath="$PROJECT_DIR$/rice-location-web.iml" group="rice-location and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-sampleapp.iml" filepath="$PROJECT_DIR$/rice-sampleapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-serviceregistry.iml" filepath="$PROJECT_DIR$/rice-serviceregistry.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-sql.iml" filepath="$PROJECT_DIR$/rice-sql.iml" group="rice-db and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-standalone.iml" filepath="$PROJECT_DIR$/rice-standalone.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-web.iml" filepath="$PROJECT_DIR$/rice-web.iml" />

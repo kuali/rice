@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="kradConfigurer" class="org.kuali.rice.krad.config.KRADConfigurer"/>
+
+  <bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
+
+  <bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
+
+  <bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
+
+  <bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
+
+  <bean id="edlConfigurer" class="org.kuali.rice.edl.impl.config.EDLConfigurer"/>
+
+  <bean id="krmsConfigurer" class="org.kuali.rice.krms.config.KRMSConfigurer"/>
+
+  <bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
+
+</beans>

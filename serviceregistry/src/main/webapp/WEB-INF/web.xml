@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="2.5"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<display-name>KSB Registry</display-name>
+
+	<context-param>
+		<param-name>environment</param-name>
+		<param-value>${env.code}</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>web.bootstrap.spring.file</param-name>
+		<param-value>classpath:org/rice/kuali/serviceregistry/config/serviceregistry-spring-beans.xml</param-value>
+	</context-param>
+
+    <!-- Begin Filters -->
+	<filter>
+		<filter-name>HideWebInfFilter</filter-name>
+		<filter-class>org.kuali.rice.krad.web.filter.HideWebInfFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>HideWebInfFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- End Filters -->
+
+    <!-- Begin Listeners -->
+	<listener>
+		<listener-class>org.kuali.rice.core.web.listener.KualiInitializeListener</listener-class>
+	</listener>
+	<!-- End Listeners -->
+	
+	<!-- Begin Servlets -->
+	<servlet>
+        <servlet-name>remoting</servlet-name>
+        <servlet-class>org.kuali.rice.ksb.messaging.servlet.KSBDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:org/kuali/rice/ksb/config/remoting-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>remoting</servlet-name>
+        <url-pattern>/remoting/*</url-pattern>
+    </servlet-mapping>
+	<!-- End Servlets -->
+</web-app>

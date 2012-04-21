@@ -1,114 +1,100 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.kuali.rice</groupId>
-	<artifactId>ksb-serviceregistry</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <name>Rice KSB Server Registry</name>
+  <description>Standalone KSB registry application</description>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice</artifactId>
+    <version>2.1.0-M3-SNAPSHOT</version>
+  </parent>
+  <artifactId>ksb-serviceregistry</artifactId>
 	<packaging>war</packaging>
-	<name>KSB Registry</name>
-	<description>Standalone KSB registry application</description>
 
-	<properties>
-		<iurice.group>org.kuali.rice</iurice.group>
-		<iurice.version>2.1.0-M2-SNAPSHOT</iurice.version>
-
-		<app.code>ksb</app.code>
-		<env.code>dev</env.code>
-		<war.name>${app.code}-${env.code}</war.name>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>${iurice.group}</groupId>
-			<artifactId>rice-ksb-server-impl</artifactId>
-			<version>${iurice.version}</version>
-		</dependency>
-		<dependency>
-            <groupId>${iurice.group}</groupId>
-            <artifactId>rice-ksb-client-impl</artifactId>
-            <version>${iurice.version}</version>
-        </dependency>
-		<dependency>
-            <groupId>${iurice.group}</groupId>
-            <artifactId>rice-impl</artifactId>
-            <version>${iurice.version}</version>
-        </dependency>
-		<dependency>
-			<groupId>${iurice.group}</groupId>
-			<artifactId>rice-core-web</artifactId>
-			<version>${iurice.version}</version>
-		</dependency>
-	</dependencies>
+  <properties>
+    <web.launch.context.path>/serviceregistry</web.launch.context.path>
+    <bootstrap.spring.file>classpath:org/kuali/rice/serviceregistry/config/ServiceRegistrySpringBeans.xml</bootstrap.spring.file>
+  </properties>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
-				<configuration>
-					<warName>${war.name}</warName>
-					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-					<webResources>
-						<webResource>
-							<directory>src/main/webapp/WEB-INF</directory>
-							<includes>
-								<include>web.xml</include>
-							</includes>
-							<targetPath>WEB-INF</targetPath>
-							<filtering>true</filtering>
-						</webResource>
-					</webResources>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <overlays>
+            <overlay>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>rice-web</artifactId>
+              <includes>
+                <include>WEB-INF/web.xml</include>
+              </includes>
+              <filtered>true</filtered>
+            </overlay>
+            <overlay>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>rice-web</artifactId>
+              <filtered>false</filtered>
+              <excludes>
+                <exclude>WEB-INF/web.xml</exclude>
+              </excludes>
+            </overlay>
+          </overlays>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>tomcat-deploy</id>
-			<activation>
-				<property>
-					<name>tomcat7.home</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<outputDirectory>${tomcat7.home}/webapps</outputDirectory>
-						</configuration>
-					</plugin>
-					<plugin>
-						<artifactId>maven-clean-plugin</artifactId>
-						<configuration>
-							<filesets>
-								<!-- Cleans the "exploded" version of the WAR from the webapps directory -->
-								<fileset>
-									<directory>${tomcat7.home}/webapps/${war.name}</directory>
-									<includes>
-										<include>**/*</include>
-									</includes>
-								</fileset>
-								<fileset>
-									<directory>${tomcat7.home}/webapps</directory>
-									<includes>
-										<include>${war.name}</include>
-									</includes>
-								</fileset>
-								<!-- Cleans the Tomcat work directory -->
-								<fileset>
-									<directory>${tomcat7.home}/work/Catalina/localhost</directory>
-									<includes>
-										<include>**/*</include>
-									</includes>
-								</fileset>
-							</filesets>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+  <profiles>
+    <profile>
+      <id>serviceregistry</id>
+      <properties>
+        <appserver.port>9090</appserver.port>
+      </properties>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-web</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-edl-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
 </project>

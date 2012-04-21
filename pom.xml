@@ -984,6 +984,7 @@
     <module>web</module>
     <module>development-tools</module>
     <module>sampleapp</module>
+    <module>serviceregistry</module>
     <module>standalone</module>
     <module>it</module>
     <module>client-contrib</module>

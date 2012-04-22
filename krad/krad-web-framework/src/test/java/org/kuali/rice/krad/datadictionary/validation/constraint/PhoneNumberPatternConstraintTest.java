@@ -41,13 +41,13 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
  * 
  * 1. empty value check. (failure) {@link #testValueInvalidPhoneNumberEmpty()}
  * 2. value with valid phone number. (success) {@link #testValueValidPhoneNumber()}
- * 3. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber()}
- * 4. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber1()}
- * 5. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber2()}
- * 6. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber3()}
- * 7. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber4()}
- * 8. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber5()}
- * 9. value with invalid phone number. (failure) {@link testValueInvalidPhoneNumber6()}
+ * 3. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber()}
+ * 4. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber1()}
+ * 5. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber2()}
+ * 6. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber3()}
+ * 7. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber4()}
+ * 8. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber5()}
+ * 9. value with invalid phone number. (failure) {@link #testValueInvalidPhoneNumber6()}
  * 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 

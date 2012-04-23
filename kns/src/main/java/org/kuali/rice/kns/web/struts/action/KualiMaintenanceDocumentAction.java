@@ -425,7 +425,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 return null;
             }
             // attachment is part of a collection
-            PersistableAttachmentList attachmentsBo = (PersistableAttachmentList) document.getNewMaintainableObject().getBusinessObject();
+            PersistableAttachmentList<PersistableAttachment> attachmentsBo = (PersistableAttachmentList<PersistableAttachment>) document.getNewMaintainableObject().getBusinessObject();
             if (CollectionUtils.isEmpty(attachmentsBo.getAttachments())) {
                 document.populateAttachmentListForBO();
             }
@@ -491,9 +491,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             document.refreshReferenceObject("attachments");
             getBusinessObjectService().delete(document.getAttachment());
 
-            PersistableAttachmentList attachmentListBo = (PersistableAttachmentList) document.getNewMaintainableObject().getBusinessObject();
+            PersistableAttachmentList<PersistableAttachment> attachmentListBo = (PersistableAttachmentList<PersistableAttachment>) document.getNewMaintainableObject().getBusinessObject();
 
-            PersistableAttachment attachment = attachmentListBo.getAttachments().get(lineNum);
+            PersistableAttachment attachment = (PersistableAttachment)attachmentListBo.getAttachments().get(lineNum);
             attachment.setAttachmentContent(null);
             attachment.setContentType(null);
             attachment.setFileName(null);

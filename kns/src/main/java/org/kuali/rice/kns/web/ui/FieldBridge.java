@@ -33,6 +33,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
@@ -182,6 +183,8 @@ public class FieldBridge {
             if (fieldControl != null && fieldControl.isFile()) {
                 if (Field.FILE.equals(field.getFieldType())) {
                     Object fileName = ObjectUtils.getNestedValue(bo, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+                    Object fileType = ObjectUtils.getNestedValue(bo, KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
+                    field.setImageSrc(WebUtils.getAttachmentImageForUrl((String) fileType));
                     field.setPropertyValue(fileName);
                 }
             }

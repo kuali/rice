@@ -130,7 +130,14 @@
         <name>getButtonImageUrl</name>
         <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
         <function-signature>java.lang.String getButtonImageUrl(java.lang.String)</function-signature>
-        <example>${kfunc:getButtonImageUrl((imageName)}</example>
+        <example>${kfunc:getButtonImageUrl(imageName)}</example>
+    </function>
+    <function>
+      <description>get a named image for an attachment based on its content type code.</description>
+      <name>getAttachmentImageForUrl</name>
+      <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+      <function-signature>java.lang.String getAttachmentImageForUrl(java.lang.String)</function-signature>
+      <example>${kfunc:getAttachmentImageForUrl(contentType)}</example>
     </function>
     <function>
         <description>check config properties to determine if environment is production</description>

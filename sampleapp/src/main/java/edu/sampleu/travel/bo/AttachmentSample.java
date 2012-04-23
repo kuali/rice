@@ -25,7 +25,7 @@ import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-public class AttachmentSample extends PersistableBusinessObjectBase implements PersistableAttachment, PersistableAttachmentList {
+public class AttachmentSample extends PersistableBusinessObjectBase implements PersistableAttachment, PersistableAttachmentList<MultiAttachmentSample> {
     
     private String id;
     private String description;
@@ -94,14 +94,15 @@ public class AttachmentSample extends PersistableBusinessObjectBase implements P
         return this.attachments;
     }
 
-    public void setAttachments(List<? extends PersistableAttachment> attachments) {
+    @Override
+    public void setAttachments(List<MultiAttachmentSample> attachments) {
         List<MultiAttachmentSample> list = new ArrayList<MultiAttachmentSample>();
-        for (PersistableAttachment persistableAttachment : attachments) {
+        for (MultiAttachmentSample multiAttachment : attachments) {
             MultiAttachmentSample attachment = new MultiAttachmentSample();
-            attachment.setId(getId());
-            attachment.setAttachmentContent(persistableAttachment.getAttachmentContent());
-            attachment.setFileName(persistableAttachment.getFileName());
-            attachment.setContentType(persistableAttachment.getContentType());
+            attachment.setId(multiAttachment.getId());
+            attachment.setAttachmentContent(multiAttachment.getAttachmentContent());
+            attachment.setFileName(multiAttachment.getFileName());
+            attachment.setContentType(multiAttachment.getContentType());
             list.add(attachment);
         }
         this.attachments = list;

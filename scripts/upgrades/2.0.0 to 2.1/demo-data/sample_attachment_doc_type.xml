@@ -23,7 +23,7 @@
         Sample Maintenance Document for maintaining attachments
       </description>
       <label>Attachment Sample</label>
-      <docHandler>${kr.url}/maintenance?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
       <parent>RiceDocument</parent>
     </documentType>
   </documentTypes>

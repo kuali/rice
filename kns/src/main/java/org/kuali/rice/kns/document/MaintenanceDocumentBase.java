@@ -194,7 +194,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
     @Override
     public void populateBoAttachmentListBeforeSave() {
 
-        PersistableAttachmentList boAttachments = (PersistableAttachmentList) newMaintainableObject.getDataObject();
+        PersistableAttachmentList<PersistableAttachment> boAttachments = (PersistableAttachmentList<PersistableAttachment>) newMaintainableObject.getDataObject();
         if (CollectionUtils.isEmpty(attachments)) {
             //there are no attachments.  Clear out Bo Attachments
             boAttachments.setAttachments(Collections.<PersistableAttachment>emptyList());
@@ -234,7 +234,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
     public void populateAttachmentListForBO() {
         refreshAttachmentList();
 
-        PersistableAttachmentList boAttachments = (PersistableAttachmentList) newMaintainableObject.getDataObject();
+        PersistableAttachmentList<PersistableAttachment> boAttachments = (PersistableAttachmentList<PersistableAttachment>) newMaintainableObject.getDataObject();
 
         if (ObjectUtils.isNotNull(getAttachmentListPropertyName())) {
             //String collectionName = getAttachmentCollectionName();
@@ -294,7 +294,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
         String attachmentPropNm = getAttachmentListPropertyName();
         String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
         //don't have form fields to use to fill, but they should be populated on the DataObject.  grab them from there.
-        PersistableAttachmentList boAttachmentList = (PersistableAttachmentList) newMaintainableObject.getDataObject();
+        PersistableAttachmentList<PersistableAttachment> boAttachmentList = (PersistableAttachmentList<PersistableAttachment>) newMaintainableObject.getDataObject();
 
         if (CollectionUtils.isNotEmpty(boAttachmentList.getAttachments())) {
             //Populate DocumentAttachment BO

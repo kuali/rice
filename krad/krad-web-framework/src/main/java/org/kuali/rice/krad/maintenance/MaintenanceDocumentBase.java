@@ -688,7 +688,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             populateDocumentAttachmentList();
             populateAttachmentListForBO();
             if (oldMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
-                for (PersistableAttachment pa : ((PersistableAttachmentList)oldMaintainableObject.getDataObject()).getAttachments()) {
+                for (PersistableAttachment pa : ((PersistableAttachmentList<PersistableAttachment>)oldMaintainableObject.getDataObject()).getAttachments()) {
                     pa.setAttachmentContent(null);
                 }
             }

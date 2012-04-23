@@ -146,6 +146,15 @@
     <param name="travel.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
     <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>
 
+    <!-- Defined images for specific file types (mime type codes) -->
+    <param name="attach.img.application/msword" override="false">word.gif</param>
+    <param name="attach.img.application/pdf" override="false">pdf.gif</param>
+    <param name="attach.img.application/xml" override="false">xml.gif</param>
+    <param name="attach.img.text/xml" override="false">xml.gif</param>
+    <param name="attach.img.application/vnd.openxmlformats-officedocument.wordprocessingml.document" override="false">word.gif</param>
+    <param name="attach.img.application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" override="false">xls.gif</param>
+    <param name="attach.img.default" override="false">clip.gif</param>
+
     <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
     <param name="production.environment.code" override="false">prd</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->

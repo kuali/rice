@@ -159,6 +159,8 @@ public final class KRADConstants {
     public static final String EXTERNALIZABLE_HELP_URL_KEY = "externalizable.help.url";
     public static final String APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY = "externalizable.images.url";
     public static final String EXTERNALIZABLE_IMAGES_URL_KEY = "kr.externalizable.images.url";
+    public static final String ATTACHMENT_IMAGE_PREFIX = "attach.img.";
+    public static final String ATTACHMENT_IMAGE_DEFAULT = "attach.img.default";
 //    public static final String REPORTS_DIRECTORY_KEY = "reports.directory";
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String KUALI_RICE_URL_KEY = "kr.url";
@@ -465,7 +467,7 @@ public final class KRADConstants {
     public static final String DOWNLOAD_CUSTOM_BO_ATTACHMENT_METHOD ="downloadCustomBOAttachment";
     public static final String NOTE_IDENTIFIER = "noteIdentifier";
     public static final String BO_ATTACHMENT_FILE_NAME = "fileName";
-    public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "fileContentType";
+    public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "contentType";
     public static final String BO_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentBOField";
     
 

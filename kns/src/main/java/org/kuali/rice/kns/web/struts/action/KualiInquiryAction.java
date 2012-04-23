@@ -166,7 +166,7 @@ public class KualiInquiryAction extends KualiAction {
             }
         } else {
             if (bo instanceof PersistableAttachmentList) {
-                PersistableAttachmentList attachmentsBo = (PersistableAttachmentList)bo;
+                PersistableAttachmentList<PersistableAttachment> attachmentsBo = (PersistableAttachmentList<PersistableAttachment>)bo;
                 if (CollectionUtils.isEmpty(attachmentsBo.getAttachments())) {
                     return null;
                 }
@@ -174,7 +174,7 @@ public class KualiInquiryAction extends KualiAction {
                 List<? extends PersistableAttachment> attachments = attachmentsBo.getAttachments();
                 if (CollectionUtils.isNotEmpty(attachments)
                         && attachments.size() > line) {
-                    PersistableAttachment attachment = attachmentsBo.getAttachments().get(line);
+                    PersistableAttachment attachment = (PersistableAttachment)attachmentsBo.getAttachments().get(line);
                     streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
                 }
             }

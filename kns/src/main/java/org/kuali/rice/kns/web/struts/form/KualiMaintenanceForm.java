@@ -32,6 +32,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
@@ -297,8 +298,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
     protected void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
         try {
-            Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName());
-            ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
+            Object dataObject = maintenanceDocument.getNewMaintainableObject().getDataObject();
+            if (dataObject instanceof PersistableAttachment) {
+                Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getDataObject(), maintenanceDocument.getAttachmentPropertyName());
+                ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
+            }
         } catch (FormatException e) {
             throw new RuntimeException("Exception occurred while setting attachment property on NewMaintainable bo", e);
         } catch (IllegalAccessException e) {

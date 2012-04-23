@@ -636,6 +636,8 @@ public final class FieldUtils {
 		// individual fields as defined by PersistableAttachment.
 	    if (Field.FILE.equals(field.getFieldType())) {
             Object fileName = ObjectUtils.getNestedValue(businessObject, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+            Object fileType = ObjectUtils.getNestedValue(businessObject, KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
+            field.setImageSrc(WebUtils.getAttachmentImageForUrl((String)fileType));
             field.setPropertyValue(fileName);
         }
 

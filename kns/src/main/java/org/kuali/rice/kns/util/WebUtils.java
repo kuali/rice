@@ -291,7 +291,7 @@ public class WebUtils {
 	 * 
 	 * @param response
 	 * @param contentType
-	 * @param outStream
+	 * @param byteArrayOutputStream
 	 * @param fileName
 	 */
 	public static void saveMimeOutputStreamAsFile(HttpServletResponse response, String contentType,
@@ -318,7 +318,7 @@ public class WebUtils {
 	 * 
 	 * @param response
 	 * @param contentType
-	 * @param outStream
+	 * @param inStream
 	 * @param fileName
 	 */
 	public static void saveMimeInputStreamAsFile(HttpServletResponse response, String contentType,
@@ -772,6 +772,14 @@ public class WebUtils {
 		}
 		return buttonImageUrl;
 	}
+
+    public static String getAttachmentImageForUrl(String contentType) {
+        String image = getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ATTACHMENT_IMAGE_PREFIX + contentType);
+        if (StringUtils.isEmpty(image)) {
+            return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ATTACHMENT_IMAGE_DEFAULT);
+        }
+        return image;
+    }
 
 	/**
 	 * Generates a default button image URL, in the form of:

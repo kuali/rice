@@ -679,6 +679,10 @@
                     <c:if test="${fn:contains(field.propertyName, '[') and fn:contains(field.propertyName, '].')}" >
                       <c:set var="lineNum" value=".line${fn:substringBefore(fn:substringAfter(field.propertyName, '['), '].')}.anchor${tabIndex}"/>
                     </c:if>
+                    <%--<c:set var="imgName" value="${field.imageSrc}"/>
+                    <c:if test="${empty imgName}"/>
+                      <c:set var="imgName" value="${kfunc:getAttachmentImageForUrl(mimeTypeCode)}"/>
+                    </c:if>--%>
                     <td class="grid" style="width:${dataCellWidth}%;">
                         <c:choose>
                             <c:when test="${isFieldReadOnly}">
@@ -686,7 +690,7 @@
                                     <c:out value="<%=((String) request.getAttribute(\"fileName\"))%>" />&nbsp;
                                 </c:if>
                                 <c:if test="${not empty fieldValue}" >
-                                    <html:image property="methodToCall.downloadAttachment${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                    <html:image property="methodToCall.downloadAttachment${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}${field.imageSrc}" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                     <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
                                 </c:if>
                             </c:when>
@@ -706,7 +710,7 @@
 
                                           <div id="replaceDiv" style="display:block;">
 
-                                            <html:image property="methodToCall.downloadAttachment${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                            <html:image property="methodToCall.downloadAttachment${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}${field.imageSrc}" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                             <c:out value="${fieldValue}"/>
                                             &nbsp;&nbsp;
                                                                                         <input type="hidden" name='methodToCall' />

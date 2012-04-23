@@ -18,7 +18,7 @@ package org.kuali.rice.krad.bo;
 import java.util.List;
 
 
-public interface PersistableAttachmentList {
-    List<? extends PersistableAttachment> getAttachments();
-    void setAttachments(List<? extends PersistableAttachment> attachments);
+public interface PersistableAttachmentList<T extends PersistableAttachment> {
+    List<T> getAttachments();
+    void setAttachments(List<T> attachments);
 }

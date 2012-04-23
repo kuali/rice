@@ -114,6 +114,8 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         if (documentType != null) {
             errors = KEWServiceLocator.getDocumentSearchCustomizationMediator().validateLookupFieldParameters(documentType, criteria.build());
+        } else {
+            criteria.setDocumentAttributeValues(new HashMap<String, List<String>>());
         }
         return errors == null ? Collections.<RemotableAttributeError>emptyList() : Collections.unmodifiableList(errors);
     }

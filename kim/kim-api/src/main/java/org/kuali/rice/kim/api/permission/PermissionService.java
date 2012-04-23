@@ -142,6 +142,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
+    @Cacheable(value= Permission.Cache.NAME, key="'{isAuthorized}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p3)")
     boolean isAuthorized( @WebParam(name="principalId") String principalId,
     					  @WebParam(name="namespaceCode") String namespaceCode,
     					  @WebParam(name="permissionName") String permissionName,
@@ -200,6 +201,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isAuthorizedByTemplate")
     @WebResult(name = "isAuthorized")
+    @Cacheable(value= Permission.Cache.NAME, key="'{isAuthorizedByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p4)")
     boolean isAuthorizedByTemplate(@WebParam(name = "principalId") String principalId,
                                    @WebParam(name = "namespaceCode") String namespaceCode,
                                    @WebParam(name = "permissionTemplateName") String permissionTemplateName,
@@ -230,6 +232,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
+    @Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssignees}' + 'namespaceCode=' + #p0 + '|' + 'permissionName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2)")
     List<Assignee> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
     									   @WebParam(name="permissionName") String permissionName,
                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -258,6 +261,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
+    @Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssigneesByTemplate}' + 'namespaceCode=' + #p0 + '|' + 'permissionTemplateName=' + #p1  + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p3)")
     List<Assignee> getPermissionAssigneesByTemplate(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
@@ -275,6 +279,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isPermissionDefined")
     @WebResult(name = "isPermissionDefined")
+    @Cacheable(value= Permission.Cache.NAME, key="'{isPermissionDefined}' + 'namespaceCode=' + #p0 + '|' + 'permissionName=' + #p1")
     boolean isPermissionDefined( @WebParam(name="namespaceCode") String namespaceCode,
     							 @WebParam(name="permissionName") String permissionName)
             throws RiceIllegalArgumentException;
@@ -290,6 +295,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isPermissionDefinedByTemplate")
     @WebResult(name = "isPermissionDefinedByTemplate")
+    @Cacheable(value= Permission.Cache.NAME, key="'{isPermissionDefinedByTemplate}' + 'namespaceCode=' + #p0 + '|' + 'permissionTemplateName=' + #p1 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2)")
     boolean isPermissionDefinedByTemplate(@WebParam(name = "namespaceCode")
                                           String namespaceCode,
                                           @WebParam(name = "permissionTemplateName")
@@ -321,6 +327,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
+    @Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissions}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p3)")
     List<Permission> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
     										   @WebParam(name="namespaceCode") String namespaceCode,
     										   @WebParam(name="permissionName") String permissionName,
@@ -358,6 +365,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
+    @Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissionsByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p4)")
     List<Permission> getAuthorizedPermissionsByTemplate(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,

@@ -80,4 +80,37 @@ public final class CacheKeyUtils {
         return b.toString();
     }
 
+    /**
+     * Create a String key value out of a Map.  It accomplishes this by first sorting the given map on it's keys
+     * (keys in the map must implement Comparable) and then construct a key based on the {@code .toString()}
+     * values of each item in the sorted collection.
+     *
+     * <p>The sorting of the given map happens on a copy of the map, so this method does not side-affect the given
+     * map.</p>
+     *
+     * @param col the map.  if null will return "", if empty, will return "[]"
+     * @param <K> the col type
+     *
+     * @return the map as a string value
+     */
+    public static <K extends Comparable<K>> String key(Map<K, Object> col) {
+        if (col == null) {
+            return "";
+        }
+
+        final List<K> sorted = new ArrayList<K>(col.keySet());
+        Collections.sort(sorted);
+        final StringBuilder b = new StringBuilder("[");
+        for (K entry : sorted) {
+            if (entry != null) {
+                b.append(entry);
+                b.append("|");
+                b.append(col.get(entry));
+                b.append(",");
+            }
+        }
+        b.append("]");
+        return b.toString();
+    }
+
 }

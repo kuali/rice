@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.permission.Permission;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -267,6 +268,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1)")
     List<RoleMembership> getRoleMembers(
                 @WebParam(name="roleIds")
                 List<String> roleIds,
@@ -288,6 +290,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'roleName=' + #p0 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1)")
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
                 @WebParam(name="roleName") String roleName,
                 @WebParam(name="qualification")
@@ -306,6 +309,7 @@ public interface RoleService {
      */
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'{principalHasRole}' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1)")
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
             @WebParam(name="roleIds") List<String> roleIds,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
@@ -326,6 +330,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'getPrincipalIdSubListWithRole' + 'roleNamespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2)")
     List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
             @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
             @WebParam(name="roleName") String roleName,

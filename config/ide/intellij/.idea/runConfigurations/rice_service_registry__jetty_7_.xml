@@ -1,0 +1,208 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="rice service registry (jetty 7)" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 7.5.1.v20110908">
+    <option name="OPEN_IN_BROWSER" value="false" />
+    <option name="COMMON_VM_ARGUMENTS" value="-Dlog4j.configuration=$PROJECT_DIR$/../../../31938-log4j.properties -Dalt.config.location=$PROJECT_DIR$/../../../31938-serviceregistry-config.xml -Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:org/kuali/rice/serviceregistry/config/ServiceRegistrySpringBeans.xml" />
+    <option name="UPDATING_POLICY" value="update-resources" />
+    <deployment>
+      <artifact name="rice-serviceregistry:war exploded">
+        <settings DEPLOYMENT_METHOD="contexts">
+          <option name="contextRoot" value="/kr-dev" />
+          <option name="defaultContextRoot" value="false" />
+        </settings>
+      </artifact>
+    </deployment>
+    <server-settings>
+      <data>
+        <option name="configFiles">
+          <list>
+            <JettyConfigFile>
+              <option name="active" value="true" />
+              <option name="path" value="etc\jetty-jmx.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-ajp.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-bio-ssl.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-bio.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-contexts.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-debug.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-deploy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-fileserver.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-ipaccess.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-logging.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-overlay.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-plus.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-policy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-proxy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-requestlog.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-rewrite.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-ssl.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-stats.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-testrealm.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-webapps.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-xinetd.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-ajp.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-bio-ssl.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-bio.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-contexts.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-debug.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-deploy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-fileserver.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-ipaccess.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-jmx.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-logging.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-overlay.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-plus.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-policy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-proxy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-requestlog.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-rewrite.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-ssl.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-stats.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-testrealm.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-webapps.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-xinetd.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-monitor.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-annotations.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-monitor.xml" />
+            </JettyConfigFile>
+          </list>
+        </option>
+      </data>
+    </server-settings>
+    <predefined_log_file id="Jetty" enabled="true" />
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <RunnerSettings RunnerId="Debug">
+      <option name="DEBUG_PORT" value="62575" />
+      <option name="TRANSPORT" value="0" />
+      <option name="LOCAL" value="true" />
+    </RunnerSettings>
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper VM_VAR="" RunnerId="Debug">
+      <option name="USE_ENV_VARIABLES" value="true" />
+      <STARTUP>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </STARTUP>
+      <SHUTDOWN>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </SHUTDOWN>
+    </ConfigurationWrapper>
+    <ConfigurationWrapper VM_VAR="" RunnerId="Run">
+      <option name="USE_ENV_VARIABLES" value="true" />
+      <STARTUP>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </STARTUP>
+      <SHUTDOWN>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </SHUTDOWN>
+    </ConfigurationWrapper>
+    <method>
+      <option name="BuildArtifacts" enabled="true">
+        <artifact name="rice-serviceregistry:war exploded" />
+      </option>
+    </method>
+  </configuration>
+</component>

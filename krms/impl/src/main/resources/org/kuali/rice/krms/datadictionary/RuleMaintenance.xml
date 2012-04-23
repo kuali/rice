@@ -315,7 +315,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('385');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('addparent');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -327,7 +327,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('356');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('edit');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -340,7 +340,7 @@
         </bean>
 
         <bean parent="Uif-MessageField" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('391');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('left');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');
           }
@@ -351,7 +351,7 @@
                   p:altText="Left"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('397');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('right');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');
           }
@@ -362,7 +362,7 @@
                   p:altText="Right"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('403');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('up');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');
           }
@@ -373,7 +373,7 @@
                   p:altText="Up"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('409');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('down');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');
           }
@@ -386,29 +386,41 @@
         </bean>
         <bean parent="Uif-MessageField" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('418');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('cut');
           if (enabled) {
               ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');
           }
           "
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
+          <property name="styleClasses">
+            <list merge="true">
+              <value>tree-bar-button</value>
+              <value>kr-cut-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
                   p:altText="Cut"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('424');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('paste');
           if (enabled) {
               ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');
           }
           "
               p:actionLabel="Paste">
+          <property name="styleClasses">
+            <list merge="true">
+              <value>tree-bar-button</value>
+              <value>kr-paste-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('430');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('delete');
           if (enabled) {
               ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');
           }

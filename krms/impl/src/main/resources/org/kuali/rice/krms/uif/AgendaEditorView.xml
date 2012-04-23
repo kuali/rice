@@ -514,6 +514,11 @@
 
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
+          <property name="styleClasses">
+            <list merge="true">
+              <value>kr-cut-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
                   p:altText="Cut"/>
@@ -524,7 +529,12 @@
             p:conditionalDisable="document.newMaintainableObject.dataObject.agendaItemCutPaste == null -->
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxPaste', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Paste">
-          <property name="actionImage">
+          <property name="styleClasses">
+            <list merge="true">
+              <value>kr-paste-button</value>
+            </list>
+          </property>
+         <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>

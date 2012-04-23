@@ -250,7 +250,6 @@
     <bean parent="Uif-KeyLabelPair" p:key="yellow" p:value="Yellow"/>
     <bean parent="Uif-KeyLabelPair" p:key="olive" p:value="Olive"/>
     <bean parent="Uif-KeyLabelPair" p:key="silver" p:value="Silver"/>
-    <bean parent="Uif-KeyLabelPair" p:key="teal" p:value="Teal"/>
     <bean parent="Uif-KeyLabelPair" p:key="white" p:value="White"/>
   </util:list>
 

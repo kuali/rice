@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.location.service.impl;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -56,6 +45,17 @@ import org.kuali.rice.location.impl.county.CountyBo;
 import org.kuali.rice.location.impl.postalcode.PostalCodeBo;
 import org.kuali.rice.location.impl.state.StateBo;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
 public class LocationModuleService extends ModuleServiceBase {
 
     private CampusService campusService;
@@ -70,7 +70,7 @@ public class LocationModuleService extends ModuleServiceBase {
             if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)){
                 Campus campus = getCampusService().getCampus((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
-                return (T) CampusBo.from(campus);
+                return (T) CampusEbo.from(campus);
             }
         } else if(StateEbo.class.isAssignableFrom(businessObjectClass)){
             if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
@@ -78,13 +78,13 @@ public class LocationModuleService extends ModuleServiceBase {
                 State state = getStateService().getState((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.STATE_CODE));
-                return (T) StateBo.from(state);
+                return (T) StateEbo.from(state);
             }
         } else if(CountryEbo.class.isAssignableFrom(businessObjectClass)){
             if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)) {
                 Country country = getCountryService().getCountry((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
-                return (T) CountryBo.from(country);
+                return (T) CountryEbo.from(country);
             }
         } else if (CountyEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)
@@ -94,7 +94,7 @@ public class LocationModuleService extends ModuleServiceBase {
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.STATE_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
-                return (T)CountyBo.from(county);
+                return (T)CountyEbo.from(county);
             }
         } else if (PostalCodeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)
@@ -102,7 +102,7 @@ public class LocationModuleService extends ModuleServiceBase {
                 PostalCode postalCode = getPostalCodeService().getPostalCode((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.CODE));
-                return (T)PostalCodeBo.from(postalCode);
+                return (T)PostalCodeEbo.from(postalCode);
             }
         }
         // otherwise, use the default implementation
@@ -123,35 +123,35 @@ public class LocationModuleService extends ModuleServiceBase {
             Collection<StateBo> states = getBusinessObjectService().findMatching(StateBo.class, fieldValues);
             List<StateEbo> stateEbos = new ArrayList<StateEbo>(states.size());
             for (StateBo state : states) {
-                stateEbos.add(StateBo.from(State.Builder.create(state).build()));
+                stateEbos.add(StateEbo.from(State.Builder.create(state).build()));
             }
             return (List<T>)stateEbos;
 		} else if ( CampusEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
             Collection<CampusBo> campuses = getBusinessObjectService().findMatching(CampusBo.class, fieldValues);
             List<CampusEbo> campusEbos = new ArrayList<CampusEbo>(campuses.size());
             for (CampusBo campus : campuses) {
-                campusEbos.add(CampusBo.from(Campus.Builder.create(campus).build()));
+                campusEbos.add(CampusEbo.from(Campus.Builder.create(campus).build()));
             }
             return (List<T>)campusEbos;
 		} else if ( CountryEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
             Collection<CountryBo> countries = getBusinessObjectService().findMatching(CountryBo.class, fieldValues);
             List<CountryEbo> countryEbos = new ArrayList<CountryEbo>(countries.size());
             for (CountryBo country : countries) {
-                countryEbos.add(CountryBo.from(Country.Builder.create(country).build()));
+                countryEbos.add(CountryEbo.from(Country.Builder.create(country).build()));
             }
             return (List<T>)countryEbos;
 		} else if ( CountyEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
             Collection<CountyBo> counties = getBusinessObjectService().findMatching(CountyBo.class, fieldValues);
             List<CountyEbo> countyEbos = new ArrayList<CountyEbo>(counties.size());
             for (CountyBo county : counties) {
-                countyEbos.add(CountyBo.from(County.Builder.create(county).build()));
+                countyEbos.add(CountyEbo.from(County.Builder.create(county).build()));
             }
             return (List<T>)countyEbos;
 		} else if ( PostalCodeEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
             Collection<PostalCodeBo> postalCodes = getBusinessObjectService().findMatching(PostalCodeBo.class, fieldValues);
             List<PostalCodeEbo> postalCodeEbos = new ArrayList<PostalCodeEbo>(postalCodes.size());
             for (PostalCodeBo postalCode : postalCodes) {
-                postalCodeEbos.add(PostalCodeBo.from(PostalCode.Builder.create(postalCode).build()));
+                postalCodeEbos.add(PostalCodeEbo.from(PostalCode.Builder.create(postalCode).build()));
             }
             return (List<T>)postalCodeEbos;
 		}
@@ -182,7 +182,7 @@ public class LocationModuleService extends ModuleServiceBase {
                     unbounded);
             List<StateEbo> stateEbos = new ArrayList<StateEbo>(states.size());
             for (StateBo state : states) {
-                stateEbos.add(StateBo.from(State.Builder.create(state).build()));
+                stateEbos.add(StateEbo.from(State.Builder.create(state).build()));
             }
             return (List<T>)stateEbos;
 		} else if ( CampusEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
@@ -190,7 +190,7 @@ public class LocationModuleService extends ModuleServiceBase {
                     searchCriteria, unbounded);
             List<CampusEbo> campusEbos = new ArrayList<CampusEbo>(campuses.size());
             for (CampusBo campus : campuses) {
-                campusEbos.add(CampusBo.from(Campus.Builder.create(campus).build()));
+                campusEbos.add(CampusEbo.from(Campus.Builder.create(campus).build()));
             }
             return (List<T>)campusEbos;
 		} else if ( CountryEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
@@ -198,7 +198,7 @@ public class LocationModuleService extends ModuleServiceBase {
                     searchCriteria, unbounded);
             List<CountryEbo> countryEbos = new ArrayList<CountryEbo>(countries.size());
             for (CountryBo country : countries) {
-                countryEbos.add(CountryBo.from(Country.Builder.create(country).build()));
+                countryEbos.add(CountryEbo.from(Country.Builder.create(country).build()));
             }
             return (List<T>)countryEbos;
 		} else if ( CountyEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
@@ -206,7 +206,7 @@ public class LocationModuleService extends ModuleServiceBase {
                     searchCriteria, unbounded);
             List<CountyEbo> countyEbos = new ArrayList<CountyEbo>(counties.size());
             for (CountyBo county : counties) {
-                countyEbos.add(CountyBo.from(County.Builder.create(county).build()));
+                countyEbos.add(CountyEbo.from(County.Builder.create(county).build()));
             }
             return (List<T>)countyEbos;
 		} else if ( PostalCodeEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
@@ -214,7 +214,7 @@ public class LocationModuleService extends ModuleServiceBase {
                     searchCriteria, unbounded);
             List<PostalCodeEbo> postalCodeEbos = new ArrayList<PostalCodeEbo>(postalCodes.size());
             for (PostalCodeBo postalCode : postalCodes) {
-                postalCodeEbos.add(PostalCodeBo.from(PostalCode.Builder.create(postalCode).build()));
+                postalCodeEbos.add(PostalCodeEbo.from(PostalCode.Builder.create(postalCode).build()));
             }
             return (List<T>)postalCodeEbos;
 		}

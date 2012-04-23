@@ -26,22 +26,22 @@ import javax.persistence.JoinColumn
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.persistence.Transient
-
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
-import org.joda.time.DateTime
 import org.kuali.rice.kim.api.role.Role
+import org.kuali.rice.kim.api.role.RoleContract
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.framework.role.RoleEbo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.springframework.util.AutoPopulatingList
+import org.joda.time.DateTime
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
 @Entity
 @Table(name = "KRIM_ROLE_T")
-public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
+public class RoleBo extends PersistableBusinessObjectBase implements RoleContract {
 
     private static final long serialVersionUID = 1L;
 

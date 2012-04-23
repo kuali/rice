@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-serviceregistry:war exploded">
-    <output-path>$PROJECT_DIR$/../../../serviceregistry/target/ksb-serviceregistry-2.1.0-M3-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/../../../serviceregistry/target/rice-serviceregistry-2.1.0-M3-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-serviceregistry/web/Web" />
       <element id="directory" name="WEB-INF">

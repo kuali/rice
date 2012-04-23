@@ -50,6 +50,23 @@ public class Image extends ContentElementBase {
         this.source = source;
     }
 
+    /** Provides alternate information for the image element
+     *
+     * <p>The altText property specifies an alternate text for an image, if the image cannot be displayed.
+     * This is especially important for accessibility, because screen readers can't understand images,
+     * but rather read aloud the alternative text assigned to them.
+     * <br>
+     * Some best practices:
+     * <ul>
+     *     <li>spacer images, bullets, and icons should have the altText set to null or the empty string. This
+     *     will prevent screen readers from will ignore the presence of the item and will not announce it.</li>
+     *     <li>Make the altText message as short and succinct as possible</li>
+     *     <li>Describe the content of the image and nothing more</li>
+     * </ul>
+     * </p>
+     *
+     * @return a String representing alternative information about the image.
+     */
     public String getAltText() {
         return this.altText;
     }

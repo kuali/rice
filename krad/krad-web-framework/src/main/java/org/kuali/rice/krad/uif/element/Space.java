@@ -13,7 +13,7 @@ public class Space extends ContentElementBase {
     }
 
     /**
-     * Indicates that this element renders itself and does not use a template.
+     * Indicates that this element renders itself and does not use a template
      *
      * <p>
      * Since this method returns true, the renderOutput property provides
@@ -29,7 +29,7 @@ public class Space extends ContentElementBase {
     }
 
     /**
-     * Provides the HTML string to be used to render a non-breaking space.
+     * Provides the HTML string to be used to render a non-breaking space
      *
      * <p>The HTML for a Space element is <code>&amp;nbsp;</code></p>
      *

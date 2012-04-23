@@ -14,7 +14,7 @@ public class Image extends ContentElementBase {
     private static final long serialVersionUID = -3911849875276940507L;
 
     private String source;
-    private String altText;
+    private String altText = "";
     private String height;
     private String width;
 

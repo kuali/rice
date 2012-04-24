@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.field.ValidationMessages;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.widget.Help;
+import org.kuali.rice.krad.uif.widget.Helpable;
 
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,7 @@ import java.util.Set;
  * 
  * @see org.kuali.rice.krad.uif.component.Component
  */
-public interface Container extends Component {
+public interface Container extends Component, Helpable {
 
 	/**
 	 * <code>List</code> of <code>Component</code> instances that are held by
@@ -194,26 +195,6 @@ public interface Container extends Component {
 	 * @param validationMessages
 	 */
 	public void setValidationMessages(ValidationMessages validationMessages);
-
-	/**
-	 * Help configuration object for the container
-	 * 
-	 * <p>
-	 * External help information can be configured for the container. The
-	 * <code>Help</code> object can the configuration for rendering a link to
-	 * that help information.
-	 * </p>
-	 * 
-	 * @return Help for container
-	 */
-	public Help getHelp();
-
-	/**
-	 * Setter for the containers help content
-	 * 
-	 * @param help
-	 */
-	public void setHelp(Help help);
 
 	/**
 	 * This property is true if the container is used to display a group of fields that is visually a single

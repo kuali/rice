@@ -30,7 +30,9 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
+import org.kuali.rice.krad.uif.widget.Helpable;
 import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
@@ -44,7 +46,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DataField extends FieldBase implements DataBinding {
+public class DataField extends FieldBase implements DataBinding, Helpable {
     private static final long serialVersionUID = -4129678891948564724L;
 
     // binding
@@ -642,6 +644,18 @@ public class DataField extends FieldBase implements DataBinding {
     public void setHelp(Help help) {
         this.help = help;
     }
+
+    /**
+     * For data fields the help tooltip is placed on the label.
+     *
+     * @see org.kuali.rice.krad.uif.widget.Helpable#getTooltipOfComponent()
+     */
+    @Override
+    public Tooltip getTooltipOfComponent() {
+        return getFieldLabel().getToolTip();
+    }
+
+
 
 
     /**

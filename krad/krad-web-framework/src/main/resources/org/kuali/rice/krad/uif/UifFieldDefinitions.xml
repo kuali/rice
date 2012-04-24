@@ -53,6 +53,9 @@
     <property name="fieldInquiry">
       <bean parent="Uif-Inquiry"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-DataField-LabelTop" parent="Uif-DataField-LabelTop-parentBean"/>

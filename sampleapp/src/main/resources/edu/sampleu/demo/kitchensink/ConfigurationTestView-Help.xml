@@ -24,11 +24,168 @@
       <list>
         <ref bean="ConfigurationTestView-Help-Section1"/>
         <ref bean="ConfigurationTestView-Help-Section2"/>
+        <ref bean="ConfigurationTestView-Help-Section3"/>
+        <ref bean="ConfigurationTestView-Help-Section4"/>
+        <ref bean="ConfigurationTestView-Help-Section5"/>
+        <ref bean="ConfigurationTestView-Help-Section6"/>
       </list>
     </property>
   </bean>
 
   <bean id="ConfigurationTestView-Help-Section1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+    <property name="title" value="Tooltip Help"/>
+    <property name="instructionalText" value="The various ways an help tooltip may be rendered."/>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="tooltipHelpHtml" value="Section Help"/>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Field help (label left)"/>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
+              p:instructionalText="Label right with help">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Field help (label right)"/>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="TOP"
+              p:instructionalText="Label top with help">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Field help (label top)" />
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component (nothing will be show)" />
+        <bean parent="Uif-Help">
+          <property name="tooltipHelpHtml" value="Standalone help widget tooltip will never be rendered"/>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Field help (there is also a tooltip on the label but it is overridden by the help tooltip)"/>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+          <property name="fieldLabel">
+            <bean parent="Uif-Label">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContentHTML='Label ToolTip (not from help)'/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Field help (there is also an on focus tooltip)"/>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:onFocusFlag="true" p:tooltipContentHTML="This is a focus event tooltip"/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Check box help&lt;br&gt;&lt;font color=&quot;green&quot;&gt;with &lt;b&gt;html&lt;/b&gt; formating&lt;/font&gt;"/>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-CheckboxControl"/>
+          </property>
+        </bean>
+
+
+
+
+        <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
+          <property name="title" value="Display only fields"/>
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value="Sub Section Help"/>
+            </bean>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="field102" p:label="Field Label" p:defaultValue="DataFieldValue">
+                <property name="help">
+                  <bean parent="Uif-Help">
+                    <property name="tooltipHelpHtml" value="Read only field help"/>
+                  </bean>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+
+      </list>
+  </property>
+  </bean>
+
+  <bean id="ConfigurationTestView-Help-Section2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+    <property name="title" value="Missing Tooltip Help"/>
+    <property name="instructionalText" value="This section has non-existing help specified. Help tooltips should not render"/>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="tooltipHelpHtml" value=""/>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="tooltipHelpHtml" value=""/>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
+        <bean parent="Uif-Help">
+          <property name="tooltipHelpHtml" value=""/>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ConfigurationTestView-Help-Section3" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="title" value="External Help"/>
     <property name="instructionalText" value="The various ways an external help icon may be rendered."/>
     <property name="help">
@@ -70,12 +227,10 @@
 
 
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="TOP"
-              p:instructionalText="Label top with help">
+              p:instructionalText="Label top with help and with DD coded link">
           <property name="help">
             <bean parent="Uif-Help">
-              <property name="helpDefinition">
-                <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/>
-              </property>
+              <property name="externalHelpUrl" value="http://www.google.com"/>
             </bean>
           </property>
           <property name="control">
@@ -115,10 +270,10 @@
         </bean>
 
       </list>
-  </property>
+    </property>
   </bean>
 
-  <bean id="ConfigurationTestView-Help-Section2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+  <bean id="ConfigurationTestView-Help-Section4" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="title" value="Missing External Help"/>
     <property name="instructionalText" value="This section has non-existing help specified. Help icons should not render"/>
     <property name="help">
@@ -144,12 +299,152 @@
           </property>
         </bean>
 
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition"/>
+              </property>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
         <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
         <bean parent="Uif-Help">
           <property name="helpDefinition">
-            <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT" />
+            <bean parent="HelpDefinition" p:parameterNamespace="KR-NS" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
           </property>
         </bean>
+
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ConfigurationTestView-Help-Section5" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
+        p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+        p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpHtml="Section Help">
+    <property name="title" value="Internal and External Help"/>
+    <property name="instructionalText" value="The various ways tooltips and help icon may be rendered together.  Properties are set directly via p:help.x."/>
+    <property name="items">
+      <list>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpHtml="Field help (label left)">
+        <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
+              p:instructionalText="Label right with help"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpHtml="Field help (label right)">
+        <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="TOP"
+              p:instructionalText="Label top with help"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpHtml="Field help (label top)">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
+        <bean parent="Uif-Help" p:helpDefinition.parameterNamespace="KR-NS" p:helpDefinition.parameterName="TEST_PARAM"
+              p:helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:tooltipHelpHtml="Standalone help widget tooltip will never be rendered"/>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:help.tooltipHelpHtml="Field help (there is also a tooltip on the label but it is overridden by the help tooltip)">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+          <property name="fieldLabel">
+            <bean parent="Uif-Label">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContentHTML='Label ToolTip (not from help)'/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:help.tooltipHelpHtml="Field help (there is also an on focus tooltip)">
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:onFocusFlag="true" p:tooltipContentHTML="This is a focus event tooltip"/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:help.tooltipHelpHtml="Check box help&lt;br&gt;&lt;font color=&quot;green&quot;&gt;with &lt;b&gt;html&lt;/b&gt; formating&lt;/font&gt;">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl"/>
+          </property>
+        </bean>
+
+
+        <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL"
+              p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:help.tooltipHelpHtml="Sub Section Help">
+        <property name="title" value="Display only fields"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="field102" p:label="Field Label" p:defaultValue="DataFieldValue"
+                    p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
+                    p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
+                    p:help.tooltipHelpHtml="Read only field help">
+              </bean>
+            </list>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+  <bean id="ConfigurationTestView-Help-Section6" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
+        p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM_NOT_EXISTS"
+        p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpHtml="">
+    <property name="title" value="Missing Internal and External Help"/>
+    <property name="instructionalText" value="This section has non-existing help specified. Neither tooltip help nor help icons should not render"/>
+    <property name="items">
+      <list>
+
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+              p:help.helpDefinition.parameterNamespace="KR-NS"
+              p:help.helpDefinition.parameterName="TEST_PARAM_NOT_EXISTS"
+              p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:help.tooltipHelpHtml="">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
+        <bean parent="Uif-Help" p:helpDefinition.parameterNamespace="KR-NS"
+              p:helpDefinition.parameterName="TEST_PARAM_NOT_EXISTS"
+              p:helpDefinition.parameterDetailType="TEST_COMPONENT"
+              p:tooltipHelpHtml=""/>
 
       </list>
     </property>

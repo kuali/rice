@@ -27,6 +27,8 @@ import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
+import org.kuali.rice.krad.uif.widget.Helpable;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,7 +234,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getHelp()
+	 * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
 	 */
 	@Override
 	public Help getHelp() {
@@ -240,14 +242,24 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setHelp(org.kuali.rice.krad.uif.widget.Help)
+	 * @see org.kuali.rice.krad.uif.widget.Helpable#setHelp(org.kuali.rice.krad.uif.widget.Help)
 	 */
 	@Override
 	public void setHelp(Help help) {
 		this.help = help;
 	}
 
-	/**
+    /**
+     * For containers the help tooltip is placed on the header.
+     *
+     * @see org.kuali.rice.krad.uif.widget.Helpable#getTooltipOfComponent()
+     */
+    @Override
+    public Tooltip getTooltipOfComponent() {
+        return getHeader().getToolTip();
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.container.Container#getItems()
 	 */
 	@Override

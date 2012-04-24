@@ -46,6 +46,10 @@
     <property name="instructionalMessageField">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
+    <!--This causes DD load loop / stack overflow-->
+    <!--<property name="help">-->
+      <!--<bean parent="Uif-Help"/>-->
+    <!--</property>-->
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
@@ -58,6 +62,10 @@
         <value>uif-boxGroup</value>
       </list>
     </property>
+    <!--This causes DD load loop / stack overflow-->
+    <!--<property name="help">-->
+      <!--<bean parent="Uif-Help"/>-->
+    <!--</property>-->
   </bean>
 
   <!--Vertical Box Groups and Sections-->
@@ -71,6 +79,9 @@
     </property>
     <property name="layoutManager">
       <bean parent="Uif-VerticalBoxLayout"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 

@@ -293,6 +293,9 @@
         </property>
       </bean>
     </property>
+    <property name="helpDefinition">
+      <bean parent="HelpDefinition"/>
+    </property>
   </bean>
 
 

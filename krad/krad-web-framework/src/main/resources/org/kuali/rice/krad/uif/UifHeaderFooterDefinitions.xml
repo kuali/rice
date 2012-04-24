@@ -47,6 +47,9 @@
         </property>
       </bean>
     </property>
+    <property name="toolTip">
+      <bean parent="Uif-Tooltip"/>
+    </property>
   </bean>
 
   <bean id="Uif-HeaderOne" parent="Uif-HeaderOne-parentBean"/>

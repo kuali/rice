@@ -25,7 +25,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * test various ComponentUtils methods
+ * ComponentUtilsTest tests various ComponentUtils methods
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtilsTest {

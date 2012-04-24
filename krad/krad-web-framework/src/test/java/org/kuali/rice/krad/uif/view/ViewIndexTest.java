@@ -27,7 +27,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * various tests for ViewIndex
+ * ViewIndexTest has various tests for ViewIndex
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewIndexTest {

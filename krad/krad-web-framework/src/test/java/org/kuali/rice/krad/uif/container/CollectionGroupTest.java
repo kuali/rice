@@ -33,7 +33,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * holds various tests for CollectionGroup
+ * various tests for CollectionGroup
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

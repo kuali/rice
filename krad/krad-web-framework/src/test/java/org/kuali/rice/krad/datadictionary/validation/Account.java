@@ -33,7 +33,7 @@ public class Account {
 	 * @param accountId
 	 * @param bankName
 	 * @param totalBalance
-	 * @param creditBalanace
+	 * @param creditBalance
 	 * @param debitBalance
 	 */
 	public Account(String accountId, String bankName, String totalBalance, String creditBalance, String debitBalance) {

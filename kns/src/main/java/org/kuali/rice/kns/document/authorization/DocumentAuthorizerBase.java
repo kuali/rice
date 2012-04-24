@@ -141,7 +141,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         return documentActions;
     }
 
-    public final boolean canInitiate(String documentTypeName, Person user) {
+    public boolean canInitiate(String documentTypeName, Person user) {
         String nameSpaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
         Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, documentTypeName);
@@ -220,7 +220,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         return canTakeRequestedAction(document, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user);
     }
 
-    public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
+    public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_REQUEST_CD, actionRequestCode);
         return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
@@ -228,12 +228,12 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
 
-    public final boolean canOpen(Document document, Person user) {
+    public boolean canOpen(Document document, Person user) {
         return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user.getPrincipalId());
     }
 
-    public final boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user) {
+    public boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
@@ -243,7 +243,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
 
-    public final boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode, String createdBySelfOnly,
+    public boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode, String createdBySelfOnly,
             Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (attachmentTypeCode != null) {
@@ -255,7 +255,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
 
-    public final boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user) {
+    public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
@@ -270,7 +270,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         return canViewNoteAttachment(document, attachmentTypeCode, user);
     }
 
-    public final boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user) {
+    public boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (actionRequestCd != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_REQUEST_CD, actionRequestCd);
@@ -286,7 +286,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
                 document, user);
     }
 
-    public final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
+    public boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
         if (canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user)) {
             RoutePath routePath = KewApiServiceLocator.getDocumentTypeService().getRoutePathForDocumentTypeName(
                     document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());

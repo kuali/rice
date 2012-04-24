@@ -648,11 +648,11 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     /**
      * For data fields the help tooltip is placed on the label.
      *
-     * @see org.kuali.rice.krad.uif.widget.Helpable#getTooltipOfComponent()
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip))
      */
     @Override
-    public Tooltip getTooltipOfComponent() {
-        return getFieldLabel().getToolTip();
+    public void setTooltipOfComponent(Tooltip tooltip) {
+        getFieldLabel().setToolTip(tooltip);
     }
 
 

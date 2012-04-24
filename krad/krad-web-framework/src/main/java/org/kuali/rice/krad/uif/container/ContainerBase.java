@@ -252,11 +252,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     /**
      * For containers the help tooltip is placed on the header.
      *
-     * @see org.kuali.rice.krad.uif.widget.Helpable#getTooltipOfComponent()
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
      */
     @Override
-    public Tooltip getTooltipOfComponent() {
-        return getHeader().getToolTip();
+    public void setTooltipOfComponent(Tooltip tooltip) {
+        getHeader().setToolTip(tooltip);
     }
 
     /**

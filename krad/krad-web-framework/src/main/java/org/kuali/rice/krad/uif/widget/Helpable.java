@@ -42,13 +42,12 @@ public interface Helpable {
     public void setHelp(Help help);
 
     /**
-     *  Getter for the component's tooltip.
+     *  Setter for the component's tooltip.
      *
      *  This is used by the helper to set the help content to the tooltip.
      *
-     *  @return Tooltip of the container
+     *  @parm Tooltip with the help for the container
      */
-    //ToDo: replace with setTooltipOfComponent
-    public Tooltip getTooltipOfComponent();
+    public void setTooltipOfComponent(Tooltip tooltip);
 
 }

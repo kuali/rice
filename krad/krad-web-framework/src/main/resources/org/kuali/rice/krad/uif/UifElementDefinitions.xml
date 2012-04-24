@@ -68,11 +68,6 @@
     <property name="requiredMessageField">
       <bean parent="Uif-RequiredMessage" p:render="false"/>
     </property>
-    <!--Undo, not needed.  initialize help tooltip and use it instead -->
-    <property name="toolTip">
-      <bean parent="Uif-Tooltip"/>
-    </property>
-
   </bean>
 
   <bean id="Uif-Link" parent="Uif-Link-parentBean"/>

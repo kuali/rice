@@ -61,7 +61,7 @@
         <element name="ruleAttribute" type="ra:RuleAttributeType">
         	<annotation>
         		<documentation>
-        		 A modifiable rue attributes paramtere in the system.
+        		 A modifiable rue attributes parameter in the system.
         		</documentation>
         	</annotation>
         </element>

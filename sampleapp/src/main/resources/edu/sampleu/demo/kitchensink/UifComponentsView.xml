@@ -433,7 +433,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField-LabelTop" p:propertyName="field112" p:label="Date 1"
-              p:instructionalText="Default DateControl options">
+              p:instructionalText="Default DateControl options" p:required="true">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>

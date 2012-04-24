@@ -111,9 +111,9 @@ public class RichTableTest {
 
     @Test
     /**
-     * test that sortableColumns and hiddenColumns, when set on layoutManager, override those properties on the richTable
+     * test that sortableColumns and hiddenColumns, when set on layoutManager, will not override those properties on the richTable
      */
-     public void testComponentOptionsHideColumnOnLayoutManager() {
+    public void testComponentOptionsHideColumnOnLayoutManager() {
         // set rich table properties
         Set<String> richTableHiddenColumns = new HashSet<String>();
         richTableHiddenColumns.add("employeeId");
@@ -129,7 +129,7 @@ public class RichTableTest {
         ((TableLayoutManager)group.getLayoutManager()).setSortableColumns(lmSortableColumns);
         ((TableLayoutManager)group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
 
-        String expected = "[ null ,{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}, {bVisible: false}]";
+        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
     }
 

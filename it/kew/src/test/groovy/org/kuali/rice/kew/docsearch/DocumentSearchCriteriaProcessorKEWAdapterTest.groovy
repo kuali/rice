@@ -101,7 +101,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
     // the list of additional fields added by DSCPKEWAdapter, including the searchable attribute fields for the "SearchDocType"
     private static def SEARCHABLE_FIELD_NAMES = [
         "documentAttribute.givenname", "documentAttribute.testLongKey","documentAttribute.testFloatKey",
-        "documentAttribute.testDateTimeKey", "documentAttribute.rangeLowerBoundKeyPrefix_testDateTimeKey",
+        "documentAttribute.testDateTimeKey", "documentAttribute.testDateTimeKey",
         "isAdvancedSearch",
         "resetSavedSearch",
         "superUserSearch"

@@ -228,9 +228,12 @@
                 <exclude>config/ide/**</exclude>
                 <exclude>it/**</exclude>
                 <exclude>**/src/it/**</exclude>
+                <exclude>web/src/main/webapp/krad/plugins</exclude>
 
                 <!-- File excludes -->
                 <exclude>LICENSE.txt</exclude>
+                <exclude>scripts/bean-rename/beanReplacements.txt</exclude>
+                <exclude>scripts/bean-rename/cssReplacements.txt</exclude>
 
                 <!-- File type excludes -->
                 <exclude>**/*.pdf</exclude>

@@ -164,6 +164,7 @@
               <ref bean="remotableFieldsGroup"/>
               <ref bean="remotableFieldsCollection"/>
               <ref bean="miscGroup"/>
+              <ref bean="toolTipGroup"/>
             </list>
           </property>
         </bean>

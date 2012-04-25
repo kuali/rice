@@ -59,11 +59,7 @@
   <bean id="miscGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
     <property name="title" value="Various configuration and feature examples"/>
     <property name="header">
-      <bean parent="Uif-SectionHeader">
-        <property name="toolTip">
-          <bean parent="Uif-Tooltip" p:tooltipContentHTML="This is a header tooltip"/>
-        </property>
-      </bean>
+      <bean parent="Uif-SectionHeader"/>
     </property>
     <property name="items">
       <list>
@@ -99,19 +95,55 @@
           </property>
         </bean>
 
-        <bean parent="GenericTextField" p:label="Field Tooltip" p:required="false" p:propertyName="field1" p:readOnly="false"
+      </list>
+    </property>
+  </bean>
+
+  <bean id="toolTipGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
+    <property name="title" value="Tooltip examples"/>
+    <property name="header">
+      <bean parent="Uif-SectionHeader">
+        <property name="toolTip">
+          <bean parent="Uif-Tooltip" p:tooltipContent="This is a header tooltip">
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="GenericTextField" p:label="Field 1" p:required="false" p:propertyName="field1" p:readOnly="false"
               p:instructionalText="Hover mouse over label or select control to display tooltip">
           <property name="fieldLabel">
             <bean parent="Uif-Label">
               <property name="toolTip">
-                <bean parent="Uif-Tooltip" p:tooltipContentHTML='&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color="#660033"&gt;&lt;a href="http://www.vegabit.com/jquery_bubble_popup_v2/#examples" target="_blank"&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;'/>
-              </property>        
+                <bean parent="Uif-Tooltip" p:tooltipContent='&lt;p&gt;Example of HTML rich tooltip content.&lt;p&gt;&lt;p&gt;&lt;font color="#660033"&gt;&lt;a href="http://www.vegabit.com/jquery_bubble_popup_v2/#examples" target="_blank"&gt;jQuery Bubble Popup&lt;/a&gt;&lt;/font&gt;&lt;/p&gt;'>
+                </bean>
+              </property>
             </bean>
           </property>
           <property name="control">
             <bean parent="Uif-TextControl">
               <property name="toolTip">
-                <bean parent="Uif-Tooltip" p:onFocusFlag="true" p:tooltipContentHTML="This is a focus event tooltip"/>
+                <bean parent="Uif-TooltipFocus" p:onMouseHoverFlag = "true" p:tooltipContent="This tooltip is triggered by or and mouse over."/>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="GenericTextField" p:label="Field 2" p:required="false" p:propertyName="field2" p:readOnly="false"
+              p:instructionalText="Mouse over control tooltip">
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="toolTip">
+                <bean parent="Uif-Tooltip" p:tooltipContent="This is a tool-tip with different position and tail options">
+                  <property name="templateOptions">
+                    <map merge = "true">
+                      <entry key="position" value="right"/>
+                      <entry key="align" value="center"/>
+                      <entry key="tail" value="{ align:'center', hidden: true }"/>
+                    </map>
+                  </property>
+                </bean>
               </property>
             </bean>
           </property>

@@ -24,19 +24,19 @@ import java.util.Map;
 /**
  * Widget that renders a Tooltip on a component
  *
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Tooltip extends WidgetBase {
 
-    private String tooltipContentHTML;
+    private String tooltipContent;
 
     private boolean onFocusFlag;
 
-    private boolean helpFlag;
-
-    private Map<String, String> helpTemplateOptions;
-    private Map<String, String> focusTemplateOptions;
+    private boolean onMouseHoverFlag;
+//    private boolean helpFlag;
+//
+//    private Map<String, String> helpTemplateOptions;
+//    private Map<String, String> focusTemplateOptions;
 
     public Tooltip() {
         super();
@@ -48,21 +48,21 @@ public class Tooltip extends WidgetBase {
     }
 
     /**
-     * Plain text or HTML string that will be used to render the tooltip div.
+     * Plain text or HTML string that will be used to render the tooltip div
      *
      * @return String
      */
-    public String getTooltipContentHTML() {
-        return tooltipContentHTML;
+    public String getTooltipContent() {
+        return tooltipContent;
     }
 
     /**
-     * Setter for the tooltip content HTML text
+     * Setter for the tooltip content text
      *
-     * @param tooltipContentHTML
+     * @param tooltipContent
      */
-    public void setTooltipContentHTML(String tooltipContentHTML) {
-        this.tooltipContentHTML = tooltipContentHTML;
+    public void setTooltipContent(String tooltipContent) {
+        this.tooltipContent = tooltipContent;
     }
 
     /**
@@ -80,66 +80,74 @@ public class Tooltip extends WidgetBase {
      * @param onFocusFlag
      */
     public void setOnFocusFlag(boolean onFocusFlag) {
-        if (onFocusFlag) {
-            getTemplateOptions().putAll(focusTemplateOptions);
-        }
+//        if (onFocusFlag) {
+//            getTemplateOptions().putAll(focusTemplateOptions);
+//        }
         this.onFocusFlag = onFocusFlag;
     }
+//
+//    /**
+//     * Flag that indicates the tooltip should be using help framework component options
+//     *
+//     * @return boolean
+//     */
+//    public boolean isHelpFlag() {
+//        return helpFlag;
+//    }
+//
+//    /**
+//     * Setter for the helpFlag
+//     *
+//     * @param helpFlag
+//     */
+//    public void setHelpFlag(boolean helpFlag) {
+//        if (helpFlag) {
+//            getTemplateOptions().putAll(helpTemplateOptions);
+//        }
+//        this.helpFlag = helpFlag;
+//    }
+//
+//    /**
+//     * Template options that changes the style to help
+//     *
+//     * @return Map of focus template options
+//     */
+//    public Map<String, String> getHelpTemplateOptions() {
+//        return helpTemplateOptions;
+//    }
+//
+//    /**
+//     * Setter for helpTemplateOptions
+//     *
+//     * @param helpTemplateOptions
+//     */
+//    public void setHelpTemplateOptions(Map<String, String> helpTemplateOptions) {
+//        this.helpTemplateOptions = helpTemplateOptions;
+//    }
+//
+//    /**
+//     * Template options that changes the event trigger to focus/blur
+//     *
+//     * @return Map of focus template options
+//     */
+//    public Map<String, String> getFocusTemplateOptions() {
+//        return focusTemplateOptions;
+//    }
+//
+//    /**
+//     * Setter for focusTemplateOptions
+//     *
+//     * @param focusTemplateOptions
+//     */
+//    public void setFocusTemplateOptions(Map<String, String> focusTemplateOptions) {
+//        this.focusTemplateOptions = focusTemplateOptions;
+//    }
 
-    /**
-     * Flag that indicates the tooltip should be using help framework component options
-     *
-     * @return boolean
-     */
-    public boolean isHelpFlag() {
-        return helpFlag;
+    public boolean isOnMouseHoverFlag() {
+        return onMouseHoverFlag;
     }
 
-    /**
-     * Setter for the helpFlag
-     *
-     * @param helpFlag
-     */
-    public void setHelpFlag(boolean helpFlag) {
-        if (helpFlag) {
-            getTemplateOptions().putAll(helpTemplateOptions);
-        }
-        this.helpFlag = helpFlag;
-    }
-
-    /**
-     * Template options that changes the style to help
-     *
-     * @return Map of focus template options
-     */
-    public Map<String, String> getHelpTemplateOptions() {
-        return helpTemplateOptions;
-    }
-
-    /**
-     * Setter for helpTemplateOptions
-     *
-     * @param helpTemplateOptions
-     */
-    public void setHelpTemplateOptions(Map<String, String> helpTemplateOptions) {
-        this.helpTemplateOptions = helpTemplateOptions;
-    }
-
-    /**
-     * Template options that changes the event trigger to focus/blur
-     *
-     * @return Map of focus template options
-     */
-    public Map<String, String> getFocusTemplateOptions() {
-        return focusTemplateOptions;
-    }
-
-    /**
-     * Setter for focusTemplateOptions
-     *
-     * @param focusTemplateOptions
-     */
-    public void setFocusTemplateOptions(Map<String, String> focusTemplateOptions) {
-        this.focusTemplateOptions = focusTemplateOptions;
+    public void setOnMouseHoverFlag(boolean onMouseHoverFlag) {
+        this.onMouseHoverFlag = onMouseHoverFlag;
     }
 }

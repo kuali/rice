@@ -87,7 +87,7 @@ public class Help extends WidgetBase {
         if (StringUtils.isNotBlank(tooltipHelpHtml)) {
             // make sure that we are the component's native help and not a misconfigured standalone help bean.
             if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
-                this.getToolTip().setTooltipContentHTML(tooltipHelpHtml);
+                this.getToolTip().setTooltipContent(tooltipHelpHtml);
                 ((Helpable) parent).setTooltipOfComponent(this.getToolTip());
             }
         }

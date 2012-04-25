@@ -218,7 +218,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                                 if (top == self) {
                                     jq.fancybox(options);
                                 } else {
-                                    parent.$.fancybox(options);
+                                    parent.jQuery.fancybox(options);
                                 }
                             }
                         });
@@ -619,29 +619,187 @@ function createSpinner(id, options) {
  * @param id - id for the component to apply the tooltip to
  * @param options - options for the tooltip
  */
-function createTooltip(id, text, options, onFocusFlag) {
+function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
+    var elementInfo = getHoverElement(id);
+    var element = elementInfo.element;
+
     options['innerHtml'] = text;
+    options['manageMouseEvents'] = false;
     if (onFocusFlag) {
-//        ;
+        // Add onfocus trigger
         jQuery("#" + id).focus(function() {
-            jQuery("#" + id).SetBubblePopupOptions(options, true);
-            jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
-            jQuery("#" + id).ShowBubblePopup();
+//            if (!jQuery("#" + id).IsBubblePopupOpen()) {
+                // TODO : use data attribute to check if control
+                if (!isControlWithMessages()) {
+                    jQuery("#" + id).SetBubblePopupOptions(options, true);
+                    jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
+                    jQuery("#" + id).ShowBubblePopup();
+                }
+//            }
         });
         jQuery("#" + id).blur(function() {
             jQuery("#" + id).HideBubblePopup();
         });
-    } else {
-        options['manageMouseEvents'] = false;
-        jQuery("#" + id).mouseenter(function() {
-            jQuery("#" + id).SetBubblePopupOptions(options, true);
-            jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
-            jQuery("#" + id).ShowBubblePopup();
-        });
-        jQuery("#" + id).mouseleave(function() {
-            jQuery("#" + id).HideBubblePopup();
+    }
+    if (onMouseHoverFlag) {
+        // Add mouse hover trigger
+        jQuery("#" + id).hover(function() {
+            if (!jQuery("#" + id).IsBubblePopupOpen()) {
+                if (!isControlWithMessages()) {
+                    jQuery("#" + id).SetBubblePopupOptions(options, true);
+                    jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
+                    jQuery("#" + id).ShowBubblePopup();
+                }
+            }
+        },function(event) {
+            if (!onFocusFlag || !jQuery("#" + id).is(":focus")) {
+                var result = mouseInTooltipCheck(event, id, element, this, elementInfo.type);
+                if (result) {
+                    mouseLeaveHideTooltip(id, jQuery("#" + id), element, elementInfo.type);
+                }
+            }
         });
     }
+}
+
+/**
+ * Checks if the component is a control that contains validation messages
+ * @param id the id of the field
+ */
+function isControlWithMessages(id) {
+    if (jQuery("#" + id).is(".uif-control")) {
+        var fieldId = getAttributeId(id);
+        var messageData = jQuery("#" + fieldId).data("validationMessages");
+        if (messageData) {
+            if (messageData.serverErrors.length || messageData.errors.length
+                    || messageData.serverWarnings.length || messageData.warnings.length
+                    || messageData.serverInfo.length || messageData.info.length) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * Workaround to prevent hiding the tooltip when the mouse actually may still be hovering over the field
+ * correctly, checks to see if the mouseleave event was entering the tooltip and if so dont continue the
+ * hide action, rather add a mouseleave handler that will only be invoked once for that segment, when this
+ * is left the check occurs again, until the user has either left the tooltip or the field - then the tooltip
+ * is hidden appropriately
+ * @param event - mouseleave event
+ * @param fieldId - id of the field this logic is being applied to
+ * @param triggerElements - the elements that can trigger mouseover
+ * @param callingElement - original element that invoked the mouseleave
+ * @param type - type of the field
+ */
+function mouseInTooltipCheck(event, fieldId, triggerElements, callingElement, type) {
+    if (event.relatedTarget &&
+            jQuery(event.relatedTarget).length &&
+            jQuery(event.relatedTarget).attr("class") != null &&
+            jQuery(event.relatedTarget).attr("class").indexOf("jquerybubblepopup") >= 0) {
+        //this bind is only every invoked once, then unbound - return false to stop hide
+        jQuery(event.relatedTarget).one("mouseleave", function (event) {
+            mouseInTooltipCheck(event, fieldId, triggerElements, callingElement, type);
+        });
+        return false;
+    }
+    //If target moving into is not a triggerElement for this hover
+    // and if the source of the event is not a trigger element
+    else if (!jQuery(event.relatedTarget).is(triggerElements) && !jQuery(event.target).is(triggerElements)) {
+        //hide the tooltip for the original element
+        mouseLeaveHideTooltip(fieldId, callingElement, triggerElements, type, true);
+        return true;
+    }
+    else {
+        return true;
+    }
+}
+
+/**
+ * Method to hide the tooltip when the mouse leave event was successful for the field
+ * @param id id of the field
+ * @param currentElement the current element be iterated on
+ * @param elements all elements within the hover set
+ * @param type type of field
+ */
+function mouseLeaveHideTooltip(id, currentElement, elements, type, force) {
+    var hide = true;
+    var tooltipElement = jQuery(currentElement);
+
+    if (type == "fieldset") {
+        //hide only if mouseleave is on fieldset not its internal radios/checkboxes
+        hide = force || jQuery(currentElement).is("fieldset");
+        tooltipElement = elements.filter("label:first");
+    }
+
+    //hide only if hide flag is true and the tooltip is open
+    if (hide && jQuery(tooltipElement).IsBubblePopupOpen()) {
+        hideTooltip(id);
+    }
+}
+
+/**
+ * Hide the tooltip associated with the field by id
+ * @param fieldId the id of the field
+ */
+function hideTooltip(fieldId) {
+    var elementInfo = getTooltipElement(fieldId);
+    var element = elementInfo.element;
+    if (elementInfo.type == "fieldset") {
+        //for checkbox/radio fieldsets we put the tooltip on the label of the first input
+        element = jQuery(element).filter("label:first");
+    }
+    var data = jQuery("#" + fieldId).data("validationMessages");
+    if (data && data.showTimer) {
+        clearTimeout(data.showTimer);
+    }
+    var tooltipId = jQuery(element).GetBubblePopupID();
+    if (tooltipId) {
+        //this causes the tooltip to be IMMEDIATELY hidden, rather than wait for animation
+        jQuery("#" + tooltipId).css("opacity", 0);
+        jQuery("#" + tooltipId).hide();
+    }
+    jQuery(element).HideBubblePopup();
+
+}
+
+/**
+ * Gets the hover elements for a field by id.  The hover elements are the elements which will cause the tooltip to
+ * be shown, the element the tooltip is actually placed on is an item its hover elements.
+ * @param fieldId the id of the field
+ */
+function getTooltipElement(fieldId) {
+    var hasFieldset = jQuery("#" + fieldId).find("fieldset").length;
+    var elementInfo = {};
+
+    if (!hasFieldset) {
+        //regular case
+        elementInfo.element = jQuery("#" + fieldId);
+        elementInfo.type = "";
+        if (elementInfo.element.is("input:checkbox")) {
+            elementInfo.themeMargins = {
+                total:'13px',
+                difference:'0px'
+            };
+        }
+    }
+    else if (hasFieldset && jQuery("#" + fieldId).find("fieldset > span > input").length) {
+        //radio and checkbox fieldset case
+        //get the fieldset, the inputs its associated with, and the associated labels as hover elements
+        elementInfo.element = jQuery("#" + fieldId).find("fieldset, fieldset input, fieldset label");
+        elementInfo.type = "fieldset";
+        elementInfo.themeMargins = {
+            total:'13px',
+            difference:'2px'
+        };
+    }
+    else {
+        //not found or wrapping fieldset case
+        elementInfo.element = [];
+        elementInfo.type = "";
+    }
+    return elementInfo;
 }
 
 /**

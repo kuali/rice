@@ -108,7 +108,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *
      * @return a new Set
      */
-    private static Set<BusinessObject> newIdentitySet() {
+    protected final Set<BusinessObject> newIdentitySet() {
         return java.util.Collections.newSetFromMap(new IdentityHashMap<BusinessObject, Boolean>());
     }
 
@@ -230,7 +230,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
 
-    private void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth,
+    protected void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth,
             boolean validateRequired, boolean chompLastLetterSFromCollectionName, Set<BusinessObject> processedBOs) {
         // if null or already processed, return
         if (ObjectUtils.isNull(businessObject) || processedBOs.contains(businessObject)) {

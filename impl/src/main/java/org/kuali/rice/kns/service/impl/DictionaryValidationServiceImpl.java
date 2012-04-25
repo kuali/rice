@@ -26,13 +26,11 @@ import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.kns.datadictionary.validation.MaintenanceDocumentAttributeValueReader;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -52,9 +50,28 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
             DictionaryValidationServiceImpl.class);
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentRecursively
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean, boolean)
+     * @deprecated since 2.1
+     */
+    @Override
+    @Deprecated
+    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
+            boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
+        // Use the KNS validation code here -- this overrides the behavior in the krad version which calls validate(...)
+        validateBusinessObject(document, validateRequired);
+
+        if (maxDepth > 0) {
+            validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired,
+                    chompLastLetterSFromCollectionName, newIdentitySet());
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocumentRecursively(org.kuali.rice.krad.document.Document, int)
+     * @deprecated since 2.0
      */
     @Deprecated
+    @Override
     public void validateDocumentRecursively(Document document, int depth) {
         // validate primitives of document
         validateDocument(document);
@@ -90,6 +107,7 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
      * @deprecated since 1.1
      */
     @Deprecated
+    @Override
     public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
         MaintenanceDocumentEntry entry =
                 KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
@@ -179,10 +197,11 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateAttributeFormat
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat(String, String, String, String)
      *      objectClassName is the docTypeName
      * @deprecated since 1.1
      */
+    @Override
     @Deprecated
     public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue,
             String errorKey) {
@@ -209,6 +228,7 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
      *
      * @deprecated since 1.1
      */
+    @Override
     @Deprecated
     public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue,
             String attributeDataType, String errorKey) {
@@ -399,6 +419,7 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
 
     // FIXME: JLR - this is now redundant and should be using the same code as the required processing elsewhere, but the control definition stuff doesn't really fit
     // it doesn't seem to be used anywhere
+    @Override
     @Deprecated
     public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue,
             Boolean forMaintenance, String errorKey) {

@@ -42,6 +42,7 @@ currentDir.eachFileRecurse(
             fileText = fileText.replaceAll("parent=\""+ it.key + "-parentBean\"", "parent=\""+ it.value + "-parentBean\"");
             fileText = fileText.replaceAll("id=\""+ it.key + "-parentBean\"", "id=\""+ it.value + "-parentBean\"");
             fileText = fileText.replaceAll("ref bean=\""+ it.key + "-parentBean\"", "ref bean=\""+ it.value + "-parentBean\"");
+            // for properties check p namespace and property tag, also check contains for nested
         }
         file.write(fileText);
     }

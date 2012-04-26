@@ -51,7 +51,8 @@ public class Image extends ContentElementBase {
         this.source = source;
     }
 
-    /** Provides alternate information for the image element
+    /**
+     * Provides alternate information for the image element
      *
      * <p>The altText property specifies an alternate text for an image. It is displayed by the browser
      * if the image cannot be displayed.  This is especially important for accessibility, because screen
@@ -59,10 +60,10 @@ public class Image extends ContentElementBase {
      * <br>
      * Some best practices:
      * <ul>
-     *     <li>spacer images, bullets, and icons should have the altText set to null or the empty string. This
-     *     will prevent screen readers from announcing it.</li>
-     *     <li>Make the altText message as short and succinct as possible</li>
-     *     <li>Describe the content of the image and nothing more</li>
+     * <li>spacer images, bullets, and icons should have the altText set to null or the empty string. This
+     * will prevent screen readers from announcing it.</li>
+     * <li>Make the altText message as short and succinct as possible</li>
+     * <li>Describe the content of the image and nothing more</li>
      * </ul>
      * </p>
      *
@@ -75,7 +76,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the alternate text property for this image
      *
-     * @param altText a String containing the alternative information about the image
+     * @param altText - a String containing the alternative information about the image
      */
     public void setAltText(String altText) {
         this.altText = altText;
@@ -92,14 +93,14 @@ public class Image extends ContentElementBase {
      * be that the page layout will change while the images load.
      * </p>
      *
-     * @return a String representation of the height of this image
+     * @return String representation of the height of this image
      */
     public String getHeight() {
         return this.height;
     }
 
     /**
-     * Sets the height of the image.
+     * Sets the height style attribute of the image.
      *
      * @param height a String containing the height of the image
      */
@@ -108,7 +109,7 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * Returns the width style property of the image
+     * Returns the width style attribute of the image
      *
      * <p>
      * The default unit of measure is pixels.<br>
@@ -118,7 +119,7 @@ public class Image extends ContentElementBase {
      * be that the page layout will change while the images load.
      * <p>
      *
-     * @return a string containing the width of this image
+     * @return String containing the width of this image
      */
     public String getWidth() {
         return width;
@@ -133,36 +134,86 @@ public class Image extends ContentElementBase {
         this.width = width;
     }
 
+    /**
+     * Retrieves the caption text for this image
+     *
+     * <p>
+     * The caption text is a headline for the picture. It may be displayed either above or below the picture.
+     * </p>
+     *
+     * @return String containing the caption
+     */
     public String getCaptionHeaderText() {
         return captionHeaderText;
     }
 
+    /**
+     * Sets the text displayed as of the caption for the picture
+     *
+     * @param captionHeaderText - String containing the caption text.
+     */
     public void setCaptionHeaderText(String captionHeaderText) {
         this.captionHeaderText = captionHeaderText;
     }
 
+    /**
+     * Retrieves the {@Link Header} component used to display the caption for this image
+     *
+     * @return Header component which wraps the caption text.
+     */
     public Header getCaptionHeader() {
         return captionHeader;
     }
 
+    /**
+     * Sets the Header used to display the caption for this image
+     *
+     * @param captionHeader - Header component which wraps the caption text.
+     */
     public void setCaptionHeader(Header captionHeader) {
         this.captionHeader = captionHeader;
     }
 
+    /**
+     * Retrieves the cutline text for this image
+     *
+     * <p>
+     * The cutline text give more detailed information about the picture. Generally it describes
+     * the who, what, where, when of this image.
+     * </p>
+     *
+     * @return String containing the cutline text.
+     */
     public String getCutlineText() {
         return cutlineText;
     }
 
+    /**
+     * Sets the cutline text that describes this image
+     *
+     * @param cutlineText - String describing this image
+     */
     public void setCutlineText(String cutlineText) {
         this.cutlineText = cutlineText;
     }
 
+    /**
+     * Gets the {@Link MessageField} component used to display the cutline.
+     *
+     * <p>
+     * Wrapping the cutline text with a MessageField component allows styling of the cutline text.
+     * </p>
+     *
+     * @return MessageField component wrapping the cutline.
+     */
     public MessageField getCutline() {
         return cutline;
     }
 
     /**
-     * A cutline is the text describing the image in detail (this is also often confusingly called a caption).
+     * Sets the MessageField component used to display the cutline for this image
+     *
+     * @param cutline - MessageField
      */
     public void setCutline(MessageField cutline) {
         this.cutline = cutline;
@@ -171,7 +222,7 @@ public class Image extends ContentElementBase {
     /**
      * Specifies whether the image caption is to be displayed above or below the image
      *
-     * @return  true if the caption is to be displayed above the image. false if displayed below the image.
+     * @return true if the caption is to be displayed above the image. false if displayed below the image.
      */
     public boolean isCaptionHeaderAboveImage() {
         return captionHeaderAboveImage;
@@ -180,7 +231,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets whether the image caption is to be displayed above or below the image
      *
-     * @param captionHeaderAboveImage true displays above image, false displays below image
+     * @param captionHeaderAboveImage - true displays above image, false displays below image
      */
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
         this.captionHeaderAboveImage = captionHeaderAboveImage;

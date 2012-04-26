@@ -35,7 +35,7 @@
     <condition property="checkout.properties">
       <and>
         <isset property="deploy.impex.location" />
-        <isset property="manifest.SVN-Revision" />
+        <isset property="manifest.SVN-URL" />
       </and>
     </condition>
     <fail unless="checkout.properties">Missing checkout properties</fail>

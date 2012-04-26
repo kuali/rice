@@ -1,7 +1,7 @@
 package org.kuali.rice.krad.uif.element;
 
 /**
- * Content element that renders a non-breaking space HTML <code>&amp;nbsp;</code> entity
+ * Content element that renders a non-breaking space HTML <code>&amp;nbsp;</code> tag
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

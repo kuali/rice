@@ -6,7 +6,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
- * Content element that renders as Image
+ * Content element that renders a HTML <code>&lt;IMG&gt;</code> tag
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -14,7 +14,7 @@ public class Image extends ContentElementBase {
     private static final long serialVersionUID = -3911849875276940507L;
 
     private String source;
-    private String altText = "";
+    private String altText;
     private String height;
     private String width;
 
@@ -28,6 +28,7 @@ public class Image extends ContentElementBase {
 
     public Image() {
         super();
+        altText = "";
     }
 
     public void performFinalize(View view, Object model, Component parent) {
@@ -52,43 +53,84 @@ public class Image extends ContentElementBase {
 
     /** Provides alternate information for the image element
      *
-     * <p>The altText property specifies an alternate text for an image, if the image cannot be displayed.
-     * This is especially important for accessibility, because screen readers can't understand images,
-     * but rather read aloud the alternative text assigned to them.
+     * <p>The altText property specifies an alternate text for an image. It is displayed by the browser
+     * if the image cannot be displayed.  This is especially important for accessibility, because screen
+     * readers can't understand images, but rather will read aloud the alternative text assigned to them.
      * <br>
      * Some best practices:
      * <ul>
      *     <li>spacer images, bullets, and icons should have the altText set to null or the empty string. This
-     *     will prevent screen readers from will ignore the presence of the item and will not announce it.</li>
+     *     will prevent screen readers from announcing it.</li>
      *     <li>Make the altText message as short and succinct as possible</li>
      *     <li>Describe the content of the image and nothing more</li>
      * </ul>
      * </p>
      *
-     * @return a String representing alternative information about the image.
+     * @return a String representing alternative information about this image
      */
     public String getAltText() {
         return this.altText;
     }
 
+    /**
+     * Sets the alternate text property for this image
+     *
+     * @param altText a String containing the alternative information about the image
+     */
     public void setAltText(String altText) {
         this.altText = altText;
     }
 
+    /**
+     * Returns the height style attribute of this image
+     *
+     * <p>
+     * The default unit of measure is pixels.<br>
+     * It is good practice to specify both the height and width attributes for an image.
+     * If these attributes are set, the space required for the image is reserved when the page is loaded.
+     * However, without these attributes, the browser does not know the size of the image. The effect will
+     * be that the page layout will change while the images load.
+     * </p>
+     *
+     * @return a String representation of the height of this image
+     */
     public String getHeight() {
         return this.height;
     }
 
+    /**
+     * Sets the height of the image.
+     *
+     * @param height a String containing the height of the image
+     */
     public void setHeight(String height) {
         this.height = height;
     }
 
-    public void setWidth(String width) {
-        this.width = width;
-    }
-
+    /**
+     * Returns the width style property of the image
+     *
+     * <p>
+     * The default unit of measure is pixels.<br>
+     * It is good practice to specify both the height and width attributes for an image.
+     * If these attributes are set, the space required for the image is reserved when the page is loaded.
+     * However, without these attributes, the browser does not know the size of the image. The effect will
+     * be that the page layout will change while the images load.
+     * <p>
+     *
+     * @return a string containing the width of this image
+     */
     public String getWidth() {
         return width;
+    }
+
+    /**
+     * Sets the width style attribute of the image
+     *
+     * @param width - a String containing the width of this image
+     */
+    public void setWidth(String width) {
+        this.width = width;
     }
 
     public String getCaptionHeaderText() {
@@ -126,10 +168,20 @@ public class Image extends ContentElementBase {
         this.cutline = cutline;
     }
 
+    /**
+     * Specifies whether the image caption is to be displayed above or below the image
+     *
+     * @return  true if the caption is to be displayed above the image. false if displayed below the image.
+     */
     public boolean isCaptionHeaderAboveImage() {
         return captionHeaderAboveImage;
     }
 
+    /**
+     * Sets whether the image caption is to be displayed above or below the image
+     *
+     * @param captionHeaderAboveImage true displays above image, false displays below image
+     */
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
         this.captionHeaderAboveImage = captionHeaderAboveImage;
     }

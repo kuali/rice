@@ -97,6 +97,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String finalizeMethodToCall;
     private List<Object> finalizeMethodAdditionalArguments;
     private MethodInvokerConfig finalizeMethodInvoker;
+
     private boolean selfRendered;
     private String renderOutput;
 

@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition;
+import org.kuali.rice.ksb.impl.cxf.interceptors.ImmutableCollectionsInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 
@@ -81,10 +82,11 @@ public class SOAPServiceExporter extends AbstractWebServiceExporter implements S
 		//Set logging and security interceptors
 		svrFactory.getInInterceptors().add(new LoggingInInterceptor());
 		svrFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
+        svrFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());
 		
 		svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
 		svrFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
-		
+
 		svrFactory.getInFaultInterceptors().add(new CXFWSS4JInInterceptor(soapServiceDefinition.getBusSecurity()));
 		svrFactory.getOutFaultInterceptors().add(new CXFWSS4JOutInterceptor(soapServiceDefinition.getBusSecurity()));
 		

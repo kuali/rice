@@ -39,10 +39,7 @@
       </and>
     </condition>
     <fail unless="checkout.properties">Missing checkout properties</fail>
-  	<!--
-    <property name="manifest.svn.url" value="${deploy.impex.location}@${manifest.SVN-Revision}" />
-    -->
-    <property name="manifest.svn.url" value="${deploy.impex.location}@31528" />
+    <property name="manifest.svn.url" value="${manifest.SVN-URL}" />
     <property name="checkout.dir" value="target/checkout/impex" />
     <echo>Checking out ${manifest.svn.url}</echo>
     <exec executable="svn">

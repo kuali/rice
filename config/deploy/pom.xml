@@ -71,7 +71,6 @@
     <db.vendor>oracle</db.vendor>
     <impex.url>${impex.oracle.url}</impex.url>
     <impex.dba.url>${impex.oracle.url}</impex.dba.url>
-    <deploy.impex.location>https://svn.kuali.org/repos/trunk/db/impex/master</deploy.impex.location>
 
     <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
     <jdbc.driver.artifactId>${oracle.jdbc.artifactId}</jdbc.driver.artifactId>
@@ -110,24 +109,6 @@
     </pluginManagement>
   </build>
   <profiles>
-    <profile>
-      <id>v2.0</id>
-      <properties>
-        <deploy.impex.location>https://svn.kuali.org/repos/rice/branches/rice-2.0/db/impex/master</deploy.impex.location>
-      </properties>
-    </profile>
-    <profile>
-      <id>v2.1</id>
-      <properties>
-        <deploy.impex.location>https://svn.kuali.org/repos/rice/trunk/db/impex/master</deploy.impex.location>
-      </properties>
-    </profile>
-    <profile>
-      <id>v2.2</id>
-      <properties>
-        <deploy.impex.location>https://svn.kuali.org/repos/rice/branches/rice-2.2/db/impex/master</deploy.impex.location>
-      </properties>
-    </profile>
     <profile>
       <id>sampleapp</id>
       <properties>
@@ -363,15 +344,15 @@
             <version>1.0.0</version>
             <configuration>
               <filename>target/dependency/META-INF/MANIFEST.MF</filename>
-              <attribute>SVN-Revision</attribute>
+              <attribute>SVN-URL</attribute>
               <prefix>manifest</prefix>
             </configuration>
             <executions>
               <execution>
-                <id>svnrevision</id>
+                <id>svnurl</id>
                 <phase>initialize</phase>
                 <goals>
-                  <goal>svnrevision</goal>
+                  <goal>getattribute</goal>
                 </goals>
               </execution>
             </executions>

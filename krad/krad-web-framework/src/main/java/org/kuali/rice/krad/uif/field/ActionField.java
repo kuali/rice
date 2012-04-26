@@ -60,6 +60,7 @@ public class ActionField extends FieldBase {
     private LightBox lightBoxDirectInquiry;
 
     private boolean blockValidateDirty;
+
     private boolean disabled;
     private String disabledReason;
 
@@ -136,7 +137,7 @@ public class ActionField extends FieldBase {
             }
 
             boolean validateFormDirty = false;
-            if (view instanceof FormView && !isBlockValidateDirty()) {
+            if (view instanceof FormView && isBlockValidateDirty()) {
                 validateFormDirty = ((FormView) view).isValidateDirty();
             }
 

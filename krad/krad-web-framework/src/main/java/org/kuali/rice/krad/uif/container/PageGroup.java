@@ -15,20 +15,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.Growls;
-import org.kuali.rice.krad.util.ErrorMessage;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.MessageMap;
-import org.springframework.util.AutoPopulatingList;
-
-import java.text.MessageFormat;
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

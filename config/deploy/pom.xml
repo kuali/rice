@@ -113,19 +113,19 @@
     <profile>
       <id>v2.0</id>
       <properties>
-        <deploy.impex.location>https://svn.kuali.org/repos/branches/rice-2.0/db/impex/master</deploy.impex.location>
+        <deploy.impex.location>https://svn.kuali.org/repos/rice/branches/rice-2.0/db/impex/master</deploy.impex.location>
       </properties>
     </profile>
     <profile>
       <id>v2.1</id>
       <properties>
-        <deploy.impex.location>https://svn.kuali.org/repos/trunk/db/impex/master</deploy.impex.location>
+        <deploy.impex.location>https://svn.kuali.org/repos/rice/trunk/db/impex/master</deploy.impex.location>
       </properties>
     </profile>
     <profile>
       <id>v2.2</id>
       <properties>
-        <deploy.impex.location>https://svn.kuali.org/repos/branches/rice-2.2/db/impex/master</deploy.impex.location>
+        <deploy.impex.location>https://svn.kuali.org/repos/rice/branches/rice-2.2/db/impex/master</deploy.impex.location>
       </properties>
     </profile>
     <profile>

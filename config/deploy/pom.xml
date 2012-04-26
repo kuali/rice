@@ -341,7 +341,7 @@
           <plugin>
             <groupId>org.kuali.maven.plugins</groupId>
             <artifactId>maven-manifest-plugin</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <configuration>
               <filename>target/dependency/META-INF/MANIFEST.MF</filename>
               <attribute>SVN-URL</attribute>

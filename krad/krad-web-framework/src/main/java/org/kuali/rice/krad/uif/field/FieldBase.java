@@ -93,7 +93,7 @@ public class FieldBase extends ComponentBase implements Field {
             fieldLabel.setLabelForComponentId(this.getId());
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
-                fieldLabel.getRequiredMessageField().setRender(true);
+                fieldLabel.getRequiredMessageField().setRender(!isReadOnly());
             } else {
                 setRequired(new Boolean(false));
                 fieldLabel.getRequiredMessageField().setRender(true);

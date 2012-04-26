@@ -281,6 +281,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * <p>The items need to be included when an object is being copied to all the groups nested components
      * @see #pushCollectionGroupToReference()
      * The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
+     *
      * @param includeItems - whether the components items should be included. 
      * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
      */

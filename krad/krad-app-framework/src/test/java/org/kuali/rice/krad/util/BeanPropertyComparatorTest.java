@@ -65,8 +65,10 @@ public class BeanPropertyComparatorTest {
 
     @Test
     /**
-     * test that a NullPointerException is thrown when the list of property names contains a property name
-     * that does not exist in the first argument to  @{link  org.kuali.rice.krad.util.BeanPropertyComparator#compare(java.lang.Object, java.lang.Object)}
+     * tests comparison with an unknown property name
+     *
+     * <p>test that a <code>NullPointerException</code> is thrown when the list of property names contains a property name
+     * that does not exist in the first argument to  @{link  org.kuali.rice.krad.util.BeanPropertyComparator#compare(java.lang.Object, java.lang.Object)}</p>
      */
     public void testCompare_unknownPropertyNames() {
         List unknownProperties = Arrays.asList(new String[] { "one", "two", "three" });
@@ -111,9 +113,11 @@ public class BeanPropertyComparatorTest {
 
     @Test
     /**
-     * test that a NullPointerException exception is thrown when the first argument to
+     * tests comparison when a property has a getter with private scope
+     *
+     * <p>test that a NullPointerException exception is thrown when the first argument to
      * @{link  org.kuali.rice.krad.util.BeanPropertyComparator#compare(java.lang.Object, java.lang.Object)}
-     * has a private scoped getter
+     * has a private scoped getter</p>
      */
     public void testCompare_privateProperty() {
         List privateProperty = Arrays.asList(new String[] { "s" });
@@ -201,8 +205,10 @@ public class BeanPropertyComparatorTest {
 
     @Test
     /**
-     * using 3 properties, compare two beans that have a different value for the first property
-     * and the same values for the other two properties
+     * tests comparison of multiple properties
+     *
+     * <p>using 3 properties, compare two beans that have a different value for the first property
+     * and the same values for the other two properties</p>
      */
     public void testCompare_oneLevel() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });
@@ -223,8 +229,10 @@ public class BeanPropertyComparatorTest {
 
     @Test
     /**
-     * using 3 properties, compare two beans that have a different value for the second property
-     * and the same values for the other two properties
+     * tests comparison of multiple properties
+     *
+     * <p>using 3 properties, compare two beans that have a different value for the second property
+     * and the same values for the other two properties</p>
      */
     public void testCompare_twoLevels() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });
@@ -245,8 +253,10 @@ public class BeanPropertyComparatorTest {
 
     @Test
     /**
-     * using 3 properties, compare two beans that have a different value for the third property
-     * and the same values for the other two properties
+     * tests comparison of multiple properties
+     *
+     * <p>using 3 properties, compare two beans that have a different value for the third property
+     * and the same values for the other two properties</p>
      */
     public void testCompare_threeLevels() {
         List propertiesSIB = Arrays.asList(new String[] { "s", "i", "b" });

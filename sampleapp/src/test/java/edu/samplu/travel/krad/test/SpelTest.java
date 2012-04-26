@@ -44,7 +44,7 @@ public class SpelTest {
     }
 
     /**
-     * n
+     * tests that a path without any periods in it does not cause an exception
      */
     @Test
     public void testSpelWithoutDotPrefix() {
@@ -52,6 +52,9 @@ public class SpelTest {
     }
 
     @Test
+    /**
+     * tests that an expression with the period not as a prefix does not cause an error
+     */
     public void testSpelWithObjectPrefix() {
         Expression expression = parser.parseExpression("#form.field88 eq 'none'");
     }

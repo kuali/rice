@@ -28,6 +28,7 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * ViewIndexTest has various tests for ViewIndex
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewIndexTest {
@@ -38,6 +39,7 @@ public class ViewIndexTest {
 
     /**
      * test that clear indexes after render does not clear fields with a value for refreshWhenChanged and their nested controls
+     *
      * @throws Exception
      */
     @Test

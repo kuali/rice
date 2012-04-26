@@ -279,6 +279,7 @@ public class ComponentUtils {
 
     /**
      * add a suffix to the id
+     *
      * @param component - the component instance whose id will be changed
      * @param idSuffix - the suffix to be appended
      */
@@ -290,6 +291,7 @@ public class ComponentUtils {
 
     /**
      * add a suffix to the factory id
+     *
      * @param component - the component instance whose id will be changed
      * @param idSuffix - the suffix to be appended
      */

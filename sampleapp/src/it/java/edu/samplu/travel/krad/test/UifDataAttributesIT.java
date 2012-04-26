@@ -49,6 +49,7 @@ public class UifDataAttributesIT {
 
     /**
      * verify that a tag has simple data attributes
+     *
      * @param tag - html tag e.g. img or a
      * @param tagId - derived from the bean id set in the view
      * @param tagIdSuffix - where applicable, a suffix that is appended to the control by krad e.g. _control
@@ -63,7 +64,8 @@ public class UifDataAttributesIT {
     }
 
     /**
-     * // test the attributes that are set via the data*Attribute properties
+     * test the attributes that are set via the data*Attribute properties
+     *
      * @param tag - html tag e.g. img or a
      * @param tagId - the html tag id - a combination of bean id and any suffix
      */
@@ -77,6 +79,7 @@ public class UifDataAttributesIT {
 
     /**
      * check that complex attributes exist in the script
+     *
      * @param tagId - the expected tag id
      * @param suffix - the expected suffix e.g. _button
      */
@@ -102,6 +105,7 @@ public class UifDataAttributesIT {
 
     /**
      * check that all attributes exist in the script
+     *
      * @param tagId - the expected tag id
      * @param suffix - the expected suffix e.g. _control
      * @return true if all attributes were found in script, false otherwise

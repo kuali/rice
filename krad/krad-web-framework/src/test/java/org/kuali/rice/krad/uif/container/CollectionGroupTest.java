@@ -68,6 +68,7 @@ public class CollectionGroupTest {
 
     /**
      * test that the collection group is available in the component's contexts
+     *
      * @param component
      */
     private void testForCollectionGroupInContext(Component component) {

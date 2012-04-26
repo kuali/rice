@@ -384,7 +384,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * </p>
      *
      *
-     * @return List<String> css style classes to apply
+     * @return List<String> css style classes to appear on the 'class' attribute
      */
     public List<String> getStyleClasses();
 
@@ -904,8 +904,10 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
 
     /**
      * Returns js that will add data to this component by the element which matches its id.
+     *
      * <p>This will return script for all the complex data elements.
      * This method is useful for controls that are implemented as spring form tags</p>
+     *
      * @return jQuery data script for adding all data attributes
      */
     public String getAllDataAttributesJs();

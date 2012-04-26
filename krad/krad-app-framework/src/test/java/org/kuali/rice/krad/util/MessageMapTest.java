@@ -370,6 +370,7 @@ public class MessageMapTest {
 
     /**
      * create a test error map
+     *
      * @return a MessageMap with test entries
      */
     private MessageMap buildReplaceErrorMap() {

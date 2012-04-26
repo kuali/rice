@@ -28,6 +28,7 @@ public class TimeInfo {
 
     /**
      * the start time
+     *
      * @return start time
      */
     public String getStartTime() {
@@ -36,6 +37,7 @@ public class TimeInfo {
 
     /**
      * set the start time
+     *
      * @param startTime - the start time
      */
     public void setStartTime(String startTime) {
@@ -44,6 +46,7 @@ public class TimeInfo {
 
     /**
      * get am or pm value
+     *
      * @return  am or pm value
      */
     public String getStartTimeAmPm() {
@@ -52,6 +55,7 @@ public class TimeInfo {
 
     /**
      *  get am or pm value
+     *
      * @param startTimeAmPm - am or pm value
      */
     public void setStartTimeAmPm(String startTimeAmPm) {
@@ -60,6 +64,7 @@ public class TimeInfo {
 
     /**
      * get all day value
+     *
      * @return all day value
      */
     public boolean isAllDay() {
@@ -68,6 +73,7 @@ public class TimeInfo {
 
     /**
      * set all day value
+     *
      * @param allDay -  all day value
      */
     public void setAllDay(boolean allDay) {

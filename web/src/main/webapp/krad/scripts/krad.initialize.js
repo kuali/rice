@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // global vars
-var $dialog = null;
 var jq = jQuery.noConflict();
 
 //clear out blockUI css, using css class overrides
@@ -74,6 +74,9 @@ jq(document).ready(function () {
  * on the client
  */
 function initFieldHandlers() {
+    // var HANDLE_FIELD_MESSAGES_EVENT = "handleFieldsetMessages";
+
+
     //when these fields are focus store what the current errors are if any and show the messageTooltip
     jq(document).on("focus",
             "[data-role='InputField'] input:text, "
@@ -262,16 +265,14 @@ function hideBubblePopups() {
             + " label, .uif-tooltip").HideAllBubblePopups();
 }
 
-//sets up the validator with the necessary default settings and methods
-//also sets up the dirty check and other page scripts
+/**
+ * Sets up the validator with the necessary default settings and methods
+ * also sets up the dirty check and other page scripts
+ */
 function setupPage(validate, focusFirstField) {
     jq('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
 
-    errorImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error.png' alt='Error' /> ";
-    errorGreyImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
-    warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
-    infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
-
+    setupImages();
 
     //Reset summary state before processing each field - summaries are shown if server messages
     // or on client page validation
@@ -432,6 +433,16 @@ function setupPage(validate, focusFirstField) {
     if(focusFirstField){
         performFocus();
     }
+}
+
+/**
+ * Initializes all of the image variables
+ */
+function setupImages() {
+    errorImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error.png' alt='Error' /> ";
+    errorGreyImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
+    warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
+    infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
 }
 
 /**

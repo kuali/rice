@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Submits the form through an ajax submit, the response is the new page html
  * runs all hidden scripts passed back (this is to get around a bug with premature script evaluation)

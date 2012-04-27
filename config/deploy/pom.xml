@@ -213,7 +213,6 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
@@ -285,11 +284,11 @@
         <deploy.type>war</deploy.type>
         <deploy.war>target/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</deploy.war>
         <impex.dir>target/checkout/impex</impex.dir>
+        <impex.relative.dir>/../db/impex/master</impex.relative.dir>
       </properties>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
             <executions>
               <execution>
@@ -313,7 +312,6 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
@@ -324,7 +322,6 @@
                   <goal>unpack</goal>
                 </goals>
                 <configuration>
-                  <localRepositoryDirectory>target/repository</localRepositoryDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>${deploy.groupId}</groupId>
@@ -341,19 +338,32 @@
           <plugin>
             <groupId>org.kuali.maven.plugins</groupId>
             <artifactId>maven-manifest-plugin</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
             <configuration>
               <filename>target/dependency/META-INF/MANIFEST.MF</filename>
-              <attribute>SVN-URL</attribute>
               <prefix>manifest</prefix>
             </configuration>
             <executions>
               <execution>
-                <id>svnurl</id>
+                <id>getsvnrevision</id>
                 <phase>initialize</phase>
                 <goals>
-                  <goal>getattribute</goal>
+                  <goal>getsvnrevision</goal>
                 </goals>
+                <configuration>
+                  <attribute>SVN-Revision</attribute>
+                </configuration>
+              </execution>
+              <execution>
+                <id>getsvnurl</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>getsvnurl</goal>
+                </goals>
+                <configuration>
+                  <attribute>SVN-URL</attribute>
+                  <suffix>${impex.relative.dir}</suffix>
+                </configuration>
               </execution>
             </executions>
           </plugin>

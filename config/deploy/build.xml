@@ -1,18 +1,18 @@
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+  Copyright 2005-2012 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project name="Application Deployer">
@@ -34,12 +34,12 @@
   <target name="checkout">
     <condition property="checkout.properties">
       <and>
-        <isset property="deploy.impex.location" />
         <isset property="manifest.SVN-URL" />
+        <isset property="manifest.SVN-Revision" />
       </and>
     </condition>
     <fail unless="checkout.properties">Missing checkout properties</fail>
-    <property name="manifest.svn.url" value="${manifest.SVN-URL}" />
+    <property name="manifest.svn.url" value="${manifest.SVN-URL}@${manifest.SVN-Revision}" />
     <property name="checkout.dir" value="target/checkout/impex" />
     <echo>Checking out ${manifest.svn.url}</echo>
     <exec executable="svn">
@@ -56,8 +56,7 @@
       </and>
     </condition>
     <fail unless="ssh.properties">Missing ssh.command</fail>
-    <sshexec command="${ssh.command}" username="root" host="${deploy.server}" keyfile="${deploy.auth}" trust="true"
-      verbose="${ssh.verbose}" failonerror="true" />
+    <sshexec command="${ssh.command}" username="root" host="${deploy.server}" keyfile="${deploy.auth}" trust="true" verbose="${ssh.verbose}" failonerror="true" />
   </target>
 
   <target name="stop" depends="check-basic-properties">
@@ -69,8 +68,7 @@
       catalina.pid should be present but it is not. Generally speaking, if catalina.pid
       is not present tomcat is not running, which means the build should not fail.
     -->
-    <sshexec command="${stop.command}" username="root" host="${deploy.server}" keyfile="${deploy.auth}" trust="true"
-      verbose="${ssh.verbose}" failonerror="false" />
+    <sshexec command="${stop.command}" username="root" host="${deploy.server}" keyfile="${deploy.auth}" trust="true" verbose="${ssh.verbose}" failonerror="false" />
   </target>
   <target name="cleanjdbc" depends="check-basic-properties">
     <antcall target="removedir">
@@ -205,8 +203,7 @@
     </condition>
     <fail unless="copyfile.properties">Missing either local.file or remote.file</fail>
     <echo>scp ${local.file} to ${deploy.server}:${remote.file}</echo>
-    <scp localFile="${local.file}" remoteToFile="root@${deploy.server}:${remote.file}" keyfile="${deploy.auth}"
-      trust="true" verbose="${scp.verbose}" />
+    <scp localFile="${local.file}" remoteToFile="root@${deploy.server}:${remote.file}" keyfile="${deploy.auth}" trust="true" verbose="${scp.verbose}" />
     <antcall target="ssh-exec">
       <param name="ssh.command" value="chown ${tomcat.instance}:tomcat ${remote.file}" />
     </antcall>

@@ -21,7 +21,6 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
-import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -29,6 +28,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
+import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotablePasswordInput;
@@ -41,7 +41,6 @@ import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.core.web.format.CurrencyFormatter;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -1499,7 +1498,9 @@ public final class FieldUtils {
 
     private static List<Field> constructFieldsForAttributeDefinition(RemotableAttributeField remotableAttributeField) {
         List<Field> fields = new ArrayList<Field>();
-        if (remotableAttributeField.getAttributeLookupSettings() != null && remotableAttributeField.getAttributeLookupSettings().isRanged()) {
+        if (remotableAttributeField.getAttributeLookupSettings() != null
+                && remotableAttributeField.getAttributeLookupSettings().isRanged()
+                && !remotableAttributeField.getDataType().equals(DataType.DATE)) {
             // create two fields, one for the "from" and one for the "to"
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             // Create a pair of range input fields for a ranged attribute
@@ -1529,7 +1530,6 @@ public final class FieldUtils {
             if (remotableAttributeField.getMaxLength() != null) {
                 tempField.setMaxLength(remotableAttributeField.getMaxLength());
             }
-            //List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
 
             if (remotableAttributeField.getShortLabel() != null) {
                 tempField.setFieldLabel(remotableAttributeField.getShortLabel());
@@ -1609,6 +1609,19 @@ public final class FieldUtils {
             quickfinder.setLookupParameters(toMap(field.getLookupParameters()));
             widgets.add(quickfinder);
         }
+        if (builder.getDataType().equals(DataType.DATETIME)
+                || builder.getDataType().equals(DataType.DATE)) {
+            if (field.isRanged()) {
+                RemotableAttributeLookupSettings.Builder lookupSettings = RemotableAttributeLookupSettings.Builder.create();
+                lookupSettings.setRanged(field.isRanged());
+                if (field.isDatePicker()) {
+                    lookupSettings.setLowerDatePicker(Boolean.TRUE);
+                    lookupSettings.setUpperDatePicker(Boolean.TRUE);
+                }
+                builder.setAttributeLookupSettings(lookupSettings);
+            }
+        }
+
         if (field.getFieldType().equals(Field.CURRENCY)) {
             builder.setDataType(DataType.CURRENCY);
             builder.setMaxLength(field.getFormattedMaxLength());
@@ -1742,6 +1755,10 @@ public final class FieldUtils {
             if (!lookupSettings.isInCriteria()) {
                 field.setFieldType(Field.HIDDEN);
             }
+            field.setRanged(lookupSettings.isRanged());
+            boolean datePickerLow = lookupSettings.isLowerDatePicker() == null ? false : lookupSettings.isLowerDatePicker().booleanValue();
+            boolean datePickerUpper = lookupSettings.isUpperDatePicker() == null ? false : lookupSettings.isUpperDatePicker().booleanValue();
+            field.setDatePicker(datePickerLow || datePickerUpper);
         }
     }
 

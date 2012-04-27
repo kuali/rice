@@ -21,12 +21,11 @@ import javax.persistence.Id
 import javax.persistence.Table
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
-import org.kuali.rice.kim.framework.identity.employment.EntityEmploymentTypeEbo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_EMP_TYP_T")
-public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implements EntityEmploymentTypeEbo {
+public class EntityEmploymentTypeBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
     @Id
     @Column(name="EMP_TYP_CD")
     String code;

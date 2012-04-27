@@ -876,8 +876,7 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
-              p:render="@{#dp.agendaItemLineRuleAction.typeId != ''}"
-              p:instructionalText="instructional text" p:constraintText="size 4000">
+              p:render="@{#dp.agendaItemLineRuleAction.typeId != ''}" p:constraintText="size 4000">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="40" p:maxLength="4000" p:watermarkText="Enter a Action Description" p:styleClasses="countdown"/>
           </property>

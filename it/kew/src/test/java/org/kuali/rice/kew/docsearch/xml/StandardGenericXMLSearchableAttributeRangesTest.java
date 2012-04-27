@@ -18,12 +18,11 @@ package org.kuali.rice.kew.docsearch.xml;
 import com.google.common.base.Function;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
@@ -45,7 +44,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
@@ -56,10 +54,8 @@ import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.
@@ -190,26 +186,17 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         assertTrue(remotableAttributeFields.get(0).getAttributeLookupSettings().isUpperDatePicker());
         rows = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
         if ((new SearchableAttributeDateTimeValue()).allowsRangeSearches()) {
-            assertEquals("Invalid number of search rows", 2, rows.size());
+            assertEquals("Invalid number of search rows", 1, rows.size());
             for (int i = 0; i < rows.size(); i++) {
                 Row row = rows.get(i);
-	            assertTrue("Invalid number of fields for search row", row.getFields().size() > 0);
+	            assertTrue("Invalid number of fields for search row", row.getFields().size() == 1);
 	            Field field = (Field)(row.getField(0));
-	            assertTrue("Field should be the member of a range search", field.isMemberOfRange());
-	            if (field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-	            	// this is the lower bound row
-	            	assertFalse("Lower Field should not be using datepicker field", field.isDatePicker());
-	            	assertFalse("Lower Field should not be inclusive", field.isInclusive());
-	            } else {
-	            	// this is the upper bound row
-	            	assertTrue("Upper Field should be using datepicker field", field.isDatePicker());
-	            	assertTrue("Upper Field should not be inclusive", field.isInclusive());
-                    assertEquals("Row should have 1 field (with datepicker)", 1, row.getFields().size());
-                    assertEquals("Field in row should be of type text", Field.TEXT, row.getField(0).getFieldType());
-                    // DatePicker used to go in it's own field, now it is part of the main field
-	            	//assertEquals("Row should have two fields (including the datepicker field)", 2, row.getFields().size());
-	            	//assertEquals("Second field in row  should be of type datepicker", Field.DATEPICKER, row.getField(1).getFieldType());
-	            }
+	            assertTrue("Field should be the member of a range search", field.isRanged());
+
+                assertTrue("Field should be using datepicker field", field.isDatePicker());
+                assertTrue("Field should not be inclusive", field.isInclusive());
+                assertEquals("Field in row should be of data type date", DataType.DATE.toString().toLowerCase(), field.getFieldDataType());
+
 			}
         } else {
             assertEquals("Invalid number of search rows", 1, rows.size());
@@ -353,8 +340,11 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
             results = docSearchService.lookupDocuments(userId, criteria.build());
             if (expected == EXPECT_EXCEPTION) fail("Error should have been thrown for invalid range");
         } catch (WorkflowServiceErrorException e) {
-            if (expected == EXPECT_EXCEPTION) return;
-            else throw e;
+            if (expected == EXPECT_EXCEPTION) {
+                return;
+            } else {
+                throw e;
+            }
         }
 
         assertEquals("Search results should have " + expected + " document(s).", expected,

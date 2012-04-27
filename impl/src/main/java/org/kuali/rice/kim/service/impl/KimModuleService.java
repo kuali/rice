@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupContract;
@@ -58,22 +50,20 @@ import org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo;
 import org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.impl.identity.EntityTypeBo;
-import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
-import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
-import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
-import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo;
-import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
-import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
-import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -107,72 +97,72 @@ public class KimModuleService extends ModuleServiceBase {
 		} else if(RoleContract.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)){
 				Role role = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
-				return (T) RoleBo.from(role);
+				return (T) RoleEbo.from(role);
 			}
 		} else if(GroupContract.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID)) {
                 Group group = getGroupService().getGroup((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
-				return (T) GroupBo.from(group);
+				return (T) GroupEbo.from(group);
 			}
 		} else if (EntityEmailTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getEmailType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityEmailTypeBo.from(codedAttribute);
+                return (T)EntityEmailTypeEbo.from(codedAttribute);
             }
         } else if (EntityAddressTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getAddressType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityAddressTypeBo.from(codedAttribute);
+                return (T)EntityAddressTypeEbo.from(codedAttribute);
             }
         } else if (EntityAffiliationTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 EntityAffiliationType codedAttribute = getIdentityService()
                         .getAffiliationType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityAffiliationTypeBo.from(codedAttribute);
+                return (T)EntityAffiliationTypeEbo.from(codedAttribute);
             }
         } else if (EntityCitizenshipStatusEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getCitizenshipStatus((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityCitizenshipStatusBo.from(codedAttribute);
+                return (T)EntityCitizenshipStatusEbo.from(codedAttribute);
             }
         } else if (EntityEmploymentStatusEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getEmploymentStatus((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityEmploymentStatusBo.from(codedAttribute);
+                return (T)EntityEmploymentStatusEbo.from(codedAttribute);
             }
         }  else if (EntityEmploymentTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getEmploymentType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityEmploymentTypeBo.from(codedAttribute);
+                return (T)EntityEmploymentTypeEbo.from(codedAttribute);
             }
         } else if (EntityNameTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getNameType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityNameTypeBo.from(codedAttribute);
+                return (T)EntityNameTypeEbo.from(codedAttribute);
             }
         } else if (EntityTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getEntityType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityTypeBo.from(codedAttribute);
+                return (T)EntityTypeEbo.from(codedAttribute);
             }
         } else if (EntityExternalIdentifierTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 EntityExternalIdentifierType codedAttribute = getIdentityService()
                         .getExternalIdentifierType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityExternalIdentifierTypeBo.from(codedAttribute);
+                return (T)EntityExternalIdentifierTypeEbo.from(codedAttribute);
             }
         } else if (EntityPhoneTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
                         .getPhoneType((String) fieldValues.get(KimConstants.PrimaryKeyConstants.CODE));
-                return (T)EntityPhoneTypeBo.from(codedAttribute);
+                return (T)EntityPhoneTypeEbo.from(codedAttribute);
             }
         }
 		// otherwise, use the default implementation
@@ -197,14 +187,14 @@ public class KimModuleService extends ModuleServiceBase {
             List<Role> roles = getKimRoleService().findRoles(toQuery(fieldValues)).getResults();
             List<RoleEbo> roleEbos = new ArrayList<RoleEbo>(roles.size());
             for (Role role : roles) {
-                roleEbos.add(RoleBo.from(role));
+                roleEbos.add(RoleEbo.from(role));
             }
             return (List<T>)roleEbos;
 		} else if ( GroupContract.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
 			List<Group> groups = getGroupService().findGroups(toQuery(fieldValues)).getResults();
             List<GroupEbo> groupEbos = new ArrayList<GroupEbo>(groups.size());
             for (Group group : groups) {
-                groupEbos.add(GroupBo.from(group));
+                groupEbos.add(GroupEbo.from(group));
             }
             return (List<T>)groupEbos;
 		}
@@ -236,14 +226,14 @@ public class KimModuleService extends ModuleServiceBase {
 			List<Role> roles = getKimRoleService().findRoles(toQuery(fieldValues)).getResults();
             List<RoleEbo> roleEbos = new ArrayList<RoleEbo>(roles.size());
             for (Role role : roles) {
-                roleEbos.add(RoleBo.from(role));
+                roleEbos.add(RoleEbo.from(role));
             }
             return (List<T>)roleEbos;
 		} else if (GroupContract.class.isAssignableFrom( externalizableBusinessObjectClass)) {
             List<Group> groups = getGroupService().findGroups(toQuery(fieldValues)).getResults();
             List<GroupEbo> groupEbos = new ArrayList<GroupEbo>(groups.size());
             for (Group group : groups) {
-                groupEbos.add(GroupBo.from(group));
+                groupEbos.add(GroupEbo.from(group));
             }
             return (List<T>)groupEbos;
         }
@@ -383,5 +373,15 @@ public class KimModuleService extends ModuleServiceBase {
         }
 
     }
+    
+    @Override
+    public boolean goToCentralRiceForInquiry() {
+        RunMode runMode = getRunMode(KimApiConstants.Namespaces.MODULE_NAME);
 
+        if (RunMode.EMBEDDED.equals(runMode)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -60,7 +60,7 @@ import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
+import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -752,6 +752,19 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     }
 
     public boolean processAddMember(AddMemberEvent addMemberEvent) {
+
+        //KULRICE-7178 Don't allow adding duplicate members
+        KimDocumentRoleMember newMember = addMemberEvent.getMember();
+        IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
+        int i = 0;
+        for (KimDocumentRoleMember member: document.getMembers()){
+            if (member.getMemberId().equals(newMember.getMemberId()) && member.getMemberTypeCode().equals(newMember.getMemberTypeCode())){
+                GlobalVariables.getMessageMap().putError("document.members["+i+"].memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+                return false;
+            }
+            i++;
+        }
+
         boolean success = new KimDocumentMemberRule().processAddMember(addMemberEvent);
         success &= validateActiveDate("member.activeFromDate", addMemberEvent.getMember().getActiveFromDate(), addMemberEvent.getMember().getActiveToDate());
         success &= checkForCircularRoleMembership(addMemberEvent);

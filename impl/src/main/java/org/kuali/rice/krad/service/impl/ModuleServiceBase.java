@@ -15,7 +15,13 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -90,13 +96,22 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
     @Deprecated
     @Override
     protected String getInquiryUrl(Class inquiryBusinessObjectClass) {
-        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                KRADConstants.APPLICATION_URL_KEY);
+        
+        String riceBaseUrl = "";
+        String potentialUrlAddition = "";
+
+        if (goToCentralRiceForInquiry()) {
+            riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KUALI_RICE_URL_KEY); 
+        } else {
+            riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.APPLICATION_URL_KEY);
+            potentialUrlAddition = "kr/";
+        }
+        
         String inquiryUrl = riceBaseUrl;
         if (!inquiryUrl.endsWith("/")) {
             inquiryUrl = inquiryUrl + "/";
         }
-        return inquiryUrl + "kr/" + KRADConstants.INQUIRY_ACTION;
+        return inquiryUrl + potentialUrlAddition + KRADConstants.INQUIRY_ACTION;
     }
 
     @Override
@@ -121,17 +136,28 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
             Map<String, String> parameters) {
         Properties urlParameters = new Properties();
 
-        String riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                KRADConstants.APPLICATION_URL_KEY);
+        String riceBaseUrl = "";
+        String potentialUrlAddition = "";
+
+        if (goToCentralRiceForInquiry()) {
+            riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KUALI_RICE_URL_KEY);
+        } else {
+            riceBaseUrl = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(KRADConstants.APPLICATION_URL_KEY);
+            potentialUrlAddition = "kr/";
+        }
+        
         String lookupUrl = riceBaseUrl;
         if (!lookupUrl.endsWith("/")) {
             lookupUrl = lookupUrl + "/";
         }
+        
         if (parameters.containsKey(KRADConstants.MULTIPLE_VALUE)) {
-            lookupUrl = lookupUrl + "kr/" + KRADConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
-        } else {
-            lookupUrl = lookupUrl + "kr/" + KRADConstants.LOOKUP_ACTION;
+            lookupUrl = lookupUrl + potentialUrlAddition + KRADConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
         }
+        else {
+            lookupUrl = lookupUrl + potentialUrlAddition + KRADConstants.LOOKUP_ACTION;
+        }
+           
         for (String paramName : parameters.keySet()) {
             urlParameters.put(paramName, parameters.get(paramName));
         }
@@ -164,7 +190,18 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
         return businessObjectService;
     }
 
-
+    public boolean goToCentralRiceForInquiry() { 
+        return false;
+    }
+        
+    protected RunMode getRunMode(String module) {
+        String propertyName = module + ".mode";
+        String runMode = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+        if (StringUtils.isBlank(runMode)) {
+            throw new ConfigurationException("Failed to determine run mode for module '" + module + "'.  Please be sure to set configuration parameter '" + propertyName + "'");
+        }
+        return RunMode.valueOf(runMode.toUpperCase());
+    }
 
 }
 

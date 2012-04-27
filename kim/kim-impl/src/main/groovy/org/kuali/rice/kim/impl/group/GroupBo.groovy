@@ -23,23 +23,22 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.persistence.Transient
-
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import org.hibernate.annotations.Type
 import org.joda.time.DateTime
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes
 import org.kuali.rice.kim.api.group.Group
+import org.kuali.rice.kim.api.group.GroupContract
 import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.framework.group.GroupEbo
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_GRP_T")
-public class GroupBo extends PersistableBusinessObjectBase implements GroupEbo {
+public class GroupBo extends PersistableBusinessObjectBase implements GroupContract {
     private static final long serialVersionUID = 1L;
 
     @Id

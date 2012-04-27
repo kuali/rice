@@ -1700,6 +1700,11 @@
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
           </exclusion>
+          <!--Removing the asm 1.5.3 version that comes with OJB-->
+           <exclusion>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
 

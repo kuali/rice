@@ -126,7 +126,7 @@
 
                     <div align="center">
 
-                        <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
+                      <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 
 
                         <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
@@ -254,9 +254,10 @@
                     <c:set var="kimAttrId" value="${qualifier.kimAttribute.id}"  />
                   <td align="left" valign="middle">
                         <div align="center">
-                          <c:if test="$(kfunc:matchingQualifierExists(KualiForm.document.members,index,kimAttrId) }">
+                         <c:if test="${kfunc:matchingQualifierExists(KualiForm.document.members,index,kimAttrId) }">
+
                             <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
-                          </c:if>
+
                           <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                             <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                               <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">
@@ -264,6 +265,7 @@
                               </c:if>
                             </c:if>
                           </c:forEach>
+                          </c:if>
                         </div>
                     </td>
                 </c:forEach>

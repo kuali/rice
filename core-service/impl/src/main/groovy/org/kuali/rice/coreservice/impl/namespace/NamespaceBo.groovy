@@ -20,15 +20,16 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-
 import org.hibernate.annotations.Type
 import org.kuali.rice.coreservice.api.namespace.Namespace
-import org.kuali.rice.coreservice.framework.namespace.NamespaceEbo
+import org.kuali.rice.coreservice.api.namespace.NamespaceContract
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 @Entity
 @Table(name="KRCR_NMSPC_T")
-class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo {
+class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceContract, MutableInactivatable {
 
     private static final long serialVersionUID = 1L;
 

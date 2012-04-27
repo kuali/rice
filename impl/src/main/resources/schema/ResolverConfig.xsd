@@ -68,6 +68,13 @@
       		</documentation>
       	</annotation>
       </element>
+      <element name="qualifier" type="ra:QualifierType" minOccurs="0" maxOccurs="unbounded">
+      	<annotation>
+      		<documentation>
+      		 A attributes to resolve
+      		</documentation>
+      	</annotation>
+      </element>
       <any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
     </sequence>
   </complexType>

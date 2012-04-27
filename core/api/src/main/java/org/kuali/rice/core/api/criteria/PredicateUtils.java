@@ -126,7 +126,7 @@ public final class PredicateUtils {
  		}
 
  		valueEntered = valueEntered.trim();
-
+        valueEntered = valueEntered.replaceAll("%", "*");
  		if(lRet == null){
  			throw new NullPointerException("The list passed in is by reference and should never be null.");
  		}

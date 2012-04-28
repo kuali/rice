@@ -49,8 +49,16 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView"
-        p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js,../krms/scripts/disableButtons.js,../krms/scripts/countdownInputs.js">
+  <bean id="Editor-MaintenanceView" parent="Uif-MaintenanceView">
+    <property name="additionalScriptFiles">
+      <list>
+        <value>/krms/scripts/ruleTree.js</value>
+        <value>/krms/scripts/agendaTree.js</value>
+        <value>/krms/scripts/requiredAlerts.js</value>
+        <value>/krms/scripts/disableButtons.js</value>
+        <value>/krms/scripts/countdownInputs.js</value>
+      </list>
+    </property>
     <property name="additionalCssFiles">
       <list>
         <value>/krms/css/agendaTree.css</value>

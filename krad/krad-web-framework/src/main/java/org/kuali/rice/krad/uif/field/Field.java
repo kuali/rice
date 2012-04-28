@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.field;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Label;
 
+import java.util.List;
+
 /**
  * Component that contains one or more user interface elements and can be placed
  * into a <code>Container</code>
@@ -106,5 +108,33 @@ public interface Field extends Component {
 	 * @param labelFieldRendered
 	 */
 	public void setLabelRendered(boolean labelFieldRendered);
+
+    /**
+     * Label style classes for the field
+     *
+     * @return List<String> label style classes
+     */
+    public List<String> getLabelStyleClasses();
+
+    /**
+     * Setter for the field's label style classes
+     *
+     * @param labelStyleClasses
+     */
+    public void setLabelStyleClasses(List<String> labelStyleClasses);
+
+    /**
+     * Label column span for the field
+     *
+     * @return int label column span
+     */
+    public int getLabelColSpan();
+
+    /**
+     * Setter for the field's label column span
+     *
+     * @param labelColSpan
+     */
+    public void setLabelColSpan(int labelColSpan);
 
 }

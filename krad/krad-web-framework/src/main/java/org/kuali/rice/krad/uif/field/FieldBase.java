@@ -179,6 +179,54 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.field.Field#getLabelStyleClasses
+     */
+    public List<String> getLabelStyleClasses() {
+        if (fieldLabel != null) {
+            return fieldLabel.getStyleClasses();
+        }
+
+        return null;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.Field#setLabelStyleClasses
+     */
+    public void setLabelStyleClasses(List<String> labelStyleClasses) {
+        if (labelStyleClasses != null && this.fieldLabel == null) {
+            this.fieldLabel = ComponentFactory.getLabel();
+        }
+
+        if (this.fieldLabel != null) {
+            this.fieldLabel.setStyleClasses(labelStyleClasses);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.Field#getLabelColSpan
+     */
+    public int getLabelColSpan() {
+        if (fieldLabel != null) {
+            return fieldLabel.getColSpan();
+        }
+
+        return 1;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.Field#setLabelColSpan
+     */
+    public void setLabelColSpan(int labelColSpan) {
+        if (this.fieldLabel == null) {
+            this.fieldLabel = ComponentFactory.getLabel();
+        }
+
+        if (this.fieldLabel != null) {
+            this.fieldLabel.setColSpan(labelColSpan);
+        }
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.field.Field#getShortLabel()
      */
     public String getShortLabel() {

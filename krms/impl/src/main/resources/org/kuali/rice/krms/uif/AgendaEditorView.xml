@@ -631,7 +631,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-MessageField" p:label="Rule Editor Summary" p:showLabel="true" p:labelPlacement="TOP"
-              p:fieldLabel.styleClasses="labelTop" p:messageText="@{#dp.ruleEditorMessage}" />
+              p:labelStyleClasses="labelTop" p:messageText="@{#dp.ruleEditorMessage}" />
       </list>
     </property>
   </bean>

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.util;
 
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.util.UifFormManager;
+import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,7 +31,7 @@ import java.util.concurrent.Callable;
  */
 public final class GlobalVariables {
 
-    private static ThreadLocal<LinkedList<GlobalVariables>> GLOBAL_VARIABLES_STACK = new ThreadLocal<LinkedList<GlobalVariables>>() {
+    private static ThreadLocal<LinkedList<GlobalVariables>> GLOBAL_VARIABLES_STACK = new ApplicationThreadLocal<LinkedList<GlobalVariables>>() {
         protected LinkedList<GlobalVariables> initialValue() {
             LinkedList<GlobalVariables> globalVariablesStack = new LinkedList<GlobalVariables>();
             globalVariablesStack.add(new GlobalVariables());

@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Resolves object definitions into java Objects that are wrapped in a proxy whose classloader is the current
@@ -62,30 +63,35 @@ public class ObjectDefinitionResolver {
 		return createObject(new ObjectDefinition(className), classLoader, true);
 	}
 
-	public static Object createObject(ObjectDefinition definition, ClassLoader classLoader, boolean wrap) {
-		Object object = null;
-		String className = definition.getClassName();
-		try {
-			ContextClassLoaderBinder.bind(classLoader);
-			Class<?>[] constructorParamTypes = buildConstructorParamTypes(definition.getConstructorParameters());
-			Object[] constructorParams = buildConstructorParams(definition.getConstructorParameters());
-			try {
-				Class<?> objectClass = Class.forName(className, true, classLoader);
-				object = loadObject(objectClass, constructorParams, constructorParamTypes);
-			} catch (ClassNotFoundException e) {
-				return null;
-			}
-			invokeProperties(object, definition.getProperties());
-			if (wrap) {
-				return wrap(object, classLoader);
-			}
-			return object;
-		} catch (Exception e) {
-			handleException(className, e);
-		} finally {
-			ContextClassLoaderBinder.unbind();
-		}
-		return object;
+	public static Object createObject(final ObjectDefinition definition, final ClassLoader classLoader, final boolean wrap) {
+		Object result = null;
+		final String className = definition.getClassName();
+
+        try {
+            result = ContextClassLoaderBinder.doInContextClassLoader(classLoader, new Callable() {
+                public Object call() throws Exception {
+                    Object object = null;
+                    Class<?>[] constructorParamTypes = buildConstructorParamTypes(definition.getConstructorParameters());
+                    Object[] constructorParams = buildConstructorParams(definition.getConstructorParameters());
+                    try {
+                        Class<?> objectClass = Class.forName(className, true, classLoader);
+                        object = loadObject(objectClass, constructorParams, constructorParamTypes);
+                    } catch (ClassNotFoundException e) {
+                        return null;
+                    }
+                    invokeProperties(object, definition.getProperties());
+                    if (wrap) {
+                        return wrap(object, classLoader);
+                    }
+                    return object;
+
+                }
+            });
+        } catch (Exception e) {
+            handleException(className, e);
+        }
+
+		return result;
 	}
 
 	protected static Object loadObject(Class<?> objectClass, Object[] constructorParams, Class<?>[] constructorParamTypes) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {

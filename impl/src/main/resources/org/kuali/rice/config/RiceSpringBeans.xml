@@ -21,6 +21,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <bean class="org.kuali.rice.core.util.ApplicationThreadLocalCleaner" lazy-init="false"/>
+
   <import resource="classpath:org/kuali/rice/config/RiceServiceRegistrySpringBeans.xml"/>
 
   <import resource="classpath:org/kuali/rice/config/RiceServiceSpringBeans.xml"/>

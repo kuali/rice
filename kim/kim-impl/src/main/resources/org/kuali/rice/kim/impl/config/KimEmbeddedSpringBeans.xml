@@ -59,7 +59,8 @@
 
   <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
         p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:kualiConfigurationService-ref="rice.kim.import.kualiConfigurationService"/>
+        p:kualiConfigurationService-ref="rice.kim.import.kualiConfigurationService"
+        p:transactionManager-ref="transactionManager"/>
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.impl.identity.IdentityCurrentAndArchivedServiceImpl">
     <constructor-arg ref="kimIdentityArchiveService"/>

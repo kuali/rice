@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -31,16 +32,16 @@ public final class KNSGlobalVariables {
         throw new UnsupportedOperationException("do not call");
     }
 
-    private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
+    private static ThreadLocal<KualiForm> kualiForms = new ApplicationThreadLocal<KualiForm>();
 
-    private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>() {
+    private static ThreadLocal<MessageList> messageLists = new ApplicationThreadLocal<MessageList>() {
         @Override
         protected MessageList initialValue() {
             return new MessageList();
         }
     };
 
-    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ThreadLocal<HashMap<String, AuditCluster>>() {
+    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ApplicationThreadLocal<HashMap<String, AuditCluster>>() {
     	@Override
     	protected HashMap<String, AuditCluster> initialValue() {
     		return new HashMap<String, AuditCluster>();

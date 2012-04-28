@@ -61,6 +61,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
 	private BusinessObjectService businessObjectService;
 	private ConfigurationService kualiConfigurationService;
+    private PlatformTransactionManager transactionManager;
 
 	private static final String EXEC_INTERVAL_SECS = "kim.identityArchiveServiceImpl.executionIntervalSeconds";
 	private static final String MAX_WRITE_QUEUE_SIZE = "kim.identityArchiveServiceImpl.maxWriteQueueSize";
@@ -174,6 +175,10 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			ConfigurationService kualiConfigurationService) {
 		this.kualiConfigurationService = kualiConfigurationService;
 	}
+
+    public void setTransactionManager(PlatformTransactionManager txMgr) {
+        this.transactionManager = txMgr;
+    }
     
     /** schedule the writer on the KSB scheduled pool. */
 	@Override
@@ -282,7 +287,6 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 				// the strategy is to grab chunks of entities, dedupe & sort them, and insert them in a big
 				// batch to reduce transaction overhead.  Sorting is done so insertion order is guaranteed, which
 				// prevents deadlocks between concurrent writers to the database.
-				PlatformTransactionManager transactionManager = KRADServiceLocatorInternal.getTransactionManager();
 				TransactionTemplate template = new TransactionTemplate(transactionManager);
 				template.execute(new TransactionCallback() {
 					@Override

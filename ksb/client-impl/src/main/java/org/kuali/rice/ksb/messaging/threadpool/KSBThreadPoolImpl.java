@@ -69,7 +69,10 @@ public class KSBThreadPoolImpl extends ThreadPoolExecutor implements KSBThreadPo
     public void stop() throws Exception {
 		if (isStarted()) {
 			LOG.info("Shutting down KSB thread pool...");
-		    this.shutdownNow();
+		    int pendingTasks = this.shutdownNow().size();
+            LOG.info(pendingTasks + " pending tasks...");
+            LOG.info("awaiting termination: " + this.awaitTermination(20, TimeUnit.SECONDS));
+            LOG.info("...KSB thread pool successfully stopped, isShutdown=" + this.isShutdown() + ", isTerminated=" + this.isTerminated());
 		    this.started = false;
 		    LOG.info("...KSB thread pool successfully shut down.");
 		}

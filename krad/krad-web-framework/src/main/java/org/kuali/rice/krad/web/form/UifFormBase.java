@@ -20,12 +20,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,6 +66,10 @@ public class UifFormBase implements ViewModel {
     protected boolean defaultsApplied;
     protected boolean skipViewInit;
 
+    protected String updateComponentId;
+    protected boolean renderFullView;
+    protected boolean validateDirty;
+
     protected View view;
     protected View postedView;
 
@@ -87,9 +88,6 @@ public class UifFormBase implements ViewModel {
     protected String returnFormKey;
 
     protected History formHistory;
-
-    protected boolean renderFullView;
-    protected boolean validateDirty;
 
     public UifFormBase() {
         formKey = generateFormKey();
@@ -158,6 +156,8 @@ public class UifFormBase implements ViewModel {
     public void postRender(HttpServletRequest request) {
         renderFullView = true;
         skipViewInit = false;
+
+        updateComponentId = null;
 
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
@@ -463,6 +463,24 @@ public class UifFormBase implements ViewModel {
      */
     public void setAttachmentFile(MultipartFile attachmentFile) {
         this.attachmentFile = attachmentFile;
+    }
+
+    /**
+     * Id for the component that should be updated for a component refresh process
+     *
+     * @return String component id
+     */
+    public String getUpdateComponentId() {
+        return updateComponentId;
+    }
+
+    /**
+     * Setter for the component id that should be refreshed
+     *
+     * @param updateComponentId
+     */
+    public void setUpdateComponentId(String updateComponentId) {
+        this.updateComponentId = updateComponentId;
     }
 
     /**

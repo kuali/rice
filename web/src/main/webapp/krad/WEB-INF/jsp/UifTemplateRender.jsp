@@ -53,6 +53,7 @@
             <%-- Based on its value, form elements will be checked for dirtyness --%>
             <form:hidden path="validateDirty"/>
           </c:if>
+
           <%-- render full view --%>
           <krad:template component="${KualiForm.view}"/>
 
@@ -81,6 +82,24 @@
 
        </s:nestedPath>
      </html>
+
+    <%-- render component only --%>
+    <html>
+      <%-- rerun view pre-load script to get new state variables for page --%>
+      <krad:script value="${view.preLoadScript}"/>
+
+    	<s:nestedPath path="KualiForm">
+        <krad:template component="${KualiForm.view.breadcrumbs}"/>
+
+        <%-- render errors field for page so they can be pulled and updated on the view --%>
+        <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
+
+        <%-- now render the updated component wrapped in an update span --%>
+    		<span id="${Component.id}_update" data-handler="update-component">
+    			<krad:template componentUpdate="true" component="${Component}"/>
+    		</span>
+    	</s:nestedPath>
+    </html>
      
   </c:otherwise>
 </c:choose>

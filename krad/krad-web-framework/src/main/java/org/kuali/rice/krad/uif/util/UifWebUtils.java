@@ -66,15 +66,6 @@ public class UifWebUtils {
         return modelAndView;
     }
 
-    public static ModelAndView getComponentModelAndView(Component component, Object model) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, model);
-        modelAndView.addObject("Component", component);
-        modelAndView.setViewName("ComponentUpdate");
-
-        return modelAndView;
-    }
-
     /**
      * After the controller logic is executed, the form is placed into session
      * and the corresponding view is prepared for rendering
@@ -83,20 +74,28 @@ public class UifWebUtils {
             ModelAndView modelAndView) throws Exception {
         if (handler instanceof UifControllerBase && (modelAndView != null)) {
             UifControllerBase controller = (UifControllerBase) handler;
-            UifFormBase form = null;
 
-            // check to see if this is a full view request
-            if (modelAndView.getViewName().equals(UifConstants.SPRING_VIEW_ID)) {
-                Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
-                if (model instanceof UifFormBase) {
-                    form = (UifFormBase) model;
+            Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
+            if (model instanceof UifFormBase) {
+                UifFormBase form = (UifFormBase) model;
 
-                    // prepare view instance
-                    prepareViewForRendering(request, form);
+                // prepare view instance
+                prepareViewForRendering(request, form);
 
-                    // update history for view
-                    prepareHistory(request, form);
+                // for component refresh need to export the component as a model
+                if (!form.isRenderFullView()) {
+                    Component component = null;
+                    if (StringUtils.isBlank(form.getUpdateComponentId())) {
+                        // refresh component is page
+                        component = form.getView().getCurrentPage();
+                    } else {
+                        component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
+                    }
+                    modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
                 }
+
+                // update history for view
+                prepareHistory(request, form);
             }
         }
     }
@@ -137,28 +136,45 @@ public class UifWebUtils {
     }
 
     /**
-     * Prepares the <code>View</code> instance contained on the form for
-     * rendering
+     * Prepares the <code>View</code> instance contained on the form for rendering
      *
      * @param request - request object
      * @param form - form instance containing the data and view instance
      */
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
-        View view = form.getView();
+        // for component refreshes only lifecycle for component is performed
+        if (!form.isRenderFullView() && StringUtils.isNotBlank(form.getUpdateComponentId())) {
+            String refreshComponentId = form.getUpdateComponentId();
 
-        // set view page to page requested on form
-        if (StringUtils.isNotBlank(form.getPageId())) {
-            view.setCurrentPageId(form.getPageId());
+            // get a new instance of the component
+            Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
+
+            View postedView = form.getPostedView();
+
+            // run lifecycle and update in view
+            postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp, refreshComponentId);
+
+            // regenerate server message content for page
+            postedView.getCurrentPage().getValidationMessages().generateMessages(false, postedView, form,
+                    postedView.getCurrentPage());
+        } else {
+            // full view build
+            View view = form.getView();
+
+            // set view page to page requested on form
+            if (StringUtils.isNotBlank(form.getPageId())) {
+                view.setCurrentPageId(form.getPageId());
+            }
+
+            Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+            parameterMap.putAll(form.getViewRequestParameters());
+
+            // build view which will prepare for rendering
+            getViewService().buildView(view, form, parameterMap);
+
+            // set dirty flag
+            form.setValidateDirty(view.isValidateDirty());
         }
-
-        Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
-        parameterMap.putAll(form.getViewRequestParameters());
-
-        // build view which will prepare for rendering
-        getViewService().buildView(view, form, parameterMap);
-
-        // set dirty flag
-        form.setValidateDirty(view.isValidateDirty());
     }
 
     protected static ViewService getViewService() {

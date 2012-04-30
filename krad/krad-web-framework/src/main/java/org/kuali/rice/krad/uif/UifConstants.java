@@ -23,9 +23,10 @@ package org.kuali.rice.krad.uif;
 public class UifConstants {
     public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
+    public static final String COMPONENT_MODEL_NAME = "Component";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
-    public static final String SPRING_VIEW_ID = "AppViewContainer";
+    public static final String SPRING_VIEW_ID = "UifTemplateRender";
     public static final String SPRING_REDIRECT_ID = "redirectURL";
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
@@ -77,7 +78,6 @@ public class UifConstants {
         public static final String DELETE_LINE = "deleteLine";
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
-        public static final String UPDATE_COMP = "updateComponent";
         public static final String TOGGLE_INACTIVE = "toggleInactiveRecordDisplay";
     }
 

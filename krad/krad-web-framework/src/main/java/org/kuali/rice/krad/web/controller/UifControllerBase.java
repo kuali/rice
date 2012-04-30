@@ -25,7 +25,6 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -121,6 +120,15 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Called to create a new model(form) object when necessary. This usually occurs on the initial request
+     * in a conversation (when the model is not present in the session). This method must be
+     * overridden when extending a controller and using a different form type than the superclass.
+     *
+     * @param request - the http request that was made
+     */
+    protected abstract UifFormBase createInitialForm(HttpServletRequest request);
+
+    /**
      * Remove unused forms from breadcrumb history
      * <p>
      * When going back in the breadcrumb history some forms become unused in the breadcrumb history.  Here the unused
@@ -150,15 +158,6 @@ public abstract class UifControllerBase {
 
         uifFormManager.removeFormByKey(lastFormKey);
     }
-
-    /**
-     * Called to create a new model(form) object when necessary. This usually occurs on the initial request
-     * in a conversation (when the model is not present in the session). This method must be
-     * overridden when extending a controller and using a different form type than the superclass.
-     *
-     * @param request - the http request that was made
-     */
-    protected abstract UifFormBase createInitialForm(HttpServletRequest request);
 
     /**
      * Initial method called when requesting a new view instance which checks authorization and forwards
@@ -218,7 +217,7 @@ public abstract class UifControllerBase {
         View view = uifForm.getPostedView();
         view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
 
-        return updateComponent(uifForm, result, request, response);
+        return getUIFModelAndView(uifForm);
     }
 
     /**
@@ -250,7 +249,7 @@ public abstract class UifControllerBase {
         view.getViewHelperService().processCollectionDeleteLine(view, uifForm, selectedCollectionPath,
                 selectedLineIndex);
 
-        return updateComponent(uifForm, result, request, response);
+        return getUIFModelAndView(uifForm);
     }
 
     /**
@@ -288,7 +287,7 @@ public abstract class UifControllerBase {
         uifForm.getPostedView().getViewHelperService().performComponentLifecycle(uifForm.getPostedView(), uifForm,
                 collectionGroup, collectionGroupId);
 
-        return UifWebUtils.getComponentModelAndView(collectionGroup, uifForm);
+        return getUIFModelAndView(uifForm);
     }
 
     /**
@@ -452,36 +451,6 @@ public abstract class UifControllerBase {
         }
 
         return getUIFModelAndView(form);
-    }
-
-    /**
-     * Updates the current component by retrieving a fresh copy from the dictionary,
-     * running its component lifecycle, and returning it
-     *
-     * @param request - the request must contain reqComponentId that specifies the component to retrieve
-     */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateComponent")
-    public ModelAndView updateComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        String requestedComponentId = request.getParameter(UifParameters.REQUESTED_COMPONENT_ID);
-        if (StringUtils.isBlank(requestedComponentId)) {
-            throw new RuntimeException("Requested component id for update not found in request");
-        }
-
-        // get a new instance of the component
-        Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), requestedComponentId);
-        
-        View postedView = form.getPostedView();
-
-        // run lifecycle and update in view
-        postedView.getViewHelperService().performComponentLifecycle(postedView, form, comp,
-                requestedComponentId);
-
-        //Regenerate server message content for page
-        postedView.getCurrentPage().getValidationMessages().generateMessages(false, postedView, form,
-                postedView.getCurrentPage());
-
-        return UifWebUtils.getComponentModelAndView(comp, form);
     }
 
     /**

@@ -118,7 +118,7 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 
-        return updateComponent(uiTestForm, result, request, response);
+        return getUIFModelAndView(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshWithServerMessages")
@@ -127,7 +127,8 @@ public class UifComponentsTestController extends UifControllerBase {
         GlobalVariables.getMessageMap().putError("field45", "serverTestError");
         GlobalVariables.getMessageMap().putWarning("field45", "serverTestWarning");
         GlobalVariables.getMessageMap().putInfo("field45", "serverTestInfo");
-        return updateComponent(uiTestForm, result, request, response);
+
+        return getUIFModelAndView(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=genCollectionServerMessages")

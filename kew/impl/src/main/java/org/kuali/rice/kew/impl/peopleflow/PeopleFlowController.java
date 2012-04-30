@@ -51,7 +51,7 @@ public class PeopleFlowController extends MaintenanceDocumentController {
             peopleFlow.rebuildTypeAttributes();
         }
 
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
 }

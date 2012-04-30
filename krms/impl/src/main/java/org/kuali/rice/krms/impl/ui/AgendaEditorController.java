@@ -598,7 +598,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "moveUp")
@@ -617,7 +617,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeUp(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -726,7 +726,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeDown(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -835,7 +835,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeLeft(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -888,7 +888,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeRight(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -1198,7 +1198,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         deleteSelectedSubtree(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     
@@ -1290,7 +1290,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         ruleEditorMessage.append("Marked ").append(selectedAgendaItem.getRule().getName()).append(" for cutting.");
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "ajaxPaste")
@@ -1348,7 +1348,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -1649,7 +1649,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             rule.refreshPropositionTree(null);
         }
 
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "addProposition")
@@ -1717,7 +1717,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 rule.refreshPropositionTree(true);
             }
         }
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -1827,7 +1827,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             throws Exception {
         moveSelectedProposition(form, true);
 
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "movePropositionDown")
@@ -1836,7 +1836,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             throws Exception {
         moveSelectedProposition(form, false);
 
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     private void moveSelectedProposition(UifFormBase form, boolean up) {
@@ -1925,7 +1925,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 // and move the node to the second child.
             }
         }
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "movePropositionRight")
@@ -1964,7 +1964,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
             }
         }
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     /**
@@ -2018,7 +2018,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(true);
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
 
@@ -2031,7 +2031,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedPropId = agendaEditor.getSelectedPropositionId();
         agendaEditor.setCutPropositionId(selectedPropId);
 
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "pasteProposition")
@@ -2099,7 +2099,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         agendaEditor.setCutPropositionId(null);
         // call the super method to avoid the agenda tree being reloaded from the db
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "deleteProposition")
@@ -2132,7 +2132,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(false);
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "updateCompoundOperator")
@@ -2144,7 +2144,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
         rule.refreshPropositionTree(false);
 
-        return super.updateComponent(form, result, request, response);
+        return getUIFModelAndView(form);
     }
 
 }

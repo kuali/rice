@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
@@ -64,12 +65,12 @@ public class UserControl extends TextControl {
 
             // setup script to clear id field when name is modified
             String idPropertyPath = field.getBindingInfo().getPropertyAdjustedBindingPath(principalIdPropertyName);
-            String onChangeScript = "setValue('" + idPropertyPath + "','');";
+            String onChangeScript = "setValue('" + ScriptUtils.escapeName(idPropertyPath) + "','');";
 
-            if (StringUtils.isNotBlank(field.getOnChangeScript())) {
-                onChangeScript = field.getOnChangeScript() + onChangeScript;
+            if (StringUtils.isNotBlank(getOnChangeScript())) {
+                onChangeScript = getOnChangeScript() + onChangeScript;
             }
-            field.setOnChangeScript(onChangeScript);
+            setOnChangeScript(onChangeScript);
         }
 
         if (field.isReadOnly() && StringUtils.isBlank(field.getAdditionalDisplayPropertyName())) {
@@ -82,9 +83,11 @@ public class UserControl extends TextControl {
 
         // setup field query for displaying name
         AttributeQuery attributeQuery = new AttributeQuery();
+
         MethodInvokerConfig methodInvokerConfig = new MethodInvokerConfig();
         PersonService personService = KimApiServiceLocator.getPersonService();
         methodInvokerConfig.setTargetObject(personService);
+
         attributeQuery.setQueryMethodInvokerConfig(methodInvokerConfig);
         attributeQuery.setQueryMethodToCall("getPersonByPrincipalName");
         attributeQuery.getQueryMethodArgumentFieldList().add(field.getPropertyName());

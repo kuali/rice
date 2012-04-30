@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,6 +193,10 @@ public class UifComponentsTestForm extends UifFormBase {
     private boolean bField1;
     private boolean bField2;
     private boolean bField3;
+
+    private Date date1;
+    private Date date2;
+    private Date date3;
 
     private Map<String, Object> remoteFieldValuesMap;
     private Map<String, Object> remoteFieldValuesMap2;
@@ -2097,5 +2102,29 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setListTimeInfo(List<TimeInfo> listTimeInfo) {
         this.listTimeInfo = listTimeInfo;
+    }
+
+    public Date getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+
+    public Date getDate2() {
+        return date2;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
+    }
+
+    public Date getDate3() {
+        return date3;
+    }
+
+    public void setDate3(Date date3) {
+        this.date3 = date3;
     }
 }

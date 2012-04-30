@@ -433,14 +433,14 @@
               value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field112" p:label="Date 1"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date1" p:label="Date 1"
               p:instructionalText="Default DateControl options" p:required="true">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field113" p:label="Date 2"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date2" p:label="Date 2"
               p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
           <property name="control">
             <bean parent="Uif-DateControl">
@@ -457,6 +457,13 @@
                 </map>
               </property>
             </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date3" p:label="Date 3"
+              p:instructionalText="Disabled DateControl" p:required="true">
+          <property name="control">
+            <bean parent="Uif-DateControl" p:disabled="true"/>
           </property>
         </bean>
       </list>

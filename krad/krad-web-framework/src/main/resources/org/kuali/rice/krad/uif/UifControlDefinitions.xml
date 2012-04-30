@@ -265,7 +265,13 @@
   <bean id="Uif-DateControl" parent="Uif-DateControl-parentBean"/>
   <bean id="Uif-DateControl-parentBean" abstract="true" parent="Uif-SmallTextControl">
     <property name="datePicker">
-      <bean parent="Uif-DatePicker"/>
+      <bean parent="Uif-DatePicker">
+        <property name="templateOptions">
+          <map merge="true">
+            <entry key="disabled" value="@{#parent.disabled}"/>
+          </map>
+        </property>
+      </bean>
     </property>
     <property name="styleClasses">
       <list merge="true">

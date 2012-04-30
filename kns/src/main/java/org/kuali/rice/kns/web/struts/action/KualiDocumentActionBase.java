@@ -267,11 +267,12 @@ public class KualiDocumentActionBase extends KualiAction {
                     request.setAttribute(KRADConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
                 }
             }
+            // Pull in the pending action requests for the document and attach them to the form
+            List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(documentForm.getDocId());
+            documentForm.setActionRequests(actionRequests);
         }
 
-        // Pull in the pending action requests for the document and attach them to the form
-        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(documentForm.getDocId());
-        documentForm.setActionRequests(actionRequests);
+
         
         return returnForward;
     }

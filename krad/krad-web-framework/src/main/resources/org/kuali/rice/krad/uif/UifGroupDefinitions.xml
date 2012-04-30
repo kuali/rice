@@ -46,10 +46,6 @@
     <property name="instructionalMessageField">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
-    <!--This causes DD load loop / stack overflow-->
-    <!--<property name="help">-->
-      <!--<bean parent="Uif-Help"/>-->
-    <!--</property>-->
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
@@ -62,10 +58,6 @@
         <value>uif-boxGroup</value>
       </list>
     </property>
-    <!--This causes DD load loop / stack overflow-->
-    <!--<property name="help">-->
-      <!--<bean parent="Uif-Help"/>-->
-    <!--</property>-->
   </bean>
 
   <!--Vertical Box Groups and Sections-->
@@ -80,9 +72,6 @@
     <property name="layoutManager">
       <bean parent="Uif-VerticalBoxLayout"/>
     </property>
-    <property name="help">
-      <bean parent="Uif-Help"/>
-    </property>
   </bean>
 
   <bean id="Uif-VerticalBoxSection" parent="Uif-VerticalBoxSection-parentBean"/>
@@ -95,6 +84,9 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-VerticalBoxSubSection" parent="Uif-VerticalBoxSubSection-parentBean"/>
@@ -106,6 +98,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -157,6 +152,9 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-HorizontalBoxSubSection" parent="Uif-HorizontalBoxSubSection-parentBean"/>
@@ -168,6 +166,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -224,6 +225,9 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-GridSubSection" parent="Uif-GridSubSection-parentBean"/>
@@ -235,6 +239,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -287,6 +294,9 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-TabSubSection" parent="Uif-TabSubSection-parentBean"/>
@@ -298,6 +308,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -378,6 +391,9 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-TreeSubSection" parent="Uif-TreeSubSection-parentBean"/>
@@ -390,6 +406,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -419,6 +438,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -522,6 +544,9 @@
     <property name="layoutManager.lineGroupPrototype.header">
       <bean parent="Uif-HeaderFour"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-StackedCollectionSubSection" parent="Uif-StackedCollectionSubSection-parentBean"/>
@@ -543,6 +568,9 @@
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
       <bean parent="Uif-HeaderFive"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -566,6 +594,9 @@
     <property name="layoutManager.lineGroupPrototype.header">
       <bean parent="Uif-HeaderFive"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-StackedSubCollection-WithinSubSection" parent="Uif-StackedSubCollection-WithinSubSection-parentBean"/>
@@ -587,6 +618,9 @@
     </property>
     <property name="layoutManager.lineGroupPrototype.header">
       <bean parent="Uif-HeaderSix"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -667,6 +701,9 @@
     <property name="layoutManager.addLineGroup.header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-TableCollectionSubSection" parent="Uif-TableCollectionSubSection-parentBean"/>
@@ -685,6 +722,9 @@
     </property>
     <property name="layoutManager.addLineGroup.header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -705,6 +745,9 @@
     <property name="layoutManager.addLineGroup.header">
       <bean parent="Uif-SubCollectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-TableSubCollection-WithinSubSection" parent="Uif-TableSubCollection-WithinSubSection-parentBean"/>
@@ -723,6 +766,9 @@
     </property>
     <property name="layoutManager.addLineGroup.header">
       <bean parent="Uif-SubCollectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 
@@ -818,6 +864,9 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-ListCollectionSubSection" parent="Uif-ListCollectionSubSection-parentBean"/>
@@ -829,6 +878,9 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
+    </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
     </property>
   </bean>
 

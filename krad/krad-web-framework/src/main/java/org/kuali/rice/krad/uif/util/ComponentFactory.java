@@ -348,8 +348,6 @@ public class ComponentFactory {
         inputField.setPropertyName(remotableField.getName());
         inputField.setShortLabel(remotableField.getShortLabel());
         inputField.setLabel(remotableField.getLongLabel());
-        inputField.setHelpSummary(remotableField.getHelpSummary());
-        inputField.setHelpDescription(remotableField.getHelpDescription());
         inputField.setConstraintText(remotableField.getConstraintText());
         inputField.setPerformUppercase(remotableField.isForceUpperCase());
         inputField.setMinLength(remotableField.getMinLength());

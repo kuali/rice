@@ -32,22 +32,30 @@ public interface Helpable {
      *
      * @return Help for container
      */
-    public Help getHelp();
+    Help getHelp();
 
     /**
      * Setter for the containers help content
      *
      * @param help
      */
-    public void setHelp(Help help);
+    void setHelp(Help help);
 
     /**
      *  Setter for the component's tooltip.
      *
-     *  This is used by the helper to set the help content to the tooltip.
+     * <p>
+     * This is used by the helper to set the help content to the tooltip.
+     * </p>
      *
      *  @parm Tooltip with the help for the container
      */
-    public void setTooltipOfComponent(Tooltip tooltip);
+    void setTooltipOfComponent(Tooltip tooltip);
+
+    /**
+     *
+     * @return
+     */
+    public String getHelpTitle();
 
 }

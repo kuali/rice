@@ -45,7 +45,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ContainerBase extends ComponentBase implements Container {
+public abstract class ContainerBase extends ComponentBase implements Container, Helpable {
 	private static final long serialVersionUID = -4182226230601746657L;
 
 	private int itemOrderingSequence;
@@ -257,6 +257,18 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     @Override
     public void setTooltipOfComponent(Tooltip tooltip) {
         getHeader().setToolTip(tooltip);
+    }
+
+    /**
+     * Return the container title for the help title
+     *
+     * @return container title
+     *
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     */
+    @Override
+    public String getHelpTitle() {
+        return this.getTitle();
     }
 
     /**

@@ -79,9 +79,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
     private boolean escapeHtmlInPropertyValue;
 
-    private String helpSummary;
-    private String helpDescription;
-
     // widgets
     private Inquiry fieldInquiry;
     private Help help;
@@ -274,16 +271,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         // short label
         if (StringUtils.isEmpty(getShortLabel())) {
             setShortLabel(attributeDefinition.getShortLabel());
-        }
-
-        // summary
-        if (StringUtils.isEmpty(getHelpSummary())) {
-            setHelpSummary(attributeDefinition.getSummary());
-        }
-
-        // description
-        if (StringUtils.isEmpty(getHelpDescription())) {
-            setHelpDescription(attributeDefinition.getDescription());
         }
 
         // security
@@ -514,7 +501,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return String summary help text
      */
     public String getHelpSummary() {
-        return helpSummary;
+        return this.help.getTooltipHelpContent();
     }
 
     /**
@@ -523,25 +510,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param helpSummary
      */
     public void setHelpSummary(String helpSummary) {
-        this.helpSummary = helpSummary;
-    }
-
-    /**
-     * Full help information text for the field
-     *
-     * @return String help description text
-     */
-    public String getHelpDescription() {
-        return this.helpDescription;
-    }
-
-    /**
-     * Setter for the help description text
-     *
-     * @param helpDescription
-     */
-    public void setHelpDescription(String helpDescription) {
-        this.helpDescription = helpDescription;
+        this.help.setTooltipHelpContent(helpSummary);
     }
 
     /**
@@ -655,8 +624,17 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         getFieldLabel().setToolTip(tooltip);
     }
 
-
-
+    /**
+     * Return the field label for the help title
+     *
+     * @return field label
+     *
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     */
+    @Override
+    public String getHelpTitle() {
+        return this.getLabel();
+    }
 
     /**
      * Additional display attribute name, which will be displayed next to the actual field value

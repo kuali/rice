@@ -19,18 +19,20 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
  * Widget that renders help on a component
  *
- * - if help URL is specified display help icon
- * - if help summary is specified display help tooltip
+ * <p>
+ * If help URL is specified then display help icon and/or if help summary is specified then display help tooltip.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -41,14 +43,16 @@ public class Help extends WidgetBase {
     private HelpDefinition helpDefinition;
     private String externalHelpUrl;
 
-    private String tooltipHelpHtml;
-
-    private static ParameterService parameterService;
+    private String tooltipHelpContent;
 
     /**
      * Finalize the help widget for usage
      *
-     * - Build the external help Url and set the javascript action to open the external help.
+     * <p>
+     * In addition to the standard finalization the following tasks are performed:
+     * <li>Build the external help Url</li>
+     * <li>Set the javascript action which opens the external help in window</li>
+     * </p>
      *
      * @see org.kuali.rice.krad.uif.widget.WidgetBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
@@ -56,38 +60,73 @@ public class Help extends WidgetBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-        buildExternalHelpUrl();
 
-        // set the javascript action to open the external help
-        getHelpActionField().setClientSideJs("openHelpWindow('" + externalHelpUrl + "')");
-
-        buildTooltipHelpText(parent);
+        buildExternalHelp(view, parent);
+        buildTooltipHelp(parent);
     }
 
     /**
-     * The external help Url is build from the parameter table record that matches the {@link HelpDefinition};
-     * however, the external help Url can be overwritten and specified directly in the datadictionary/Uif deceleration.
+     * Build the external help
+     *
+     * <p>
+     * When the externalHelpUrl is blank and the helpDefinition is specified then the external help URL is
+     * looked up via the helpDefinition from the system parameters.  The namespace in the helpDefinition
+     * does not need to be specified and will default to the namespace of the view.
+     * </p><p>
+     * Set the javascript action to open the external help in a window.
+     * </p><p>
+     * Set the html title attribute of the help icon.
+     * </p>
+     *
+     * @param view - used to get the default namespace
+     * @param parent used to get the help title text used in the html title attribute of the help icon
+
      */
-    private void buildExternalHelpUrl() {
-        if (StringUtils.isBlank(externalHelpUrl)) {
-            if ((helpDefinition != null) && StringUtils.isNotBlank(helpDefinition.getParameterNamespace())
+    protected void buildExternalHelp(View view, Component parent) {
+        if (StringUtils.isBlank(externalHelpUrl) && (helpDefinition != null)) {
+            if (StringUtils.isBlank(helpDefinition.getParameterNamespace())) {
+                helpDefinition.setParameterNamespace(view.getViewNamespaceCode());
+            }
+
+            if (StringUtils.isNotBlank(helpDefinition.getParameterNamespace())
                     && StringUtils.isNotBlank(helpDefinition.getParameterDetailType())
                     && StringUtils.isNotBlank(helpDefinition.getParameterName())) {
                 externalHelpUrl = getParameterService().getParameterValueAsString(helpDefinition.getParameterNamespace(),
                         helpDefinition.getParameterDetailType(), helpDefinition.getParameterName());
             }
         }
+
+        // set the javascript action for the external help
+        getHelpActionField().setClientSideJs("openHelpWindow('" + externalHelpUrl + "')");
+
+        // set the alt and title attribute of the image
+        String helpTitle;
+        if (parent instanceof Helpable) {
+            helpTitle = MessageFormat.format(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    "help.icon.title.tag.with.field.label"), ((Helpable) parent).getHelpTitle());
+        } else {
+            helpTitle = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    "help.icon.title.tag");
+        }
+        getHelpActionField().getActionImage().setAltText(helpTitle);
+        getHelpActionField().getActionImage().setTitle(helpTitle);
     }
 
-    private void buildTooltipHelpText(Component parent) {
-        if (StringUtils.isBlank(tooltipHelpHtml) && (parent instanceof DataField)) {
-            tooltipHelpHtml = ((DataField) parent).getHelpSummary();
-        }
-
-        if (StringUtils.isNotBlank(tooltipHelpHtml)) {
+    /**
+     * Build the tooltip help
+     *
+     * <p>
+     * The help tooltip is set on the component.  To use the help tooltip bean definition, the help's tooltip is used
+     * as and intermediary for setting up the tooltip widget and then copied to the component.
+     * </p>
+     *
+     * @param parent used for checking misconfigurations
+     */
+    protected void buildTooltipHelp(Component parent) {
+        if (StringUtils.isNotBlank(tooltipHelpContent)) {
             // make sure that we are the component's native help and not a misconfigured standalone help bean.
             if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
-                this.getToolTip().setTooltipContent(tooltipHelpHtml);
+                this.getToolTip().setTooltipContent(tooltipHelpContent);
                 ((Helpable) parent).setTooltipOfComponent(this.getToolTip());
             }
         }
@@ -125,9 +164,9 @@ public class Help extends WidgetBase {
 
     /**
      * The help definition is used as the key to retrieve the external help Url from the parameter table of
-     * the database.
+     * the database
      *
-     * @return
+     * @return HelpDefinition
      */
     public HelpDefinition getHelpDefinition() {
         return helpDefinition;
@@ -143,18 +182,21 @@ public class Help extends WidgetBase {
     }
 
     /**
-     * The external help Url.
+     * The external help Url
      *
-     * @return Url of the external help
+     * <p>
+     * This should contain a valid URL.  When specified this URL takes precedence over the external help URL from
+     * the system parameters.
+     * </p>
+     *
+     * * @return Url of the external help
      */
     public String getExternalHelpUrl() {
         return this.externalHelpUrl;
     }
 
     /**
-     * Setter for externalHelpUrl.
-     *
-     * This should contain a valid Url.  When specified it overrides the help parameters in the database.
+     * Setter for externalHelpUrl
      *
      * @param externalHelpUrl
      */
@@ -163,33 +205,30 @@ public class Help extends WidgetBase {
     }
 
     /**
-     * TooltipHelpHtml
+     * TooltipHelpContent
      *
-     * @return TooltipHelpHtml
+     * @return TooltipHelpContent
      */
-    public String getTooltipHelpHtml() {
-        return this.tooltipHelpHtml;
+    public String getTooltipHelpContent() {
+        return this.tooltipHelpContent;
     }
 
     /**
-     * Setter for tooltipHelpHtml.
+     * Setter for tooltipHelpContent
      *
-     * @param tooltipHelpHtml
+     * @param tooltipHelpContent
      */
-    public void setTooltipHelpHtml(String tooltipHelpHtml) {
-        this.tooltipHelpHtml = tooltipHelpHtml;
+    public void setTooltipHelpContent(String tooltipHelpContent) {
+        this.tooltipHelpContent = tooltipHelpContent;
     }
 
     /**
-     * Retrieve the parameter service.
+     * Retrieve the parameter service
      *
      * @return ParameterService
      */
-    private ParameterService getParameterService() {
-        if ( parameterService == null ) {
-            parameterService = CoreFrameworkServiceLocator.getParameterService();
-        }
-        return parameterService;
+    protected ParameterService getParameterService() {
+        return CoreFrameworkServiceLocator.getParameterService();
     }
 
 }

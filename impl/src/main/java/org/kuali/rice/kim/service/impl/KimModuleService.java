@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -50,20 +60,22 @@ import org.kuali.rice.kim.framework.identity.name.EntityNameTypeEbo;
 import org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
+import org.kuali.rice.kim.impl.group.GroupBo;
+import org.kuali.rice.kim.impl.identity.EntityTypeBo;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
+import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
+import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
+import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo;
+import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
+import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
+import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.

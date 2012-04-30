@@ -657,10 +657,26 @@ public class QuickFinder extends WidgetBase {
         this.showMaintenanceLinks = showMaintenanceLinks;
     }
 
+    /**
+     * Action component that is used to rendered for the field for invoking the quickfinder action (bringin up the
+     * lookup)
+     *
+     * <p>
+     * Through the action configuration the image (or link, button) rendered for the quickfinder can be modified. In
+     * addition to other action component settings
+     * </p>
+     *
+     * @return ActionField instance rendered for quickfinder
+     */
     public ActionField getQuickfinderActionField() {
         return this.quickfinderActionField;
     }
 
+    /**
+     * Setter for the action field component to render for the quickfinder
+     *
+     * @param quickfinderActionField
+     */
     public void setQuickfinderActionField(ActionField quickfinderActionField) {
         this.quickfinderActionField = quickfinderActionField;
     }

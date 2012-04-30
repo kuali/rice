@@ -20,12 +20,16 @@
               type="java.util.List" %>
 <%@ attribute name="numberOfColumns" required="false"
               description="Number of columns the grid should contain, defaults to 2" %>
+<%@ attribute name="renderFirstRowHeader" required="false"
+              description="Boolean that indicates whether the first row of items should be rendered as th cells, defaults to false" %>
 <%@ attribute name="renderHeaderRow" required="false"
               description="Boolean that indicates whether the row columns should rendered as th or td cell, defaults to false" %>
 <%@ attribute name="applyAlternatingRowStyles" required="false"
               description="Boolean that indicates whether the even odd style classes should be applied to the rows, defaults to false" %>
 <%@ attribute name="applyDefaultCellWidths" required="false"
               description="Boolean that indicates whether default widths should be applied to the cells, defaults to true" %>
+<%@ attribute name="renderRowFirstCellHeader" required="false"
+              description="Boolean that indicates whether the first cell of each row should be rendered as a th, defaults to false" %>
 <%@ attribute name="renderAlternatingHeaderColumns" required="false"
               description="Boolean that indicates whether alternating header columns should be rendered, defaults to false" %>
 <%@ attribute name="firstLineStyle" required="false"
@@ -33,6 +37,10 @@
 
 <c:if test="${empty numberOfColumns}">
   <c:set var="numberOfColumns" value="2"/>
+</c:if>
+
+<c:if test="${empty renderFirstRowHeader}">
+  <c:set var="renderFirstRowHeader" value="false"/>
 </c:if>
 
 <c:if test="${empty renderHeaderRow}">
@@ -51,14 +59,12 @@
   <c:set var="applyDefaultCellWidths" value="true"/>
 </c:if>
 
-<c:if test="${empty renderAlternatingHeaderColumns}">
-  <c:set var="renderAlternatingHeaderColumns" value="false"/>
+<c:if test="${empty renderRowFirstCellHeader}">
+  <c:set var="renderRowFirstCellHeader" value="false"/>
 </c:if>
 
-<c:set var="renderHeaderColumn" value="false"/>
-<c:if test="${renderAlternatingHeaderColumns}">
-  <c:set var="renderHeaderColumn" value="true"/>
-  <c:set var="headerScope" value="row"/>
+<c:if test="${empty renderAlternatingHeaderColumns}">
+  <c:set var="renderAlternatingHeaderColumns" value="false"/>
 </c:if>
 
 <c:set var="defaultCellWidth" value="${100/numberOfColumns}"/>
@@ -68,7 +74,6 @@
 <c:set var="tmpCarryOverColCount" value="0"/>
 
 <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-  <%--   <c:if test="${item.render}"> --%>
   <c:set var="colCount" value="${colCount + 1}"/>
   <c:set var="actualColCount" value="${actualColCount + 1}"/>
 
@@ -89,15 +94,22 @@
     <c:choose>
       <c:when test="${itemVarStatus.first}">
         <tr class="${firstLineStyle}">
+        <c:set var="firstRow" value="true"/>
       </c:when>
       <c:otherwise>
         <tr class="${evenOddClass}">
+        <c:set var="firstRow" value="false"/>
       </c:otherwise>
     </c:choose>
 
-    <%-- force alternating cells to be header --%>
+    <%-- if alternating header columns, force first cell of row to be header --%>
     <c:if test="${renderAlternatingHeaderColumns}">
-      <c:set var="renderHeaderColumn" value="true"/>
+      <c:set var="renderAlternateHeader" value="true"/>
+    </c:if>
+
+    <%-- if render first cell of each row as header, set cell to be rendered as header --%>
+    <c:if test="${renderRowFirstCellHeader}">
+      <c:set var="renderFirstCellHeader" value="true"/>
     </c:if>
   </c:if>
 
@@ -125,11 +137,32 @@
     <c:set var="cellWidth" value="width=\"${cellWidth}\""/>
   </c:if>
 
+  <%-- determine if we only have one cell for a non header row, in which case we don't want to render a th --%>
+  <c:set var="singleCellOnly" value="false"/>
+  <c:if test="${(numberOfColumns == 1) || (item.colSpan == numberOfColumns)}">
+    <c:set var="singleCellOnly" value="true"/>
+  </c:if>
+
+  <c:set var="renderHeaderColumn" value="false"/>
+  <c:if test="${renderHeaderRow || (renderFirstRowHeader && firstRow) ||
+              ((renderFirstCellHeader || renderAlternateHeader) && !singleCellOnly)}">
+    <c:set var="renderHeaderColumn" value="true"/>
+
+    <c:choose>
+      <c:when test="${renderHeaderRow || (renderFirstRowHeader && firstRow)}">
+        <c:set var="headerScope" value="col"/>
+      </c:when>
+      <c:otherwise>
+        <c:set var="headerScope" value="row"/>
+      </c:otherwise>
+    </c:choose>
+  </c:if>
+
   <krad:attributeBuilder component="${item}"/>
 
   <%-- render cell and item template --%>
   <c:choose>
-    <c:when test="${renderHeaderRow || renderHeaderColumn || (item['class'].simpleName eq 'HeaderField')}">
+    <c:when test="${renderHeaderColumn}">
       <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
           rowspan="${item.rowSpan}" ${style}>
         <krad:template component="${item}"/>
@@ -143,9 +176,13 @@
     </c:otherwise>
   </c:choose>
 
-  <%-- if alternating headers flip flag --%>
+  <%-- if alternating headers flip header flag --%>
   <c:if test="${renderAlternatingHeaderColumns}">
-    <c:set var="renderHeaderColumn" value="${!renderHeaderColumn}"/>
+    <c:set var="renderAlternateHeader" value="${!renderAlternateHeader}"/>
+  </c:if>
+
+  <c:if test="${renderRowFirstCellHeader}">
+    <c:set var="renderFirstCellHeader" value="false"/>
   </c:if>
 
   <%-- handle colspan for the count --%>
@@ -161,5 +198,4 @@
     <c:set var="carryOverColCount" value="${carryOverColCount + tmpCarryOverColCount}"/>
     <c:set var="tmpCarryOverColCount" value="0"/>
   </c:if>
-  <%--  </c:if>  --%>
-</c:forEach>             
+</c:forEach>

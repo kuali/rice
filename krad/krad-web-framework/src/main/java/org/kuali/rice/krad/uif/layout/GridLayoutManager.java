@@ -42,7 +42,10 @@ public class GridLayoutManager extends LayoutManagerBase {
     private boolean suppressLineWrapping;
     private boolean applyAlternatingRowStyles;
     private boolean applyDefaultCellWidths;
+    private boolean renderFirstRowHeader;
     private boolean renderAlternatingHeaderColumns;
+    private boolean renderRowFirstCellHeader;
+
     private String firstLineStyle = "";
 
     public GridLayoutManager() {
@@ -181,6 +184,55 @@ public class GridLayoutManager extends LayoutManagerBase {
      */
     public void setApplyDefaultCellWidths(boolean applyDefaultCellWidths) {
         this.applyDefaultCellWidths = applyDefaultCellWidths;
+    }
+
+    /**
+     * Indicates whether the first cell of each row should be rendered as a header cell (th)
+     * 
+     * <p>
+     * When this flag is turned on, the first cell for each row will be rendered as a header cell. If
+     * {@link #isRenderAlternatingHeaderColumns()} is false, the remaining cells for the row will be rendered
+     * as data cells, else they will alternate between cell headers
+     * </p>
+     * 
+     * @return boolean true if first cell of each row should be rendered as a header cell
+     */
+    public boolean isRenderRowFirstCellHeader() {
+        return renderRowFirstCellHeader;
+    }
+
+    /**
+     * Setter for render first row column as header indicator
+     * 
+     * @param renderRowFirstCellHeader
+     */
+    public void setRenderRowFirstCellHeader(boolean renderRowFirstCellHeader) {
+        this.renderRowFirstCellHeader = renderRowFirstCellHeader;
+    }
+
+    /**
+     * Indicates whether the first row of items rendered should all be rendered as table header (th) cells
+     *
+     * <p>
+     * Generally when using a grid layout all the cells will be tds or alternating th/td (with the label in the
+     * th cell). However in some cases it might be desired to display the labels in one row as table header cells (th)
+     * followed by a row with the corresponding fields in td cells. When this is enabled this type of layout is
+     * possible
+     * </p>
+     *
+     * @return boolean true if first row should be rendered as header cells
+     */
+    public boolean isRenderFirstRowHeader() {
+        return renderFirstRowHeader;
+    }
+
+    /**
+     * Setter for the first row as header indicator
+     *
+     * @param renderFirstRowHeader
+     */
+    public void setRenderFirstRowHeader(boolean renderFirstRowHeader) {
+        this.renderFirstRowHeader = renderFirstRowHeader;
     }
 
     /**

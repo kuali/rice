@@ -62,22 +62,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-MaintenanceCompare-Modifier" parent="Uif-MaintenanceCompare-Modifier-parentBean"/>
-  <bean id="Uif-MaintenanceCompare-Modifier-parentBean" abstract="true" parent="Uif-CompareFieldCreate-Modifier">
-    <property name="headerFieldPrototype">
-      <bean parent="Uif-HeaderFour" p:colSpan="2"/>
-    </property>
-    <property name="comparables">
-      <list>
-        <bean parent="Uif-CompareConfig" p:readOnly="true" p:headerText="Old" p:compareToForValueChange="true"
-              p:bindingObjectPath="document.oldMaintainableObject.dataObject"/>
-        <bean parent="Uif-CompareConfig" p:headerText="New"
-              p:bindingObjectPath="document.newMaintainableObject.dataObject"/>
-      </list>
-    </property>
-    <property name="generateCompareHeaders" value="true"/>
-  </bean>
-
   <!-- Other -->
 
   <bean id="Uif-BindingInfo" class="org.kuali.rice.krad.uif.component.BindingInfo" scope="prototype"/>

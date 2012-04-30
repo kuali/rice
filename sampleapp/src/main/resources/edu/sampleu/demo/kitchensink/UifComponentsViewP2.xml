@@ -149,9 +149,9 @@
     <property name="instructionalText" value="Fields that display an image"/>
     <property name="items">
       <list>
-        <bean parent="Uif-ImageField" p:label="Image field with alt text" p:altText="pdf image"
+        <bean parent="Uif-ImageField" p:label="Image field with alt text" p:altText="pdf image" p:title="pdf image"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png"/>
-        <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
+        <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming" p:title="computer programming"
               p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
       </list>

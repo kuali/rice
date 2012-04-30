@@ -35,7 +35,7 @@
   <krad:template component="${element.captionHeader}"/>
 </c:if>
 
-<img id="${element.id}" src="${element.source}" alt="${element.altText}"
+<img id="${element.id}" src="${element.source}" alt="${element.altText}" title="${element.title}"
 ${height} ${style} ${styleClass} ${title} ${element.simpleDataAttributes}
 ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}/>
 

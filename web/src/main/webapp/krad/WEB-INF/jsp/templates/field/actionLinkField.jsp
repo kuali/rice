@@ -59,7 +59,8 @@
             <img ${imageRole}
                     class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}" ${height} ${width}
                     style="${field.actionImage.style}" src="${field.actionImage.source}"
-                    alt="${field.actionImage.altText}"/>
+                    alt="${field.actionImage.altText}"
+                    title="${field.actionImage.title}"/>
           </a>
         </c:when>
         <c:otherwise>
@@ -68,7 +69,8 @@
             ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}><img ${imageRole}
                   class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}" ${height} ${width}
                   style="${field.actionImage.style}" src="${field.actionImage.source}"
-                  alt="${field.actionImage.altText}"/>${field.actionLabel}
+                  alt="${field.actionImage.altText}"
+                  title="${field.actionImage.title}"/>${field.actionLabel}
           </a>
         </c:otherwise>
       </c:choose>

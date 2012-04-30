@@ -53,7 +53,7 @@
 
         <input type="image" id="${tagId}" ${disabled}
                src="${field.actionImage.source}"
-               alt="${field.actionImage.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex}
+               alt="${field.actionImage.altText}" title="${field.actionImage.title}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex}
                ${field.simpleDataAttributes} data-role="${field.dataRoleAttribute}" data-type="${field.dataTypeAttribute}"
                data-meta="${field.dataMetaAttribute}"/>
 
@@ -73,7 +73,8 @@
                     class="actionImage topActionImage ${field.actionImage.styleClassesAsString}"
                     style="${field.actionImage.style}"
                     src="${field.actionImage.source}"
-                    alt="${field.actionImage.altText}"/></span>${field.actionLabel}
+                    alt="${field.actionImage.altText}"
+                    title="${field.actionImage.title}"/></span>${field.actionLabel}
             </button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'BOTTOM')}">
@@ -83,14 +84,17 @@
                     style="${field.actionImage.style}"
                     class="actionImage bottomActionImage ${field.actionImage.styleClassesAsString}"
                     src="${field.actionImage.source}"
-                    alt="${field.actionImage.altText}"/></span></button>
+                    alt="${field.actionImage.altText}"
+                    title="${field.actionImage.title}"/></span></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'RIGHT')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
             ${field.actionLabel}<img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}"
-                    src="${field.actionImage.source}" alt="${field.actionImage.altText}"/></button>
+                    src="${field.actionImage.source}"
+                    alt="${field.actionImage.altText}"
+                    title="${field.actionImage.title}"/></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'LEFT')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${field.simpleDataAttributes} ${dataAttributes}>
@@ -98,7 +102,8 @@
                     style="${field.actionImage.style}"
                     class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}"
                     src="${field.actionImage.source}"
-                    alt="${field.actionImage.altText}"/>${field.actionLabel}
+                    alt="${field.actionImage.altText}"
+                    title="${field.actionImage.title}"/>${field.actionLabel}
             </button>
           </c:when>
           <c:otherwise>

@@ -33,9 +33,11 @@
 <!-- PAGE RELATED VARS -->
 <c:if test="${KualiForm.view.renderForm}">
   <form:hidden path="pageId"/>
+
   <c:if test="${!empty pageGroup}">
     <form:hidden id="currentPageTitle" path="view.currentPage.title"/>
   </c:if>
+
   <form:hidden path="jumpToId"/>
   <form:hidden path="jumpToName"/>
   <form:hidden path="focusId"/>

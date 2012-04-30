@@ -117,7 +117,7 @@
       </bean>
     </property>
     <property name="actionFieldPrototype">
-      <bean parent="Uif-HorizontalFieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
+      <bean parent="Uif-HorizontalFieldGroup" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
     </property>
     <property name="addLineGroup">
       <bean parent="Uif-CollectionGridItem" p:styleClasses="uif-collectionItem,uif-tableCollectionItem,uif-collectionAddItem"/>

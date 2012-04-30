@@ -174,7 +174,7 @@ function updatePageCallback(content) {
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#Uif-ViewContentWrapper > #Uif-PageContentWrapper";
-    jq(pageInLayout).empty().append(page.children());
+	jq(pageInLayout).empty().append(page.find(">*"));
 
     setPageBreadcrumb();
 

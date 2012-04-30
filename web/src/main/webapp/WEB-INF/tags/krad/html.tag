@@ -23,6 +23,7 @@
 <html lang="en">
   <%----------------------------------- HEAD ---------------------------------------%>
   <head>
+
     <c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
       <script type="text/javascript">
         <!--

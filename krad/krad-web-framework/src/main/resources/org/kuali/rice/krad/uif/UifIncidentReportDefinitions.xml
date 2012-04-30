@@ -59,7 +59,7 @@
       </list>
     </property>
     <property name="header.headerText" value="Incident Feedback"/>
-    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="header.styleClasses" value="uif-incidentDetailGroup-header"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">
       <bean parent="Uif-IncidentReportFooter"/>

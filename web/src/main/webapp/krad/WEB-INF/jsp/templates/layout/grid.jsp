@@ -43,7 +43,7 @@
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
-<table id="${manager.id}" ${style} ${styleClass} role="presentation">
+<table id="${manager.id}" ${style} ${styleClass}>
    <krad:grid items="${items}" numberOfColumns="${manager.numberOfColumns}" 
               applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"
               applyDefaultCellWidths="${manager.applyDefaultCellWidths}"

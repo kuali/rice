@@ -35,7 +35,7 @@
 <krad:div component="${element}">
   <c:if test="${!empty element.headerLevel && !empty element.headerText && element.headerText != '&nbsp;'}">
     <c:set var="group" value="${element.context['parent']}"/>
-    ${headerOpenTag}${element.headerText}${headerCloseTag}<krad:template component="${group.help}"/>
+    ${headerOpenTag}<span class="uif-headerText-span">${element.headerText}</span>${headerCloseTag}<krad:template component="${group.help}"/>
   </c:if>
   
   <%-- render header group --%>

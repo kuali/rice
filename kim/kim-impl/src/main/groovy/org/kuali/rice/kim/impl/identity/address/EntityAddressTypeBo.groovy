@@ -25,10 +25,11 @@ import javax.persistence.Entity
 import javax.persistence.Table
 
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
+import org.kuali.rice.kim.framework.identity.address.EntityAddressTypeEbo;
 
 @Entity
 @Table(name="KRIM_ADDR_TYP_T")
-public class EntityAddressTypeBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
+public class EntityAddressTypeBo extends PersistableBusinessObjectBase implements EntityAddressTypeEbo {
     @Id
     @Column(name="ADDR_TYP_CD")
     String code;

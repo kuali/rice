@@ -19,15 +19,14 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.kuali.rice.kim.api.identity.CodedAttribute
-import org.kuali.rice.kim.api.identity.CodedAttributeContract
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract
+
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType
+import org.kuali.rice.kim.framework.identity.external.EntityExternalIdentifierTypeEbo
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_EXT_ID_TYP_T")
-public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBase implements EntityExternalIdentifierTypeContract {
+public class EntityExternalIdentifierTypeBo extends PersistableBusinessObjectBase implements EntityExternalIdentifierTypeEbo {
     @Id
     @Column(name="EXT_ID_TYP_CD")
     String code;

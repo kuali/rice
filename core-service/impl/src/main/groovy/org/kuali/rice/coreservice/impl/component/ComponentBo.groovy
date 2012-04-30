@@ -27,15 +27,14 @@ import javax.persistence.Table
 
 import org.hibernate.annotations.Type
 import org.kuali.rice.coreservice.api.component.Component
-import org.kuali.rice.coreservice.api.component.ComponentContract
+import org.kuali.rice.coreservice.framework.component.ComponentEbo
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo
-import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @IdClass(ComponentId.class)
 @Entity
 @Table(name="KRCR_CMPNT_T")
-public class ComponentBo extends PersistableBusinessObjectBase implements ComponentContract, MutableInactivatable {
+public class ComponentBo extends PersistableBusinessObjectBase implements ComponentEbo {
 
     private static final long serialVersionUID = 1L;
 

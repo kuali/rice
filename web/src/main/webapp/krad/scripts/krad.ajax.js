@@ -26,25 +26,24 @@
  */
 
 function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock){
-	var data;
-    //methodToCall checks
-	if(methodToCall != null){
-		data = {methodToCall: methodToCall, renderFullView: false};
-	}
-	else{
+	var data = {};
+
+    // methodToCall checks
+    if (methodToCall == null) {
         var methodToCallInput = jq("input[name='methodToCall']");
-        if(methodToCallInput.length > 0){
+        if (methodToCallInput.length > 0) {
             methodToCall = jq("input[name='methodToCall']").val();
         }
-        //check to see if methodToCall is still null
-        if(methodToCall == null || methodToCall === ""){
-            data = {renderFullView: false};
-        }
-        else{
-            data = {methodToCall: methodToCall, renderFullView: false};
-        }
-	}
-    //remove this since the methodToCall was passed in or extracted from the page, to avoid issues
+    }
+
+    // check to see if methodToCall is still null
+    if (methodToCall != null || methodToCall !== "") {
+        data.methodToCall = methodToCall;
+    }
+
+    data.renderFullView = false;
+
+    // remove this since the methodToCall was passed in or extracted from the page, to avoid issues
     jq("input[name='methodToCall']").remove();
 	
 	if(additionalData != null){
@@ -147,7 +146,7 @@ function validateAndSubmit(methodToCall, successCallback){
  * The page is then replaced with the result of the ajax call.
  */
 function validateAndSubmitUsingFormMethodToCall(){
-    validateAndSubmit(null, replacePage);
+    validateAndSubmit(null, updatePageCallback);
 }
 
 /**
@@ -156,20 +155,31 @@ function validateAndSubmitUsingFormMethodToCall(){
  */
 function submitForm(){
 	var methodToCall = jq("input[name='methodToCall']").val();
-	ajaxSubmitForm(methodToCall, replacePage, null, null);
+	ajaxSubmitForm(methodToCall, updatePageCallback, null, null);
 }
 
-function replacePage(contentDiv){
-	var page = jq("#Uif-PageContentWrapper", contentDiv);
+/**
+ * Invoked on success of an ajax call that refreshes the page
+ *
+ * <p>
+ * Finds the page content in the returned content and updates on the page, then processes breadcrumbs and hidden
+ * scripts. While processing, the page contents are hidden
+ * </p>
+ *
+ * @param content - content returned from response
+ */
+function updatePageCallback(content) {
+    var page = jq("[data-handler='update-component']", content);
     page.hide();
+
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#Uif-ViewContentWrapper > #Uif-PageContentWrapper";
-	jq(pageInLayout).empty().append(page.children());
+    jq(pageInLayout).empty().append(page.children());
 
-	setPageBreadcrumb();
+    setPageBreadcrumb();
 
-	pageValidatorReady = false;
-	runHiddenScripts(pageInLayout, true);
+    pageValidatorReady = false;
+    runHiddenScripts(pageInLayout, true);
 
     jq(pageInLayout).show();
 }
@@ -184,7 +194,7 @@ function replacePage(contentDiv){
  *          the id for the page that the link should navigate to
  */
 function handleActionLink(methodToCall, navigateToPageId) {
-	ajaxSubmitForm(methodToCall, replacePage, {navigateToPageId: navigateToPageId}, null);
+    ajaxSubmitForm(methodToCall, updatePageCallback, {navigateToPageId:navigateToPageId}, null);
 }
 
 /**
@@ -255,11 +265,11 @@ function retrieveComponent(id, baseId, methodToCall){
 	};
 
     if (!methodToCall) {
-        methodToCall = "updateComponent";
+        methodToCall = "refresh";
     }
 	
 	ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-			{reqComponentId: id, skipViewInit: "true"}, elementToBlock);
+			{updateComponentId: id, skipViewInit: "true"}, elementToBlock);
 }
 
 /**
@@ -288,7 +298,7 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
     };
     
     ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback, 
-			{reqComponentId: collectionGroupId, skipViewInit: "true", showInactiveRecords : showInactive}, 
+			{updateComponentId: collectionGroupId, skipViewInit: "true", showInactiveRecords : showInactive},
 			elementToBlock);
 }
 
@@ -309,7 +319,7 @@ function performCollectionAction(collectionGroupId){
 	    };
 	    
 	    var methodToCall = jq("input[name='methodToCall']").val();
-		ajaxSubmitForm(methodToCall, updateCollectionCallback, {reqComponentId: collectionGroupId, skipViewInit: "true"},
+		ajaxSubmitForm(methodToCall, updateCollectionCallback, {updateComponentId: collectionGroupId, skipViewInit: "true"},
 				elementToBlock);
 	}
 }

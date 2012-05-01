@@ -148,6 +148,7 @@
 
     <!-- Defined images for specific file types (mime type codes) -->
     <param name="attach.img.application/msword" override="false">word.gif</param>
+    <param name="attach.img.application/vnd.ms-excel" override="false">xls.gif</param>
     <param name="attach.img.application/pdf" override="false">pdf.gif</param>
     <param name="attach.img.application/xml" override="false">xml.gif</param>
     <param name="attach.img.text/xml" override="false">xml.gif</param>

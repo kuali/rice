@@ -22,29 +22,38 @@ def inputFile = new File("beanReplacements.txt");
 def replaceMap = new HashMap();
 
 inputFile.splitEachLine(',') {fields ->
-  replaceMap.put(fields[0], fields[1]);
+    replaceMap.put(fields[0], fields[1]);
 }
 
 def backupFile;
 def fileText;
 
 currentDir.eachFileRecurse(
-  {file ->
-      if (file.isFile() && (file.name.equals("UifLayoutView.xml") || (!file.name.startsWith("Uif") && file.name.endsWith(".xml")))) {
-        fileText = file.text;
-        //backupFile = new File(file.path + ".bak");
-        //backupFile.write(fileText);
-        replaceMap.each{
-            fileText = fileText.replaceAll("parent=\""+ it.key + "\"", "parent=\""+ it.value + "\"");
-            fileText = fileText.replaceAll("ref bean=\""+ it.key + "\"", "ref bean=\""+ it.value + "\"");
-            fileText = fileText.replaceAll("id=\""+ it.key + "\"", "id=\""+ it.value + "\"");
-            fileText = fileText.replaceAll("-ref=\""+ it.key + "\"", "-ref=\""+ it.value + "\"");
-            fileText = fileText.replaceAll("parent=\""+ it.key + "-parentBean\"", "parent=\""+ it.value + "-parentBean\"");
-            fileText = fileText.replaceAll("id=\""+ it.key + "-parentBean\"", "id=\""+ it.value + "-parentBean\"");
-            fileText = fileText.replaceAll("ref bean=\""+ it.key + "-parentBean\"", "ref bean=\""+ it.value + "-parentBean\"");
-            // for properties check p namespace and property tag, also check contains for nested
+        {file ->
+            if (file.isFile() && (file.name.equals("UifLayoutView.xml") || (!file.name.startsWith("Uif") && file.name.endsWith(".xml")))) {
+                fileText = file.text;
+                //backupFile = new File(file.path + ".bak");
+                //backupFile.write(fileText);
+                replaceMap.each {
+                    fileText = fileText.replaceAll("parent=\"" + it.key + "\"", "parent=\"" + it.value + "\"");
+                    fileText = fileText.replaceAll("ref bean=\"" + it.key + "\"", "ref bean=\"" + it.value + "\"");
+                    fileText = fileText.replaceAll("id=\"" + it.key + "\"", "id=\"" + it.value + "\"");
+                    fileText = fileText.replaceAll("-ref=\"" + it.key + "\"", "-ref=\"" + it.value + "\"");
+                    fileText = fileText.replaceAll("parent=\"" + it.key + "-parentBean\"", "parent=\"" + it.value + "-parentBean\"");
+                    fileText = fileText.replaceAll("id=\"" + it.key + "-parentBean\"", "id=\"" + it.value + "-parentBean\"");
+                    fileText = fileText.replaceAll("ref bean=\"" + it.key + "-parentBean\"", "ref bean=\"" + it.value + "-parentBean\"");
+
+                    // for properties check p namespace and property tag, also check contains for nested
+                   // fileText = fileText.replaceAll("p:" + it.key, "p:" + it.value);
+                   // fileText = fileText.replaceAll("property name=\"" + it.key + "\"", "property name=\"" + it.value + "\"");
+
+                    def propertyMatcher = "(p:(\\w+\\.)*)${it.key}";
+                    fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value);
+
+                    propertyMatcher = "(property name=\"(\\w+\\.)*)${it.key}";
+                    fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value);
+                }
+                file.write(fileText);
+            }
         }
-        file.write(fileText);
-    }
-  }
 );

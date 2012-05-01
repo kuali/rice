@@ -207,7 +207,7 @@
     </property>
   </bean>
 
-  <bean id="testGroup4" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6">
+  <bean id="testGroup4" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6" p:collectionLookup.render="false">
     <property name="title" value="Collection Group 1"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>

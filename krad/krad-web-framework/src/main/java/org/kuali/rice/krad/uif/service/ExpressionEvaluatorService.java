@@ -30,6 +30,12 @@ import java.util.Map;
 public interface ExpressionEvaluatorService {
 
     /**
+     * Indicator that can be added to a property name to indicate the expression result should be added to the
+     * property (assumed to be a collection) instead of replaced
+     */
+    public static String EMBEDDED_PROPERTY_NAME_ADD_INDICATOR = ".add";
+
+    /**
      * Evaluates any el expressions that are found as a string property value
      * for the object
      * 

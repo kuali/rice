@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -223,7 +224,21 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
                 propertyValue = evaluateExpressionTemplate(contextObject, evaluationParameters, expression);
             }
 
-            ObjectPropertyUtils.setPropertyValue(object, propertyName, propertyValue);
+            // if property name has the special indicator then we need to add the expression result to the property
+            // value instead of replace
+            if (StringUtils.endsWith(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
+                StringUtils.removeEnd(propertyName, ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR);
+
+                Collection collectionValue = ObjectPropertyUtils.getPropertyValue(object, propertyName);
+                if (collectionValue == null) {
+                    throw new RuntimeException("Property name: "
+                            + propertyName
+                            + " with collection type was not initialized. Cannot add expression result");
+                }
+                collectionValue.add(propertyValue);
+            } else {
+                ObjectPropertyUtils.setPropertyValue(object, propertyName, propertyValue);
+            }
         }
     }
 

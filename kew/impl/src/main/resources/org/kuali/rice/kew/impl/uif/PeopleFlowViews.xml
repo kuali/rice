@@ -34,7 +34,7 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespaceCode"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:directInquiryRender="false" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:fieldDirectInquiry.render="false" />
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
@@ -113,7 +113,7 @@
       <list>
         <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="description" p:rowSpan="2" p:fieldLabel.rowSpan="2"/>
-        <bean parent="Uif-InputField" p:propertyName="name" p:required="true" p:directInquiryRender="false"/>
+        <bean parent="Uif-InputField" p:propertyName="name" p:required="true" p:fieldDirectInquiry.render="false"/>
         <bean parent="Uif-InputField" p:propertyName="typeId"/>
         <bean parent="Uif-InputField" p:propertyName="active" p:defaultValue="true"/>
       </list>

@@ -58,7 +58,6 @@ import java.util.List;
  * application
  *
  * <p>
- * R
  * The <code>InputField</code> provides the majority of the data input/output
  * for the screen. Through these fields the model can be displayed and updated.
  * For data input, the field contains a {@link Control} instance will
@@ -105,7 +104,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private QuickFinder fieldLookup;
     private DirectInquiry fieldDirectInquiry;
     private Suggest fieldSuggest;
-    private Boolean directInquiryRender = true;
 
     public InputField() {
         super();
@@ -786,14 +784,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setMinLength(Integer minLength) {
         simpleConstraint.setMinLength(minLength);
-    }
-    
-    public Boolean getDirectInquiryRender() {
-        return this.directInquiryRender;
-    }
-    
-    public void setDirectInquiryRender(Boolean directInquiryRender) {
-        this.directInquiryRender = directInquiryRender;
     }
 
     /**

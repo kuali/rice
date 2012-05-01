@@ -290,7 +290,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'roleName=' + #p0 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1)")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2)")
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
                 @WebParam(name="roleName") String roleName,
                 @WebParam(name="qualification")
@@ -309,7 +309,7 @@ public interface RoleService {
      */
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'{principalHasRole}' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1)")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2)")
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
             @WebParam(name="roleIds") List<String> roleIds,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
@@ -330,7 +330,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'getPrincipalIdSubListWithRole' + 'roleNamespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p2)")
+    @Cacheable(value= RoleMember.Cache.NAME, key="'getPrincipalIdSubListWithRole' + 'principalIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'roleNamespaceCode=' + #p1 + '|' + 'roleName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p3)")
     List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
             @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
             @WebParam(name="roleName") String roleName,
@@ -463,7 +463,7 @@ public interface RoleService {
      */
     @WebMethod(operationName = "getDelegationMemberByDelegationAndMemberId")
     @WebResult(name = "delegateMember")
-    @Cacheable(value=DelegateMember.Cache.NAME, key="'delegateId=' + #p0 + '|' + 'memberId=' + #p1")
+    @Cacheable(value=DelegateMember.Cache.NAME, key="'delegationId=' + #p0 + '|' + 'memberId=' + #p1")
     DelegateMember getDelegationMemberByDelegationAndMemberId(
             @WebParam(name = "delegationId") String delegationId, @WebParam(name = "memberId") String memberId) throws RiceIllegalArgumentException;
 
@@ -522,7 +522,7 @@ public interface RoleService {
      */
     @WebMethod(operationName = "getDelegateTypeByRoleIdAndDelegateTypeCode")
     @WebResult(name = "delegateType")
-    @Cacheable(value=DelegateType.Cache.NAME, key="'roleId=' + #p0 + '|' + 'code=' + #p1")
+    @Cacheable(value=DelegateType.Cache.NAME, key="'roleId=' + #p0 + '|' + 'delegateType=' + #p1")
     DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(@WebParam(name = "roleId") String roleId,
             @WebParam(name = "delegateType") DelegationType delegateType)  throws RiceIllegalArgumentException;
 

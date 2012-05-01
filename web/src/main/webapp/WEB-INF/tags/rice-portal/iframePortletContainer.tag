@@ -71,7 +71,7 @@
         setupCrossDomainResize();
       }
       else {
-        intervalId = setInterval(setSameDomainIframeHeight, 249);
+        intervalId = setInterval(setSameDomainIframeHeight, 500);
       }
     }
 

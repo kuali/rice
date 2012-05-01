@@ -448,7 +448,7 @@
 
   <bean id="Uif-LinkGroup" parent="Uif-LinkGroup-parentBean"/>
   <bean id="Uif-LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup"
-        parent="Uif-VerticalBoxGroup">
+        parent="Uif-HorizontalBoxGroup">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-linkGroup</value>

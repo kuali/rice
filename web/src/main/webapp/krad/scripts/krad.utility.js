@@ -234,6 +234,7 @@ function runHiddenScripts(id, isSelector){
         initBubblePopups();
 
         //Interpret new server message state for refreshed InputFields and write them out
+
         jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
             var data = jQuery(this).data("validationMessages");
             if(!data.processed){

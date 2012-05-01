@@ -110,7 +110,10 @@ function initFieldHandlers() {
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data("validationMessages");
-                var hadError = data.focusedErrors.length;
+                var hadError = false;
+                if (data.focusedErrors){
+                    hadError = data.focusedErrors.length;
+                }
                 var valid = true;
 
                 if (validateClient) {

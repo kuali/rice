@@ -486,7 +486,6 @@ function handleMessagesAtField(id, skipGroupWrite) {
         }
 
         data.processed = true;
-        jQuery("#" + id).data("validationMessages", data);
     }
 }
 
@@ -519,21 +518,17 @@ function handleMessagesAtGroup(id, fieldId, fieldData, skipWrite) {
         }
         if (!messageMap) {
             messageMap = {};
+            data.messageMap = messageMap;
         }
 
         //add fresh data to group's message data based on the new field info
         messageMap[fieldId] = fieldData;
-        data.messageMap = messageMap;
         data = calculateMessageTotals(data);
-
-        //Display counts in the header even if messages aren't displayed at that level
-        displayHeaderMessageCount(id, data);
-
-        //update data
-        jQuery("#" + id).data("validationMessages", data);
 
         //write messages for this group
         if(!skipWrite){
+            //Display counts in the header even if messages aren't displayed at that level
+            displayHeaderMessageCount(id, data);
             writeMessagesForGroup(id, data);
         }
     }
@@ -553,11 +548,14 @@ function writeMessagesForGroup(id, data){
         var sections = data.sections;
 
         //retrieve header for section
-        var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label, "
-                + "> a > :header, > a > label");
+        if(data.isSection == undefined){
+            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label, "
+                    + "> a > :header, > a > label");
+            data.isSection = sectionHeader.length;
+        }
 
         //show messages if data is received as force show or if this group is considered a section
-        var showMessages = sectionHeader.length || data.forceShow;
+        var showMessages = data.isSection || data.forceShow;
 
         //TabGroups rely on tab error indication to indicate messages - don't show messages here
         var type = jQuery("#" + id).data("type");
@@ -576,60 +574,65 @@ function writeMessagesForGroup(id, data){
         if (showMessages) {
 
             var newList = jQuery("<ul class='uif-validationMessagesList'></ul>");
-            newList = generateSectionLevelMessages(id, data, newList);
 
-            if (data.summarize) {
-                newList = generateSummaries(id, messageMap, sections, order, newList);
-            }
-            else {
-                //if not generating summaries just output field links
-                for (var key in messageMap) {
-                    var link = generateFieldLink(messageMap[key], key, data.collapseFieldMessages, data.displayLabel);
-                    newList = writeMessageItemToList(link, newList);
+            if(data.messageTotal){
+                newList = generateSectionLevelMessages(id, data, newList);
+
+                if (data.summarize) {
+                    newList = generateSummaries(id, messageMap, sections, order, newList);
+                }
+                else {
+                    //if not generating summaries just output field links
+                    for (var key in messageMap) {
+                        var link = generateFieldLink(messageMap[key], key, data.collapseFieldMessages, data.displayLabel);
+                        newList = writeMessageItemToList(link, newList);
+                    }
+                }
+
+                //clear and write the new list of summary items
+                clearMessages(id);
+                handleTabStyle(id, data.errorTotal, data.warningTotal, data.infoTotal);
+                writeMessages(id, newList);
+                //page level validation messsage header handling
+                if (pageLevel) {
+                    if (newList.children().length) {
+                        var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
+                        var countMessage = generateCountString(data.errorTotal, data.warningTotal,
+                                data.infoTotal);
+                        var pageValidationHeader = jQuery("<h3 tabindex='0' class='uif-pageValidationHeader' "
+                                + "id='pageValidationHeader'>The Page submission has " + countMessage + "</h3>");
+
+                        pageValidationHeader.find(".uif-validationImage").remove();
+                        var pageSummaryClass = "";
+                        if (data.errorTotal) {
+                            pageSummaryClass = "uif-pageValidationMessages-error";
+                            pageValidationHeader.prepend(errorImage);
+                        }
+                        else if (data.warningTotal) {
+                            pageSummaryClass = "uif-pageValidationMessages-warning";
+                            pageValidationHeader.prepend(warningImage);
+                        }
+                        else if (data.infoTotal) {
+                            pageSummaryClass = "uif-pageValidationMessages-info";
+                            pageValidationHeader.prepend(infoImage);
+                        }
+
+                        messagesDiv.prepend(pageValidationHeader);
+
+                        //Handle special classes
+                        pageValidationHeader.parent().removeClass("uif-pageValidationMessages-error");
+                        pageValidationHeader.parent().removeClass("uif-pageValidationMessages-warning");
+                        pageValidationHeader.parent().removeClass("uif-pageValidationMessages-info");
+                        pageValidationHeader.parent().addClass(pageSummaryClass);
+
+                        messagesDiv.find(".uif-validationMessagesList").attr("id", "pageValidationList");
+                        messagesDiv.find(".uif-validationMessagesList").attr("aria-labelledby",
+                                "pageValidationHeader");
+                    }
                 }
             }
-
-            //clear and write the new list of summary items
-            clearMessages(id);
-            handleTabStyle(id, data.errorTotal, data.warningTotal, data.infoTotal);
-            writeMessages(id, newList);
-            //page level validation messsage header handling
-            if (pageLevel) {
-                if (newList.children().length) {
-                    var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
-                    var countMessage = generateCountString(data.errorTotal, data.warningTotal,
-                            data.infoTotal);
-                    var pageValidationHeader = jQuery("<h3 tabindex='0' class='uif-pageValidationHeader' "
-                            + "id='pageValidationHeader'>The Page submission has " + countMessage + "</h3>");
-
-                    pageValidationHeader.find(".uif-validationImage").remove();
-                    var pageSummaryClass = "";
-                    if (data.errorTotal) {
-                        pageSummaryClass = "uif-pageValidationMessages-error";
-                        pageValidationHeader.prepend(errorImage);
-
-                    }
-                    else if (data.warningTotal) {
-                        pageSummaryClass = "uif-pageValidationMessages-warning";
-                        pageValidationHeader.prepend(warningImage);
-                    }
-                    else if (data.infoTotal) {
-                        pageSummaryClass = "uif-pageValidationMessages-info";
-                        pageValidationHeader.prepend(infoImage);
-                    }
-
-                    messagesDiv.prepend(pageValidationHeader);
-
-                    //Handle special classes
-                    pageValidationHeader.parent().removeClass("uif-pageValidationMessages-error");
-                    pageValidationHeader.parent().removeClass("uif-pageValidationMessages-warning");
-                    pageValidationHeader.parent().removeClass("uif-pageValidationMessages-info");
-                    pageValidationHeader.parent().addClass(pageSummaryClass);
-
-                    messagesDiv.find(".uif-validationMessagesList").attr("id", "pageValidationList");
-                    messagesDiv.find(".uif-validationMessagesList").attr("aria-labelledby",
-                            "pageValidationHeader");
-                }
+            else{
+                clearMessages(id);
             }
         }
     }
@@ -646,9 +649,10 @@ function writeMessagesForPage(){
 
 function writeMessagesForChildGroups(parentId){
     jQuery("[data-parent='"+ parentId +"']").each(function(){
-        var id = jQuery(this).attr("id");
-        var data = jQuery(this).data("validationMessages");
-        if(!(jQuery(this).is("[data-role='InputField'"))){
+        var currentGroup = jQuery(this);
+        var id = currentGroup.attr("id");
+        var data = currentGroup.data("validationMessages");
+        if(!(currentGroup.is("[data-role='InputField']"))){
             writeMessagesForGroup(id, data);
             writeMessagesForChildGroups(id);
         }

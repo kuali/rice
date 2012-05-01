@@ -52,6 +52,7 @@ function publishHeight(){
     }
 
     var height = jQuery("body").outerHeight();
+    jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
     if (parentUrl && !isNaN(height) && height > 0) {
         jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;

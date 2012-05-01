@@ -40,8 +40,8 @@
     var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
     var intervalId = "";
 
-    //iframe resize breaks datatables in ie8
-    var browserIsIE8 = jQuery.browser.msie && jQuery.browser.version == 8.0;
+    //iframe resize breaks datatables in older IEs
+    var browserIsOlderIE = jQuery.browser.msie && (jQuery.browser.version == 8.0);
 
     if (iframeSrc.indexOf("http") == 0 || iframeSrc.indexOf("ftp") == 0) {
       iframeSrc = iframeSrc.match(regex)[1].toString();
@@ -53,16 +53,19 @@
 
     //Unsupported browser combinations that the iframe resize wont work properly on
     if ((iframeSrc !== window.location.host && (!navigator.cookieEnabled || jQuery.browser.msie))
-            || (browserIsIE8)) {
-      /*jQuery(thisIframe).replaceWith(
+            || (browserIsOlderIE)) {
+/*      jQuery(thisIframe).replaceWith(
               "<iframe src='${channelUrl}' name='iframeportlet' id='iframeportlet'" +
                       "title='E-Doc' height='${frameHeight}' width='100%' frameborder='0'></iframe>"
       );*/
 
+      jQuery(thisIframe).attr("scroll", "yes");
+      jQuery(thisIframe).attr("scrolling", "yes");
       jQuery(thisIframe).css("overflow", "auto");
     }
 
-    if(!browserIsIE8){
+    if(!browserIsOlderIE){
+      jQuery(thisIframe).attr("scroll", "no");
       jQuery(thisIframe).attr("scrolling", "no");
       if (iframeSrc !== window.location.host) {
         setupCrossDomainResize();
@@ -74,7 +77,8 @@
 
     function resizeIframe() {
       var newHeight = thisIframe.contents().find("body").outerHeight();
-      var newWidth = jQuery("body").width();
+      var newWidth = jQuery("#iframe_portlet_container_div").width() - 15;
+      thisIframe.contents().find("body").attr("style", "overflow-x: auto; padding-right: 20px;");
       if (newHeight > 100 && (newHeight != previousHeight || newWidth != previousWidth)) {
         previousHeight = newHeight;
         previousWidth = newWidth;
@@ -115,7 +119,7 @@
       if (!sameDomain) {
         // Get the height from the passed data
         var newHeight = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
-        var newWidth = jQuery("#iframe_portlet_container_div").width();
+        var newWidth = jQuery("#iframe_portlet_container_div").width() - 15;
         if (newWidth < 500) {
           newWidth = 500;
         }

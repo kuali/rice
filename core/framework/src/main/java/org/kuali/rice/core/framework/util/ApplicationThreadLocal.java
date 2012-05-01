@@ -43,25 +43,32 @@ public class ApplicationThreadLocal<T> extends ThreadLocal<T> {
      * going to be called from the owning thread. since our explicit purpose is to forcibly yank these thread locals from arbitrary
      * threads, we are breaking this assumption. we're doing the best we can.
      * @param t the thread
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     protected boolean remove(Thread t) {
+        return removeThreadLocal(t, this);
+    }
+
+    /**
+     * Utility method for removing a specific ThreadLocal from a Thread
+     * @param thread the thread
+     * @param threadLocal the threadlocal to remove()
+     * @return true if successful false otherwise
+     */
+    public static boolean removeThreadLocal(Thread thread, ThreadLocal threadLocal) {
         try {
             // call package method getMap on self
             Method getMap = ThreadLocal.class.getDeclaredMethod("getMap", Thread.class);
             getMap.setAccessible(true);
-            Object map = getMap.invoke(this, t);
+            Object map = getMap.invoke(threadLocal, thread);
             // if ThreadLocalMap has been set
             if (map != null) {
                 // call private method remove on ThreadLocalMap
                 Method remove = map.getClass().getDeclaredMethod("remove", ThreadLocal.class);
                 remove.setAccessible(true);
-                remove.invoke(map, this);
+                remove.invoke(map, threadLocal);
             }
             return true;
-        // we don't really have any recourse here, so just print the stack trace
+            // we don't really have any recourse here, so just print the stack trace
         } catch (NoSuchMethodException nsme) {
             nsme.printStackTrace();
         } catch (IllegalAccessException iae) {

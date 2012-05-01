@@ -78,4 +78,6 @@
         class="org.kuali.rice.ksb.security.service.impl.DigitalSignatureServiceImpl"
         lazy-init="true" />
 
+  <bean class="org.kuali.rice.ksb.util.SignatureAlgorithmCacheCleaner" lazy-init="false" />
+
 </beans>

@@ -38,6 +38,7 @@ import java.util.Map;
  */
 public class ExpressionUtils {
      private static final Log LOG = LogFactory.getLog(ExpressionUtils.class);
+
     /**
      * Adjusts the property expressions for a given object. Any nested properties are moved to the parent
      * object. Binding adjust prefixes are replaced with the correct values.

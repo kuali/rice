@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.widget;
 
 /**
  * Interface for components that support help.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Helpable {
 
@@ -26,7 +28,7 @@ public interface Helpable {
      *
      * <p>
      * External help information can be configured for the container. The
-     * <code>Help</code> object can the configuration for rendering a link to
+     * {@code Help} object can the configuration for rendering a link to
      * that help information.
      * </p>
      *
@@ -42,7 +44,7 @@ public interface Helpable {
     void setHelp(Help help);
 
     /**
-     *  Setter for the component's tooltip.
+     * Setter for the component's tooltip.
      *
      * <p>
      * This is used by the helper to set the help content to the tooltip.
@@ -53,9 +55,10 @@ public interface Helpable {
     void setTooltipOfComponent(Tooltip tooltip);
 
     /**
+     * Help title which is used for the HTML title attribute of the help icon
      *
-     * @return
+     * @return Help title for the container
      */
-    public String getHelpTitle();
+     String getHelpTitle();
 
 }

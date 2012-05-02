@@ -25,11 +25,6 @@
       <property name="title" value="Group Errors" />
       <property name="instructionalText"
         value="Group with displayMessages turned on (off by default because messages are displayed at page level and at field level normally)" />
-      <property name="validationMessages">
-        <bean parent="Uif-GroupValidationMessages">
-          <property name="displayMessages" value="true" />
-        </bean>
-      </property>
     </bean>
 
     <bean id="errors2" parent="genericTextGroup">

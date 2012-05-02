@@ -31,6 +31,21 @@ public class Image extends ContentElementBase {
         altText = "";
     }
 
+
+    /**
+     * Performs the final lifecycle phase for this element.
+     *
+     * <p>
+     * Performs the following steps
+     * <ul>
+     * <li>Set the caption header text on the caption header</li>
+     * <li>Set the cutline text on the cutline message</li>
+     * </ul>
+     * </p>
+     *
+     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
@@ -43,10 +58,20 @@ public class Image extends ContentElementBase {
         }
     }
 
+    /**
+     * returns the URL of this image
+     *
+     * @return String containing the URL of this image.
+     */
     public String getSource() {
         return this.source;
     }
 
+    /**
+     * Sets the URL of this image
+     *
+     * @param source - String representing the URL of this image
+     */
     public void setSource(String source) {
         this.source = source;
     }
@@ -93,7 +118,7 @@ public class Image extends ContentElementBase {
      * be that the page layout will change while the images load.
      * </p>
      *
-     * @return String representation of the height of this image
+     * @return String containing of the height style attribute of this image
      */
     public String getHeight() {
         return this.height;
@@ -102,7 +127,7 @@ public class Image extends ContentElementBase {
     /**
      * Sets the height style attribute of the image.
      *
-     * @param height a String containing the height of the image
+     * @param height - String containing the height of the image
      */
     public void setHeight(String height) {
         this.height = height;

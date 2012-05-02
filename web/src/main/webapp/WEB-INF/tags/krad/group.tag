@@ -31,7 +31,7 @@
   </c:if>
 
   <krad:template component="${group.validationMessages}"/>
-  <krad:template component="${group.instructionalMessageField}"/>
+  <krad:template component="${group.instructionalMessage}"/>
 
   <jsp:doBody/>
 

@@ -313,7 +313,7 @@ public class QuickFinder extends WidgetBase {
     }
 
     /**
-     * Setter for the lookup base url (comain, context, and controller)
+     * Setter for the lookup base url (domain, context, and controller)
      *
      * @param baseLookupUrl
      */

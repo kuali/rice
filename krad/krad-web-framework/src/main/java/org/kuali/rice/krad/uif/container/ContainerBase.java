@@ -19,10 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.ValidationMessages;
-import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -60,7 +60,7 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
 	private Group footer;
 
 	private String instructionalText;
-	private MessageField instructionalMessageField;
+	private Message instructionalMessage;
 
 	private boolean fieldContainer;
 
@@ -114,7 +114,7 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
 	 * 
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
-	 * <li>Set the messageText of the summary MessageField if it is blank</li>
+	 * <li>Set the messageText of the summary Message if it is blank</li>
 	 * <li>Finalizes LayoutManager</li>
 	 * </ul>
 	 * 
@@ -135,8 +135,8 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
         }
 
 		// setup summary message field if necessary
-		if (instructionalMessageField != null && StringUtils.isBlank(instructionalMessageField.getMessageText())) {
-			instructionalMessageField.setMessageText(instructionalText);
+		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+			instructionalMessage.setMessageText(instructionalText);
 		}
 
 		if (layoutManager != null) {
@@ -156,7 +156,7 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
 		components.add(footer);
 		components.add(validationMessages);
 		components.add(help);
-		components.add(instructionalMessageField);
+		components.add(instructionalMessage);
 
 		for (Component component : getItems()) {
 			components.add(component);
@@ -417,10 +417,10 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return MessageField instructional message field
+     * @return Message instructional message field
      */
-	public MessageField getInstructionalMessageField() {
-		return this.instructionalMessageField;
+	public Message getInstructionalMessage() {
+		return this.instructionalMessage;
 	}
 
     /**
@@ -431,10 +431,10 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
      * set on the field but can also be set using {@link #setInstructionalText(String)}
      * </p>
      *
-     * @param instructionalMessageField
+     * @param instructionalMessage
      */
-	public void setInstructionalMessageField(MessageField instructionalMessageField) {
-		this.instructionalMessageField = instructionalMessageField;
+	public void setInstructionalMessage(Message instructionalMessage) {
+		this.instructionalMessage = instructionalMessage;
 	}
 
 	/**

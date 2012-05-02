@@ -187,7 +187,7 @@
     <property name="layoutManager">
       <bean parent="Uif-VerticalBoxLayout"/>
     </property>
-    <property name="instructionalMessageField">
+    <property name="instructionalMessage">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>

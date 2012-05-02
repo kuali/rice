@@ -405,7 +405,7 @@
                         <bean parent="Uif-TextControl" p:size="4"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-MessageField" p:messageText="* message here"/>
+                    <bean parent="Uif-Message" p:messageText="* message here"/>
                   </list>
                 </property>
               </bean>

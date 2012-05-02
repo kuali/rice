@@ -44,11 +44,11 @@ currentDir.eachFileRecurse(
                     fileText = fileText.replaceAll("ref bean=\"" + it.key + "-parentBean\"", "ref bean=\"" + it.value + "-parentBean\"");
 
                     // for properties check p namespace and property tag, also check contains for nested
-                    def propertyMatcher = "(p:(\\w+\\.)*)${it.key}";
-                    fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value);
+                    def propertyMatcher = "(p:(\\w+\\.)*)${it.key}([\\s=\\.]+)";
+                    fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value + '$3');
 
-                    propertyMatcher = "(property name=\"(\\w+\\.)*)${it.key}";
-                    fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value);
+                    propertyMatcher = "(property name=\"(\\w+\\.)*)${it.key}([\\.\"]+)";
+                    fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value + '$3');
                 }
                 file.write(fileText);
             }

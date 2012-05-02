@@ -57,7 +57,7 @@
 			<list>
 				<bean parent="GenericTextField" p:required="true"
 					p:propertyName="field2" />
-				<bean parent="GenericTextArea" p:required="true" p:fieldLabel.requiredMessageField.messageText="Required"
+				<bean parent="GenericTextArea" p:required="true" p:fieldLabel.requiredMessage.messageText="Required"
               p:instructionalText="different text for required indicator"
 					p:propertyName="field3" />
 				<bean parent="GenericRadio" p:required="true" p:propertyName="field4"

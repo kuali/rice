@@ -174,7 +174,7 @@
               <bean parent="Uif-VerticalBoxGroup" p:styleClasses="group-border">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-MessageField" p:messageText="System Calculated Information"
+                    <bean parent="Uif-Message" p:messageText="System Calculated Information"
                           p:styleClasses="font-lightBold"/>
                     <bean parent="Uif-HorizontalFieldGroup" p:label="Weekly Contact Hours" p:labelPlacement="TOP">
                       <property name="items">

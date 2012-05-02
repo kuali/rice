@@ -29,3 +29,4 @@
 .animated-navigation,.basic-navigation
 .kr-page-section-title,.uif-header
 .uif-headerGroup,.uif-lowerHeaderGroup
+.uif-messageField,.uif-message

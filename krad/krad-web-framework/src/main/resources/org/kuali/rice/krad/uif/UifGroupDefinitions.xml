@@ -43,7 +43,7 @@
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="disclosure.expandImageSrc"
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-    <property name="instructionalMessageField">
+    <property name="instructionalMessage">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
@@ -368,7 +368,7 @@
     <property name="defaultNodePrototype">
       <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
         <property name="labelPrototype">
-          <bean parent="Uif-MessageField"/>
+          <bean parent="Uif-Message"/>
         </property>
         <property name="dataGroupPrototype">
           <bean parent="Uif-VerticalBoxGroup"/>
@@ -490,7 +490,7 @@
       <ref bean="Uif-BindingInfo"/>
     </property>
     <property name="addLineLabel">
-      <bean parent="Uif-Label" p:labelText="add" p:requiredMessageField.render="false"/>
+      <bean parent="Uif-Label" p:labelText="add" p:requiredMessage.render="false"/>
     </property>
     <property name="addLineActions">
       <list>

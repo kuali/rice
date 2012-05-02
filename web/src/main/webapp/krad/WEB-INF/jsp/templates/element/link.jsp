@@ -24,10 +24,6 @@
     Standard HTML Link     
  --%>
 
-<c:if test="${(field.lightBox != null)}">
-  <krad:template component="${field.lightBox}" componentId="${field.id}"/>
-</c:if>
-
 <c:if test="${element.skipInTabOrder}">
   <c:set var="tabindex" value="tabindex=-1"/>
 </c:if>
@@ -41,3 +37,7 @@
 <a id="${element.id}" href="${element.hrefText}" target="${element.target}" title="${element.title}"
 ${style} ${styleClass} ${tabindex} ${element.simpleDataAttributes}
 ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>${body}</a>
+
+<c:if test="${(element.lightBox != null)}">
+  <krad:template component="${element.lightBox}" componentId="${element.id}"/>
+</c:if>

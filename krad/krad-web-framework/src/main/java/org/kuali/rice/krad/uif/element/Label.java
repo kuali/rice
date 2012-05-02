@@ -18,8 +18,6 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.FieldBase;
-import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.List;
@@ -42,7 +40,7 @@ public class Label extends ContentElementBase {
     private boolean renderColon;
 
     private Position requiredMessagePlacement;
-    private MessageField requiredMessageField;
+    private Message requiredMessage;
 
     public Label() {
         renderColon = true;
@@ -75,7 +73,7 @@ public class Label extends ContentElementBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(requiredMessageField);
+        components.add(requiredMessage);
 
         return components;
     }
@@ -143,7 +141,7 @@ public class Label extends ContentElementBase {
     }
 
     /**
-     * <code>MessageField</code> instance that will display a required indicator
+     * <code>Message</code> instance that will display a required indicator
      * 
      * <p>
      * To indicate a field must have a value (required input) the required
@@ -152,19 +150,19 @@ public class Label extends ContentElementBase {
      * message
      * </p>
      * 
-     * @return MessageField instance
+     * @return Message instance
      */
-    public MessageField getRequiredMessageField() {
-        return this.requiredMessageField;
+    public Message getRequiredMessage() {
+        return this.requiredMessage;
     }
 
     /**
      * Setter for the required message field
      * 
-     * @param requiredMessageField
+     * @param requiredMessage
      */
-    public void setRequiredMessageField(MessageField requiredMessageField) {
-        this.requiredMessageField = requiredMessageField;
+    public void setRequiredMessage(Message requiredMessage) {
+        this.requiredMessage = requiredMessage;
     }
 
     /**

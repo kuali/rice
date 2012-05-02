@@ -88,8 +88,7 @@
         <bean parent="Uif-InputField" p:propertyName="userInput"
               p:label="User Feedback">
           <property name="control">
-            <bean parent="Uif-TextAreaControl" p:rows="8" p:cols="65"
-                  p:watermarkText="Enter user feedback here..."/>
+            <bean parent="Uif-LargeTextAreaControl" p:watermarkText="Enter user feedback here..."/>
           </property>
         </bean>
       </list>

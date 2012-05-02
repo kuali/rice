@@ -36,5 +36,5 @@
 </c:if>
 
 <c:if test="${control.textExpand}">
-	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
+	<krad:script value="setupTextPopout('${control.id}', '${field.label}', '${field.instructionalMessage.messageText}', '${field.constraintMessage.messageText}', '${ConfigProperties['krad.externalizable.images.url']}');" />
 </c:if>

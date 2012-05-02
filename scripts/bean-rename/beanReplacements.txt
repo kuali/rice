@@ -184,3 +184,9 @@ addLineActionFields,addLineActions
 directInquiryActionField,directInquiryAction
 helpActionField,helpAction
 quickfinderActionField,quickfinderAction
+Uif-MessageField,Uif-Message
+constraintMessageField,constraintMessage
+instructionalMessageField,instructionalMessage
+requiredMessageField,requiredMessage
+cutline,cutlineMessage
+inquiryLinkField,inquiryLink

@@ -1,5 +1,6 @@
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.uif.widget.LightBox;
 
 /**
  * Content element that renders a link
@@ -12,6 +13,8 @@ public class Link extends ContentElementBase {
     private String linkLabel;
     private String target;
     private String hrefText;
+
+    private LightBox lightBox;
 
     public Link() {
         super();
@@ -69,6 +72,24 @@ public class Link extends ContentElementBase {
      */
     public void setHrefText(String hrefText) {
         this.hrefText = hrefText;
+    }
+
+    /**
+     *  Returns the <code>LightBox</code> used to open the link in
+     *
+     * @return The <code>LightBox</code>
+     */
+    public LightBox getLightBox() {
+        return lightBox;
+    }
+
+    /**
+     * Setter for the lightBox
+     *
+     * @param lightBox
+     */
+    public void setLightBox(LightBox lightBox) {
+        this.lightBox = lightBox;
     }
 
 }

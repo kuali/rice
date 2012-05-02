@@ -30,7 +30,7 @@
 <krad:span component="${element}">
   <%-- required message --%>
   <c:if test="${element.requiredMessagePlacement eq 'LEFT'}">
-    <krad:template component="${element.requiredMessageField}"/>
+    <krad:template component="${element.requiredMessage}"/>
   </c:if>
 
   <label id="${element.id}" for="${element.labelForComponentId}" ${element.simpleDataAttributes}
@@ -40,7 +40,7 @@
 
   <%-- required message --%>
   <c:if test="${element.requiredMessagePlacement eq 'RIGHT'}">
-    <krad:template component="${element.requiredMessageField}"/>
+    <krad:template component="${element.requiredMessage}"/>
   </c:if>
 
 </krad:span>

@@ -30,8 +30,8 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.LinkField;
-import org.kuali.rice.krad.uif.field.MessageField;
 
 import java.util.TreeMap;
 
@@ -136,7 +136,7 @@ public class ComponentBaseTest {
                             overridingControls[i].getComplexDataAttributesJs()));
         }
         // other controls should have a different value for
-        Component[] nonOverridingControls = {new Image(), new Action(), new LinkField(), new MessageField()};
+        Component[] nonOverridingControls = {new Image(), new Action(), new LinkField(), new Message()};
         for (Component component: nonOverridingControls) {
             component.setDataAttributes(dataAttributes);
             assertFalse(component.getClass() + " should not override getComplexAttributes",

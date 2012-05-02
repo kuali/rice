@@ -61,15 +61,16 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Iframe;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.field.ValidationMessages;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.LinkField;
-import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class ComponentFactory {
     protected static final String SPACE_FIELD = "Uif-SpaceField";
     protected static final String GENERIC_FIELD = "Uif-CustomTemplateField";
     protected static final String LABEL = "Uif-Label";
+    protected static final String MESSAGE = "Uif-Message";
     protected static final String MESSAGE_FIELD = "Uif-MessageField";
     protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
     protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
@@ -551,6 +553,10 @@ public class ComponentFactory {
 
     public static Label getLabel() {
         return (Label) getNewComponentInstance(LABEL);
+    }
+
+    public static Message getMessage() {
+        return (Message) getNewComponentInstance(MESSAGE);
     }
 
     public static MessageField getMessageField() {

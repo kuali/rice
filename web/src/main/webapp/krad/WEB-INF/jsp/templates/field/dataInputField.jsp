@@ -60,7 +60,7 @@
 
       <c:otherwise>
         <%-- render field instructional text --%>
-        <krad:template component="${field.instructionalMessageField}"/>
+        <krad:template component="${field.instructionalMessage}"/>
 
         <%-- render control for input --%>
         <krad:template component="${field.control}" field="${field}"/>
@@ -89,7 +89,7 @@
 
   <%-- render field constraint if field is editable --%>
   <c:if test="${!readOnly}">
-    <krad:template component="${field.constraintMessageField}"/>
+    <krad:template component="${field.constraintMessage}"/>
   </c:if>
 
   <%-- render span and values for informational properties --%>

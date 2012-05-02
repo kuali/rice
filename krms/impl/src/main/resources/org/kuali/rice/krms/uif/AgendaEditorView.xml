@@ -118,7 +118,7 @@
     <property name="items">
       <list>
         <!-- work around for title issues above, though apparently new agenda's don't have the name set so this doesn't get displayed -->
-        <bean parent="Uif-MessageField" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
+        <bean parent="Uif-Message" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
         <bean parent="ruleEditorBody">
         </bean>
       </list>
@@ -140,7 +140,7 @@
     <property name="items">
       <list>
         <!-- work around for title issues above, though apparently new agenda's don't have the name set so this doesn't get displayed -->
-        <bean parent="Uif-MessageField" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
+        <bean parent="Uif-Message" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
         <bean parent="ruleEditorBody">
         </bean>
       </list>
@@ -484,7 +484,7 @@
         </bean>
          -->
 
-        <bean parent="Uif-MessageField" p:messageText="Move: [" p:style="display: inline;"/>
+        <bean parent="Uif-Message" p:messageText="Move: [" p:style="display: inline;"/>
 
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Left">
@@ -518,7 +518,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-MessageField" p:messageText="]" p:style="display: inline;"/>
+        <bean parent="Uif-Message" p:messageText="]" p:style="display: inline;"/>
 
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
@@ -606,7 +606,7 @@
         <entry key="#{ T(org.kuali.rice.krms.impl.ui.AgendaTreeRuleNode) }">
           <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
-              <bean parent="Uif-MessageField"/>
+              <bean parent="Uif-Message"/>
             </property>
             <property name="dataGroupPrototype">
               <!-- float:right is a hack to get the group for this hidden control out of the way -->
@@ -623,7 +623,7 @@
         <entry key="#{ T(org.kuali.rice.krms.impl.ui.AgendaTreeLogicNode) }">
           <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
             <property name="labelPrototype">
-              <bean parent="Uif-MessageField"/>
+              <bean parent="Uif-Message"/>
             </property>
             <property name="dataGroupPrototype">
               <bean parent="Uif-VerticalBoxGroup" />
@@ -638,7 +638,7 @@
     <property name="disclosure.render" value="false" />
     <property name="items">
       <list>
-        <bean parent="Uif-MessageField" p:label="Rule Editor Summary" p:showLabel="true" p:labelPlacement="TOP"
+        <bean parent="Uif-Message" p:label="Rule Editor Summary" p:showLabel="true" p:labelPlacement="TOP"
               p:labelStyleClasses="labelTop" p:messageText="@{#dp.ruleEditorMessage}" />
       </list>
     </property>

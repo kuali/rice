@@ -98,8 +98,8 @@
     <property name="instructionalText" value="Message fields display read-only text"/>
     <property name="items">
       <list>
-        <bean parent="Uif-MessageField" p:messageText="Message Field 1 Text"/>
-        <bean parent="Uif-MessageField" p:messageText="Message Field with expression text: '@{field88}'"/>
+        <bean parent="Uif-Message" p:messageText="Message Field 1 Text"/>
+        <bean parent="Uif-Message" p:messageText="Message Field with expression text: '@{field88}'"/>
       </list>
     </property>
   </bean>
@@ -311,7 +311,7 @@
           <property name="defaultNodePrototype">
             <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
               <property name="labelPrototype">
-                <bean parent="Uif-MessageField"/>
+                <bean parent="Uif-Message"/>
               </property>
               <property name="dataGroupPrototype">
                 <bean parent="Uif-VerticalBoxGroup"  p:style="margin-left: 2em;">
@@ -349,15 +349,15 @@
                     value="Reorder the group items by dragging one of the items to its new position. Note each of these 'boxes' could contain a field or group of fields"/>
           <property name="items">
             <list>
-              <bean parent="Uif-MessageField" p:messageText="Box 1"
+              <bean parent="Uif-Message" p:messageText="Box 1"
                     p:styleClasses="fl-font-size-150,fl-input-outline"/>
-              <bean parent="Uif-MessageField" p:messageText="Box 2"
+              <bean parent="Uif-Message" p:messageText="Box 2"
                     p:styleClasses="fl-font-size-150,fl-input-outline"/>
-              <bean parent="Uif-MessageField" p:messageText="Box 3"
+              <bean parent="Uif-Message" p:messageText="Box 3"
                     p:styleClasses="fl-font-size-150,fl-input-outline"/>
-              <bean parent="Uif-MessageField" p:messageText="Box 4"
+              <bean parent="Uif-Message" p:messageText="Box 4"
                     p:styleClasses="fl-font-size-150,fl-input-outline"/>
-              <bean parent="Uif-MessageField" p:messageText="Box 5"
+              <bean parent="Uif-Message" p:messageText="Box 5"
                     p:styleClasses="fl-font-size-150,fl-input-outline"/>
             </list>
           </property>

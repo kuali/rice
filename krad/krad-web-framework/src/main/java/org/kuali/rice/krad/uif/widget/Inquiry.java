@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -26,8 +25,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
@@ -61,7 +60,7 @@ public class Inquiry extends WidgetBase {
 
     private boolean forceInquiry;
 
-    private LinkField inquiryLinkField;
+    private Link inquiryLink;
 
     public Inquiry() {
         super();
@@ -215,12 +214,12 @@ public class Inquiry extends WidgetBase {
             inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
         }
 
-        getInquiryLinkField().setHrefText(inquiryUrl);
+        getInquiryLink().setHrefText(inquiryUrl);
 
         // set inquiry title
         String linkTitle = createTitleText(inquiryObjectClass);
         linkTitle = LookupInquiryUtils.getLinkTitleText(linkTitle, inquiryObjectClass, getInquiryParameters());
-        getInquiryLinkField().setTitle(linkTitle);
+        getInquiryLink().setTitle(linkTitle);
 
         setRender(true);
     }
@@ -256,15 +255,32 @@ public class Inquiry extends WidgetBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(getInquiryLinkField());
+        components.add(getInquiryLink());
 
         return components;
     }
 
+    /**
+     * Returns the URL for the inquiry for which parameters will be added
+     *
+     * <p>
+     * The base URL includes the domain, context, and controller mapping for the inquiry invocation. Parameters are
+     * then added based on configuration to complete the URL. This is generally defaulted to the application URL and
+     * internal KRAD servlet mapping, but can be changed to invoke another application such as the Rice standalone
+     * server
+     * </p>
+     *
+     * @return String inquiry base URL
+     */
     public String getBaseInquiryUrl() {
         return this.baseInquiryUrl;
     }
 
+    /**
+     * Setter for the inquiry base url (domain, context, and controller)
+     *
+     * @param baseInquiryUrl
+     */
     public void setBaseInquiryUrl(String baseInquiryUrl) {
         this.baseInquiryUrl = baseInquiryUrl;
     }
@@ -301,11 +317,11 @@ public class Inquiry extends WidgetBase {
         this.inquiryParameters = inquiryParameters;
     }
 
-    public LinkField getInquiryLinkField() {
-        return this.inquiryLinkField;
+    public Link getInquiryLink() {
+        return this.inquiryLink;
     }
 
-    public void setInquiryLinkField(LinkField inquiryLinkField) {
-        this.inquiryLinkField = inquiryLinkField;
+    public void setInquiryLink(Link inquiryLink) {
+        this.inquiryLink = inquiryLink;
     }
 }

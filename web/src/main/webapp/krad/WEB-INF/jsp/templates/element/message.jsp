@@ -17,21 +17,14 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field"	classname="org.kuali.rice.krad.uif.field.LinkField" />
-<tiles:useAttribute name="body"/>
+<tiles:useAttribute name="element" classname="org.kuali.rice.krad.uif.element.Message"/>
 
 <%--
-    Standard HTML Link     
+    Renders text in a span tag     
  --%>
 
-<krad:attributeBuilder component="${field}" />
+<krad:span component="${element}">
 
-<krad:span component="${field}">
-
-  <krad:fieldLabel field="${field}">
-
-    <krad:template component="${field.link}"/>
-
-  </krad:fieldLabel>
+    ${element.messageText}
 
 </krad:span>

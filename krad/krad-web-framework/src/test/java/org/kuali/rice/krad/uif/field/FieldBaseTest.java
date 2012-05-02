@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.view.View;
 
 import org.junit.Test;
@@ -47,10 +48,10 @@ public class FieldBaseTest {
         // build asterisk required message and mock label to test rendering
         Label mockLabel = mock(Label.class);
 
-        MessageField requiredMessage = new MessageField();
+        Message requiredMessage = new Message();
         requiredMessage.setMessageText("*");
         requiredMessage.setRender(true);
-        when(mockLabel.getRequiredMessageField()).thenReturn(requiredMessage);
+        when(mockLabel.getRequiredMessage()).thenReturn(requiredMessage);
 
         try {
             FieldBase fieldBase = new FieldBase();
@@ -60,12 +61,12 @@ public class FieldBaseTest {
             // required and not readonly - render
             fieldBase.setReadOnly(false);
             fieldBase.performFinalize(mockView, nullModel, mockComponent);
-            assertTrue(fieldBase.getFieldLabel().getRequiredMessageField().isRender());
+            assertTrue(fieldBase.getFieldLabel().getRequiredMessage().isRender());
 
             // required and readonly -  do not render
             fieldBase.setReadOnly(true);
             fieldBase.performFinalize(mockView, nullModel, mockComponent);
-            assertFalse(fieldBase.getFieldLabel().getRequiredMessageField().isRender());
+            assertFalse(fieldBase.getFieldLabel().getRequiredMessage().isRender());
         } catch(Exception ex) {
             fail("Unit Test Exception - " + ex.getMessage());
         }        

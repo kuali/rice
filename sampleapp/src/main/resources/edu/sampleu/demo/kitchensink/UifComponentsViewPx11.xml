@@ -31,28 +31,28 @@
         <bean parent="Uif-VerticalBoxGroup" p:onMouseOverScript="jq(this).stop();jq('#'+'myEvents').stop().css({'color':'blue','fontSize':'2em'});" p:onMouseOutScript="jq('#'+'myEvents').stop().css({'color':'black','fontSize':'1em'});">
           <property name="items">
                 <list>
-                  <bean parent="Uif-MessageField" p:messageText="This makes it easy for the page to respond to user interactions with the browser."/>
-                  <bean parent="Uif-MessageField" p:messageText="The events supported include:" />
+                  <bean parent="Uif-Message" p:messageText="This makes it easy for the page to respond to user interactions with the browser."/>
+                  <bean parent="Uif-Message" p:messageText="The events supported include:" />
                   <bean id="myEvents" parent="Uif-GridGroup" p:style="padding-left:50px;">
                     <property name="layoutManager.numberOfColumns" value="3"/>
                     <property name="layoutManager.renderAlternatingHeaderColumns" value="false"/>
                     <property name="items">
                       <list>
-                        <bean parent="Uif-MessageField" p:messageText="onClick"/>
-                        <bean parent="Uif-MessageField" p:messageText="onMouseOver"/>
-                        <bean parent="Uif-MessageField" p:messageText="onKeyPress"/>
-                        <bean parent="Uif-MessageField" p:messageText="onDblClick"/>
-                        <bean parent="Uif-MessageField" p:messageText="onMouseOut"/>
-                        <bean parent="Uif-MessageField" p:messageText="onKeyDown"/>
-                        <bean parent="Uif-MessageField" p:messageText="onFocus"/>
-                        <bean parent="Uif-MessageField" p:messageText="onMouseDown"/>
-                        <bean parent="Uif-MessageField" p:messageText="onKeyUp"/>
-                        <bean parent="Uif-MessageField" p:messageText="onBlur"/>
-                        <bean parent="Uif-MessageField" p:messageText="onMouseUp"/>
-                        <bean parent="Uif-MessageField" p:messageText="onLoad"/>
-                        <bean parent="Uif-MessageField" p:messageText="onChange"/>
-                        <bean parent="Uif-MessageField" p:messageText="onMouseMove"/>
-                        <bean parent="Uif-MessageField" p:messageText="onSubmit"/>
+                        <bean parent="Uif-Message" p:messageText="onClick"/>
+                        <bean parent="Uif-Message" p:messageText="onMouseOver"/>
+                        <bean parent="Uif-Message" p:messageText="onKeyPress"/>
+                        <bean parent="Uif-Message" p:messageText="onDblClick"/>
+                        <bean parent="Uif-Message" p:messageText="onMouseOut"/>
+                        <bean parent="Uif-Message" p:messageText="onKeyDown"/>
+                        <bean parent="Uif-Message" p:messageText="onFocus"/>
+                        <bean parent="Uif-Message" p:messageText="onMouseDown"/>
+                        <bean parent="Uif-Message" p:messageText="onKeyUp"/>
+                        <bean parent="Uif-Message" p:messageText="onBlur"/>
+                        <bean parent="Uif-Message" p:messageText="onMouseUp"/>
+                        <bean parent="Uif-Message" p:messageText="onLoad"/>
+                        <bean parent="Uif-Message" p:messageText="onChange"/>
+                        <bean parent="Uif-Message" p:messageText="onMouseMove"/>
+                        <bean parent="Uif-Message" p:messageText="onSubmit"/>
                       </list>
                     </property>
                   </bean>

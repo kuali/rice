@@ -23,12 +23,12 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.widget.RichTable;
@@ -106,7 +106,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	public void performInitialization(View view, Object model, Container container) {
 		super.performInitialization(view, model, container);
 		
-        if (generateAutoSequence && !(sequenceFieldPrototype instanceof MessageField)) {
+        if (generateAutoSequence && !(sequenceFieldPrototype instanceof Message)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(sequenceFieldPrototype);
         }
@@ -238,8 +238,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 sequenceField = ComponentUtils.copy(sequenceFieldPrototype, idSuffix);
                 //Ignore in validation processing
                 sequenceField.addDataAttribute("vignore", "yes");
-                if (generateAutoSequence && (sequenceField instanceof MessageField)) {
-                    ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
+                if (generateAutoSequence && (sequenceField instanceof Message)) {
+                    ((Message) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
                 }
             }
 			else {
@@ -376,10 +376,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		headerLabel.setColSpan(field.getColSpan());
 
 		if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
-			headerLabel.getRequiredMessageField().setRender(true);
+			headerLabel.getRequiredMessage().setRender(true);
 		}
 		else {
-			headerLabel.getRequiredMessageField().setRender(false);
+			headerLabel.getRequiredMessage().setRender(false);
 		}
 
 		headerLabels.add(headerLabel);

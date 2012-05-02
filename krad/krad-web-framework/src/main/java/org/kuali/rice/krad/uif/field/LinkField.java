@@ -33,8 +33,6 @@ public class LinkField extends FieldBase {
 
     private Link link;
 
-    private LightBox lightBox;
-
     public LinkField() {
         super();
     }
@@ -66,7 +64,6 @@ public class LinkField extends FieldBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(link);
-        components.add(lightBox);
 
         return components;
     }
@@ -149,16 +146,22 @@ public class LinkField extends FieldBase {
      * @param lightBox
      */
     public void setLightBox(LightBox lightBox) {
-        this.lightBox = lightBox;
+        if (link != null) {
+            link.setLightBox(lightBox);
+        }
     }
 
     /**
-     *  Returns the <code>LightBox</code> used to open the link in
+     * Returns the <code>LightBox</code> used to open the link in
      *
      * @return The <code>LightBox</code>
      */
     public LightBox getLightBox() {
-        return lightBox;
+        if (link != null) {
+            return link.getLightBox();
+        }
+
+        return null;
     }
 
 }

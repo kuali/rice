@@ -109,10 +109,10 @@
     <property name="fieldSuggest">
       <bean parent="Uif-Suggest"/>
     </property>
-    <property name="instructionalMessageField">
+    <property name="instructionalMessage">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
-    <property name="constraintMessageField">
+    <property name="constraintMessage">
       <bean parent="Uif-ConstraintMessage"/>
     </property>
   </bean>
@@ -147,34 +147,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
-  <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-instructionalMessage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-ConstraintMessage" parent="Uif-ConstraintMessage-parentBean"/>
-  <bean id="Uif-ConstraintMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-constraintMessage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
-  <bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
-        p:messageText="*">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-requiredMessage</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="Uif-LookupCriteriaInputField" parent="Uif-LookupCriteriaInputField-parentBean"/>
   <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.field.LookupInputField"
@@ -185,6 +157,20 @@
       </list>
     </property>
     <property name="bindingInfo.bindToMap" value="true"/>
+  </bean>
+
+  <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
+  <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-messageField</value>
+      </list>
+    </property>
+    <property name="message">
+      <bean parent="Uif-Message"/>
+    </property>
   </bean>
 
   <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
@@ -247,17 +233,6 @@
     </property>
     <property name="link">
       <bean parent="Uif-Link"/>
-    </property>
-  </bean>
-
-  <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
-  <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
-        parent="Uif-FieldBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-messageField</value>
-      </list>
     </property>
   </bean>
 
@@ -335,7 +310,7 @@
 
   <!-- Common Fields -->
 
-  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-MessageField" p:messageText="* indicates required field">
+  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-Message" p:messageText="* indicates required field">
     <property name="styleClasses">
       <list merge="true">
         <value>uif-requiredInstructionsMessage</value>

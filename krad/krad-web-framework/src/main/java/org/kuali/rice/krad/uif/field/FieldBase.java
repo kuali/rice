@@ -93,15 +93,15 @@ public class FieldBase extends ComponentBase implements Field {
             fieldLabel.setLabelForComponentId(this.getId());
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
-                fieldLabel.getRequiredMessageField().setRender(!isReadOnly());
+                fieldLabel.getRequiredMessage().setRender(!isReadOnly());
             } else {
                 setRequired(new Boolean(false));
-                fieldLabel.getRequiredMessageField().setRender(true);
+                fieldLabel.getRequiredMessage().setRender(true);
                 String prefixStyle = "";
-                if (StringUtils.isNotBlank(fieldLabel.getRequiredMessageField().getStyle())) {
-                    prefixStyle = fieldLabel.getRequiredMessageField().getStyle();
+                if (StringUtils.isNotBlank(fieldLabel.getRequiredMessage().getStyle())) {
+                    prefixStyle = fieldLabel.getRequiredMessage().getStyle();
                 }
-                fieldLabel.getRequiredMessageField().setStyle(prefixStyle + ";" + "display: none;");
+                fieldLabel.getRequiredMessage().setStyle(prefixStyle + ";" + "display: none;");
             }
 
             if (labelPlacement.equals(Position.RIGHT)) {

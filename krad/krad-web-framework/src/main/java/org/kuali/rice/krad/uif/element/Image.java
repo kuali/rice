@@ -2,7 +2,6 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -24,13 +23,13 @@ public class Image extends ContentElementBase {
     private Header captionHeader;
 
     private String cutlineText;
-    private MessageField cutline;
+    private Message cutlineMessage;
 
     public Image() {
         super();
+
         altText = "";
     }
-
 
     /**
      * Performs the final lifecycle phase for this element.
@@ -54,7 +53,7 @@ public class Image extends ContentElementBase {
         }
 
         if (StringUtils.isNotBlank(cutlineText)) {
-            cutline.setMessageText(cutlineText);
+            cutlineMessage.setMessageText(cutlineText);
         }
     }
 
@@ -223,25 +222,25 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * Gets the {@Link MessageField} component used to display the cutline.
+     * Gets the {@Link Message} component used to display the cutline.
      *
      * <p>
-     * Wrapping the cutline text with a MessageField component allows styling of the cutline text.
+     * Wrapping the cutline text with a Message component allows styling of the cutline text.
      * </p>
      *
-     * @return MessageField component wrapping the cutline.
+     * @return Message component wrapping the cutline.
      */
-    public MessageField getCutline() {
-        return cutline;
+    public Message getCutlineMessage() {
+        return cutlineMessage;
     }
 
     /**
-     * Sets the MessageField component used to display the cutline for this image
+     * Sets the Message component used to display the cutline for this image
      *
-     * @param cutline - MessageField
+     * @param cutlineMessage - Message
      */
-    public void setCutline(MessageField cutline) {
-        this.cutline = cutline;
+    public void setCutlineMessage(Message cutlineMessage) {
+        this.cutlineMessage = cutlineMessage;
     }
 
     /**

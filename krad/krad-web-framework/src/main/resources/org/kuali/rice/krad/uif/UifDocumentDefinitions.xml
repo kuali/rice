@@ -135,8 +135,8 @@
                           p:actionLabel="download attachment" p:title="download attachment"
                           p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
 
-                    <bean parent="Uif-MessageField" p:messageText="@{#line.attachment?.attachmentFileName}"/>
-                    <bean parent="Uif-MessageField"
+                    <bean parent="Uif-Message" p:messageText="@{#line.attachment?.attachmentFileName}"/>
+                    <bean parent="Uif-Message"
                           p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})"/>
 
                   </list>

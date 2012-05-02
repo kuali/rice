@@ -147,8 +147,8 @@
         parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/inquiry.jsp"/>
     <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
-    <property name="inquiryLinkField">
-      <bean parent="Uif-LinkField">
+    <property name="inquiryLink">
+      <bean parent="Uif-Link">
         <property name="lightBox">
           <bean parent="Uif-LightBox"/>
         </property>

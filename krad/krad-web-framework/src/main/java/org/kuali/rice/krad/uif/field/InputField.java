@@ -37,6 +37,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
@@ -95,8 +96,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private String constraintText;
     private String instructionalText;
 
-    private MessageField instructionalMessageField;
-    private MessageField constraintMessageField;
+    private Message instructionalMessage;
+    private Message constraintMessage;
 
     private AttributeQuery fieldAttributeQuery;
 
@@ -187,12 +188,12 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         // Sets message
         if (StringUtils.isNotBlank(instructionalText)) {
-            instructionalMessageField.setMessageText(instructionalText);
+            instructionalMessage.setMessageText(instructionalText);
         }
 
         // Sets constraints
         if (StringUtils.isNotBlank(constraintText)) {
-            constraintMessageField.setMessageText(constraintText);
+            constraintMessage.setMessageText(constraintText);
         }
 
         // adjust paths on PrerequisiteConstraint property names
@@ -279,8 +280,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getControl(), UifConstants.IdSuffixes.CONTROL);
         setNestedComponentIdAndSuffix(getValidationMessages(), UifConstants.IdSuffixes.ERRORS);
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
-        setNestedComponentIdAndSuffix(getInstructionalMessageField(), UifConstants.IdSuffixes.INSTRUCTIONAL);
-        setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
+        setNestedComponentIdAndSuffix(getInstructionalMessage(), UifConstants.IdSuffixes.INSTRUCTIONAL);
+        setNestedComponentIdAndSuffix(getConstraintMessage(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
         setNestedComponentIdAndSuffix(getFieldDirectInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
         setNestedComponentIdAndSuffix(getFieldSuggest(), UifConstants.IdSuffixes.SUGGEST);
@@ -367,7 +368,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // constraint
         if (StringUtils.isEmpty(getConstraintText())) {
             setConstraintText(attributeDefinition.getConstraintText());
-            getConstraintMessageField().setMessageText(attributeDefinition.getConstraintText());
+            getConstraintMessage().setMessageText(attributeDefinition.getConstraintText());
         }
 
         // options
@@ -562,10 +563,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return MessageField instructional message field
+     * @return Message instructional message field
      */
-    public MessageField getInstructionalMessageField() {
-        return this.instructionalMessageField;
+    public Message getInstructionalMessage() {
+        return this.instructionalMessage;
     }
 
     /**
@@ -576,10 +577,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * set on the field but can also be set using {@link #setInstructionalText(String)}
      * </p>
      *
-     * @param instructionalMessageField - the instructional message to set
+     * @param instructionalMessage - the instructional message to set
      */
-    public void setInstructionalMessageField(MessageField instructionalMessageField) {
-        this.instructionalMessageField = instructionalMessageField;
+    public void setInstructionalMessage(Message instructionalMessage) {
+        this.instructionalMessage = instructionalMessage;
     }
 
     /**
@@ -614,10 +615,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * the styleClasses property will be of most interest
      * </p>
      *
-     * @return MessageField constraint message field
+     * @return Message constraint message field
      */
-    public MessageField getConstraintMessageField() {
-        return this.constraintMessageField;
+    public Message getConstraintMessage() {
+        return this.constraintMessage;
     }
 
     /**
@@ -628,10 +629,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * set on the field but can also be set using {@link #setConstraintText(String)}
      * </p>
      *
-     * @param constraintMessageField - the constrain message field to set
+     * @param constraintMessage - the constrain message field to set
      */
-    public void setConstraintMessageField(MessageField constraintMessageField) {
-        this.constraintMessageField = constraintMessageField;
+    public void setConstraintMessage(Message constraintMessage) {
+        this.constraintMessage = constraintMessage;
     }
 
     /**

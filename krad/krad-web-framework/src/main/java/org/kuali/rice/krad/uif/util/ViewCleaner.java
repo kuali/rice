@@ -96,7 +96,7 @@ public class ViewCleaner {
         container.setFooter(null);
         container.setHelp(null);
         container.setLayoutManager(null);
-        container.setInstructionalMessageField(null);
+        container.setInstructionalMessage(null);
         container.setTemplateOptions(new HashMap<String, String>());
         container.setComponentModifiers(new ArrayList<ComponentModifier>());
         container.setPropertyReplacers(new ArrayList<PropertyReplacer>());
@@ -109,8 +109,8 @@ public class ViewCleaner {
      */
     public static void cleanInputField(InputField inputField) {
         inputField.setControl(null);
-        inputField.setInstructionalMessageField(null);
-        inputField.setConstraintMessageField(null);
+        inputField.setInstructionalMessage(null);
+        inputField.setConstraintMessage(null);
         inputField.setFieldDirectInquiry(null);
         inputField.setFieldInquiry(null);
         inputField.setLabel(null);

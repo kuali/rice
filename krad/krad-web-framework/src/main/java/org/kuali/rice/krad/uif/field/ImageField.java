@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.element.Message;
 
 import java.util.List;
 
@@ -131,12 +132,12 @@ public class ImageField extends FieldBase {
         image.setCutlineText(cutlineText);
     }
 
-    public MessageField getCutline() {
-        return image.getCutline();
+    public Message getCutline() {
+        return image.getCutlineMessage();
     }
 
-    public void setCutline(MessageField cutline) {
-        image.setCutline(cutline);
+    public void setCutline(Message cutline) {
+        image.setCutlineMessage(cutline);
     }
 
     public boolean isCaptionHeaderAboveImage() {

@@ -45,7 +45,7 @@ ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}/>
 </c:if>
 
 <%-- render cutline text --%>
-<c:if test="${!empty element.cutline.messageText}">
-  <krad:template component="${element.cutline}"/>
+<c:if test="${!empty element.cutlineMessage.messageText}">
+  <krad:template component="${element.cutlineMessage}"/>
 </c:if>
 

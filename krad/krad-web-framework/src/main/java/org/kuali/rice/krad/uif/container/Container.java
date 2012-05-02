@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.ValidationMessages;
-import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.widget.Helpable;
 
@@ -33,7 +33,7 @@ import java.util.Set;
  * Each container has the following parts in addition to the contained components:
  * <ul>
  * <li>{@code HeaderField}</li>
- * <li>Summary {@code MessageField}</li>
+ * <li>Summary {@code Message}</li>
  * <li>Help component</li>
  * <li>Errors container</li>
  * <li>Footer {@code Group}</li>
@@ -155,24 +155,24 @@ public interface Container extends Component, Helpable {
      * instructions
      *
      * <p>
-     * Text is encapsulated in a {@code MessageField} that contains
+     * Text is encapsulated in a {@code Message} that contains
      * rendering configuration.
      * </p>
      * <p>
-     * Summary {@code MessageField} only rendered if this methods does not
+     * Summary {@code Message} only rendered if this methods does not
      * return null
      * </p>
      *
-     * @return MessageField instance or Null
+     * @return Message instance or Null
      */
-	MessageField getInstructionalMessageField();
+	Message getInstructionalMessage();
 
 	/**
 	 * Setter for the containers summary message field
 	 * 
-	 * @param summaryMessageField
+	 * @param instructionalMessage
 	 */
-	void setInstructionalMessageField(MessageField summaryMessageField);
+	void setInstructionalMessage(Message instructionalMessage);
 
 	/**
      * Field that contains the error messages for the container

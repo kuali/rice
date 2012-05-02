@@ -30,18 +30,40 @@ public class ViewTheme implements Serializable{
     private List<String> stylesheets;
     private List<String> jsFiles;
 
+    /**
+     * Get the css stylesheets to be imported for this view, this must be a list of .css files
+     * with their relative paths
+     *
+     * @return List<String>
+     */
     public List<String> getStylesheets() {
         return stylesheets;
     }
 
+    /**
+     * Set the css stylesheets
+     *
+     * @param stylesheets
+     */
     public void setStylesheets(List<String> stylesheets) {
         this.stylesheets = stylesheets;
     }
 
+    /**
+     * Get the javascript files to be imported for this view, these must be a list of .js files
+     * with their relative paths
+     *
+     * @return List<String>
+     */
     public List<String> getJsFiles() {
         return jsFiles;
     }
 
+    /**
+     * Set the js files
+     *
+     * @param jsFiles
+     */
     public void setJsFiles(List<String> jsFiles) {
         this.jsFiles = jsFiles;
     }

@@ -40,10 +40,10 @@
     <c:set var="group" value="${element.context['parent']}"/>
     ${headerOpenTag}<span class="uif-headerText-span">${element.headerText}</span>${headerCloseTag}
     <krad:template component="${group.help}"/>
-  </c:if>
 
-  <%-- right group --%>
-  <krad:template component="${element.rightGroup}"/>
+    <%-- right group --%>
+    <krad:template component="${element.rightGroup}"/>
+  </c:if>
 
   <%-- lower group --%>
   <krad:template component="${element.lowerGroup}"/>

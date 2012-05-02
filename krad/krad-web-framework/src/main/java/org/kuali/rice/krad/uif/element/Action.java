@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -36,7 +37,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionField extends FieldBase {
+public class Action extends ContentElementBase {
     private static final long serialVersionUID = 1025672792657238829L;
 
     private String methodToCall;
@@ -64,30 +65,11 @@ public class ActionField extends FieldBase {
     private boolean disabled;
     private String disabledReason;
 
-    public ActionField() {
+    public Action() {
         super();
 
         disabled = false;
-
         actionParameters = new HashMap<String, String>();
-    }
-
-    /**
-     * The following initialization is performed:
-     *
-     * <ul>
-     * <li>Set the actionLabel if blank to the Field label</li>
-     * </ul>
-     * 
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
-     */
-    @Override
-    public void performInitialization(View view, Object model) {
-        super.performInitialization(view, model);
-
-        if (StringUtils.isBlank(actionLabel)) {
-            actionLabel = this.getLabel();
-        }
     }
 
     /**
@@ -329,7 +311,7 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * For an <code>ActionField</code> that is part of a
+     * For an <code>Action</code> that is part of a
      * <code>NavigationGroup</code, the navigate to page id can be set to
      * configure the page that should be navigated to when the action is
      * selected
@@ -433,23 +415,23 @@ public class ActionField extends FieldBase {
     /**
      * Action Field Security object that indicates what authorization (permissions) exist for the action
      *
-     * @return ActionFieldSecurity instance
+     * @return ActionSecurity instance
      */
     @Override
-    public ActionFieldSecurity getComponentSecurity() {
-        return (ActionFieldSecurity) super.getComponentSecurity();
+    public ActionSecurity getComponentSecurity() {
+        return (ActionSecurity) super.getComponentSecurity();
     }
 
     /**
-     * Override to assert a {@link ActionFieldSecurity} instance is set
+     * Override to assert a {@link ActionSecurity} instance is set
      *
-     * @param componentSecurity - instance of ActionFieldSecurity
+     * @param componentSecurity - instance of ActionSecurity
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if (!(componentSecurity instanceof ActionFieldSecurity)) {
+        if (!(componentSecurity instanceof ActionSecurity)) {
             throw new RiceRuntimeException(
-                    "Component security for ActionField should be instance of ActionFieldSecurity");
+                    "Component security for Action should be instance of ActionSecurity");
         }
 
         super.setComponentSecurity(componentSecurity);
@@ -457,7 +439,7 @@ public class ActionField extends FieldBase {
 
     @Override
     protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
-        return ActionFieldSecurity.class;
+        return ActionSecurity.class;
     }
 
     /**
@@ -495,7 +477,7 @@ public class ActionField extends FieldBase {
      * jumped to automatically when the new page is retrieved after a submit.
      * Using "TOP" or "BOTTOM" will jump to the top or the bottom of the
      * resulting page. Passing in nothing for both jumpToIdAfterSubmit and
-     * jumpToNameAfterSubmit will result in this ActionField being jumped to by
+     * jumpToNameAfterSubmit will result in this Action being jumped to by
      * default if it is present on the new page. WARNING: jumpToIdAfterSubmit
      * always takes precedence over jumpToNameAfterSubmit, if set.
      * 
@@ -510,7 +492,7 @@ public class ActionField extends FieldBase {
      * The name to jump to in the next page, the element with this name will be
      * jumped to automatically when the new page is retrieved after a submit.
      * Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit
-     * will result in this ActionField being jumped to by default if it is
+     * will result in this Action being jumped to by default if it is
      * present on the new page. WARNING: jumpToIdAfterSubmit always takes
      * precedence over jumpToNameAfterSubmit, if set.
      * 
@@ -532,7 +514,7 @@ public class ActionField extends FieldBase {
      * The id of the field to place focus on in the new page after the new page
      * is retrieved. Passing in "FIRST" will focus on the first visible input
      * element on the form. Passing in the empty string will result in this
-     * ActionField being focused.
+     * Action being focused.
      * 
      * @return the focusOnAfterSubmit
      */
@@ -567,7 +549,7 @@ public class ActionField extends FieldBase {
 
     /**
      * Client side javascript to be executed when this actionField is clicked.
-     * This overrides the default action for this ActionField so the method
+     * This overrides the default action for this Action so the method
      * called must explicitly submit, navigate, etc. through js, if necessary.
      * In addition, this js occurs AFTER onClickScripts set on this field, it
      * will be the last script executed by the click event. Sidenote: This js is
@@ -674,8 +656,8 @@ public class ActionField extends FieldBase {
     /**
      * Set to TOP, BOTTOM, LEFT, RIGHT to position image at that location within the button.
      * For the subclass ActionLinkField only LEFT and RIGHT are allowed.  When set to blank/null/IMAGE_ONLY, the image
-     * itself will be the ActionField, if no value is set the default is ALWAYS LEFT, you must explicitly set
-     * blank/null/IMAGE_ONLY to use ONLY the image as the ActionField.
+     * itself will be the Action, if no value is set the default is ALWAYS LEFT, you must explicitly set
+     * blank/null/IMAGE_ONLY to use ONLY the image as the Action.
      * @return
      */
     public void setActionImageLocation(String actionImageLocation) {

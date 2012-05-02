@@ -164,12 +164,12 @@
     <property name="disclosure.defaultOpen"
               value="@{!document.notes.empty or #component.defaultOpen}"/>
     <property name="validationMessages.additionalKeysToMatch" value="attachmentFile"/>
-    <property name="addLineActionFields">
+    <property name="addLineActions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note"/>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="actions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send"
@@ -258,7 +258,7 @@
   </bean>
 
   <bean id="Uif-DocumentViewHeader" abstract="true" parent="Uif-ViewHeader">
-    <property name="headerGroup">
+    <property name="lowerGroup">
       <bean parent="Uif-DocumentInfoGroup">
         <property name="styleClasses">
           <list merge="true">

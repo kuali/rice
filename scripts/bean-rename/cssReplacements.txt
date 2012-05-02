@@ -28,3 +28,4 @@
 .kr-footer,.uif-footer
 .animated-navigation,.basic-navigation
 .kr-page-section-title,.uif-header
+.uif-headerGroup,.uif-lowerHeaderGroup

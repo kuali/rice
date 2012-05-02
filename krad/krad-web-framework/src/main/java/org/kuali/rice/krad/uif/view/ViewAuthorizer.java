@@ -18,12 +18,10 @@ package org.kuali.rice.krad.uif.view;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.widget.Widget;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.Set;
 
@@ -47,7 +45,7 @@ public interface ViewAuthorizer {
      * used within expressions for configuring the view content.
      *
      * For example:
-     * <bean parent="ActionField" p:methodToCall="save" p:actionLabel="save"
+     * <bean parent="Action" p:methodToCall="save" p:actionLabel="save"
      * p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
      * </p>
      *
@@ -170,7 +168,7 @@ public interface ViewAuthorizer {
 
     public boolean canViewWidget(View view, ViewModel model, Widget widget, String widgetId, Person user);
 
-    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId, Person user);
 
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
@@ -186,7 +184,7 @@ public interface ViewAuthorizer {
             String collectionPropertyName, Object line, Field field, String propertyName, Person user);
 
     public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
-            String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId,
+            String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user);
 
 }

@@ -258,7 +258,7 @@
         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="actions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
               p:actionEvent="delete" p:componentSecurity.performLineActionAuthz="true"/>

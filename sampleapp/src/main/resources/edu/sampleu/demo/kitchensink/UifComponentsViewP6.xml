@@ -88,7 +88,7 @@
                 <entry key="number" value="field87" />
               </map>
             </property>
-            <property name="fieldLookup.quickfinderActionField.actionLabel" value="Search Now"/>
+            <property name="fieldLookup.quickfinderAction.actionLabel" value="Search Now"/>
           </bean>
           <bean parent="GenericTextField" p:label="Suggest"
             p:instructionalText="for example, type ea or ca to see a suggestion"

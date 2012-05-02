@@ -177,3 +177,10 @@ Uif-BoxSubSection,Uif-VerticalBoxSubSection
 Uif-Disclosure-BoxSection,Uif-Disclosure-VerticalBoxSection
 Uif-Disclosure-BoxSubSection,Uif-Disclosure-VerticalBoxSubSection
 labelField,fieldLabel
+headerGroup,lowerGroup
+Uif-ActionBase,Uif-Action
+actionFields,actions
+addLineActionFields,addLineActions
+directInquiryActionField,directInquiryAction
+helpActionField,helpAction
+quickfinderActionField,quickfinderAction

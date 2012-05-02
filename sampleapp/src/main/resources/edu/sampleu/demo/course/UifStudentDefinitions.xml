@@ -96,7 +96,7 @@
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithBoxItems"/>
     </property>
-    <property name="addLineActionFields">
+    <property name="addLineActions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add">
           <property name="actionImage">
@@ -106,7 +106,7 @@
         </bean>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="actions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete">
           <property name="actionImage">
@@ -159,7 +159,7 @@
   </bean>
 
   <bean id="AdvancedSearchQuickFinder" parent="Uif-QuickFinder">
-    <property name="quickfinderActionField">
+    <property name="quickfinderAction">
       <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Advanced Search"
             p:styleClasses="kr-quickfinder action">
         <property name="lightBoxLookup">

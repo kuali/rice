@@ -23,4 +23,4 @@
     Renders the lookup icon for a field
  --%>
  
-<krad:template component="${widget.quickfinderActionField}"/> 
+<krad:template component="${widget.quickfinderAction}"/>

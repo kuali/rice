@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -112,7 +112,7 @@ public class CollectionGroupBuilder implements Serializable {
 
                     Object currentLine = modelCollection.get(index);
 
-                    List<ActionField> actions = getLineActions(view, model, collectionGroup, currentLine, index);
+                    List<Action> actions = getLineActions(view, model, collectionGroup, currentLine, index);
                     buildLine(view, model, collectionGroup, bindingPathPrefix, actions, false, currentLine, index);
                 }
             }
@@ -184,7 +184,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         String addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-        List<ActionField> actions = getAddLineActions(view, model, collectionGroup);
+        List<Action> actions = getAddLineActions(view, model, collectionGroup);
 
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingPath);
         buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, addLine, -1);
@@ -218,7 +218,7 @@ public class CollectionGroupBuilder implements Serializable {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
-			List<ActionField> actions, boolean bindToForm, Object currentLine, int lineIndex) {
+			List<Action> actions, boolean bindToForm, Object currentLine, int lineIndex) {
 		CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
 		// copy group items for new line
@@ -269,7 +269,7 @@ public class CollectionGroupBuilder implements Serializable {
             }
 
             // set focus on after the add line submit to first field of add line
-            for (ActionField action : actions) {
+            for (Action action : actions) {
                 if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
                         .size() > 0)) {
                     action.setFocusOnAfterSubmit(lineFields.get(0).getId());
@@ -505,7 +505,7 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected void applyLineFieldAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line, boolean readOnlyLine, List<Field> lineFields,
-            List<ActionField> actions) {
+            List<Action> actions) {
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();
 
@@ -568,22 +568,22 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         // check auth on line actions
-        for (ActionField actionField : actions) {
-            if (actionField.isRender()) {
+        for (Action action : actions) {
+            if (action.isRender()) {
                 boolean canPerformAction = authorizer.canPerformLineAction(view, model, collectionGroup,
-                        collectionGroup.getPropertyName(), line, actionField, actionField.getActionEvent(),
-                        actionField.getId(), user);
+                        collectionGroup.getPropertyName(), line, action, action.getActionEvent(),
+                        action.getId(), user);
                 if (canPerformAction) {
                     canPerformAction = presentationController.canPerformLineAction(view, model, collectionGroup,
-                            collectionGroup.getPropertyName(), line, actionField, actionField.getActionEvent(),
-                            actionField.getId());
+                            collectionGroup.getPropertyName(), line, action, action.getActionEvent(),
+                            action.getId());
                 }
 
                 if (!canPerformAction) {
-                    actionField.setRender(false);
+                    action.setRender(false);
 
-                    if (actionField.getPropertyExpressions().containsKey("render")) {
-                        actionField.getPropertyExpressions().remove("render");
+                    if (action.getPropertyExpressions().containsKey("render")) {
+                        action.getPropertyExpressions().remove("render");
                     }
                 }
             }
@@ -627,7 +627,7 @@ public class CollectionGroupBuilder implements Serializable {
     }
 
 	/**
-	 * Creates new <code>ActionField</code> instances for the line
+	 * Creates new <code>Action</code> instances for the line
 	 * 
 	 * <p>
 	 * Adds context to the action fields for the given line so that the line the
@@ -645,25 +645,25 @@ public class CollectionGroupBuilder implements Serializable {
 	 * @param lineIndex
 	 *            - index of the line the actions should apply to
 	 */
-	protected List<ActionField> getLineActions(View view, Object model, CollectionGroup collectionGroup,
+	protected List<Action> getLineActions(View view, Object model, CollectionGroup collectionGroup,
 			Object collectionLine, int lineIndex) {
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
-        List<ActionField> lineActions = ComponentUtils.copyFieldList(collectionGroup.getActionFields(), lineSuffix);
+        List<Action> lineActions = ComponentUtils.copyComponentList(collectionGroup.getActions(), lineSuffix);
 
-		for (ActionField actionField : lineActions) {
-			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
+		for (Action action : lineActions) {
+			action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
 					.getBindingPath());
-			actionField.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
-			actionField.setJumpToIdAfterSubmit(collectionGroup.getId());
+			action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
+			action.setJumpToIdAfterSubmit(collectionGroup.getId());
 
             String clientSideJs = "performCollectionAction('" + collectionGroup.getId() + "');";
-            if (StringUtils.isNotBlank(actionField.getClientSideJs())) {
-                clientSideJs = actionField.getClientSideJs() + clientSideJs;
+            if (StringUtils.isNotBlank(action.getClientSideJs())) {
+                clientSideJs = action.getClientSideJs() + clientSideJs;
             }
-            actionField.setClientSideJs(clientSideJs);
+            action.setClientSideJs(clientSideJs);
 		}
 
 		ComponentUtils.updateContextsForLine(lineActions, collectionLine, lineIndex);
@@ -672,7 +672,7 @@ public class CollectionGroupBuilder implements Serializable {
 	}
 
 	/**
-	 * Creates new <code>ActionField</code> instances for the add line
+	 * Creates new <code>Action</code> instances for the add line
 	 * 
 	 * <p>
 	 * Adds context to the action fields for the add line so that the collection
@@ -686,26 +686,26 @@ public class CollectionGroupBuilder implements Serializable {
 	 * @param collectionGroup
 	 *            - collection group component for the collection
 	 */
-	protected List<ActionField> getAddLineActions(View view, Object model, CollectionGroup collectionGroup) {
+	protected List<Action> getAddLineActions(View view, Object model, CollectionGroup collectionGroup) {
         String lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
-        List<ActionField> lineActions = ComponentUtils.copyFieldList(collectionGroup.getAddLineActionFields(),
+        List<Action> lineActions = ComponentUtils.copyComponentList(collectionGroup.getAddLineActions(),
                 lineSuffix);
 
-		for (ActionField actionField : lineActions) {
-			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
+		for (Action action : lineActions) {
+			action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
 					.getBindingPath());
-			actionField.setJumpToIdAfterSubmit(collectionGroup.getId());
-			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
+			action.setJumpToIdAfterSubmit(collectionGroup.getId());
+			action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
             String baseId = collectionGroup.getFactoryId();
             if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ baseId +"');");
+            action.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ baseId +"');");
 		}
 
 		// get add line for context

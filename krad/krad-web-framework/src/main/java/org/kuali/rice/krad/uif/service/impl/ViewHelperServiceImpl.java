@@ -28,7 +28,7 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
@@ -830,16 +830,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             // check authorization for actions
-            if (field instanceof ActionField) {
-                ActionField actionField = (ActionField) field;
+            if (field instanceof Action) {
+                Action action = (Action) field;
 
-                boolean canTakeAction = authorizer.canPerformAction(view, model, actionField,
-                        actionField.getActionEvent(), actionField.getId(), user);
+                boolean canTakeAction = authorizer.canPerformAction(view, model, action,
+                        action.getActionEvent(), action.getId(), user);
                 if (canTakeAction) {
-                    canTakeAction = presentationController.canPerformAction(view, model, actionField,
-                            actionField.getActionEvent(), actionField.getId());
+                    canTakeAction = presentationController.canPerformAction(view, model, action,
+                            action.getActionEvent(), action.getId());
                 }
-                actionField.setRender(canTakeAction);
+                action.setRender(canTakeAction);
             }
         }
 

@@ -21,7 +21,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.text.MessageFormat;
@@ -39,7 +39,7 @@ import java.util.List;
 public class Help extends WidgetBase {
 	private static final long serialVersionUID = -1514436681476297241L;
 
-    private ActionField helpActionField;
+    private Action helpAction;
     private HelpDefinition helpDefinition;
     private String externalHelpUrl;
 
@@ -97,7 +97,7 @@ public class Help extends WidgetBase {
         }
 
         // set the javascript action for the external help
-        getHelpActionField().setClientSideJs("openHelpWindow('" + externalHelpUrl + "')");
+        getHelpAction().setClientSideJs("openHelpWindow('" + externalHelpUrl + "')");
 
         // set the alt and title attribute of the image
         String helpTitle;
@@ -108,8 +108,8 @@ public class Help extends WidgetBase {
             helpTitle = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                     "help.icon.title.tag");
         }
-        getHelpActionField().getActionImage().setAltText(helpTitle);
-        getHelpActionField().getActionImage().setTitle(helpTitle);
+        getHelpAction().getActionImage().setAltText(helpTitle);
+        getHelpAction().getActionImage().setTitle(helpTitle);
     }
 
     /**
@@ -139,7 +139,7 @@ public class Help extends WidgetBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(helpActionField);
+        components.add(helpAction);
 
         return components;
     }
@@ -147,19 +147,19 @@ public class Help extends WidgetBase {
     /**
      * HelpActionField is used for rendering external help
      *
-     * @return ActionField for external help
+     * @return Action for external help
      */
-    public ActionField getHelpActionField() {
-        return helpActionField;
+    public Action getHelpAction() {
+        return helpAction;
     }
 
     /**
-     * Setter for helpActionField
+     * Setter for helpAction
      *
-     * @param helpActionField
+     * @param helpAction
      */
-    public void setHelpActionField(ActionField helpActionField) {
-        this.helpActionField = helpActionField;
+    public void setHelpAction(Action helpAction) {
+        this.helpAction = helpAction;
     }
 
     /**

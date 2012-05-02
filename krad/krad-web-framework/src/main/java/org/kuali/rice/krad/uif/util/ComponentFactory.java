@@ -57,10 +57,10 @@ import org.kuali.rice.krad.uif.control.SizedControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Iframe;
 import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.SpaceField;
@@ -102,8 +102,8 @@ public class ComponentFactory {
     protected static final String DATA_FIELD = "Uif-DataField";
     protected static final String INPUT_FIELD = "Uif-InputField";
     protected static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
-    protected static final String ACTION_FIELD = "Uif-PrimaryActionButton";
-    protected static final String ACTION_LINK_FIELD = "Uif-ActionLink";
+    protected static final String ACTION = "Uif-PrimaryActionButton";
+    protected static final String ACTION_LINK = "Uif-ActionLink";
     protected static final String LINK_FIELD = "Uif-LinkField";
     protected static final String IFRAME = "Uif-Iframe";
     protected static final String IMAGE_FIELD = "Uif-ImageField";
@@ -521,12 +521,12 @@ public class ComponentFactory {
         return (ValidationMessages) getNewComponentInstance(ERRORS_FIELD);
     }
 
-    public static ActionField getActionField() {
-        return (ActionField) getNewComponentInstance(ACTION_FIELD);
+    public static Action getAction() {
+        return (Action) getNewComponentInstance(ACTION);
     }
 
-    public static ActionField getActionLinkField() {
-        return (ActionField) getNewComponentInstance(ACTION_LINK_FIELD);
+    public static Action getActionLink() {
+        return (Action) getNewComponentInstance(ACTION_LINK);
     }
 
     public static LinkField getLinkField() {

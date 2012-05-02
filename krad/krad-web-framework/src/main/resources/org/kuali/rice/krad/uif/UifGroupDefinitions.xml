@@ -492,21 +492,19 @@
     <property name="addLineLabel">
       <bean parent="Uif-Label" p:labelText="add" p:requiredMessageField.render="false"/>
     </property>
-    <property name="addLineActionFields">
+    <property name="addLineActions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add"
               p:actionEvent="addLine"/>
       </list>
     </property>
-    <property name="actionFields">
+    <property name="actions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"/>
       </list>
     </property>
     <property name="collectionLookup">
-      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true"
-            p:quickfinderActionField.styleClasses="kr-mvQuickfinder-cntr"
-            p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
+      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true"/>
     </property>
   </bean>
 
@@ -533,7 +531,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -558,7 +556,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -583,7 +581,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubCollectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -608,7 +606,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubCollectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -693,7 +691,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -715,7 +713,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubSectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -737,7 +735,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubCollectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>
@@ -759,7 +757,7 @@
     </property>
     <property name="header">
       <bean parent="Uif-SubCollectionHeader">
-        <property name="headerGroup">
+        <property name="lowerGroup">
           <bean parent="Uif-InactiveItemsActionsGroup"/>
         </property>
       </bean>

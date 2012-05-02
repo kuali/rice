@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -62,7 +60,7 @@ public interface ViewPresentationController {
 
     public boolean canViewWidget(View view, ViewModel model, Widget widget, String widgetId);
 
-    public boolean canPerformAction(View view, ViewModel model, ActionField actionField, String actionEvent,
+    public boolean canPerformAction(View view, ViewModel model, Action action, String actionEvent,
             String actionId);
 
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
@@ -78,6 +76,6 @@ public interface ViewPresentationController {
             String collectionPropertyName, Object line, Field field, String propertyName);
 
     public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
-            String collectionPropertyName, Object line, ActionField actionField, String actionEvent, String actionId);
+            String collectionPropertyName, Object line, Action action, String actionEvent, String actionId);
 
 }

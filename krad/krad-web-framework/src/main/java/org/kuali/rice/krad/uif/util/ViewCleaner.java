@@ -21,7 +21,7 @@ import org.kuali.rice.krad.uif.container.CollectionFilter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.view.View;
@@ -77,8 +77,8 @@ public class ViewCleaner {
      */
     public static void cleanCollectionGroup(CollectionGroup collectionGroup) {
         collectionGroup.setAddLineLabel(null);
-        collectionGroup.setAddLineActionFields(new ArrayList<ActionField>());
-        collectionGroup.setActionFields(new ArrayList<ActionField>());
+        collectionGroup.setAddLineActions(new ArrayList<Action>());
+        collectionGroup.setActions(new ArrayList<Action>());
         collectionGroup.setSubCollections(new ArrayList<CollectionGroup>());
         collectionGroup.setActiveCollectionFilter(null);
         collectionGroup.setFilters(new ArrayList<CollectionFilter>());

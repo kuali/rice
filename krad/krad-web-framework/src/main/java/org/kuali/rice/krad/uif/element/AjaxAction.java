@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -25,13 +27,13 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AjaxActionField extends ActionField {
+public class AjaxAction extends Action {
     private static final long serialVersionUID = -2831173647391138870L;
 
     private String refreshId;
     private String refreshPropertyName;
 
-    public AjaxActionField() {
+    public AjaxAction() {
         super();
     }
 

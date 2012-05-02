@@ -18,11 +18,11 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.Properties;
 public class DirectInquiry extends Inquiry {
     private static final long serialVersionUID = -2490979579285984314L;
     
-    private ActionField directInquiryActionField;
+    private Action directInquiryAction;
 
     private boolean adjustInquiryParameters;
     private BindingInfo fieldBindingInfo;
@@ -108,9 +108,9 @@ public class DirectInquiry extends Inquiry {
 
 		// Check if lightbox is set. Get lightbox options.
 		String lightBoxOptions = "";
-		boolean lightBoxShow = directInquiryActionField.getLightBoxDirectInquiry() != null;
+		boolean lightBoxShow = directInquiryAction.getLightBoxDirectInquiry() != null;
 		if (lightBoxShow) {
-			lightBoxOptions = directInquiryActionField.getLightBoxDirectInquiry()
+			lightBoxOptions = directInquiryAction.getLightBoxDirectInquiry()
 					.getTemplateOptionsJSString();
 		}
 
@@ -140,8 +140,8 @@ public class DirectInquiry extends Inquiry {
 		onClickScript.append(lightBoxOptions);
 		onClickScript.append(");");
 
-		directInquiryActionField.setBlockValidateDirty(true);
-		directInquiryActionField.setClientSideJs(onClickScript.toString());
+		directInquiryAction.setBlockValidateDirty(true);
+		directInquiryAction.setClientSideJs(onClickScript.toString());
 
 		setRender(true);
 	}
@@ -153,23 +153,23 @@ public class DirectInquiry extends Inquiry {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(directInquiryActionField);
+        components.add(directInquiryAction);
 
         return components;
     }	
 	
 	/**
-	 * @return the directInquiryActionField
+	 * @return the directInquiryAction
 	 */
-	public ActionField getDirectInquiryActionField() {
-		return this.directInquiryActionField;
+	public Action getDirectInquiryAction() {
+		return this.directInquiryAction;
 	}
 
 	/**
-	 * @param directInquiryActionField the directInquiryActionField to set
+	 * @param directInquiryAction the directInquiryAction to set
 	 */
-	public void setDirectInquiryActionField(ActionField directInquiryActionField) {
-		this.directInquiryActionField = directInquiryActionField;
+	public void setDirectInquiryAction(Action directInquiryAction) {
+		this.directInquiryAction = directInquiryAction;
 	}
 
 }

@@ -231,7 +231,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="enabled Button" p:methodToCall="foo"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button" p:methodToCall="foo" p:disabled="true"/>
 
         <bean parent="Uif-VerticalBoxGroup" p:instructionalText="Action components with primary, secondary, primary small, and secondary small styling">
           <property name="items">

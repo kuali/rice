@@ -26,8 +26,8 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -67,10 +67,10 @@ public class CollectionGroup extends Group implements DataBinding {
     private BindingInfo addLineBindingInfo;
     private Label addLineLabel;
     private List<? extends Component> addLineFields;
-    private List<ActionField> addLineActionFields;
+    private List<Action> addLineActions;
 
     private boolean renderLineActions;
-    private List<ActionField> actionFields;
+    private List<Action> actions;
 
     private boolean renderSelectField;
     private String selectPropertyName;
@@ -95,9 +95,9 @@ public class CollectionGroup extends Group implements DataBinding {
         renderSelectField = false;
 
         filters = new ArrayList<CollectionFilter>();
-        actionFields = new ArrayList<ActionField>();
+        actions = new ArrayList<Action>();
         addLineFields = new ArrayList<Field>();
-        addLineActionFields = new ArrayList<ActionField>();
+        addLineActions = new ArrayList<Action>();
         subCollections = new ArrayList<CollectionGroup>();
     }
 
@@ -241,9 +241,9 @@ public class CollectionGroup extends Group implements DataBinding {
 
         ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
-        List<ActionField> actionFields = ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
-        for (ActionField actionField : actionFields) {
-            actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(components, Action.class);
+        for (Action action : actions) {
+            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     this.getBindingInfo().getBindingPath());
         }
     }
@@ -311,8 +311,8 @@ public class CollectionGroup extends Group implements DataBinding {
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.addAll(actionFields);
-        components.addAll(addLineActionFields);
+        components.addAll(actions);
+        components.addAll(addLineActions);
         components.addAll(getItems());
         components.addAll(getSubCollections());
         components.addAll(addLineFields);
@@ -379,26 +379,26 @@ public class CollectionGroup extends Group implements DataBinding {
      * Action fields that should be rendered for each collection line. Example
      * line action is the delete action
      *
-     * @return List<ActionField> line action fields
+     * @return List<Action> line action fields
      */
-    public List<ActionField> getActionFields() {
-        return this.actionFields;
+    public List<Action> getActions() {
+        return this.actions;
     }
 
     /**
      * Setter for the line action fields list
      *
-     * @param actionFields
+     * @param actions
      */
-    public void setActionFields(List<ActionField> actionFields) {
-        this.actionFields = actionFields;
+    public void setActions(List<Action> actions) {
+        this.actions = actions;
     }
 
     /**
      * Indicates whether the action column for the collection should be rendered
      *
      * @return boolean true if the actions should be rendered, false if not
-     * @see #getActionFields()
+     * @see #getActions()
      */
     public boolean isRenderLineActions() {
         return this.renderLineActions;
@@ -555,19 +555,19 @@ public class CollectionGroup extends Group implements DataBinding {
      * the add action (button) but can be configured to contain additional
      * actions
      *
-     * @return List<ActionField> add line action fields
+     * @return List<Action> add line action fields
      */
-    public List<ActionField> getAddLineActionFields() {
-        return this.addLineActionFields;
+    public List<Action> getAddLineActions() {
+        return this.addLineActions;
     }
 
     /**
      * Setter for the add line action fields
      *
-     * @param addLineActionFields
+     * @param addLineActions
      */
-    public void setAddLineActionFields(List<ActionField> addLineActionFields) {
-        this.addLineActionFields = addLineActionFields;
+    public void setAddLineActions(List<Action> addLineActions) {
+        this.addLineActions = addLineActions;
     }
 
     /**

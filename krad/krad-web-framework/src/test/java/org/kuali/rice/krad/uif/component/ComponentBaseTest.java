@@ -28,12 +28,11 @@ import org.kuali.rice.krad.uif.control.FileControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import static junit.framework.Assert.assertFalse;
@@ -51,7 +50,7 @@ public class ComponentBaseTest {
     @Before
     public void setUp() throws Exception {
         // use an action field, since ComponentBase is abstract
-        component = new ActionField();
+        component = new Action();
         component.setId("action1");
         // used a TreeMap since it makes specific guarantees as to the order of entries
         dataAttributes = new TreeMap<String, String>();
@@ -137,7 +136,7 @@ public class ComponentBaseTest {
                             overridingControls[i].getComplexDataAttributesJs()));
         }
         // other controls should have a different value for
-        Component[] nonOverridingControls = {new Image(), new ActionField(), new LinkField(), new MessageField()};
+        Component[] nonOverridingControls = {new Image(), new Action(), new LinkField(), new MessageField()};
         for (Component component: nonOverridingControls) {
             component.setDataAttributes(dataAttributes);
             assertFalse(component.getClass() + " should not override getComplexAttributes",

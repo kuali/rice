@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
+
+import org.kuali.rice.krad.uif.field.FieldSecurity;
 
 /**
  * Action field security adds the take action flags to the standard component security
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionFieldSecurity extends FieldSecurity {
+public class ActionSecurity extends FieldSecurity {
     private static final long serialVersionUID = 585138507596582667L;
 
     private boolean performActionAuthz;
     private boolean performLineActionAuthz;
 
-    public ActionFieldSecurity() {
+    public ActionSecurity() {
         super();
 
         performActionAuthz = false;

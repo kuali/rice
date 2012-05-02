@@ -19,5 +19,5 @@
 
 <%-- only render external help if a Url is specified --%>
 <c:if test="${!empty widget.externalHelpUrl}">
-  <krad:template component="${widget.helpActionField}" />
+  <krad:template component="${widget.helpAction}" />
 </c:if>

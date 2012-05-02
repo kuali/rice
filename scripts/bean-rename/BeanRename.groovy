@@ -30,7 +30,7 @@ def fileText;
 
 currentDir.eachFileRecurse(
         {file ->
-            if (file.isFile() && (file.name.equals("UifLayoutView.xml") || (!file.name.startsWith("Uif") && file.name.endsWith(".xml")))) {
+            if (file.isFile() && file.name.endsWith(".xml")) {
                 fileText = file.text;
                 //backupFile = new File(file.path + ".bak");
                 //backupFile.write(fileText);
@@ -44,9 +44,6 @@ currentDir.eachFileRecurse(
                     fileText = fileText.replaceAll("ref bean=\"" + it.key + "-parentBean\"", "ref bean=\"" + it.value + "-parentBean\"");
 
                     // for properties check p namespace and property tag, also check contains for nested
-                   // fileText = fileText.replaceAll("p:" + it.key, "p:" + it.value);
-                   // fileText = fileText.replaceAll("property name=\"" + it.key + "\"", "property name=\"" + it.value + "\"");
-
                     def propertyMatcher = "(p:(\\w+\\.)*)${it.key}";
                     fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value);
 

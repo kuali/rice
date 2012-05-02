@@ -139,7 +139,7 @@
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="true"/>
     <property name="renderSelectField" value="@{#view.multipleValuesSelect}"/>
-    <property name="header.headerGroup">
+    <property name="header.lowerGroup">
       <bean parent="Uif-VerticalBoxGroup"/>
     </property>
     <property name="footer">
@@ -149,7 +149,7 @@
   </bean>
 
   <bean id="Uif-LookupPageHeader" parent="Uif-PageHeader">
-    <property name="headerGroup">
+    <property name="lowerGroup">
       <bean parent="Uif-LookupPageHeaderGroup"/>
     </property>
   </bean>

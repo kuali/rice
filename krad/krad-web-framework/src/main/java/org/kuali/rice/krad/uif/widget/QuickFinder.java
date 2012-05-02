@@ -20,11 +20,11 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -65,7 +65,7 @@ public class QuickFinder extends WidgetBase {
     private Boolean multipleValuesSelect;
     private String lookupCollectionName;
 
-    private ActionField quickfinderActionField;
+    private Action quickfinderAction;
 
     public QuickFinder() {
         super();
@@ -164,16 +164,16 @@ public class QuickFinder extends WidgetBase {
             }
         }
 
-        quickfinderActionField.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
-        quickfinderActionField.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
+        quickfinderAction.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
+        quickfinderAction.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
         if (!fieldConversions.isEmpty()) {
-            quickfinderActionField.addActionParameter(UifParameters.CONVERSION_FIELDS,
+            quickfinderAction.addActionParameter(UifParameters.CONVERSION_FIELDS,
                     KRADUtils.buildMapParameterString(fieldConversions));
         }
 
         if (!lookupParameters.isEmpty()) {
-            quickfinderActionField.addActionParameter(UifParameters.LOOKUP_PARAMETERS,
+            quickfinderAction.addActionParameter(UifParameters.LOOKUP_PARAMETERS,
                     KRADUtils.buildMapParameterString(lookupParameters));
         }
 
@@ -198,7 +198,7 @@ public class QuickFinder extends WidgetBase {
 
     protected void addActionParameterIfNotNull(String parameterName, Object parameterValue) {
         if ((parameterValue != null) && StringUtils.isNotBlank(parameterValue.toString())) {
-            quickfinderActionField.addActionParameter(parameterName, parameterValue.toString());
+            quickfinderAction.addActionParameter(parameterName, parameterValue.toString());
         }
     }
 
@@ -291,7 +291,7 @@ public class QuickFinder extends WidgetBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(quickfinderActionField);
+        components.add(quickfinderAction);
 
         return components;
     }
@@ -666,19 +666,19 @@ public class QuickFinder extends WidgetBase {
      * addition to other action component settings
      * </p>
      *
-     * @return ActionField instance rendered for quickfinder
+     * @return Action instance rendered for quickfinder
      */
-    public ActionField getQuickfinderActionField() {
-        return this.quickfinderActionField;
+    public Action getQuickfinderAction() {
+        return this.quickfinderAction;
     }
 
     /**
      * Setter for the action field component to render for the quickfinder
      *
-     * @param quickfinderActionField
+     * @param quickfinderAction
      */
-    public void setQuickfinderActionField(ActionField quickfinderActionField) {
-        this.quickfinderActionField = quickfinderActionField;
+    public void setQuickfinderAction(Action quickfinderAction) {
+        this.quickfinderAction = quickfinderAction;
     }
 
     /**

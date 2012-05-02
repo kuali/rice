@@ -126,7 +126,7 @@
     <!-- TODO: change to use config krad.url -->
     <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
     <property name="multipleValuesSelect" value="false"/>
-    <property name="quickfinderActionField">
+    <property name="quickfinderAction">
       <bean parent="Uif-ActionImage" p:methodToCall="performLookup">
         <property name="actionImage">
           <bean parent="Uif-QuickLookupImage"/>
@@ -140,7 +140,7 @@
   </bean>
 
   <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean"
-        p:quickfinderActionField.lightBoxLookup.lookupReturnByScript="true"/>
+        p:quickfinderAction.lightBoxLookup.lookupReturnByScript="true"/>
 
   <bean id="Uif-Inquiry" parent="Uif-Inquiry-parentBean"/>
   <bean id="Uif-Inquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Inquiry" scope="prototype"
@@ -163,7 +163,7 @@
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
     <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
-    <property name="directInquiryActionField">
+    <property name="directInquiryAction">
       <bean parent="Uif-ActionImage">
         <property name="actionImage">
           <bean parent="Uif-DirectInquiryImage"/>
@@ -296,7 +296,7 @@
     <property name="toolTip">
       <bean parent="Uif-TooltipHelp"/>
     </property>
-    <property name="helpActionField">
+    <property name="helpAction">
       <bean parent="Uif-ActionImage">
         <property name="actionImage">
           <bean parent="Uif-HelpImage"/>

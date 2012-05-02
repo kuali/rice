@@ -21,12 +21,12 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -178,7 +178,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 *      java.lang.String, java.lang.Object, int)
 	 */
 	public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<FieldGroup> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
+			List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
 			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
 
@@ -619,7 +619,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * column. For each collection line this instance is copied and adjusted as
 	 * necessary. Note the actual actions for the group come from the collection
 	 * groups actions List
-	 * (org.kuali.rice.krad.uif.container.CollectionGroup.getActionFields()). The
+	 * (org.kuali.rice.krad.uif.container.CollectionGroup.getActions()). The
 	 * FieldGroup prototype is useful for setting styling of the actions column
 	 * and for the layout of the action fields. Note also the label associated
 	 * with the prototype is used for the action column header
@@ -715,7 +715,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * on the group will be used to rendered the add line fields. If the header (title) is not set on the group, it
      * will be set from
      * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()}. In addition,
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActionFields()} will be added to the group
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActions()} will be added to the group
      * footer items.
      * </p>
      *

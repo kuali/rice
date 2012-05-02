@@ -25,4 +25,4 @@
     Check if the field is read only
     Render the direct inquiry for editable fields
  --%>
-<krad:template component="${widget.directInquiryActionField}" />
+<krad:template component="${widget.directInquiryAction}" />

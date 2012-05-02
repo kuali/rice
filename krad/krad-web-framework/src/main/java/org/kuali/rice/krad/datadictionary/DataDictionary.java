@@ -103,7 +103,13 @@ public class DataDictionary  {
     public void setDataDictionaryMapper(DataDictionaryMapper mapper) {
     	this.ddMapper = mapper;
     }
-    
+
+    /**
+     * adds an entry to the index
+     *
+     * @param sourceName - a file system or classpath resource locator
+     * @throws IOException
+     */
     private void indexSource(String sourceName) throws IOException {        
         if (sourceName == null) {
             throw new DataDictionaryException("Source Name given is null");
@@ -112,7 +118,12 @@ public class DataDictionary  {
         if (!sourceName.endsWith(".xml") ) {
             Resource resource = getFileResource(sourceName);
             if (resource.exists()) {
-                indexSource(resource.getFile());
+                try {
+                    indexSource(resource.getFile());
+                } catch (IOException e) {
+                    // ignore resources that exist and cause an error here - they may be directories resident in jar files
+                    LOG.debug("Skipped existing resource without absolute file path");
+                }
             } else {
                 LOG.warn("Could not find " + sourceName);
                 throw new DataDictionaryException("DD Resource " + sourceName + " not found");

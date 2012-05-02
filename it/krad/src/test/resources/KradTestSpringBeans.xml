@@ -162,11 +162,17 @@
 				<property name="dataDictionaryPackages">
 					<list>
 						<value>org/kuali/rice/krad/test/document</value>
+            <!--Due to maven dependencies, this entry will break the krad integrations tests
+             uncomment only to run sample app travel docs  tests-->
+            <!--<value>edu/sampleu/travel/datadictionary</value>-->
 					</list>
 				</property>
 				<property name="databaseRepositoryFilePaths">
 					<list>
 						<value>OJB-repository-krad-test.xml</value>
+            <!--Due to maven dependencies, this entry will break the krad integrations tests
+             uncomment only to run sample app travel docs  tests-->
+            <!--<value>OJB-repository-sampleapp.xml</value>-->
 					</list>
 				</property>
 			</bean>

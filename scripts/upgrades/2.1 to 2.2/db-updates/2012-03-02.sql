@@ -20,9 +20,7 @@
 --
 
 alter table TRV_ACCT drop column ACCT_TYPE;
-/
 
 insert into KRMS_CNTXT_T
 (CNTXT_ID, NMSPC_CD, NM, TYP_ID, ACTV, VER_NBR)
-values ('trav-acct-test-ctxt','KR-SAP', 'Travel Account', 'T4', 'Y', 1)
-/
+values ('trav-acct-test-ctxt','KR-SAP', 'Travel Account', 'T4', 'Y', 1);

@@ -105,13 +105,22 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	}
 
 	/**
-	 * forceUppercase = convert user entry to uppercase and always display
-	 * database value as uppercase.
+	 * Setter for force upper case
 	 */
 	public void setForceUppercase(Boolean forceUppercase) {
 		this.forceUppercase = forceUppercase;
 	}
 
+    /**
+     * Indicates whether user entry should be converted to upper case
+     *
+     * <p>
+     * If set all user input will be changed to uppercase. Values from the database will also be forced to display
+     * as upper case and thus be persisted as upper case.
+     * </p>
+     *
+     * @return true if force upper case is set
+     */
 	public Boolean getForceUppercase() {
 		return this.forceUppercase;
 	}

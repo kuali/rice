@@ -32,7 +32,7 @@
     <property name="items">
       <list>
         <bean id="Demo-StandardLayout-SectionsPage" parent="Uif-Page" p:title="Page Title">
-          <property name="header.headerGroup">
+          <property name="header.lowerGroup">
             <bean parent="Uif-LinkGroup">
               <property name="items">
                 <list>

@@ -43,7 +43,9 @@ public class Header extends ContentElementBase {
     private List<String> headerStyleClasses;
     private String headerStyle;
 
-    private Group headerGroup;
+    private Group upperGroup;
+    private Group rightGroup;
+    private Group lowerGroup;
 
     public Header() {
         super();
@@ -65,9 +67,17 @@ public class Header extends ContentElementBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        // don't render header group if no items were configured
-        if ((getHeaderGroup() != null) && (getHeaderGroup().getItems().isEmpty())) {
-            getHeaderGroup().setRender(false);
+        // don't render header groups if no items were configured
+        if ((getUpperGroup() != null) && (getUpperGroup().getItems().isEmpty())) {
+            getUpperGroup().setRender(false);
+        }
+
+        if ((getRightGroup() != null) && (getRightGroup().getItems().isEmpty())) {
+            getRightGroup().setRender(false);
+        }
+
+        if ((getLowerGroup() != null) && (getLowerGroup().getItems().isEmpty())) {
+            getLowerGroup().setRender(false);
         }
     }
 
@@ -78,7 +88,9 @@ public class Header extends ContentElementBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(headerGroup);
+        components.add(upperGroup);
+        components.add(rightGroup);
+        components.add(lowerGroup);
 
         return components;
     }
@@ -186,59 +198,102 @@ public class Header extends ContentElementBase {
     }
 
     /**
-     * Nested group instance that can be used to render contents in the header area
+     * Nested group instance that can be used to render contents above the header text
      *
      * <p>
-     * The header group is useful for adding content such as links or actions that is presented with the header(for
-     * example to the right of the header text).
+     * The header group is useful for adding content such as links or actions that is presented with the header
      * </p>
      *
      * @return Group instance
      */
-    public Group getHeaderGroup() {
-        return headerGroup;
+    public Group getUpperGroup() {
+        return upperGroup;
     }
 
     /**
-     * Setter for the header group instance
+     * Setter for the header group instance that is rendered above the header text
      *
-     * @param headerGroup
+     * @param upperGroup
      */
-    public void setHeaderGroup(Group headerGroup) {
-        this.headerGroup = headerGroup;
+    public void setUpperGroup(Group upperGroup) {
+        this.upperGroup = upperGroup;
     }
 
     /**
-     * List of <code>Component</code> instances contained in the nested group
+     * Nested group instance that can be used to render contents to the right of the header text
+     *
+     * <p>
+     * The header group is useful for adding content such as links or actions that is presented with the header
+     * </p>
+     *
+     * @return Group instance
+     */
+    public Group getRightGroup() {
+        return rightGroup;
+    }
+
+    /**
+     * Setter for the header group instance that is rendered to the right of the header text
+     *
+     * @param rightGroup
+     */
+    public void setRightGroup(Group rightGroup) {
+        this.rightGroup = rightGroup;
+    }
+
+    /**
+     * Nested group instance that can be used to render contents below the header text
+     *
+     * <p>
+     * The header group is useful for adding content such as links or actions that is presented with the header
+     * </p>
+     *
+     * @return Group instance
+     */
+    public Group getLowerGroup() {
+        return lowerGroup;
+    }
+
+    /**
+     * Setter for the header group instance that is rendered below the header text
+     *
+     * @param lowerGroup
+     */
+    public void setLowerGroup(Group lowerGroup) {
+        this.lowerGroup = lowerGroup;
+    }
+
+    /**
+     * List of <code>Component</code> instances contained in the lower header group
      *
      * <p>
      * Convenience method for configuration to get the items List from the
-     * header's nested group
+     * lower header group
      * </p>
      *
      * @return List<? extends Component> items
      */
     public List<? extends Component> getItems() {
-        if (headerGroup != null) {
-            return headerGroup.getItems();
+        if (lowerGroup != null) {
+            return lowerGroup.getItems();
         }
 
         return null;
     }
 
     /**
-     * Setter for the header's nested group items
+     * Setter for the lower group's items
      *
      * <p>
      * Convenience method for configuration to set the items List for the
-     * header's nested group
+     * lower header group
      * </p>
      *
      * @param items
      */
     public void setItems(List<? extends Component> items) {
-        if (headerGroup != null) {
-            headerGroup.setItems(items);
+        if (lowerGroup != null) {
+            lowerGroup.setItems(items);
         }
     }
 }

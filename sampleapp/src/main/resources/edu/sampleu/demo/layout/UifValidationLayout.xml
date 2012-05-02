@@ -28,7 +28,7 @@
     <property name="navigation">
       <ref bean="Demo-ValidationLayout-NavMenu"/>
     </property>
-    <property name="header.headerGroup">
+    <property name="header.lowerGroup">
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">
               <list>

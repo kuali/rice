@@ -33,13 +33,18 @@
 </c:if>
 
 <krad:div component="${element}">
+  <%-- upper group --%>
+  <krad:template component="${element.upperGroup}"/>
+
   <c:if test="${!empty element.headerLevel && !empty element.headerText && element.headerText != '&nbsp;'}">
     <c:set var="group" value="${element.context['parent']}"/>
-    ${headerOpenTag}<span class="uif-headerText-span">${element.headerText}</span>${headerCloseTag}<krad:template component="${group.help}"/>
+    ${headerOpenTag}<span class="uif-headerText-span">${element.headerText}</span>${headerCloseTag}
+    <krad:template component="${group.help}"/>
   </c:if>
-  
-  <%-- render header group --%>
-  <c:if test="${!empty element.headerGroup}">
-    <krad:template component="${element.headerGroup}"/>
-  </c:if>
+
+  <%-- right group --%>
+  <krad:template component="${element.rightGroup}"/>
+
+  <%-- lower group --%>
+  <krad:template component="${element.lowerGroup}"/>
 </krad:div>

@@ -38,11 +38,29 @@
         <value>uif-headerText</value>
       </list>
     </property>
-    <property name="headerGroup">
+    <property name="upperGroup">
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="styleClasses">
           <list merge="true">
-            <value>uif-headerGroup</value>
+            <value>uif-upperHeaderGroup</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="rightGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
+        <property name="styleClasses">
+          <list merge="true">
+            <value>uif-rightHeaderGroup</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lowerGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
+        <property name="styleClasses">
+          <list merge="true">
+            <value>uif-lowerHeaderGroup</value>
           </list>
         </property>
       </bean>
@@ -132,14 +150,14 @@
 
   <bean id="Uif-EditablePageHeader" parent="Uif-EditablePageHeader-parentBean"/>
   <bean id="Uif-EditablePageHeader-parentBean" abstract="true" parent="Uif-PageHeader">
-    <property name="headerGroup">
+    <property name="lowerGroup">
       <bean parent="Uif-DisclosureActions-ReqMessageGroup"/>
     </property>
   </bean>
 
   <bean id="Uif-ReadOnlyPageHeader" parent="Uif-ReadOnlyPageHeader-parentBean"/>
   <bean id="Uif-ReadOnlyPageHeader-parentBean" abstract="true" parent="Uif-PageHeader">
-    <property name="headerGroup">
+    <property name="lowerGroup">
       <bean parent="Uif-DisclosureActionsGroup"/>
     </property>
   </bean>

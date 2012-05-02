@@ -31,7 +31,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * An integration test which tests the reference implementation of the ComponentService.
+ * An integration test which tests the reference implementation of the ComponentService
  *
  * TODO - for now this test is part of KRAD even though it should be part of the core (pending
  * further modularity work)
@@ -49,6 +49,10 @@ public class ComponentServiceTest extends KRADTestCase {
     }
 
     @Test
+    /**
+     * tests {@link ComponentService#getComponentByCode(String, String)} for a component that does not exist
+     * and for a component that exists
+     */
     public void testGetComponentByCode() {
         // get a component we know does not exist
         assertNull(componentService.getComponentByCode("blah", "blah"));
@@ -60,6 +64,10 @@ public class ComponentServiceTest extends KRADTestCase {
     }
 
     @Test
+    /**
+     * tests {@link ComponentService#getAllComponentsByNamespaceCode(String)} by a component namespace that does not exist and
+     * by a component namespace that does exist
+     */
     public void testGetAllComponentsByNamespaceCode() {
         // get by a component namespace we know does not exist
         List<Component> components = componentService.getAllComponentsByNamespaceCode("blah");
@@ -115,6 +123,10 @@ public class ComponentServiceTest extends KRADTestCase {
     }
 
     @Test
+    /**
+     * tests that {@link ComponentService#getActiveComponentsByNamespaceCode(String)} returns all active components
+     * for the given name space code
+     */
     public void testGetActiveComponentsByNamespaceCode() {
         // get by a component namespace we know does not exist
         List<Component> components = componentService.getActiveComponentsByNamespaceCode("blah");
@@ -160,6 +172,9 @@ public class ComponentServiceTest extends KRADTestCase {
     }
 
     @Test
+    /**
+     * tests {@link ComponentService#getDerivedComponentSet(String)} and {@link ComponentService#publishDerivedComponents(String, java.util.List)}
+     */
     public void testPublishComponents_and_getPublishedComponentSet() {
 
         String testComponentSetId = "testComponentSet";

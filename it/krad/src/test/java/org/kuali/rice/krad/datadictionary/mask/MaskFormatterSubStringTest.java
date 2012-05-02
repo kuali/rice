@@ -21,7 +21,7 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.*;
 
 /**
- * Unit Tests for MaskFormatterSubString.java
+ * MaskFormatterSubStringTest tests {@link MaskFormatterSubString} methods
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

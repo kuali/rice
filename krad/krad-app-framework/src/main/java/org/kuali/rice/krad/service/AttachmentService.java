@@ -29,12 +29,16 @@ import java.io.InputStream;
  */
 public interface AttachmentService {
     /**
-     * Stores the given fileContents and returns referring Attachment object whieh acts as a momento to the archived object.
+     * Stores the given fileContents and returns referring Attachment object which acts as a momento to the archived object.
      *
-     * @param document TODO
-     * @param foo
+     * @param parent - the document to which the attachment belongs
+     * @param uploadedFileName - the name of the uploaded file
+     * @param mimeType - the uploaded file's mime type
+     * @param  fileSize - the size of the uploaded file in bytes
+     * @param  fileContents - an input stream used to read the file's contents
+     * @param attachmentType -the attachment type code
      *
-     * @return Attachment
+     * @return Attachment - the attachment, having been written to the file system
      * @throws IOException
      */
     public Attachment createAttachment(PersistableBusinessObject parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentType) throws IOException;
@@ -42,7 +46,7 @@ public interface AttachmentService {
     /**
      * Retrieves a given Attachments contents from the corresponding Attachment object
      *
-     * @param documentAttachment
+     * @param attachment - the attachment whose contents are to be retrieved
      *
      * @return OutputStream
      * @throws IOException
@@ -52,7 +56,7 @@ public interface AttachmentService {
     /**
      * Deletes a given DocumentAttachment contents from the corresponding Attachment object
      *
-     * @param documentAttachment
+     * @param attachment - the attachment whose contents are to be deleted
      */
     public void deleteAttachmentContents(Attachment attachment);
     

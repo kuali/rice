@@ -17,14 +17,23 @@ package org.kuali.rice.krad.datadictionary.validation;
 
 import static org.junit.Assert.fail;
 
-
+/**
+ * ValidationTestUtils has test values and a utility method for testing validation patterns
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class ValidationTestUtils {
     private static final String[] TEST_INPUTS = { "", "!!!", "[a-9]", "^A-Z", "abc", "a bc", "a_bc", "123", "12 3", "12_3", "a1b2c3", "a1b2_c3", "a 1b2c3", "a 1b2_c3", "foo.bar", "foo.bar_baz", ".bar_foo baz" };
 
 	private ValidationTestUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}
-    
+
+    /**
+     * checks that the test values, when matched to the supplied pattern, result in the expected value
+     * @param pattern - a validation pattern
+     * @param expectedValues - an array containing boolean values for each expected result
+     */
     public static final void assertPatternMatches(ValidationPattern pattern, boolean[] expectedValues) {
         if (expectedValues.length != TEST_INPUTS.length) {
             fail("expectedValues length was " + expectedValues.length + ", expected TEST_INPUTS.length of " + TEST_INPUTS.length);

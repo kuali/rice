@@ -20,6 +20,11 @@ import org.kuali.rice.kns.datadictionary.validation.charlevel.AlphaNumericValida
 import org.kuali.rice.krad.datadictionary.validation.ValidationTestUtils;
 import org.kuali.rice.test.BaseRiceTestCase;
 
+/**
+ * AlphaNumericValidationPatternTest tests {@link AlphaNumericValidationPattern}
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
     private AlphaNumericValidationPattern pattern;
 
@@ -29,7 +34,9 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
         pattern = new AlphaNumericValidationPattern();
     }
 
-
+    /**
+     * tests that only numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowDefault() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
@@ -53,6 +60,9 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
 
+    /**
+     * tests that underscores, numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowUnderscore() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
@@ -77,6 +87,9 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
 
+    /**
+     * tests that white space, numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowWhitespace() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
@@ -101,6 +114,9 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
 
+    /**
+     * tests that white space, underscores, numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowUnderScoreAndWhiteSpace() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
@@ -126,7 +142,10 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
 
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
-    
+
+    /**
+     * tests that periods, numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowPeriod() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
@@ -151,7 +170,10 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
 
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
-    
+
+    /**
+     * tests that periods, underscores, numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowPeriodAndUnderscore() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
@@ -177,7 +199,10 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
 
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
-    
+
+    /**
+     * tests that periods, underscores, white space, numbers and letters of the alphabet are allowed
+     */
     @Test public final void testMatch_allowPeriodAndUnderscoreAndSpace() {
         boolean[] expected = { true, // ""
                 false, // "!!!"

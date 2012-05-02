@@ -154,6 +154,18 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
         return true;
     }
 
+    // See KULRICE-7093: KSB Module UI is not available on client applications
+    @Override
+    public boolean shouldRenderWebInterface() {
+        if (RunMode.EMBEDDED == getRunMode()) {
+            return true;
+        }
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.WEB_FORCE_ENABLE)) {
+            return true;
+        }
+        return super.shouldRenderWebInterface();
+    }
+
     @Override
     protected WebModuleConfiguration loadWebModule() {
         WebModuleConfiguration configuration = super.loadWebModule();

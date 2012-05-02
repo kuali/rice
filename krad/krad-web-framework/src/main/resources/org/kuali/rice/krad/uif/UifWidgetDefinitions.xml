@@ -260,7 +260,7 @@
 
   <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>
   <bean id="Uif-Tooltip-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tooltip" scope="prototype">
-    <property name="onMouseHoverFlag" value="true"/>
+    <property name="onMouseHover" value="true"/>
     <property name="templateOptions">
       <map>
         <entry key="position" value="top"/>
@@ -272,20 +272,6 @@
         <entry key="selectable" value="true"/>
       </map>
     </property>
-    <!--<property name="helpTemplateOptions">-->
-      <!--<map>-->
-        <!--<entry key="themeName" value="black"/>-->
-        <!--<entry key="selectable" value="true"/>-->
-      <!--</map>-->
-    <!--</property>-->
-    <!--<property name="focusTemplateOptions">-->
-      <!--<map>-->
-        <!--<entry key="manageMouseEvents" value="false"/>-->
-        <!--<entry key="position" value="right"/>-->
-        <!--<entry key="align" value="center"/>-->
-        <!--<entry key="tail" value="{ align:'center', hidden: true }"/>-->
-      <!--</map>-->
-    <!--</property>-->
   </bean>
 
   <bean id="Uif-TooltipHelp" parent="Uif-TooltipHelp-parentBean"/>
@@ -300,8 +286,8 @@
 
   <bean id="Uif-TooltipFocus" parent="Uif-TooltipFocus-parentBean"/>
   <bean id="Uif-TooltipFocus-parentBean" abstract="true" parent="Uif-Tooltip">
-    <property name="onFocusFlag" value="true"/>
-    <property name="onMouseHoverFlag" value="false"/>
+    <property name="onFocus" value="true"/>
+    <property name="onMouseHover" value="false"/>
   </bean>
 
   <bean id="Uif-Help" parent="Uif-Help-parentBean"/>

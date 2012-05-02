@@ -30,9 +30,9 @@ public class Tooltip extends WidgetBase {
 
     private String tooltipContent;
 
-    private boolean onFocusFlag;
+    private boolean onFocus;
 
-    private boolean onMouseHoverFlag;
+    private boolean onMouseHover;
 //    private boolean helpFlag;
 //
 //    private Map<String, String> helpTemplateOptions;
@@ -66,88 +66,38 @@ public class Tooltip extends WidgetBase {
     }
 
     /**
-     * Flag that indicates the tooltip should be triggered by focus/blur in stead of default mouse trigger
+     * Indicates the tooltip should be triggered by focus/blur
      *
      * @return boolean
      */
-    public boolean isOnFocusFlag() {
-        return onFocusFlag;
+    public boolean isOnFocus() {
+        return onFocus;
     }
 
     /**
-     * Setter for the onFocusFlag
+     * Setter for the onFocus
      *
-     * @param onFocusFlag
+     * @param onFocus
      */
-    public void setOnFocusFlag(boolean onFocusFlag) {
-//        if (onFocusFlag) {
-//            getTemplateOptions().putAll(focusTemplateOptions);
-//        }
-        this.onFocusFlag = onFocusFlag;
-    }
-//
-//    /**
-//     * Flag that indicates the tooltip should be using help framework component options
-//     *
-//     * @return boolean
-//     */
-//    public boolean isHelpFlag() {
-//        return helpFlag;
-//    }
-//
-//    /**
-//     * Setter for the helpFlag
-//     *
-//     * @param helpFlag
-//     */
-//    public void setHelpFlag(boolean helpFlag) {
-//        if (helpFlag) {
-//            getTemplateOptions().putAll(helpTemplateOptions);
-//        }
-//        this.helpFlag = helpFlag;
-//    }
-//
-//    /**
-//     * Template options that changes the style to help
-//     *
-//     * @return Map of focus template options
-//     */
-//    public Map<String, String> getHelpTemplateOptions() {
-//        return helpTemplateOptions;
-//    }
-//
-//    /**
-//     * Setter for helpTemplateOptions
-//     *
-//     * @param helpTemplateOptions
-//     */
-//    public void setHelpTemplateOptions(Map<String, String> helpTemplateOptions) {
-//        this.helpTemplateOptions = helpTemplateOptions;
-//    }
-//
-//    /**
-//     * Template options that changes the event trigger to focus/blur
-//     *
-//     * @return Map of focus template options
-//     */
-//    public Map<String, String> getFocusTemplateOptions() {
-//        return focusTemplateOptions;
-//    }
-//
-//    /**
-//     * Setter for focusTemplateOptions
-//     *
-//     * @param focusTemplateOptions
-//     */
-//    public void setFocusTemplateOptions(Map<String, String> focusTemplateOptions) {
-//        this.focusTemplateOptions = focusTemplateOptions;
-//    }
-
-    public boolean isOnMouseHoverFlag() {
-        return onMouseHoverFlag;
+    public void setOnFocus(boolean onFocus) {
+        this.onFocus = onFocus;
     }
 
-    public void setOnMouseHoverFlag(boolean onMouseHoverFlag) {
-        this.onMouseHoverFlag = onMouseHoverFlag;
+    /**
+     * Indicates the tooltip should be triggered by mouse hover
+     *
+     * @return boolean
+     */
+    public boolean isOnMouseHover() {
+        return onMouseHover;
+    }
+
+    /**
+     * Setter for onMouseHover
+     *
+     * @param onMouseHover
+     */
+    public void setOnMouseHover(boolean onMouseHover) {
+        this.onMouseHover = onMouseHover;
     }
 }

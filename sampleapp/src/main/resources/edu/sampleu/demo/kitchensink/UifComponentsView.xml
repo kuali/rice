@@ -440,6 +440,30 @@
           </property>
         </bean>
 
+        <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date1" p:label="date format: mm-dd-yy"
+              p:instructionalText="altField, constraintInput options set" p:required="true">
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="altField" value="#myDate_control"/>
+                <entry key="altFormat" value="mm-dd-y"/>
+                <entry key="dateFormat" value="mm-dd-yy"/>
+                <entry key="constraintInput" value="true"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
         <bean parent="Uif-InputField-LabelTop" p:propertyName="date2" p:label="Date 2"
               p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
           <property name="control">

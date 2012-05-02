@@ -17,6 +17,7 @@ package mocks;
 
 import java.util.List;
 
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
@@ -70,6 +71,10 @@ public class MockPostProcessor implements PostProcessor {
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
     	return new ProcessDocReport(actionTakenResult, "testing");
 	}
+
+    public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
+        return new ProcessDocReport(actionTakenResult, "testing");
+    }
 
     public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
         return new ProcessDocReport(processMethodsDocReportResult, "testing");

@@ -17,6 +17,7 @@ package org.kuali.rice.kew.routemanager;
 
 import java.util.List;
 
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
@@ -79,6 +80,13 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
 		}
 		return new ProcessDocReport(true, "");
 	}
+
+    public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
+        if (THROW_DO_ACTION_TAKEN_EXCEPTION) {
+            throw new RuntimeException("I am the afterActionTaken exploder");
+        }
+        return new ProcessDocReport(true, "");
+    }
 
     public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
         if (THROW_BEFORE_PROCESS_EXCEPTION) {

@@ -450,11 +450,13 @@
       <name>RecallTest</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
     </documentType>
     <documentType>
       <name>RecallWithPrevNotifyTest</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
       <policies>
         <policy>
           <name>NOTIFY_COMPLETED_ON_RETURN</name>
@@ -466,6 +468,7 @@
       <name>RecallWithoutPendingNotifyTest</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
       <policies>
         <policy>
           <name>NOTIFY_COMPLETED_ON_RETURN</name>
@@ -481,6 +484,7 @@
       <name>RecallWithThirdPartyNotifyTest</name>
       <parent>NotificationTest</parent>
       <label>RecallTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
       <policies>
         <policy>
           <name>NOTIFY_COMPLETED_ON_RETURN</name>

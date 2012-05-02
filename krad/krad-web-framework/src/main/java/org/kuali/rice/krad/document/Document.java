@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
@@ -104,6 +105,12 @@ public interface Document extends PersistableBusinessObject {
      * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document
      */
     public void doActionTaken(ActionTakenEvent event);
+
+    /**
+     * method to integrate with workflow where we will be able to perform logic after an action taken being performed on a document
+     * @since 2.1
+     */
+    public void afterActionTaken(ActionType performed, ActionTakenEvent event);
     
     /**
      * This method will be called after the Workflow engine has completely finished processing a document.

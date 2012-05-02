@@ -28,6 +28,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
@@ -52,6 +53,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 /**
  * Super class containing mostly often used methods by all actions. Holds common
@@ -248,43 +250,53 @@ public abstract class ActionTakenEvent {
 		}
 	}
 
-	protected void notifyActionTaken(ActionTakenValue actionTaken) {
-	    if (!isRunPostProcessorLogic()) {
-	        return;
-	    }
-		if (actionTaken == null) {
-			return;
-		}
-		try {
-			LOG.debug("Notifying post processor of action taken");
-			PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-			ProcessDocReport report = postProcessor.doActionTaken(new org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), ActionTakenValue.to(actionTaken)));
-			if (!report.isSuccess()) {
-				LOG.warn(report.getMessage(), report.getProcessException());
-				throw new InvalidActionTakenException(report.getMessage());
-			}
-
-		} catch (Exception ex) {
-		    processPostProcessorException(ex);
-		}
-	}
-
-	protected void notifyStatusChange(String newStatusCode, String oldStatusCode) throws InvalidActionTakenException {
+    /**
+     * Wraps PostProcessor invocation with error handling
+     * @param message log message
+     * @param invocation the callable that invokes the postprocessor
+     */
+    protected void invokePostProcessor(String message, Callable<ProcessDocReport> invocation) {
         if (!isRunPostProcessorLogic()) {
             return;
         }
-		DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getDocumentId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
-		try {
-			LOG.debug("Notifying post processor of status change " + oldStatusCode + "->" + newStatusCode);
-			PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-			ProcessDocReport report = postProcessor.doRouteStatusChange(statusChangeEvent);
-			if (!report.isSuccess()) {
-				LOG.warn(report.getMessage(), report.getProcessException());
-				throw new InvalidActionTakenException(report.getMessage());
-			}
-		} catch (Exception ex) {
-		    processPostProcessorException(ex);
-		}
+        LOG.debug(message);
+        try {
+            ProcessDocReport report = invocation.call();
+            if (!report.isSuccess()) {
+                LOG.warn(report.getMessage(), report.getProcessException());
+                throw new InvalidActionTakenException(report.getMessage());
+            }
+        } catch (Exception ex) {
+            processPostProcessorException(ex);
+        }
+    }
+
+	protected void notifyActionTaken(final ActionTakenValue actionTaken) {
+        invokePostProcessor("Notifying post processor of action taken", new Callable<ProcessDocReport>() {
+            public ProcessDocReport call() throws Exception {
+                PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
+                return postProcessor.doActionTaken(new org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), ActionTakenValue.to(actionTaken)));
+            }
+        });
+	}
+
+    protected void notifyAfterActionTaken(final ActionTakenValue actionTaken) {
+        invokePostProcessor("Notifying post processor after action taken", new Callable<ProcessDocReport>() {
+            public ProcessDocReport call() throws Exception {
+                PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
+                return postProcessor.afterActionTaken(ActionType.fromCode(getActionPerformedCode()), new org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), ActionTakenValue.to(actionTaken)));
+            }
+        });
+    }
+
+	protected void notifyStatusChange(final String newStatusCode, final String oldStatusCode) throws InvalidActionTakenException {
+        invokePostProcessor("Notifying post processor of status change " + oldStatusCode + "->" + newStatusCode, new Callable<ProcessDocReport>() {
+            public ProcessDocReport call() throws Exception {
+                DocumentRouteStatusChange statusChangeEvent = new DocumentRouteStatusChange(routeHeader.getDocumentId(), routeHeader.getAppDocId(), oldStatusCode, newStatusCode);
+                PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
+                return postProcessor.doRouteStatusChange(statusChangeEvent);
+            }
+        });
 	}
 
 	/**

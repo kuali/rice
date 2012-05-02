@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
@@ -218,6 +219,13 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             //documentAuthorizer.establishWorkflowPessimisticLocking(this);
         	KRADServiceLocatorWeb.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.document.Document#afterActionTaken(ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
+     */
+    public void afterActionTaken(ActionType performed, ActionTakenEvent event) {
+        // do nothing
     }
     
     protected List<String> getNonLockingActionTakenCodes() {

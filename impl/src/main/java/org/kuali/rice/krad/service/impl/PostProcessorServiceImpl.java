@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
@@ -176,6 +177,41 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                         document.doActionTaken(event);
                         if ( LOG.isDebugEnabled() ) {
                             LOG.debug(new StringBuffer("finished doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
+                        }
+                    }
+                }
+                catch (Exception e) {
+                    logAndRethrow("do action taken", e);
+                }
+                return new ProcessDocReport(true, "");
+
+            }
+        });
+    }
+
+    /**
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterActionTaken(org.kuali.rice.kew.api.action.ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
+     */
+    @Override
+    public ProcessDocReport afterActionTaken(final ActionType performed, final ActionTakenEvent event) throws Exception {
+        return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
+            public ProcessDocReport call() throws Exception {
+                try {
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug(new StringBuffer("started doing after action taken for action performed code " + performed.getCode() + " and action taken code ").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
+                    }
+                    Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
+                    if (ObjectUtils.isNull(document)) {
+                        // only throw an exception if we are not cancelling
+                        if (!KewApiConstants.ACTION_TAKEN_CANCELED.equals(event.getActionTaken())) {
+                            LOG.warn("afterActionTaken() Unable to load document with id " + event.getDocumentId() +
+                                    " using action taken code '" + KewApiConstants.ACTION_TAKEN_CD.get(event.getActionTaken().getActionTaken()));
+                            //                    throw new RuntimeException("unable to load document " + event.getDocumentId());
+                        }
+                    } else {
+                        document.afterActionTaken(performed, event);
+                        if ( LOG.isDebugEnabled() ) {
+                            LOG.debug(new StringBuffer("finished doing after action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
                         }
                     }
                 }

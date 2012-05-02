@@ -58,6 +58,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -240,5 +241,27 @@ public class RecallAction extends ReturnToPreviousNodeAction {
             notifyStatusChange(newStatus, oldStatus);
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
         }
+        // we don't have an established mechanism for exposing the action taken that is saved as the result of a (nested) action
+        // so use the last action take saved
+        ActionTakenValue last = getLastActionTaken(getDocumentId());
+        if (last != null) {
+            notifyAfterActionTaken(last);
+        }
+    }
+
+    /**
+     * Returns the last action taken on a document
+     * @param docId the doc id
+     * @return last action taken on a document
+     */
+    protected static ActionTakenValue getLastActionTaken(String docId) {
+        ActionTakenValue last = null;
+        Collection<ActionTakenValue> actionsTaken = (Collection<ActionTakenValue>) KEWServiceLocator.getActionTakenService().getActionsTaken(docId);
+        for (ActionTakenValue at: actionsTaken) {
+            if (last == null || at.getActionDate().after(last.getActionDate())) {
+                last = at;
+            }
+        }
+        return last;
     }
 }

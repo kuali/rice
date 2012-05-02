@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
+import org.kuali.rice.kew.framework.postprocessor.*;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.KimConstants;
@@ -35,18 +34,6 @@ import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo;
-import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
-import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,9 +41,22 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class RecallActionTest extends KEWTestCase {
+    /**
+     * test postprocessor for testing afterActionTaken hook
+     */
+    public static class RecallTestPostProcessor extends DefaultPostProcessor {
+        public static ActionType afterActionTakenType;
+        public static ActionTakenEvent afterActionTakenEvent;
+        @Override
+        public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
+            afterActionTakenType = performed;
+            afterActionTakenEvent = event;
+            return super.afterActionTaken(performed, event);
+        }
+    }
+
     private static final String RECALL_TEST_DOC = "RecallTest";
     private static final String RECALL_NOTIFY_TEST_DOC = "RecallWithPrevNotifyTest";
     private static final String RECALL_NO_PENDING_NOTIFY_TEST_DOC = "RecallWithoutPendingNotifyTest";
@@ -80,6 +80,15 @@ public class RecallActionTest extends KEWTestCase {
         RKIRKEND = getPrincipalIdForName("rkirkend");
         NATJOHNS = getPrincipalIdForName("natjohns");
         BMCGOUGH = getPrincipalIdForName("bmcgough");
+
+        RecallTestPostProcessor.afterActionTakenType = null;
+        RecallTestPostProcessor.afterActionTakenEvent = null;
+    }
+
+    protected void assertAfterActionTakenCalled(ActionType performed, ActionType taken) {
+        assertEquals(performed, RecallTestPostProcessor.afterActionTakenType);
+        assertNotNull(RecallTestPostProcessor.afterActionTakenEvent);
+        assertEquals(taken, RecallTestPostProcessor.afterActionTakenEvent.getActionTaken().getActionTaken());
     }
 
     @Test(expected=InvalidActionTakenException.class) public void testCantRecallUnroutedDoc() {
@@ -94,6 +103,7 @@ public class RecallActionTest extends KEWTestCase {
         document.recall("recalling", true);
 
         assertTrue("Document should be recalled", document.isRecalled());
+        assertAfterActionTakenCalled(ActionType.RECALL, ActionType.RECALL);
 
         //verify that the document is truly dead - no more action requests or action items.
 
@@ -115,6 +125,7 @@ public class RecallActionTest extends KEWTestCase {
         document.recall("recalling", true);
 
         assertTrue("Document should be recalled", document.isRecalled());
+        assertAfterActionTakenCalled(ActionType.RECALL, ActionType.RECALL);
 
         //verify that the document is truly dead - no more action requests or action items.
 
@@ -187,6 +198,7 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue("Document should be saved", document.isSaved());
         assertEquals(1, document.getCurrentNodeNames().size());
         assertTrue(document.getCurrentNodeNames().contains("AdHoc"));
+        assertAfterActionTakenCalled(ActionType.RECALL, ActionType.COMPLETE);
 
         // initiator has completion request
         assertTrue(document.isCompletionRequested());
@@ -434,6 +446,7 @@ public class RecallActionTest extends KEWTestCase {
         document.recall("recalling", false);
 
         assertTrue("Document should be saved", document.isSaved());
+        assertAfterActionTakenCalled(ActionType.RECALL, ActionType.COMPLETE);
 
         // the recaller has a completion request
         assertTrue(document.isCompletionRequested());

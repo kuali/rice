@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.rule;
 
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
@@ -141,6 +142,10 @@ public class AgendaEditorMaintenanceDocumentDummy implements MaintenanceDocument
 
     public void doActionTaken(ActionTakenEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void afterActionTaken(ActionType performed, ActionTakenEvent event) {
+
     }
 
     public void afterWorkflowEngineProcess(boolean successfullyProcessed) {

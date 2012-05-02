@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.postprocessor;
 
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
@@ -52,6 +53,10 @@ public class DefaultPostProcessor implements PostProcessor {
     }
 
     public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
+        return new ProcessDocReport(true, "");
+    }
+
+    public ProcessDocReport afterActionTaken(ActionType performed, ActionTakenEvent event) throws Exception {
         return new ProcessDocReport(true, "");
     }
 

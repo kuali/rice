@@ -26,6 +26,10 @@ import org.springframework.jndi.JndiTemplate;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +77,7 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
     private List<String> preferredDataSourceJndiParams = new ArrayList<String>();
     private boolean serverDataSource = false;
     private boolean nullAllowed = false;
+    private boolean forceLazy = false;
     
     public PrimaryDataSourceFactoryBean() {
         setSingleton(true);
@@ -91,12 +96,32 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
     	super.afterPropertiesSet();
 	}
 
+    /**
+     * <p>returns the new DataSource instance, or a lazy proxy to it (see {@link #setForceLazy(boolean)}.</p>
+     *
+     * @return the new DataSource
+     * @throws Exception see superclass method
+     * @see org.springframework.beans.factory.config.AbstractFactoryBean#createInstance()
+     */
 	@Override
     protected Object createInstance() throws Exception {
-        Config config = ConfigContext.getCurrentContextConfig();
-        DataSource dataSource = createDataSource(config);
+        DataSource dataSource = null;
+        if (!isForceLazy()) {
+            dataSource = createDataSourceInstance();
+        } else {
+            dataSource = (DataSource)Proxy.newProxyInstance(getClass().getClassLoader(),
+                    new Class[] { DataSource.class },
+                    new LazyInvocationHandler());
+        }
+        
+        return dataSource;
+    }
+
+    private DataSource createDataSourceInstance() throws Exception {
+        final DataSource dataSource;Config config = ConfigContext.getCurrentContextConfig();
+        dataSource = createDataSource(config);
         if (dataSource == null && !isNullAllowed()) {
-        	throw new ConfigurationException("Failed to configure the Primary Data Source.");
+            throw new ConfigurationException("Failed to configure the Primary Data Source.");
         }
         return dataSource;
     }
@@ -266,4 +291,38 @@ public class PrimaryDataSourceFactoryBean extends AbstractFactoryBean {
 		this.nullAllowed = nullAllowed;
 	}
 
+    /**
+     * @see #setForceLazy(boolean)
+     */
+    public boolean isForceLazy() {
+        return forceLazy;
+    }
+
+    /**
+     * setting to true will cause the {@link #createInstance()} method to return a lazy proxy to the DataSource
+     * @param forceLazy
+     * @see #createInstance()
+     */
+    public void setForceLazy(boolean forceLazy) {
+        this.forceLazy = forceLazy;
+    }
+
+    /**
+     * used for constructing a lazy proxy to a DataSource in {@link
+     * org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean#createInstance()}
+     */
+    private class LazyInvocationHandler implements InvocationHandler {
+        private volatile DataSource dataSource = null;
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            try {
+                if (dataSource == null) {
+                    dataSource = createDataSourceInstance();
+                }
+                return method.invoke(dataSource, args);
+            } catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
+        }
+    }
+    
 }

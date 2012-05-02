@@ -60,7 +60,18 @@
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml" />
 	<import resource="classpath:org/kuali/rice/ksb/config/KsbServiceBusClientSpringBeans.xml" />
 
-	<bean id="rice.ksb.messageDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
+	<bean id="rice.ksb.messageDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true" scope="singleton">
+    <!--
+       See KULRICE-6574: Some KSB beans not defined unless message persistence turned on.
+       The forceLazy property was added to allow the datasource to be created with a lazy proxy
+       directly by the factory bean.  The reason for this hack is that the CXF bus is forcing
+       all lazy beans to be eagerly initialized. This hack overrides that unwanted behavior, and
+       allows the datasource to still be lazy.
+
+       Logic here is that if neither useQuartzDatabase nor message.persistence is true, then we
+       shouldn't need this datasource, so we can make it lazy and it should never be init-ed.
+    -->
+    <property name="forceLazy" value="#{ !(${useQuartzDatabase} or ${message.persistence}) }"/>
 		<property name="preferredDataSourceParams">
 			<list>
 				<value>rice.ksb.message.datasource</value>
@@ -74,7 +85,11 @@
 		<property name="serverDataSource" value="false"/>
 	</bean>
 
-	<bean id="rice.ksb.messageNonTransactionalDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="rice.ksb.messageNonTransactionalDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true"  scope="singleton">
+    <!--
+       See comment on rice.ksb.messageDataSource above forceLazy, KULRICE-6574
+    -->
+    <property name="forceLazy" value="#{ !(${useQuartzDatabase} or ${message.persistence}) }"/>
 		<property name="nullAllowed" value="true"/>
 		<property name="nonTransactionalDataSource" value="true"/>
 		<property name="preferredDataSourceParams">
@@ -91,11 +106,11 @@
 	</bean>
 
 	<bean id="rice.ksb.messageHelper" class="org.kuali.rice.ksb.messaging.MessageHelperImpl" lazy-init="true" />
-	
+
 	<bean id="rice.ksb.messageQueueService" class="org.kuali.rice.ksb.messaging.service.impl.MessageQueueServiceImpl" lazy-init="true">
 		<property name="messageQueueDao" ref="rice.ksb.messageQueueDao" />
 	</bean>
-	
+
 	<bean id="rice.ksb.exceptionMessagingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
 
 	<bean id="rice.ksb.scheduler" class="org.kuali.rice.ksb.messaging.quartz.KSBSchedulerFactoryBean" destroy-method="stop">

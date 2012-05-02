@@ -127,12 +127,14 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
                 throw new UnsupportedOperationException("JPA not currently supported for KSB");
             }
 
-
-		    if (isMessagePersistenceEnabled()) {
+            // Loading these beans unconditionally now, see:
+            // KULRICE-6574: Some KSB beans not defined unless message persistence turned on
+            //
+		    // if (isMessagePersistenceEnabled()) {
 			    springFileLocations.add(MESSAGE_CLIENT_SPRING);
 			    springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
-		    }
-        
+		    // }
+
             if (isBamEnabled()) {
         	    springFileLocations.add(BAM_SPRING);
         	    springFileLocations.add(OJB_BAM_SPRING);

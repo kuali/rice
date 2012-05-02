@@ -513,7 +513,7 @@ public interface RoleService {
 
 
     /**
-     * Gets a DelegateTyupe for the given role id and delegation type.
+     * Gets a DelegateType for the given role id and delegation type.
      *
      * @param roleId the role Id.
      * @param delegateType type of delegation
@@ -631,6 +631,45 @@ public interface RoleService {
     @CacheEvict(value={Permission.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     RoleMember updateRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
+    /**
+     * Updates the given delegateMember to the values in the passed in delegateMember
+     *
+     * @param delegateMember the new DelegateMember to save.
+     * @return DelegateMember as updated.
+     * @throws RiceIllegalArgumentException if delegateMember is null.
+     * @throws RiceIllegalStateException if delegateMember does not yet exist.
+     */
+    @WebMethod(operationName = "updateDelegateMember")
+    @WebResult(name = "delegateMember")
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    DelegateMember updateDelegateMember(@WebParam(name = "delegateMember") DelegateMember delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * Creates a new DelegateMember.  Needs to be passed a valid DelegateMember object that does not currently exist.
+     *
+     * @param delegateMember the new DelegateMember to save.
+     * @return DelegateMember as created.
+     * @throws RiceIllegalArgumentException if delegateMember is null.
+     * @throws RiceIllegalStateException if delegateMember already exists.
+     */
+    @WebMethod(operationName = "createDelegateMember")
+    @WebResult(name = "delegateMember")
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    DelegateMember createDelegateMember(
+            @WebParam(name = "delegateMember")
+            DelegateMember delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * Removes existing DelegateMembers.  Needs to be passed DelegateMember objects.
+     *
+     * @param  DelegateMember to remove.
+     * @throws RiceIllegalArgumentException if delegateMember is null.
+     */
+    @WebMethod(operationName = "removeDelegateMembers")
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    void removeDelegateMembers(
+            @WebParam(name = "delegateMembers")
+            List<DelegateMember> delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Creates a new RoleResponsibilityAction.  Needs to be passed a valid RoleResponsibilityAction

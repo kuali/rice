@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 
 import java.util.Set;
@@ -31,6 +32,7 @@ public interface ResponsibilityInternalService {
 
 	void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
 	RoleMemberBo saveRoleMember(RoleMemberBo roleMember);
+    DelegateMemberBo saveDelegateMember(DelegateMemberBo delegateMember);
 	void removeRoleMember(RoleMemberBo roleMember);
 	void updateActionRequestsForRoleChange(String roleId);
 

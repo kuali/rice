@@ -22,6 +22,7 @@ import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
@@ -434,7 +435,24 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
             if (CollectionUtils.isNotEmpty(attachments)
                     && attachments.size() > line) {
                 PersistableAttachment attachment = attachmentsBo.getAttachments().get(line);
-                streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
+
+                //it is possible that document hasn't been saved (attachment just added) and the attachment content is still in the FormFile
+                //need to grab it if that is the case.
+                byte[] attachmentContent = attachment.getAttachmentContent();
+                String fileName = attachment.getFileName();
+                String contentType = attachment.getContentType();
+                if (attachmentContent == null) {
+                    String attachmentPropNm = document.getAttachmentListPropertyName();
+                    String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
+
+                    FormFile attachmentFromBusinessObject =  (FormFile)(attachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(attachment));
+                    if (attachmentFromBusinessObject.getInputStream() != null) {
+                        attachmentContent = attachmentFromBusinessObject.getFileData();
+                        fileName = attachmentFromBusinessObject.getFileName();
+                        contentType = attachmentFromBusinessObject.getContentType();
+                    }
+                }
+                streamToResponse(attachmentContent, fileName, contentType, response);
             }
         }
 		return null;

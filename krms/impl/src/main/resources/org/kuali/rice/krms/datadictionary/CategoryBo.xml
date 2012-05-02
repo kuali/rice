@@ -72,7 +72,7 @@
 
   <bean id="CategoryBo-LookupView" parent="CategoryBo-LookupView-parentBean" />
   <bean id="CategoryBo-LookupView-parentBean" abstract="true" parent="Uif-LookupView">
-    <property name="title" value="Category Lookup"/>
+    <property name="headerText" value="Category Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
     <property name="criteriaFields">
       <list>

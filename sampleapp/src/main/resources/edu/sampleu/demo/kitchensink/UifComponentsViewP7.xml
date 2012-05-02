@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="collection1" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-     <property name="title" value="Collection Group 1 - CollectionGroupTableLayout"/>
+     <property name="headerText" value="Collection Group 1 - CollectionGroupTableLayout"/>
      <property name="instructionalText"
                value="This is a table based layout of a collection - CollectionGroupTableLayout"/>
      <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
@@ -54,7 +54,7 @@
    </bean>
 
    <bean id="collection2" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
      <property name="instructionalText"
        value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and multi-value lookup" />
@@ -119,7 +119,7 @@
      </property>
    </bean>
 
-  <bean id="UifCompDataTable" parent="Uif-VerticalBoxSection" p:title="Data Table - Ajax Source">
+  <bean id="UifCompDataTable" parent="Uif-VerticalBoxSection" p:headerText="Data Table - Ajax Source">
     <property name="instructionalText"
               value="Standard section with a DataTable (builds table using Ajax source)"/>
     <property name="items">
@@ -149,7 +149,7 @@
   </bean>
 
    <bean id="collection3" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="title" value="Collection Group 3 - Stacked" />
+     <property name="headerText" value="Collection Group 3 - Stacked" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
      <property name="collectionObjectClass"
@@ -223,7 +223,7 @@
    </bean>
 
    <bean id="collection4" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 4 - Stacked Collection with a Table subcollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
@@ -252,7 +252,7 @@
 
    <bean id="subCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
      p:layoutManager.numberOfColumns="4">
-     <property name="title" value="SubCollection" />
+     <property name="headerText" value="SubCollection" />
      <property name="instructionalText"
        value="A table collection within an item of a stacked collection" />
      <property name="collectionObjectClass"
@@ -324,7 +324,7 @@
    </bean>
 
    <bean id="collection5" parent="Uif-Disclosure-StackedCollectionSection">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
@@ -353,7 +353,7 @@
    </bean>
 
    <bean id="subCollection2" parent="Uif-StackedSubCollection-WithinSection">
-     <property name="title" value="SubCollection" />
+     <property name="headerText" value="SubCollection" />
      <property name="instructionalText"
        value="This is a stacked layout of a collection - CollectionGroup" />
      <property name="disclosure.render" value="false" />
@@ -379,7 +379,7 @@
 
    <bean id="collection6" parent="Uif-Disclosure-TableCollectionSection"
      p:layoutManager.numberOfColumns="4">
-     <property name="title"
+     <property name="headerText"
        value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
      <property name="instructionalText" value="No sequence column rendering on, separate add line, infinite scrolling" />
      <property name="collectionObjectClass"

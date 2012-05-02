@@ -111,11 +111,11 @@
               <bean parent="FieldDefinition" p:attributeName="name"/>
             </list>
           </property>
-          <property name="title" value=""/>
+          <property name="headerText" value=""/>
         </bean>
       </list>
     </property>
-    <property name="title" value="Account Type Inquiry"/>
+    <property name="headerText" value="Account Type Inquiry"/>
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -141,6 +141,6 @@
         <bean parent="FieldDefinition" p:attributeName="name"/>
       </list>
     </property>
-    <property name="title" value="Account Type Lookup"/>
+    <property name="headerText" value="Account Type Lookup"/>
   </bean>
 </beans>

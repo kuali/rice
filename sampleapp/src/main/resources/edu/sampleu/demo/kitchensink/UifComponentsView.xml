@@ -31,14 +31,14 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView" parent="Uif-FormView">
-    <property name="title" value="Uif Components"/>
+    <property name="headerText" value="Uif Components"/>
     <property name="entryPageId" value="UifCompView-Page1"/>
     <property name="navigation">
       <ref bean="UifCompView-Menu"/>
     </property>
     <property name="items">
       <list>
-        <bean id="UifCompView-Page1" parent="UifCompViewPageWithFooter" p:title="Input Fields and Controls">
+        <bean id="UifCompView-Page1" parent="UifCompViewPageWithFooter" p:headerText="Input Fields and Controls">
           <property name="items">
             <list>
               <ref bean="UifCompView-AnchorLinks"/>
@@ -51,7 +51,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page2" parent="UifCompViewPageWithFooter" p:title="Other Fields">
+        <bean id="UifCompView-Page2" parent="UifCompViewPageWithFooter" p:headerText="Other Fields">
           <property name="items">
             <list>
               <ref bean="UifCompView-FieldGroups"/>
@@ -65,7 +65,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page3" parent="UifCompViewPageWithFooter" p:title="Validation"
+        <bean id="UifCompView-Page3" parent="UifCompViewPageWithFooter" p:headerText="Validation"
               p:instructionalText="Take note of the constraintText text underneath field inputs, they describe the validation constraint for that field.  Validation constraints are evaluated by default when a user leaves a field, if the user has not satisfied the requirement, the ui will alert them of their error.  When they return to a field the ui will dynamically remove the error as they correct it and note any additional errors they may have caused.">
           <property name="items">
             <list>
@@ -79,7 +79,7 @@
         </bean>
 
         <bean id="UifCompView-Page4" parent="UifCompViewPageWithFooter"
-              p:title="Validation - Regex Patterns, the ValidCharactersConstraint">
+              p:headerText="Validation - Regex Patterns, the ValidCharactersConstraint">
           <property name="items">
             <list>
               <ref bean="regex1"/>
@@ -87,7 +87,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page5" parent="UifCompViewPageWithFooter" p:title="Progressive Disclosure and Conditional Refresh"
+        <bean id="UifCompView-Page5" parent="UifCompViewPageWithFooter" p:headerText="Progressive Disclosure and Conditional Refresh"
               p:instructionalText="Fields and Groups (ONLY!) can have conditions in which they show themselves on the page or in which they refresh themselves.  Refreshing is defined as requesting an new component from the server (which may or may not be the same element ui wise).">
           <property name="items">
             <list>
@@ -99,7 +99,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page6" parent="UifCompViewPageWithFooter" p:title="Lookups, Inquiry, and SuggestBoxes inline"
+        <bean id="UifCompView-Page6" parent="UifCompViewPageWithFooter" p:headerText="Lookups, Inquiry, and SuggestBoxes inline"
               p:instructionalText="Lookups and Inquiries backed by BO searches can be used on fields to fill in their values, as well as SuggestBoxes backed by a query">
           <property name="items">
             <list>
@@ -108,7 +108,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page7" parent="UifCompViewPageWithFooter" p:title="Collections" p:instructionalText="Lists of Data Objects">
+        <bean id="UifCompView-Page7" parent="UifCompViewPageWithFooter" p:headerText="Collections" p:instructionalText="Lists of Data Objects">
           <property name="items">
             <list>
               <bean parent="Uif-AjaxActionButton" p:actionLabel="Cause Server Messages" p:methodToCall="genCollectionServerMessages"/>
@@ -126,7 +126,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page8" parent="UifCompViewPageWithFooter" p:title="Errors"
+        <bean id="UifCompView-Page8" parent="UifCompViewPageWithFooter" p:headerText="Errors"
               p:instructionalText="validationMessages options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  validationMessages options are also available on InputFields.">
           <property name="items">
             <list>
@@ -138,7 +138,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page9" parent="UifCompViewPageWithFooter" p:title="Authorization"
+        <bean id="UifCompView-Page9" parent="UifCompViewPageWithFooter" p:headerText="Authorization"
               p:instructionalText="Examples of view authorization checks. Login as 'admin' to view this page. Login as 'dev1' for additional permissions.">
           <property name="items">
             <list>
@@ -157,7 +157,7 @@
           <property name="componentSecurity.viewAuthz" value="true"/>
         </bean>
 
-        <bean id="UifCompView-Page10" parent="UifCompViewPageWithFooter" p:title="Other Examples"
+        <bean id="UifCompView-Page10" parent="UifCompViewPageWithFooter" p:headerText="Other Examples"
               p:instructionalText="Other examples for developer reference">
           <property name="items">
             <list>
@@ -169,7 +169,7 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page11" parent="UifCompViewPageWithFooter" p:title="Script Events">
+        <bean id="UifCompView-Page11" parent="UifCompViewPageWithFooter" p:headerText="Script Events">
           <property name="items">
             <list>
               <ref bean="UifCompView-EventsIntroGroup"/>
@@ -266,7 +266,7 @@
                                            UIF Comp - Text Fields Section
   ********************************************************************************************************************
   -->
-  <bean id="UifCompView-TextFields" parent="Uif-Disclosure-VerticalBoxSection" p:title="Text Controls">
+  <bean id="UifCompView-TextFields" parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Text Controls">
     <property name="items">
       <list>
         <bean parent="UifCompView-TextFields1"/>
@@ -283,7 +283,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields1" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Field Label Options"/>
+    <property name="headerText" value="Field Label Options"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field Label" p:labelPlacement="TOP"
@@ -318,7 +318,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields2" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Field Label Options"/>
+    <property name="headerText" value="Field Label Options"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
@@ -358,7 +358,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextFields3" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Text Control Options"/>
+    <property name="headerText" value="Text Control Options"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
@@ -398,7 +398,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-TextAreas" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="TextArea Control Options"/>
+    <property name="headerText" value="TextArea Control Options"/>
     <property name="instructionalText"
               value="TextAreas have basically the same options as text controls, so only a couple examples"/>
     <property name="items">
@@ -428,7 +428,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-DateFields" parent="Uif-Disclosure-HorizontalBoxSection">
-    <property name="title" value="Date Control"/>
+    <property name="headerText" value="Date Control"/>
     <property name="instructionalText"
               value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info"/>
     <property name="items">
@@ -476,7 +476,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-SelectFields" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Selection Controls"/>
+    <property name="headerText" value="Selection Controls"/>
     <property name="instructionalText" value="Controls used for selection of 1 or multiple items"/>
     <property name="items">
       <list>

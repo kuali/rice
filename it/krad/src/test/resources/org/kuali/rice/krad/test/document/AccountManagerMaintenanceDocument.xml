@@ -53,7 +53,7 @@
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
-          <property name="title" value="Add/Edit Author"/>
+          <property name="headerText" value="Add/Edit Author"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="userName"/>
@@ -64,7 +64,7 @@
         </bean>
 
         <bean parent="Uif-MaintenanceStackedCollectionSection">
-          <property name="title" value="Accounts"/>
+          <property name="headerText" value="Accounts"/>
           <property name="collectionObjectClass" value="org.kuali.rice.krad.test.document.bo.Account"/>
           <property name="propertyName" value="accounts"/>
           <property name="items">

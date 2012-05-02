@@ -34,7 +34,7 @@
   </c:if>
 
   <label id="${element.id}" for="${element.labelForComponentId}" ${element.simpleDataAttributes}
-    ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>
+    ${title} ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>
     ${label}
   </label>
 

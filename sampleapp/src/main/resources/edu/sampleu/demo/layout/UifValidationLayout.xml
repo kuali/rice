@@ -23,7 +23,7 @@
       <bean parent="Uif-KradTheme"/>
     </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
-    <property name="title" value="View Title"/>
+    <property name="headerText" value="View Title"/>
     <property name="entryPageId" value="Demo-ValidationLayout-SectionsPage"/>
     <property name="navigation">
       <ref bean="Demo-ValidationLayout-NavMenu"/>
@@ -199,7 +199,7 @@
   </bean>
 
   <bean id="Demo-ValidationLayout-Section1" parent="Uif-Disclosure-HorizontalBoxSection">
-    <property name="title" value="Section 1 Title"/>
+    <property name="headerText" value="Section 1 Title"/>
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
       <list>
@@ -265,7 +265,7 @@
   </bean>
 
   <bean id="Demo-ValidationLayout-Section2" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Section 1 Title"/>
+    <property name="headerText" value="Section 1 Title"/>
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
       <list>
@@ -285,7 +285,7 @@
   </bean>
   
   <bean id="Demo-ValidationLayout-Section3" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Section 3 Title"/>
+    <property name="headerText" value="Section 3 Title"/>
     <property name="instructionalText"
               value="A mixture of Fields, Groups, and Sections with a more complex layout:
               2 fields as direct section items, a horizontal group of 2 fields (also part of the section),
@@ -324,7 +324,7 @@
   </bean>
 
   <bean id="Demo-ValidationLayout-Section3-SubSection1" parent="Uif-VerticalBoxSubSection">
-    <property name="title" value="SubSection 3.1 Title"/>
+    <property name="headerText" value="SubSection 3.1 Title"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:required="true" p:propertyName="field12" p:label="Field 12">
@@ -353,7 +353,7 @@
   </bean>
   
   <bean id="Demo-ValidationLayout-FieldGroupSection" parent="Uif-VerticalBoxSection">
-    <property name="title" value="FieldGroups and Tabs"/>
+    <property name="headerText" value="FieldGroups and Tabs"/>
     <property name="items">
       <list>
         <bean parent="Uif-VerticalFieldGroup" p:label="Field Group 1">
@@ -396,11 +396,11 @@
       </bean>
         
         <bean parent="Uif-TabSubSection">
-          <property name="title" value="Tabs"/>
+          <property name="headerText" value="Tabs"/>
           <property name="items">
             <list>
               <bean parent="Uif-VerticalBoxSubSection">
-                <property name="title" value="Tab 1"/>
+                <property name="headerText" value="Tab 1"/>
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field1" p:label="Field 1">
@@ -412,7 +412,7 @@
                 </property>
               </bean>
               <bean parent="Uif-VerticalBoxGroup">
-                <property name="title" value="Tab 2"/>
+                <property name="headerText" value="Tab 2"/>
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field2" p:label="Field 2">
@@ -434,7 +434,7 @@
         parent="Uif-InputField-LabelTop"/>
 
   <bean id="Demo-ValidationLayout-Section1-NoTooltip" parent="Uif-Disclosure-HorizontalBoxSection">
-      <property name="title" value="Section 1 Title"/>
+      <property name="headerText" value="Section 1 Title"/>
       <property name="instructionalText" value="Fields are direct children of this section"/>
       <property name="items">
         <list>
@@ -500,7 +500,7 @@
     </bean>
 
     <bean id="Demo-ValidationLayout-Section2-NoTooltip" parent="Uif-VerticalBoxSection">
-      <property name="title" value="Section 1 Title"/>
+      <property name="headerText" value="Section 1 Title"/>
       <property name="instructionalText" value="Fields are direct children of this section"/>
       <property name="items">
         <list>

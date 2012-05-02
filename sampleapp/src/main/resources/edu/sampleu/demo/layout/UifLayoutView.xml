@@ -28,7 +28,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView" parent="Uif-FormView">
-    <property name="title" value="Layout View"/>
+    <property name="headerText" value="Layout View"/>
     <property name="entryPageId" value="UifLayoutView-Page1"/>
     <property name="navigation">
       <ref bean="UifLayoutView-Menu"/>
@@ -128,7 +128,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Box Layout Vertical"/>
+    <property name="headerText" value="Box Layout Vertical"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
       <list>
@@ -146,7 +146,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxSection2" parent="Uif-Disclosure-HorizontalBoxSection">
-    <property name="title" value="Box Layout Horizontal"/>
+    <property name="headerText" value="Box Layout Horizontal"/>
     <property name="instructionalText"
               value="Items are rendered horizontally to fill the available room, then wrap down. Adjust the window size to see the wrapping"/>
     <property name="items">
@@ -163,7 +163,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxHorizontal1" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Box Layout 3 Across"/>
+    <property name="headerText" value="Box Layout 3 Across"/>
     <property name="items">
       <list>
         <bean parent="TestInputField" p:propertyName="field5"/>
@@ -179,7 +179,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxHorizontal2" parent="Uif-HorizontalBoxSection">
-    <property name="title" value="Box Layout 8 Across"/>
+    <property name="headerText" value="Box Layout 8 Across"/>
     <property name="items">
       <list>
         <bean parent="TestInputField" p:propertyName="field13"/>
@@ -200,7 +200,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxLayoutFluidContainers" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Box Layout Fluid Containers"/>
+    <property name="headerText" value="Box Layout Fluid Containers"/>
     <property name="instructionalText" value="Applying Fluid styles to size the container"/>
     <property name="items">
       <list>
@@ -246,7 +246,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxHorizontalNestedVertical" parent="Uif-Disclosure-HorizontalBoxSection">
-    <property name="title" value="Box Layout Horizontal with Nested Vertical Groups"/>
+    <property name="headerText" value="Box Layout Horizontal with Nested Vertical Groups"/>
     <property name="instructionalText"
               value="Box layouts are nested with different orientations to form complex layouts. Here groups with vertical orientation are nested within horizontal group."/>
     <property name="items">
@@ -287,7 +287,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxVerticalNestedHorizontal" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Box Layout Vertical with Nested Horizontal Groups"/>
+    <property name="headerText" value="Box Layout Vertical with Nested Horizontal Groups"/>
     <property name="instructionalText"
               value="In this case we have nested groups with horizontal orientation inside a vertically orientated group."/>
     <property name="items">
@@ -328,7 +328,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifLayoutView-BoxNestedControls" parent="Uif-Disclosure-HorizontalBoxSection">
-    <property name="title" value="Box Layout Nested with Various Controls"/>
+    <property name="headerText" value="Box Layout Nested with Various Controls"/>
     <property name="instructionalText"
               value="Here box layouts are nested more than one level and we are using various controls and label placement."/>
     <property name="items">
@@ -447,7 +447,7 @@
 
   <!--<bean id="horizontalWithVerticalGroups-2" parent="Uif-VerticalBoxSection"-->
   <!--p:layoutManager.orientation="HORIZONTAL">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="instructionalText" value="Horizontal layout with 3 vertical groupings"/>-->
   <!--<property name="styleClasses" value="group_header"/>-->
   <!--<property name="items">-->
@@ -461,7 +461,7 @@
 
   <!--<bean id="verticalWithHorizontalGroups-1" parent="Uif-VerticalBoxSection"-->
   <!--p:layoutManager.orientation="HORIZONTAL">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="instructionalText" value="Vertical layout with 2 horizontal groupings"/>-->
   <!--<property name="styleClasses" value="group_header"/>-->
   <!--<property name="items">-->
@@ -473,7 +473,7 @@
   <!--</bean>-->
 
   <!--<bean id="gridGroup-1" parent="Uif-GridSection">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="instructionalText" value="GroupGridLayout default settings"/>-->
   <!--<property name="disclosure.render" value="false"/>-->
   <!--<property name="styleClasses" value="group_header"/>-->
@@ -487,7 +487,7 @@
   <!--</bean>-->
 
   <!--<bean id="gridGroup-2" parent="Uif-GridSection">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="layoutManager.numberOfColumns" value="4"/>-->
   <!--<property name="instructionalText" value="GroupGridLayout number of columns = 4"/>-->
   <!--<property name="disclosure.render" value="false"/>-->
@@ -505,7 +505,7 @@
   <!--</bean>-->
 
   <!--<bean id="gridGroup-3" parent="Uif-GridSection">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="layoutManager.numberOfColumns" value="4"/>-->
   <!--<property name="instructionalText"-->
   <!--value="GroupGridLayout number of columns = 4, fields have colspan settings"/>-->
@@ -530,7 +530,7 @@
   <!--</bean>-->
 
   <!--<bean id="gridGroupNested-1" parent="Uif-GridSection">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="layoutManager.numberOfColumns" value="2"/>-->
   <!--<property name="instructionalText"-->
   <!--value="GroupGridLayout 2 columns with two nested groups"/>-->
@@ -545,7 +545,7 @@
   <!--</bean>-->
 
   <!--<bean id="gridGroupNested-2" parent="Uif-GridSection">-->
-  <!--<property name="title" value="Section Title"/>-->
+  <!--<property name="headerText" value="Section Title"/>-->
   <!--<property name="instructionalText"-->
   <!--value="GroupGridLayout default settings, 2 nested groups"/>-->
   <!--<property name="disclosure.render" value="false"/>-->

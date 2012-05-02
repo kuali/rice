@@ -27,7 +27,6 @@ import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
-import org.kuali.rice.krad.uif.widget.Helpable;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ContainerBase extends ComponentBase implements Container, Helpable {
+public abstract class ContainerBase extends ComponentBase implements Container {
 	private static final long serialVersionUID = -4182226230601746657L;
 
 	private int itemOrderingSequence;
@@ -125,11 +124,6 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
 	public void performFinalize(View view, Object model, Component parent) {
 		super.performFinalize(view, model, parent);
 
-		// if header title not given, use the container title
-		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
-			header.setHeaderText(this.getTitle());
-		}
-        
         if(header != null){
             header.addDataAttribute("headerFor", this.getId());
         }
@@ -260,7 +254,7 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
     }
 
     /**
-     * Return the container title for the help title
+     * Return the container header text for the help title
      *
      * @return container title
      *
@@ -268,7 +262,7 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
      */
     @Override
     public String getHelpTitle() {
-        return this.getTitle();
+        return this.getHeader().getHeaderText();
     }
 
     /**
@@ -371,6 +365,17 @@ public abstract class ContainerBase extends ComponentBase implements Container, 
 			header.setRender(renderHeader);
 		}
 	}
+
+    /**
+     * Convenience setter for configuration to set the header text
+     *
+     * @param headerText  the text that should be displayed on the header.
+     */
+    public void setHeaderText (String headerText) {
+        if (header != null) {
+            header.setHeaderText(headerText);
+        }
+    }
 
 	/**
 	 * Convenience setter for configuration to turn rendering of the footer

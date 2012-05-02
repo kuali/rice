@@ -64,26 +64,6 @@ public class ImageField extends FieldBase {
         image.setSource(source);
     }
 
-    /**
-     * Get the title attribute of the image
-     *
-     * @return the image title
-     */
-    @Override
-    public String getTitle() {
-        return image.getTitle();
-    }
-
-    /**
-     * Set the title attribute on the image
-     *
-     * @param title
-     */
-    @Override
-    public void setTitle(String title) {
-        image.setTitle(title);
-    }
-
     public String getAltText() {
         return image.getAltText();
     }

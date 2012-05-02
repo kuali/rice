@@ -21,6 +21,7 @@
               
 <%@ variable name-given="styleClass" scope="AT_END" %>
 <%@ variable name-given="style" scope="AT_END" %>
+<%@ variable name-given="title" scope="AT_END" %>
 <%@ variable name-given="dataRoleAttribute" scope="AT_END" %>
 <%@ variable name-given="dataTypeAttribute" scope="AT_END" %>
 <%@ variable name-given="dataMetaAttribute" scope="AT_END" %>

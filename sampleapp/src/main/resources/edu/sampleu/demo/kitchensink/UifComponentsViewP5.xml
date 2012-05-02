@@ -23,7 +23,7 @@
 
 
   <bean id="prog1" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
-		p:title="Progressive Disclosure of Fields">
+		p:headerText="Progressive Disclosure of Fields">
 		<property name="disclosure.render" value="false" />
 		
 		<property name="items">
@@ -73,7 +73,7 @@
 	</bean>
 
 	<bean id="prog2" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
-		p:title="Progressive Disclosure of Groups">
+		p:headerText="Progressive Disclosure of Groups">
 		<property name="disclosure.render" value="false" />
 		
 		<property name="items">
@@ -95,7 +95,7 @@
 					</property>
 				</bean>
 				<bean parent="Uif-HorizontalBoxSection"
-					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
+					p:progressiveRender="field38 eq 'show1'" p:headerText="Group 1"
 					p:disclosure.render="false">
 					<property name="items">
 						<list>
@@ -110,7 +110,7 @@
 				</bean>
 				<bean parent="Uif-HorizontalBoxSection"
 					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
-					p:title="Group 2" p:disclosure.render="false">
+					p:headerText="Group 2" p:disclosure.render="false">
 					<property name="items">
 						<list>
 							<bean parent="GenericTextField" p:label="Field 1B"
@@ -125,7 +125,7 @@
 	</bean>
 
 	<bean id="prog3" parent="Uif-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
-		p:title="Conditional Refresh">
+		p:headerText="Conditional Refresh">
 		<property name="disclosure.render" value="false" />
 		
 		<property name="items">
@@ -195,7 +195,7 @@
 	</bean>
 
   <bean id="Uif-CollectionRefresh" parent="Uif-Disclosure-StackedCollectionSection">
-    <property name="title" value="Collection Group With Refresh"/>
+    <property name="headerText" value="Collection Group With Refresh"/>
     <property name="instructionalText" value="This demonstrates refreshes fields and groups within a collection"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list5"/>
@@ -223,7 +223,7 @@
   </bean>
 
   <bean id="Uif-SubCollectionRefresh" parent="Uif-StackedCollectionSection">
-    <property name="title" value="SubCollection With Refresh"/>
+    <property name="headerText" value="SubCollection With Refresh"/>
     <property name="instructionalText" value="This demonstrates refreshes within a sub-collection"/>
     <property name="disclosure.render" value="false"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>

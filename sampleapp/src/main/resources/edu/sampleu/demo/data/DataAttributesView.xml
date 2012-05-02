@@ -26,7 +26,7 @@
   ********************************************************************************************************************
   -->
   <bean id="dataAttributesView_selenium" parent="Uif-FormView">
-    <property name="title" value="Data Attributes View"/>
+    <property name="headerText" value="Data Attributes View"/>
     <property name="entryPageId" value="dataAttributesView-Page1"/>
     <property name="navigation">
       <ref bean="dataAttributesView-Menu"/>
@@ -81,7 +81,7 @@
   ********************************************************************************************************************
   -->
   <bean id="dataAttributesView-BoxSection1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="InputFields"/>
+    <property name="headerText" value="InputFields"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
       <list>
@@ -105,7 +105,7 @@
   ********************************************************************************************************************
   -->
   <bean id="dataAttributesView-BoxSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Various Fields"/>
+    <property name="headerText" value="Various Fields"/>
     <property name="instructionalText" value="Items are rendered one after another vertically down the page"/>
     <property name="items">
       <list>

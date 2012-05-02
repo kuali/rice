@@ -164,13 +164,13 @@
   <c:choose>
     <c:when test="${renderHeaderColumn}">
       <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
-          rowspan="${item.rowSpan}" ${style}>
+          rowspan="${item.rowSpan}" ${style} ${title}>
         <krad:template component="${item}"/>
       </th>
     </c:when>
     <c:otherwise>
       <td role="presentation" ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-        ${style}>
+        ${style} ${title}>
         <krad:template component="${item}"/>
       </td>
     </c:otherwise>

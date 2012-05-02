@@ -122,7 +122,7 @@
   </bean>
    
   <bean id="ActionBo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Action Lookup" />
+    <property name="headerText" value="Action Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ActionBo" />
     <property name="criteriaFields">
       <list>
@@ -148,13 +148,13 @@
   </bean>
   
   <bean id="ActionBo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Action Inquiry"/>
+    <property name="headerText" value="Action Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
 		  <bean parent="Uif-Disclosure-VerticalBoxSection">
-			<property name="title" value="Action" />
+			<property name="headerText" value="Action" />
 			<property name="items">
 			  <list>
 			    <bean parent="Uif-GridGroup">
@@ -171,7 +171,7 @@
 			    </bean>
 <!-- 			    
 			    <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="2">
-				  <property name="title" value="Action Attributes" />
+				  <property name="headerText" value="Action Attributes" />
 				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionAttributeBo" />
 				  <property name="propertyName" value="attributeBos" />
 				  <property name="layoutManager.renderSequenceField" value="false" />

@@ -65,7 +65,7 @@
     </property>
   </bean>
   <bean id="UifCompView-WindowEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="true">
-    <property name="title" value="Examples of Window Events on various components"/>
+    <property name="headerText" value="Examples of Window Events on various components"/>
     <property name="items">
       <list>
         <ref bean="UifCompView-WindowEvents-Group1"/>
@@ -77,7 +77,7 @@
   </bean>
 
   <bean id="UifCompView-MouseEventsGroup" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Mouse Events"/>
+    <property name="headerText" value="Mouse Events"/>
     <property name="items">
       <list>
         <ref bean="UifCompView-MouseEvents-Group1" />
@@ -88,7 +88,7 @@
     </property>
   </bean>
   <bean id="UifCompView-KeyEventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="true">
-    <property name="title" value="Key Events"/>
+    <property name="headerText" value="Key Events"/>
     <property name="items">
       <list>
         <ref bean="UifCompView-KeyEvents-Group1" />
@@ -96,14 +96,14 @@
     </property>
   </bean>
   <bean id="UifCompView-Html5EventsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Events new to Html 5"/>
+    <property name="headerText" value="Events new to Html 5"/>
     <property name="items">
       <list>
       </list>
     </property>
   </bean>
 
-  <bean id="UifCompView-WindowEvents-Group1" parent="Uif-HorizontalBoxSection" p:title="OnClick examples on various components">
+  <bean id="UifCompView-WindowEvents-Group1" parent="Uif-HorizontalBoxSection" p:headerText="OnClick examples on various components">
       <property name="items">
         <list>
           <bean parent="Uif-InputField" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"
@@ -175,7 +175,7 @@
         </list>
       </property>
     </bean>
-    <bean id="UifCompView-WindowEvents-Group2" parent="Uif-HorizontalBoxSection" p:title="Other Window Events: OnChange, onFocus, onBlur">
+    <bean id="UifCompView-WindowEvents-Group2" parent="Uif-HorizontalBoxSection" p:headerText="Other Window Events: OnChange, onFocus, onBlur">
         <property name="items">
           <list>
             <bean parent="Uif-InputField" p:propertyName="field119" p:label="Select Control" p:width="auto"
@@ -297,7 +297,7 @@
         </list>
       </property>
     </bean>
-  <bean id="UifCompView-MouseEvents-Group3" parent="Uif-HorizontalBoxSection" p:title="Groups and Sections may have events">
+  <bean id="UifCompView-MouseEvents-Group3" parent="Uif-HorizontalBoxSection" p:headerText="Groups and Sections may have events">
     <property name="items">
       <list>
         <bean parent="Uif-VerticalBoxSection" p:style="background-color:red;height:200px; width:300px">
@@ -354,7 +354,7 @@
       </list>
     </property>
   </bean>
-  <bean id="UifCompView-MouseEvents-Group4" parent="Uif-HorizontalBoxSection" p:title="Mouse Events on Buttons">
+  <bean id="UifCompView-MouseEvents-Group4" parent="Uif-HorizontalBoxSection" p:headerText="Mouse Events on Buttons">
     <property name="items">
       <list>
         <bean parent="Uif-HorizontalBoxSection" p:style="background-color:grey; height:40px; width:900px">
@@ -371,7 +371,7 @@
       </list>
     </property>
   </bean>
-  <bean id="UifCompView-KeyEvents-Group1" parent="Uif-HorizontalBoxSection" p:title="OnKeyPress, OnKeyUp, OnKeyDown">
+  <bean id="UifCompView-KeyEvents-Group1" parent="Uif-HorizontalBoxSection" p:headerText="OnKeyPress, OnKeyUp, OnKeyDown">
       <property name="items">
         <list>
           <bean parent="Uif-InputField" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"

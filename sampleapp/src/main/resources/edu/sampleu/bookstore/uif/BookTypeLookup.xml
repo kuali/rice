@@ -22,7 +22,7 @@
 
 
   <bean id="BookType-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Book Type Lookup" />
+    <property name="headerText" value="Book Type Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType" />
     <property name="criteriaFields">
       <list>

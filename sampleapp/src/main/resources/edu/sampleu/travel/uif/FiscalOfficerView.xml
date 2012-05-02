@@ -25,7 +25,7 @@
 
   <bean id="FiscalOfficer-InquiryView" parent="Uif-FormView">
     <property name="id" value="FiscalOfficer-InquiryView" />
-    <property name="title" value="Fiscal Officer Inquiry" />
+    <property name="headerText" value="Fiscal Officer Inquiry" />
     <property name="navigation">
       <ref bean="testViewMenu" />
     </property>
@@ -47,7 +47,7 @@
 
   <bean id="FiscalOfficer-InquiryView-Section1" parent="Uif-Disclosure-GridSection">
     <property name="id" value="FiscalOfficer-InquiryView-Section1" />
-    <property name="title" value="Fiscal Officer" />
+    <property name="headerText" value="Fiscal Officer" />
     <property name="instructionalText" value="A Fiscal Officer." />
     <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">

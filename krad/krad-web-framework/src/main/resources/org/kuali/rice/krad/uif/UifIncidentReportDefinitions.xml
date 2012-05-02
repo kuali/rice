@@ -30,7 +30,7 @@
         <value>uif-incidentReportView</value>
       </list>
     </property>
-    <property name="title" value="Incident Report"/>
+    <property name="headerText" value="Incident Report"/>
     <property name="entryPageId" value="page1"/>
     <property name="items">
       <list>

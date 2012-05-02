@@ -21,5 +21,5 @@
               
 <krad:attributeBuilder component="${component}"/>
 
-<span id="${component.id}_span" ${styleClass} ${style} ${component.simpleDataAttributes}
+<span id="${component.id}_span" ${styleClass} ${style} ${title} ${component.simpleDataAttributes}
 ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}><jsp:doBody/></span>

@@ -104,7 +104,7 @@
   </bean>
 
   <bean id="KrmsAttributeDefinitionBo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Attribute Lookup" />
+    <property name="headerText" value="Attribute Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" />
     <property name="criteriaFields">
       <list>
@@ -128,7 +128,7 @@
   </bean>
   
   <bean id="KrmsAttributeDefinitionBo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Attribute Inquiry"/>
+    <property name="headerText" value="Attribute Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
@@ -145,7 +145,7 @@
 					          <bean parent="Uif-InputField" p:propertyName="namespace"/>
 					        </list>
 					      </property>
-					      <property name="title" value="KRMS Attributes"/>
+					      <property name="headerText" value="KRMS Attributes"/>
 					  </bean>
                       <bean parent="Uif-Disclosure-GridSection">
                           <property name="layoutManager.numberOfColumns" value="2"/>
@@ -154,7 +154,7 @@
                               <bean parent="Uif-InputField" p:propertyName="label"/>
                             </list>
                           </property>
-                          <property name="title" value="Attribute Label"/>
+                          <property name="headerText" value="Attribute Label"/>
                       </bean>
                     </list>
                 </property>

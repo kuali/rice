@@ -121,7 +121,7 @@
 
 
   <bean id="Uif-LookupCriteriaGroup" parent="Uif-GridGroup">
-    <property name="title" value="Lookup Criteria"/>
+    <property name="headerText" value="Lookup Criteria"/>
     <property name="fieldBindingObjectPath" value="criteriaFields"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">

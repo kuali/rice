@@ -174,7 +174,7 @@
       </list>
     </property>
     <!-- default set here so page header will always be generated -->
-    <property name="title" value="&amp;nbsp;"/>
+    <property name="headerText" value="&amp;nbsp;"/>
     <property name="validationMessages">
       <bean parent="Uif-PageValidationMessages"/>
     </property>

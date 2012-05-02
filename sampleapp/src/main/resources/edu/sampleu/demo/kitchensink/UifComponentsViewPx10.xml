@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="remotableFieldsGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Fields created by Fetching Remotable Fields"/>
+    <property name="headerText" value="Fields created by Fetching Remotable Fields"/>
     <property name="items">
       <list>
         <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="remoteFieldValuesMap"
@@ -40,7 +40,7 @@
 
   <bean id="remotableFieldsCollection" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.suppressLineWrapping="true">
-    <property name="title" value="Collection Group Remote Fields"/>
+    <property name="headerText" value="Collection Group Remote Fields"/>
     <property name="instructionalText" value="A collection group that has remote fields."/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list1"/>
@@ -57,7 +57,7 @@
   </bean>
 
   <bean id="miscGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Various configuration and feature examples"/>
+    <property name="headerText" value="Various configuration and feature examples"/>
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
@@ -100,7 +100,7 @@
   </bean>
 
   <bean id="toolTipGroup" parent="Uif-VerticalBoxSection" p:disclosure.render="false">
-    <property name="title" value="Tooltip examples"/>
+    <property name="headerText" value="Tooltip examples"/>
     <property name="header">
       <bean parent="Uif-SectionHeader">
         <property name="toolTip">

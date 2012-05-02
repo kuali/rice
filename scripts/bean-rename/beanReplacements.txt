@@ -190,3 +190,4 @@ instructionalMessageField,instructionalMessage
 requiredMessageField,requiredMessage
 cutline,cutlineMessage
 inquiryLinkField,inquiryLink
+title,headerText

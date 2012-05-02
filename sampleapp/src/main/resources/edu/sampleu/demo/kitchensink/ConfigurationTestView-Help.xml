@@ -19,7 +19,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="ConfigurationTestView-Help-Page" parent="Uif-Page" p:title="Help">
+  <bean id="ConfigurationTestView-Help-Page" parent="Uif-Page" p:headerText="Help">
     <property name="items">
       <list>
         <ref bean="ConfigurationTestView-Help-Section1"/>
@@ -33,7 +33,7 @@
   </bean>
 
   <bean id="ConfigurationTestView-Help-Section1" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Tooltip Help"/>
+    <property name="headerText" value="Tooltip Help"/>
     <property name="instructionalText" value="The various ways an help tooltip may be rendered."/>
     <property name="help">
       <bean parent="Uif-Help">
@@ -110,7 +110,7 @@
           <property name="control">
             <bean parent="Uif-TextControl">
               <property name="toolTip">
-                <bean parent="Uif-Tooltip" p:onFocusFlag="true" p:tooltipContent="This is a focus event tooltip"/>
+                <bean parent="Uif-Tooltip" p:onFocus="true" p:tooltipContent="This is a focus event tooltip"/>
               </property>
             </bean>
           </property>
@@ -131,7 +131,7 @@
 
 
         <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
-          <property name="title" value="Display only fields"/>
+          <property name="headerText" value="Display only fields"/>
           <property name="help">
             <bean parent="Uif-Help">
               <property name="tooltipHelpContent" value="Sub Section Help"/>
@@ -155,7 +155,7 @@
   </bean>
 
   <bean id="ConfigurationTestView-Help-Section2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Missing Tooltip Help"/>
+    <property name="headerText" value="Missing Tooltip Help"/>
     <property name="instructionalText" value="This section has non-existing help specified. Help tooltips should not render"/>
     <property name="help">
       <bean parent="Uif-Help">
@@ -186,7 +186,7 @@
   </bean>
 
   <bean id="ConfigurationTestView-Help-Section3" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="External Help"/>
+    <property name="headerText" value="External Help"/>
     <property name="instructionalText" value="The various ways an external help icon may be rendered."/>
     <property name="help">
       <bean parent="Uif-Help">
@@ -246,7 +246,7 @@
         </bean>
 
         <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
-          <property name="title" value="Display only fields"/>
+          <property name="headerText" value="Display only fields"/>
           <property name="help">
             <bean parent="Uif-Help">
               <property name="helpDefinition">
@@ -274,7 +274,7 @@
   </bean>
 
   <bean id="ConfigurationTestView-Help-Section4" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
-    <property name="title" value="Missing External Help"/>
+    <property name="headerText" value="Missing External Help"/>
     <property name="instructionalText" value="This section has non-existing help specified. Help icons should not render"/>
     <property name="help">
       <bean parent="Uif-Help">
@@ -326,7 +326,7 @@
   <bean id="ConfigurationTestView-Help-Section5" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
         p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
         p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpContent="Section Help">
-    <property name="title" value="Internal and External Help"/>
+    <property name="headerText" value="Internal and External Help"/>
     <property name="instructionalText" value="The various ways tooltips and help icon may be rendered together.  Properties are set directly via p:help.x."/>
     <property name="items">
       <list>
@@ -387,7 +387,7 @@
           <property name="control">
             <bean parent="Uif-TextControl">
               <property name="toolTip">
-                <bean parent="Uif-Tooltip" p:onFocusFlag="true" p:tooltipContent="This is a focus event tooltip"/>
+                <bean parent="Uif-Tooltip" p:onFocus="true" p:tooltipContent="This is a focus event tooltip"/>
               </property>
             </bean>
           </property>
@@ -407,7 +407,7 @@
               p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM"
               p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
               p:help.tooltipHelpContent="Sub Section Help">
-        <property name="title" value="Display only fields"/>
+        <property name="headerText" value="Display only fields"/>
           <property name="items">
             <list>
               <bean parent="Uif-DataField" p:propertyName="field102" p:label="Field Label" p:defaultValue="DataFieldValue"
@@ -426,7 +426,7 @@
   <bean id="ConfigurationTestView-Help-Section6" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL"
         p:help.helpDefinition.parameterNamespace="KR-NS" p:help.helpDefinition.parameterName="TEST_PARAM_NOT_EXISTS"
         p:help.helpDefinition.parameterDetailType="TEST_COMPONENT" p:help.tooltipHelpContent="">
-    <property name="title" value="Missing Internal and External Help"/>
+    <property name="headerText" value="Missing Internal and External Help"/>
     <property name="instructionalText" value="This section has non-existing help specified. Neither tooltip help nor help icons should not render"/>
     <property name="items">
       <list>

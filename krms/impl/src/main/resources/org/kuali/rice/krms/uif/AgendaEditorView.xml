@@ -65,7 +65,7 @@
         <value>/krms/css/disableButtons.css</value>
       </list>
     </property>
-    <property name="title" value="Agenda Editor"/>
+    <property name="headerText" value="Agenda Editor"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable"/>
     <property name="items">
@@ -114,7 +114,7 @@
   </bean>
 
   <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Uif-Page">
-    <!-- property name="title" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
+    <!-- property name="headerText" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
     <property name="items">
       <list>
         <!-- work around for title issues above, though apparently new agenda's don't have the name set so this doesn't get displayed -->
@@ -136,7 +136,7 @@
   </bean>
 
   <bean id="AgendaEditorView-ViewRule-Page-Parent" parent="Uif-Page">
-    <!-- property name="title" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
+    <!-- property name="headerText" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
     <property name="items">
       <list>
         <!-- work around for title issues above, though apparently new agenda's don't have the name set so this doesn't get displayed -->
@@ -157,7 +157,7 @@
   </bean>
 
   <bean id="AgendaEditorView-AgendaSection" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Agenda" />
+    <property name="headerText" value="Agenda" />
     <property name="items">
       <list>
         <bean parent="Uif-GridGroup" p:layoutManager.numberOfColumns="2">
@@ -366,7 +366,7 @@
   <bean id="AgendaEditorView-TreeViewControls" parent="Uif-VerticalBoxSection"
         p:styleClasses="krms-rulesButtonBar">
     <property name="renderHeader" value="true"/>
-    <property name="title" value="Rules"/>
+    <property name="headerText" value="Rules"/>
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout"/>
     </property>
@@ -401,7 +401,7 @@
   <bean id="AgendaEditorView-TreeEditControls" parent="Uif-VerticalBoxSection"
         p:styleClasses="krms-rulesButtonBar">
     <property name="renderHeader" value="true"/>
-    <property name="title" value="Rules"/>
+    <property name="headerText" value="Rules"/>
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout" />
     </property>

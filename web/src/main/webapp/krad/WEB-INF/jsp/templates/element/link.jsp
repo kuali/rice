@@ -34,7 +34,7 @@
 
 <krad:attributeBuilder component="${element}"/>
 
-<a id="${element.id}" href="${element.hrefText}" target="${element.target}" title="${element.title}"
+<a id="${element.id}" href="${element.hrefText}" target="${element.target}" ${title}
 ${style} ${styleClass} ${tabindex} ${element.simpleDataAttributes}
 ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>${body}</a>
 

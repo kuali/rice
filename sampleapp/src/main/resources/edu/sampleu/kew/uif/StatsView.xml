@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 <bean id="KEW-StatView" parent="Uif-FormView-KnsTheme">
     <property name="id" value="KEW-StatView"/>
-    <property name="title" value="Workflow Statistics"/>
+    <property name="headerText" value="Workflow Statistics"/>
     <property name="formClass" value="edu.sampleu.kew.krad.form.StatsForm"/>
     <property name="items">
       <list>
@@ -44,7 +44,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 </bean>
 
    <bean id="aggregatesSection" parent="Uif-GridSection" p:disclosure.render="false" p:layoutManager.numberOfColumns="4">
-      <property name="title" value="Aggregates"/>
+      <property name="headerText" value="Aggregates"/>
       <property name="fieldBindByNamePrefix" value="stats"/>
       <property name="items">
         <list>
@@ -84,7 +84,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </bean> 
    
     <bean id="dateRangesSection" parent="Uif-GridSection" p:disclosure.render="false" p:layoutManager.numberOfColumns="4">
-      <property name="title" value="Date Range"/>
+      <property name="headerText" value="Date Range"/>
       <property name="items">
         <list>
         	<bean parent="Uif-InputField" p:propertyName="begDate" p:label="Begin Date">

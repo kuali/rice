@@ -92,7 +92,7 @@
   </bean>
 
   <bean id="AgendaBo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Agenda Lookup" />
+    <property name="headerText" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaLookupableHelperServiceImpl" />
     <property name="criteriaFields">
@@ -115,7 +115,7 @@
   </bean>
 
   <bean id="AgendaBo-InquiryView" parent="Uif-InquiryView">
-  <property name="title" value="Agenda Inquiry"/>
+  <property name="headerText" value="Agenda Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
     <property name="additionalScriptFiles">

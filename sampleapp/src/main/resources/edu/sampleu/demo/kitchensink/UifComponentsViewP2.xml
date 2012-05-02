@@ -27,7 +27,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-FieldGroups" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Field Groups"/>
+    <property name="headerText" value="Field Groups"/>
     <property name="instructionalText"
               value="Field Groups can have multiple fields but appear to the user as one logical field grouping."/>
     <property name="items">
@@ -94,7 +94,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-MessageFields" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Message Fields"/>
+    <property name="headerText" value="Message Fields"/>
     <property name="instructionalText" value="Message fields display read-only text"/>
     <property name="items">
       <list>
@@ -110,7 +110,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-AttributeSecurity" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Attribute Security"/>
+    <property name="headerText" value="Attribute Security"/>
     <property name="instructionalText" value="Input Fields with Security Masking"/>
     <property name="items">
       <list>
@@ -145,7 +145,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-ImageFields" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Image Fields"/>
+    <property name="headerText" value="Image Fields"/>
     <property name="instructionalText" value="Fields that display an image"/>
     <property name="items">
       <list>
@@ -164,7 +164,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-ActionFields" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Action Fields"/>
+    <property name="headerText" value="Action Fields"/>
     <property name="instructionalText"
               value="Action fields perform an action and can be images, links, buttons or combinations of the aforementioned"/>
     <property name="items">
@@ -253,7 +253,7 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-LinkFields" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Link Fields"/>
+    <property name="headerText" value="Link Fields"/>
     <property name="items">
       <list>
         <bean parent="Uif-LinkField" p:linkLabel="Kuali Website"
@@ -283,12 +283,12 @@
   ********************************************************************************************************************
   -->
   <bean id="UifCompView-OtherFields" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Miscellaneous Fields and Groups"/>
+    <property name="headerText" value="Miscellaneous Fields and Groups"/>
     <property name="instructionalText" value="A variety of other fields and groups"/>
     <property name="items">
       <list>
         <bean parent="Uif-TabSection">
-          <property name="title" value="Tabs"/>
+          <property name="headerText" value="Tabs"/>
           <property name="instructionalText"
                     value="TabGroup holds a list of groups that can be switched between, titles are based on the groups title property"/>
           <property name="items">
@@ -300,12 +300,12 @@
         </bean>
 
         <bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
-          <property name="title" value="Basic String Data tree"/>
+          <property name="headerText" value="Basic String Data tree"/>
           <property name="propertyName" value="tree1"/>
         </bean>
 
         <bean parent="Uif-TreeSection" p:instructionalText="Data Tree">
-          <property name="title" value="Tree with Data Group"/>
+          <property name="headerText" value="Tree with Data Group"/>
           <property name="propertyName" value="tree2"/>
 
           <property name="defaultNodePrototype">
@@ -344,7 +344,7 @@
         </bean>
 
         <bean parent="Uif-ReorderSection">
-          <property name="title" value="Reordering Group"/>
+          <property name="headerText" value="Reordering Group"/>
           <property name="instructionalText"
                     value="Reorder the group items by dragging one of the items to its new position. Note each of these 'boxes' could contain a field or group of fields"/>
           <property name="items">

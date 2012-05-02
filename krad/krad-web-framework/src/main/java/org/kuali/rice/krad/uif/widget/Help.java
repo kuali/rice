@@ -101,7 +101,8 @@ public class Help extends WidgetBase {
 
         // set the alt and title attribute of the image
         String helpTitle;
-        if (parent instanceof Helpable) {
+        // make sure that we are the component's native help and not a misconfigured standalone help bean.
+        if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
             helpTitle = MessageFormat.format(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                     "help.icon.title.tag.with.field.label"), ((Helpable) parent).getHelpTitle());
         } else {

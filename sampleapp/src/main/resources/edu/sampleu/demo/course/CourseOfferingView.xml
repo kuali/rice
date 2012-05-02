@@ -25,7 +25,7 @@
                     http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
   <bean id="CourseOfferingView" parent="KSFormView">
-    <property name="title"
+    <property name="headerText"
               value="@{courseSection.course.subjectId} @{courseSection.course.number} @{courseSection.course.title}"/>
     <property name="header.items">
       <list>

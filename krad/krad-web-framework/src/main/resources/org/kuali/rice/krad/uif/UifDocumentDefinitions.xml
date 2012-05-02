@@ -86,7 +86,7 @@
 
   <bean id="Uif-DocumentOverviewSection" parent="Uif-Disclosure-GridSection" p:layoutManager.numberOfColumns="4"
         p:layoutManager.applyDefaultCellWidths="false">
-    <property name="title" value="Document Overview"/>
+    <property name="headerText" value="Document Overview"/>
     <property name="items">
       <list>
         <bean parent="Uif-DocumentDescription" p:required="true" p:label="Description"/>
@@ -99,7 +99,7 @@
 
   <bean id="Uif-DocumentNotesSection" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.suppressLineWrapping="true">
-    <property name="title"
+    <property name="headerText"
               value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})"/>
     <property name="propertyName" value="notes"/>
     <property name="styleClasses" value="tableborders wrap"/>
@@ -180,7 +180,7 @@
   </bean>
 
   <bean id="Uif-DocumentAdHocRecipientsSection" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Ad Hoc Recipients"/>
+    <property name="headerText" value="Ad Hoc Recipients"/>
     <property name="items">
       <list>
         <bean id="Uif-AdHocPersonCollection" parent="Uif-TableCollectionSubSection"
@@ -188,7 +188,7 @@
           <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRoutePerson"/>
           <property name="propertyName" value="adHocRoutePersons"/>
           <property name="bindingInfo.bindingObjectPath" value="document"/>
-          <property name="title" value="Person Requests:"/>
+          <property name="headerText" value="Person Requests:"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="styleClasses" value="tableborders wrap"/>
@@ -214,7 +214,7 @@
               p:layoutManager.numberOfColumns="3">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRouteWorkgroup"/>
           <property name="propertyName" value="adHocRouteWorkgroups"/>
-          <property name="title" value="Ad Hoc Group Requests:"/>
+          <property name="headerText" value="Ad Hoc Group Requests:"/>
           <property name="bindingInfo.bindingObjectPath" value="document"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
@@ -244,7 +244,7 @@
   </bean>
 
   <bean id="Uif-DocumentRouteLogSection" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Route Log"/>
+    <property name="headerText" value="Route Log"/>
     <property name="items">
       <list>
         <bean parent="Uif-Iframe" p:height="500" p:width="95%" p:frameborder="0">

@@ -24,7 +24,7 @@
       <bean parent="Uif-KradTheme"/>
     </property>
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
-    <property name="title" value="View Title"/>
+    <property name="headerText" value="View Title"/>
     <property name="entryPageId" value="Demo-StandardLayout-SectionsPage"/>
     <property name="navigation">
       <ref bean="Demo-StandardLayout-NavMenu"/>
@@ -84,7 +84,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section1" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Section 1 Title"/>
+    <property name="headerText" value="Section 1 Title"/>
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
       <list>
@@ -103,7 +103,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section2" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Section 2 Title"/>
+    <property name="headerText" value="Section 2 Title"/>
     <property name="instructionalText" value="SubSections are direct children of this Section"/>
     <property name="items">
       <list>
@@ -114,7 +114,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section2-SubSection1" parent="Uif-HorizontalBoxSubSection">
-    <property name="title" value="SubSection 2.1 Title"/>
+    <property name="headerText" value="SubSection 2.1 Title"/>
     <property name="instructionalText" value="Uses a Uif-HorizontalBoxSubSection for its fields"/>
     <property name="items">
       <list>
@@ -138,7 +138,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section2-SubSection2" parent="Uif-GridSubSection">
-    <property name="title" value="SubSection 2.2 Title"/>
+    <property name="headerText" value="SubSection 2.2 Title"/>
     <property name="instructionalText" value="Uses a Uif-GridSubSection for its fields"/>
     <property name="items">
       <list>
@@ -157,7 +157,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section3" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Section 3 Title"/>
+    <property name="headerText" value="Section 3 Title"/>
     <property name="instructionalText"
               value="A mixture of Fields, Groups, and Sections with a more complex layout:
               2 fields as direct section items, a horizontal group of 2 fields (also part of the section),
@@ -196,7 +196,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section3-SubSection1" parent="Uif-VerticalBoxSubSection">
-    <property name="title" value="SubSection 3.1 Title"/>
+    <property name="headerText" value="SubSection 3.1 Title"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field12" p:label="Field 12">
@@ -225,7 +225,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-CollectionSection1" parent="Uif-StackedCollectionSection">
-    <property name="title"
+    <property name="headerText"
               value="Section 1 Title"/>
     <property name="instructionalText"
               value="Uif-StackedCollectionSection with an overridden layout manager (Uif-StackedCollectionLayout-WithBoxItems)
@@ -249,7 +249,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-CollectionSection2" parent="Uif-StackedCollectionSection">
-    <property name="title"
+    <property name="headerText"
               value="Section 2 Title"/>
     <property name="instructionalText"
               value="Uif-StackedCollectionSection with Uif-Disclosure-TableSubCollection-WithinSection (note the postfix)"/>
@@ -275,7 +275,7 @@
 
   <bean id="Demo-StandardLayout-CollectionSection2-SubCollection"
         parent="Uif-Disclosure-TableSubCollection-WithinSection">
-    <property name="title" value="SubCollection Title"/>
+    <property name="headerText" value="SubCollection Title"/>
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
@@ -310,7 +310,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-Section4" parent="Uif-VerticalBoxSection">
-    <property name="title" value="Section 3 Title"/>
+    <property name="headerText" value="Section 3 Title"/>
     <property name="instructionalText" value="Section with 2 fields and a collection SubSection"/>
     <property name="items">
       <list>
@@ -330,7 +330,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-CollectionSubSection" parent="Uif-StackedCollectionSubSection">
-    <property name="title"
+    <property name="headerText"
               value="SubSection Title"/>
     <property name="instructionalText"
               value="Collection as a SubSection"/>
@@ -355,7 +355,7 @@
   </bean>
 
   <bean id="Demo-StandardLayout-CollectionSubSection-SubCollection" parent="Uif-StackedSubCollection-WithinSubSection">
-    <property name="title" value="SubCollection Title"/>
+    <property name="headerText" value="SubCollection Title"/>
     <property name="instructionalText"
               value="SubCollection with postfix -withinSubSection *Important*"/>
     <property name="collectionObjectClass"

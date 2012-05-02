@@ -116,7 +116,7 @@
   </bean>
 
   <bean id="RuleBo-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Rule Lookup" />
+    <property name="headerText" value="Rule Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
     <property name="criteriaFields">
       <list>
@@ -141,13 +141,13 @@
   </bean>
   
   <bean id="RuleBo-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Rule Inquiry"/>
+    <property name="headerText" value="Rule Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
         <list>
 		  <bean parent="Uif-Disclosure-VerticalBoxSection">
-			<property name="title" value="Rule" />
+			<property name="headerText" value="Rule" />
 			<property name="items">
 			  <list>
 			    <bean parent="Uif-GridGroup">
@@ -163,7 +163,7 @@
 				  </property>
 			    </bean>
 			    <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="2">
-				  <property name="title" value="Rule Attributes" />
+				  <property name="headerText" value="Rule Attributes" />
 				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
 				  <property name="propertyName" value="attributeBos" />
 				  <property name="layoutManager.renderSequenceField" value="false" />
@@ -178,7 +178,7 @@
 			</property>
 		  </bean>
 		  <bean parent="Uif-Disclosure-VerticalBoxSection">
-			<property name="title" value="Rule Propositions" />
+			<property name="headerText" value="Rule Propositions" />
 			<property name="items">
 			  <list>
 		  		<bean parent="Uif-GridGroup">
@@ -190,10 +190,10 @@
 				      <bean parent="Uif-InputField" p:propertyName="proposition.propositionTypeCode" />
 			        </list>
 			      </property>
-                  <property name="title" value="Proposition"/>
+                  <property name="headerText" value="Proposition"/>
                 </bean>
 			    <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">
-				  <property name="title" value="Proposition Parameters" />
+				  <property name="headerText" value="Proposition Parameters" />
 				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
 				  <property name="propertyName" value="proposition.parameters" />
 				  <property name="layoutManager.renderSequenceField" value="false" />
@@ -209,7 +209,7 @@
 			</property>
 		  </bean>
 			    <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-				  <property name="title" value="Rule Actions" />
+				  <property name="headerText" value="Rule Actions" />
 				  <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionBo" />
 				  <property name="propertyName" value="actions" />
 				  <property name="layoutManager.renderSequenceField" value="false" />

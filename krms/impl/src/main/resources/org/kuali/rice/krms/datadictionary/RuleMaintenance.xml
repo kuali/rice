@@ -40,7 +40,7 @@
   
 
   <bean id="RuleBo-MaintenanceView" parent="Uif-MaintenanceView">
-    <property name="title" value="Rule Editor" />
+    <property name="headerText" value="Rule Editor" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
     <property name="items">
       <list merge="false">
@@ -60,7 +60,7 @@
   </bean>
 
   <bean id="ruleEditorBody-parent" parent="Uif-GridSection" p:renderHeader="false">
-    <property name="title" value="Rule Editor" />
+    <property name="headerText" value="Rule Editor" />
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="3" />
     </property>
@@ -74,7 +74,7 @@
 
   <bean id="ruleInfoSection" parent="ruleInfoSection-parent"/>
   <bean id="ruleInfoSection-parent" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Rule" />
+    <property name="headerText" value="Rule" />
     <property name="renderHeader" value="true" />
     <property name="disclosure.render" value="true" />
     <property name="disclosure.defaultOpen" value="true" />
@@ -90,7 +90,7 @@
   </bean>
 
   <bean id="ruleInfoGrid" parent="Uif-GridSection">
-    <property name="title" value="Rule Information" />
+    <property name="headerText" value="Rule Information" />
     <property name="renderHeader" value="false" />
     <property name="disclosure.render" value="false" />
     <property name="items">
@@ -172,7 +172,7 @@
   </bean>
 
   <bean name="propositionSection-parent" parent="Uif-VerticalBoxGroup">
-    <property name="title" value="Proposition Tree" />
+    <property name="headerText" value="Proposition Tree" />
     <property name="disclosure.render" value="true" />
 
     <property name="items">
@@ -276,7 +276,7 @@
       p:styleClasses="krms-rulesButtonBar">
 
     <property name="renderHeader" value="true"/>
-    <property name="title" value="Propositions"/>
+    <property name="headerText" value="Propositions"/>
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
     </property>
@@ -291,7 +291,7 @@
       p:styleClasses="krms-rulesButtonBar">
 
     <property name="renderHeader" value="true"/>
-    <property name="title" value="Propositions"/>
+    <property name="headerText" value="Propositions"/>
     <property name="layoutManager">
       <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
     </property>
@@ -756,14 +756,14 @@
     <!-- TODO: temporarily disabling attribute group rendering: -->
     <property name="render"><value>false</value></property>
 
-    <property name="title" value="Rule Attributes" />
+    <property name="headerText" value="Rule Attributes" />
     <property name="disclosure.render" value="true" />
     <property name="disclosure.defaultOpen" value="false" />
     <property name="items">
       <list>
   <bean name="ruleAttributeTable" parent="Uif-TableCollectionSection"
     p:layoutManager.numberOfColumns="2">
-    <property name="title" value="Rule Attributes" />
+    <property name="headerText" value="Rule Attributes" />
     <property name="collectionObjectClass"
       value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
     <property name="propertyName" value="agendaItemLine.rule.attributeBos" />
@@ -797,7 +797,7 @@
  
   <bean name="ruleActionsSection" parent="ruleActionsSection-parent"/>
     <bean name="ruleActionsSection-parent" parent="Uif-Disclosure-VerticalBoxSection" p:style="width: 500;border: 1">
-      <property name="title" value="Action"/>
+      <property name="headerText" value="Action"/>
       <property name="renderHeader" value="true" />
       <property name="disclosure.render" value="true" />
       <property name="disclosure.defaultOpen" value="true"/>

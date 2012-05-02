@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
    <bean id="KEW-IngesterView" parent="Uif-FormView-KnsTheme">
       <property name="id" value="KEW-IngesterView"/>
-      <property name="title" value="Ingester"/>
+      <property name="headerText" value="Ingester"/>
       <property name="items">
         <list>
           <bean parent="Uif-Page" p:id="page1" p:autoFocus="false" p:validationMessages.combineMessages="false" p:validationMessages.displayFieldLabelWithMessages="false">

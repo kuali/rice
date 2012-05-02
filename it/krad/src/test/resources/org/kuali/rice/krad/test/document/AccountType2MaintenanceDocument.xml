@@ -48,6 +48,6 @@
       </list>
     </property>
     <property name="id" value="Edit Account Type 2"/>
-    <property name="title" value="Edit Account Type 2"/>
+    <property name="headerText" value="Edit Account Type 2"/>
   </bean>
 </beans>

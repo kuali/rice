@@ -90,11 +90,11 @@
               <bean parent="FieldDefinition" p:attributeName="userName" p:forceInquiry="true"/>
             </list>
           </property>
-          <property name="title" value=""/>
+          <property name="headerText" value=""/>
         </bean>
       </list>
     </property>
-    <property name="title" value="Account Manager Inquiry"/>
+    <property name="headerText" value="Account Manager Inquiry"/>
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -121,6 +121,6 @@
       </list>
     </property>
     <property name="resultSetLimit" value="90"/>
-    <property name="title" value="Account Manager Lookup"/>
+    <property name="headerText" value="Account Manager Lookup"/>
   </bean>
 </beans>

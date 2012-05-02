@@ -24,7 +24,7 @@
 
   <bean id="Context-MaintenanceView" parent="Context-MaintenanceView-parentBean"/>
   <bean id="Context-MaintenanceView-parentBean" abstract="true" parent="Uif-MaintenanceView">
-    <property name="title" value="Context Maintenance"/>
+    <property name="headerText" value="Context Maintenance"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
     <property name="items">
       <list merge="true">
@@ -39,7 +39,7 @@
               <bean parent="Uif-InputField" p:propertyName="active" p:label="Active"/>
             </list>
           </property>
-          <property name="title" value="Context"/>
+          <property name="headerText" value="Context"/>
         </bean>
       </list>
     </property>

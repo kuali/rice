@@ -24,7 +24,7 @@
 
   <bean id="Travel-testView1" parent="Uif-FormView">
     <property name="id" value="Travel-testView1"/>
-    <property name="title" value="Test View 1"/>
+    <property name="headerText" value="Test View 1"/>
     <property name="entryPageId" value="page1"/>
     <property name="items">
       <list>
@@ -49,7 +49,7 @@
   </bean>
 
   <bean id="testSection1-cgrid" parent="testSection1">
-    <property name="title" value="Bank Setup - Non Table"/>
+    <property name="headerText" value="Bank Setup - Non Table"/>
     <property name="componentModifiers">
       <list>
       </list>
@@ -63,7 +63,7 @@
   </bean>
 
   <bean id="testSection1" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Bank Setup"/>
+    <property name="headerText" value="Bank Setup"/>
     <property name="items">
       <list>
         <ref bean="testGroup1"/>
@@ -83,7 +83,7 @@
   </bean>
 
   <bean id="testGroup1" parent="Uif-GridSection">
-    <property name="title" value="Bank Information"/>
+    <property name="headerText" value="Bank Information"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="Bank Id" p:maxLength="4" p:minLength="2"
@@ -139,7 +139,7 @@
   </bean>
 
   <bean id="testGroup2" parent="Uif-GridSection">
-    <property name="title" value="Test Group 2"/>
+    <property name="headerText" value="Test Group 2"/>
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:style="width: 50%"/>
     </property>
@@ -188,7 +188,7 @@
     </property>
     <property name="propertyReplacers">
       <list>
-        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="title"
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="headerText"
               p:condition="#view.id eq 'Travel-testView1'" p:replacement="Subs Test Group"/>
       </list>
     </property>
@@ -196,7 +196,7 @@
   </bean>
 
   <bean id="testSection6" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Test Collections"/>
+    <property name="headerText" value="Test Collections"/>
     <property name="items">
       <list>
         <ref bean="testGroup4"/>
@@ -208,7 +208,7 @@
   </bean>
 
   <bean id="testGroup4" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6" p:collectionLookup.render="false">
-    <property name="title" value="Collection Group 1"/>
+    <property name="headerText" value="Collection Group 1"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="layoutManager.sequencePropertyName" value="number"/>
@@ -247,7 +247,7 @@
   </bean>
 
   <bean id="testGroup5" parent="Uif-StackedCollectionSection">
-    <property name="title" value="Collection Group 2"/>
+    <property name="headerText" value="Collection Group 2"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="bindingInfo.bindingObjectPath" value="travelAccount2"/>
@@ -270,7 +270,7 @@
   </bean>
 
   <bean id="testGroup10" parent="Uif-StackedCollectionSection">
-    <property name="title" value="Sub Collections Stacked"/>
+    <property name="headerText" value="Sub Collections Stacked"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="propertyName" value="fiscalOfficer.accounts"/>
     <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
@@ -292,7 +292,7 @@
     <property name="subCollections">
       <list>
         <bean parent="testGroup5">
-          <property name="title" value="Sub Collection 1"/>
+          <property name="headerText" value="Sub Collection 1"/>
           <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
           <property name="instructionalText" value="Sub collection stacked layout"/>
         </bean>
@@ -302,7 +302,7 @@
   </bean>
 
   <!--    <bean id="testGroup11" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="6">
-       <property name="title" value="Sub Collection Table"/>
+       <property name="headerText" value="Sub Collection Table"/>
        <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
        <property name="propertyName" value="fiscalOfficer.accounts"/>
        <property name="layoutManager.sequencePropertyName" value="number"/>
@@ -338,7 +338,7 @@
   </bean>
 
   <bean id="testGroup3" parent="Uif-GridSection">
-    <property name="title" value="Test Group 3"/>
+    <property name="headerText" value="Test Group 3"/>
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4"/>
     </property>
@@ -403,7 +403,7 @@
   </bean>
 
   <bean id="testSection5-cgrid" parent="testSection5">
-    <property name="title" value="Banking Info - Non Table"/>
+    <property name="headerText" value="Banking Info - Non Table"/>
     <property name="componentModifiers">
       <list>
       </list>
@@ -416,7 +416,7 @@
   </bean>
 
   <bean id="testSection5" parent="Uif-Disclosure-VerticalBoxSection">
-    <property name="title" value="Banking Info"/>
+    <property name="headerText" value="Banking Info"/>
     <property name="items">
       <list>
         <ref bean="testGroup3"/>
@@ -426,7 +426,7 @@
 
   <bean id="testSection2" parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.styleClasses="layout_center"
         p:layoutManager.padding="5px">
-    <property name="title" value="Test Section 2"/>
+    <property name="headerText" value="Test Section 2"/>
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
     <property name="items">
       <list>
@@ -456,7 +456,7 @@
   </bean>
 
   <bean id="testSection4" parent="Uif-Disclosure-GridSection">
-    <property name="title" value="Test Section 4"/>
+    <property name="headerText" value="Test Section 4"/>
     <property name="layoutManager">
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4"/>
     </property>
@@ -569,7 +569,7 @@
   </bean>
 
   <bean id="testSection3" parent="Uif-Disclosure-GridSection">
-    <property name="title" value="Test Section 3"/>
+    <property name="headerText" value="Test Section 3"/>
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
     <property name="items">
       <list>

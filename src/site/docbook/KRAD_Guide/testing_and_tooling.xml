@@ -16,7 +16,7 @@
     limitations under the License.
 
 -->
-<chapter xml:id="coding_templates" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+<chapter xml:id="testing_and_tooling" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Testing and Tooling </title>
     <section>
         <title>Reloading Dictionary </title>

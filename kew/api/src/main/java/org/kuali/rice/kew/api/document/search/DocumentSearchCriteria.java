@@ -788,6 +788,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             this.documentAttributeValues = documentAttributeValues;
         }
 
+        /**
+         * add document attribute value to an internal map
+         * @param name - the attribute name
+         * @param value - the attribute value
+         */
         public void addDocumentAttributeValue(String name, String value) {
             if (StringUtils.isBlank(value)) {
                 throw new IllegalArgumentException("value was null or blank");
@@ -818,8 +823,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
 
         /**
          * Resets DateTimes to local TimeZone (preserving absolute time)
-         * @see {@link http://jira.codehaus.org/browse/JACKSON-279}
-         * @see {@link org.kuali.rice.core.util.JacksonRiceModule}
+         *
+         * @see <a href="http://jira.codehaus.org/browse/JACKSON-279">Modify Joda DateTime</a>
          */
         public void normalizeDateTimes() {
             if (dateCreatedFrom != null) dateCreatedFrom = dateCreatedFrom.withZone(DateTimeZone.getDefault());

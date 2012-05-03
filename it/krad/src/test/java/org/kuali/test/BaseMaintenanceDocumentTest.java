@@ -29,6 +29,13 @@ import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *  BaseMaintenanceDocumentTest is a base class for testing maintenance documents
+ *
+ *  <p>It provides test methods for setting up, editing, saving and copying a maintenance document</p>
+ *
+ *  @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
     private MaintenanceDocument document;
     private String documentTypeName;
@@ -67,6 +74,11 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
         return initiatorPrincipalName;
     }
 
+    /**
+     *  setup a new maintenance document
+     *
+     * @param document - the maintenance document being tested
+     */
     protected void setupNewAccountMaintDoc(MaintenanceDocument document) {
 
         Object am = getNewMaintainableObject();
@@ -124,7 +136,7 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
 
     @Test
     /**
-     * test editing
+     * test editing a maintenance document
      */
     public void test_EditDoc() {
 
@@ -138,7 +150,7 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
 
     @Test
     /**
-     * test copying
+     * test copying a maintenance document
      */
     public void test_CopyDoc() {
 
@@ -153,7 +165,7 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
 
     @Test
     /**
-     * test saving
+     * test saving a maintenance document
      */
     public void test_SaveNewDoc() throws WorkflowException {
         setupNewAccountMaintDoc(getDocument());
@@ -161,10 +173,19 @@ public abstract class BaseMaintenanceDocumentTest extends KRADTestCase {
         Assert.assertTrue(getDocument().getDocumentHeader().getWorkflowDocument().isSaved());
     }
 
+    /**
+     * gets the maintenance document that is created in the constructor
+     *
+     * @return a maintenance document of the type returned by {@link #getDocumentTypeName()}
+     */
     public MaintenanceDocument getDocument() {
         return document;
     }
 
+    /**
+     * set the maintenance document to use in the test
+     * @param document - the maintenance document
+     */
     public void setDocument(MaintenanceDocument document) {
         this.document = document;
     }

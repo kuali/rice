@@ -86,6 +86,9 @@ public class ConstraintValidationResult {
 	}
 
 	/**
+     * the error key is used to retrieve a message to display to the user
+     *
+     * @see org.kuali.rice.core.api.util.RiceKeyConstants
 	 * @return the errorKey
 	 */
 	public String getErrorKey() {

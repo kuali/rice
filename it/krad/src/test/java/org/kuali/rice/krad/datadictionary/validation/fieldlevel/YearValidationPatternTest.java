@@ -22,8 +22,13 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
-
+/**
+ * YearValidationPatternTest tests {@link YearValidationPattern}
+ *
+ * <p>Valid year values should match</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class YearValidationPatternTest extends KRADTestCase {
     YearValidationPattern pattern;
 

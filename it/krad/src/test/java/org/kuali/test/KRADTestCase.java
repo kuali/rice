@@ -26,7 +26,7 @@ import java.util.List;
 
 
 /**
- * Default test base for a full KNS enabled unit test.
+ * Default test base for a full KRAD enabled unit test
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -30,7 +30,7 @@ import java.sql.Statement;
 import static org.junit.Assert.*;
 
 /**
- * This class is used by the {@link DataLoaderAnnotationTest} and {@link DataLoaderAnnotationOverrideTest} classes to verify parent class annotation usage
+ * AnnotationTestParent is used by the {@link DataLoaderAnnotationTest} and {@link DataLoaderAnnotationOverrideTest} classes to verify parent class annotation usage
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

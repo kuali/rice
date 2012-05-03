@@ -35,6 +35,8 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest tests {@link NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl}
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest extends KRADTestCase {
@@ -58,6 +60,9 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     }
 
     @Test
+    /**
+     * tests {@link NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl#getMatchingPermissions(java.util.Map, java.util.List)}
+     */
     public void testIngesterPermissionExampleLikeRice() {
         Map<String, String> requestedDetails = getUseIngesterRequestedDetails();
         
@@ -80,7 +85,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     }
     
     /**
-     * This is my best guess for the data described in KULRICE-3770
+     * tests for the data described in KULRICE-3770
      */
     @Test
     public void testIngesterPermissionExampleLikeKFS() {
@@ -102,7 +107,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     }
     
     /**
-     * This method recreates the requested details that would be encountered when accessing 
+     * recreates the requested details that would be encountered when accessing
      * the xml ingester screen.
      */
     private Map<String, String> getUseIngesterRequestedDetails() {
@@ -113,6 +118,13 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     }
 
     /**
+     * creates a test permission
+     *
+     * @param permissionTemplate - the Template to use to create this permission
+     * @param name - the permission name
+     * @param namespace - the namespace code to use
+     * @param attrs - attributes to set for this permission
+     *
      * @return a KimPermissionInfo object for the given name, namespace, and varargs "=" delimited attributes
      */
     private PermissionBo createPermission(Template permissionTemplate, String name, String namespace, String ... attrs) {

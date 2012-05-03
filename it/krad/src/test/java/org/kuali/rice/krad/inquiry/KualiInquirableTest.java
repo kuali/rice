@@ -25,7 +25,7 @@ import org.kuali.test.KRADTestCase;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This class tests the KualiInquirable methods.
+ * KualiInquirableTest tests {@link KualiInquirableImpl} methods
  * 
  * 
  */
@@ -42,7 +42,7 @@ public class KualiInquirableTest extends KRADTestCase {
     }
 
     /**
-     * Tests the inquiry url output for a given bo and property name.
+     * Tests the inquiry url output for a given bo and property name
      */
     @Test public final void testBuildInquiryUrl() {
     	String inquiryUrl = ((HtmlData.AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(am, "amId", true)).getHref();

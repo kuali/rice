@@ -40,11 +40,13 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 
 /**
- * This class is the base class for a MockWorkflowDocument. It can be extended by any other kind of
+ * MockWorkflowDocument is the base class for a MockWorkflowDocument
+ *
+ * <p>It can be extended by any other kind of
  * mock document that needs to override certain methods. This class has absolutely no state or
  * behavior. There is no public constructor, and no member variables. All void methods do nothing.
  * All methods with a return value return null. All state and behavior needs to be added via a
- * subclass.
+ * subclass.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 

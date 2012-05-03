@@ -24,6 +24,13 @@ import org.kuali.rice.test.BaseRiceTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * FixedPointValidationPatternTest tests {@link FixedPointValidationPattern}
+ *
+ * <p>Valid negative and positive fixed point numbers should match</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class FixedPointValidationPatternTest extends BaseRiceTestCase {
     // Unlike its superclass, FixedPointValidationPattern does not use Spring.
     FixedPointValidationPattern pattern;

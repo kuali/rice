@@ -44,6 +44,14 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * ExtensionAttributeTest tests that {@link org.kuali.rice.krad.bo.PersistableBusinessObject#getExtension()} works as expected
+ *
+ * <p>When running this test, the working directory should be set to two levels down from the root of the project e.g.
+ * it/krad</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ExtensionAttributeTest extends KRADTestCase {
 
 	DataDictionary dd = null;
@@ -66,6 +74,7 @@ public class ExtensionAttributeTest extends KRADTestCase {
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml");
         dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
+        dd.addConfigFileLocation("classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml");
         //dd.addConfigFileLocation("classpath:org/kuali/rice/krad/bo/datadictionary");
         dd.addConfigFileLocation("file:" + getUserDir() + "/../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
@@ -99,6 +108,9 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	}
 
 	@Test
+    /**
+     * tests that the extension attribute type is present and has all the configured values
+     */
 	public void testExtensionAttributeType() throws Exception {
 		BusinessObjectEntry boe = dd.getBusinessObjectEntry( "Account" );
 		assertNotNull( "BusinessObjectEntry for TravelAccount should not be null", boe );
@@ -114,6 +126,9 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	}
 
 	@Test
+    /**
+     * tests that various properties of the business object extension are of the expected Java Class
+     */
 	public void testObjectUtils_getPropertyType() throws Exception {
 		Account ta = new Account();
 	assertEquals("physical property type mismatch", PersistableBusinessObjectExtension.class, PropertyUtils
@@ -128,6 +143,9 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	}
 
 	@Test
+    /**
+     * test that a business object relationship definitions have the expected values
+     */
 	public void testBOMetaDataService() throws Exception {
 		Account ta = new Account();
 	DataObjectRelationship br = KNSServiceLocator.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
@@ -142,6 +160,9 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	}
 
 	@Test
+    /**
+     * tests that a quick finder, when set on an extension attribute, has the expected values
+     */
 	public void testQuickFinder() throws Exception {
 		Account ta = new Account();
 		ArrayList<String> lookupFieldAttributeList = new ArrayList<String>();
@@ -160,20 +181,25 @@ public class ExtensionAttributeTest extends KRADTestCase {
 	}
 
 	@Test
+    /**
+     * tests validation on the extension attribute
+     *
+     * <p>The values given for attributes that are foreign keys should represent existing objects when auto-update is set to false</p>
+     */
 	public void testExistenceChecks() throws Exception {
-		Account ta = new Account();
-		((AccountExtension)ta.getExtension()).setAccountTypeCode( "XYZ" ); // invalid account type
-		ta.setName( "Test Name" );
-		ta.setNumber( "1234567" );
+		Account account = new Account();
+		((AccountExtension)account.getExtension()).setAccountTypeCode( "XYZ" ); // invalid account type
+		account.setName("Test Name");
+		account.setNumber("1234567");
         GlobalVariables.setUserSession(new UserSession("quickstart"));
 	MaintenanceDocument document = (MaintenanceDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(
 		"AccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
         document.getDocumentHeader().setDocumentDescription( getClass().getSimpleName() + "test" );
         document.getOldMaintainableObject().setDataObject(null);
-        document.getOldMaintainableObject().setDataObjectClass(ta.getClass());
-        document.getNewMaintainableObject().setDataObject(ta);
-        document.getNewMaintainableObject().setDataObjectClass(ta.getClass());
+        document.getOldMaintainableObject().setDataObjectClass(account.getClass());
+        document.getNewMaintainableObject().setDataObject(account);
+        document.getNewMaintainableObject().setDataObjectClass(account.getClass());
 
         boolean failedAsExpected = false;
         try {

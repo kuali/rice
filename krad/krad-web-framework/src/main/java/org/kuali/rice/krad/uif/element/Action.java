@@ -621,6 +621,15 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * Setter for the disabled indicator
+     *
+     * @param disabled
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    /**
      * If the action field is disabled, gives a reason for why which will be displayed as a tooltip
      * on the action field (button)
      *
@@ -638,15 +647,6 @@ public class Action extends ContentElementBase {
      */
     public void setDisabledReason(String disabledReason) {
         this.disabledReason = disabledReason;
-    }
-
-    /**
-     * Setter for the disabled indicator
-     *
-     * @param disabled
-     */
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     public String getActionImageLocation() {

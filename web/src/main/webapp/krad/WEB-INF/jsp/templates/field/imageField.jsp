@@ -1,4 +1,3 @@
-</krad:div>
 <%--
 
     Copyright 2005-2012 The Kuali Foundation

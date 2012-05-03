@@ -187,14 +187,14 @@
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:clientSideJs="alert('You clicked a button');">
+        <bean parent="Uif-ActionImage" p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
             <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
-                  p:altText="ActionImageField demonstration"/>
+                  p:altText="Action Image demonstration"/>
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="ActionField" p:clientSideJs="alert('You clicked a button');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="button" p:clientSideJs="alert('You clicked a button');"/>
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
               p:clientSideJs="alert('You clicked a button');">
@@ -232,6 +232,14 @@
         </bean>
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button" p:methodToCall="foo" p:disabled="true"/>
+
+        <bean parent="Uif-ActionField" p:methodToCall="foo" p:label="Action Field">
+          <property name="actionImage">
+            <bean parent="Uif-ImageField"
+                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+                  p:altText="Action Field"/>
+          </property>
+        </bean>
 
         <bean parent="Uif-VerticalBoxGroup" p:instructionalText="Action components with primary, secondary, primary small, and secondary small styling">
           <property name="items">

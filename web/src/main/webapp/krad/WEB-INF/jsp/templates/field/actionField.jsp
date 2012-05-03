@@ -17,18 +17,17 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field"	classname="org.kuali.rice.krad.uif.field.LinkField" />
-<tiles:useAttribute name="body"/>
+<tiles:useAttribute name="field"	classname="org.kuali.rice.krad.uif.field.ActionField" />
 
 <%--
-    Renders label and div, then invokes rendering of the link component
+    Renders label and div, then invokes rendering of the action component
  --%>
 
 <krad:div component="${field}">
 
   <krad:fieldLabel field="${field}">
 
-    <krad:template component="${field.link}"/>
+    <krad:template component="${field.action}"/>
 
   </krad:fieldLabel>
 

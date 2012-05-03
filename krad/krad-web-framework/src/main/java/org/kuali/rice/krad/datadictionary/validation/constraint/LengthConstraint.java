@@ -16,15 +16,33 @@
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 /**
- * A length constraint is one that restricts the length of a string to some predefined maximum (and/or minimum). 
+ * Constraint that restricts the length of a string to some predefined maximum and/or minimum
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
 public interface LengthConstraint extends DataTypeConstraint {
 
-	public Integer getMaxLength();
-	
-	public Integer getMinLength();
+    /**
+     * Determines the maximum size of the field
+     *
+     * <p>
+     * The maximum size is used for data entry, data edit and display purposes.
+     * </p>
+     *
+     * @return Integer specifying maximum length of field
+     */
+    Integer getMaxLength();
+
+    /**
+     * Determines the minimum size of the field
+     *
+     * <p>
+     * The minimum size is used for data entry, data edit and display purposes.
+     * </p>
+     *
+     * @return Integer specifying minimum length of field
+     */
+    Integer getMinLength();
 	
 }

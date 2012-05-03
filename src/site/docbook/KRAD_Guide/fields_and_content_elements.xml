@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="coding_templates" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+    <title>Fields and Content Elements </title>
+    <section>
+        <title>Field Labels </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Data Fields and Input Fields </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Data Binding </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Data Dictionary Backing </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Types of Controls </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Disabling Controls and Tabbing </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Hooking up Lookups and Inquiries </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Input Field Messages </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Field Queries and Informational Properties </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Other Data and Input Field Properties </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Action and Action Field </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Space and Space Field </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Errors Field </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Generic Field </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Iframe </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Image and Image Field </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Link and Link Field </title>
+        <para></para>
+    </section>
+    <section>
+        <title>Message Field</title>
+        <para></para>
+    </section>
+</chapter>

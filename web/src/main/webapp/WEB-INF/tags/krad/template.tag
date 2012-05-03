@@ -96,11 +96,8 @@ still render, but render in a hidden container --%>
       <krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', '${component.refreshDiscloseMethodToCall}');" />
     </c:forEach>
   </c:if>
-</c:if>
 
-<%-- Add Tooltip if the tooltip content is not empty --%>
-<c:if test="${(!empty component.toolTip.tooltipContent)}">
-  <krad:script component="${component}" value="createTooltip('${component.id}', '${component.toolTip.tooltipContent}', ${component.toolTip.templateOptionsJSString}, ${component.toolTip.onMouseHover}, ${component.toolTip.onFocus});" />
-  <krad:script component="${component}" value="addAttribute('${component.id}', 'class', 'uif-tooltip', true);"/>
-</c:if>
+  <%-- generate tooltip for component --%>
+  <krad:tooltip component="${component}" />
 
+</c:if>

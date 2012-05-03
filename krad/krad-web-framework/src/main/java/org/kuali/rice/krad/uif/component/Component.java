@@ -913,7 +913,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public String getAllDataAttributesJs();
 
     /**
-     * Tooltip widget that should decorate the element
+     * Tooltip widget that renders a tooltip with additional information about the element on specified trigger event
      *
      * @return Tooltip
      */

@@ -19,10 +19,13 @@ package org.kuali.rice.krad.uif.widget;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 
-import java.util.Map;
-
 /**
  * Widget that renders a Tooltip on a component
+ *
+ * <p>
+ * Tooltips can display extra information about an element. The content can be plain text or rich HTML. Tooltips
+ * can be triggered by focus or mouse hover events.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -33,15 +36,15 @@ public class Tooltip extends WidgetBase {
     private boolean onFocus;
 
     private boolean onMouseHover;
-//    private boolean helpFlag;
-//
-//    private Map<String, String> helpTemplateOptions;
-//    private Map<String, String> focusTemplateOptions;
 
     public Tooltip() {
         super();
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      Object, org.kuali.rice.krad.uif.component.Component)
+     */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
@@ -62,7 +65,7 @@ public class Tooltip extends WidgetBase {
      * @param tooltipContent
      */
     public void setTooltipContent(String tooltipContent) {
-        this.tooltipContent = tooltipContent;
+        this.tooltipContent = tooltipContent.replace("\"", "&quot;").replace("'", "&apos;");
     }
 
     /**

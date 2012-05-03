@@ -73,7 +73,7 @@ public interface ActionListService {
 
     /**
      * Retrieves the max action item Id  and the total number of action items for the given user's primary Action List
-     * (does not include secondary delegations)
+     * (Including secondary and primary delegations)
      * @param principalId
      */
     public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);

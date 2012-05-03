@@ -592,7 +592,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private static final String ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY = "select cast((max(actn_itm_id))as decimal) as max_id, count(distinct(doc_hdr_id)) as total_records"
             + "  from ("
             + "       select actn_itm_id,doc_hdr_id  "
-            + "         from KREW_ACTN_ITM_T   where    prncpl_id=? and (dlgn_typ is null or dlgn_typ = 'P')"
+            + "         from KREW_ACTN_ITM_T   where    prncpl_id=? "
             + "         group by  actn_itm_id,doc_hdr_id "
             + "       ) T";
 

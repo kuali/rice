@@ -147,6 +147,9 @@
         <entry key="actionFlags" value="#view.actionFlags"/>
       </map>
     </property>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-FormView" abstract="true" parent="Uif-FormView-parentBean"/>
@@ -173,13 +176,14 @@
         <value>uif-page</value>
       </list>
     </property>
-    <!-- default set here so page header will always be generated -->
-    <property name="headerText" value="&amp;nbsp;"/>
     <property name="validationMessages">
       <bean parent="Uif-PageValidationMessages"/>
     </property>
     <property name="header">
-      <bean parent="Uif-PageHeader"/>
+      <bean parent="Uif-PageHeader">
+        <!-- default set here so page header will always be generated -->
+        <property name="headerText" value="&amp;nbsp;"/>
+      </bean>
     </property>
     <property name="disclosure">
       <bean parent="Uif-Disclosure"/>
@@ -193,6 +197,9 @@
     <property name="readOnly" value="@{#parent.readOnly}"/>
     <property name="autoFocus" value="true"/>
     <property name="disclosure.render" value="false"/>
+    <property name="help">
+      <bean parent="Uif-Help"/>
+    </property>
   </bean>
 
   <bean id="Uif-Disclosure-Page" parent="Uif-Disclosure-Page-parentBean"/>

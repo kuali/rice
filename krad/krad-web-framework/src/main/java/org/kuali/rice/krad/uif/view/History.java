@@ -404,7 +404,7 @@ public class History implements Serializable {
      */
     protected String buildViewTitle(UifFormBase form) {
         View view = form.getView();
-        String title = view.getTitle();
+        String title = view.getHeaderText();
 
         // may move this into view logic instead in the future if it is required for the view's title (not just breadcrumb)
         // if so remove this and just use getTitle - this logic would be in performFinalize instead

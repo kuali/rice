@@ -367,6 +367,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
     /**
+     * Convenience getter for the header text
+     *
+     * @return The text that should be displayed on the header
+     */
+    public String getHeaderText () {
+        if (header != null) {
+            return header.getHeaderText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Convenience setter for configuration to set the header text
      *
      * @param headerText  the text that should be displayed on the header.

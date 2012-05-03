@@ -230,27 +230,6 @@
                   p:altText="Image Only button"/>
           </property>
         </bean>
-
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button" p:methodToCall="foo" p:disabled="true"/>
-
-        <bean parent="Uif-ActionField" p:methodToCall="foo" p:label="Action Field">
-          <property name="actionImage">
-            <bean parent="Uif-ImageField"
-                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
-                  p:altText="Action Field"/>
-          </property>
-        </bean>
-
-        <bean parent="Uif-VerticalBoxGroup" p:instructionalText="Action components with primary, secondary, primary small, and secondary small styling">
-          <property name="items">
-            <list>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" p:methodToCall="foo"/>
-              <bean parent="Uif-SecondaryActionButton" p:actionLabel="Save" p:methodToCall="foo"/>
-              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Save" p:methodToCall="foo"/>
-              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Save" p:methodToCall="foo"/>
-            </list>
-          </property>
-        </bean>
       </list>
     </property>
   </bean>

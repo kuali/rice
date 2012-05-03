@@ -201,7 +201,7 @@
   <bean id="Uif-GridGroup" parent="Uif-GridGroup-parentBean"/>
   <bean id="Uif-GridGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
     <property name="styleClasses">
-      <list>
+      <list merge="true">
         <value>uif-gridGroup</value>
       </list>
     </property>
@@ -218,7 +218,7 @@
   <bean id="Uif-GridSection" parent="Uif-GridSection-parentBean"/>
   <bean id="Uif-GridSection-parentBean" abstract="true" parent="Uif-GridGroup" scope="prototype">
     <property name="styleClasses">
-      <list>
+      <list merge="true">
         <value>uif-gridSection</value>
       </list>
     </property>
@@ -233,7 +233,7 @@
   <bean id="Uif-GridSubSection" parent="Uif-GridSubSection-parentBean"/>
   <bean id="Uif-GridSubSection-parentBean" abstract="true" parent="Uif-GridGroup" scope="prototype">
     <property name="styleClasses">
-      <list>
+      <list merge="true">
         <value>uif-gridSubSection</value>
       </list>
     </property>

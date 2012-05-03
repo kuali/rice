@@ -27,7 +27,7 @@ a {
 /** Header customizations ****************************************************************************/
 
 .uif-headerText {
-    margin: 5px 5px 5px 0;
+    margin: 5px 0 5px 0;
 }
 
 h1.uif-headerText {
@@ -71,7 +71,18 @@ h6.uif-headerText {
 
 .uif-viewHeader {
     background: url(../../images/kns/masthead1.png);
-    margin: 0;
+    margin: 0 0 15px;
+    padding-left: 15px;
+    padding: .8em;
+}
+
+.uif-viewHeader h1.uif-headerText{
+    margin-top: 0px;
+}
+
+/** this is so the grid layout appears attached to it's header - no spacing **/
+.uif-gridGroup > .uif-header > a > .uif-headerText, .uif-gridGroup > .uif-header > .uif-headerText{
+    margin-bottom: 0px;
 }
 
 h2 img.expand_collapse-buttons[alt="expand"] {
@@ -104,7 +115,23 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
     background-repeat: no-repeat;
 }
 
+/* Footer *********************************************************************************************/
+.uif-footer{
+    text-align: center;
+}
+
 /* Buttons ********************************************************************************************/
+.uif-primaryActionButton:hover, .uif-secondaryActionButton:hover {
+    background: #a90329; /* Old browsers */
+    background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a90329), color-stop(44%, #8f0222), color-stop(100%, #6d0019)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a90329', endColorstr = '#6d0019', GradientType = 0); /* IE6-9 */
+    background: linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C */
+    color: #FFFFFF
+}
 
 .uif-primaryActionButton, .uif-secondaryActionButton {
     font-weight: bold;
@@ -122,30 +149,30 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
     background: linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
     border: 1px solid #999;
     color: #900000;
-    padding-top: 0em;
+    padding: .1em 2.1em;
 }
 
-.uif-primaryActionButton[disabled="true"], .uif-secondaryActionButton[disabled="true"] {
+.uif-secondaryActionButton {
+    font-weight: normal;
+}
+
+.uif-primaryActionButton[disabled="true"], .uif-secondaryActionButton[disabled="true"],
+.uif-primaryActionButton[disabled="true"]:hover, .uif-secondaryActionButton[disabled="true"]:hover{
+    color: #900000;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e5e5e5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#e5e5e5', GradientType = 0); /* IE6-9 */
+    background: linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
     -moz-opacity: 0.44;
     opacity: 0.44;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=44)";
+    cursor: default;
 }
 
-.uif-primaryActionButton {
-    padding-bottom: .2em;
-}
-
-.uif-primaryActionButton:hover, .uif-secondaryActionButton:hover {
-    background: #a90329; /* Old browsers */
-    background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a90329), color-stop(44%, #8f0222), color-stop(100%, #6d0019)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* Opera11.10+ */
-    background: -ms-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* IE10+ */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#a90329', endColorstr = '#6d0019', GradientType = 0); /* IE6-9 */
-    background: linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C */
-    color: #FFFFFF
-}
 
 /* Datepicker customizations *********************************************************************/
 .ui-state-hover {
@@ -269,7 +296,6 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
     color: #900000;
     border: 1px solid #999;
     cursor: pointer;
-    height: 16px;
     font-size: 0.9em;
     text-transform: lowercase;
 }
@@ -288,6 +314,21 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
     color: #ffffff;
     border: 1px solid #999;
     cursor: pointer;
+}
+
+/** Navigation Menu ****************************************************************************************/
+li.uif-navigationItem a{
+    color: #900000;
+}
+
+li.uif-navigationItem a:hover, li.uif-navigationItem a:focus {
+    color: white;
+    background: #900000;
+}
+
+li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
+    color: white;
+    background: black;
 }
 
 /* Tabs navigation customizations **********************************************************************************/
@@ -556,6 +597,7 @@ table.uif-tableCollectionLayout td {
 table.uif-gridLayout td {
     border: 1px solid #CCC;
     border-collapse: collapse;
+    background-color: white;
 }
 
 /** TODO Navigation Menu *******************************************************************************/

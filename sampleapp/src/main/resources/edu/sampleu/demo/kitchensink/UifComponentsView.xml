@@ -126,14 +126,12 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page8" parent="UifCompViewPageWithFooter" p:headerText="Errors"
-              p:instructionalText="validationMessages options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  validationMessages options are also available on InputFields.">
+        <bean id="UifCompView-Page8" parent="UifCompViewPageWithFooter" p:headerText="H2 Header Title">
           <property name="items">
             <list>
-              <ref bean="errors1"/>
-              <ref bean="errors2"/>
-              <ref bean="errors3"/>
-              <ref bean="errors4"/>
+              <ref bean="Demo-ButtonLevels"/>
+              <ref bean="Demo-HeaderLevels"/>
+              <ref bean="Demo-Disclosure-HeaderLevels"/>
             </list>
           </property>
         </bean>
@@ -225,7 +223,7 @@
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page7"
               p:actionLabel="Collections"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page8"
-              p:actionLabel="Error Layout"/>
+              p:actionLabel="Button/Header Levels"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page9"
               p:actionLabel="Authorization"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="UifCompView-Page10"

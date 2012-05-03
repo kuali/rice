@@ -188,12 +188,23 @@ h6.uif-headerText {
 
 .uif-documentView .uif-viewHeader{
     height: 60px;
+    padding: 0;
 }
 
 /** header disclosure image style **/
 img.expand_collapse-buttons {
     margin-bottom: 5px;
     vertical-align: middle;
+}
+
+/** Footer ************************************************************************************************/
+.uif-footer{
+    margin: 5px 0 5px 0;
+}
+
+.uif-footer .uif-horizontalBoxLayout > .uif-action{
+    float: none;
+    display: inline;
 }
 
 /** Group specific styles *******************************************************************************/
@@ -216,7 +227,6 @@ img.expand_collapse-buttons {
 
 .uif-breadcrumbs {
     display: block;
-    width: 100%;
     letter-spacing: 0.02em;
     padding: 3px 0 3px 15px;
 }
@@ -279,12 +289,14 @@ button img.rightActionImage, a img.rightActionImage {
     margin-left: 5px;
 }
 
-.uif-primaryActionButton {
-    padding: 0.5em 1.3em;
+.uif-primaryActionButton, .uif-secondaryActionButton {
+    padding: 0.4em 1.8em;
+    font-size: 1.1em;
 }
 
-.uif-secondaryActionButton {
-    padding: 0.1em 2.1em;
+.uif-smallActionButton{
+    padding: 0.1em 1.8em;
+    font-size: 0.9em;
 }
 
 .uif-primaryActionButton a, .uif-primaryActionButton a:link, .uif-primaryActionButton a:visited {
@@ -311,12 +323,12 @@ div.clearfix:after {
     height: 1%;
 }
 
-.uif-page{
-    padding-right: 15px;
-}
-
 .uif-gridLayout th {
     text-align: right;
+}
+
+.uif-gridLayout th[scope="col"]{
+    text-align: left;
 }
 
 .uif-gridLayout .uif-group {
@@ -326,8 +338,12 @@ div.clearfix:after {
 .uif-boxLayoutHorizontalItem {
     float: left;
     display: block;
-    margin-right: 20px;
+    margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.uif-inputField.uif-boxLayoutHorizontalItem{
+    margin-right: 20px;
 }
 
 .uif-boxLayoutVerticalItem {
@@ -363,6 +379,7 @@ table.uif-tableCollectionLayout thead th.sorting_desc label{
 .uif-stackedCollectionLayout > .uif-collectionItem {
     display: block;
     margin-bottom: 5px;
+    padding: 5px;
 }
 
 .uif-placeholder {
@@ -380,8 +397,8 @@ tr.uif-collectionAddItem td.sorting_1 {
     background-color: #F2F2F2;
 }
 
-div.uif-collectionAddItem, span.uif-collectionAddItem {
-    background-color: #F2F2F2;
+div.uif-collectionAddItem {
+    background-color: #FAFAFA;
     border: 1px solid #D3D3D3;
 }
 
@@ -612,6 +629,11 @@ fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"] {
     padding: 0.5em;
     margin-bottom: 0;
     text-decoration: none;
+}
+
+.ui-widget {
+    font-family: inherit !important;
+    font-size: inherit !important;
 }
 
 .ui-tabs li {

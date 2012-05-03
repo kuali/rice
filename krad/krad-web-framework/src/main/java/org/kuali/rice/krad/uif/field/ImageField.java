@@ -23,8 +23,13 @@ import org.kuali.rice.krad.uif.element.Message;
 import java.util.List;
 
 /**
- * Field that wraps an image content element
+ * Field that wraps an image content element.
  *
+ * <p>
+ * Puts a <code>&lt;DIV&gt;</code> tag around an image element. This allows for labeling, styling, etc.
+ * </p>
+ *
+ * @see org.kuali.rice.krad.uif.element.Image
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ImageField extends FieldBase {
@@ -48,26 +53,63 @@ public class ImageField extends FieldBase {
         return components;
     }
 
+    /**
+     * Retrieves the {@link Image} element wrapped by this field
+     *
+     * @return Image - the Image element representing the HTML IMG element
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Sets the Image to be wrapped by this field
+     *
+     * @param image - the Image element to be wrapped by this field
+     */
     public void setImage(Image image) {
         this.image = image;
     }
 
+    /**
+     * Retrieves the URL the image wrapped by this field
+     *
+     * @see org.kuali.rice.krad.uif.element.Image#getSource()
+     * @return String containing the URL for the image
+     */
     public String getSource() {
         return image.getSource();
     }
 
+    /**
+     * Sets the source URL for the Image associated with this field
+     *
+     * @param source - String URL for the image
+     */
     public void setSource(String source) {
         image.setSource(source);
     }
 
+    /**
+     * Provides alternate information for the image element
+     *
+     * <p>The altText property specifies an alternate text for an image. It is displayed by the browser
+     * if the image cannot be displayed.  This is especially important for accessibility, because screen
+     * readers can't understand images, but rather will read aloud the alternative text assigned to them.
+     * </p>
+     *
+     * @see org.kuali.rice.krad.uif.element.Image#getAltText()
+     * @return a String representing alternative information about this image
+     */
     public String getAltText() {
         return image.getAltText();
     }
 
+    /**
+     * Sets the alternate text attribute of the image assosiated with this field
+     *
+     * @param altText - a String containing the alternative information about the image
+     */
     public void setAltText(String altText) {
         image.setAltText(altText);
     }

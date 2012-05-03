@@ -181,7 +181,7 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * Retrieves the {@Link Header} component used to display the caption for this image
+     * Retrieves the {@link Header} component used to display the caption for this image
      *
      * @return Header component which wraps the caption text.
      */
@@ -222,7 +222,7 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * Gets the {@Link Message} component used to display the cutline.
+     * Gets the {@link Message} component used to display the cutline.
      *
      * <p>
      * Wrapping the cutline text with a Message component allows styling of the cutline text.

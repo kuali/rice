@@ -18,9 +18,211 @@
 -->
 <chapter xml:id="fields_and_content_elements" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Fields and Content Elements </title>
+    <para>Throughout the next few chapters, we will be taking a detailed look at the component types and the individual components available out of 
+        the box with KRAD. We will start small and work our way up to the entire view. By the end of this section, you will be armed with the 
+        knowledge you can use to create a wide variety of rich web interfaces!</para>
+    <para>In this chapter, we will look at the Content Element and Field component types. These form the palette from which we can paint our page. 
+         Content elements are components that will generate an HTML element tag. Their properties are generally used to populate an available 
+         attribute of the HMTL tag.  Therefore, if you are familiar with the base set of HTML tag learning these components should be no problem!</para>
+    <para>The Field component type is a wrapper. It is associated with the HTML span tag that allows us to enclose one or more elements and treat 
+        them as one unit for layout purposes. The field also allows us to declare a label which will be presented with the field block. For 
+        convenience, KRAD includes field components that have present elements included. This allows for easily bundling in a group and applying a 
+        layout to the set of fields. If a span is not needed, the elements can be directly configured in a group and rendered using the configured
+        layout manager.</para>
+    <para>So to learn more about what we can do with elements and fields, let’s take a look at each component we have in these types.
+    </para>
     <section>
         <title>Field Labels </title>
-        <para></para>
+        <para>One commonly used content element we have is the Label component. As you might have
+            guessed, this component will render an HTML Label element. To create a new label
+            component, we create a new bean with parent=”Uif-Label”:</para>
+        <para>One commonly used content element we have is the Label component. As you might have
+            guessed, this component will render an HTML Label element. To create a new label
+            component, we create a new bean with parent=”Uif-Label”:</para>
+        <para><programlisting>&lt;bean parent=”Uif-Label” ... &gt;</programlisting></para>
+        <para>The label component is one of the simplest to use since there are few properties which
+            it accepts. However, there is one required property – the label text! This is the actual
+            text that will appear on the screen as the label. To specify this we can use the
+            labelText property:</para>
+        <para><programlisting>&lt;bean parent=”Uif-Label” p:labelText=”Book Title”/&gt;</programlisting></para>
+        <para>In most cases, this is all we need to do! The resulting HTML will look like the
+            following:</para>
+        <para><programlisting>&lt;label id="66_label”&gt;Field Label&lt;/label&gt;</programlisting></para>
+        <para>Wait, where did the id come from? Recall that all components extend ComponentBase
+            which provides several properties for us, including the id property. If not specified,
+            the framework will generate an id for us automatically and use for the element id
+            attribute. We can specify a different in either of the following two ways:</para>
+        <para><programlisting>&lt;bean id=”mylabel” parent=”Uif-Label” p:labelText=”Book Title”/&gt;</programlisting></para>
+        <para><programlisting>&lt;bean parent=”Uif-Label” p:id=”mylabel” p:labelText=”Book Title”/&gt;</programlisting></para>
+        <para>In addition to the id property provided by ComponentBase, there are many others we
+            might want to use. Some that might be useful for the label component include title,
+            style, and styleClasses.</para>
+        <para>When generating a label, it is a best practice (for accessibility reasons) to also
+            specify the for attribute. The value for this attribute is the id of the element for
+            which the label applies. On the label component, we can configure this value using the
+            labelForComponentId property:</para>
+        <para><programlisting>&lt;bean parent=”Uif-Label” p:labelText=”Book Title” p:labelForComponentId=”bookTitle”/&gt;</programlisting></para>
+        <para>However, this is usually not necessary. Instead of creating the label component
+            directly, we can let the field component create one for us. The field component provides
+            some assistance to us for configuring the label and associating it with a component. To
+            understand this, first let’s look at the generic FieldBase class from which all fields
+            extend:</para>
+        <para><programlisting>
+public class FieldBase extends ComponentBase implements Field {
+    private Label fieldLabel;
+} </programlisting></para>
+        <para>We see the field base encapsulates a label component. Thus when creating a field
+            component we can set the label component properties using the spring nested syntax (dot
+            notation)</para>
+        <para><programlisting>&lt;bean parent=”Uif-DataField” p:fieldLabel.labelText=”My Data Field” ... &gt;</programlisting></para>
+        <para>We see the field base encapsulates a label component. Thus when creating a field
+            component we can set the label component properties using the spring nested syntax (dot
+            notation)</para>
+        <para><programlisting>&lt;bean parent=”Uif-DataField” p:fieldLabel.labelText=”My Data Field” ... &gt;</programlisting></para>
+        <para>Since the label is bundled within the field which is a wrapper for another component,
+            the labelForComponentId property will be automatically set (to the id of that wrapped
+            component).</para>
+        <para>The Field component also provides a more convenient way of setting the label text.
+            Instead of using the nested notation of ‘fieldLabel.labelText’, we can simply set the
+            ‘label’ property:</para>
+        <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” ... &gt;</programlisting></para>
+        <para>The given value will then be set on the label property of the nested label
+            component.</para>
+        <section>
+            <title>Other Label Options</title>
+            <para>In addition to the properties described previously, the label component offers the
+                following properties:</para>
+            <para><emphasis role="bold">renderColon</emphasis> – This indicates whether a colon
+                should be rendered after the label text. For example label text of ‘Foo’ will result
+                in ‘Foo:’ being rendered.</para>
+            <para><emphasis role="bold">requiredMessage</emphasis> – This is a message component
+                that will be rendered with the label to indicate the element associated with the
+                label (generally a control) is required. By default, the message text is configured
+                to be ‘*’ but can be changed on a global or case by case basis:</para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:label.requiredMessage=”required”/&gt;</programlisting></para>
+            <para>Like all components, the required message will be displayed if its render property
+                is true. Therefore we can set the required message to not display as follows:</para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:label.requiredMessage.render=”false”/&gt;</programlisting></para>
+            <para>However, we typically want to display the required message when the component the label is 
+                associated with is required. This is again where our Field component provides value. The 
+                field will look at the required property (on all components) of the wrapped component, 
+                and if set to true will then set the render property to true for the label’s required message. 
+                Likewise if the component’s required property is false, the render property on the required 
+                message will be set to false. Therefore these two properties are synced.</para>
+            <note>
+                <title>Automatic Setting of Properties?</title>
+                <para>In this section we have mentioned a few cases where the field component will
+                    automatically set values for us based on a condition. Where does this happen?
+                    Well in code of course! Besides simply holding the property values for us, the
+                    component class can also perform logic which are invoked during the view
+                    lifecycle. Therefore if we wanted to change the component behavior, we would
+                    need to create a new class and then override the base bean definition as
+                    described </para>
+            </note>
+            <para><emphasis role="bold">requiredMessagePlacement</emphasis> – Along with the
+                required message the label component also provides a required message placement
+                option. This indicates where the required message should be rendered in relation to
+                the label text. The type for this property is
+                org.kuali.rice.krad.uif.UifConstants.Position which is an enum for the four possible
+                positions (LEFT, TOP, RIGHT, BOTTOM). However in the case of the required message,
+                only the LEFT and RIGHT positions are supported.</para>
+        </section>
+        <section>
+            <title>Other Field Label Options</title>
+            <para>The field also provides some additional properties that related to the label.
+                These are:</para>
+            <para><emphasis role="bold">labelPlacement </emphasis>– Similar to the
+                requiredMessagePlacement of the label component this property is of type Position.
+                It indicates where the label should be placed in relation to the other field content
+                (the wrapped component(s)). The LEFT, TOP, or RIGHT position may be
+                specified:</para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”LEFT”/&gt;</programlisting></para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”TOP”/&gt;</programlisting></para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”RIGHT”/&gt;</programlisting></para>
+            <para>These three configurations are shown in the figure below. </para>
+            <figure>
+                <title>labelPlacement Options</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/labelPlacement.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para><emphasis role="bold">shortLabel</emphasis> – On the field component we can also
+                configure an alternate ‘short’ label. When necessary the short label can be pulled
+                instead of the standard ‘long’ label. For example, the table layout manager in KRAD
+                will use the short label for the table headers.</para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:shortLabel=”My Fld”/&gt;</programlisting></para>
+        </section>
+        <section>
+            <title>Base Beans</title>
+            <para>With the various configuration options such as what to render and where, it can
+                overwhelming. We certainly do not want to think through each setting for every field
+                we create. To help with this, base beans are provided sensible defaults based on the
+                label placement. These beans exist for the data field and input field (two most
+                commonly used fields). </para>
+            <para>Uif-DataField – Default which sets label placement to left, render colon as true,
+                and required message placement to right</para>
+            <para>Uif-DataField-LabelTop – Sets label placement as top, render colon as false, and
+                required message placement to right</para>
+            <para>Uif-DataField-LabelRight – Sets label placement to right, render colon as false,
+                and required message placement to left</para>
+            <para>Similar beans exist for the Uif-InputField. To use one of the label
+                configurations, we simply change our parent bean:</para>
+            <para><programlisting>&lt;bean parent=”Uif-DataField-LabelTop” p:labelText=”My Data Field” /&gt;</programlisting></para>
+        </section>
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para>The link content element component renders an html label tag</para>
+                </listitem>
+                <listitem>
+                    <para>The text for the label is specified using the <emphasis role="bold"
+                        >labelText</emphasis> property</para>
+                </listitem>
+                <listitem>
+                    <para>The <emphasis role="bold">labelForComponentId</emphasis> property on label
+                        specifies the component id the label is associated with</para>
+                </listitem>
+                <listitem>
+                    <para>Generally we don’t need to create label components ourselves, but instead
+                        configuring them through a field component</para>
+                </listitem>
+                <listitem>
+                    <para>Labels can also include a required message that indicates the field
+                        associated with the label is has required input</para>
+                </listitem>
+                <listitem>
+                    <para>The field component will automatically set the for property on the label
+                        for us along with setting the required message field component’s render flag
+                        to true if the field is required</para>
+                </listitem>
+                <listitem>
+                    <para>On the label component we can specify whether a colon should be added with
+                        the <emphasis role="bold">renderColon</emphasis> Boolean</para>
+                </listitem>
+                <listitem>
+                    <para>On the label component we can also specify whether the required message
+                        appears to the left or right of the label using the <emphasis role="bold"
+                            >requiredMessagePlacement</emphasis> property</para>
+                </listitem>
+                <listitem>
+                    <para>The field component allows us to specify where the label is placed in
+                        relation to the field contents. The options are left, top, or right</para>
+                </listitem>
+                <listitem>
+                    <para>The field component allows us to specify a short label that can be used
+                        instead of the ‘long’ label by some layout managers (for example the table
+                        layout manager)</para>
+                </listitem>
+                <listitem>
+                    <para>Base beans are provided for data and input fields that have different
+                        configurations for label. The render colon and requirement message placement
+                        properties are set based on the label placement</para>
+                </listitem>
+            </itemizedlist>
+        </section>        
     </section>
     <section>
         <title>Data Fields and Input Fields </title>

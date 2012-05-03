@@ -39,21 +39,21 @@
         <para>One commonly used content element we have is the Label component. As you might have
             guessed, this component will render an HTML Label element. To create a new label
             component, we create a new bean with parent=”Uif-Label”:</para>
-        <para><programlisting>&lt;bean parent=”Uif-Label” ... &gt;</programlisting></para>
+        <programlisting>&lt;bean parent=”Uif-Label” ... &gt;</programlisting>
         <para>The label component is one of the simplest to use since there are few properties which
             it accepts. However, there is one required property – the label text! This is the actual
             text that will appear on the screen as the label. To specify this we can use the
             labelText property:</para>
-        <para><programlisting>&lt;bean parent=”Uif-Label” p:labelText=”Book Title”/&gt;</programlisting></para>
+        <programlisting>&lt;bean parent=”Uif-Label” p:labelText=”Book Title”/&gt;</programlisting>
         <para>In most cases, this is all we need to do! The resulting HTML will look like the
             following:</para>
-        <para><programlisting>&lt;label id="66_label”&gt;Field Label&lt;/label&gt;</programlisting></para>
+        <programlisting>&lt;label id="66_label”&gt;Field Label&lt;/label&gt;</programlisting>
         <para>Wait, where did the id come from? Recall that all components extend ComponentBase
             which provides several properties for us, including the id property. If not specified,
             the framework will generate an id for us automatically and use for the element id
             attribute. We can specify a different in either of the following two ways:</para>
-        <para><programlisting>&lt;bean id=”mylabel” parent=”Uif-Label” p:labelText=”Book Title”/&gt;</programlisting></para>
-        <para><programlisting>&lt;bean parent=”Uif-Label” p:id=”mylabel” p:labelText=”Book Title”/&gt;</programlisting></para>
+        <programlisting>&lt;bean id=”mylabel” parent=”Uif-Label” p:labelText=”Book Title”/&gt;</programlisting>
+        <programlisting>&lt;bean parent=”Uif-Label” p:id=”mylabel” p:labelText=”Book Title”/&gt;</programlisting>
         <para>In addition to the id property provided by ComponentBase, there are many others we
             might want to use. Some that might be useful for the label component include title,
             style, and styleClasses.</para>
@@ -61,31 +61,31 @@
             specify the for attribute. The value for this attribute is the id of the element for
             which the label applies. On the label component, we can configure this value using the
             labelForComponentId property:</para>
-        <para><programlisting>&lt;bean parent=”Uif-Label” p:labelText=”Book Title” p:labelForComponentId=”bookTitle”/&gt;</programlisting></para>
+        <programlisting>&lt;bean parent=”Uif-Label” p:labelText=”Book Title” p:labelForComponentId=”bookTitle”/&gt;</programlisting>
         <para>However, this is usually not necessary. Instead of creating the label component
             directly, we can let the field component create one for us. The field component provides
             some assistance to us for configuring the label and associating it with a component. To
             understand this, first let’s look at the generic FieldBase class from which all fields
             extend:</para>
-        <para><programlisting>
+        <programlisting>
 public class FieldBase extends ComponentBase implements Field {
     private Label fieldLabel;
-} </programlisting></para>
+} </programlisting>
         <para>We see the field base encapsulates a label component. Thus when creating a field
             component we can set the label component properties using the spring nested syntax (dot
             notation)</para>
-        <para><programlisting>&lt;bean parent=”Uif-DataField” p:fieldLabel.labelText=”My Data Field” ... &gt;</programlisting></para>
+        <programlisting>&lt;bean parent=”Uif-DataField” p:fieldLabel.labelText=”My Data Field” ... &gt;</programlisting>
         <para>We see the field base encapsulates a label component. Thus when creating a field
             component we can set the label component properties using the spring nested syntax (dot
             notation)</para>
-        <para><programlisting>&lt;bean parent=”Uif-DataField” p:fieldLabel.labelText=”My Data Field” ... &gt;</programlisting></para>
+        <programlisting>&lt;bean parent=”Uif-DataField” p:fieldLabel.labelText=”My Data Field” ... &gt;</programlisting>
         <para>Since the label is bundled within the field which is a wrapper for another component,
             the labelForComponentId property will be automatically set (to the id of that wrapped
             component).</para>
         <para>The Field component also provides a more convenient way of setting the label text.
             Instead of using the nested notation of ‘fieldLabel.labelText’, we can simply set the
             ‘label’ property:</para>
-        <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” ... &gt;</programlisting></para>
+        <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” ... &gt;</programlisting>
         <para>The given value will then be set on the label property of the nested label
             component.</para>
         <section>
@@ -99,10 +99,10 @@ public class FieldBase extends ComponentBase implements Field {
                 that will be rendered with the label to indicate the element associated with the
                 label (generally a control) is required. By default, the message text is configured
                 to be ‘*’ but can be changed on a global or case by case basis:</para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:label.requiredMessage=”required”/&gt;</programlisting></para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:label.requiredMessage=”required”/&gt;</programlisting>
             <para>Like all components, the required message will be displayed if its render property
                 is true. Therefore we can set the required message to not display as follows:</para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:label.requiredMessage.render=”false”/&gt;</programlisting></para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:label.requiredMessage.render=”false”/&gt;</programlisting>
             <para>However, we typically want to display the required message when the component the label is 
                 associated with is required. This is again where our Field component provides value. The 
                 field will look at the required property (on all components) of the wrapped component, 
@@ -136,9 +136,9 @@ public class FieldBase extends ComponentBase implements Field {
                 It indicates where the label should be placed in relation to the other field content
                 (the wrapped component(s)). The LEFT, TOP, or RIGHT position may be
                 specified:</para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”LEFT”/&gt;</programlisting></para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”TOP”/&gt;</programlisting></para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”RIGHT”/&gt;</programlisting></para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”LEFT”/&gt;</programlisting>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”TOP”/&gt;</programlisting>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:labelPlacement=”RIGHT”/&gt;</programlisting>
             <para>These three configurations are shown in the figure below. </para>
             <figure>
                 <title>labelPlacement Options</title>
@@ -152,7 +152,7 @@ public class FieldBase extends ComponentBase implements Field {
                 configure an alternate ‘short’ label. When necessary the short label can be pulled
                 instead of the standard ‘long’ label. For example, the table layout manager in KRAD
                 will use the short label for the table headers.</para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:shortLabel=”My Fld”/&gt;</programlisting></para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:label=”My Data Field” p:shortLabel=”My Fld”/&gt;</programlisting>
         </section>
         <section>
             <title>Base Beans</title>
@@ -169,7 +169,7 @@ public class FieldBase extends ComponentBase implements Field {
                 and required message placement to left</para>
             <para>Similar beans exist for the Uif-InputField. To use one of the label
                 configurations, we simply change our parent bean:</para>
-            <para><programlisting>&lt;bean parent=”Uif-DataField-LabelTop” p:labelText=”My Data Field” /&gt;</programlisting></para>
+            <programlisting>&lt;bean parent=”Uif-DataField-LabelTop” p:labelText=”My Data Field” /&gt;</programlisting>
         </section>
         <section>
             <title>Recap</title>
@@ -226,7 +226,141 @@ public class FieldBase extends ComponentBase implements Field {
     </section>
     <section>
         <title>Data Fields and Input Fields </title>
-        <para></para>
+        <para>Two fields that are used often in enterprise applications are the DataField and
+            InputField. Generally enterprise applications have a large amount of data input and
+            output. This IO is performed using an HTML Form. The properties that back the form
+            (provide and accept the data) are stored on a model. For our purposes now, we can think
+            of the model as a simple JavaBean (more information will be given in the section ‘Data
+            Binding’. When we need to display one of these properties using KRAD we configure a
+            DataField or InputField.</para>
+        <section>
+            <title>Data Field</title>
+            <para>A Data Field is used to display a property value from the model as read-only. When
+                we say read-only, this means the value is displayed as static text on the page and
+                the user cannot changes its value. To create a data field we specify a new bean with
+                parent=”Uif-DataField”:</para>
+            <programlisting>&lt;bean parent=”Uif-DataField” ... &gt;</programlisting>
+            <para>When configuring a data field for our view, we must associate it with a property
+                on the model object. This is accomplished using the propertyName property. For
+                example, suppose we had the following model object:</para>
+            <programlisting>
+public class BookForm {
+  private String bookId;
+  private String bookTitle;
+  // getters/setters
+}
+            </programlisting>
+            <para>To create a data field for the bookId property, our configuration would be as
+                follows:</para>
+            <para>&lt;bean parent=”Uif-DataField” p:propertyName=”bookId” p:label=”Book”/&gt;</para>
+            <para>the page. Recall from the previous section our data field includes a label element
+                and by default is configured to be placed to the left of the field content.
+                Therefore the result of this will appear as in the figure below.</para>
+            <figure>
+                <title>Data Field Label</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/dataFieldLabel.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>                
+            <para>The given property name can be a nested path. For an example of this, suppose now
+                our model is the following:</para>
+            <programlisting>
+public class BookForm {
+  private Book book;
+  
+  // getters/setters
+}
+
+public class Book {
+  private String bookId;
+  private String bookTitle;
+}
+            </programlisting>
+            <para>To display the bookId now, our property name should be “book.bookId”. This is the
+                same as doing getBook().getBookId(). More complex situations will be covered in the
+                section ‘Data Binding’.</para>            
+        </section>
+        <section>
+            <title>Input Field</title>
+            <para>An Input Field extends from the Data Field and gives edit capability. This means
+                the user can change the value for the associated property and submit back using the
+                HTML form. Values are edited using an HTML control which is represented in KRAD with
+                a Control content element. We will learn all about the various types of controls
+                later on in this chapter. </para>
+            <para>To create a new input field we specify a new bean with
+                parent=”Uif-InputField”:</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” ... &gt;</programlisting>
+            <para>Now since input field is also a data field, we must specify the property it is
+                associated with using the propertyName property:</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId”/&gt;</programlisting>
+            <para>Furthermore, since we have an input field and want to allow the user to change the
+                value, we need to configure a control component to use. We set the control component
+                for the input field using the <emphasis role="bold">control</emphasis>
+                property:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:label=”Book Id”&gt;
+    &lt;property name=”control”&gt;
+    &lt;bean parent=”Uif-TextControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+            <para>The control component is a new object, not a primitive. Therefore we use a bean or
+                ref tag to provide the value. In this example we are using the text control whose
+                bean id is ‘Uif-TextControl’. If needed, we could set properties on the text control
+                component using the  p namespace or nested property tags.</para>
+            <para>In the figure below we see the result of the above input field
+                configuration.</para>
+            <para>The rendered HTML for our input field will be the following:</para>
+            <programlisting>&lt;input id="u66" name="bookId" class="uif-control uif-textControl valid" tabindex="0" type="text" value="" size="30" aria-invalid="false"&gt;</programlisting>
+            <para>Where did all these attributes come from? Since we didn’t assign an id, the framework generated 
+            one for us and outputted as the element id. Next, the propertyName given for the input field was used 
+            as the name attribute on the tag. This is important for binding the data which will be discussed in the 
+            section ‘Data Binding’. The ‘Uif-TextControl’ bean that was used for the control property included a 
+            default size of ‘30’, and also includes the style classes ‘uif-control’ and ‘uif-textControl’. Finally 
+            the framework set a tabindex for us (this happens to be the first field on the page) and added aria markup 
+            for accessibility. Don’t worry if this all doesn’t make sense now, we’ll see all these properties many more times!</para>
+            <note>
+                <title>Data and Input Fields</title>
+                <para>Whenever this training manual refers to data field, the same will also apply to 
+                    input fields (by inheritance). However the reverse is not always true. </para>
+            </note>
+        </section>
+        <section>
+            <title>Default Values</title>
+            <para>Through configuration of the data field, we can also initialize the backing
+                property of the model. The value specified will then be set as the property value
+                when the model is initialized. Chapter 12 will cover how the model gets initialized
+                along with other concerns of the lifecycle. In terms of default values, it is just
+                important to know the model gets created for a new request to a view (such as a
+                request from the portal or other application menu), and once created is reused
+                throughout the conversation (series of posts on the same view). Generally for
+                initial requests we do not need to perform a lot of business logic. That is, usually
+                we just want to display the view for the user to begin completing. Being able to set
+                default values that will display on the initial view is convenient in that we don’t
+                have to override the controller method to do the same in code.</para>
+            <para>There are two properties available on data field that allows us to configure a
+                default value. The first is the property ‘defaultValue’ which takes the actual value
+                to use. For example, suppose we want to set a default value of ‘2012’ for the
+                bookYear property. This would be done as follows:</para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”2012”/&gt;</programlisting>
+            <para>This is equivalent to code:</para>
+            <programlisting>bookForm.setBookYear(“2012”);</programlisting>
+            <para>The default value given must be convertible to the property type without a custom
+                property editor. </para>
+            <note>
+                <title>Default Type Conversion</title>
+                <para>Spring uses PropertyEditor classes when converting a configured value in the XML 
+                    to the type for the property being populated. Furthermore, these are used when formatting 
+                    the value between the user interface and a custom editor can be specified on the data field. 
+                    As of Rice 2.0, any custom editor is not used to apply the default value. This 
+                    is being looked at for a potential enhancement in 2.2.</para>
+            </note>
+            <para>A very powerful feature we will be looking at later on in this training manual is
+                the Spring Expression Language (EL). KRAD allows you to use expressions for most
+                component properties, including the defaultValue. There are many things you can do
+                with EL, but to give you a taste here are a couple:</para>
+        </section>
     </section>
     <section>
         <title>Data Binding </title>

@@ -166,7 +166,21 @@ public class ComponentUtils {
 
         return typeComponents;
     }
-    
+
+    /**
+     * Return the components of the specified type from the given component list
+     *
+     * <p>
+     * Components that match, implement or are extended from the specified {@code componentType} are returned in
+     * the result.  If a component is a parent to other components then these child components are searched for
+     * matching component types as well.
+     * </p>
+     *
+     * @param items list of components from which to search
+     * @param componentType the class or interface of the component type to return
+     * @param <T> the type of the components that are returned
+     * @return List of matching components
+     */
     public static <T extends Component> List<T> getComponentsOfTypeDeep(List<? extends Component> items,
             Class<T> componentType) {
         List<T> typeComponents = new ArrayList<T>();

@@ -126,6 +126,18 @@
         <value>org.kuali.rice.coreservice.</value>
       </list>
     </property>
+	<property name="externalizableBusinessObjectImplementations">
+      <map>
+        <entry key="org.kuali.rice.coreservice.framework.component.ComponentEbo"
+               value="org.kuali.rice.coreservice.impl.component.ComponentBo"/>
+        <entry key="org.kuali.rice.coreservice.framework.namespace.NamespaceEbo"
+               value="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"/>
+        <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterEbo"
+               value="org.kuali.rice.coreservice.impl.parameter.ParameterBo"/>
+        <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo"
+               value="org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo"/>
+      </map>
+    </property>
   </bean>
 
   <bean id="coreServiceServerModule" class="org.kuali.rice.coreservice.service.impl.CoreServiceModuleService">

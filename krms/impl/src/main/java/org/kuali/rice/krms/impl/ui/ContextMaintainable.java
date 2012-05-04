@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
@@ -29,6 +31,30 @@ import java.util.Map;
  * */
 public class ContextMaintainable extends MaintainableImpl {
 
+    private transient SequenceAccessorService sequenceAccessorService;
+
+    @Override
+    public void processAfterNew(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        ContextBo newContext = (ContextBo) document.getNewMaintainableObject().getDataObject();
+
+        String nextId = getSequenceAccessorService().getNextAvailableSequenceNumber(KrmsMaintenanceConstants.Sequences.CONTEXT).toString();
+        newContext.setId(nextId);
+
+        super.processAfterNew(document, requestParameters);    
+    }
+
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        ContextBo context = (ContextBo) document.getNewMaintainableObject().getDataObject();
+
+        String nextId = getSequenceAccessorService().getNextAvailableSequenceNumber(KrmsMaintenanceConstants.Sequences.CONTEXT).toString();
+        context.setId(nextId);
+
+        super.processAfterCopy(document,
+                requestParameters);
+    }
+
+
 
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
@@ -38,10 +64,21 @@ public class ContextMaintainable extends MaintainableImpl {
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
             document.getDocumentHeader().setDocumentDescription("New Context Document");
 
-            contextBo = contextBo.copyContext(" " + System.currentTimeMillis());
+            contextBo = contextBo.copyContext(" Copy " + System.currentTimeMillis());
         }
 
         return contextBo;
+    }
+
+    /**
+     *  Returns the sequenceAssessorService
+     * @return {@link SequenceAccessorService}
+     */
+    private SequenceAccessorService getSequenceAccessorService() {
+        if ( sequenceAccessorService == null ) {
+            sequenceAccessorService = KRADServiceLocator.getSequenceAccessorService();
+        }
+        return sequenceAccessorService;
     }
 
 }

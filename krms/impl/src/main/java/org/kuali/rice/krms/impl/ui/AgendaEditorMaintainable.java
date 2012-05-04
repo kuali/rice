@@ -330,7 +330,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 TermBo newTerm = new TermBo();
                 newTerm.setDescription(propositionBo.getNewTermDescription());
                 newTerm.setSpecificationId(termSpecId);
-                newTerm.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_TERM_S").toString());
+                newTerm.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
+                        KrmsMaintenanceConstants.Sequences.TERM_SPECIFICATION).toString());
 
                 List<TermParameterBo> params = new ArrayList<TermParameterBo>();
                 for (Map.Entry<String, String> entry : propositionBo.getTermParameters().entrySet()) {
@@ -338,7 +339,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                     param.setTermId(newTerm.getId());
                     param.setName(entry.getKey());
                     param.setValue(entry.getValue());
-                    param.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_TERM_PARM_S").toString());
+                    param.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
+                            KrmsMaintenanceConstants.Sequences.TERM_PARAMETER).toString());
 
                     params.add(param);
                 }

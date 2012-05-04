@@ -103,9 +103,6 @@
     <property name="fieldLookup">
       <bean parent="Uif-QuickFinder"/>
     </property>
-    <property name="fieldDirectInquiry">
-      <bean parent="Uif-DirectInquiry"/>
-    </property>
     <property name="fieldSuggest">
       <bean parent="Uif-Suggest"/>
     </property>

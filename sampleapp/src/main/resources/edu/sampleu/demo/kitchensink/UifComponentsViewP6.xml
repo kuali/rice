@@ -39,9 +39,9 @@
           <bean parent="GenericTextField" p:label="Direct Inquiry"
             p:instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
             p:propertyName="field71" p:defaultValue="a1">
-            <property name="fieldDirectInquiry.dataObjectClassName"
+            <property name="fieldInquiry.dataObjectClassName"
               value="edu.sampleu.travel.bo.TravelAccount" />
-            <property name="fieldDirectInquiry.inquiryParameters">
+            <property name="fieldInquiry.inquiryParameters">
               <map>
                 <entry key="field71" value="number" />
               </map>

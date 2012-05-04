@@ -111,7 +111,6 @@ public class ViewCleaner {
         inputField.setControl(null);
         inputField.setInstructionalMessage(null);
         inputField.setConstraintMessage(null);
-        inputField.setFieldDirectInquiry(null);
         inputField.setFieldInquiry(null);
         inputField.setLabel(null);
         inputField.setTemplateOptions(new HashMap<String, String>());

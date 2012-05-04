@@ -154,15 +154,6 @@
         </property>
       </bean>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
-    <property name="render" value="@{#parent.readOnly}"/>
-  </bean>
-
-  <bean id="Uif-DirectInquiry" parent="Uif-DirectInquiry-parentBean"/>
-  <bean id="Uif-DirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DirectInquiry"
-        scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
-    <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
     <property name="directInquiryAction">
       <bean parent="Uif-ActionImage">
         <property name="actionImage">
@@ -173,7 +164,6 @@
         </property>
       </bean>
     </property>
-    <property name="render" value="@{!#parent.readOnly}"/>
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 

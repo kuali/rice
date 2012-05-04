@@ -25,8 +25,10 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
@@ -41,7 +43,16 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 /**
- * Widget for rendering an Inquiry link on a field's value
+ * Widget for rendering an Inquiry link or DirectInquiry action field
+ *
+ * <p>
+ * The inquiry widget will render a button for the field value when
+ * that field is editable. When read only the widget will create a link on the display value.
+ * It points to the associated inquiry view for the field. The inquiry can be configured to point to a certain
+ * {@code InquiryView}, or the framework will attempt to associate the
+ * field with a inquiry based on its metadata (in particular its
+ * relationships in the model).
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -58,14 +69,16 @@ public class Inquiry extends WidgetBase {
 
     private Map<String, String> inquiryParameters;
 
-    private boolean forceInquiry;
-
     private Link inquiryLink;
+
+    private Action directInquiryAction;
+
+    private boolean adjustInquiryParameters;
+    private BindingInfo fieldBindingInfo;
 
     public Inquiry() {
         super();
 
-        forceInquiry = false;
         inquiryParameters = new HashMap<String, String>();
     }
 
@@ -77,32 +90,53 @@ public class Inquiry extends WidgetBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        // only set inquiry if enabled
-        if (!isRender() || !isReadOnly()) {
+        if (!isRender()) {
             return;
         }
 
         // set render to false until we find an inquiry class
         setRender(false);
 
-        DataField field = (DataField) parent;
-        if (StringUtils.isBlank(field.getBindingInfo().getBindingPath())) {
-           return;
+        // Do checks for inquiry when read only
+        if (isReadOnly()) {
+
+            if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())) {
+                return;
+            }
+
+            // check if field value is null, if so no inquiry
+            Object propertyValue = ObjectPropertyUtils.getPropertyValue(model,
+                    ((DataField) parent).getBindingInfo().getBindingPath());
+            if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
+                return;
+            }
+
         }
 
-        // check if field value is null, if so no inquiry
-        Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
-        if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
-            return;
+        // Do checks for direct inquiry when editable
+        if (!isReadOnly() && parent instanceof InputField) {
+
+            // determine whether inquiry parameters will need adjusted
+            if (StringUtils.isBlank(getDataObjectClassName())
+                    || (getInquiryParameters() == null)
+                    || getInquiryParameters().isEmpty()) {
+                // if inquiry parameters not given, they will not be adjusted by super
+                adjustInquiryParameters = true;
+                fieldBindingInfo = ((InputField) parent).getBindingInfo();
+            }
+
         }
 
-        setupLink(view, model, field);
+        setupLink(view, model, (DataField) parent);
     }
 
     /**
      * Get parent object and field name and build the inquiry link
+     *
+     * <p>
      * This was moved from the performFinalize because overlapping and to be used
-     * by DirectInquiry
+     * by DirectInquiry.
+     * </p>
      *
      * @param view - Container View
      * @param model - model
@@ -114,7 +148,7 @@ public class Inquiry extends WidgetBase {
         // if class and parameters configured, build link from those
         if (StringUtils.isNotBlank(getDataObjectClassName()) && (getInquiryParameters() != null) &&
                 !getInquiryParameters().isEmpty()) {
-            Class<?> inquiryObjectClass = null;
+            Class<?> inquiryObjectClass;
             try {
                 inquiryObjectClass = Class.forName(getDataObjectClassName());
             } catch (ClassNotFoundException e) {
@@ -136,15 +170,15 @@ public class Inquiry extends WidgetBase {
 
     /**
      * Adjusts the path on the inquiry parameter property to match the binding
-     * path prefix of the given <code>BindingInfo</code>
+     * path prefix of the given {@code BindingInfo}
      *
      * @param bindingInfo - binding info instance to copy binding path prefix from
      */
     public void updateInquiryParameters(BindingInfo bindingInfo) {
         Map<String, String> adjustedInquiryParameters = new HashMap<String, String>();
-        for (String fromField : inquiryParameters.keySet()) {
-            String toField = inquiryParameters.get(fromField);
-            String adjustedFromFieldPath = bindingInfo.getPropertyAdjustedBindingPath(fromField);
+        for (Entry<String, String> stringEntry : inquiryParameters.entrySet()) {
+            String toField = stringEntry.getValue();
+            String adjustedFromFieldPath = bindingInfo.getPropertyAdjustedBindingPath(stringEntry.getKey());
 
             adjustedInquiryParameters.put(adjustedFromFieldPath, toField);
         }
@@ -159,69 +193,122 @@ public class Inquiry extends WidgetBase {
      * parameters)
      * @param propertyName - name of the property the inquiry is set on
      * @param inquiryObjectClass - class of the object the inquiry should point to
-     * @param inquiryParms - map of key field mappings for the inquiry
+     * @param inquiryParams - map of key field mappings for the inquiry
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Class<?> inquiryObjectClass,
-            Map<String, String> inquiryParms) {
+            Map<String, String> inquiryParams) {
+
         Properties urlParameters = new Properties();
 
-        urlParameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
-        urlParameters.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
+        urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
+        urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
 
-        for (Entry<String, String> inquiryParameter : inquiryParms.entrySet()) {
-            String parameterName = inquiryParameter.getKey();
+        // configure inquiry when read only
+        if (isReadOnly()) {
 
-            Object parameterValue = ObjectPropertyUtils.getPropertyValue(dataObject, parameterName);
+            for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
+                String parameterName = inquiryParameter.getKey();
 
-            // TODO: need general format util that uses spring
-            if (parameterValue == null) {
-                parameterValue = "";
-            } else if (parameterValue instanceof java.sql.Date) {
-                if (Formatter.findFormatter(parameterValue.getClass()) != null) {
-                    Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
-                    parameterValue = formatter.format(parameterValue);
+                Object parameterValue = ObjectPropertyUtils.getPropertyValue(dataObject, parameterName);
+
+                // TODO: need general format util that uses spring
+                if (parameterValue == null) {
+                    parameterValue = "";
+                } else if (parameterValue instanceof java.sql.Date) {
+                    if (Formatter.findFormatter(parameterValue.getClass()) != null) {
+                        Formatter formatter = Formatter.getFormatter(parameterValue.getClass());
+                        parameterValue = formatter.format(parameterValue);
+                    }
+                } else {
+                    parameterValue = parameterValue.toString();
                 }
+
+                // Encrypt value if it is a field that has restriction that prevents a value from being shown to
+                // user, because we don't want the browser history to store the restricted attributes value in the URL
+                if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
+                        .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass,
+                                inquiryParameter.getValue())) {
+                    try {
+                        parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
+                    } catch (GeneralSecurityException e) {
+                        LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                // add inquiry parameter to URL
+                urlParameters.put(inquiryParameter.getValue(), parameterValue);
+            }
+
+            /* build inquiry URL */
+            String inquiryUrl;
+
+            // check for EBOs for an alternate inquiry URL
+            ModuleService responsibleModuleService =
+                    KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
+            if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
+                inquiryUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(inquiryObjectClass,
+                        urlParameters);
             } else {
-                parameterValue = parameterValue.toString();
+                inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
             }
 
-            // Encrypt value if it is a field that has restriction that prevents a value from being shown to
-            // user, because we don't want the browser history to store the restricted attributes value in the URL
-            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass, inquiryParameter.getValue())) {
-                try {
-                    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
-                } catch (GeneralSecurityException e) {
-                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                    throw new RuntimeException(e);
+            getInquiryLink().setHrefText(inquiryUrl);
+
+            // set inquiry title
+            String linkTitle = createTitleText(inquiryObjectClass);
+            linkTitle = LookupInquiryUtils.getLinkTitleText(linkTitle, inquiryObjectClass, getInquiryParameters());
+            getInquiryLink().setTitle(linkTitle);
+
+            setRender(true);
+        }
+
+        // configure direct inquiry when editable
+        if (!isReadOnly()) {
+
+            // Direct inquiry
+            String inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
+            StringBuilder paramMapString = new StringBuilder();
+
+            // Check if lightbox is set. Get lightbox options.
+            String lightBoxOptions = "";
+            boolean lightBoxShow = directInquiryAction.getLightBoxDirectInquiry() != null;
+            if (lightBoxShow) {
+                lightBoxOptions = directInquiryAction.getLightBoxDirectInquiry().getTemplateOptionsJSString();
+            }
+
+            // Build parameter string using the actual names of the fields as on the
+            // html page
+            for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
+                String inquiryParameterFrom = inquiryParameter.getKey();
+                if (adjustInquiryParameters && (fieldBindingInfo != null)) {
+                    inquiryParameterFrom = fieldBindingInfo.getPropertyAdjustedBindingPath(inquiryParameterFrom);
                 }
+                paramMapString.append(inquiryParameterFrom);
+                paramMapString.append(":");
+                paramMapString.append(inquiryParameter.getValue());
+                paramMapString.append(",");
             }
+            paramMapString.deleteCharAt(paramMapString.length() - 1);
 
-            // add inquiry parameter to URL
-            urlParameters.put(inquiryParameter.getValue(), parameterValue);
+            // Create onlick script to open the inquiry window on the click event
+            // of the direct inquiry
+            StringBuilder onClickScript = new StringBuilder("showDirectInquiry(\"");
+            onClickScript.append(inquiryUrl);
+            onClickScript.append("\", \"");
+            onClickScript.append(paramMapString);
+            onClickScript.append("\", ");
+            onClickScript.append(lightBoxShow);
+            onClickScript.append(", ");
+            onClickScript.append(lightBoxOptions);
+            onClickScript.append(");");
+
+            directInquiryAction.setBlockValidateDirty(true);
+            directInquiryAction.setClientSideJs(onClickScript.toString());
+
+            setRender(true);
+
         }
-
-        // build inquiry URL
-        String inquiryUrl = "";
-
-        // check for EBOs for an alternate inquiry URL
-        ModuleService responsibleModuleService =
-                KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(inquiryObjectClass);
-        if (responsibleModuleService != null && responsibleModuleService.isExternalizable(inquiryObjectClass)) {
-            inquiryUrl = responsibleModuleService.getExternalizableDataObjectLookupUrl(inquiryObjectClass,
-                    urlParameters);
-        } else {
-            inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
-        }
-
-        getInquiryLink().setHrefText(inquiryUrl);
-
-        // set inquiry title
-        String linkTitle = createTitleText(inquiryObjectClass);
-        linkTitle = LookupInquiryUtils.getLinkTitleText(linkTitle, inquiryObjectClass, getInquiryParameters());
-        getInquiryLink().setTitle(linkTitle);
-
-        setRender(true);
     }
 
     /**
@@ -233,14 +320,14 @@ public class Inquiry extends WidgetBase {
     public String createTitleText(Class<?> dataObjectClass) {
         String titleText = "";
 
-        String titlePrefixProp =
-                KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(INQUIRY_TITLE_PREFIX);
+        String titlePrefixProp = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                INQUIRY_TITLE_PREFIX);
         if (StringUtils.isNotBlank(titlePrefixProp)) {
             titleText += titlePrefixProp + " ";
         }
 
-        String objectLabel = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary()
-                .getDataObjectEntry(dataObjectClass.getName()).getObjectLabel();
+        String objectLabel = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                dataObjectClass.getName()).getObjectLabel();
         if (StringUtils.isNotBlank(objectLabel)) {
             titleText += objectLabel + " ";
         }
@@ -256,6 +343,8 @@ public class Inquiry extends WidgetBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(getInquiryLink());
+
+        components.add(getDirectInquiryAction());
 
         return components;
     }
@@ -301,14 +390,6 @@ public class Inquiry extends WidgetBase {
         this.viewName = viewName;
     }
 
-    public boolean isForceInquiry() {
-        return this.forceInquiry;
-    }
-
-    public void setForceInquiry(boolean forceInquiry) {
-        this.forceInquiry = forceInquiry;
-    }
-
     public Map<String, String> getInquiryParameters() {
         return this.inquiryParameters;
     }
@@ -317,11 +398,40 @@ public class Inquiry extends WidgetBase {
         this.inquiryParameters = inquiryParameters;
     }
 
+    /**
+     * {@code Link} that will be rendered for an inquiry
+     *
+     * @return the inquiry link
+     */
     public Link getInquiryLink() {
         return this.inquiryLink;
     }
 
+    /**
+     * Setter for the inquiry {@code Link}
+     *
+     * @param inquiryLink - the inquiry {@link Link} object
+     */
     public void setInquiryLink(Link inquiryLink) {
         this.inquiryLink = inquiryLink;
     }
+
+    /**
+     * {@code Action} that will be rendered next to the field for a direct inquiry
+     *
+     * @return the directInquiryAction
+     */
+    public Action getDirectInquiryAction() {
+        return this.directInquiryAction;
+    }
+
+    /**
+     * Setter for the direct inquiry {@code Action}
+     *
+     * @param directInquiryAction the direct inquiry {@link Action}
+     */
+    public void setDirectInquiryAction(Action directInquiryAction) {
+        this.directInquiryAction = directInquiryAction;
+    }
+
 }

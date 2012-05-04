@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
@@ -46,7 +47,6 @@ import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.widget.DirectInquiry;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -59,13 +59,13 @@ import java.util.List;
  * application
  *
  * <p>
- * The <code>InputField</code> provides the majority of the data input/output
+ * The {@code InputField} provides the majority of the data input/output
  * for the screen. Through these fields the model can be displayed and updated.
  * For data input, the field contains a {@link Control} instance will
  * render an HTML control element(s). The input field also contains a
- * {@link LabelField}, summary, and widgets such as a quickfinder (for
+ * {@link Label}, summary, and widgets such as a quickfinder (for
  * looking up values) and inquiry (for getting more information on the value).
- * <code>InputField</code> instances can have associated messages (errors)
+ * {@code InputField} instances can have associated messages (errors)
  * due to invalid input or business rule failures. Security can also be
  * configured to restrict who may view the fields value.
  * </p>
@@ -103,7 +103,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     // widgets
     private QuickFinder fieldLookup;
-    private DirectInquiry fieldDirectInquiry;
     private Suggest fieldSuggest;
 
     public InputField() {
@@ -229,6 +228,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     /**
      * Adjust paths on the prerequisite constraint bindings
+     *
      * @param prerequisiteConstraints
      */
     protected void adjustPrerequisiteConstraintBinding(List<PrerequisiteConstraint> prerequisiteConstraints) {
@@ -283,7 +283,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getInstructionalMessage(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessage(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
-        setNestedComponentIdAndSuffix(getFieldDirectInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
+        setNestedComponentIdAndSuffix(getFieldInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
         setNestedComponentIdAndSuffix(getFieldSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
         if(this.getFieldLabel() != null){
@@ -299,8 +299,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
 
     /**
-     * Defaults the properties of the <code>InputField</code> to the
-     * corresponding properties of its <code>AttributeDefinition</code>
+     * Defaults the properties of the {@code InputField} to the
+     * corresponding properties of its {@code AttributeDefinition}
      * retrieved from the dictionary (if such an entry exists). If the field
      * already contains a value for a property, the definitions value is not
      * used.
@@ -309,6 +309,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * @param attributeDefinition - AttributeDefinition instance the property values should be
      * copied from
      */
+    @Override
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
         super.copyFromAttributeDefinition(view, attributeDefinition);
 
@@ -345,14 +346,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
             //if still null, default to false
             if (getRequired() == null) {
-                setRequired(false);
+                setRequired(Boolean.FALSE);
             }
         }
         
-        if (this.dataType == null) {
+        if (getDataType() == null) {
             setDataType(attributeDefinition.getDataType());
             //Assume date if dataType is still null and using a DatePicker
-            if(this.dataType == null && control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
+            if(getDataType() == null && control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
                 setDataType(DataType.DATE);
             }
         }
@@ -387,7 +388,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         components.add(control);
         components.add(validationMessages);
         components.add(fieldLookup);
-        components.add(fieldDirectInquiry);
         components.add(fieldSuggest);
 
         return components;
@@ -402,7 +402,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * <code>Control</code> instance that should be used to input data for the
+     * {@code Control} instance that should be used to input data for the
      * field
      *
      * <p>
@@ -428,7 +428,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     /**
      * Field that contains the messages (errors) for the input field. The
-     * <code>ValidationMessages</code> holds configuration on associated messages along
+     * {@code ValidationMessages} holds configuration on associated messages along
      * with information on rendering the messages in the user interface
      *
      * @return ValidationMessages instance
@@ -447,7 +447,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * Instance of <code>KeyValuesFinder</code> that should be invoked to
+     * Instance of {@code KeyValuesFinder} that should be invoked to
      * provide a List of values the field can have. Generally used to provide
      * the options for a multi-value control or to validate the submitted field
      * value
@@ -483,8 +483,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * <p>
      * The quickfinder widget places a small icon next to the field that allows
      * the user to bring up a search screen for finding valid field values. The
-     * <code>Widget</code> instance can be configured to point to a certain
-     * <code>LookupView</code>, or the framework will attempt to associate the
+     * {@code Widget} instance can be configured to point to a certain
+     * {@code LookupView}, or the framework will attempt to associate the
      * field with a lookup based on its metadata (in particular its
      * relationships in the model)
      * </p>
@@ -636,43 +636,45 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * The <code>ValideCharacterConstraint</code> that applies to this <code>InputField</code>
+     * The {@code ValidCharactersConstraint} that applies to this {@code InputField}
      *
      * @return the valid characters constraint for this input field
      */
+    @Override
     public ValidCharactersConstraint getValidCharactersConstraint() {
         return this.validCharactersConstraint;
     }
 
     /**
-     * Setter for <code>validCharacterConstraint</code>
+     * Setter for {@code validCharacterConstraint}
      *
-     * @param validCharactersConstraint - the <code>ValidCharactersConstraint</code> to set
+     * @param validCharactersConstraint - the {@code ValidCharactersConstraint} to set
      */
     public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
         this.validCharactersConstraint = validCharactersConstraint;
     }
 
     /**
-     * The <code>CaseConstraint</code> that applies to this <code>InputField</code>
+     * The {@code CaseConstraint} that applies to this {@code InputField}
      *
      * @return the case constraint for this input field
      */
+    @Override
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
 
     /**
-     * Setter for <code>caseConstraint</code>
+     * Setter for {@code caseConstraint}
      *
-     * @param caseConstraint - the <code>CaseConstraint</code> to set
+     * @param caseConstraint - the {@code CaseConstraint} to set
      */
     public void setCaseConstraint(CaseConstraint caseConstraint) {
         this.caseConstraint = caseConstraint;
     }
 
     /**
-     * List of <code>PrerequisiteConstraint</code> that apply to this <code>InputField</code>
+     * List of {@code PrerequisiteConstraint} that apply to this {@code InputField}
      *
      * @return the dependency constraints for this input field
      */
@@ -681,27 +683,28 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * Setter for <code>dependencyConstraints</code>
+     * Setter for {@code dependencyConstraints}
      *
-     * @param dependencyConstraints - list of <code>PrerequisiteConstraint</code> to set
+     * @param dependencyConstraints - list of {@code PrerequisiteConstraint} to set
      */
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
         this.dependencyConstraints = dependencyConstraints;
     }
 
     /**
-     * List of <code>MustOccurConstraint</code> that apply to this <code>InputField</code>
+     * List of {@code MustOccurConstraint} that apply to this {@code InputField}
      *
      * @return the must occur constraints for this input field
      */
+    @Override
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
 
     /**
-     * Setter for <code>mustOccurConstraints</code>
+     * Setter for {@code mustOccurConstraints}
      *
-     * @param mustOccurConstraints - list of <code>MustOccurConstraint</code> to set
+     * @param mustOccurConstraints - list of {@code MustOccurConstraint} to set
      */
     public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
         this.mustOccurConstraints = mustOccurConstraints;
@@ -717,6 +720,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the simple constraint of the input field
      */
+    @Override
     public SimpleConstraint getSimpleConstraint() {
         return this.simpleConstraint;
     }
@@ -749,6 +753,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the maximum length of the input field
      */
+    @Override
     public Integer getMaxLength() {
         return simpleConstraint.getMaxLength();
     }
@@ -774,6 +779,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the minimum length of the input field
      */
+    @Override
     public Integer getMinLength() {
         return simpleConstraint.getMinLength();
     }
@@ -817,6 +823,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the exclusive minimum numeric value of the input field
      */
+    @Override
     public String getExclusiveMin() {
         return simpleConstraint.getExclusiveMin();
     }
@@ -844,6 +851,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return the inclusive maximum numeric value of the input field
      */
+    @Override
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
@@ -858,40 +866,13 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * <code>DirectInquiry</code> widget for the field
-     *
-     * <p>
-     * The direct inquiry widget will render a button for the field value when
-     * that field is editable. It points to the associated inquiry view for the
-     * field. The inquiry can be configured to point to a certain
-     * <code>InquiryView</code>, or the framework will attempt to associate the
-     * field with a inquiry based on its metadata (in particular its
-     * relationships in the model)
-     * </p>
-     *
-     * @return the <code>DirectInquiry</code> field DirectInquiry
-     */
-    public DirectInquiry getFieldDirectInquiry() {
-        return fieldDirectInquiry;
-    }
-
-    /**
-     * Setter for the field's direct inquiry widget
-     *
-     * @param fieldDirectInquiry - the <code>DirectInquiry</code> to set
-     */
-    public void setFieldDirectInquiry(DirectInquiry fieldDirectInquiry) {
-        this.fieldDirectInquiry = fieldDirectInquiry;
-    }
-
-    /**
      * Attribute query instance configured for this field to dynamically pull information back for
      * updates other fields or providing messages
      *
      * <p>
      * If field attribute query is not null, associated event script will be generated to trigger the
-     * query from the UI. This will invoke the <code>AttributeQueryService</code> to
-     * execute the query and return an instance of <code>AttributeQueryResult</code> that is then
+     * query from the UI. This will invoke the {@code AttributeQueryService} to
+     * execute the query and return an instance of {@code AttributeQueryResult} that is then
      * read by the script to update the UI. Typically used to update informational property values or
      * other field values
      * </p>
@@ -944,6 +925,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         return this.getBindingInfo().getBindingPath();
     }
 
+    @Override
     public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
         return dependencyConstraints;
     }
@@ -967,6 +949,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * explicitly set.
      * @return
      */
+    @Override
     public DataType getDataType() {
         return this.simpleConstraint.getDataType();
     }

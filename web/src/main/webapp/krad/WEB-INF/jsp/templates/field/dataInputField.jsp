@@ -48,13 +48,16 @@
 
         <span id="${field.id}">
           <%-- render inquiry if enabled --%>
-          <c:if test="${field.fieldInquiry.render}">
-            <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}"/>
-          </c:if>
+          <c:choose>
+            <c:when test="${field.fieldInquiry.render}">
+              <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}"
+                             readOnly="${field.readOnly}" />
+            </c:when>
 
-          <c:if test="${!field.fieldInquiry.render}">
-            ${readOnlyDisplay}
-          </c:if>
+            <c:otherwise>
+              ${readOnlyDisplay}
+            </c:otherwise>
+          </c:choose>
         </span>
       </c:when>
 
@@ -72,9 +75,9 @@
       <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
     </c:if>
 
-    <%-- render field direct inquiry if field is editable --%>
-    <c:if test="${!readOnly && field.fieldDirectInquiry.render}">
-      <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
+    <%-- render field direct inquiry if field is editable and inquiry is enabled--%>
+    <c:if test="${!readOnly && field.fieldInquiry.render}">
+      <krad:template component="${field.fieldInquiry}" componentId="${field.id}" readOnly="${field.readOnly}"/>
     </c:if>
 
   </krad:fieldLabel>

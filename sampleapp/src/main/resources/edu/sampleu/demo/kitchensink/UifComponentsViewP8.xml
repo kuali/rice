@@ -96,7 +96,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-VerticalBoxGroup" p:headerText="H5 Header Title">
-                <property name="styleClasses">
+                <property name="cssClasses">
                   <list merge="true">
                     <value>uif-disclosure</value>
                   </list>
@@ -108,7 +108,7 @@
                 <property name="items">
                   <list>
                     <bean parent="Uif-VerticalBoxGroup" p:headerText="H6 Header Title">
-                      <property name="styleClasses">
+                      <property name="cssClasses">
                         <list merge="true">
                           <value>uif-disclosure</value>
                         </list>

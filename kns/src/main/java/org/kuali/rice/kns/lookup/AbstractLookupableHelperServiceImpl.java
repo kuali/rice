@@ -915,7 +915,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     }
 
     /**
-     * @see org.kuali.core.lookup.LookupableHelperService#setFieldConversions(java.util.Map)
+     * @see LookupableHelperService#setFieldConversions(java.util.Map)
      */
     public void setFieldConversions(Map fieldConversions) {
         this.fieldConversions = fieldConversions;
@@ -951,7 +951,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * Checks that any required search fields have value.
      *
-     * @see org.kuali.core.lookup.LookupableHelperService#validateSearchParameters(java.util.Map)
+     * @see LookupableHelperService#validateSearchParameters(java.util.Map)
      */
     public void validateSearchParameters(Map<String, String> fieldValues) {
         List<String> lookupFieldAttributeList = null;
@@ -1072,7 +1072,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * may actually want to use this operation.  Subclasses desiring other behaviors
      * will need to override this.
      *
-     * @see org.kuali.core.lookup.LookupableHelperService#getSearchResultsUnbounded(java.util.Map)
+     * @see LookupableHelperService#getSearchResultsUnbounded(java.util.Map)
      */
     public List<? extends BusinessObject> getSearchResultsUnbounded(Map<String, String> fieldValues) {
         throw new UnsupportedOperationException("Lookupable helper services do not always support getSearchResultsUnbounded");
@@ -1282,7 +1282,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     /**
      * @return false always, subclasses should override to do something smarter
-     * @see org.kuali.core.lookup.LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
+     * @see LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
      */
     public boolean isSearchUsingOnlyPrimaryKeyValues() {
         // by default, this implementation returns false, as lookups may not necessarily support this
@@ -1293,14 +1293,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * Returns "N/A"
      *
      * @return "N/A"
-     * @see org.kuali.core.lookup.LookupableHelperService#getPrimaryKeyFieldLabels()
+     * @see LookupableHelperService#getPrimaryKeyFieldLabels()
      */
     public String getPrimaryKeyFieldLabels() {
         return KRADConstants.NOT_AVAILABLE_STRING;
     }
 
     /**
-     * @see org.kuali.core.lookup.LookupableHelperService#isResultReturnable(org.kuali.core.bo.BusinessObject)
+     * @see LookupableHelperService#isResultReturnable(org.kuali.core.bo.BusinessObject)
      */
     public boolean isResultReturnable(BusinessObject object) {
         return true;

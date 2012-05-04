@@ -35,7 +35,7 @@
   <form:hidden path="pageId"/>
 
   <c:if test="${!empty pageGroup}">
-    <form:hidden id="currentPageTitle" path="view.currentPage.headerText"/>
+    <form:hidden id="currentPageTitle" path="view.currentPage.header.headerText"/>
   </c:if>
 
   <form:hidden path="jumpToId"/>

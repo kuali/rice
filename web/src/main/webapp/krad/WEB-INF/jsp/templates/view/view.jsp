@@ -34,7 +34,7 @@
   <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper">
 
     <!-- VIEW NAVIGATION -->
-    <div>
+    <div id="Uif-Navigation">
       <krad:template component="${view.navigation}" currentPageId="${view.currentPageId}"/>
     </div>
 

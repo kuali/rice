@@ -22,12 +22,12 @@
  */
 function setPageBreadcrumb(){
 	//check to see if page has navigation element, if so show breadcrumb
-	if(jq("#viewnavigation_div").html() && jq("#breadcrumbs").length){
+	if(jq("#Uif-Navigation").html() && jq("#breadcrumbs").length){
 		var pageTitle = jq("#currentPageTitle").val();
 		var pageId = jq("#pageId").val();
 		jq("#breadcrumbs").find("#page_breadcrumb").remove();
 		var bcSet = false;
-		if(pageTitle && pageTitle != "&nbsp;"){
+		if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
 			jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 			jq("#current_breadcrumb_span").hide();
             if(jq("#current_breadcrumb_span").parent("li").length){
@@ -40,7 +40,7 @@ function setPageBreadcrumb(){
 		}
 		else if(pageId){
 			pageTitle = jq("a[name='"+ escapeName(pageId) + "']").text();
-			if(pageTitle && pageTitle != "&nbsp;"){
+			if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
 				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 				jq("#current_breadcrumb_span").hide();
                 if(jq("#current_breadcrumb_span").parent("li").length){

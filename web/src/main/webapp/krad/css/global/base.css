@@ -370,6 +370,12 @@ div.clearfix:after {
     margin-right: 0px;
 }
 
+.uif-linkGroup div{
+    display: inline;
+    float: none;
+    margin-right: 0px;
+}
+
 /** Collection styles *******************************************************************************/
 
 table.uif-tableCollectionLayout {

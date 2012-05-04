@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -26,7 +26,7 @@ import org.kuali.rice.krad.uif.view.View;
 public class FieldValidationMessages extends ValidationMessages{
 
     private boolean useTooltip;
-    
+
     @Override
     /**
      * Calls super and add dataAttributes that are appropriate for field level validationMessages
@@ -42,7 +42,7 @@ public class FieldValidationMessages extends ValidationMessages{
             + "serverErrors:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors())) + ","
             + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings())) + ","
             + "serverInfo:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
-                + "}");
+            + "}");
     }
 
 

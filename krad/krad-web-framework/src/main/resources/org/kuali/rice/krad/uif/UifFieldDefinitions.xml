@@ -184,55 +184,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
-  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.field.ValidationMessages"
-        scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
-    <property name="cssClasses">
-      <list>
-        <value>uif-validationMessages</value>
-      </list>
-    </property>
-    <property name="displayMessages" value="true"/>
-  </bean>
-
-  <bean id="Uif-FieldValidationMessages" parent="Uif-FieldValidationMessages-parentBean"/>
-  <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
-        class="org.kuali.rice.krad.uif.field.FieldValidationMessages">
-    <property name="useTooltip" value="true"/>
-  </bean>
-
-  <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
-  <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
-        class="org.kuali.rice.krad.uif.field.GroupValidationMessages">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-groupValidationMessages</value>
-      </list>
-    </property>
-    <property name="displayFieldLabelWithMessages" value="true"/>
-    <property name="collapseAdditionalFieldLinkMessages" value="true"/>
-  </bean>
-
-  <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
-  <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages"
-        class="org.kuali.rice.krad.uif.field.PageValidationMessages">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-pageValidationMessages</value>
-      </list>
-    </property>
-    <property name="additionalKeysToMatch">
-      <list>
-        <value>GLOBAL_ERRORS</value>
-        <value>GLOBAL_WARNINGS</value>
-        <value>GLOBAL_INFO</value>
-      </list>
-    </property>
-    <property name="fireGrowlsForMessages" value="true"/>
-  </bean>
-
   <bean id="Uif-LinkField" parent="Uif-LinkField-parentBean"/>
   <bean id="Uif-LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
         parent="Uif-FieldBase-withLabel" scope="prototype">

@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;

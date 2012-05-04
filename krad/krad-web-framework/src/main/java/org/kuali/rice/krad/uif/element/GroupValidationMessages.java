@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -37,7 +39,7 @@ public class GroupValidationMessages extends ValidationMessages {
 
     private boolean displayFieldLabelWithMessages;
     private boolean collapseAdditionalFieldLinkMessages;
-    
+
     private static final String SECTION_TOKEN = "s$";
     private static final String FIELDGROUP_TOKEN = "f$";
 
@@ -122,7 +124,8 @@ public class GroupValidationMessages extends ValidationMessages {
 
     /**
      * Collects all the ids from the items passed into this method.  Puts the ids of items determined to be sections
-     * into the sectionIds list, and orders all items by the order they appear on the page in the order list with special identifiers
+     * into the sectionIds list, and orders all items by the order they appear on the page in the order list with
+     * special identifiers
      * to determine the type of item they are (used by the client js).  When skipSections is true do not
      * include sectionIds found in the lists.
      *

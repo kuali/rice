@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.element;
 
 /**
  * ValidationMessages for logic and options specific to pages

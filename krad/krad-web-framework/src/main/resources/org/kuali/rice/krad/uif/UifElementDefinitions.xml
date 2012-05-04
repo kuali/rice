@@ -27,6 +27,55 @@
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
+  <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
+  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.ValidationMessages"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
+    <property name="cssClasses">
+      <list>
+        <value>uif-validationMessages</value>
+      </list>
+    </property>
+    <property name="displayMessages" value="true"/>
+  </bean>
+
+  <bean id="Uif-FieldValidationMessages" parent="Uif-FieldValidationMessages-parentBean"/>
+  <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
+        class="org.kuali.rice.krad.uif.element.FieldValidationMessages">
+    <property name="useTooltip" value="true"/>
+  </bean>
+
+  <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
+  <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
+        class="org.kuali.rice.krad.uif.element.GroupValidationMessages">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-groupValidationMessages</value>
+      </list>
+    </property>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="collapseAdditionalFieldLinkMessages" value="true"/>
+  </bean>
+
+  <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
+  <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages"
+        class="org.kuali.rice.krad.uif.element.PageValidationMessages">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-pageValidationMessages</value>
+      </list>
+    </property>
+    <property name="additionalKeysToMatch">
+      <list>
+        <value>GLOBAL_ERRORS</value>
+        <value>GLOBAL_WARNINGS</value>
+        <value>GLOBAL_INFO</value>
+      </list>
+    </property>
+    <property name="fireGrowlsForMessages" value="true"/>
+  </bean>
+
   <bean id="Uif-Iframe" parent="Uif-Iframe-parentBean"/>
   <bean id="Uif-Iframe-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Iframe"
         parent="Uif-ContentElementBase" scope="prototype">

@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.field.ValidationMessages;
+import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.widget.Helpable;
 

@@ -17,7 +17,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<tiles:useAttribute name="element" classname="org.kuali.rice.krad.uif.field.ValidationMessages"/>
+<tiles:useAttribute name="element" classname="org.kuali.rice.krad.uif.element.ValidationMessages"/>
 
 <krad:div component="${element}">
 </krad:div>

@@ -25,6 +25,7 @@
       <list>
         <ref bean="ConfigurationTestView-ProgressiveRender-Section1"/>
         <ref bean="ConfigurationTestView-ProgressiveRender-TimeInfoSection"/>
+        <ref bean="ConfigurationTestView-ProgressiveRender-DayEventSection"/>
       </list>
     </property>
   </bean>
@@ -101,6 +102,44 @@
         <ref bean="ConfigurationTestView-ProgressiveRender-StartTimeAmPmInputField"/>
         <ref bean="ConfigurationTestView-ProgressiveRender-AllDayInputField"/>
       </list>
+    </property>
+  </bean>
+
+  <!-- KULRICE-7226: Sorting in rich table not working with specified sorting fields -->
+  <bean id="ConfigurationTestView-ProgressiveRender-DayEventSection" parent="Uif-Disclosure-TableCollectionSection">
+    <property name="headerText" value="Day Events - Sorting enable/disable testing"/>
+    <property name="instructionalText"
+              value="Sorting in rich table should work with specified sorting fields"/>
+    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.DayEvent"/>
+    <property name="propertyName" value="dayEvents"/>
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="layoutManager.generateAutoSequence" value="false" />
+    <property name="layoutManager.richTable.render" value="true"/>
+    <property name="readOnly" value="true"/>
+    <property name="items">
+      <list>
+      <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
+      <bean parent="Uif-InputField" p:propertyName="date" p:label="Date" />
+      <bean parent="Uif-InputField" p:propertyName="startTime" p:label="start Time" />
+      <bean parent="Uif-InputField" p:propertyName="startTimeAmPm" p:label="Am/Pm" />
+      <bean parent="Uif-InputField" p:propertyName="allDay" p:label="all Day" />
+      </list>
+    </property>
+    <property name="layoutManager.richTable.templateOptions">
+      <map merge="true">
+        <entry key="bFilter" value="false"/>
+        <entry key="bInfo" value="false"/>
+        <entry key="bLengthChange" value="false"/>
+        <entry key="bPaginate" value="false"/>
+        <entry key="aaSorting" value="[[0,'asc'],[1,'asc']]"/>
+        <entry key="aoColumns"
+               value="[ {'bSortable':true, 'sWidth':'20%'},
+                {'bSortable':true, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%'},
+                {'bSortable':false, 'sWidth':'20%'},
+                {'bSortable':false, 'sWidth':'20%'},
+                {'bSortable':false, 'sWidth':'20%'}
+              ]"/>
+      </map>
     </property>
   </bean>
 

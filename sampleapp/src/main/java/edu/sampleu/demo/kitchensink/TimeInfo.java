@@ -24,9 +24,27 @@ package edu.sampleu.demo.kitchensink;
 public class TimeInfo {
     private String startTime;
     private String startTimeAmPm;
-     private boolean allDay;
+    private boolean allDay;
 
     /**
+     * constructor
+     * @param startTime - the start time
+     * @param startTimeAmPm - whether the start time is PM/AM
+     * @param allDay - whether the event is all day
+     */
+    public TimeInfo(String startTime, String startTimeAmPm, boolean allDay) {
+        this.startTime = startTime;
+        this.startTimeAmPm = startTimeAmPm;
+        this.allDay = allDay;
+    }
+
+    /**
+     * default constructor
+     */
+    public TimeInfo() {}
+
+    /**
+
      * the start time
      *
      * @return start time

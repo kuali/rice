@@ -49,6 +49,7 @@
         <property name="tooltipHelpContent" value="View help"/>
       </bean>
     </property>
+    <property name="growlMessagingEnabled" value="true"/>
   </bean>
 
   <bean id="ConfigurationTestView_KNS" parent="ConfigurationTestView">

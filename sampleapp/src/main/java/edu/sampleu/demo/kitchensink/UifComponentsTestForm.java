@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -186,6 +187,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
     private List<TimeInfo> listTimeInfo = new ArrayList<TimeInfo>();
+    private List<DayEvent> dayEvents = new ArrayList<DayEvent>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
@@ -243,8 +245,20 @@ public class UifComponentsTestForm extends UifFormBase {
                     RandomStringUtils.randomAlphanumeric(1),
                     RandomStringUtils.randomAlphanumeric(1)));
         }
-        
-        
+
+        Calendar calendar = Calendar.getInstance();
+        dayEvents.add(new DayEvent("Tour", calendar.getTime(), "5.00", "AM", true));
+        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
+        dayEvents.add(new DayEvent("Team Building", calendar.getTime(), "8.00", "AM", true));
+        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
+        dayEvents.add(new DayEvent("Swimming", calendar.getTime(), "11.00", "AM", false));
+        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
+        dayEvents.add(new DayEvent("Meeting", calendar.getTime(), "2.00", "PM", false));
+        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
+        dayEvents.add(new DayEvent("Game", calendar.getTime(), "5.00", "PM", false));
+        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
+        dayEvents.add(new DayEvent("Wedding", calendar.getTime(), "9.00", "AM", true));
+
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
@@ -2126,5 +2140,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setDate3(Date date3) {
         this.date3 = date3;
+    }
+
+    public List<DayEvent> getDayEvents() {
+        return dayEvents;
+    }
+
+    public void setDayEvents(List<DayEvent> dayEvents) {
+        this.dayEvents = dayEvents;
     }
 }

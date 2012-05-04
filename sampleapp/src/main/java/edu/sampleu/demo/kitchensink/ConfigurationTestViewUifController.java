@@ -16,12 +16,18 @@
 
 package edu.sampleu.demo.kitchensink;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * a controller for the configuration test view
@@ -35,5 +41,18 @@ public class ConfigurationTestViewUifController extends UifControllerBase {
     @Override
     protected UifFormBase createInitialForm(HttpServletRequest request) {
         return new UifComponentsTestForm();
+    }
+
+    /**
+     * places a message containing apostrophes into the message map for display as a growl
+     */
+    @Override
+    @RequestMapping(params = "methodToCall=start")
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        String randomYear = RandomStringUtils.randomNumeric(2);
+        GlobalVariables.getMessageMap().putInfo("growl.testing.apostrophe", "sampleapp.growl.testmsg", "'" + randomYear);
+
+        return super.start(form, result, request, response);
     }
 }

@@ -1811,15 +1811,676 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
                 <para>Since the radio control only allows selection of one option, the backing property 
                     should be a non-List type.</para>
             </section> 
+            <section><title>Select</title><para>The Select control is another variation of a
+                    multi-value control. The select control appears similar to the text control, but
+                    with an arrow to display a dropdown list of options. The select control can be
+                    configured to only allow one selection, or multiple.</para><para>To specify a
+                    select control should be used that allows only one value to be selected, a bean
+                    with parent of ‘Uif-DropdownControl’ should be used:</para><programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”selectedOpt” p:label=”Select Control”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-DropdownControl”&gt;
+            &lt;property name=”options”&gt;
+                &lt;list&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O1” p:value=”Option 1”/&gt;
+                    ...         
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>The backing property in this case should be a simple primitive (string, integer, …). </para>
+                <para>Below shows the select control allowing only one selection.</para>
+                <figure>
+                    <title>Select Control</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/selectControl.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>To specify a select control should be used that allows one or more values to
+                    be selected, a bean with parent of ‘Uif-MultiSelectControl’ should be used: </para>
+                <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”selectedOpts” p:label=”Multi Select Control”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-MultiSelectControl”&gt;
+            &lt;property name=”options”&gt;
+                &lt;list&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O1” p:value=”Option 1”/&gt;
+                    ...
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>Below shows the select control allowing multiple values to be selected. </para>
+                <figure>
+                    <title>Multi Select Control</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/multiSelectControl.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>The select control supports two custom properties. The first is the multiple
+                    property which is a boolean indicating whether selection of more than one value
+                    is allowed (set to true by the ‘Uif-MultiSelectControl’ bean). The second
+                    property is named size and configures how many options should be visible to the
+                    user without using the arrow. This dictates the vertical size of the control. As
+                    an example the select control is Screen Shot 17 was set as 3. </para>
+            </section>
+            <section>
+                <title>KIM Group</title>
+                <para>The KIM Group control is not an actual different type of HTML control.
+                    Instead, it is a wrapper for the text control that provides additional
+                    functionality related to selecting a KIM group. The KIM group and KIM user
+                    entities are used often in Rice enabled applications, therefore these controls
+                    are provided to simplify the configuration.</para>
+                <para>The group control adds a quickfinder (lookup icon) to the text control that is
+                    configured to invoke the KIM group lookup. The lookup is configured to return
+                    the group id, namespace, and name. The namespace and name fields can then be
+                    displayed as data or input fields, and the group id will be added as a
+                    hidden.</para>
+                <para>To use the KIM group control a bean with parent of ‘Uif-KimGroupControl’
+                    should be given. The property that backs the input field for which the control
+                    is configured is assumed to hold the group name. As usual this is configured
+                    using the propertyName property on input field. In order for the control to work
+                    properly, we must then specify the properties that hold the group id and
+                    namespace:</para>
+                <programlisting>
+&lt;bean parent="Uif-InputField" p:propertyName="groupNamespaceCode" p:label="Namespace Code"/&gt;
+&lt;bean parent="Uif-InputField" p:propertyName="groupName" p:label="Name"&gt;
+    &lt;property name="control"&gt;
+        &lt;bean parent="Uif-KimGroupControl" p:groupIdPropertyName="groupId" p:namespaceCodePropertyName="groupNamespaceCode"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>Notice we are displaying the group namespace in an input field before the group name.</para>
+            </section>
+            <section>
+                <title>KIM User</title>
+                <para>The KIM User control is similar to the KIM Group control but instead of a KIM
+                    group, allows us to find a KIM User. This control does several things for us.
+                    First like the group control, it will configured a quickfinder for our field
+                    that is configured to invoke the KIM User lookup. The lookup will then return
+                    the principal id, principal name (username), and person name (full name). Also
+                    like the group control it will automatically add the principal id as a hidden
+                    field for us. In addition, it sets up a field query (covered in later on in this
+                    chapter) that display the person name under the control on return from the
+                    lookup or when tabbing out of the control.</para>
+                <para>To use the KIM User control a bean with parent of ‘Uif-KimPersonControl’
+                    should be given. The property that backs the input field for which the control
+                    is configured is assumed to hold the principal name. As usual this is configured
+                    using the propertyName property on input field. In order for the control to work
+                    properly, we must then specify the properties that hold the principal id and the
+                    person name:</para>
+                <programlisting>
+&lt;bean parent="Uif-InputField" p:propertyName="principalName" p:label="Person Name" p:required="true"&gt;
+    &lt;property name="control"&gt;
+        &lt;bean parent="Uif-KimPersonControl" p:principalIdPropertyName="principalId" p:personNamePropertyName="personName"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>It a common setup to carry the principal id as a primitive field, with a
+                    nested Person object. In these cases it is not necessary to have a separate
+                    property for the principal name and person name, but instead the properties on
+                    the nested person object can be used. For these cases, the user control provides
+                    a simpler way to configure it by setting the personObjectPropertyName. This is
+                    the name of the property that holds the nested person object. </para>
+                <programlisting>
+&lt;bean parent="Uif-InputField" p:propertyName="principalName" p:label="Person Name" p:required="true"&gt;
+    &lt;property name="control"&gt;
+        &lt;bean parent="Uif-KimPersonControl" p:personObjectPropertyName="person”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>Below shows the user control with the person name displayed:</para>
+                <figure>
+                    <title>KIM Group Control</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/KIMGroupControl.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </section>    
         </section>
+        <section>
+            <title>Recap</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>A control is a type of content element that allows the user to input
+                            data through the HTML form</para>
+                    </listitem>
+                    <listitem>
+                        <para>A control has an initial value that comes from a model property, and
+                            can then be changed by the user or script on behalf of the user</para>
+                    </listitem>
+                    <listitem>
+                        <para>When the form is submitted, the value for each control is sent as a
+                            request parameter. Where the parameter name is the taken from the name
+                            attribute and the value is the actual control value</para>
+                    </listitem>
+                    <listitem>
+                        <para>Controls are associated with an input field which holds a pointer to
+                            the property from which the control value will be pulled</para>
+                    </listitem>
+                    <listitem>
+                        <para>HTML controls have different types which are represented by different
+                            control components in KRAD</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">Checkbox</emphasis> component is used to
+                            render an HTML input of type ‘checkbox’. A checkbox is used to toggle a
+                            value (typically a boolean property with true or false values)</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">File</emphasis> component is used to render
+                            an HTML input of type ‘file’. This allows the user to select a file from
+                            the local filesystem that will be uploaded to the server. The backing
+                            property for a file control must be of type
+                            org.springframework.web.multipart.MultipartFile</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">Hidden</emphasis> component is used to
+                            render an HTML input of type ‘hidden’. This control is not visible to
+                            the user and therefore cannot be changed directly by the user (only by
+                            script)</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">Text</emphasis> component is used to render
+                            an HTML input of type ‘text’. This renders a single line text box where
+                            the user can type a value. This control supports the following options:</para>
+                        <itemizedlist>
+                                <listitem>
+                                    <para>size – The horizontal display size of the text box</para>
+                                </listitem>
+                                <listitem>
+                                    <para>maxLength – The maximum number of the characters the user
+                                        can enter (corresponding to the length of the value)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>minLength – The minimum number of characters that are
+                                        required for the value</para>
+                                </listitem>
+                                <listitem>
+                                    <para>dataPicker – A nested data picker widget that allows the
+                                        user to select a date from a calendar</para>
+                                </listitem>
+                                <listitem>
+                                    <para>watermarkText – Text that will appear in the control when
+                                        there is no value. This is used to help the user know the
+                                        format for the value</para>
+                                </listitem>
+                                <listitem>
+                                    <para>textExpand – A boolean that indicates whether the text
+                                        expand widget should be enabled for the control. This allows
+                                        the user to click an icon and get an expanded text
+                                        box</para>
+                                </listitem>
+                            </itemizedlist>
+                    </listitem>
+                    <listitem>
+                        <para>The UIF provides base beans that promote standard sizes for small,
+                            medium, and large text controls. These include ‘Uif-SmallTextControl’,
+                            ‘Uif-MediumTextControl’, and ‘Uif-LargeTextControl’</para>
+                    </listitem>
+                    <listitem>
+                        <para>The UIF also provides the bean ‘Uif-DateControl’ which is a text
+                            control with the date picker widget enabled. Furthermore the bean
+                            ‘Uif-CurrencyTextControl’ can be used when the value is a
+                            currency</para>
+                    </listitem>
+                    <listitem>
+                        <para>The TextArea component renders an HTML text area tag. This is a
+                            multi-line text box used for long values. The text area components
+                            supports the rows and cols properties, which determine the vertical and
+                            horizontal display size of the control.</para>
+                    </listitem>
+                    <listitem>
+                        <para>The Spinner component render as HTML input of type ‘text’ that is
+                            decorated with the jQuery Spinner plugin. This allows the user to
+                            increment or decrement the value using a arrows rendered within the text
+                            box</para>
+                    </listitem>
+                    <listitem>
+                        <para>Multi-Value controls are controls which can present multiple values
+                            for selection and possibly allow multiple values to be submitted for a
+                            single field</para>
+                    </listitem>
+                    <listitem>
+                        <para>When creating a multi-value control we must specify the options that
+                            should be available. These are built by configuring instances of the
+                            Rice KeyValue interface (ConcreteKeyValue implementation)</para>
+                    </listitem>
+                    <listitem>
+                        <para>KeyValue objects can be created in XML by using the bean
+                            ‘Uif-KeyLabelPair’</para>
+                    </listitem>
+                    <listitem>
+                        <para>The list of KeyValues are associated with a control using the
+                                <emphasis role="bold">options</emphasis> property</para>
+                    </listitem>
+                    <listitem>
+                        <para>Instead of specifying the options directly in the XML, we can create a
+                            class of type org.kuali.rice.krad.keyvalues.KeyValuesFinder and
+                            implement the method List&lt;KeyValue&gt; getKeyValues(). This class is
+                            then configured on the input field using the property <emphasis
+                                role="bold">optionsFinderClass</emphasis> (or an object can be
+                            injected using the optionsFinder property)</para>
+                    </listitem>
+                    <listitem>
+                        <para>The UIF provides a special key value finder
+                            org.kuali.rice.krad.uif.control.UifKeyValuesFinder that allows
+                            conditional key values to be built based on the model</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">CheckboxGroup</emphasis> component is a
+                            multi-value control that presents the options are a set of
+                            checkboxes</para>
+                    </listitem>
+                    <listitem>
+                        <para>The checkbox group control supports a delimiter which will be rendered
+                            between each checkbox. The UIF provides two beans with a delimiter set:
+                            ‘Uif-HorizontalCheckboxesControl’ (space delimiter) and
+                            ‘Uif-VerticalCheckboxesControl’ (HTML break delimiter)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Checkbox group controls allow multiple values to be selected.
+                            Therefore the backing property must be a List type</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">RadioGroup</emphasis> component is similar
+                            to the checkbox group, with the exception of only allowing one value to
+                            be selected</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">Select</emphasis> component is a multi-value
+                            control that presents the options as a dropdown (arrow in the text box
+                            that can be clicked to see the options)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Select controls are created using the bean ‘Uif-DropdownControl’ for
+                            allowing a single value to be selected or the bean
+                            ‘Uif-MultiSelectControl’ for allowing multiple values to be
+                            selected</para>
+                    </listitem>
+                    <listitem>
+                        <para>The select control supports the <emphasis role="bold">size</emphasis>
+                            property which controls the number of options that are visible without
+                            clicking the arrow</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">KIMGroup</emphasis> control is a special
+                            text control that is configured for inputting KIM group names</para>
+                    </listitem>
+                    <listitem>
+                        <para>The <emphasis role="bold">KIMUser</emphasis> control is a special text
+                            control that is configured for inputting KIM users. It adds things such
+                            as a quickfinder and field query</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>    
     </section>
     <section>
         <title>Disabling Controls and Tabbing </title>
-        <para></para>
+        <para>Besides the specific properties offered by the various controls, all control
+            components inherit a couple of properties from
+            org.kuali.rice.krad.uif.control.ControlBase. The first of these is the <emphasis
+                role="bold">tabIndex</emphasis> property. This property is an int type that used to
+            populate the taxIndex attribute on the corresponding control element tag. This is of
+            course used by the browser to set the tabbing order between the form controls. </para>
+        <para>By default, the framework sets all tab indexes to 0. This means the tabbing will
+            follow the natural order of the page (the order the controls are laid out on the page).
+            However, if needed a specific tab order can be created by setting the tab index property
+            for each control.</para>
+        <para>The other property supported on all controls is the <emphasis role="bold"
+                >disabled</emphasis> property with type Boolean. The value given for this property
+            will be set as the attribute value for the disabled attribute of the corresponding
+            control element. This is then indicates to the browser that the user should not be
+            allowed to interact with the control.</para>
+        <para>Similar to other properties, we can statically set the value to ‘true’ or ‘false’ in
+            the XML, or use an expression to conditionally disable the control:</para>
+        <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”fruitName”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-TextControl” p:disabled=”@{foodGroup ne ‘Fruit’}”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+        </programlisting>
+        <para>In this example, we are disabling the text control for ‘Fruit Name’ if the food group
+            field is not ‘Fruit’.</para>
+        <para>The following is an example text control that is in the disabled state:</para>
+        <figure>
+            <title>Disabled State Control</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/disabledStateControl.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <tip>
+            <title>Disabled or Read Only</title>
+            <para>An important UX issue is whether to disabled a control, or make the control read only. 
+                Both display the current value and prevent the user from changing it. Generally, disabled 
+                is used to temporarily disallow interaction based on a condition. It might be the result 
+                of a refreshed component based on a change to data. While read only is often used to display 
+                a state that cannot be changed based on the current data (for example user permissions or 
+                a state that the user cannot modify).</para>
+        </tip>
+        <note>
+            <title>Disabled Reason</title>
+            <para>Control base also currently has a property name controlReason. This is not currently being 
+                used by the framework but the intention is when a control’s state is changed to disabled, a 
+                reason can be given using this property. The user will then be able to hover over the control 
+                to see the disabled reason as a tooltip (Tooltips are an upcoming enhancement as well).</para>
+        </note>
+        <section>
+            <title>Recap</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>All controls have the <emphasis role="bold">tabIndex</emphasis>
+                            property which can be used to implement a custom tab order (Note this is
+                            not recommended though, if not set the framework will set the tab
+                            indexes based on the natural order of the page)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Controls also support the <emphasis role="bold">disabled</emphasis>
+                            property. This is a boolean that will disable the control so that input
+                            is not allowed (the control is still rendered). Like most properties,
+                            the disabled property can contain an expression to conditionally disable
+                            the control</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>    
     </section>
     <section>
         <title>Hooking up Lookups and Inquiries </title>
-        <para></para>
+        <para>The input field component also provides a couple of widgets we can configure that will
+            help the user with data input. The first of these is the fieldLookup property which is a
+            nested widget component. This widget component is called a Quickfinder. Quickfinder is a
+            term that was adopted in the KNS framework to represent the icon next to a control that
+            can be used to bring up a lookup screen, search for a value, and return that value to
+            the field. In KRAD, the quickfinder widget holds all the configuration for rendering the
+            icon along with the lookup request it makes.</para>
+        <para>All the options for quickfinder are covered in Chapter 8, but we will go over the
+            essential ones here. To understand these widget properties we need to know a little bit
+            about the lookup API. Essentially this is a request based API where communication is
+            done via request parameters, of which the following are required:</para>
+        <para><emphasis role="bold">dataObjectClassName</emphasis> – Lookup views (a special ‘type’
+            of view) are associated with a data object class. This is the class for the data object
+            the search will be performed on. After the bean container is loading, an indexing
+            process is performed that maps data object classes to configured lookup views (see ‘View
+            Type Indexing’ in Chapter 13). Therefore instead of passing in the unique view id to
+            specify the view we want, we can pass in the data object class name.</para>
+        <para><emphasis role="bold">fieldConversions</emphasis> – The purpose of using the lookup is
+            to search for a particular value and return that value to the form being completed. In
+            order for the lookup framework to return the field back to us, we must specify the name
+            of the field on the data object class whose value we need, and the name of the field on
+            the calling view. Furthermore, we can choose to have the lookup return additional fields
+            that populate other form fields or informational properties (see ‘Field Queries and
+            Informational Properties’). These pairs of fields are known as ‘field
+            conversions’.</para>
+        <para>The fieldConversions property is a Map. Each entry represents a field that will be
+            returned back from the lookup, with the entry key being the field name on the data
+            object class, and the entry value being the field name on the calling view. It is
+            helpful to think of this as a from-to mapping. Pulling from the data object field (map
+            key) to the calling view field (map value).</para>
+        <para>To configure a quickfinder on an input field we have two options. First we can create
+            an inner bean with parent of ‘Uif-QuickFinder’ for the input field’s fieldLookup
+            property:</para>
+        <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”document.number”&gt;
+    &lt;property name=”fieldLookup”&gt;
+        &lt;bean parent=”Uif-QuickFinder” p:dataObjectClassName=” edu.sampleu.travel.bo.TravelAccount” p:fieldConversions=”number:document.number”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+        </programlisting>
+        <para>In this example we have configured a quickfinder that will invoke the lookup view for
+            Travel Account. After the user performs a search and selects a row (using the provided
+            return value links), the corresponding number property value for the selected row will
+            be returned and set in the document.number property for our view (the field for which
+            the quickfinder is configured). Notice in this example we are using the map shorthand
+            configuration for the fieldConversions property.</para>
+        <para>An alternative configuration is to use set the dataObjectClassName and
+            fieldConversions properties directly using nested notation. Note this only works if the
+            bean we are inheriting from (or one of its parents) has configured the parent property,
+            else a NullPointerException will be thrown:</para>
+        <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”document.number” p:fieldLookup.dataObjectClassName=”edu.sampleu.travel.bo.TravelAccount” p:fieldLookup.fieldConversions=”number:document.number”/&gt;</programlisting>
+        <note>
+            <title>Initializing Nested Components</title>
+            <para>It is a common practice in the UIF for base beans to initialize and nested components. 
+                This allows child beans to simply configure the needed properties on the nested component 
+                without having to initialize the component itself. For example, the ‘Uif-InputField’ has the 
+                following property tag:</para>
+            <programlisting>
+&lt;property name="fieldLookup"&gt;
+    &lt;bean parent="Uif-QuickFinder"/&gt;
+&lt;/property&gt;</programlisting>
+            <para>If this was not provided, child beans would need to populate the fieldLookup property using a 
+                nested bean instead of using the directed nested property notation.</para>
+        </note>
+        <para>Below we see the quickfinder icon (to the right of the text control) and the 
+            corresponding lookup view that is presented when the user click the icon:</para>
+        <figure>
+            <title>Quickfinder Hook</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/quickfinderHook.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <figure>
+            <title>Quickfinder Hook Example</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/quickfinderHookExample.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>Another widget provided by input field and data field components is the Inquiry
+            component. The inquiry is used to display additional information about the current field
+            value, generally the associated database record. </para>
+        <para>There are two different flavors of the inquiry, the ‘standard’ inquiry and the
+            ‘direct’ inquiry. The former refers to an inquiry for a field that is read only (user is
+            not allowed to change value). This inquiry is configured with the <emphasis role="bold"
+                >fieldInquiry</emphasis> property on data field. A direct inquiry refers to an
+            inquiry of a field that is editable (has a control for changing the value). This
+            inquired is configured with the <emphasis role="bold">fieldDirectInquiry</emphasis>
+            property and is available on input fields only.</para>
+        <para>Both inquiries point to the Inquiry widget component. This widget holds the
+            configuration for invoking the inquiry view once the inquiry is triggered (a link for
+            the standard and an icon for the direct). Inquiry views are similar to lookup views.
+            They are associated with a data object class and can be requested by passing the data
+            object class name. However, for inquiries we need to pass a value from the calling view
+            to the inquiry view, instead of the other way around (as is the case for lookup views).
+            These are the values that will be used to retrieve the data for the inquiry view.</para>
+        <para>This configuration is done using the <emphasis role="bold"
+                >inquiryParameters</emphasis> property on the Inquiry widget. Like the Lookup’s
+            fieldConversions property, this holds a map where each entry is a mapping of fields
+            between the two views. The entry key is the name of the field in the calling view from
+            which the value will be pulled, and the entry key is the name of the field in the
+            inquiry data object class for which the value will be populated. Again we can think of
+            this as a from-to mapping.</para>
+        <para>To configure the standard inquiry we use a bean with parent of ‘Uif-Inquiry’. For the
+            direct inquiry, we use a bean with parent of ‘Uif-DirectInquiry’. </para>
+        <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”document.number”&gt;
+    &lt;property name=”fieldInquiry”&gt;
+        &lt;bean parent=”Uif-Inquiry” p:dataObjectClassName=” edu.sampleu.travel.bo.TravelAccount” p:inquiryParameters=”document.number:number”/&gt;
+    &lt;/property&gt;
+    &lt;property name=”fieldDirectInquiry”&gt;
+        &lt;bean parent=”Uif-DirectInquiry” p:dataObjectClassName=” edu.sampleu.travel.bo.TravelAccount” p:inquiryParameters=”document.number:number”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+        </programlisting>
+        <para>We also have the option of using the nested property notation instead of using inner
+            beans.</para>
+        <para>Below shows an example inquiry (standard inquiry for read only field), followed by an
+            example direct inquiry</para>
+        <figure>
+            <title>Standard Inquiry, Read Only</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/standardInquiryReadOnly.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <section><title>Automatic Lookups and Inquiries</title><para>For many instances where a
+                lookup or inquiry is desired, there is an underlying relationship in the model. In
+                Chapter 3, we learned how to represent one to one relationships in code (with nested
+                data objects) and then provide configuration to OJB using a reference descriptor. In
+                Chapter 4, we learned about the data dictionary and the ability to declare
+                relationship definitions for our data object entry. These sources of metadata are
+                then consumed by the UIF to automatically configured lookups and inquiries for our
+                fields!</para><para>For each data or input field, the framework will attempt to find
+                a model relationship if two conditions are met: one, we have not manually configured
+                the lookup and inquiry, and two the render flag for both is not set to false.
+                Setting the render flag to false on the fieldLookup or fieldInquiry indicates to the
+                framework we do not want them rendered regardless of the existence of a
+                relationship.</para><para>The basic strategy for determining the existence of a
+                relationship is as follows:</para><orderedlist>
+                <listitem>
+                    <para>Determine a parent data object class for the fields property</para>
+                </listitem>
+                <listitem>
+                    <para>Query OJB metadata to get class descriptor for the data object class, get
+                        any reference descriptors the property participates in</para>
+                </listitem>
+                <listitem>
+                    <para>Query data dictionary metadata to get data object entry for the data
+                        object class, get any relationship definitions the field participates
+                        in</para>
+                </listitem>
+                <listitem>
+                    <para>Of all the relationships found in steps 2 and 3, filter out those where
+                        the target class does not support the function (lookup or inquiry). For
+                        example if the target data object class is TravelAccount, but there is no
+                        lookup view associated with that data object class we do not consider that
+                        relationship.</para>
+                </listitem>
+                <listitem>
+                    <para>Of the relationships remaining from step 4, choose the relationship which
+                        has the lowest cardinality of foreign keys</para>
+                </listitem>
+                <listitem>
+                    <para>If a relationship was not found and the property name is nested, split the
+                        property name using the first part of the path as the parent property and
+                        the remaining as the property name. Repeat the process looking for a
+                        relationship. Note this is similar to the process of finding a back data
+                        dictionary entry.</para>
+                </listitem>
+            </orderedlist>
+            <para>This is a complicated process and not all details are important as a user of KRAD.
+                However, the first step is critical to understand and deserves more explanation. The
+                determination of the parent data object class drives the metadata picked up by the
+                framework and therefore where the relationships will be found. Recall the three
+                parts to the fields binding path: the object path, binding prefix, and binding name
+                (property name). The framework will use the object path and prefix as the path to
+                the parent object (everything except the property name). Then it will get the type
+                for the property from the model which is used as the data object class.</para>
+            <note>
+                    <title>Data Object Metadata</title>
+                           <para>Many areas of the UIF (including the above widgets) use metadata from the
+                                OJB repository and Data Dictionary together. They use a service
+                                named DataObjectMetaDataService which is as a façade for both
+                                sources of metadata.</para>
+            </note>
+            <para>A couple of things should be noted about the automatic lookups and inquiries.
+            First, if no relationship is found, the render flag on the widget will be set to false.
+            Second, recall for the lookup and inquiry we need to configure field mappings
+            (fieldConversions and inquiryParameters). The framework builds these mappings from the
+            fields that participate in the relationship.</para> 
+        </section>
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para>The input field component provides the quickfinder widget to allow the
+                        user to search for a value to enter. This is configured using the
+                        fieldLookup property</para>
+                </listitem>
+                <listitem>
+                    <para>The quickfinder can be configured by creating an inner bean with parent
+                        ‘Uif-Quickfinder’ or setting options using the nested notation
+                        (fieldLookup.property)</para>
+                </listitem>
+                <listitem>
+                    <para>The basic options for a quickfinder are:</para>
+                    <itemizedlist>
+                            <listitem>
+                                <para>dataObjectClassName – The full class name for the data object
+                                    whose lookup view should be rendered</para>
+                            </listitem>
+                            <listitem>
+                                <para>fieldConversions – A mapping of properties on the lookup data
+                                    object to properties in the calling view. When a result row is
+                                    selected from the lookup, the values for the configured lookup
+                                    data object fields will be returned to their associated view
+                                    properties</para>
+                            </listitem>
+                            <listitem>
+                                <para>lookupParameters – A mapping of properties from the calling
+                                    view to search fields for the data object. When the quickfinder
+                                    is selected the values for the configured view properties will
+                                    be pulled and populated into the search fields</para>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>The input field also provides the Inquiry widget. This allows the user to
+                        see detail associated with the current value. This comes in two flavors, a
+                        simple inquiry (presented as a link) for read only state, and a direct
+                        inquiry (used by clicking an icon) to inquiry on the current value of a
+                        control</para>
+                </listitem>
+                <listitem>
+                    <para>The inquiry widget is configured using the input field’s <emphasis
+                            role="bold">fieldInquiry</emphasis> and <emphasis role="bold"
+                            >fieldDirectInquiry</emphasis> properties</para>
+                </listitem>
+                <listitem>
+                    <para>The inquiry can be configured by creating an inner bean with parent
+                        ‘Uif-Inquiry’ or ‘Uif-DirectInquiry’. We can also use nested notation to set
+                        properties (fieldInquiry.property or fieldDirectInquiry.property)</para>
+                </listitem>
+                <listitem>
+                    <para>The basic options for an inquiry are:</para>
+                    <itemizedlist>
+                            <listitem>
+                                <para>dataObjectClassName – Full class name for the data object
+                                    whose inquiry view should be rendered</para>
+                            </listitem>
+                            <listitem>
+                                <para>inquiryParameters – A mapping of properties from the calling
+                                    view to properties on the inquiry data object. When the inquiry
+                                    is selected the values for the view properties will be pulled
+                                    and sent with the inquiry as request parameters for the
+                                    corresponding inquiry properties. This generally becomes the
+                                    critiera for the record selection (and is generally the primary
+                                    keys for the data object)</para>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+                <listitem>
+                    <para>If a quickfinder or inquiry is not explicity configured, the framework
+                        will attempt to hook these up automatically. This is done using the
+                        DataObjectMetaDataService which will finder relationships for the
+                        property</para>
+                </listitem>
+                <listitem>
+                    <para>We can turn off automatic quickfinders or inquiries by setting the render
+                        property to false</para>
+                </listitem>
+            </itemizedlist>
+        </section>
     </section>
     <section>
         <title>Input Field Messages </title>

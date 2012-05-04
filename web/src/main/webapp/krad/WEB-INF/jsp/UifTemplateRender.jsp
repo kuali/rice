@@ -67,21 +67,6 @@
 
   </c:when>
   <c:otherwise>
-  
-     <%-- render page only --%>
-     <html>
-       <%-- rerun view pre-load script to get new state variables for page --%>
-       <krad:script value="${view.preLoadScript}"/>
-
-       <s:nestedPath path="KualiForm">
-       	 <krad:template component="${KualiForm.view.breadcrumbs}"/>
-
-         <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
-            <krad:template component="${KualiForm.view.currentPage}"/>
-         </div>
-
-       </s:nestedPath>
-     </html>
 
     <%-- render component only --%>
     <html>
@@ -91,13 +76,16 @@
     	<s:nestedPath path="KualiForm">
         <krad:template component="${KualiForm.view.breadcrumbs}"/>
 
-        <%-- render errors field for page so they can be pulled and updated on the view --%>
-        <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
+        <c:if test="${!empty KualiForm.updateComponentId}">
+          <%-- render errors field for page so they can be pulled and updated on the view --%>
+          <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
+        </c:if>
 
-        <%-- now render the updated component wrapped in an update span --%>
-    		<span id="${Component.id}_update" data-handler="update-component">
-    			<krad:template componentUpdate="true" component="${Component}"/>
-    		</span>
+        <%-- now render the updated component (or page) wrapped in an update div --%>
+        <div id="${Component.id}_update" data-handler="update-component">
+          <krad:template componentUpdate="true" component="${Component}"/>
+        </div>
+
     	</s:nestedPath>
     </html>
      

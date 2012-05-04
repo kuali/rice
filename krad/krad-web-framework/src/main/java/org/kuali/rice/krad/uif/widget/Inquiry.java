@@ -398,10 +398,26 @@ public class Inquiry extends WidgetBase {
         this.dataObjectClassName = dataObjectClassName;
     }
 
+    /**
+     * When multiple target inquiry views exists for the same data object class, the view name can be set to
+     * determine which one to use
+     *
+     * <p>
+     * When creating multiple inquiry views for the same data object class, the view name can be specified for the
+     * different versions (for example 'simple' and 'advanced'). When multiple inquiry views exist the view name must
+     * be sent with the data object class for the request. Note the view id can be alternatively used to uniquely
+     * identify the inquiry view
+     * </p>
+     */
     public String getViewName() {
         return this.viewName;
     }
 
+    /**
+     * Setter for the view name configured on the inquiry view that should be invoked by the inquiry widget
+     *
+     * @param viewName
+     */
     public void setViewName(String viewName) {
         this.viewName = viewName;
     }

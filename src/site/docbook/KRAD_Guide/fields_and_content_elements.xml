@@ -1285,6 +1285,454 @@ public class TravelAccount {
                     only when a file upload is present (with the use of script detection).  </para>
             </tip>
         </section>
+        <section>
+            <title>Hidden</title>
+            <para>The Hidden control is used to render an HTML input of type hidden. A hidden
+                control is not visible to the user, therefore its value can only be changed by
+                script. These are often used to hold some state that is needed when the page is
+                posted back, or to provide data for scripting purposes.</para>
+            <para>To specify a hidden control should be used, a bean with parent of
+                ‘Uif-HiddenControl’ should be given:</para>
+            <programlisting>    
+&lt;bean parent=”Uif-InputField” p:propertyName=”hiddenField”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-HiddenControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <tip>
+                <title>Request/Session State</title>
+                <para>All model data is stored with the user session and when a form is submitted
+                    the request data is overlaid. This means any model properties that were not
+                    present in the request will remain untouched. This alleviates the need to write
+                    all state to the request (using hiddens) so that it is not lost. </para>
+            </tip>
+            <para>Using a hidden control is not the same as making the field state hidden (covered
+                in Chapter 10). When the field state is hidden, all of the field contents will be
+                rendered (including a control that is possibly not hidden) but not visible by
+                default. The field contents then can be shown with script once a condition is met.
+                With the hidden control, the other field contents (such as label and lookup) can
+                still be visible. One usage of the hidden control is to provide a field quickfinder
+                (lookup icon) that forces the user to select a value from the lookup instead of
+                allowing them to type the value. </para>
+            <tip>
+                <title>Min/Max Length</title>
+                <para>The input field control also has properties for setting min  and max length.
+                    If the corresponding properties on the control are not set, they will be synced
+                    with the field settings. It can be necessary to have a different setting for the
+                    control than the field due to formatting. The min and max length settings for
+                    the control are used on the client, which is working with the formatted value.
+                    On the server, validation is performed against the model property value
+                    (unformatted) and uses the field length settings. </para>
+            </tip>
+        </section>
+        <section><title>Text</title><para>The Text control renders the HTML input element with type
+                of “text”. This is a single-line box that allows the user to type the
+                value.</para><para>To specify a text control should be used, a bean with parent of
+                ‘Uif-TextControl’ should be
+                given:</para><programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”title” p:label=”Title”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-TextControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <para>The text control supports the following properties:</para>
+            <para><emphasis role="bold">size</emphasis> – This is the display size for the control
+                in number of characters</para>
+            <para><emphasis role="bold">maxLength</emphasis> – When a value is given, this is the
+                maximum number of characters in length the value can have. If set, the browser will
+                stop the user from entering more characters than allowed.</para>
+            <para><emphasis role="bold">minLength</emphasis> – When a value is given, this is the
+                minimum number of characters in length the value can have. Note this is not
+                supported by the HTML input tag itself, but is used by the KRAD validators to check
+                the value client side or server side.</para>
+            <para><emphasis role="bold">datePicker</emphasis> – This is a nested widget component
+                that renders an icon next to the text input that can be used  to selected a calendar
+                day. Like all components the date picker will be rendered if is render property is
+                set to true. This widget and others are covered in Chapter 8.</para>
+            <para><emphasis role="bold">watermarkText</emphasis> – Specifies text that will appear
+                in the text control when the value is empty. This is used to show example inputs to
+                the user and is sometimes referred to as a placeholder (HTML 5). Once the user
+                begins to input a value the watermark text is cleared.</para>
+            <para><emphasis role="bold">textExpand</emphasis> – A Boolean type which indicates
+                whether the text input can be expanded. When enabled, an icon is rendered next to
+                the text input that allows the user to click for getting a text area input that
+                allows more room for entering the value. This is useful if the maximum length for
+                the field is longer than the display size.</para>
+            <para>The UIF provides a handful of base beans for the text control that have various
+                commonly used configuration. These are as follows:</para>
+            <para><emphasis role="bold">Uif-TextControl</emphasis> – The default text control bean
+                which sets the size to 30. None of the other text control properties are set by
+                default.</para>
+            <para><emphasis role="bold">Uif-SmallTextControl</emphasis> – Similar to Uif-TextControl
+                but sets the size to 10 and applies an additional style class of
+                ‘uif-smallTextControl’.</para>
+            <para><emphasis role="bold">Uif-MediumTextControl </emphasis>– The same as
+                Uif-TextControl except adds a style class of ‘uif-mediumTextControl’.</para>
+            <para><emphasis role="bold">Uif-LargeTextControl</emphasis> – Similar to Uif-TextControl
+                but sets the size to 100 and applies an additional style class of
+                ‘uif-largeTextControl’.</para>
+            <para><emphasis role="bold">Uif-CurrencyTextControl</emphasis> – Same as Uif-TextControl
+                except an added style class of ‘uif-currencyControl’. This adds a right align style
+                to the control useful for displaying currency.</para>
+            <para><emphasis role="bold">Uif-DateControl</emphasis> – Same as Uif-SmallTextControl
+                with the data picker added and an additional style class of
+                ‘uif-dateControl’.</para>
+            <para>Below are various examples of using these beans and setting other
+                properties:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”field” p:label=”Field Label”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-MediumControl” p:watermarkText=”It’s watermarked”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <figure>
+                <title>Watermark Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/watermarkControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <programlisting>            
+&lt;bean parent=”Uif-InputField” p:propertyName=”field” p:label=”Date 1”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-DateControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <figure>
+                <title>Date Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/dateControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <programlisting>            
+&lt;bean parent=”Uif-InputField” p:propertyName=”field” p:label=”Field Label”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-TextControl” p:textExpand=”true”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <figure>
+                <title>Text Expand Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/textExpandControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+        <section>
+            <title>TextArea</title>
+            <para>The TextArea control is similar to the text control with the exception of
+                providing multiple lines for input. This control is used for entering longer strings
+                of data such as a description.</para>
+            <para>To specify a text area control should be used, a bean with parent of
+                ‘Uif-TextAreaControl’ should be given:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”title” p:label=”Title”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-TextAreaControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <para>The text area control supports the following properties:</para>
+            <para><emphasis role="bold">rows</emphasis> – Specifies the number of rows (or lines)
+                the input should have. This determines the height of the control.</para>
+            <para><emphasis role="bold">cols</emphasis> – Specifies the width in characters the
+                input should have.</para>
+            <para><emphasis role="bold">maxLength</emphasis> – Similar to the text control, when a
+                value is given restricts the number to a certain  number of characters. </para>
+            <para><emphasis role="bold">minLength</emphasis> – When a value is given, requires the
+                length be greater than or equal to a certain number of characters.</para>
+            <para><emphasis role="bold">textExpand</emphasis> - A Boolean type which indicates
+                whether the text are input can be expanded.</para>
+            <para><emphasis role="bold">watermarkText</emphasis> – Specifies text that will appear
+                in the text area control when the value is empty.</para>
+            <para>The UIF provides a handful of base beans for the text area control that have
+                various commonly used configuration. These are as follows:</para>
+            <para><emphasis role="bold">Uif-TextAreaControl </emphasis>– The default text area
+                control bean which sets rows to 3, and cols to 40.</para>
+            <para><emphasis role="bold">Uif-SmallTextAreaControl</emphasis> – Sets rows to 2 and
+                cols to 35. Adds the style class ‘uif-smallTextAreaControl’. </para>
+            <para><emphasis role="bold">Uif-MediumTextAreaControl</emphasis> – Sets rows to 3 and
+                cols to 40. Adds the style class ‘uif-mediumTextAreaControl’. </para>
+            <para><emphasis role="bold">Uif-LargeTextAreaControl</emphasis> – Sets rows to 6 and
+                cols to 50. Adds the style class ‘uif-largeTextAreaControl’. </para>
+            <para>Below shows an example text area control.</para>
+            <figure>
+                <title>TextArea Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/textAreaControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+        <section>
+            <title>Spinner</title>
+            <para>The Spinner control is a special text control that renders up and down arrows to
+                the right of the control for incrementing and decrementing the value. This is an
+                example of a ‘decorated’ control. That is, HTML does not support a Spinner control
+                inherently, but we use JavaScript to provide the additional functionality. This
+                means the rendered content will be the input element with type of ‘text’, with a
+                script invocation to add the spinner functionality.</para>
+            <para>Within the UIF, these script decorations are represented by a widget component.
+                The widget is associated with the component it works with. In this case, we extend
+                the text control component and add the spinner widget. The spinner widget will be
+                covered in more detail in Chapter 8.</para>
+            <para>To specify a spinner control should be used, a bean with parent of
+                ‘Uif-SpinnerControl’ should be given:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”count” p:label=”Spinner Control”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-SpinnerControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <para> Screen shot 13 shows the spinner control. </para>
+            <figure>
+                <title>Spinner Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/spinnerControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </section>
+        <section>
+            <title>Multi-Value Controls</title>
+            <para>Up to this point, the controls we have seen hold a single value. Next, we will
+                look at controls that can hold multiple values to choose from. Some also allow
+                selecting multiple values to be submitted. These components are known as multi-value
+                controls and implement the org.kuali.rice.krad.uif.control.MultiValueControl
+                interface.</para>
+            <section>
+                <title>Options</title>
+            <para>When using a multi-value control, we need to specify a list of options the control
+                will present. Each option has two parts: the option key and the option value. The
+                key gives the value for the field that will be submitted to the server when the
+                option is chosen. The label is display to the user for that option. These do not
+                necessarily have to be different, but it is a useful feature to display a friendlier
+                label for the value.</para>
+            <para>As an example, let’s assume we need to render a control that presents the list of
+                states as options. In our model, the property expects the state code (two letter
+                abbreviation). However, to help the user we want to display the full name for each
+                state. Our options would then look like the following:</para>
+                <table frame="all">
+                    <title>State Options Example</title>
+                    <tgroup cols="2">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                        <thead>
+                            <row>
+                                <entry>Key</entry>
+                                <entry>Value</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>AL</entry>
+                                <entry>Alabama</entry>
+                            </row>
+                            <row>
+                                <entry>CO</entry>
+                                <entry>Colorado</entry>
+                            </row>
+                            <row>
+                                <entry>IN</entry>
+                                <entry>Indiana</entry>
+                            </row>
+                            <row>
+                                <entry>OH</entry>
+                                <entry>Ohio</entry>
+                            </row>
+                            <row>
+                                <entry>TX</entry>
+                                <entry>Texas</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+                <para>To represent these options, Rice provides the <emphasis role="bold"
+                        >KeyValue</emphasis> interface and the <emphasis role="bold"
+                        >ConcreteKeyValue</emphasis> implementation. This class provides a string
+                    property for the key and a string property for the value, with corresponding
+                    getters and setters. Furthermore, for configuring key value objects within XML,
+                    the bean with name ‘Uif-KeyLabelPair’ is provided (whose class is
+                    ConcreateKeyValue). The following demonstrates creating the above list in Spring
+                    XML:</para>
+                <programlisting>
+&lt;property name=”options”&gt;
+    &lt;list&gt;
+        &lt;bean parent=”Uif-KeyLabelPair” p:key=”AL” p:value=”Alabama”/&gt;
+        &lt;bean parent=”Uif-KeyLabelPair” p:key=”CO” p:value=”Colorado”/&gt;
+        &lt;bean parent=”Uif-KeyLabelPair” p:key=”IN” p:value=”Indiana”/&gt;
+        &lt;bean parent=”Uif-KeyLabelPair” p:key=”OH” p:value=”Ohio”/&gt;
+        &lt;bean parent=”Uif-KeyLabelPair” p:key=”TX” p:value=”Texas”/&gt;
+&lt;/property&gt;
+                </programlisting>    
+            </section>
+            <section><title>Key Value Finders</title>
+                <para>Hard-coding in the options works for some simple cases (like ‘Yes’, ‘No’ type
+                    options), however most of the time the options need to be built up dynamically.
+                    This might require performing a database query to retrieve code/name pairs, or
+                    invoking a service to retrieve the options. For this, a small piece of code must
+                    be written that implements the org.kuali.rice.krad.keyvalues.KeyValuesFinder
+                    interface. The easiest way to implement a key value finder is to extend the base
+                    class org.kuali.rice.krad.keyvalues.KeyValuesBase. When extending this base
+                    class, we must implement the following method:</para>
+                <programlisting>public List&lt;KeyValue&gt; getKeyValues();</programlisting>
+                <para>Hopefully, it is
+                    clear what we need to do here. As stated previously, each option is represented
+                    by a KeyValue object, so we return a List of KeyValue objects that will make up
+                    our options. How the method is implemented depends purely on the application
+                    logic needed. A common pattern is to query the database to retrieve all records
+                    of a certain type, and then to use two fields from the record (usually the
+                    primary key property and a description property) as the key and value. Here is
+                    an example from the Rice project that is building up the options for
+                    state:</para>
+                <programlisting>
+public List&lt;KeyValue&gt; getKeyValues() {
+    List&lt;KeyValue&gt; labels = new ArrayList&lt;KeyValue&gt;();
+    List&lt;State&gt; codes = 
+LocationApiServiceLocator.getStateService().findAllStatesInCountry(countryCode);
+
+labels.add(new ConcreteKeyValue("", ""));
+for (State state : codes) {
+    if(state.isActive()) {
+        labels.add(new ConcreteKeyValue(state.getCode(), state.getName()));
+        }
+    }
+    return labels;
+}
+                </programlisting>
+                <para>Notice the construction of ConcreteKeyValue objects using the state code and
+                    name properties. </para>
+                <para>Once a key value finder class is created, it needs to be specified on the
+                    input field for which the options should apply. This is done using the <emphasis
+                        role="bold">optionsFinder</emphasis> or <emphasis role="bold"
+                        >optionsFinderClass</emphasis> properties. This first of these takes an
+                    actual KeyValueFinder instance, so it will be an inner bean or bean reference in
+                    the XML. This is useful if a reusable finder has been created that contains
+                    properties which can be configured. For example, suppose our state finder had an
+                    option indicating whether inactive state codes should be included.  First, we
+                    could setup a base bean as follows:</para>
+                <programlisting>&lt;bean id=”StateOptionsFinder” class=”org.kuali.rice.location.framework.state. StateValuesFinder”/&gt;</programlisting>
+                <para>Next, we can specify that the state finder should be used for an input field
+                    and configure the include inactive option:</para>
+                <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”stateCode”&gt;
+    &lt;property name=”optionsFinder”&gt;
+        &lt;bean parent=”StateOptionsFinder” p:includeInactive=”true”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>If our finder class does not have any options, or we just want to use the
+                    default, we can specify the class using the optionsFinderClass property:</para>
+                <programlisting> &lt;bean parent=”Uif-InputField” p:propertyName=”stateCode” p:optionsFinderClass=” org.kuali.rice.location.framework.state.StateValuesFinder”/&gt; </programlisting>
+                <note>
+                    <title>Reusable Key Value Finders</title>
+                    <para>Since the majority of key value finder implementations employ the pattern of 
+                        retrieving all records for a business object, a ‘generic’ key value finder could 
+                        easily be built that is configured with the business object class to retrieve, and 
+                        properties that should be used for the key and value. Then this finder can be referenced 
+                        and configured within input fields saving the need to create a new class each time. 
+                        This along with potentially other reusable key value finders will be added in Rice 
+                        2.2.</para>
+                </note>
+                <para>When the key value finder class is configured on an input field, during the
+                    view lifecycle it will be invoked to build the options, which will then in turn
+                    be set on the options property of the control. If the options property was
+                    already set on the control, it will not be overridden.</para>
+                <para>The KeyValueFinder class is actually used not only in KRAD but in various
+                    places throughout the Rice project. In terms of building options for our
+                    controls, it has one big gap. Our getKeyValues method takes no parameters, so
+                    unless our model data is provided through some global variable, it is not
+                    possible to conditionally build the options based on a model property value.
+                    This is a use case that comes up often. For example, think of two dropdown
+                    controls, the first providing options for the food groups (Dairy, Fruit,
+                    Vegetables, and so on). The second dropdown should provide options for the
+                    particular foods within the selected group of the first dropdown. Thus, our key
+                    value finder for the food dropdown needs to know the current value for the food
+                    group.</para>
+                <para>To allow for this, KRAD extends the KeyValueFinder interface with
+                    org.kuali.rice.krad.uif.control.UifKeyValuesFinder. One of the methods this
+                    interface adds is the following:</para>
+                <programlisting>public List&lt;KeyValue&gt; getKeyValues(ViewModel model);</programlisting>
+                <para>Notice we now have a getKeyValues method that takes in the model for which we
+                    can get at our application data. A base class named
+                    org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase is provided for creating
+                    new UIF key value finders. The following demonstrates implementing conditional
+                    logic for building the options:</para>
+                <programlisting>
+public class FoodKeyValuesFinder extends UifKeyValuesFinderBase {  
+
+@Override
+public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
+    UifComponentsTestForm testForm = (UifComponentsTestForm) model;           
+                        
+    List&lt;KeyValue&gt; options = new
+                        ArrayList&lt;KeyValue&gt;();           
+
+        if (testForm.getFoodGroup().equals("Fruits")) {
+            options.add(new ConcreteKeyValue("Apples", "Apples"));
+            options.add(new ConcreteKeyValue("Bananas", "Bananas"));
+            options.add(new ConcreteKeyValue("Cherries", "Cherries"));
+            options.add(new ConcreteKeyValue("Oranges", "Oranges"));
+            options.add(new ConcreteKeyValue("Pears", "Pears"));
+        } else if (testForm.getFoodGroup().equals("Vegetables")) {
+            options.add(new ConcreteKeyValue("Beans", "Beans"));
+            options.add(new ConcreteKeyValue("Broccoli", "Broccoli"));
+            options.add(new ConcreteKeyValue("Cabbage", "Cabbage"));
+            options.add(new ConcreteKeyValue("Carrots", "Carrots"));
+            options.add(new ConcreteKeyValue("Celery", "Celery"));
+            options.add(new ConcreteKeyValue("Corn", "Corn"));
+            options.add(new ConcreteKeyValue("Peas", "Peas"));
+        }           
+        
+        return options;
+    }
+}
+                </programlisting>
+                <para>In this example, foodGroup which is on our test form holds the value for the
+                    selected food group. This key value finder is then associated with the field
+                    that will display the available foods for that group:</para>
+                <programlisting>
+&lt;bean parent="Uif-InputField" p:propertyName="food" p:label="Foods” p:optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder" p:refreshWhenChanged="field88"&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-DropdownControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>Notice the refreshWhenChanged property setting pointing to foodGroup. This is
+                    configuring refresh behavior which we will learn about in Chapter 11. When the
+                    value of the foodGroup control changes, it will refresh our food control which
+                    will then rebuild the options based on the new food group!</para>
+                <para>Besides making the model data available, the UIF key value finder also
+                    provides another convenience. In some cases (depending on whether our field is
+                    required) we want to display a blank option for our control, while others we do
+                    not (forcing a value to be selected). You might have noticed in our state finder
+                    the following line:</para>
+                <programlisting>labels.add(new ConcreteKeyValue("", ""));</programlisting>
+                <para>This is adding a blank option at the beginning of the options list. Previous
+                    to KRAD, if you then wanted the same options on another screen but did not want
+                    to provide the blank option, a new key value finder class would need to be
+                    created. The UifKeyValuesFinder makes this a simple configuration option with
+                    the following method:</para>
+                <programlisting>public boolean isAddBlankOption();</programlisting>
+                <para>When this is set to true, the framework will add a blank option to the
+                    returned list of options from the key value finder. Using the mechanism
+                    described above for setting key value finder properties, we can reuse the same
+                    class in multiple places and configure whether a blank option should be
+                    added.</para>
+            </section>
+        </section>
     </section>
     <section>
         <title>Disabling Controls and Tabbing </title>

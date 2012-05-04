@@ -29,8 +29,7 @@ public class AppSpecificRouteRecipient implements Serializable {
 
 	private static final long serialVersionUID = 6587140192756322878L;
 
-	private static Map actionRequestCds = CodeTranslator.arLabels;
-
+	private static Map actionRequestCds;
     protected String type;
     protected String actionRequested;
     protected String id;  //can be networkId or groupId (although, currently, it's being treated as principal name or group name)
@@ -66,16 +65,18 @@ public class AppSpecificRouteRecipient implements Serializable {
     public String getActionRequestId() {
     	return actionRequestId;
     }
-    
+
     public void setActionRequestId(String actionRequestId) {
     	this.actionRequestId = actionRequestId;
     }
-    
+
     public String getActionRequestedValue(){
+        actionRequestCds.clear();
+        actionRequestCds.putAll(CodeTranslator.arLabels);
         if(getActionRequested() != null && !getActionRequested().trim().equals("")){
             return (String) actionRequestCds.get(getActionRequested());
         }
         return null;
     }
-    
+
 }

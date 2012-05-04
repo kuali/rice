@@ -36,7 +36,7 @@ import java.util.Map;
 public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -6499610180752232494L;
 
-    private static Map actionRequestCds = CodeTranslator.arLabels;
+    private static Map actionRequestCds;
     public static final Integer PERSON_TYPE = new Integer(0);
     public static final Integer WORKGROUP_TYPE = new Integer(1);
 
@@ -107,6 +107,8 @@ public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
     public String getActionRequestedValue() {
         String actionRequestedValue = null;
         if (StringUtils.isNotBlank(getActionRequested())) {
+            actionRequestCds.clear();
+            actionRequestCds.putAll(CodeTranslator.arLabels);
             actionRequestedValue = (String) actionRequestCds.get(getActionRequested());
         }
 

@@ -2484,11 +2484,236 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
     </section>
     <section>
         <title>Input Field Messages </title>
-        <para></para>
+        <para>For views that are not used often (such as a student page) or complex or unclear
+            fields it is helpful to provide instructional text within the field. These messages
+            provide additional information that helps clarify the intended use.</para>
+        <para>The input field component has two types of standard messages that can be configured.
+            The first of these is known as instructional text. Instructional text is used to
+            indicate more information about filling out a field or how to complete a task using the
+            UI elements. An example of this is “Complete this field only if applying for a one year
+            loan”. Instructional text is specified for an input field using the instructionalText
+            property:</para>
+        <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”oneYearTerm” p:instructionalText=”Complete this field only if applying for a one year loan”/&gt;</programlisting>
+        <para>The instructional text appears by default above the control and has a style class
+            named ‘uif-instructionalMessage’ applied. If the label placement is top, the
+            instructional text will appear between the label and the control. </para>
+        <para>Another type of message that can be configured on the input field is called constraint
+            text. Constraint text gives the user information about the required format of the data
+            that must be entered, or other information necessary for entering the data correctly. A
+            constraint message can be configured using the constraintText property as shown
+            here:</para>
+        <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”oneYearTerm” p:constraintText=”Must be formatted as 3 digits”/&gt;</programlisting>
+        <para>The constraint text appears by default under the control and has a style class named
+            ‘uif-constraintMessage’ applied.</para>
+        <para>Below shows an input field with instructional and constraint text.</para>
+        <figure>
+            <title>Input Field with Contratint Text</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/inputFieldConstraintText.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>Recall from Chapter 4 these messages can also be configured on the dictionary
+            attribute definition. If an attribute definition is found for the field, the
+            instructional and constraint messages will be copied (unless overridden).</para>
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                    <para>Input field provides message properties that can be specified to help
+                        clarify the purpose of a form field</para>
+                </listitem>
+                <listitem>
+                    <para>The first type of message is known as instructional text and is configured
+                        with the <emphasis role="bold">instructionalText</emphasis> property</para>
+                </listitem>
+                <listitem>
+                    <para>Instructional text is meant to give information about how to complete a
+                        field or a task</para>
+                </listitem>
+                <listitem>
+                    <para>By default the instructional text appears above the input field control
+                        and has a style class of ‘uif-instructionalMessage’</para>
+                </listitem>
+                <listitem>
+                    <para>The other type of message is known as constraint text and is configured
+                        with the <emphasis role="bold">constraintText</emphasis> property</para>
+                </listitem>
+                <listitem>
+                    <para>Constraint text gives information about the format or other constraints
+                        for an inputted value</para>
+                </listitem>
+                <listitem>
+                    <para>By default the constraint text appears below the input field control and
+                        has a style class of ‘uif-constraintMessage’</para>
+                </listitem>
+                <listitem>
+                    <para>These messages can also be configured on the data dictionary attribute
+                        definition and inherited by the input field</para>
+                </listitem>
+                </itemizedlist>
+        </section>
     </section>
     <section>
         <title>Field Queries and Informational Properties </title>
-        <para></para>
+        <para>Next let’s take a look at some of the features available for providing the user
+            dynamic information based on the inputted field data. The information provided can vary
+            based on what is relevant for a particular field. Generally though, it is similar
+            information as provided by the inquiry view, except we pick a couple of important fields
+            that inserted directly into the page field (without the user having to take an action
+            and bring up a lightbox or separate page).</para>
+        <para>To display dynamic information, first we need to setup placeholders or the properties
+            that will hold the information. These must be valid properties on the model (however for
+            display a custom message the form is a great place to create ‘dummy’ properties). To
+            specify information properties we configure the informationalDisplayPropertyNames
+            property on DataField. This property is a List type with each entry giving the name for
+            a property to display.</para>
+        <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:label=”Book Id” p:informationalDisplayPropertyNames=”bookTitle,bookCopyright”/&gt;</programlisting>
+        <para>In this example we have an input field for the book id property, and we want to
+            display the values for the bookTitle and bookCopyright property with the field. </para>
+        <para>Informational display properties by default are rendered under the field control (or
+            if read only under the displayed value, also if constraint text is present they will
+            display below it). They are always displayed read only. The value for each property is
+            placed with a span that receives a style class of ‘uif-informationalMessage’. Therefore,
+            we can configure this style to change how the properties are displayed. The default
+            style uses the CSS display block style, making each property value appear on a new
+            line.</para>
+        <para> Below gives a picture of this with two informational properties being
+            displayed.</para>
+        <figure>
+            <title>Two Informational Properties Example</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/informationalProperties.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <section>
+            <title>Field Attribute Query</title>
+            <para>Each time the field is rendered, the information display property values will be
+                displayed. This is a useful, however by itself is not ‘dynamic’. That is, if the
+                user then changes the value the information properties will not change to reflect
+                the update. To make this happen, we need to associate a piece of functionality
+                called attribute query with our field.</para>
+            <para>An attribute query is represented by the class
+                org.kuali.rice.krad.uif.field.AttributeQuery. This is not a component, just a class
+                that configures behavior that can be added to the input field component. Basically
+                this class provides properties for configuring a query to retrieve these information
+                properties. It has similar concepts to the lookup (quickfinder widget) with a more
+                targeted purpose. There are two mechanisms for configuring a query. The first
+                involves configured the necessary properties to allow the framework to automatically
+                perform a query. This involves the following attribute query properties:</para>
+            <para><emphasis role="bold">dataObjectClassName</emphasis> – Name of the data object
+                class the query will go against. The class given must be mapped to the database
+                (with ORM metadata) to support the automatic lookup. This functions the same as the
+                dataObjectClassName for the lookup view (or quickfinder widget).</para>
+            <para><emphasis role="bold">queryFieldMapping</emphasis> – A map type that holds the
+                mappings of properties from the calling view to properties on the data object class.
+                Each entry represents one property mapping. The map key is the property name in the
+                calling view, and the map value is the property name on the data object class. This
+                will usually include the property name of the field for which the query is
+                configured (since we want to query based on the value the user has inputted). We
+                might need to pass in additional properties from the view to complete the query.
+                This property functions similar to the inquiryParameters on the inquiry
+                widget.</para>
+            <para>Note this mapping is used to build criteria for the query. The values for the
+                calling view properties are retrieved and used to restrict the retrieved data object
+                records based on the mapped data object fields. For example, suppose we have the
+                following query field mapping: “document.rentedBookId:bookId” and the value of the
+                document.rentedBookId on our view is ‘3’. When the query is performed the following
+                clause will be created “where bookId = ‘3’” (note the actual SQL is not constructed
+                by KRAD, but created by the OJB criteria object).</para>
+            <para><emphasis role="bold">returnFieldMapping</emphasis> – A map type that holds the
+                mappings of properties from the data object class to the calling view. Each entry
+                represents one property mapping. The map key is the property name on the data object
+                class, and the map value is the property name on the calling view. We can use this
+                property to map properties on the data object class back to configured information
+                display properties of the field. However, it is not limited to that. We can also map
+                properties of the data object class back to properties that are separate fields
+                (thus filling in the control value for those corresponding fields).</para>
+            <para><emphasis role="bold">additionalCriteria</emphasis> – A map that holds additional
+                criteria for the query. The criteria specified will be added to the constructed
+                criteria based on query field mapping. The map key is the name of the property on
+                the data object class the criteria should apply to, and the map value is the value
+                for the criteria. All map entries are joined using the AND clause. Note, the map
+                value does support query characters as provided by the lookup framework (‘!’ – not,
+                ‘&gt;’ – greater than, ‘&lt;’ – less than, ‘*’ – wildcard, and so on). In addition
+                for the map values, we can use expressions (‘@{}’).</para>
+            <para>To hook up an attribute query with an input field we use the <emphasis role="bold"
+                    >fieldAttributeQuery</emphasis> property. We can then create an instance of the
+                attribute query class by creating a bean with parent of
+                ‘Uif-AttributeQueryConfig’:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”rentedBookId” p:label=”Book Id” p:informationalDisplayPropertyNames=”rentedBookTitle,rentedBookCopyright”&gt;
+    &lt;property name=”fieldAttribueQuery”&gt;
+        &lt;bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.bookstore.bo.Book" p:queryFieldMapping="rentedBookId:bookId" p:returnFieldMapping="bookTitle:rentedBookTitle, bookCopyright:rentedBookCopyright"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <para>In this example we have an input field for the rentedBookId property. We then
+                setup a query that will go against the Book data object, passing the value for
+                rentedBookId as criteria for the bookId property. From the resulting record, the
+                bookTitle and bookCopyright property values will be copied to the rentedBookTitle
+                and rendedBookCopyright properties. These are configured as informational display
+                properties, therefore the updated values will display under the control for
+                rentedBookId.</para>
+            <para>Note the framework takes care of trigger the query (with the ‘onblur’ event),
+                performing the query, and updating the mapping return fields all client side
+                (without a page post). It is expected the field attribute query will return only one
+                result. If more than one record is retrieved, the first record of the hit list will
+                be used. In the case of no matching records, a message will be rendered stating
+                ‘{field label} not found’, where {field label} is the configured label. This message
+                can be disabled by setting fieldAttributeQuery.renderNotFoundMessage to false. In
+                addition, attribute query contains a property named returnMessageText that can be
+                used to configure a message that will display with the results, or a custom message
+                in the case no results are found.</para>
+            <para>The attribute query class also allows us to hook up a custom query that will be
+                invoked to retrieve the additional information. In this case, the developer writes
+                the actual code to perform the query (call another service or whatever) and return
+                the results. The framework will then take care of triggering the query and handling
+                the results (updating the values).</para>
+            <para>There is a great deal of flexibility for invoking a custom query method. Let’s
+                start with the way that requires the least amount of configuration. First, we need
+                to know a little bit about the framework code, in particular one service. The UIF
+                invokes a service of type org.kuali.rice.krad.uif.service.ViewHelperService to
+                perform building of the view and many other UI related functions. An implementation
+                of this service (ViewHelperServiceImpl) carries out this processing. The framework
+                allows us to extend this service and declare that one or more views should use the
+                custom view helper. This is our gateway for code based customizations. So let’s do
+                it! The following sets up a custom view helper service:</para>
+            <programlisting>
+                package edu.myedu.sample;
+public class CustomViewHelperServiceImpl extends ViewHelperServiceImpl {
+}</programlisting>
+            <para>Next we configure our view to use the custom view helper service. This is done by
+                setting the viewHelperServiceClassName property on the view component (the View
+                component is covered in complete detail in Chapter 9):</para>
+            <programlisting>
+&lt;bean id="MyView" parent="Uif-FormView"&gt;
+    ...
+    &lt;property name="viewHelperServiceClassName" value="edu.myedu.sample.CustomViewHelperServiceImpl"/&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <para>Now we have a place to put our custom query method. The signature of this method
+                depends on the query being performed, but there are a few guidelines:<orderedlist>
+                    <listitem>
+                        <para>The method parameters must correspond to fields on the view (for
+                            example, think of the queryFieldMapping which is configured for the
+                            automatic query, essentially we will be pulling fields from the view the
+                            same way, except passing them as arguments to the method).</para>
+                    </listitem>
+                    <listitem>
+                        <para>The method must return a data object instance for which the return
+                            properties can be retrieved, or a list of data objects (in the case of
+                            backing a field suggest), or an AttributeQueryResult. The
+                            AttributeQueryResult is an object that gets returned back to the client
+                            and read to process the results. If the method returns the data object,
+                            the framework will build the result object from that. However the result
+                            object can be built directly for custom needs.</para>
+                    </listitem>
+                </orderedlist></para>
+        </section>     
     </section>
     <section>
         <title>Other Data and Input Field Properties </title>

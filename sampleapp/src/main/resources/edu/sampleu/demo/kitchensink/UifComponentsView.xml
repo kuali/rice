@@ -388,7 +388,7 @@
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field109" p:label="Field Label" p:labelPlacement="TOP"
-              p:fieldLabel.renderColon="false" p:instructionalText="Perform uppercase" p:performUppercase="true">
+              p:fieldLabel.renderColon="false" p:instructionalText="Perform uppercase" p:uppercaseValue="true">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30"/>
           </property>

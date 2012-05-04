@@ -80,8 +80,8 @@ public interface ComponentModifier extends Configurable, Serializable, Ordered {
      * @param view - the view instance to which the component belongs
      * @param model - top level object containing the view data
      * @param component - the component instance to modify
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier.performModification
-     *      (View, Component)
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification
+     *      (View, Object, Component)
      */
     public void performModification(View view, Object model, Component component);
 

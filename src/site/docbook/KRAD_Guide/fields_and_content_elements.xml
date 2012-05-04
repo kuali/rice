@@ -144,7 +144,7 @@ public class FieldBase extends ComponentBase implements Field {
                 <title>labelPlacement Options</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/labelPlacement.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/labelPlacement.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -260,7 +260,7 @@ public class BookForm {
                 <title>Data Field Label</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/dataFieldLabel.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/dataFieldLabel.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>                
@@ -424,7 +424,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
                     <title>Data Field Label</title>
                     <mediaobject>
                        <imageobject>
-                        <imagedata fileref="images/fixedDelimiter.png"/>
+                           <imagedata fileref="../images/KRAD_Guide/fixedDelimiter.png"/>
                        </imageobject>
                     </mediaobject>
             </figure>
@@ -1210,7 +1210,7 @@ public class TravelAccount {
                 <title>Checkbox Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/checkboxControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/checkboxControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1263,7 +1263,7 @@ public class TravelAccount {
                 <title>File Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/fileControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/fileControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1392,7 +1392,7 @@ public class TravelAccount {
                 <title>Watermark Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/watermarkControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/watermarkControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1407,7 +1407,7 @@ public class TravelAccount {
                 <title>Date Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/dateControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/dateControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1422,7 +1422,7 @@ public class TravelAccount {
                 <title>Text Expand Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/textExpandControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/textExpandControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1469,7 +1469,7 @@ public class TravelAccount {
                 <title>TextArea Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/textAreaControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/textAreaControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1500,7 +1500,7 @@ public class TravelAccount {
                 <title>Spinner Control</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="images/spinnerControl.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/spinnerControl.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1732,6 +1732,85 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
                     class in multiple places and configure whether a blank option should be
                     added.</para>
             </section>
+            <section>
+                <title>CheckboxGroup</title>
+                <para>The CheckboxGroup control is a multi-value control that presents each option
+                    as a checkbox. When a checkbox is selected the corresponding option key will be
+                    selected as a value. The checkbox group allows selecting multiple options,
+                    therefore multiple checkboxes for the group may be selected. The option label
+                    for each checkbox is rendered to the right of the control.</para>
+                <para>The checkbox group control supports one custom property named delimiter. This
+                    is a string that will be rendered between each checkbox (including the label).
+                    Two common options for this are the ‘&amp;nbsp;’ and ‘&lt;/br&gt;’ strings. Note
+                    this is the HTML entity and tag and thus the first adds a space between each
+                    checkbox, while the second add a link break between each. These can be used to
+                    horizontally or vertically align the checkboxes. KRAD provides base beans for
+                    both these options named ‘Uif-HorizontalCheckboxesControl’ and
+                    ‘Uif-VerticalCheckboxesControl’.</para>
+                <para>To specify a checkbox control should be used, a bean with parent of
+                    ‘Uif-HorizontalCheckboxesControl’ or ‘Uif-VerticalCheckboxesControl’ should be
+                    given:</para>
+                <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”selectedOpts” p:label=”Checkboxes 1”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-VerticalCheckboxesControl”&gt;
+            &lt;property name=”options”&gt;
+                &lt;list&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O1” p:value=”Option 1”/&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O2” p:value=”Option 2”/&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O3” p:value=”Option 3”/&gt;
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>
+                <para>Note we could also have chosen to configure the optionsFinder or
+                    optionsFinderClass on the input field bean instead of configuring the options
+                    directly on the control.</para>
+                <para>Below shows the checkbox group control.</para>
+                <figure>
+                    <title>CheckboxGroup Control</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/checkBoxGroupControl.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>Since the checkbox group control allows selecting multiple values, our back
+                    model property must be a List type of primitives (usually string). For
+                    example:</para>
+                <programlisting>private List&lt;String&gt; checkboxGroupProperty;</programlisting>
+                <para>After the request data is bound to the model, each value that was checked will
+                    be an entry in the List.</para>
+            </section>
+            <section>
+                <title>RadioGroup</title>
+                <para>The RadioGroup control is similar to the checkbox group control, with the
+                    exception of it only allows one value to be selected. Similar to checkbox group
+                    it supports the delimiter property and the UIF provides two base beans for the
+                    space and line break delimiters.</para>
+                <para>To specify a radio control should be used, a bean with parent of
+                    ‘Uif-HorizontalRadioControl’ or ‘Uif-VerticalRadioControl’ should be
+                    given:</para>
+                <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”selectedOpt” p:label=”Radio 1”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-VerticalRadioControl”&gt;
+            &lt;property name=”options”&gt;
+                &lt;list&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O1” p:value=”Option 1”/&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O2” p:value=”Option 2”/&gt;
+                    &lt;bean parent=”Uif-KeyLabelPair” p:key=”O3” p:value=”Option 3”/&gt;
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+                </programlisting>  
+                <para>Since the radio control only allows selection of one option, the backing property 
+                    should be a non-List type.</para>
+            </section> 
         </section>
     </section>
     <section>

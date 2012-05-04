@@ -43,16 +43,16 @@ public class Action extends ContentElementBase {
     private String methodToCall;
     private String navigateToPageId;
 
-    private boolean clientSideValidate;
+    private boolean performClientSideValidation;
     private String clientSideJs;
 
     private String jumpToIdAfterSubmit;
     private String jumpToNameAfterSubmit;
-    private String focusOnAfterSubmit;
+    private String focusOnIdAfterSubmit;
 
     private String actionLabel;
-    private ImageField actionImage;
-    private String actionImageLocation = "LEFT";
+    private Image actionImage;
+    private String actionImagePlacement;
 
     private String actionEvent;
     private Map<String, String> actionParameters;
@@ -60,13 +60,15 @@ public class Action extends ContentElementBase {
     private LightBox lightBoxLookup;
     private LightBox lightBoxDirectInquiry;
 
-    private boolean blockValidateDirty;
+    private boolean performDirtyValidation;
 
     private boolean disabled;
     private String disabledReason;
 
     public Action() {
         super();
+
+        actionImagePlacement = UifConstants.Position.LEFT.name();
 
         disabled = false;
         actionParameters = new HashMap<String, String>();
@@ -87,7 +89,7 @@ public class Action extends ContentElementBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
         //clear alt text to avoid screen reader confusion when using image in button with text
-        if(actionImage != null && StringUtils.isNotBlank(actionImageLocation) && StringUtils.isNotBlank(actionLabel)){
+        if(actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(actionLabel)){
             actionImage.setAltText("");
         }
 
@@ -119,8 +121,8 @@ public class Action extends ContentElementBase {
             }
 
             boolean validateFormDirty = false;
-            if (view instanceof FormView && isBlockValidateDirty()) {
-                validateFormDirty = ((FormView) view).isValidateDirty();
+            if (view instanceof FormView && isPerformDirtyValidation()) {
+                validateFormDirty = ((FormView) view).isApplyDirtyCheck();
             }
 
             boolean includeDirtyCheckScript = false;
@@ -158,13 +160,13 @@ public class Action extends ContentElementBase {
             writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HOME + "' , '"
                     + "false" + "'); ";
 
-            if (StringUtils.isBlank(focusOnAfterSubmit)) {
+            if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
                 // if this is blank focus this actionField by default
-                focusOnAfterSubmit = this.getId();
+                focusOnIdAfterSubmit = this.getId();
                 writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + this.getId() + "'); ";
-            } else if (!focusOnAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
+            } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
                 // Use the id passed in
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnAfterSubmit + "'); ";
+                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnIdAfterSubmit + "'); ";
             } else {
                 // First input will be focused, must be first field set to empty
                 // string
@@ -186,7 +188,7 @@ public class Action extends ContentElementBase {
             if (StringUtils.isNotBlank(clientSideJs)) {
                 postScript = clientSideJs;
             }
-            if (isClientSideValidate()) {
+            if (isPerformClientSideValidation()) {
                 postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
             }
             if (StringUtils.isBlank(postScript)) {
@@ -288,16 +290,17 @@ public class Action extends ContentElementBase {
 
     /**
      * Image to use for the action
+     *
      * <p>
-     * When the action image field is set (and render is true) the image will be
+     * When the action image component is set (and render is true) the image will be
      * used to present the action as opposed to the default (input submit). For
      * action link templates the image is used for the link instead of the
      * action link text
      * </p>
      * 
-     * @return ImageField action image
+     * @return Image action image
      */
-    public ImageField getActionImage() {
+    public Image getActionImage() {
         return this.actionImage;
     }
 
@@ -306,7 +309,7 @@ public class Action extends ContentElementBase {
      * 
      * @param actionImage
      */
-    public void setActionImage(ImageField actionImage) {
+    public void setActionImage(Image actionImage) {
         this.actionImage = actionImage;
     }
 
@@ -518,16 +521,16 @@ public class Action extends ContentElementBase {
      * 
      * @return the focusOnAfterSubmit
      */
-    public String getFocusOnAfterSubmit() {
-        return this.focusOnAfterSubmit;
+    public String getFocusOnIdAfterSubmit() {
+        return this.focusOnIdAfterSubmit;
     }
 
     /**
-     * @param focusOnAfterSubmit
+     * @param focusOnIdAfterSubmit
      *            the focusOnAfterSubmit to set
      */
-    public void setFocusOnAfterSubmit(String focusOnAfterSubmit) {
-        this.focusOnAfterSubmit = focusOnAfterSubmit;
+    public void setFocusOnIdAfterSubmit(String focusOnIdAfterSubmit) {
+        this.focusOnIdAfterSubmit = focusOnIdAfterSubmit;
     }
 
     /**
@@ -535,16 +538,16 @@ public class Action extends ContentElementBase {
      *
      * return true if validation should occur, false otherwise
      */
-    public boolean isClientSideValidate() {
-        return this.clientSideValidate;
+    public boolean isPerformClientSideValidation() {
+        return this.performClientSideValidation;
     }
 
     /**
      * Setter for the client side validation flag
-     * @param clientSideValidate
+     * @param performClientSideValidation
      */
-    public void setClientSideValidate(boolean clientSideValidate) {
-        this.clientSideValidate = clientSideValidate;
+    public void setPerformClientSideValidation(boolean performClientSideValidation) {
+        this.performClientSideValidation = performClientSideValidation;
     }
 
     /**
@@ -597,18 +600,18 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @param blockValidateDirty
+     * @param performDirtyValidation
      *            the blockValidateDirty to set
      */
-    public void setBlockValidateDirty(boolean blockValidateDirty) {
-        this.blockValidateDirty = blockValidateDirty;
+    public void setPerformDirtyValidation(boolean performDirtyValidation) {
+        this.performDirtyValidation = performDirtyValidation;
     }
 
     /**
      * @return the blockValidateDirty
      */
-    public boolean isBlockValidateDirty() {
-        return blockValidateDirty;
+    public boolean isPerformDirtyValidation() {
+        return performDirtyValidation;
     }
 
     /**
@@ -649,8 +652,8 @@ public class Action extends ContentElementBase {
         this.disabledReason = disabledReason;
     }
 
-    public String getActionImageLocation() {
-        return actionImageLocation;
+    public String getActionImagePlacement() {
+        return actionImagePlacement;
     }
 
     /**
@@ -660,7 +663,7 @@ public class Action extends ContentElementBase {
      * blank/null/IMAGE_ONLY to use ONLY the image as the Action.
      * @return
      */
-    public void setActionImageLocation(String actionImageLocation) {
-        this.actionImageLocation = actionImageLocation;
+    public void setActionImagePlacement(String actionImagePlacement) {
+        this.actionImagePlacement = actionImagePlacement;
     }
 }

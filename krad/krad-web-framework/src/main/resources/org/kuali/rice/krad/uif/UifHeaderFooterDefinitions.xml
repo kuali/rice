@@ -28,19 +28,19 @@
   <bean id="Uif-HeaderBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Header"
         scope="prototype" parent="Uif-ComponentBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/header.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-header</value>
       </list>
     </property>
-    <property name="headerStyleClasses">
+    <property name="headerTagCssClasses">
       <list merge="true">
         <value>uif-headerText</value>
       </list>
     </property>
     <property name="upperGroup">
       <bean parent="Uif-HorizontalBoxGroup">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-upperHeaderGroup</value>
           </list>
@@ -49,7 +49,7 @@
     </property>
     <property name="rightGroup">
       <bean parent="Uif-HorizontalBoxGroup">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-rightHeaderGroup</value>
           </list>
@@ -58,7 +58,7 @@
     </property>
     <property name="lowerGroup">
       <bean parent="Uif-HorizontalBoxGroup">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-lowerHeaderGroup</value>
           </list>
@@ -102,7 +102,7 @@
 
   <bean id="Uif-ViewHeader" parent="Uif-ViewHeader-parentBean"/>
   <bean id="Uif-ViewHeader-parentBean" abstract="true" parent="Uif-HeaderOne">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-viewHeader</value>
       </list>
@@ -111,7 +111,7 @@
 
   <bean id="Uif-PageHeader" parent="Uif-PageHeader-parentBean"/>
   <bean id="Uif-PageHeader-parentBean" abstract="true" parent="Uif-HeaderTwo">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-pageHeader</value>
       </list>
@@ -120,7 +120,7 @@
 
   <bean id="Uif-SectionHeader" parent="Uif-SectionHeader-parentBean"/>
   <bean id="Uif-SectionHeader-parentBean" abstract="true" parent="Uif-HeaderThree">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-sectionHeader</value>
       </list>
@@ -129,7 +129,7 @@
 
   <bean id="Uif-SubSectionHeader" parent="Uif-SubSectionHeader-parentBean"/>
   <bean id="Uif-SubSectionHeader-parentBean" abstract="true" parent="Uif-HeaderFour">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-subSectionHeader</value>
       </list>
@@ -138,7 +138,7 @@
 
   <bean id="Uif-SubCollectionHeader" parent="Uif-SubCollectionHeader-parentBean"/>
   <bean id="Uif-SubCollectionHeader-parentBean" abstract="true" parent="Uif-HeaderBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-subCollectionHeader</value>
       </list>
@@ -166,7 +166,7 @@
 
   <bean id="Uif-FooterBase" abstract="true" parent="Uif-FooterBase-parentBean"/>
   <bean id="Uif-FooterBase-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup" scope="prototype">
-    <property name="styleClasses" value="uif-footer"/>
+    <property name="cssClasses" value="uif-footer"/>
   </bean>
 
   <!-- Common Footers -->
@@ -174,7 +174,7 @@
   <bean id="Uif-FormFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save" p:clientSideValidate="true"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save" p:performClientSideValidation="true"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
         <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"/>
       </list>
@@ -188,15 +188,15 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="send adhoc"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="submit" p:clientSideValidate="true"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="submit" p:performClientSideValidation="true"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="save" p:clientSideValidate="true"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="save" p:performClientSideValidation="true"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="reload" p:actionLabel="reload"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="blanketApprove" p:actionLabel="blanket approve" p:clientSideValidate="true"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="blanketApprove" p:actionLabel="blanket approve" p:performClientSideValidation="true"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="approve" p:actionLabel="approve"  p:clientSideValidate="true"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="approve" p:actionLabel="approve"  p:performClientSideValidation="true"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_APPROVE]}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="disapprove" p:actionLabel="disapprove"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}"/>

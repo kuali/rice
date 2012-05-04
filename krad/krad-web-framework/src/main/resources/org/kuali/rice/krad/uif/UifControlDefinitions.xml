@@ -27,7 +27,7 @@
   <bean id="Uif-ControlBase" abstract="true" parent="Uif-ControlBase-parentBean"/>
   <bean id="Uif-ControlBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.ControlBase"
           parent="Uif-ComponentBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-control</value>
       </list>
@@ -41,7 +41,7 @@
   <bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/text.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-textControl</value>
       </list>
@@ -51,7 +51,7 @@
 
   <bean id="Uif-SmallTextControl" parent="Uif-SmallTextControl-parentBean"/>
   <bean id="Uif-SmallTextControl-parentBean" parent="Uif-TextControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-smallTextControl</value>
       </list>
@@ -61,7 +61,7 @@
 
   <bean id="Uif-MediumTextControl" parent="Uif-MediumTextControl-parentBean"/>
   <bean id="Uif-MediumTextControl-parentBean" parent="Uif-TextControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-mediumTextControl</value>
       </list>
@@ -71,7 +71,7 @@
 
   <bean id="Uif-LargeTextControl" parent="Uif-LargeTextControl-parentBean"/>
   <bean id="Uif-LargeTextControl-parentBean" parent="Uif-TextControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-largeTextControl</value>
       </list>
@@ -81,7 +81,7 @@
 
   <bean id="Uif-CurrencyTextControl" parent="Uif-CurrencyTextControl-parentBean"/>
   <bean id="Uif-CurrencyTextControl-parentBean" abstract="true" parent="Uif-TextControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-currencyControl</value>
       </list>
@@ -92,7 +92,7 @@
   <bean id="Uif-CheckboxControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.CheckboxControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkbox.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-checkboxControl</value>
       </list>
@@ -103,7 +103,7 @@
   <bean id="Uif-HiddenControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.HiddenControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/hidden.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-hiddenControl</value>
       </list>
@@ -114,7 +114,7 @@
   <bean id="Uif-TextAreaControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextAreaControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/textArea.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-textAreaControl</value>
       </list>
@@ -125,7 +125,7 @@
 
   <bean id="Uif-SmallTextAreaControl" parent="Uif-SmallTextAreaControl-parentBean"/>
   <bean id="Uif-SmallTextAreaControl-parentBean" parent="Uif-TextAreaControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-smallTextAreaControl</value>
       </list>
@@ -136,7 +136,7 @@
 
   <bean id="Uif-MediumTextAreaControl" parent="Uif-MediumTextAreaControl-parentBean"/>
   <bean id="Uif-MediumTextAreaControl-parentBean" parent="Uif-TextAreaControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-mediumTextAreaControl</value>
       </list>
@@ -147,7 +147,7 @@
 
   <bean id="Uif-LargeTextAreaControl" parent="Uif-LargeTextAreaControl-parentBean"/>
   <bean id="Uif-LargeTextAreaControl-parentBean" parent="Uif-TextAreaControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-largeTextControl</value>
       </list>
@@ -160,7 +160,7 @@
   <bean id="Uif-DropdownControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControl"
         scope="prototype" parent="Uif-ControlBase" p:multiple="false">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/select.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-dropdownControl</value>
       </list>
@@ -171,7 +171,7 @@
   <bean id="Uif-MultiSelectControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControl"
         scope="prototype" parent="Uif-ControlBase" p:multiple="true">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/select.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-multiSelectControl</value>
       </list>
@@ -187,7 +187,7 @@
         <value>uif-verticalRadioFieldset</value>
       </list>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-radioControl</value>
         <value>uif-verticalRadioControl</value>
@@ -206,7 +206,7 @@
         <value>uif-horizontalRadioFieldset</value>
       </list>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-radioControl</value>
         <value>uif-horizontalRadioControl</value>
@@ -224,7 +224,7 @@
         <value>uif-verticalCheckboxesFieldset</value>
       </list>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-checkboxesControl</value>
         <value>uif-verticalCheckboxesControl</value>
@@ -243,7 +243,7 @@
         <value>uif-horizontalCheckboxesFieldset</value>
       </list>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-checkboxesControl</value>
         <value>uif-horizontalCheckboxesControl</value>
@@ -255,7 +255,7 @@
   <bean id="Uif-FileControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.FileControl"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/control/file.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-fileControl</value>
       </list>
@@ -273,7 +273,7 @@
         </property>
       </bean>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-dateControl</value>
       </list>
@@ -288,7 +288,7 @@
     <property name="spinner">
       <bean parent="Uif-Spinner"/>
     </property>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-spinnerControl</value>
       </list>

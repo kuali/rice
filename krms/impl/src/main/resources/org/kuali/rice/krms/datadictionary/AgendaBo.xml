@@ -94,7 +94,7 @@
   <bean id="AgendaBo-LookupView" parent="Uif-LookupView">
     <property name="headerText" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaLookupableHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.repository.AgendaLookupableHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
@@ -117,7 +117,7 @@
   <bean id="AgendaBo-InquiryView" parent="Uif-InquiryView">
   <property name="headerText" value="Agenda Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
     <property name="additionalScriptFiles">
       <list>
         <value>/krms/scripts/ruleTree.js</value>

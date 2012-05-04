@@ -23,14 +23,14 @@
   <bean id="Uif-MaintenanceView" abstract="true" parent="Uif-MaintenanceView-parentBean"/>
   <bean id="Uif-MaintenanceView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.MaintenanceView" parent="Uif-DocumentView">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-maintenanceView</value>
       </list>
     </property>
     <property name="viewTypeName" value="MAINTENANCE"/>
     <property name="viewName" value="default"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
     <property name="presentationControllerClass"
               value="org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceViewAuthorizerBase"/>
@@ -44,7 +44,7 @@
 
   <bean id="Uif-MaintenancePage" abstract="true" parent="Uif-MaintenancePage-parentBean"/>
   <bean id="Uif-MaintenancePage-parentBean" parent="Uif-DocumentPage">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-maintenancePage</value>
       </list>

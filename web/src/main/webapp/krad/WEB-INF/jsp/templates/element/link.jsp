@@ -29,12 +29,12 @@
 </c:if>
 
 <c:if test="${empty fn:trim(body)}">
-  <c:set var="body" value="${element.linkLabel}"/>
+  <c:set var="body" value="${element.linkText}"/>
 </c:if>
 
 <krad:attributeBuilder component="${element}"/>
 
-<a id="${element.id}" href="${element.hrefText}" target="${element.target}" ${title}
+<a id="${element.id}" href="${element.href}" target="${element.target}" ${title}
 ${style} ${styleClass} ${tabindex} ${element.simpleDataAttributes}
 ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>${body}</a>
 

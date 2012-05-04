@@ -45,7 +45,7 @@
     </property>
     <property name="items">
       <list>
-        <bean id="Demo-ValidationLayout-SectionsPage" parent="Uif-Page" p:title="Standard Sections Page">
+        <bean id="Demo-ValidationLayout-SectionsPage" parent="Uif-Page" p:headerText="Standard Sections Page">
           <property name="items">
             <list>
               <ref bean="Demo-ValidationLayout-Section1"/>
@@ -53,12 +53,12 @@
             </list>
           </property>
         </bean>
-        <bean id="Demo-ValidationLayout-SectionsPageSectionMessages" parent="Demo-ValidationLayout-SectionsPage" p:title="Section Level Messages">
+        <bean id="Demo-ValidationLayout-SectionsPageSectionMessages" parent="Demo-ValidationLayout-SectionsPage" p:headerText="Section Level Messages">
         </bean>
-        <bean id="Demo-ValidationLayout-SectionsPageUnmatched" parent="Demo-ValidationLayout-SectionsPage" p:title="Unmatched Messages">
+        <bean id="Demo-ValidationLayout-SectionsPageUnmatched" parent="Demo-ValidationLayout-SectionsPage" p:headerText="Unmatched Messages">
         </bean>
         <bean id="Demo-ValidationLayout-SectionsPage-NoTooltip" 
-              parent="Uif-Page" p:title="Standard Sections Page - No tooltip">
+              parent="Uif-Page" p:headerText="Standard Sections Page - No tooltip">
           <property name="items">
             <list>
               <ref bean="Demo-ValidationLayout-Section1-NoTooltip"/>
@@ -67,7 +67,7 @@
           </property>
         </bean>
         <bean id="Demo-ValidationLayout-SectionsPage-NoSectionMessages"
-                      parent="Uif-Page" p:title="Standard Sections Page - displayMessages off for Sections">
+                      parent="Uif-Page" p:headerText="Standard Sections Page - displayMessages off for Sections">
           <property name="items">
             <list>
               <bean id="Demo-ValidationLayout-Section1-NoMessages" parent="Demo-ValidationLayout-Section1">
@@ -80,7 +80,7 @@
           </property>
         </bean>
         <bean id="Demo-ValidationLayout-SectionsPage-NoLabels"
-                              parent="Uif-Page" p:title="Standard Sections Page - displayFieldLabelWithMessages
+                              parent="Uif-Page" p:headerText="Standard Sections Page - displayFieldLabelWithMessages
                                off for Sections">
           <property name="items">
             <list>
@@ -94,7 +94,7 @@
           </property>
         </bean>
         <bean id="Demo-ValidationLayout-SectionsPage-NoCollapse"
-                                      parent="Uif-Page" p:title="Standard Sections Page - displayFieldLabelWithMessages
+                                      parent="Uif-Page" p:headerText="Standard Sections Page - displayFieldLabelWithMessages
                                        off for Sections">
           <property name="items">
             <list>
@@ -133,7 +133,7 @@
             </list>
           </property>
         </bean>
-        <bean id="Demo-ValidationLayout-SubSectionsPage" parent="Uif-Page" p:title="Sections/SubSections Page">
+        <bean id="Demo-ValidationLayout-SubSectionsPage" parent="Uif-Page" p:headerText="Sections/SubSections Page">
           <property name="items">
             <list>
               <ref bean="Demo-ValidationLayout-Section2"/>
@@ -141,7 +141,7 @@
             </list>
           </property>
         </bean>
-        <bean id="Demo-ValidationLayout-CollectionsPage" parent="Uif-Page" p:title="Collections">
+        <bean id="Demo-ValidationLayout-CollectionsPage" parent="Uif-Page" p:headerText="Collections">
           <property name="items">
             <list>
               <ref bean="Demo-StandardLayout-CollectionSection1"/>
@@ -149,7 +149,7 @@
             </list>
           </property>
         </bean>
-        <bean id="Demo-ValidationLayout-FieldGroupPage" parent="Uif-Page" p:title="Field Groups/Tabs">
+        <bean id="Demo-ValidationLayout-FieldGroupPage" parent="Uif-Page" p:headerText="Field Groups/Tabs">
           <property name="items">
             <list>
               <ref bean="Demo-ValidationLayout-FieldGroupSection"/>

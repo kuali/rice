@@ -81,8 +81,8 @@
         <bean parent="GenericTextField" p:label="Field Query w Progressive"
               p:instructionalText="Progressively renders a field when a hidden field is populated by a field query"
               p:propertyName="field72" p:defaultValue="a3">
-          <property name="hiddenPropertyNames" value="field73,field74"/>
-          <property name="fieldAttributeQuery">
+          <property name="additionalHiddenPropertyNames" value="field73,field74"/>
+          <property name="attributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74"/>
           </property>

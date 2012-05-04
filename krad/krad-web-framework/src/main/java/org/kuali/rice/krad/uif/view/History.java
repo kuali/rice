@@ -408,7 +408,7 @@ public class History implements Serializable {
 
         // may move this into view logic instead in the future if it is required for the view's title (not just breadcrumb)
         // if so remove this and just use getTitle - this logic would be in performFinalize instead
-        String viewLabelPropertyName = view.getViewLabelFieldPropertyName();
+        String viewLabelPropertyName = view.getBreadcrumbTitlePropertyName();
 
         // if view label property name given, try to retrieve the title attribute for the main data object
         if (StringUtils.isBlank(viewLabelPropertyName)) {
@@ -466,12 +466,12 @@ public class History implements Serializable {
             titleAppend = viewLabelPropertyValue.toString();
         }
 
-        if (StringUtils.isNotBlank(titleAppend) && view.getAppendOption() != null) {
-            if (view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.DASH)) {
+        if (StringUtils.isNotBlank(titleAppend) && view.getBreadcrumbTitleDisplayOption() != null) {
+            if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.DASH)) {
                 title = title + " - " + titleAppend;
-            } else if (view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.PARENTHESIS)) {
+            } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.PARENTHESIS)) {
                 title = title + "(" + titleAppend + ")";
-            } else if (view.getAppendOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.REPLACE)) {
+            } else if (view.getBreadcrumbTitleDisplayOption().equalsIgnoreCase(UifConstants.TitleAppendTypes.REPLACE)) {
                 title = titleAppend;
             }
             //else it is none or blank so no title modification will be used

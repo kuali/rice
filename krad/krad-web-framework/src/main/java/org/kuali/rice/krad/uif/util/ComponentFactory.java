@@ -150,18 +150,18 @@ public class ComponentFactory {
             throw new RuntimeException(id + " not found in view index try setting p:persistInSession=\"true\" in xml");
         }
 
-        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getFactoryId())) {
-            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getFactoryId());
+        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
+            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getBaseId());
             LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
         } else {
             component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
-                    origComponent.getFactoryId());
+                    origComponent.getBaseId());
             LOG.debug("getNewInstanceForRefresh: id '" + id + "' was NOT found in initialStates. New one fetched from DD");
         }
 
         if (component != null) {
             component = ComponentUtils.copyObject(component);
-            component.setId(origComponent.getFactoryId());
+            component.setId(origComponent.getBaseId());
         }
 
         return component;
@@ -178,7 +178,7 @@ public class ComponentFactory {
 
         // clear id before returning so duplicates do not occur
         component.setId(null);
-        component.setFactoryId(null);
+        component.setBaseId(null);
 
         return component;
     }
@@ -351,7 +351,7 @@ public class ComponentFactory {
         inputField.setShortLabel(remotableField.getShortLabel());
         inputField.setLabel(remotableField.getLongLabel());
         inputField.setConstraintText(remotableField.getConstraintText());
-        inputField.setPerformUppercase(remotableField.isForceUpperCase());
+        inputField.setUppercaseValue(remotableField.isForceUpperCase());
         inputField.setMinLength(remotableField.getMinLength());
         inputField.setMaxLength(remotableField.getMaxLength());
 
@@ -389,10 +389,10 @@ public class ComponentFactory {
         }
 
         if (remotableQuickFinder != null) {
-            inputField.getFieldLookup().setBaseLookupUrl(remotableQuickFinder.getBaseLookupUrl());
-            inputField.getFieldLookup().setDataObjectClassName(remotableQuickFinder.getDataObjectClass());
-            inputField.getFieldLookup().setLookupParameters(remotableQuickFinder.getLookupParameters());
-            inputField.getFieldLookup().setFieldConversions(remotableQuickFinder.getFieldConversions());
+            inputField.getQuickfinder().setBaseLookupUrl(remotableQuickFinder.getBaseLookupUrl());
+            inputField.getQuickfinder().setDataObjectClassName(remotableQuickFinder.getDataObjectClass());
+            inputField.getQuickfinder().setLookupParameters(remotableQuickFinder.getLookupParameters());
+            inputField.getQuickfinder().setFieldConversions(remotableQuickFinder.getFieldConversions());
         }
 
         if (remotableField.getControl() != null) {

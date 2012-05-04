@@ -20,7 +20,6 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
@@ -96,7 +95,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
             if (c != null) {
                 
                 //Add item styles to the the item
-                List<String> styleClasses = c.getStyleClasses();
+                List<String> styleClasses = c.getCssClasses();
                 if(orientation.equals(Orientation.HORIZONTAL)){
                     styleClasses.add("uif-boxLayoutHorizontalItem");
                     styleClasses.addAll(this.getItemStyleClasses());
@@ -106,7 +105,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
                     styleClasses.addAll(this.getItemStyleClasses());
                     styleClasses.add("clearfix");
                 }
-                c.setStyleClasses(styleClasses);
+                c.setCssClasses(styleClasses);
                 if(c.getStyle() != null && !c.getStyle().endsWith(";")){
                     c.appendToStyle(";" + this.getItemStyle());
                 }

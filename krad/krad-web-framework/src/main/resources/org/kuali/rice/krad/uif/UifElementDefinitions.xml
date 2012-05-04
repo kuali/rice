@@ -31,7 +31,7 @@
   <bean id="Uif-Iframe-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Iframe"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/iframe.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-iFrame</value>
       </list>
@@ -42,17 +42,17 @@
   <bean id="Uif-Image-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Image"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/image.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-image</value>
       </list>
     </property>
-    <property name="captionHeaderAboveImage" value="true"/>
+    <property name="captionHeaderPlacementAboveImage" value="true"/>
     <property name="captionHeader">
       <bean parent="Uif-HeaderFour"/>
     </property>
     <property name="cutlineMessage">
-      <bean parent="Uif-Message" p:styleClasses="uif-cutlineMessage"/>
+      <bean parent="Uif-Message" p:cssClasses="uif-cutlineMessage"/>
     </property>
   </bean>
 
@@ -60,7 +60,7 @@
   <bean id="Uif-Label-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Label"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/label.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-label</value>
       </list>
@@ -74,7 +74,7 @@
   <bean id="Uif-Link-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Link"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/link.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-link</value>
       </list>
@@ -91,7 +91,7 @@
   <bean id="Uif-DataTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DataTable"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/dataTable.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-tableCollectionLayout</value>
         <value>uif-dataTable</value>
@@ -118,7 +118,7 @@
   <bean id="Uif-Action-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Action"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/action.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-action</value>
       </list>
@@ -127,17 +127,17 @@
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
   <bean id="Uif-ActionImage-parentBean" abstract="true" parent="Uif-Action">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-actionImage</value>
       </list>
     </property>
-    <property name="actionImageLocation" value="IMAGE_ONLY"/>
+    <property name="actionImagePlacement" value="IMAGE_ONLY"/>
   </bean>
 
   <bean id="Uif-PrimaryActionButton" parent="Uif-PrimaryActionButton-parentBean"/>
   <bean id="Uif-PrimaryActionButton-parentBean" abstract="true" parent="Uif-Action">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-primaryActionButton</value>
       </list>
@@ -146,7 +146,7 @@
 
   <bean id="Uif-SecondaryActionButton" parent="Uif-SecondaryActionButton-parentBean"/>
   <bean id="Uif-SecondaryActionButton-parentBean" abstract="true" parent="Uif-Action">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-secondaryActionButton</value>
       </list>
@@ -155,7 +155,7 @@
 
   <bean id="Uif-PrimaryActionButton-Small" parent="Uif-PrimaryActionButton-Small-parentBean"/>
   <bean id="Uif-PrimaryActionButton-Small-parentBean" abstract="true" parent="Uif-PrimaryActionButton">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-smallActionButton</value>
       </list>
@@ -164,7 +164,7 @@
 
   <bean id="Uif-SecondaryActionButton-Small" parent="Uif-SecondaryActionButton-Small-parentBean"/>
   <bean id="Uif-SecondaryActionButton-Small-parentBean" abstract="true" parent="Uif-SecondaryActionButton">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-smallActionButton</value>
       </list>
@@ -174,7 +174,7 @@
   <bean id="Uif-ActionLink" parent="Uif-ActionLink-parentBean"/>
   <bean id="Uif-ActionLink-parentBean" abstract="true" parent="Uif-Action" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/actionLink.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-actionLink</value>
       </list>
@@ -184,7 +184,7 @@
   <bean id="Uif-AjaxActionButton" parent="Uif-AjaxActionButton-parentBean"/>
   <bean id="Uif-AjaxActionButton-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.AjaxAction"
         parent="Uif-PrimaryActionButton" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-ajaxAction</value>
       </list>
@@ -196,38 +196,38 @@
   perform page navigation-->
   <bean id="Uif-NavigationActionLink" parent="Uif-NavigationActionLink-parentBean"/>
   <bean id="Uif-NavigationActionLink-parentBean" abstract="true" parent="Uif-ActionLink" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-navigationActionLink</value>
       </list>
     </property>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
-    <property name="focusOnAfterSubmit" value="FIRST"/>
+    <property name="focusOnIdAfterSubmit" value="FIRST"/>
     <property name="clientSideJs" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-NavigationActionButton" parent="Uif-NavigationActionButton-parentBean"/>
   <bean id="Uif-NavigationActionButton-parentBean" abstract="true" parent="Uif-PrimaryActionButton" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-navigationActionButton</value>
       </list>
     </property>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
-    <property name="focusOnAfterSubmit" value="FIRST"/>
+    <property name="focusOnIdAfterSubmit" value="FIRST"/>
     <property name="clientSideJs" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-SecondaryNavigationActionButton" parent="Uif-SecondaryNavigationActionButton-parentBean"/>
   <bean id="Uif-SecondaryNavigationActionButton-parentBean" abstract="true" parent="Uif-SecondaryActionButton"
         scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-navigationActionButton</value>
       </list>
     </property>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
-    <property name="focusOnAfterSubmit" value="FIRST"/>
+    <property name="focusOnIdAfterSubmit" value="FIRST"/>
     <property name="clientSideJs" value="submitForm();"/>
   </bean>
 
@@ -235,7 +235,7 @@
   <bean id="Uif-Message-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Message"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/element/message.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-message</value>
       </list>
@@ -244,7 +244,7 @@
 
   <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
   <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-instructionalMessage</value>
       </list>
@@ -253,7 +253,7 @@
 
   <bean id="Uif-ConstraintMessage" parent="Uif-ConstraintMessage-parentBean"/>
   <bean id="Uif-ConstraintMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-constraintMessage</value>
       </list>
@@ -263,7 +263,7 @@
   <bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
   <bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype"
         p:messageText="*">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-requiredMessage</value>
       </list>

@@ -66,7 +66,7 @@
             <list>
               <bean parent="Uif-DataField" p:propertyName="id"/>
               <bean parent="Uif-DataField" p:propertyName="namespaceCode"/>
-              <bean parent="Uif-DataField" p:propertyName="name" p:fieldInquiry.render="false"/>
+              <bean parent="Uif-DataField" p:propertyName="name" p:inquiry.render="false"/>
               <bean parent="Uif-DataField" p:propertyName="typeId"/>
               <bean parent="Uif-DataField" p:propertyName="description"/>
               <bean parent="Uif-DataField" p:propertyName="active"/>
@@ -78,7 +78,7 @@
         <bean parent="PeopleFlow-Detail"/>
       </list>
     </property>
-    <property name="viewHelperServiceClassName"
+    <property name="viewHelperServiceClass"
               value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowInquirableImpl"/>
   </bean>
 
@@ -98,7 +98,7 @@
         <bean parent="PeopleFlow-Detail"/>
       </list>
     </property>
-    <property name="viewHelperServiceClassName"
+    <property name="viewHelperServiceClass"
               value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMaintainableImpl"/>
   </bean>
 
@@ -122,8 +122,8 @@
   </bean>
 
   <bean id="PeopleFlow-TypeAttributes" parent="Uif-GridSection"
-        p:refreshWhenChanged="document.newMaintainableObject.dataObject.typeId"
-        p:refreshDiscloseMethodToCall="prepareTypeAttributes" p:disclosure.render="false">
+        p:refreshWhenChangedPropertyNames="document.newMaintainableObject.dataObject.typeId"
+        p:methodToCallOnRefresh="prepareTypeAttributes" p:disclosure.render="false">
     <property name="items">
       <list>
         <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="attributeValues"
@@ -156,7 +156,7 @@
         <bean parent="Uif-InputField" p:propertyName="priority" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean parent="PeopleFlow-Member" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChanged="#lp.memberTypeCode"
+        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChangedPropertyNames="#lp.memberTypeCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -185,7 +185,7 @@
         <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean id="PeopleFlow-MemberDelegate" parent="PeopleFlow-Member" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="delegationTypeCode" p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChanged="#lp.memberTypeCode"
+        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChangedPropertyNames="#lp.memberTypeCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -197,7 +197,7 @@
   ********************************************************************************************************************
   -->
   <bean id="PeopleFlow-Member" parent="Uif-InputField" p:propertyName="memberName" p:label="Member"
-        p:refreshWhenChanged="#lp.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
+        p:refreshWhenChangedPropertyNames="#lp.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
         p:fieldLookup.render="@{!view.readOnly}" p:resetDataOnRefresh="true">
     <property name="control">
       <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name" p:watermarkText="Name"/>

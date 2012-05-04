@@ -58,7 +58,7 @@ public class ViewModelUtils {
      * @param view - view instance providing the context (abstract map)
      * @param propertyPath - full path to property to retrieve type for (relative to the form class)
      * @return Class<?> type of property in model, or Null if type could not be determined
-     * @see org.kuali.rice.krad.uif.view.View#getAbstractTypeClasses()
+     * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()
      */
     public static Class<?> getPropertyTypeByClassAndView(View view, String propertyPath) {
         Class<?> propertyType = null;
@@ -78,7 +78,7 @@ public class ViewModelUtils {
         String flattenedPropertyPath = propertyPath.replaceAll("\\[.+\\]", "");
 
         // check if property path matches one of the modelClass entries
-        Map<String, Class<?>> modelClasses = view.getAbstractTypeClasses();
+        Map<String, Class<?>> modelClasses = view.getObjectPathToConcreteClassMapping();
         for (String path : modelClasses.keySet()) {
             // full match
             if (StringUtils.equals(path, flattenedPropertyPath)) {

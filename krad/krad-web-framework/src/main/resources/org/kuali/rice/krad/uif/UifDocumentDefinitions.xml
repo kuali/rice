@@ -23,7 +23,7 @@
   <bean id="Uif-DocumentView" abstract="true" parent="Uif-DocumentView-parentBean"/>
   <bean id="Uif-DocumentView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView-KnsTheme">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-documentView</value>
       </list>
@@ -34,7 +34,7 @@
     <property name="presentationControllerClass"
               value="org.kuali.rice.krad.document.DocumentViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.document.DocumentViewAuthorizerBase"/>
-    <property name="viewHelperServiceClassName"
+    <property name="viewHelperServiceClass"
               value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl"/>
     <property name="singlePageView" value="true"/>
     <property name="header">
@@ -46,7 +46,7 @@
     <property name="footer">
       <bean parent="Uif-FooterBase"/>
     </property>
-    <property name="itemOrderingSequence" value="11"/>
+    <property name="defaultItemPosition" value="11"/>
     <property name="items">
       <list>
         <bean parent="Uif-DocumentOverviewSection" p:order="10"/>
@@ -58,7 +58,7 @@
   </bean>
 
   <bean id="Uif-DocumentPage" parent="Uif-Disclosure-Page">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-documentPage</value>
       </list>
@@ -102,7 +102,7 @@
     <property name="headerText"
               value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})"/>
     <property name="propertyName" value="notes"/>
-    <property name="styleClasses" value="tableborders wrap"/>
+    <property name="cssClasses" value="tableborders wrap"/>
     <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note"/>
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="layoutManager.richTable.render" value="false"/>
@@ -169,7 +169,7 @@
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note"/>
       </list>
     </property>
-    <property name="actions">
+    <property name="lineActions">
       <list>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send"
@@ -191,7 +191,7 @@
           <property name="headerText" value="Person Requests:"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
-          <property name="styleClasses" value="tableborders wrap"/>
+          <property name="cssClasses" value="tableborders wrap"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="actionRequested">
@@ -218,7 +218,7 @@
           <property name="bindingInfo.bindingObjectPath" value="document"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
-          <property name="styleClasses" value="tableborders"/>
+          <property name="cssClasses" value="tableborders"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="actionRequested">
@@ -260,7 +260,7 @@
   <bean id="Uif-DocumentViewHeader" abstract="true" parent="Uif-ViewHeader">
     <property name="lowerGroup">
       <bean parent="Uif-DocumentInfoGroup">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-docheader</value>
           </list>
@@ -271,7 +271,7 @@
 
   <bean id="Uif-DocumentNumber" parent="Uif-InputField" p:propertyName="documentNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentNumber</value>
           </list>
@@ -280,7 +280,7 @@
 
   <bean id="Uif-DocumentStatus" parent="Uif-InputField" p:propertyName="documentHeader.workflowDocument.status"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="workflowDocumentStatus">
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentStatus</value>
           </list>
@@ -290,7 +290,7 @@
   <bean id="Uif-DocumentInitiatorNetworkId" parent="Uif-InputField" p:propertyName="documentInitiatorNetworkId"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="initiatorNetworkId">
     <property name="bindingInfo.bindToForm" value="true"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentInitiatorNetworkId</value>
           </list>
@@ -300,7 +300,7 @@
   <bean id="Uif-DocumentCreateDate" parent="Uif-InputField" p:propertyName="documentCreateDate"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="createDate">
     <property name="bindingInfo.bindToForm" value="true"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentCreateDate</value>
           </list>
@@ -309,7 +309,7 @@
 
   <bean id="Uif-DocumentTemplateNumber" parent="Uif-InputField" p:propertyName="documentTemplateNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentTemplateNumber</value>
           </list>
@@ -318,7 +318,7 @@
 
   <bean id="Uif-DocumentDescription" parent="Uif-InputField" p:propertyName="documentDescription"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentDescription</value>
           </list>
@@ -327,7 +327,7 @@
 
   <bean id="Uif-DocumentExplaination" parent="Uif-InputField" p:propertyName="explanation"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-documentExplaination</value>
           </list>
@@ -336,7 +336,7 @@
 
   <bean id="Uif-OrganizationDocumentNumber" parent="Uif-InputField" p:propertyName="organizationDocumentNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
-    <property name="styleClasses">
+    <property name="cssClasses">
           <list merge="true">
             <value>uif-organizationDocumentNumber</value>
           </list>

@@ -23,7 +23,6 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Arrays;
@@ -90,7 +89,7 @@ public class LookupView extends FormView {
         super();
 
         setViewTypeName(ViewType.LOOKUP);
-        setValidateDirty(false);
+        setApplyDirtyCheck(false);
     }
 
     /**
@@ -115,9 +114,9 @@ public class LookupView extends FormView {
             hideReturnLinks = true;
         }
 
-        getAbstractTypeClasses().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
+        getObjectPathToConcreteClassMapping().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {
-            getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
+            getObjectPathToConcreteClassMapping().put(getDefaultBindingObjectPath(), getDataObjectClassName());
         }
     }
 

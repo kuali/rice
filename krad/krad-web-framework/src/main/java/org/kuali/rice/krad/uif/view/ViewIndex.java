@@ -27,7 +27,6 @@ import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -146,26 +145,27 @@ public class ViewIndex implements Serializable {
             if (component != null) {
                 // if component has a refresh condition we need to keep it
                 if (StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
-                        component.getConditionalRefresh()) || StringUtils.isNotBlank(
-                        component.getRefreshWhenChanged()) || component.isRefreshedByAction()) {
-                    holdFactoryIds.add(component.getFactoryId());
+                        component.getConditionalRefresh()) || (component.getRefreshWhenChangedPropertyNames() != null
+                        && !component.getRefreshWhenChangedPropertyNames().isEmpty()) || component
+                        .isRefreshedByAction()) {
+                    holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
                 // if component is marked as persist in session we need to keep it
-                else if (component.isPersistInSession()) {
-                    holdFactoryIds.add(component.getFactoryId());
+                else if (component.isForceSessionPersistence()) {
+                    holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
                 // if component is a collection we need to keep it
                 else if (component instanceof CollectionGroup) {
                     ViewCleaner.cleanCollectionGroup((CollectionGroup) component);
-                    holdFactoryIds.add(component.getFactoryId());
+                    holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
                 // if component is input field and has a query we need to keep the final state
                 else if ((component instanceof InputField)) {
                     InputField inputField = (InputField) component;
-                    if ((inputField.getFieldAttributeQuery() != null) || inputField.getFieldSuggest().isRender()) {
+                    if ((inputField.getAttributeQuery() != null) || inputField.getSuggest().isRender()) {
                         holdIds.add(component.getId());
                     }
                 }
@@ -299,9 +299,9 @@ public class ViewIndex implements Serializable {
      * @param component - component instance to add
      */
     public void addInitialComponentStateIfNeeded(Component component) {
-        if (StringUtils.isBlank(component.getFactoryId())) {
-            component.setFactoryId(component.getId());
-            initialComponentStates.put(component.getFactoryId(), ComponentUtils.copy(component));
+        if (StringUtils.isBlank(component.getBaseId())) {
+            component.setBaseId(component.getId());
+            initialComponentStates.put(component.getBaseId(), ComponentUtils.copy(component));
         }
     }
 

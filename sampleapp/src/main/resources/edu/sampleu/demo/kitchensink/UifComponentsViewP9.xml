@@ -175,10 +175,10 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field14">
-          <property name="fieldLookup.id" value="UifCompView-SecureWidget"/>
-          <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-          <property name="fieldLookup.fieldConversions" value="number:field60"/>
-          <property name="fieldLookup.componentSecurity.viewAuthz" value="true"/>
+          <property name="quickfinder.id" value="UifCompView-SecureWidget"/>
+          <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="quickfinder.fieldConversions" value="number:field60"/>
+          <property name="quickfinder.componentSecurity.viewAuthz" value="true"/>
         </bean>
       </list>
     </property>
@@ -258,7 +258,7 @@
         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
-    <property name="actions">
+    <property name="lineActions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
               p:actionEvent="delete" p:componentSecurity.performLineActionAuthz="true"/>

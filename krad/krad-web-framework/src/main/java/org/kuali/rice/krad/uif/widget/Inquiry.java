@@ -253,7 +253,7 @@ public class Inquiry extends WidgetBase {
                 inquiryUrl = UrlFactory.parameterizeUrl(getBaseInquiryUrl(), urlParameters);
             }
 
-            getInquiryLink().setHrefText(inquiryUrl);
+            getInquiryLink().setHref(inquiryUrl);
 
             // set inquiry title
             String linkTitle = createTitleText(inquiryObjectClass);
@@ -303,7 +303,7 @@ public class Inquiry extends WidgetBase {
             onClickScript.append(lightBoxOptions);
             onClickScript.append(");");
 
-            directInquiryAction.setBlockValidateDirty(true);
+            directInquiryAction.setPerformDirtyValidation(false);
             directInquiryAction.setClientSideJs(onClickScript.toString());
 
             setRender(true);
@@ -374,10 +374,26 @@ public class Inquiry extends WidgetBase {
         this.baseInquiryUrl = baseInquiryUrl;
     }
 
+    /**
+     * Full class name the inquiry should be provided for
+     *
+     * <p>
+     * This is passed on to the inquiry request for the data object the lookup should be rendered for. This is then
+     * used by the inquiry framework to select the lookup view (if more than one inquiry view exists for the same
+     * data object class name, the {@link #getViewName()} property should be specified to select the view to render).
+     * </p>
+     *
+     * @return String inquiry class name
+     */
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
 
+    /**
+     * Setter for the class name that inquiry should be provided for
+     *
+     * @param dataObjectClassName
+     */
     public void setDataObjectClassName(String dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
     }

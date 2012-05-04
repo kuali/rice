@@ -88,7 +88,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     // display props
     private Control control;
     private KeyValuesFinder optionsFinder;
-    private boolean performUppercase;
+
+    private boolean uppercaseValue;
 
     private ValidationMessages validationMessages;
 
@@ -99,11 +100,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private Message instructionalMessage;
     private Message constraintMessage;
 
-    private AttributeQuery fieldAttributeQuery;
+    private AttributeQuery attributeQuery;
 
     // widgets
-    private QuickFinder fieldLookup;
-    private Suggest fieldSuggest;
+    private QuickFinder quickfinder;
+    private Suggest suggest;
 
     public InputField() {
         super();
@@ -162,10 +163,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
         if (isReadOnly()
                 && !fieldOptions.isEmpty()
-                && StringUtils.isBlank(getAlternateDisplayValue())
-                && StringUtils.isBlank(getAdditionalDisplayValue())
-                && StringUtils.isBlank(getAlternateDisplayPropertyName())
-                && StringUtils.isBlank(getAdditionalDisplayPropertyName())) {
+                && StringUtils.isBlank(getReadOnlyDisplayReplacement())
+                && StringUtils.isBlank(getReadOnlyDisplaySuffix())
+                && StringUtils.isBlank(getReadOnlyDisplayReplacementPropertyName())
+                && StringUtils.isBlank(getReadOnlyDisplaySuffixPropertyName())) {
 
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
 
@@ -173,7 +174,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             if ((fieldValue != null) && (TypeUtils.isSimpleType(fieldValue.getClass()))) {
                 for (KeyValue keyValue : fieldOptions) {
                     if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
-                        setAlternateDisplayValue(keyValue.getValue());
+                        setReadOnlyDisplayReplacement(keyValue.getValue());
                         break;
                     }
                 }
@@ -247,17 +248,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * triggering the query client side is constructed
      */
     protected void setupFieldQuery() {
-        if (getFieldAttributeQuery() != null) {
+        if (getAttributeQuery() != null) {
             // adjust paths on query mappings
-            getFieldAttributeQuery().updateQueryFieldMapping(getBindingInfo());
-            getFieldAttributeQuery().updateReturnFieldMapping(getBindingInfo());
-            getFieldAttributeQuery().updateQueryMethodArgumentFieldList(getBindingInfo());
+            getAttributeQuery().updateQueryFieldMapping(getBindingInfo());
+            getAttributeQuery().updateReturnFieldMapping(getBindingInfo());
+            getAttributeQuery().updateQueryMethodArgumentFieldList(getBindingInfo());
 
             // build onblur script for field query
             String script = "executeFieldQuery('" + getControl().getId() + "',";
-            script += "'" + getId() + "'," + getFieldAttributeQuery().getQueryFieldMappingJsString() + ",";
-            script += getFieldAttributeQuery().getQueryMethodArgumentFieldsJsString() + ",";
-            script += getFieldAttributeQuery().getReturnFieldMappingJsString() + ");";
+            script += "'" + getId() + "'," + getAttributeQuery().getQueryFieldMappingJsString() + ",";
+            script += getAttributeQuery().getQueryMethodArgumentFieldsJsString() + ",";
+            script += getAttributeQuery().getReturnFieldMappingJsString() + ");";
 
             if (StringUtils.isNotBlank(getControl().getOnBlurScript())) {
                 script = getControl().getOnBlurScript() + script;
@@ -273,27 +274,22 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     protected void setupIds() {
         // update ids so they all match the attribute
-/*        if (getControl() != null) {
-            getControl().setId(getId());
-        }*/
 
         setNestedComponentIdAndSuffix(getControl(), UifConstants.IdSuffixes.CONTROL);
         setNestedComponentIdAndSuffix(getValidationMessages(), UifConstants.IdSuffixes.ERRORS);
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
         setNestedComponentIdAndSuffix(getInstructionalMessage(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessage(), UifConstants.IdSuffixes.CONSTRAINT);
-        setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
-        setNestedComponentIdAndSuffix(getFieldInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
-        setNestedComponentIdAndSuffix(getFieldSuggest(), UifConstants.IdSuffixes.SUGGEST);
+        setNestedComponentIdAndSuffix(getQuickfinder(), UifConstants.IdSuffixes.QUICK_FINDER);
+        setNestedComponentIdAndSuffix(getSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
         if(this.getFieldLabel() != null){
             this.getFieldLabel().setLabelForComponentId(this.getControl().getId());
         }
+        
         if(this.getControl() != null){
             this.getControl().addDataAttribute(UifConstants.DATA_ATTRIBUTE_CONTROL_FOR, this.getId());
         }
-
-        //setId(getId() + UifConstants.IdSuffixes.ATTRIBUTE);
     }
 
 
@@ -387,8 +383,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         components.add(control);
         components.add(validationMessages);
-        components.add(fieldLookup);
-        components.add(fieldSuggest);
+        components.add(quickfinder);
+        components.add(suggest);
 
         return components;
     }
@@ -491,17 +487,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return QuickFinder lookup widget
      */
-    public QuickFinder getFieldLookup() {
-        return this.fieldLookup;
+    public QuickFinder getQuickfinder() {
+        return this.quickfinder;
     }
 
     /**
      * Setter for the lookup widget
      *
-     * @param fieldLookup - the field lookup widget to set
+     * @param quickfinder - the field lookup widget to set
      */
-    public void setFieldLookup(QuickFinder fieldLookup) {
-        this.fieldLookup = fieldLookup;
+    public void setQuickfinder(QuickFinder quickfinder) {
+        this.quickfinder = quickfinder;
     }
 
     /**
@@ -519,17 +515,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return Suggest instance
      */
-    public Suggest getFieldSuggest() {
-        return fieldSuggest;
+    public Suggest getSuggest() {
+        return suggest;
     }
 
     /**
      * Setter for the fields suggest widget
      *
-     * @param fieldSuggest - the field suggest widget to  set
+     * @param suggest - the field suggest widget to  set
      */
-    public void setFieldSuggest(Suggest fieldSuggest) {
-        this.fieldSuggest = fieldSuggest;
+    public void setSuggest(Suggest suggest) {
+        this.suggest = suggest;
     }
 
     /**
@@ -879,17 +875,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return AttributeQuery instance
      */
-    public AttributeQuery getFieldAttributeQuery() {
-        return fieldAttributeQuery;
+    public AttributeQuery getAttributeQuery() {
+        return attributeQuery;
     }
 
     /**
      * Setter for this field's attribute query
      *
-     * @param fieldAttributeQuery
+     * @param attributeQuery
      */
-    public void setFieldAttributeQuery(AttributeQuery fieldAttributeQuery) {
-        this.fieldAttributeQuery = fieldAttributeQuery;
+    public void setAttributeQuery(AttributeQuery attributeQuery) {
+        this.attributeQuery = attributeQuery;
     }
 
     /**
@@ -902,17 +898,17 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      *
      * @return performUppercase flag
      */
-    public boolean isPerformUppercase() {
-        return performUppercase;
+    public boolean isUppercaseValue() {
+        return uppercaseValue;
     }
 
     /**
      * Setter for this field's performUppercase flag
      *
-     * @param performUppercase - boolean flag
+     * @param uppercaseValue - boolean flag
      */
-    public void setPerformUppercase(boolean performUppercase) {
-        this.performUppercase = performUppercase;
+    public void setUppercaseValue(boolean uppercaseValue) {
+        this.uppercaseValue = uppercaseValue;
     }
 
     /**

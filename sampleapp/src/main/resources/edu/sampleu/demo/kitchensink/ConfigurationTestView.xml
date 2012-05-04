@@ -29,7 +29,7 @@
   <bean id="ConfigurationTestView" parent="Uif-FormView">
     <property name="headerText" value="Configuration Test View"/>
     <property name="entryPageId" value="ConfigurationTestView-ProgressiveRender-Page"/>
-    <property name="viewNamespaceCode" value="KR-NS"/>
+    <property name="namespaceCode" value="KR-NS"/>
     <property name="navigation">
       <ref bean="ConfigurationTestView-Menu"/>
     </property>

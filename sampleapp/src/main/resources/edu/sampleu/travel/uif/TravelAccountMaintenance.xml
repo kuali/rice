@@ -33,28 +33,28 @@
               <bean parent="Uif-InputField" p:propertyName="number"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="extension.accountTypeCode">
-                <property name="fieldLookup">
+                <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
               <bean parent="Uif-InputField" p:propertyName="subAccount">
-                <property name="fieldLookup">
+                <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
-                <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-                <property name="fieldLookup.fieldConversions">
+                <property name="quickfinder.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+                <property name="quickfinder.fieldConversions">
                   <map>
                     <entry key="number" value="subAccount"/>
                     <entry key="name" value="subAccountName"/>
                   </map>
                 </property>
-                <property name="fieldLookup.lookupParameters" value="subAccountName:name"/>
+                <property name="quickfinder.lookupParameters" value="subAccountName:name"/>
               </bean>
               <bean parent="Uif-InputField" p:propertyName="subAccountName"/>
               <bean parent="Uif-InputField" p:propertyName="createDate"/>
               <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"/>
               <bean parent="Uif-InputField" p:propertyName="foId" >
-                <property name="fieldLookup">
+                <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
@@ -71,7 +71,7 @@
               <bean parent="Uif-InputField" p:propertyName="number"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="foId">
-                <property name="fieldLookup">
+                <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
                 <property name="dependencyConstraints">

@@ -52,7 +52,7 @@
     </c:if>
 
     <c:choose>
-      <c:when test="${element.actionImageLocation != null && (element.actionImageLocation eq 'RIGHT')}">
+      <c:when test="${element.actionImagePlacement != null && (element.actionImagePlacement eq 'RIGHT')}">
         <a id="${element.id}" ${href}
            onclick="return false;"${name} ${style} ${styleClass} ${tabindex} ${element.simpleDataAttributes} ${dataRoleAttribute}
           ${dataMetaAttribute} ${dataTypeAttribute}>${element.actionLabel}

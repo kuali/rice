@@ -20,7 +20,7 @@
 
     <krad:html view="${KualiForm.view}">
 
-      <c:if test="${!KualiForm.view.dialogMode}">
+      <c:if test="${!KualiForm.view.renderedInLightBox}">
         <krad:script value="
           jq(function(){
             publishHeight();

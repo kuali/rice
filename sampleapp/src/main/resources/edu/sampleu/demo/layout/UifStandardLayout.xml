@@ -31,7 +31,7 @@
     </property>
     <property name="items">
       <list>
-        <bean id="Demo-StandardLayout-SectionsPage" parent="Uif-Page" p:title="Page Title">
+        <bean id="Demo-StandardLayout-SectionsPage" parent="Uif-Page" p:headerText="Page Title">
           <property name="header.lowerGroup">
             <bean parent="Uif-LinkGroup">
               <property name="items">
@@ -52,7 +52,7 @@
             </list>
           </property>
         </bean>
-        <bean id="Demo-StandardLayout-CollectionSectionsPage" parent="Uif-Page" p:title="Page Title">
+        <bean id="Demo-StandardLayout-CollectionSectionsPage" parent="Uif-Page" p:headerText="Page Title">
           <property name="items">
             <list>
               <ref bean="Demo-StandardLayout-CollectionSection1"/>

@@ -23,7 +23,7 @@
 <krad:div component="${view}">
 
   <!-- BREADCRUMBS -->
-  <c:if test="${!view.breadcrumbsInApplicationHeader}">
+  <c:if test="${view.renderBreadcrumbsInView}">
     <krad:template component="${view.breadcrumbs}"/>
   </c:if>
 

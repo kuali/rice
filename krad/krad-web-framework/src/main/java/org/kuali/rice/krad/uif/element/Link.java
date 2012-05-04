@@ -10,9 +10,9 @@ import org.kuali.rice.krad.uif.widget.LightBox;
 public class Link extends ContentElementBase {
     private static final long serialVersionUID = 8989868231938336068L;
 
-    private String linkLabel;
+    private String linkText;
     private String target;
-    private String hrefText;
+    private String href;
 
     private LightBox lightBox;
 
@@ -21,25 +21,25 @@ public class Link extends ContentElementBase {
     }
 
     /**
-     *  Returns the label of the link.
+     * Returns the label of the link
      *
      * @return The link label
      */
-    public String getLinkLabel() {
-        return linkLabel;
+    public String getLinkText() {
+        return linkText;
     }
 
     /**
-     * Setter for the link label.
+     * Setter for the link label
      *
-     * @param linkLabel
+     * @param linkText
      */
-    public void setLinkLabel(String linkLabel) {
-        this.linkLabel = linkLabel;
+    public void setLinkText(String linkText) {
+        this.linkText = linkText;
     }
 
     /**
-     *  Returns the target that will be used to specify where to open the href.
+     * Returns the target that will be used to specify where to open the href
      *
      * @return The target
      */
@@ -48,7 +48,7 @@ public class Link extends ContentElementBase {
     }
 
     /**
-     * Setter for the link target.
+     * Setter for the link target
      *
      * @param target
      */
@@ -57,25 +57,25 @@ public class Link extends ContentElementBase {
     }
 
     /**
-     *  Returns the href text.
+     * Returns the href text
      *
      * @return The href text
      */
-    public String getHrefText() {
-        return hrefText;
+    public String getHref() {
+        return href;
     }
 
     /**
-     * Setter for the hrefText.
+     * Setter for the hrefText
      *
-     * @param hrefText
+     * @param href
      */
-    public void setHrefText(String hrefText) {
-        this.hrefText = hrefText;
+    public void setHref(String href) {
+        this.href = href;
     }
 
     /**
-     *  Returns the <code>LightBox</code> used to open the link in
+     * Returns the <code>LightBox</code> used to open the link in
      *
      * @return The <code>LightBox</code>
      */

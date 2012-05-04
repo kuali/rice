@@ -27,7 +27,7 @@
   <bean id="Uif-FieldBase" abstract="true" parent="Uif-FieldBase-parentBean"/>
   <bean id="Uif-FieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase"
         parent="Uif-ComponentBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-field</value>
       </list>
@@ -50,7 +50,7 @@
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
-    <property name="fieldInquiry">
+    <property name="inquiry">
       <bean parent="Uif-Inquiry"/>
     </property>
     <property name="help">
@@ -61,7 +61,7 @@
   <bean id="Uif-DataField-LabelTop" parent="Uif-DataField-LabelTop-parentBean"/>
   <bean id="Uif-DataField-LabelTop-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="TOP"
         p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
-    <property name="fieldLabel.styleClasses">
+    <property name="fieldLabel.cssClasses">
       <list merge="true">
         <value>uif-labelTop</value>
       </list>
@@ -71,7 +71,7 @@
   <bean id="Uif-DataField-LabelRight" parent="Uif-DataField-LabelRight-parentBean"/>
   <bean id="Uif-DataField-LabelRight-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="RIGHT"
         p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="LEFT">
-    <property name="fieldLabel.styleClasses">
+    <property name="fieldLabel.cssClasses">
       <list merge="true">
         <value>uif-labelRight</value>
       </list>
@@ -91,7 +91,7 @@
         parent="Uif-DataField"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-inputField</value>
       </list>
@@ -100,10 +100,10 @@
     <property name="validationMessages">
       <bean parent="Uif-FieldValidationMessages"/>
     </property>
-    <property name="fieldLookup">
+    <property name="quickfinder">
       <bean parent="Uif-QuickFinder"/>
     </property>
-    <property name="fieldSuggest">
+    <property name="suggest">
       <bean parent="Uif-Suggest"/>
     </property>
     <property name="instructionalMessage">
@@ -117,12 +117,12 @@
   <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
   <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
         p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-inputField-labelTop</value>
       </list>
     </property>
-    <property name="fieldLabel.styleClasses">
+    <property name="fieldLabel.cssClasses">
       <list merge="true">
         <value>uif-labelTop</value>
       </list>
@@ -132,12 +132,12 @@
   <bean id="Uif-InputField-LabelRight" parent="Uif-InputField-LabelRight-parentBean"/>
   <bean id="Uif-InputField-LabelRight-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="RIGHT"
         p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="LEFT">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-inputField-labelRight</value>
       </list>
     </property>
-    <property name="fieldLabel.styleClasses">
+    <property name="fieldLabel.cssClasses">
       <list merge="true">
         <value>uif-labelRight</value>
       </list>
@@ -148,7 +148,7 @@
   <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.field.LookupInputField"
         parent="Uif-InputField">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-lookupCriteriaInputField</value>
       </list>
@@ -160,7 +160,7 @@
   <bean id="Uif-ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-actionField</value>
       </list>
@@ -174,7 +174,7 @@
   <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-messageField</value>
       </list>
@@ -189,7 +189,7 @@
         class="org.kuali.rice.krad.uif.field.ValidationMessages"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-validationMessages</value>
       </list>
@@ -206,7 +206,7 @@
   <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
   <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
         class="org.kuali.rice.krad.uif.field.GroupValidationMessages">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-groupValidationMessages</value>
       </list>
@@ -218,7 +218,7 @@
   <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
   <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages"
         class="org.kuali.rice.krad.uif.field.PageValidationMessages">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-pageValidationMessages</value>
       </list>
@@ -237,7 +237,7 @@
   <bean id="Uif-LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-linkField</value>
       </list>
@@ -251,7 +251,7 @@
   <bean id="Uif-ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/imageField.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-imageField</value>
       </list>
@@ -265,7 +265,7 @@
   <bean id="Uif-SpaceField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.SpaceField"
         parent="Uif-FieldBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/spaceField.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-spaceField</value>
       </list>
@@ -275,7 +275,7 @@
   <bean id="Uif-CustomTemplateField" parent="Uif-CustomTemplateField-parentBean"/>
   <bean id="Uif-CustomTemplateField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GenericField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-customTemplateField</value>
       </list>
@@ -286,20 +286,20 @@
   <bean id="Uif-FieldGroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup"
         parent="Uif-FieldBase-withLabel" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/fieldGroup.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-fieldGroup</value>
       </list>
     </property>
     <property name="group">
-      <bean parent="Uif-VerticalBoxGroup" p:fieldContainer="true"/>
+      <bean parent="Uif-VerticalBoxGroup"/>
     </property>
   </bean>
 
   <bean id="Uif-VerticalFieldGroup" parent="Uif-VerticalFieldGroup-parentBean"/>
   <bean id="Uif-VerticalFieldGroup-parentBean" parent="Uif-FieldGroupBase"
         p:group.layoutManager.orientation="VERTICAL">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-verticalFieldGroup</value>
       </list>
@@ -309,20 +309,20 @@
   <bean id="Uif-HorizontalFieldGroup" parent="Uif-HorizontalFieldGroup-parentBean"/>
   <bean id="Uif-HorizontalFieldGroup-parentBean" parent="Uif-FieldGroupBase"
         p:group.layoutManager.orientation="HORIZONTAL">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-horizontalFieldGroup</value>
       </list>
     </property>
     <property name="group">
-      <bean parent="Uif-HorizontalBoxGroup" p:fieldContainer="true"/>
+      <bean parent="Uif-HorizontalBoxGroup"/>
     </property>
   </bean>
 
   <!-- Common Fields -->
 
   <bean id="Uif-RequiredInstructionsMessage" parent="Uif-Message" p:messageText="* indicates required field">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-requiredInstructionsMessage</value>
       </list>
@@ -331,7 +331,7 @@
 
   <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:clientSideJs="jumpToTop();"
         p:actionLabel="Top">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-jumpToTopLink</value>
       </list>
@@ -340,7 +340,7 @@
 
   <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:clientSideJs="jumpToBottom();"
         p:actionLabel="Bottom">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-jumpToBottomLink</value>
       </list>
@@ -349,7 +349,7 @@
 
   <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:clientSideJs="expandDisclosures();"
         p:actionLabel="Expand All">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-expandDisclosuresButton</value>
       </list>
@@ -359,38 +359,17 @@
   <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
         p:clientSideJs="collapseDisclosures();"
         p:actionLabel="Collapse All">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-collapseDisclosuresButton</value>
       </list>
     </property>
   </bean>
 
-
-  <bean id="Uif-QuickLookupImage" parent="Uif-ImageField"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
-        p:altText="Search Field" p:title="Search Field">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-quickFinderImage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-DirectInquiryImage" parent="Uif-ImageField"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
-        p:altText="Direct Inquiry" p:title="Direct Inquiry">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-directInquiryImage</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="Uif-CreateNewLink" parent="Uif-LinkField"
-        p:linkLabel="Create New"
+        p:linkText="Create New"
         p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-createNewLink</value>
       </list>
@@ -407,7 +386,7 @@
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive"
         p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-showInactiveCollectionItemsButton</value>
       </list>
@@ -418,7 +397,7 @@
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="hide inactive"
         p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-hideInactiveCollectionItemsButton</value>
       </list>
@@ -426,7 +405,7 @@
   </bean>
 
   <bean id="Uif-CheckboxInputField" parent="Uif-InputField" p:labelPlacement="RIGHT">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-checkboxInputField</value>
       </list>
@@ -436,14 +415,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-HelpImage" parent="Uif-ImageField"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}icon_help.png"
-        p:altText="Help" p:title="Help">
-    <property name="styleClasses">
-      <list merge="true">
-        <value>uif-helpImage</value>
-      </list>
-    </property>
-  </bean>
+
 
 </beans>

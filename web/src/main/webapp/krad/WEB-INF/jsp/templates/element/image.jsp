@@ -31,7 +31,7 @@
 <krad:attributeBuilder component="${element}"/>
 
 <%-- render caption header above --%>
-<c:if test="${!empty element.captionHeader.headerText && element.captionHeaderAboveImage}">
+<c:if test="${!empty element.captionHeader.headerText && element.captionHeaderPlacementAboveImage}">
   <krad:template component="${element.captionHeader}"/>
 </c:if>
 
@@ -40,7 +40,7 @@ ${height} ${style} ${styleClass} ${title} ${element.simpleDataAttributes}
 ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}/>
 
 <%-- render caption header below --%>
-<c:if test="${!empty element.captionHeader.headerText && !element.captionHeaderAboveImage}">
+<c:if test="${!empty element.captionHeader.headerText && !element.captionHeaderPlacementAboveImage}">
   <krad:template component="${element.captionHeader}"/>
 </c:if>
 

@@ -42,7 +42,7 @@
   <bean id="Uif-DatePicker-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DatePicker"
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/datePicker.jsp"/>
-    <property name="styleClasses" value="calendar"/>
+    <property name="cssClasses" value="calendar"/>
     <property name="templateOptions">
       <map>
         <entry key="showOn" value="button"/>
@@ -142,6 +142,16 @@
   <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean"
         p:quickfinderAction.lightBoxLookup.lookupReturnByScript="true"/>
 
+  <bean id="Uif-QuickLookupImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:altText="Search Field" p:title="Search Field">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-quickFinderImage</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-Inquiry" parent="Uif-Inquiry-parentBean"/>
   <bean id="Uif-Inquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Inquiry" scope="prototype"
         parent="Uif-WidgetBase">
@@ -167,6 +177,16 @@
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
+  <bean id="Uif-DirectInquiryImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
+        p:altText="Direct Inquiry" p:title="Direct Inquiry">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-directInquiryImage</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-Disclosure" parent="Uif-Disclosure-parentBean"/>
   <bean id="Uif-Disclosure-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Disclosure"
         scope="prototype" parent="Uif-WidgetBase">
@@ -185,7 +205,7 @@
     <property name="displayHomewardPath" value="true"/>
     <property name="displayPassedHistory" value="true"/>
     <property name="displayBreadcrumbsWhenOne" value="false"/>
-    <property name="styleClasses" value="uif-breadcrumbs"/>
+    <property name="cssClasses" value="uif-breadcrumbs"/>
     <property name="homewardPathList">
       <list>
         <bean parent="Uif-HistoryEntry" p:title="Home" p:url="@{#ConfigProperties['application.url']}/portal.do"/>
@@ -295,6 +315,16 @@
     </property>
     <property name="helpDefinition">
       <bean parent="HelpDefinition"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-HelpImage" parent="Uif-Image"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}icon_help.png"
+        p:altText="Help" p:title="Help">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-helpImage</value>
+      </list>
     </property>
   </bean>
 

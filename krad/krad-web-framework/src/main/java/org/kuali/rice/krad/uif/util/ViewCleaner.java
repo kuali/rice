@@ -78,7 +78,7 @@ public class ViewCleaner {
     public static void cleanCollectionGroup(CollectionGroup collectionGroup) {
         collectionGroup.setAddLineLabel(null);
         collectionGroup.setAddLineActions(new ArrayList<Action>());
-        collectionGroup.setActions(new ArrayList<Action>());
+        collectionGroup.setLineActions(new ArrayList<Action>());
         collectionGroup.setSubCollections(new ArrayList<CollectionGroup>());
         collectionGroup.setActiveCollectionFilter(null);
         collectionGroup.setFilters(new ArrayList<CollectionFilter>());
@@ -111,7 +111,7 @@ public class ViewCleaner {
         inputField.setControl(null);
         inputField.setInstructionalMessage(null);
         inputField.setConstraintMessage(null);
-        inputField.setFieldInquiry(null);
+        inputField.setInquiry(null);
         inputField.setLabel(null);
         inputField.setTemplateOptions(new HashMap<String, String>());
         inputField.setComponentModifiers(new ArrayList<ComponentModifier>());

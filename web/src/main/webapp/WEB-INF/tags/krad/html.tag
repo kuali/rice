@@ -39,7 +39,7 @@
       :: ${view.title}
     </title>
 
-    <c:forEach items="${view.theme.stylesheets}" var="cssFile">
+    <c:forEach items="${view.theme.cssFiles}" var="cssFile">
       <c:choose>
         <c:when test="${fn:startsWith(cssFile,'http')}">
           <link href="${cssFile}" rel="stylesheet" type="text/css"/>
@@ -63,7 +63,7 @@
       </c:if>
     </c:forEach>
 
-    <c:forEach items="${view.theme.jsFiles}" var="javascriptFile">
+    <c:forEach items="${view.theme.scriptFiles}" var="javascriptFile">
       <c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
         <c:choose>
           <c:when test="${fn:startsWith(javascriptFile,'http')}">

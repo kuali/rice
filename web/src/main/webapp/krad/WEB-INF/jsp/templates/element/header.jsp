@@ -23,8 +23,8 @@
   <c:set var="styleClass" value="class=\"${element.headerStyleClassesAsString}\""/>
 </c:if>
 
-<c:if test="${!empty element.headerStyle}">
-  <c:set var="style" value="style=\"${element.headerStyle}\""/>
+<c:if test="${!empty element.headerTagStyle}">
+  <c:set var="style" value="style=\"${element.headerTagStyle}\""/>
 </c:if>
 
 <c:if test="${!empty element.headerLevel}">

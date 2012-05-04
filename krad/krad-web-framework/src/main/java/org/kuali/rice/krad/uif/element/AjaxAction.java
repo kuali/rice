@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -79,14 +78,14 @@ public class AjaxAction extends Action {
             refreshComponent.setRefreshedByAction(true);
             // update initial state
             Component initialComponent = view.getViewIndex().getInitialComponentStates().get(
-                    refreshComponent.getFactoryId());
+                    refreshComponent.getBaseId());
             if (initialComponent != null) {
                 initialComponent.setRefreshedByAction(true);
-                view.getViewIndex().getInitialComponentStates().put(refreshComponent.getFactoryId(), initialComponent);
+                view.getViewIndex().getInitialComponentStates().put(refreshComponent.getBaseId(), initialComponent);
             }
 
             // refresh component for action
-            actionScript = "retrieveComponent('" + refreshComponent.getId() + "','" + refreshComponent.getFactoryId()
+            actionScript = "retrieveComponent('" + refreshComponent.getId() + "','" + refreshComponent.getBaseId()
                     + "','" + getMethodToCall() + "');";
         }
         else {

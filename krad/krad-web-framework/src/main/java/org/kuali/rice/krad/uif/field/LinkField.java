@@ -51,8 +51,8 @@ public class LinkField extends FieldBase {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        if (StringUtils.isBlank(getLinkLabel())) {
-            setLinkLabel(this.getLabel());
+        if (StringUtils.isBlank(getLinkText())) {
+            setLinkText(this.getLabel());
         }
     }
 
@@ -87,12 +87,12 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     *  Returns the label of the <code>Link<code/> field that will be used to render the label of the link.
+     * Returns the label of the <code>Link<code/> field that will be used to render the label of the link.
      *
      * @return The link label
      */
-    public String getLinkLabel() {
-        return link.getLinkLabel();
+    public String getLinkText() {
+        return link.getLinkText();
     }
 
     /**
@@ -100,8 +100,8 @@ public class LinkField extends FieldBase {
      *
      * @param linkLabel
      */
-    public void setLinkLabel(String linkLabel) {
-        link.setLinkLabel(linkLabel);
+    public void setLinkText(String linkLabel) {
+        link.setLinkText(linkLabel);
     }
 
     /**
@@ -123,12 +123,12 @@ public class LinkField extends FieldBase {
     }
 
     /**
-     *  Returns the href text of the <code>Link<code/> field.
+     * Returns the href text of the <code>Link<code/> field.
      *
      * @return The href text
      */
-    public String getHrefText() {
-        return link.getHrefText();
+    public String getHref() {
+        return link.getHref();
     }
 
     /**
@@ -136,8 +136,8 @@ public class LinkField extends FieldBase {
      *
      * @param hrefText
      */
-    public void setHrefText(String hrefText) {
-        link.setHrefText(hrefText);
+    public void setHref(String hrefText) {
+        link.setHref(hrefText);
     }
 
     /**

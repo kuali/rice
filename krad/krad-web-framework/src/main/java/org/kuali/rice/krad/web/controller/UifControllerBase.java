@@ -283,7 +283,7 @@ public abstract class UifControllerBase {
                 uifForm.getPostedView(), collectionGroupId);
 
         // update inactive flag on group
-        collectionGroup.setShowInactive(showInactive);
+        collectionGroup.setShowInactiveLines(showInactive);
 
         // run lifecycle and update in view
         uifForm.getPostedView().getViewHelperService().performComponentLifecycle(uifForm.getPostedView(), uifForm,

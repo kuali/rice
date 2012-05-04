@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * test the RichTable widget
@@ -54,7 +53,7 @@ public class RichTableTest {
         TableLayoutManager layoutManager = new TableLayoutManager();
         layoutManager.setRenderSequenceField(true);
         group.setLayoutManager(layoutManager);
-        group.setRenderSelectField(false);
+        group.setIncludeLineSelectionField(false);
         group.setRenderLineActions(false);
 
         List<Component> items = new ArrayList<Component>(1);

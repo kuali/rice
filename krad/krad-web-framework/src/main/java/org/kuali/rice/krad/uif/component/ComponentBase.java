@@ -18,14 +18,12 @@ package org.kuali.rice.krad.uif.component;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
-import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Tooltip;
-import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -50,12 +48,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
-    private String factoryId;
+    private String baseId;
     private String template;
     private String title;
 
     private boolean render;
-    private boolean refresh;
 
     @KeepExpression
     private String progressiveRender;
@@ -69,12 +66,11 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String conditionalRefreshConditionJs;
     private List<String> conditionalRefreshControlNames;
 
-    private String refreshWhenChanged;
-    private List<String> refreshWhenChangedControlNames;
+    private List<String> refreshWhenChangedPropertyNames;
     private boolean refreshedByAction;
 
     private boolean resetDataOnRefresh;
-    private String refreshDiscloseMethodToCall;
+    private String methodToCallOnRefresh;
 
     private boolean hidden;
     private boolean readOnly;
@@ -88,7 +84,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private int rowSpan;
 
     private String style;
-    private List<String> styleClasses;
+    private List<String> cssClasses;
+
+    private Tooltip toolTip;
 
     private int order;
 
@@ -99,9 +97,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private MethodInvokerConfig finalizeMethodInvoker;
 
     private boolean selfRendered;
-    private String renderOutput;
+    private String renderedHtmlOutput;
 
-    private boolean persistInSession;
+    private boolean forceSessionPersistence;
 
     private ComponentSecurity componentSecurity;
 
@@ -139,8 +137,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String dataTypeAttribute;
     private String dataMetaAttribute;
 
-    private Tooltip toolTip;
-
     public ComponentBase() {
         super();
 
@@ -154,12 +150,13 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         progressiveRenderAndRefresh = false;
         refreshedByAction = false;
         resetDataOnRefresh = false;
-        persistInSession = false;
+        forceSessionPersistence = false;
 
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
+        refreshWhenChangedPropertyNames = new ArrayList<String>();
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
-        styleClasses = new ArrayList<String>();
+        cssClasses = new ArrayList<String>();
         componentModifiers = new ArrayList<ComponentModifier>();
         templateOptions = new HashMap<String, String>();
         context = new HashMap<String, Object>();
@@ -227,29 +224,23 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
                     conditionalRefreshControlNames);
         }
 
-        if (StringUtils.isNotEmpty(refreshWhenChanged)) {
-            refreshWhenChanged = ExpressionUtils.replaceBindingPrefixes(view, this, refreshWhenChanged);
-            refreshWhenChangedControlNames = new ArrayList<String>();
-            String[] names = StringUtils.split(refreshWhenChanged, ",");
-            for (String name : names) {
-                refreshWhenChangedControlNames.add(name.trim());
-            }
+        List<String> adjustedRefreshPropertyNames = new ArrayList<String>();
+        for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
+            adjustedRefreshPropertyNames.add(ExpressionUtils.replaceBindingPrefixes(view, this, refreshPropertyName));
+        }
+        refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
+
+        // add the align, valign, and width settings to style
+        if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
+            appendToStyle(CssConstants.TEXT_ALIGN + getAlign() + ";");
         }
 
-        // TODO: does this check on final status need to be here?
-        if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
-            // add the align, valign, and width settings to style
-            if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
-                appendToStyle(CssConstants.TEXT_ALIGN + getAlign() + ";");
-            }
+        if (StringUtils.isNotBlank(getValign()) && !StringUtils.contains(getStyle(), CssConstants.VERTICAL_ALIGN)) {
+            appendToStyle(CssConstants.VERTICAL_ALIGN + getValign() + ";");
+        }
 
-            if (StringUtils.isNotBlank(getValign()) && !StringUtils.contains(getStyle(), CssConstants.VERTICAL_ALIGN)) {
-                appendToStyle(CssConstants.VERTICAL_ALIGN + getValign() + ";");
-            }
-
-            if (StringUtils.isNotBlank(getWidth()) && !StringUtils.contains(getStyle(), CssConstants.WIDTH)) {
-                appendToStyle(CssConstants.WIDTH + getWidth() + ";");
-            }
+        if (StringUtils.isNotBlank(getWidth()) && !StringUtils.contains(getStyle(), CssConstants.WIDTH)) {
+            appendToStyle(CssConstants.WIDTH + getWidth() + ";");
         }
 
         // Set the skipInTabOrder flag on all nested components
@@ -342,17 +333,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getFactoryId()
+     * @see org.kuali.rice.krad.uif.component.Component#getBaseId()
      */
-    public String getFactoryId() {
-        return this.factoryId;
+    public String getBaseId() {
+        return this.baseId;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setFactoryId(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setBaseId(java.lang.String)
      */
-    public void setFactoryId(String factoryId) {
-        this.factoryId = factoryId;
+    public void setBaseId(String baseId) {
+        this.baseId = baseId;
     }
 
     /**
@@ -561,17 +552,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getStyleClasses()
+     * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
-    public List<String> getStyleClasses() {
-        return this.styleClasses;
+    public List<String> getCssClasses() {
+        return this.cssClasses;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setStyleClasses(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setCssClasses(java.util.List)
      */
-    public void setStyleClasses(List<String> styleClasses) {
-        this.styleClasses = styleClasses;
+    public void setCssClasses(List<String> cssClasses) {
+        this.cssClasses = cssClasses;
     }
 
     /**
@@ -581,8 +572,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @return String class attribute string
      */
     public String getStyleClassesAsString() {
-        if (styleClasses != null) {
-            return StringUtils.join(styleClasses, " ");
+        if (cssClasses != null) {
+            return StringUtils.join(cssClasses, " ");
         }
 
         return "";
@@ -592,8 +583,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.Component#addStyleClass(java.lang.String)
      */
     public void addStyleClass(String styleClass) {
-        if (!styleClasses.contains(styleClass)) {
-            styleClasses.add(styleClass);
+        if (!cssClasses.contains(styleClass)) {
+            cssClasses.add(styleClass);
         }
     }
 
@@ -670,31 +661,31 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getRenderOutput()
+     * @see org.kuali.rice.krad.uif.component.Component#getRenderedHtmlOutput()
      */
-    public String getRenderOutput() {
-        return this.renderOutput;
+    public String getRenderedHtmlOutput() {
+        return this.renderedHtmlOutput;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setRenderOutput(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setRenderedHtmlOutput(java.lang.String)
      */
-    public void setRenderOutput(String renderOutput) {
-        this.renderOutput = renderOutput;
+    public void setRenderedHtmlOutput(String renderedHtmlOutput) {
+        this.renderedHtmlOutput = renderedHtmlOutput;
     }
 
     /**
-     * @see Component#isPersistInSession()
+     * @see Component#isForceSessionPersistence()
      */
-    public boolean isPersistInSession() {
-        return persistInSession;
+    public boolean isForceSessionPersistence() {
+        return forceSessionPersistence;
     }
 
     /**
-     * @see Component#setPersistInSession(boolean)
+     * @see Component#setForceSessionPersistence(boolean)
      */
-    public void setPersistInSession(boolean persistInSession) {
-        this.persistInSession = persistInSession;
+    public void setForceSessionPersistence(boolean forceSessionPersistence) {
+        this.forceSessionPersistence = forceSessionPersistence;
     }
 
     /**
@@ -809,6 +800,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getToolTip()
+     */
+    public Tooltip getToolTip() {
+        return toolTip;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setToolTip(Tooltip)
+     */
+    public void setToolTip(Tooltip toolTip) {
+        this.toolTip = toolTip;
     }
 
     /**
@@ -1295,34 +1300,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * Specifies a property by name that when it value changes will
-     * automatically perform a refresh on this component. This can be a comma
-     * separated list of multiple properties that require this component to be
-     * refreshed when any of them change. <Br>DO NOT use with progressiveRender
-     * unless it is know that progressiveRender condition will always be
-     * satisfied before one of these fields can be changed.
-     *
-     * @return the refreshWhenChanged
+     * @see Component#getRefreshWhenChangedPropertyNames()
      */
-    public String getRefreshWhenChanged() {
-        return this.refreshWhenChanged;
+    public List<String> getRefreshWhenChangedPropertyNames() {
+        return this.refreshWhenChangedPropertyNames;
     }
 
     /**
-     * @param refreshWhenChanged the refreshWhenChanged to set
+     * @see Component#setRefreshWhenChangedPropertyNames(java.util.List<java.lang.String>)
      */
-    public void setRefreshWhenChanged(String refreshWhenChanged) {
-        this.refreshWhenChanged = refreshWhenChanged;
-    }
-
-    /**
-     * Control names which will refresh this component when they are changed, added
-     * internally
-     *
-     * @return the refreshWhenChangedControlNames
-     */
-    public List<String> getRefreshWhenChangedControlNames() {
-        return this.refreshWhenChangedControlNames;
+    public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
+        this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames;
     }
 
     /**
@@ -1354,20 +1342,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @return the refresh
-     */
-    public boolean isRefresh() {
-        return this.refresh;
-    }
-
-    /**
-     * @param refresh the refresh to set
-     */
-    public void setRefresh(boolean refresh) {
-        this.refresh = refresh;
-    }
-
-    /**
      * Name of a method on the controller that should be invoked as part of the component refresh and disclosure process
      *
      * <p>
@@ -1383,17 +1357,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *
      * @return String valid controller method name
      */
-    public String getRefreshDiscloseMethodToCall() {
-        return refreshDiscloseMethodToCall;
+    public String getMethodToCallOnRefresh() {
+        return methodToCallOnRefresh;
     }
 
     /**
      * Setter for the controller method to call for a refresh or disclosure action on this component
      *
-     * @param refreshDiscloseMethodToCall
+     * @param methodToCallOnRefresh
      */
-    public void setRefreshDiscloseMethodToCall(String refreshDiscloseMethodToCall) {
-        this.refreshDiscloseMethodToCall = refreshDiscloseMethodToCall;
+    public void setMethodToCallOnRefresh(String methodToCallOnRefresh) {
+        this.methodToCallOnRefresh = methodToCallOnRefresh;
     }
 
     /**
@@ -1540,20 +1514,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             }
             return js;
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getToolTip()
-     */
-    public Tooltip getToolTip() {
-        return toolTip;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#setToolTip(Tooltip)
-     */
-    public void setToolTip(Tooltip toolTip) {
-        this.toolTip = toolTip;
     }
 
 }

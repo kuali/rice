@@ -27,7 +27,7 @@
   <bean id="Uif-BoxLayoutBase" abstract="true" parent="Uif-BoxLayoutBase-parentBean"/>
   <bean id="Uif-BoxLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
         scope="prototype">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-boxLayout</value>
       </list>
@@ -37,7 +37,7 @@
 
   <bean id="Uif-HorizontalBoxLayout" parent="Uif-HorizontalBoxLayout-parentBean"/>
   <bean id="Uif-HorizontalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-horizontalBoxLayout</value>
       </list>
@@ -47,7 +47,7 @@
 
   <bean id="Uif-VerticalBoxLayout" parent="Uif-VerticalBoxLayout-parentBean"/>
   <bean id="Uif-VerticalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-verticalBoxLayout</value>
       </list>
@@ -61,7 +61,7 @@
   <bean id="Uif-GridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-gridLayout</value>
       </list>
@@ -96,7 +96,7 @@
   <bean id="Uif-TableCollectionLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/table.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-tableCollectionLayout</value>
       </list>
@@ -105,11 +105,11 @@
     <property name="applyDefaultCellWidths" value="true"/>
     <property name="renderAlternatingHeaderColumns" value="false"/>
     <property name="headerLabelPrototype">
-      <bean parent="Uif-Label" p:renderColon="false" p:styleClasses="infoline"/>
+      <bean parent="Uif-Label" p:renderColon="false" p:cssClasses="infoline"/>
     </property>
     <property name="sequenceFieldPrototype">
       <bean parent="Uif-InputField" p:readOnly="true" p:label=" " p:shortLabel=" ">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-sequenceItem</value>
           </list>
@@ -120,12 +120,12 @@
       <bean parent="Uif-HorizontalFieldGroup" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
     </property>
     <property name="addLineGroup">
-      <bean parent="Uif-CollectionGridItem" p:styleClasses="uif-collectionItem,uif-tableCollectionItem,uif-collectionAddItem"/>
+      <bean parent="Uif-CollectionGridItem" p:cssClasses="uif-collectionItem,uif-tableCollectionItem,uif-collectionAddItem"/>
     </property>
     <property name="subCollectionFieldGroupPrototype">
       <bean parent="Uif-VerticalFieldGroup"
             p:fieldLabel.render="false"
-            p:styleClasses="uif-subCollection"/>
+            p:cssClasses="uif-subCollection"/>
     </property>
     <property name="selectFieldPrototype">
       <bean parent="Uif-SelectCollectionItemField"/>
@@ -142,7 +142,7 @@
   <bean id="Uif-StackedCollectionLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list>
         <value>uif-stackedCollectionLayout</value>
       </list>
@@ -150,7 +150,7 @@
     <property name="subCollectionFieldGroupPrototype">
       <bean parent="Uif-VerticalFieldGroup" p:fieldLabel.render="false"
             p:colSpan="@{#parent.layoutManager.numberOfColumns}"
-            p:styleClasses="uif-subCollection"/>
+            p:cssClasses="uif-subCollection"/>
     </property>
     <property name="selectFieldPrototype">
       <bean parent="Uif-SelectCollectionItemField"/>
@@ -161,7 +161,7 @@
   <bean id="Uif-StackedCollectionLayout-WithGridItems-parentBean" abstract="true" parent="Uif-StackedCollectionLayoutBase">
     <property name="addLineGroup">
       <bean parent="Uif-CollectionGridItem">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-collectionAddItem</value>
           </list>
@@ -177,7 +177,7 @@
   <bean id="Uif-StackedCollectionLayout-WithBoxItems-parentBean" abstract="true" parent="Uif-StackedCollectionLayoutBase">
     <property name="addLineGroup">
       <bean parent="Uif-CollectionHorizontalBoxItem">
-        <property name="styleClasses">
+        <property name="cssClasses">
           <list merge="true">
             <value>uif-collectionAddItem</value>
           </list>
@@ -193,7 +193,7 @@
 
   <bean id="Uif-CollectionGridItem" parent="Uif-CollectionGridItem-parentBean"/>
   <bean id="Uif-CollectionGridItem-parentBean" abstract="true" parent="Uif-GridGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionItem</value>
         <value>uif-gridCollectionItem</value>
@@ -207,7 +207,7 @@
   <bean id="Uif-CollectionVerticalBoxItem" parent="Uif-CollectionVerticalBoxItem-parentBean"/>
   <bean id="Uif-CollectionVerticalBoxItem-parentBean" abstract="true" parent="Uif-VerticalBoxGroup"
           p:layoutManager.orientation="VERTICAL">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionItem</value>
         <value>uif-boxCollectionItem</value>
@@ -220,7 +220,7 @@
 
   <bean id="Uif-CollectionHorizontalBoxItem" parent="Uif-CollectionHorizontalBoxItem-parentBean"/>
   <bean id="Uif-CollectionHorizontalBoxItem-parentBean" abstract="true" parent="Uif-HorizontalBoxGroup">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionItem</value>
         <value>uif-boxCollectionItem</value>

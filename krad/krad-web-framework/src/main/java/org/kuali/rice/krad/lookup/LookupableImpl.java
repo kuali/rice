@@ -87,7 +87,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Initialization of Lookupable requires that the business object class be set for the {@link
      * #initializeInputFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.InputField)} method
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     @Override
     public void performInitialization(View view, Object model) {
@@ -134,8 +135,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // removed blank search values and decrypt any encrypted search values
         Map<String, String> nonBlankSearchCriteria = processSearchCriteria(form, searchCriteria);
 
-        boolean searchUsingOnlyPrimaryKeyValues =
-                getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(getDataObjectClass(), searchCriteria);
+        boolean searchUsingOnlyPrimaryKeyValues = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(
+                getDataObjectClass(), searchCriteria);
 
         // if this class is an EBO, just call the module service to get the results
         if (ExternalizableBusinessObject.class.isAssignableFrom(getDataObjectClass())) {
@@ -153,11 +154,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 }
 
                 // add those results as criteria run the normal search (but with the EBO criteria added)
-                searchResults = (List<?>) getLookupService()
-                        .findCollectionBySearchHelper(getDataObjectClass(), eboSearchCriteria, unbounded);
+                searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
+                        eboSearchCriteria, unbounded);
             } else {
-                searchResults = (List<?>) getLookupService()
-                        .findCollectionBySearchHelper(getDataObjectClass(), nonBlankSearchCriteria, unbounded);
+                searchResults = (List<?>) getLookupService().findCollectionBySearchHelper(getDataObjectClass(),
+                        nonBlankSearchCriteria, unbounded);
             }
         } catch (IllegalAccessException e) {
             LOG.error("Error trying to perform search", e);
@@ -218,10 +219,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     protected List<?> getSearchResultsForEBO(Map<String, String> searchCriteria, boolean unbounded) {
-        ModuleService eboModuleService =
-                KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(getDataObjectClass());
-        BusinessObjectEntry ddEntry =
-                eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getDataObjectClass());
+        ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(
+                getDataObjectClass());
+        BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(
+                getDataObjectClass());
 
         Map<String, String> filteredFieldValues = new HashMap<String, String>();
         for (String fieldName : searchCriteria.keySet()) {
@@ -245,15 +246,15 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         // remove the EBO criteria
-        Map<String, String> nonEboFieldValues =
-                LookupUtils.removeExternalizableBusinessObjectFieldValues(getDataObjectClass(), searchCriteria);
+        Map<String, String> nonEboFieldValues = LookupUtils.removeExternalizableBusinessObjectFieldValues(
+                getDataObjectClass(), searchCriteria);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Non EBO properties removed: " + nonEboFieldValues);
         }
 
         // get the list of EBO properties attached to this object
-        List<String> eboPropertyNames =
-                LookupUtils.getExternalizableBusinessObjectProperties(getDataObjectClass(), searchCriteria);
+        List<String> eboPropertyNames = LookupUtils.getExternalizableBusinessObjectProperties(getDataObjectClass(),
+                searchCriteria);
         if (LOG.isDebugEnabled()) {
             LOG.debug("EBO properties: " + eboPropertyNames);
         }
@@ -261,8 +262,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // loop over those properties
         for (String eboPropertyName : eboPropertyNames) {
             // extract the properties as known to the EBO
-            Map<String, String> eboFieldValues =
-                    LookupUtils.getExternalizableBusinessObjectFieldValues(eboPropertyName, searchCriteria);
+            Map<String, String> eboFieldValues = LookupUtils.getExternalizableBusinessObjectFieldValues(eboPropertyName,
+                    searchCriteria);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("EBO properties for master EBO property: " + eboPropertyName);
                 LOG.debug("properties: " + eboFieldValues);
@@ -292,11 +293,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             if (ObjectUtils.isNestedAttribute(eboPropertyName)) {
                 eboParentPropertyName = StringUtils.substringBeforeLast(eboPropertyName, ".");
                 try {
-                    eboParentClass =
-                            PropertyUtils.getPropertyType(getDataObjectClass().newInstance(), eboParentPropertyName);
+                    eboParentClass = PropertyUtils.getPropertyType(getDataObjectClass().newInstance(),
+                            eboParentPropertyName);
                 } catch (Exception ex) {
-                    throw new RuntimeException("Unable to create an instance of the business object class: " +
-                            getDataObjectClass().getName(), ex);
+                    throw new RuntimeException(
+                            "Unable to create an instance of the business object class: " + getDataObjectClass()
+                                    .getName(), ex);
                 }
             } else {
                 eboParentClass = getDataObjectClass();
@@ -311,8 +313,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             // find the appropriate relationship
             // CHECK THIS: what if eboPropertyName is a nested attribute -
             // need to strip off the eboParentPropertyName if not null
-            RelationshipDefinition rd =
-                    getDataObjectMetaDataService().getDictionaryRelationship(eboParentClass, eboPropertyName);
+            RelationshipDefinition rd = getDataObjectMetaDataService().getDictionaryRelationship(eboParentClass,
+                    eboPropertyName);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Obtained RelationshipDefinition for " + eboPropertyName);
                 LOG.debug(rd);
@@ -366,7 +368,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     @Override
     public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria) {
-        Map<String, InputField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
+        Map<String, InputField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getPostedView(),
+                form);
         Map<String, String> clearedSearchCriteria = new HashMap<String, String>();
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
@@ -374,11 +377,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             InputField inputField = criteriaFieldMap.get(searchPropertyName);
             if (inputField != null) {
                 // TODO: check secure fields
-//                                if (field.isSecure()) {
-//                    field.setSecure(false);
-//                    field.setDisplayMaskValue(null);
-//                    field.setEncryptedValue(null);
-//                }
+                //                                if (field.isSecure()) {
+                //                    field.setSecure(false);
+                //                    field.setDisplayMaskValue(null);
+                //                    field.setEncryptedValue(null);
+                //                }
 
                 // TODO: need formatting on default value and make sure it works when control converts
                 // from checkbox to radio
@@ -402,7 +405,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             throw new RuntimeException("Lookup not defined for data object " + getDataObjectClass());
         }
 
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getPostedView(), form);
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getPostedView(),
+                form);
 
         // validate required
         // TODO: this will be done by the uif validation service at some point
@@ -414,9 +418,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             InputField inputField = criteriaFields.get(searchPropertyName);
             if (inputField != null) {
                 if (StringUtils.isBlank(searchPropertyValue) && BooleanUtils.isTrue(inputField.getRequired())) {
-                    GlobalVariables.getMessageMap()
-                            .putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
-                                    inputField.getLabel());
+                    GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
+                            RiceKeyConstants.ERROR_REQUIRED, inputField.getLabel());
                 }
 
                 validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
@@ -453,10 +456,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @param inputField - attribute field instance for the field that is being searched
      * @param searchPropertyValue - value given for field to search for
      */
-    protected void validateSearchParameterWildcardAndOperators(InputField inputField,
-            String searchPropertyValue) {
-        if (StringUtils.isBlank(searchPropertyValue))
+    protected void validateSearchParameterWildcardAndOperators(InputField inputField, String searchPropertyValue) {
+        if (StringUtils.isBlank(searchPropertyValue)) {
             return;
+        }
 
         // make sure a wildcard/operator is in the value
         boolean found = false;
@@ -473,8 +476,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         String attributeLabel = inputField.getLabel();
-        if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) &&
-                (((LookupInputField) inputField).isTreatWildcardsAndOperatorsAsLiteral())) {
+        if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
+                .isDisableWildcardsAndOperators())) {
             Object dataObjectExample = null;
             try {
                 dataObjectExample = getDataObjectClass().newInstance();
@@ -483,8 +486,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 throw new RuntimeException("Cannot instantiate " + getDataObjectClass().getName(), e);
             }
 
-            Class<?> propertyType =
-                    ObjectPropertyUtils.getPropertyType(getDataObjectClass(), inputField.getPropertyName());
+            Class<?> propertyType = ObjectPropertyUtils.getPropertyType(getDataObjectClass(),
+                    inputField.getPropertyName());
             if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ||
                     TypeUtils.isTemporalClass(propertyType)) {
                 GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
@@ -496,9 +499,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                         RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
             }
         } else {
-            if (getDataObjectAuthorizationService()
-                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(getDataObjectClass(),
-                            inputField.getPropertyName())) {
+            if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
+                    getDataObjectClass(), inputField.getPropertyName())) {
                 if (!searchPropertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
                     // encrypted values usually come from the DB, so we don't
                     // need to filter for wildcards
@@ -506,9 +508,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     // they are typically encrypted, and wildcard searches cannot be performed without
                     // decrypting every row, which is currently not supported by KRAD
 
-                    GlobalVariables.getMessageMap()
-                            .putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_SECURE_FIELD,
-                                    attributeLabel);
+                    GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
+                            RiceKeyConstants.ERROR_SECURE_FIELD, attributeLabel);
                 }
             }
         }
@@ -536,12 +537,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return;
         }
         // TODO: need to handle returning anchor
-        returnLinkField.setHrefText(href);
+        returnLinkField.setHref(href);
 
         // build return link label and title
         String linkLabel = getConfigurationService().getPropertyValueAsString(
-                        KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
-        returnLinkField.setLinkLabel(linkLabel);
+                KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+        returnLinkField.setLinkText(linkLabel);
 
         List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
         Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
@@ -566,13 +567,15 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                         if (props.containsKey(returnField)) {
                             Object fieldName = returnField.replace("'", "\\'");
                             Object value = props.get(returnField);
-                            script = script.append("returnLookupResultByScript(\"" + returnField + "\", '" + value + "');");
+                            script = script.append(
+                                    "returnLookupResultByScript(\"" + returnField + "\", '" + value + "');");
                         }
                     }
                     returnLinkField.setOnClickScript(script.append("closeLightbox();").toString());
-                }  else{
+                } else {
                     // Close the light box if return target is not _self or _parent
-                    returnLinkField.setOnClickScript("e.preventDefault();closeLightbox();createLoading(true);window.open(jq(this).attr('href'), jq(this).attr('target'));");
+                    returnLinkField.setOnClickScript(
+                            "e.preventDefault();closeLightbox();createLoading(true);window.open(jq(this).attr('href'), jq(this).attr('target'));");
                 }
             }
         } else {
@@ -682,10 +685,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return;
         }
         // TODO: need to handle returning anchor
-        actionLinkField.setHrefText(href);
+        actionLinkField.setHref(href);
 
         // build action title
-        String prependTitleText = actionLinkField.getLinkLabel() + " " +
+        String prependTitleText = actionLinkField.getLinkText() + " " +
                 getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName())
                         .getObjectLabel() + " " +
                 getConfigurationService().getPropertyValueAsString(
@@ -789,8 +792,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
         if (StringUtils.isNotBlank(maintDocTypeName)) {
-            allowsNewOrCopy = getDataObjectAuthorizationService()
-                    .canCreate(getDataObjectClass(), GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+            allowsNewOrCopy = getDataObjectAuthorizationService().canCreate(getDataObjectClass(),
+                    GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
 
         return allowsNewOrCopy;
@@ -807,8 +810,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
         if (StringUtils.isNotBlank(maintDocTypeName)) {
-            allowsEdit = getDataObjectAuthorizationService()
-                    .canMaintain(dataObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+            allowsEdit = getDataObjectAuthorizationService().canMaintain(dataObject,
+                    GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
 
         return allowsEdit;
@@ -826,8 +829,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         String maintDocTypeName = getMaintenanceDocumentTypeName();
         if (StringUtils.isNotBlank(maintDocTypeName)) {
-            allowsMaintain = getDataObjectAuthorizationService()
-                    .canMaintain(dataObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
+            allowsMaintain = getDataObjectAuthorizationService().canMaintain(dataObject,
+                    GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
         }
 
         allowsDelete = getDocumentDictionaryService().getAllowsRecordDeletion(getDataObjectClass());

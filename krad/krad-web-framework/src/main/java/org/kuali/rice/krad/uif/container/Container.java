@@ -195,18 +195,4 @@ public interface Container extends Component, Helpable {
 	 */
 	void setValidationMessages(ValidationMessages validationMessages);
 
-	/**
-	 * This property is true if the container is used to display a group of fields that is visually a single
-	 * field - this has an effect on where errors will show up for these fields.
-	 * @return the fieldContainer
-	 */
-	boolean isFieldContainer();
-
-	/**
-     * Setter for the field container flag
-     *
-	 * @param fieldContainer the fieldContainer to set
-	 */
-	void setFieldContainer(boolean fieldContainer);
-
 }

@@ -27,8 +27,8 @@ import java.util.List;
 public class ViewTheme implements Serializable{
     private static final long serialVersionUID = 7063256242857896580L;
 
-    private List<String> stylesheets;
-    private List<String> jsFiles;
+    private List<String> cssFiles;
+    private List<String> scriptFiles;
 
     /**
      * Get the css stylesheets to be imported for this view, this must be a list of .css files
@@ -36,17 +36,17 @@ public class ViewTheme implements Serializable{
      *
      * @return List<String>
      */
-    public List<String> getStylesheets() {
-        return stylesheets;
+    public List<String> getCssFiles() {
+        return cssFiles;
     }
 
     /**
      * Set the css stylesheets
      *
-     * @param stylesheets
+     * @param cssFiles
      */
-    public void setStylesheets(List<String> stylesheets) {
-        this.stylesheets = stylesheets;
+    public void setCssFiles(List<String> cssFiles) {
+        this.cssFiles = cssFiles;
     }
 
     /**
@@ -55,16 +55,16 @@ public class ViewTheme implements Serializable{
      *
      * @return List<String>
      */
-    public List<String> getJsFiles() {
-        return jsFiles;
+    public List<String> getScriptFiles() {
+        return scriptFiles;
     }
 
     /**
      * Set the js files
      *
-     * @param jsFiles
+     * @param scriptFiles
      */
-    public void setJsFiles(List<String> jsFiles) {
-        this.jsFiles = jsFiles;
+    public void setScriptFiles(List<String> scriptFiles) {
+        this.scriptFiles = scriptFiles;
     }
 }

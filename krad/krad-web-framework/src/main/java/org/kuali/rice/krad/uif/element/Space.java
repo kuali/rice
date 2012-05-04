@@ -34,10 +34,10 @@ public class Space extends ContentElementBase {
      * <p>The HTML for a Space element is <code>&amp;nbsp;</code></p>
      *
      * @return the HTML string for a non-breaking space
-     * @see org.kuali.rice.krad.uif.component.Component#getRenderOutput()
+     * @see org.kuali.rice.krad.uif.component.Component#getRenderedHtmlOutput()
      */
     @Override
-    public String getRenderOutput() {
+    public String getRenderedHtmlOutput() {
         return "&nbsp;";
     }
 }

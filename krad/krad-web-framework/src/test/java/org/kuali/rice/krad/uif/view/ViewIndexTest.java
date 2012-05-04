@@ -52,7 +52,7 @@ public class ViewIndexTest {
         field.setBindingInfo(bindingInfo);
         String fieldId = "field1";
         field.setId(fieldId);
-        field.setRefreshWhenChanged("#lp.allDay eq true");
+        field.getRefreshWhenChangedPropertyNames().add("#lp.allDay eq true");
         // set a control
         TextControl textControl = new TextControl();
         String controlId = "text1";

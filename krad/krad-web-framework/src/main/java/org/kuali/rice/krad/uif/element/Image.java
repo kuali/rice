@@ -17,7 +17,7 @@ public class Image extends ContentElementBase {
     private String height;
     private String width;
 
-    private boolean captionHeaderAboveImage;
+    private boolean captionHeaderPlacementAboveImage;
 
     private String captionHeaderText;
     private Header captionHeader;
@@ -248,16 +248,16 @@ public class Image extends ContentElementBase {
      *
      * @return true if the caption is to be displayed above the image. false if displayed below the image.
      */
-    public boolean isCaptionHeaderAboveImage() {
-        return captionHeaderAboveImage;
+    public boolean isCaptionHeaderPlacementAboveImage() {
+        return captionHeaderPlacementAboveImage;
     }
 
     /**
      * Sets whether the image caption is to be displayed above or below the image
      *
-     * @param captionHeaderAboveImage - true displays above image, false displays below image
+     * @param captionHeaderPlacementAboveImage - true displays above image, false displays below image
      */
-    public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
-        this.captionHeaderAboveImage = captionHeaderAboveImage;
+    public void setCaptionHeaderPlacementAboveImage(boolean captionHeaderPlacementAboveImage) {
+        this.captionHeaderPlacementAboveImage = captionHeaderPlacementAboveImage;
     }
 }

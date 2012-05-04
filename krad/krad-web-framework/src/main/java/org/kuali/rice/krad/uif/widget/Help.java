@@ -85,7 +85,7 @@ public class Help extends WidgetBase {
     protected void buildExternalHelp(View view, Component parent) {
         if (StringUtils.isBlank(externalHelpUrl) && (helpDefinition != null)) {
             if (StringUtils.isBlank(helpDefinition.getParameterNamespace())) {
-                helpDefinition.setParameterNamespace(view.getViewNamespaceCode());
+                helpDefinition.setParameterNamespace(view.getNamespaceCode());
             }
 
             if (StringUtils.isNotBlank(helpDefinition.getParameterNamespace())

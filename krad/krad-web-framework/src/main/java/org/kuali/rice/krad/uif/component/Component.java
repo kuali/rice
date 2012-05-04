@@ -84,14 +84,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @return String bean id for component
      */
-    public String getFactoryId();
+    public String getBaseId();
 
     /**
-     * Sets the factory id that backs the component instance
+     * Sets the bae id that backs the component instance
      *
-     * @param factoryId
+     * @param baseId
      */
-    public void setFactoryId(String factoryId);
+    public void setBaseId(String baseId);
 
     /**
      * The name for the component type
@@ -386,14 +386,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @return List<String> css style classes to appear on the 'class' attribute
      */
-    public List<String> getStyleClasses();
+    public List<String> getCssClasses();
 
     /**
      * Setter for the components style classes
      *
      * @param styleClasses
      */
-    public void setStyleClasses(List<String> styleClasses);
+    public void setCssClasses(List<String> styleClasses);
 
     /**
      * Adds a single style to the list of styles on this component
@@ -594,6 +594,21 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setOrder(int order);
 
     /**
+     * Tooltip widget that renders a tooltip with additional information about the element on
+     * specified trigger event
+     *
+     * @return Tooltip
+     */
+    public Tooltip getToolTip();
+
+    /**
+     * Setter for the component tooltip widget instance
+     *
+     * @param toolTip
+     */
+    public void setToolTip(Tooltip toolTip);
+
+    /**
      * Name of the method that should be invoked for finalizing the component
      * configuration (full method name, without parameters or return type)
      *
@@ -681,14 +696,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @return String render output
      */
-    public String getRenderOutput();
+    public String getRenderedHtmlOutput();
 
     /**
      * Setter for the component's render output
      *
      * @param renderOutput
      */
-    public void setRenderOutput(String renderOutput);
+    public void setRenderedHtmlOutput(String renderOutput);
 
     /**
      * Indicates whether the component should be stored with the session view regardless of configuration
@@ -702,14 +717,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @return boolean true if the component should be stored in session, false if not
      */
-    public boolean isPersistInSession();
+    public boolean isForceSessionPersistence();
 
     /**
      * Setter for the indicator to force persistence of the component in session
      *
      * @param persistInSession
      */
-    public void setPersistInSession(boolean persistInSession);
+    public void setForceSessionPersistence(boolean persistInSession);
 
     /**
      * Security object that indicates what authorization (permissions) exist for the component
@@ -793,21 +808,27 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setProgressiveRenderAndRefresh(boolean progressiveRenderAndRefresh);
 
     /**
-     * Specifies a property by name that when it value changes will
-     * automatically perform a refresh on this component. This can be a comma
+     * Specifies a property by name that when its value changes will automatically perform
+     * a refresh on this component
+     *
+     * <p>
+     * This can be a comma
      * separated list of multiple properties that require this component to be
      * refreshed when any of them change. <Br>DO NOT use with progressiveRender
      * unless it is know that progressiveRender condition will always be
      * satisfied before one of these fields can be changed.
+     * </p>
      *
-     * @return the refreshWhenChanged
+     * @return List property names that should trigger a refresh when their values change
      */
-    public String getRefreshWhenChanged();
+    public List<String> getRefreshWhenChangedPropertyNames();
 
     /**
-     * @param refreshWhenChanged the refreshWhenChanged to set
+     * Setter for the list of property names that trigger a refresh
+     *
+     * @param refreshWhenChangedPropertyNames
      */
-    public void setRefreshWhenChanged(String refreshWhenChanged);
+    public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames);
 
     /**
      * Indicates the component can be refreshed by an action
@@ -847,27 +868,6 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @param resetDataOnRefresh
      */
     public void setResetDataOnRefresh(boolean resetDataOnRefresh);
-
-    /**
-     * Result of the conditionalRefresh expression, true if satisfied, otherwise false.
-     * Note: not currently used for any processing, required by the expression evaluator.
-     *
-     * @return the refresh
-     */
-    public boolean isRefresh();
-
-    /**
-     * @param refresh the refresh to set
-     */
-    public void setRefresh(boolean refresh);
-
-    /**
-     * Control names which will refresh this component when they are changed, added
-     * internally
-     *
-     * @return the refreshWhenChangedControlNames
-     */
-    public List<String> getRefreshWhenChangedControlNames();
 
     /**
      * Add a data attribute to the dataAttributes map
@@ -911,19 +911,5 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @return jQuery data script for adding all data attributes
      */
     public String getAllDataAttributesJs();
-
-    /**
-     * Tooltip widget that renders a tooltip with additional information about the element on specified trigger event
-     *
-     * @return Tooltip
-     */
-    public Tooltip getToolTip();
-
-    /**
-     * Setter for the component tooltip widget instance
-     *
-     * @param toolTip
-     */
-    public void setToolTip(Tooltip toolTip);
 
 }

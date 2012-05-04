@@ -103,7 +103,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canOpenView(View view, ViewModel model, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
 
         if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
@@ -124,7 +124,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
      */
     public boolean canEditView(View view, ViewModel model, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
-        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, model.getViewId());
 
         if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
@@ -427,7 +427,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     protected Map<String, String> getFieldPermissionDetails(View view, Object dataObject, Field field) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
 
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
         permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, field.getId());
 
@@ -451,7 +451,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     protected Map<String, String> getGroupPermissionDetails(View view, Object dataObject, Group group) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
 
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
         permissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, group.getId());
 
@@ -475,7 +475,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
     protected Map<String, String> getWidgetPermissionDetails(View view, Object dataObject, Widget widget) {
         Map<String, String> permissionDetails = new HashMap<String, String>();
 
-        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
         permissionDetails.put(KimConstants.AttributeConstants.WIDGET_ID, widget.getId());
 

@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -74,7 +75,7 @@ import java.util.Set;
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
-    private String viewNamespaceCode;
+    private String namespaceCode;
     private String viewName;
     private ViewTheme theme;
 
@@ -86,9 +87,10 @@ public class View extends ContainerBase {
 
     // Breadcrumbs
     private BreadCrumbs breadcrumbs;
-    private String viewLabelFieldPropertyName;
-    private String appendOption;
-    private boolean breadcrumbsInApplicationHeader;
+    private String breadcrumbTitlePropertyName;
+    private String breadcrumbTitleDisplayOption;
+
+    private boolean renderBreadcrumbsInView;
 
     // Growls support
     private Growls growls;
@@ -103,13 +105,12 @@ public class View extends ContainerBase {
 
     private Class<?> formClass;
     private String defaultBindingObjectPath;
-    private Map<String, Class<?>> abstractTypeClasses;
+    private Map<String, Class<?>> objectPathToConcreteClassMapping;
 
     private List<String> additionalScriptFiles;
     private List<String> additionalCssFiles;
 
     private ViewType viewTypeName;
-    private Class<? extends ViewHelperService> viewHelperServiceClassName;
 
     private String viewStatus;
     private ViewIndex viewIndex;
@@ -130,31 +131,33 @@ public class View extends ContainerBase {
 
     private List<? extends Group> items;
 
-    private LinkField viewMenuLink;
-    private String viewMenuGrouping;
+    private Link viewMenuLink;
+    private String viewMenuGroupName;
 
-    private boolean validateDirty;
-    private boolean translateCodes;
+    private boolean applyDirtyCheck;
+    private boolean translateCodesOnReadOnlyDisplay;
+    private boolean supportsRequestOverrideOfReadOnlyFields;
+
     private String preLoadScript;
     private Map<String, Object> clientSideState;
 
-    private boolean supportsReadOnlyFieldsOverride;
-
     @RequestParameter
-    private boolean dialogMode;
+    private boolean renderedInLightBox;
+
+    private Class<? extends ViewHelperService> viewHelperServiceClass;
 
     @ReferenceCopy
     private ViewHelperService viewHelperService;
 
     public View() {
-        dialogMode = false;
+        renderedInLightBox = false;
         singlePageView = false;
-        translateCodes = false;
+        translateCodesOnReadOnlyDisplay = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
         formClass = UifFormBase.class;
-        breadcrumbsInApplicationHeader = false;
-        supportsReadOnlyFieldsOverride = true;
+        renderBreadcrumbsInView = true;
+        supportsRequestOverrideOfReadOnlyFields = true;
         persistFormToSession = true;
 
         idSequence = 0;
@@ -163,7 +166,7 @@ public class View extends ContainerBase {
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();
         items = new ArrayList<Group>();
-        abstractTypeClasses = new HashMap<String, Class<?>>();
+        objectPathToConcreteClassMapping = new HashMap<String, Class<?>>();
         viewRequestParameters = new HashMap<String, String>();
         expressionVariables = new HashMap<String, String>();
         clientSideState = new HashMap<String, Object>();
@@ -369,17 +372,17 @@ public class View extends ContainerBase {
      *
      * @return String namespace code
      */
-    public String getViewNamespaceCode() {
-        return viewNamespaceCode;
+    public String getNamespaceCode() {
+        return namespaceCode;
     }
 
     /**
      * Setter for the view's namespace code
      *
-     * @param viewNamespaceCode
+     * @param namespaceCode
      */
-    public void setViewNamespaceCode(String viewNamespaceCode) {
-        this.viewNamespaceCode = viewNamespaceCode;
+    public void setNamespaceCode(String namespaceCode) {
+        this.namespaceCode = namespaceCode;
     }
 
     /**
@@ -629,17 +632,17 @@ public class View extends ContainerBase {
      *
      * @return Map<String, Class> of class implementations keyed by path
      */
-    public Map<String, Class<?>> getAbstractTypeClasses() {
-        return this.abstractTypeClasses;
+    public Map<String, Class<?>> getObjectPathToConcreteClassMapping() {
+        return this.objectPathToConcreteClassMapping;
     }
 
     /**
      * Setter for the Map of class implementations keyed by path
      *
-     * @param abstractTypeClasses
+     * @param objectPathToConcreteClassMapping
      */
-    public void setAbstractTypeClasses(Map<String, Class<?>> abstractTypeClasses) {
-        this.abstractTypeClasses = abstractTypeClasses;
+    public void setObjectPathToConcreteClassMapping(Map<String, Class<?>> objectPathToConcreteClassMapping) {
+        this.objectPathToConcreteClassMapping = objectPathToConcreteClassMapping;
     }
 
     /**
@@ -696,12 +699,12 @@ public class View extends ContainerBase {
         this.additionalCssFiles = additionalCssFiles;
     }
 
-    public boolean isDialogMode() {
-        return this.dialogMode;
+    public boolean isRenderedInLightBox() {
+        return this.renderedInLightBox;
     }
 
-    public void setDialogMode(boolean dialogMode) {
-        this.dialogMode = dialogMode;
+    public void setRenderedInLightBox(boolean renderedInLightBox) {
+        this.renderedInLightBox = renderedInLightBox;
     }
 
     /**
@@ -737,17 +740,17 @@ public class View extends ContainerBase {
      * @return Class for the spring bean
      * @see org.kuali.rice.krad.uif.service.ViewHelperService
      */
-    public Class<? extends ViewHelperService> getViewHelperServiceClassName() {
-        return this.viewHelperServiceClassName;
+    public Class<? extends ViewHelperService> getViewHelperServiceClass() {
+        return this.viewHelperServiceClass;
     }
 
     /**
      * Setter for the <code>ViewHelperService</code> class name
      *
-     * @param viewHelperServiceClassName
+     * @param viewHelperServiceClass
      */
-    public void setViewHelperServiceClassName(Class<? extends ViewHelperService> viewHelperServiceClassName) {
-        this.viewHelperServiceClassName = viewHelperServiceClassName;
+    public void setViewHelperServiceClass(Class<? extends ViewHelperService> viewHelperServiceClass) {
+        this.viewHelperServiceClass = viewHelperServiceClass;
     }
 
     /**
@@ -756,8 +759,8 @@ public class View extends ContainerBase {
      * @return ViewHelperService instance
      */
     public ViewHelperService getViewHelperService() {
-        if ((this.viewHelperService == null) && (this.viewHelperServiceClassName != null)) {
-            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClassName);
+        if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
+            viewHelperService = ObjectUtils.newInstance(viewHelperServiceClass);
         }
 
         return viewHelperService;
@@ -1067,9 +1070,9 @@ public class View extends ContainerBase {
      * Provides configuration for displaying a link to the view from an
      * application menu
      *
-     * @return LinkField view link field
+     * @return Link view link field
      */
-    public LinkField getViewMenuLink() {
+    public Link getViewMenuLink() {
         return this.viewMenuLink;
     }
 
@@ -1078,7 +1081,7 @@ public class View extends ContainerBase {
      *
      * @param viewMenuLink
      */
-    public void setViewMenuLink(LinkField viewMenuLink) {
+    public void setViewMenuLink(Link viewMenuLink) {
         this.viewMenuLink = viewMenuLink;
     }
 
@@ -1088,17 +1091,17 @@ public class View extends ContainerBase {
      *
      * @return String menu grouping
      */
-    public String getViewMenuGrouping() {
-        return this.viewMenuGrouping;
+    public String getViewMenuGroupName() {
+        return this.viewMenuGroupName;
     }
 
     /**
      * Setter for the views menu grouping
      *
-     * @param viewMenuGrouping
+     * @param viewMenuGroupName
      */
-    public void setViewMenuGrouping(String viewMenuGrouping) {
-        this.viewMenuGrouping = viewMenuGrouping;
+    public void setViewMenuGroupName(String viewMenuGroupName) {
+        this.viewMenuGroupName = viewMenuGroupName;
     }
 
     /**
@@ -1164,28 +1167,28 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the breadcrumbs are rendered in the application header and should not
-     * be rendered as part of the view template
+     * Indicates whether the breadcrumbs should be rendered in the view or if they have been rendered in
+     * the application header
      *
      * <p>
      * For layout purposes it is sometimes necessary to render the breadcrumbs in the application header. This flag
-     * indicates that is being done and therefore should not be rendered in the view template.
+     * indicates that is being done (by setting to false) and therefore should not be rendered in the view template.
      * </p>
      *
-     * @return boolean true if breadcrumbs are rendered in the application header, false if not and they should be
-     *         rendered with the view
+     * @return boolean true if breadcrumbs should be rendered in the view, false if not (are rendered in the
+     * application header)
      */
-    public boolean isBreadcrumbsInApplicationHeader() {
-        return breadcrumbsInApplicationHeader;
+    public boolean isRenderBreadcrumbsInView() {
+        return renderBreadcrumbsInView;
     }
 
     /**
-     * Setter for the breadcrumbs in application header indicator
+     * Setter for the render breadcrumbs in view indicator
      *
-     * @param breadcrumbsInApplicationHeader
+     * @param renderBreadcrumbsInView
      */
-    public void setBreadcrumbsInApplicationHeader(boolean breadcrumbsInApplicationHeader) {
-        this.breadcrumbsInApplicationHeader = breadcrumbsInApplicationHeader;
+    public void setRenderBreadcrumbsInView(boolean renderBreadcrumbsInView) {
+        this.renderBreadcrumbsInView = renderBreadcrumbsInView;
     }
 
     /**
@@ -1239,24 +1242,24 @@ public class View extends ContainerBase {
      *
      * @return true if dirty validation is set
      */
-    public boolean isValidateDirty() {
-        return this.validateDirty;
+    public boolean isApplyDirtyCheck() {
+        return this.applyDirtyCheck;
     }
 
     /**
      * Setter for dirty validation.
      */
-    public void setValidateDirty(boolean validateDirty) {
-        this.validateDirty = validateDirty;
+    public void setApplyDirtyCheck(boolean applyDirtyCheck) {
+        this.applyDirtyCheck = applyDirtyCheck;
     }
 
     /**
      * Indicates whether the Name of the Code should be displayed when a property is of type <code>KualiCode</code>
      *
-     * @param translateCodes - indicates whether <code>KualiCode</code>'s name should be included
+     * @param translateCodesOnReadOnlyDisplay - indicates whether <code>KualiCode</code>'s name should be included
      */
-    public void setTranslateCodes(boolean translateCodes) {
-        this.translateCodes = translateCodes;
+    public void setTranslateCodesOnReadOnlyDisplay(boolean translateCodesOnReadOnlyDisplay) {
+        this.translateCodesOnReadOnlyDisplay = translateCodesOnReadOnlyDisplay;
     }
 
     /**
@@ -1264,8 +1267,8 @@ public class View extends ContainerBase {
      *
      * @return true if the current view supports
      */
-    public boolean isTranslateCodes() {
-        return translateCodes;
+    public boolean isTranslateCodesOnReadOnlyDisplay() {
+        return translateCodesOnReadOnlyDisplay;
     }
 
     /**
@@ -1286,17 +1289,17 @@ public class View extends ContainerBase {
      *
      * @return String property name whose value should be displayed in view label
      */
-    public String getViewLabelFieldPropertyName() {
-        return this.viewLabelFieldPropertyName;
+    public String getBreadcrumbTitlePropertyName() {
+        return this.breadcrumbTitlePropertyName;
     }
 
     /**
      * Setter for the view label property name
      *
-     * @param viewLabelFieldPropertyName the viewLabelFieldPropertyName to set
+     * @param breadcrumbTitlePropertyName the viewLabelFieldPropertyName to set
      */
-    public void setViewLabelFieldPropertyName(String viewLabelFieldPropertyName) {
-        this.viewLabelFieldPropertyName = viewLabelFieldPropertyName;
+    public void setBreadcrumbTitlePropertyName(String breadcrumbTitlePropertyName) {
+        this.breadcrumbTitlePropertyName = breadcrumbTitlePropertyName;
     }
 
     /**
@@ -1307,17 +1310,17 @@ public class View extends ContainerBase {
      *
      * @return the appendOption
      */
-    public String getAppendOption() {
-        return this.appendOption;
+    public String getBreadcrumbTitleDisplayOption() {
+        return this.breadcrumbTitleDisplayOption;
     }
 
     /**
      * Setter for the append option
      *
-     * @param appendOption the appendOption to set
+     * @param breadcrumbTitleDisplayOption the appendOption to set
      */
-    public void setAppendOption(String appendOption) {
-        this.appendOption = appendOption;
+    public void setBreadcrumbTitleDisplayOption(String breadcrumbTitleDisplayOption) {
+        this.breadcrumbTitleDisplayOption = breadcrumbTitleDisplayOption;
     }
 
     /**
@@ -1382,17 +1385,17 @@ public class View extends ContainerBase {
      *
      * @return boolean true if read only request overrides are allowed, false if not
      */
-    public boolean isSupportsReadOnlyFieldsOverride() {
-        return supportsReadOnlyFieldsOverride;
+    public boolean isSupportsRequestOverrideOfReadOnlyFields() {
+        return supportsRequestOverrideOfReadOnlyFields;
     }
 
     /**
      * Setter for the the read only field override indicator
      *
-     * @param supportsReadOnlyFieldsOverride
+     * @param supportsRequestOverrideOfReadOnlyFields
      */
-    public void setSupportsReadOnlyFieldsOverride(boolean supportsReadOnlyFieldsOverride) {
-        this.supportsReadOnlyFieldsOverride = supportsReadOnlyFieldsOverride;
+    public void setSupportsRequestOverrideOfReadOnlyFields(boolean supportsRequestOverrideOfReadOnlyFields) {
+        this.supportsRequestOverrideOfReadOnlyFields = supportsRequestOverrideOfReadOnlyFields;
     }
 
     /**

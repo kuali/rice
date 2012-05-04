@@ -3,6 +3,7 @@ package org.kuali.rice.krad.uif.field;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.ActionSecurity;
+import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
 import java.util.Map;
@@ -70,14 +71,14 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getActionImage()
      */
-    public ImageField getActionImage() {
+    public Image getActionImage() {
         return action.getActionImage();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionImage(org.kuali.rice.krad.uif.field.ImageField)
+     * @see org.kuali.rice.krad.uif.element.Action#setActionImage(org.kuali.rice.krad.uif.element.Image)
      */
-    public void setActionImage(ImageField actionImage) {
+    public void setActionImage(Image actionImage) {
         action.setActionImage(actionImage);
     }
 
@@ -194,31 +195,31 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getFocusOnAfterSubmit()
+     * @see org.kuali.rice.krad.uif.element.Action#getFocusOnIdAfterSubmit()
      */
-    public String getFocusOnAfterSubmit() {
-        return action.getFocusOnAfterSubmit();
+    public String getFocusOnIdAfterSubmit() {
+        return action.getFocusOnIdAfterSubmit();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setFocusOnAfterSubmit(java.lang.String)
+     * @see org.kuali.rice.krad.uif.element.Action#setFocusOnIdAfterSubmit(java.lang.String)
      */
-    public void setFocusOnAfterSubmit(String focusOnAfterSubmit) {
-        action.setFocusOnAfterSubmit(focusOnAfterSubmit);
+    public void setFocusOnIdAfterSubmit(String focusOnAfterSubmit) {
+        action.setFocusOnIdAfterSubmit(focusOnAfterSubmit);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#isClientSideValidate()
+     * @see org.kuali.rice.krad.uif.element.Action#isPerformClientSideValidation()
      */
-    public boolean isClientSideValidate() {
-        return action.isClientSideValidate();
+    public boolean isPerformClientSideValidation() {
+        return action.isPerformClientSideValidation();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setClientSideValidate(boolean)
+     * @see org.kuali.rice.krad.uif.element.Action#setPerformClientSideValidation(boolean)
      */
-    public void setClientSideValidate(boolean clientSideValidate) {
-        action.setClientSideValidate(clientSideValidate);
+    public void setPerformClientSideValidation(boolean clientSideValidate) {
+        action.setPerformClientSideValidation(clientSideValidate);
     }
 
     /**
@@ -250,17 +251,17 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setBlockValidateDirty(boolean)
+     * @see org.kuali.rice.krad.uif.element.Action#isPerformDirtyValidation()
      */
-    public void setBlockValidateDirty(boolean blockValidateDirty) {
-        action.setBlockValidateDirty(blockValidateDirty);
+    public boolean isPerformDirtyValidation() {
+        return action.isPerformDirtyValidation();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#isBlockValidateDirty()
+     * @see org.kuali.rice.krad.uif.element.Action#setPerformDirtyValidation(boolean)
      */
-    public boolean isBlockValidateDirty() {
-        return action.isBlockValidateDirty();
+    public void setPerformDirtyValidation(boolean blockValidateDirty) {
+        action.setPerformDirtyValidation(blockValidateDirty);
     }
 
     /**
@@ -292,16 +293,16 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionImageLocation()
+     * @see org.kuali.rice.krad.uif.element.Action#getActionImagePlacement()
      */
-    public String getActionImageLocation() {
-        return action.getActionImageLocation();
+    public String getActionImagePlacement() {
+        return action.getActionImagePlacement();
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionImageLocation(java.lang.String)
+     * @see org.kuali.rice.krad.uif.element.Action#setActionImagePlacement(java.lang.String)
      */
-    public void setActionImageLocation(String actionImageLocation) {
-        action.setActionImageLocation(actionImageLocation);
+    public void setActionImagePlacement(String actionImageLocation) {
+        action.setActionImagePlacement(actionImageLocation);
     }
 }

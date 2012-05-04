@@ -53,14 +53,14 @@ public class UserControl extends TextControl {
         }
 
         InputField field = (InputField) parent;
-        field.getHiddenPropertyNames().add(principalIdPropertyName);
+        field.getAdditionalHiddenPropertyNames().add(principalIdPropertyName);
 
         if (!field.isReadOnly()) {
             // add information fields
             if (StringUtils.isNotBlank(personNamePropertyName)) {
-                field.getInformationalDisplayPropertyNames().add(personNamePropertyName);
+                field.getPropertyNamesForAdditionalDisplay().add(personNamePropertyName);
             } else {
-                field.getInformationalDisplayPropertyNames().add(personObjectPropertyName + ".name");
+                field.getPropertyNamesForAdditionalDisplay().add(personObjectPropertyName + ".name");
             }
 
             // setup script to clear id field when name is modified
@@ -73,11 +73,11 @@ public class UserControl extends TextControl {
             setOnChangeScript(onChangeScript);
         }
 
-        if (field.isReadOnly() && StringUtils.isBlank(field.getAdditionalDisplayPropertyName())) {
+        if (field.isReadOnly() && StringUtils.isBlank(field.getReadOnlyDisplaySuffixPropertyName())) {
             if (StringUtils.isNotBlank(personNamePropertyName)) {
-                field.setAdditionalDisplayPropertyName(personNamePropertyName);
+                field.setReadOnlyDisplaySuffixPropertyName(personNamePropertyName);
             } else {
-                field.setAdditionalDisplayPropertyName(personObjectPropertyName + ".name");
+                field.setReadOnlyDisplaySuffixPropertyName(personObjectPropertyName + ".name");
             }
         }
 
@@ -98,10 +98,10 @@ public class UserControl extends TextControl {
         } else {
             attributeQuery.getReturnFieldMapping().put("name", personObjectPropertyName + ".name");
         }
-        field.setFieldAttributeQuery(attributeQuery);
+        field.setAttributeQuery(attributeQuery);
 
         // setup field lookup
-        QuickFinder quickFinder = field.getFieldLookup();
+        QuickFinder quickFinder = field.getQuickfinder();
         if (quickFinder.isRender()) {
             if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
                 quickFinder.setDataObjectClassName(Person.class.getName());

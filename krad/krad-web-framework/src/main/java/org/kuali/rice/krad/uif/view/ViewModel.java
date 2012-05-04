@@ -189,7 +189,7 @@ public interface ViewModel extends Serializable {
      * </p>
      *
      * @return List<String> read only property names
-     * @see View#isSupportsReadOnlyFieldsOverride()
+     * @see View#isSupportsRequestOverrideOfReadOnlyFields()
      */
     public List<String> getReadOnlyFieldsList();
 

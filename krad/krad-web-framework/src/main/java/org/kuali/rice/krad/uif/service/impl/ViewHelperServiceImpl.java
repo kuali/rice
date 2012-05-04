@@ -209,7 +209,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         component.pushAllToContext(origComponent.getContext());
 
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
-        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getFactoryId(), "");
+        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
         ComponentUtils.updateIdWithSuffix(component, suffix);
 
         // binding path should stay the same
@@ -461,7 +461,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             if (inputField.getControl() == null) {
                 Control control = ComponentFactory.getTextControl();
                 control.setId(view.getNextId());
-                control.setFactoryId(control.getId());
+                control.setBaseId(control.getId());
 
                 inputField.setControl(control);
             }
@@ -814,7 +814,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 boolean canUnmaskValue = authorizer.canUnmaskField(view, model, dataField, dataField.getPropertyName(),
                         user);
                 if (!canUnmaskValue) {
-                    dataField.setApplyValueMask(true);
+                    dataField.setApplyMask(true);
                     dataField.setMaskFormatter(dataField.getComponentSecurity().getAttributeSecurity().
                             getMaskFormatter());
                 } else {
@@ -822,7 +822,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
                             dataField.getPropertyName(), user);
                     if (!canPartiallyUnmaskValue) {
-                        dataField.setApplyValueMask(true);
+                        dataField.setApplyMask(true);
                         dataField.setMaskFormatter(
                                 dataField.getComponentSecurity().getAttributeSecurity().getPartialMaskFormatter());
                     }
@@ -1036,7 +1036,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // implement readonly request overrides
         ViewModel viewModel = (ViewModel) model;
-        if ((component instanceof DataBinding) && view.isSupportsReadOnlyFieldsOverride() && !viewModel
+        if ((component instanceof DataBinding) && view.isSupportsRequestOverrideOfReadOnlyFields() && !viewModel
                 .getReadOnlyFieldsList().isEmpty()) {
             String propertyName = ((DataBinding) component).getPropertyName();
             if (viewModel.getReadOnlyFieldsList().contains(propertyName)) {
@@ -1213,7 +1213,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 String renderOutput = (String) finalizeMethodInvoker.invoke();
 
                 component.setSelfRendered(true);
-                component.setRenderOutput(renderOutput);
+                component.setRenderedHtmlOutput(renderOutput);
             }
         } catch (Exception e) {
             LOG.error("Error invoking rendering method for component: " + component.getId(), e);
@@ -1456,7 +1456,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line) {
         // retrieve all data fields for the collection line
-        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineFields(),
+        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
                 DataField.class);
         for (DataField dataField : dataFields) {
             String bindingPath = "";

@@ -403,7 +403,7 @@
            p:required="true" />
        </list>
      </property>
-     <property name="addLineFields">
+     <property name="addLineItems">
        <list>
          <bean parent="Uif-InputField" p:label="Add line field 1" p:propertyName="field1"
                p:required="true" />

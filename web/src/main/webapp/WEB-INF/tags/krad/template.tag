@@ -43,7 +43,7 @@ still render, but render in a hidden container --%>
 	<c:choose>
 		<%-- for self rendered components, write out render output --%>
 		<c:when test="${component.selfRendered}">
-	        ${component.renderOutput}
+	        ${component.renderedHtmlOutput}
 	  </c:when>
 
 		<%-- render component through template --%>
@@ -76,7 +76,7 @@ still render, but render in a hidden container --%>
     <c:forEach items="${component.progressiveDisclosureControlNames}" var="cName">
       <krad:script
         value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-        setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, ${component.progressiveRenderAndRefresh}, '${component.refreshDiscloseMethodToCall}');" />
+        setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition, ${component.progressiveRenderAndRefresh}, '${component.methodToCallOnRefresh}');" />
     </c:forEach>
     <krad:script value="hiddenInputValidationToggle('${component.id}');" />
   </c:if>
@@ -86,16 +86,14 @@ still render, but render in a hidden container --%>
     <c:forEach items="${component.conditionalRefreshControlNames}" var="cName">
       <krad:script
         value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
-      setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, '${component.refreshDiscloseMethodToCall}');" />
+      setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition, '${component.methodToCallOnRefresh}');" />
     </c:forEach>
   </c:if>
 
   <%-- Refresh when changed setup --%>
-  <c:if test="${!empty component.refreshWhenChanged}">
-    <c:forEach items="${component.refreshWhenChangedControlNames}" var="cName">
-      <krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', '${component.refreshDiscloseMethodToCall}');" />
-    </c:forEach>
-  </c:if>
+  <c:forEach items="${component.refreshWhenChangedPropertyNames}" var="cName">
+    <krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', '${component.methodToCallOnRefresh}');"/>
+  </c:forEach>
 
   <%-- generate tooltip for component --%>
   <krad:tooltip component="${component}" />

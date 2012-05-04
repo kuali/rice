@@ -66,7 +66,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        Suggest fieldSuggest = inputField.getFieldSuggest();
+        Suggest fieldSuggest = inputField.getSuggest();
         AttributeQuery suggestQuery = fieldSuggest.getSuggestQuery();
 
         // add term as a like criteria
@@ -116,7 +116,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        AttributeQuery fieldQuery = inputField.getFieldAttributeQuery();
+        AttributeQuery fieldQuery = inputField.getAttributeQuery();
         if (fieldQuery == null) {
             throw new RuntimeException("Field query not defined for field instance with id: " + fieldId);
         }

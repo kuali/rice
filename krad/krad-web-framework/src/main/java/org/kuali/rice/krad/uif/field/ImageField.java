@@ -163,10 +163,10 @@ public class ImageField extends FieldBase {
     }
 
     public boolean isCaptionHeaderAboveImage() {
-        return image.isCaptionHeaderAboveImage();
+        return image.isCaptionHeaderPlacementAboveImage();
     }
 
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
-        image.setCaptionHeaderAboveImage(captionHeaderAboveImage);
+        image.setCaptionHeaderPlacementAboveImage(captionHeaderAboveImage);
     }
 }

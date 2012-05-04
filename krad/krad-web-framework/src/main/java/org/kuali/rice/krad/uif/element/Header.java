@@ -40,8 +40,8 @@ public class Header extends ContentElementBase {
     private String headerText;
     private String headerLevel;
 
-    private List<String> headerStyleClasses;
-    private String headerStyle;
+    private String headerTagStyle;
+    private List<String> headerTagCssClasses;
 
     private Group upperGroup;
     private Group rightGroup;
@@ -50,7 +50,7 @@ public class Header extends ContentElementBase {
     public Header() {
         super();
 
-        headerStyleClasses = new ArrayList<String>();
+        headerTagCssClasses = new ArrayList<String>();
     }
 
     /**
@@ -142,19 +142,19 @@ public class Header extends ContentElementBase {
      * </p>
      *
      * @return List<String> list of style classes
-     * @see org.kuali.rice.krad.uif.component.Component#getStyleClasses()
+     * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
-    public List<String> getHeaderStyleClasses() {
-        return this.headerStyleClasses;
+    public List<String> getHeaderTagCssClasses() {
+        return this.headerTagCssClasses;
     }
 
     /**
      * Setter for the list of classes to apply to the header h tag
      *
-     * @param headerStyleClasses
+     * @param headerTagCssClasses
      */
-    public void setHeaderStyleClasses(List<String> headerStyleClasses) {
-        this.headerStyleClasses = headerStyleClasses;
+    public void setHeaderTagCssClasses(List<String> headerTagCssClasses) {
+        this.headerTagCssClasses = headerTagCssClasses;
     }
 
     /**
@@ -164,8 +164,8 @@ public class Header extends ContentElementBase {
      * @return String class attribute string
      */
     public String getHeaderStyleClassesAsString() {
-        if (headerStyleClasses != null) {
-            return StringUtils.join(headerStyleClasses, " ");
+        if (headerTagCssClasses != null) {
+            return StringUtils.join(headerTagCssClasses, " ");
         }
 
         return "";
@@ -184,17 +184,17 @@ public class Header extends ContentElementBase {
      * @return String header style
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
-    public String getHeaderStyle() {
-        return this.headerStyle;
+    public String getHeaderTagStyle() {
+        return this.headerTagStyle;
     }
 
     /**
      * Setter for the header h tag style
      *
-     * @param headerStyle
+     * @param headerTagStyle
      */
-    public void setHeaderStyle(String headerStyle) {
-        this.headerStyle = headerStyle;
+    public void setHeaderTagStyle(String headerTagStyle) {
+        this.headerTagStyle = headerTagStyle;
     }
 
     /**

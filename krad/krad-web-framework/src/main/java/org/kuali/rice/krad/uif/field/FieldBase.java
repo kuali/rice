@@ -183,7 +183,7 @@ public class FieldBase extends ComponentBase implements Field {
      */
     public List<String> getLabelStyleClasses() {
         if (fieldLabel != null) {
-            return fieldLabel.getStyleClasses();
+            return fieldLabel.getCssClasses();
         }
 
         return null;
@@ -198,7 +198,7 @@ public class FieldBase extends ComponentBase implements Field {
         }
 
         if (this.fieldLabel != null) {
-            this.fieldLabel.setStyleClasses(labelStyleClasses);
+            this.fieldLabel.setCssClasses(labelStyleClasses);
         }
     }
 

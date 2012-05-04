@@ -47,9 +47,9 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 
 	private String id;
 	private String template;
-	private String style;
 
-	private List<String> styleClasses;
+	private String style;
+	private List<String> cssClasses;
 
 	@ReferenceCopy(newCollectionInstance=true)
 	private Map<String, Object> context;
@@ -59,7 +59,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	public LayoutManagerBase() {
         super();
 
-		styleClasses = new ArrayList<String>();
+		cssClasses = new ArrayList<String>();
 		context = new HashMap<String, Object>();
 		propertyReplacers = new ArrayList<PropertyReplacer>();
 	}
@@ -176,17 +176,17 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyleClasses()
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getCssClasses()
 	 */
-	public List<String> getStyleClasses() {
-		return this.styleClasses;
+	public List<String> getCssClasses() {
+		return this.cssClasses;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setStyleClasses(java.util.List)
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#setCssClasses(java.util.List)
 	 */
-	public void setStyleClasses(List<String> styleClasses) {
-		this.styleClasses = styleClasses;
+	public void setCssClasses(List<String> cssClasses) {
+		this.cssClasses = cssClasses;
 	}
 
 	/**
@@ -196,8 +196,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 * @return String class attribute string
 	 */
 	public String getStyleClassesAsString() {
-		if (styleClasses != null) {
-			return StringUtils.join(styleClasses, " ");
+		if (cssClasses != null) {
+			return StringUtils.join(cssClasses, " ");
 		}
 
 		return "";
@@ -213,7 +213,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 */
 	public void setStyleClasses(String styleClasses) {
 		String[] classes = StringUtils.split(styleClasses);
-		this.styleClasses = Arrays.asList(classes);
+		this.cssClasses = Arrays.asList(classes);
 	}
 
 	/**
@@ -223,8 +223,8 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	 */
 	@Override
 	public void addStyleClass(String styleClass){
-		if(!styleClasses.contains(styleClass)){
-			styleClasses.add(styleClass);
+		if(!cssClasses.contains(styleClass)){
+			cssClasses.add(styleClass);
 		}
 	}
 

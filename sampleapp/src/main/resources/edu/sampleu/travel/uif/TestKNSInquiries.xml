@@ -25,7 +25,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Permission-InquiryView" parent="Uif-InquiryView">
 	<property name="headerText" value="Permission Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="Uif-Disclosure-GridSection">
@@ -88,7 +88,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Responsibility-InquiryView" parent="Uif-InquiryView">
 	<property name="headerText" value="Responsibility Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityInquirableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="Uif-Disclosure-GridSection">
@@ -149,7 +149,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Component-InquiryView" parent="Uif-InquiryView">
 	<property name="headerText" value="Component Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.component.ComponentBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.coreservice.web.component.ComponentInquirableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.coreservice.web.component.ComponentInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="Uif-Disclosure-GridSection">
@@ -189,7 +189,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="KimType-InquiryView" parent="Uif-InquiryView">
 	<property name="headerText" value="Kim Type"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.type.KimTypeBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.type.KimTypeInquirableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.kim.impl.type.KimTypeInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="Uif-Disclosure-GridSection">
@@ -212,7 +212,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="RuleBaseValues-InquiryView" parent="Uif-InquiryView">
 	<property name="headerText" value="Rule"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleBaseValuesInquirableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.kew.rule.bo.RuleBaseValuesInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="Uif-Disclosure-GridSection">
@@ -304,7 +304,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="RuleDelegation-InquiryView" parent="Uif-InquiryView">
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleDelegationInquirableImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.kew.rule.bo.RuleDelegationInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="Uif-Disclosure-GridSection">

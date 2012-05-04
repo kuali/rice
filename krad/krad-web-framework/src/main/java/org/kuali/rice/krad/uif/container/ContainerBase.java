@@ -20,8 +20,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -29,7 +27,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,10 +44,7 @@ import java.util.List;
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private static final long serialVersionUID = -4182226230601746657L;
 
-	private int itemOrderingSequence;
-
-	private String additionalMessageKeys;
-	private ValidationMessages validationMessages;
+	private int defaultItemPosition;
 
 	private Help help;
 	private LayoutManager layoutManager;
@@ -61,13 +55,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private String instructionalText;
 	private Message instructionalMessage;
 
-	private boolean fieldContainer;
+    private ValidationMessages validationMessages;
 
 	/**
 	 * Default Constructor
 	 */
 	public ContainerBase() {
-		itemOrderingSequence = 1;
+		defaultItemPosition = 1;
 	}
 
 	/**
@@ -87,7 +81,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 		// sort items list by the order property
 		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
-				itemOrderingSequence);
+                defaultItemPosition);
 		setItems(sortedItems);
 
 		if (layoutManager != null) {
@@ -178,40 +172,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
 	/**
-	 * Additional keys that should be matching on when gathering errors or other
-	 * messages for the <code>Container</code>
-	 * 
-	 * <p>
-	 * Messages associated with the container will be displayed with the
-	 * container grouping in the user interface. Typically, these are a result
-	 * of problems with the containers fields or some other business logic
-	 * associated with the containers information. The framework will by default
-	 * include all the error keys for fields in the container, and also an
-	 * errors associated with the containers id. Keys given here will be matched
-	 * in addition to those defaults.
-	 * </p>
-	 * 
-	 * <p>
-	 * Multple keys can be given using the comma delimiter, the * wildcard is
-	 * also allowed in the message key
-	 * </p>
-	 * 
-	 * @return String additional message key string
-	 */
-	public String getAdditionalMessageKeys() {
-		return this.additionalMessageKeys;
-	}
-
-	/**
-	 * Setter for the components additional message key string
-	 * 
-	 * @param additionalMessageKeys
-	 */
-	public void setAdditionalMessageKeys(String additionalMessageKeys) {
-		this.additionalMessageKeys = additionalMessageKeys;
-	}
-
-	/**
 	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
 	 */
 	@Override
@@ -287,17 +247,17 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * 
 	 * @return int order sequence
 	 */
-	public int getItemOrderingSequence() {
-		return this.itemOrderingSequence;
+	public int getDefaultItemPosition() {
+		return this.defaultItemPosition;
 	}
 
 	/**
 	 * Setter for the container's item ordering sequence number (initial value)
 	 * 
-	 * @param itemOrderingSequence
+	 * @param defaultItemPosition
 	 */
-	public void setItemOrderingSequence(int itemOrderingSequence) {
-		this.itemOrderingSequence = itemOrderingSequence;
+	public void setDefaultItemPosition(int defaultItemPosition) {
+		this.defaultItemPosition = defaultItemPosition;
 	}
 
 	/**
@@ -453,62 +413,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      */
 	public void setInstructionalMessage(Message instructionalMessage) {
 		this.instructionalMessage = instructionalMessage;
-	}
-
-	/**
-	 * Gets only the data fields that are nested in this container.  This is a subset of
-	 * what getComponentsForLifecycle() returns
-	 * 
-	 * @return
-	 */
-	public List<InputField> getInputFields(){
-		List<InputField> inputFields = new ArrayList<InputField>();
-		for(Component c: this.getComponentsForLifecycle()){
-			if(c instanceof InputField){
-				inputFields.add((InputField)c);
-			}
-		}
-		return inputFields;
-		
-	}
-
-    /**
-     * getAllInputFields gets all the input fields contained in this container, but also in
-     * every sub-container that is a child of this container.  When called from the top level
-     * View this will be every InputField across all pages.
-     * @return every InputField that is a child at any level of this container
-     */
-    public List<InputField> getAllInputFields(){
-        List<InputField> inputFields = new ArrayList<InputField>();
-        for(Component c: this.getComponentsForLifecycle()){
-            if(c instanceof InputField){
-                inputFields.add((InputField)c);
-            }
-            else if(c instanceof ContainerBase){
-                inputFields.addAll( ((ContainerBase) c).getAllInputFields());
-            }
-            else if(c instanceof FieldGroup){
-                ContainerBase cb = ((FieldGroup) c).getGroup();
-                inputFields.addAll(cb.getAllInputFields());
-            }
-        }
-        return inputFields;    
-    }
-
-	/**
-	 * This property is true if the container is used to display a group of fields that is visually a single
-	 * field.
-	 * @return the fieldContainer
-	 */
-	public boolean isFieldContainer() {
-		return this.fieldContainer;
-	}
-
-	/**
-	 * @param fieldContainer the fieldContainer to set
-	 */
-	public void setFieldContainer(boolean fieldContainer) {
-		this.fieldContainer = fieldContainer;
 	}
 
 }

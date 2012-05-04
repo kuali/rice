@@ -44,7 +44,7 @@
 <c:set var="tagId" value="${element.id}"/>
 <c:choose>
 
-  <c:when test="${(element.actionImage != null) && element.actionImage.render && (empty element.actionImageLocation || element.actionImageLocation eq 'IMAGE_ONLY')}">
+  <c:when test="${(element.actionImage != null) && element.actionImage.render && (empty element.actionImagePlacement || element.actionImagePlacement eq 'IMAGE_ONLY')}">
     <krad:attributeBuilder component="${element.actionImage}"/>
 
     <input type="image" id="${tagId}" ${disabled}
@@ -60,9 +60,9 @@
     <c:set var="dataAttributes" value="${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}"/>
 
     <c:choose>
-      <c:when test="${not empty element.actionImageLocation && (element.actionImage != null) && element.actionImage.render}">
+      <c:when test="${not empty element.actionImagePlacement && (element.actionImage != null) && element.actionImage.render}">
         <c:choose>
-          <c:when test="${(element.actionImageLocation eq 'TOP')}">
+          <c:when test="${(element.actionImagePlacement eq 'TOP')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${element.simpleDataAttributes} ${dataAttributes}><span
                     class="topBottomSpan"><img ${height} ${width}
                     class="actionImage topActionImage ${element.actionImage.styleClassesAsString}"
@@ -73,7 +73,7 @@
             </button>
           </c:when>
 
-          <c:when test="${(element.actionImageLocation eq 'BOTTOM')}">
+          <c:when test="${(element.actionImagePlacement eq 'BOTTOM')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${element.simpleDataAttributes} ${dataAttributes}>
             ${element.actionLabel}<span
                     class="topBottomSpan"><img ${height} ${width}
@@ -84,7 +84,7 @@
                     title="${element.actionImage.title}"/></span></button>
           </c:when>
 
-          <c:when test="${(element.actionImageLocation eq 'RIGHT')}">
+          <c:when test="${(element.actionImagePlacement eq 'RIGHT')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${element.simpleDataAttributes} ${dataAttributes}>
             ${element.actionLabel}<img ${height} ${width}
                     style="${element.actionImage.style}"
@@ -94,7 +94,7 @@
                     title="${element.actionImage.title}"/></button>
           </c:when>
 
-          <c:when test="${(element.actionImageLocation eq 'LEFT')}">
+          <c:when test="${(element.actionImagePlacement eq 'LEFT')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${element.simpleDataAttributes} ${dataAttributes}>
               <img ${height} ${width}
                     style="${element.actionImage.style}"

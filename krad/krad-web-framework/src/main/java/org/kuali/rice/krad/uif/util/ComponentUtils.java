@@ -22,8 +22,10 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
+import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanUtils;
@@ -311,7 +313,7 @@ public class ComponentUtils {
      */
     public static void updateFactoryIdWithSuffix(Component component, String idSuffix) {
         if (component != null && !StringUtils.isEmpty(idSuffix)) {
-            component.setFactoryId(component.getFactoryId() + idSuffix);
+            component.setBaseId(component.getBaseId() + idSuffix);
         }
     }
 
@@ -452,6 +454,31 @@ public class ComponentUtils {
         Collections.sort(orderedItems, new OrderComparator());
 
         return orderedItems;
+    }
+
+    /**
+     * Gets all the input fields contained in this container, but also in
+     * every sub-container that is a child of this container.  When called from the top level
+     * View this will be every InputField across all pages.
+     *
+     * @return every InputField that is a child at any level of this container
+     */
+    public static List<InputField> getAllInputFieldsWithinContainer(Container container) {
+        List<InputField> inputFields = new ArrayList<InputField>();
+
+        for (Component c : container.getComponentsForLifecycle()) {
+            if (c instanceof InputField) {
+                inputFields.add((InputField) c);
+            } else if (c instanceof Container) {
+                inputFields.addAll(getAllInputFieldsWithinContainer((Container) c));
+            } else if (c instanceof FieldGroup) {
+                Container cb = ((FieldGroup) c).getGroup();
+
+                inputFields.addAll(getAllInputFieldsWithinContainer(cb));
+            }
+        }
+
+        return inputFields;
     }
 
 }

@@ -138,7 +138,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			totalColumns++;
 		}
 
-        if (collectionGroup.isRenderSelectField()) {
+        if (collectionGroup.isIncludeLineSelectionField()) {
             totalColumns++;
         }
 
@@ -256,7 +256,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
         // select field will come after sequence field (if enabled) or be first column
-        if (collectionGroup.isRenderSelectField()) {
+        if (collectionGroup.isIncludeLineSelectionField()) {
             Field selectField = ComponentUtils.copy(selectFieldPrototype, idSuffix);
             CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
 
@@ -326,7 +326,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
         // next is select field
-        if (collectionGroup.isRenderSelectField()) {
+        if (collectionGroup.isIncludeLineSelectionField()) {
             selectFieldPrototype.setLabelRendered(true);
             selectFieldPrototype.setRowSpan(rowCount);
             addHeaderField(selectFieldPrototype, 1);
@@ -657,12 +657,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Field instance that serves as a prototype for creating the select field on each line when
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isRenderSelectField()} is true
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()} is true
      *
      * <p>
      * This prototype can be used to set the control used for the select field (generally will be a checkbox control)
      * in addition to styling and other setting. The binding path will be formed with using the
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getSelectPropertyName()} or if not set the framework
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if not set the framework
      * will use {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
      * </p>
      *

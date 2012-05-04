@@ -30,18 +30,18 @@
       <c:when test="${readOnly}">
         <c:set var="readOnlyDisplay">
           <%-- display alternate display value if set --%>
-          <c:if test="${not empty field.alternateDisplayValue}">
-            ${field.alternateDisplayValue}
+          <c:if test="${not empty field.readOnlyDisplayReplacement}">
+            ${field.readOnlyDisplayReplacement}
           </c:if>
 
-          <c:if test="${empty field.alternateDisplayValue}">
+          <c:if test="${empty field.readOnlyDisplayReplacement}">
             <%-- display actual field value --%>
             <s:bind path="${field.bindingInfo.bindingPath}"
                     htmlEscape="${field.escapeHtmlInPropertyValue}">${status.value}</s:bind>
 
             <%-- add alternate display value if set --%>
-            <c:if test="${not empty field.additionalDisplayValue}">
-              *-* ${field.additionalDisplayValue}
+            <c:if test="${not empty field.readOnlyDisplaySuffix}">
+              *-* ${field.readOnlyDisplaySuffix}
             </c:if>
           </c:if>
         </c:set>
@@ -49,8 +49,8 @@
         <span id="${field.id}">
           <%-- render inquiry if enabled --%>
           <c:choose>
-            <c:when test="${field.fieldInquiry.render}">
-              <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}"
+            <c:when test="${field.inquiry.render}">
+              <krad:template component="${field.inquiry}" componentId="${field.id}" body="${readOnlyDisplay}"
                              readOnly="${field.readOnly}" />
             </c:when>
 
@@ -72,12 +72,12 @@
 
     <%-- render field quickfinder --%>
     <c:if test="${field.inputAllowed}">
-      <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
+      <krad:template component="${field.quickfinder}" componentId="${field.id}"/>
     </c:if>
 
     <%-- render field direct inquiry if field is editable and inquiry is enabled--%>
-    <c:if test="${!readOnly && field.fieldInquiry.render}">
-      <krad:template component="${field.fieldInquiry}" componentId="${field.id}" readOnly="${field.readOnly}"/>
+    <c:if test="${!readOnly && field.inquiry.render}">
+      <krad:template component="${field.inquiry}" componentId="${field.id}" readOnly="${field.readOnly}"/>
     </c:if>
 
   </krad:fieldLabel>
@@ -97,7 +97,7 @@
 
   <%-- render span and values for informational properties --%>
   <span id="${field.id}_info_message"></span>
-  <c:forEach items="${field.informationalDisplayPropertyNames}" var="infoPropertyPath" varStatus="status">
+  <c:forEach items="${field.propertyNamesForAdditionalDisplay}" var="infoPropertyPath" varStatus="status">
     <%-- TODO: clean this up somehow! --%>
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyPath,'.','_')}"/>
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'[','-lbrak-')}"/>
@@ -113,17 +113,17 @@
 
   <%-- render field suggest if field is editable --%>
   <c:if test="${!readOnly}">
-    <krad:template component="${field.fieldSuggest}" parent="${field}"/>
+    <krad:template component="${field.suggest}" parent="${field}"/>
   </c:if>
 
   <%-- render hidden fields --%>
   <%-- TODO: always render hiddens if configured? --%>
-  <c:forEach items="${field.hiddenPropertyNames}" var="hiddenPropertyName" varStatus="status">
+  <c:forEach items="${field.additionalHiddenPropertyNames}" var="hiddenPropertyName" varStatus="status">
     <form:hidden id="${field.id}_h${status.count}" path="${hiddenPropertyName}"/>
   </c:forEach>
 
   <%-- transform all text on attribute field to uppercase --%>
-  <c:if test="${!readOnly && field.performUppercase}">
+  <c:if test="${!readOnly && field.uppercaseValue}">
     <krad:script value="uppercaseValue('${field.control.id}');"/>
   </c:if>
 </krad:div>

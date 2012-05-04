@@ -274,8 +274,8 @@
               <bean parent="Uif-InputField" p:propertyName="kimTypeInfo.name"/>
               <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
               <bean parent="Uif-InputField" p:propertyName="name">
-                <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
-                <property name="fieldInquiry.inquiryParameters" value="id:id"/>
+                <property name="inquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+                <property name="inquiry.inquiryParameters" value="id:id"/>
               </bean>
               <bean parent="Uif-InputField" p:propertyName="active"/>
               <bean parent="Uif-InputField" p:propertyName="description"/>
@@ -323,8 +323,8 @@
         <bean parent="Uif-InputField" p:propertyName="kimTypeInfo.name"/>
         <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
         <bean parent="Uif-InputField" p:propertyName="name">
-          <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
-          <property name="fieldInquiry.inquiryParameters" value="id:id"/>
+          <property name="inquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+          <property name="inquiry.inquiryParameters" value="id:id"/>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="description"/>
       </list>

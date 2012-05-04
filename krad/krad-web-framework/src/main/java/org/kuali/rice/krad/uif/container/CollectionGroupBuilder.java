@@ -142,7 +142,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         if (Inactivatable.class.isAssignableFrom(collectionGroup.getCollectionObjectClass()) && !collectionGroup
-                .isShowInactive()) {
+                .isShowInactiveLines()) {
             List<Integer> activeIndexes = collectionGroup.getActiveCollectionFilter().filter(view, model,
                     collectionGroup);
             filteredIndexes = ListUtils.intersection(filteredIndexes, activeIndexes);
@@ -225,7 +225,7 @@ public class CollectionGroupBuilder implements Serializable {
         List<? extends Component> lineItems = null;
         String lineSuffix = null;
         if (lineIndex == -1) {
-            lineItems = ComponentUtils.copyComponentList(collectionGroup.getAddLineFields(), null);
+            lineItems = ComponentUtils.copyComponentList(collectionGroup.getAddLineItems(), null);
             lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
         } else {
             lineItems = ComponentUtils.copyComponentList(collectionGroup.getItems(), null);
@@ -255,16 +255,16 @@ public class CollectionGroupBuilder implements Serializable {
                     // custom addLineToCollection js call will validate these fields manually on an add
                     Control control = ((InputField) f).getControl();
                     if (control != null) {
-                        control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
+                        control.addStyleClass(collectionGroup.getBaseId() + "-addField");
                         control.addStyleClass("ignoreValid");
                     }
                     // add to index
                     view.getViewIndex().indexComponent(f);
                     // add to initial component state map - set the factory id to null to allow that
-                    String factoryId = f.getFactoryId();
-                    f.setFactoryId(null);
+                    String factoryId = f.getBaseId();
+                    f.setBaseId(null);
                     view.getViewIndex().addInitialComponentStateIfNeeded(f);
-                    f.setFactoryId(factoryId);
+                    f.setBaseId(factoryId);
                 }
             }
 
@@ -272,7 +272,7 @@ public class CollectionGroupBuilder implements Serializable {
             for (Action action : actions) {
                 if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE) && (lineFields
                         .size() > 0)) {
-                    action.setFocusOnAfterSubmit(lineFields.get(0).getId());
+                    action.setFocusOnIdAfterSubmit(lineFields.get(0).getId());
                 }
             }
         } else {
@@ -651,7 +651,7 @@ public class CollectionGroupBuilder implements Serializable {
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
-        List<Action> lineActions = ComponentUtils.copyComponentList(collectionGroup.getActions(), lineSuffix);
+        List<Action> lineActions = ComponentUtils.copyComponentList(collectionGroup.getLineActions(), lineSuffix);
 
 		for (Action action : lineActions) {
 			action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
@@ -700,7 +700,7 @@ public class CollectionGroupBuilder implements Serializable {
 			action.setJumpToIdAfterSubmit(collectionGroup.getId());
 			action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
-            String baseId = collectionGroup.getFactoryId();
+            String baseId = collectionGroup.getBaseId();
             if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }

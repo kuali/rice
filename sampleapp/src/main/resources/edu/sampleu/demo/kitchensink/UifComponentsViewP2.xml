@@ -152,7 +152,7 @@
         <bean parent="Uif-ImageField" p:label="Image field with alt text" p:altText="pdf image" p:title="pdf image"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png"/>
         <bean parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming" p:title="computer programming"
-              p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:styleClasses="kr-photo"
+              p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:cssClasses="kr-photo"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
       </list>
     </property>
@@ -171,10 +171,10 @@
       <list>
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');"/>
 
-        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField image right" p:actionImageLocation="RIGHT"
+        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
               p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
                   p:altText="Search"/>
           </property>
         </bean>
@@ -182,52 +182,62 @@
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField image left (default)"
               p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
                   p:altText="Search"/>
           </property>
         </bean>
 
         <bean parent="Uif-ActionImage" p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
                   p:altText="Action Image demonstration"/>
           </property>
         </bean>
 
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="button" p:clientSideJs="alert('You clicked a button');"/>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image BOTTOM" p:actionImagePlacement="BOTTOM"
               p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image TOP" p:actionImageLocation="TOP"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image TOP" p:actionImagePlacement="TOP"
               p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image LEFT" p:actionImageLocation="LEFT"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image LEFT" p:actionImagePlacement="LEFT"
               p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image RIGHT" p:actionImageLocation="RIGHT"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image RIGHT" p:actionImagePlacement="RIGHT"
               p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
 
         <bean parent="Uif-PrimaryActionButton" p:clientSideJs="alert('You clicked a button');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
                   p:altText="Image Only button"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button" p:methodToCall="foo" p:disabled="true"/>
+
+        <bean parent="Uif-ActionField" p:methodToCall="foo" p:label="Action Field">
+          <property name="actionImage">
+            <bean parent="Uif-Image"
+                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+                  p:altText="Action Field"/>
           </property>
         </bean>
       </list>
@@ -243,10 +253,10 @@
     <property name="headerText" value="Link Fields"/>
     <property name="items">
       <list>
-        <bean parent="Uif-LinkField" p:linkLabel="Kuali Website"
-              p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links"/>
+        <bean parent="Uif-LinkField" p:linkText="Kuali Website"
+              p:href="http://www.kuali.org" p:label="LinkField is used for href links"/>
 
-        <bean parent="Uif-LinkGroup" p:title="LinkGroup"
+        <bean parent="Uif-LinkGroup" p:headerText="LinkGroup"
               p:instructionalText="LinkGroup with | delimiter and [] begin and end delimiter"
               p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
           <property name="items">
@@ -309,16 +319,16 @@
                           <list>
                             <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 1"
-                                  p:fieldLabel.styleClasses="labelTop"/>
+                                  p:fieldLabel.cssClasses="labelTop"/>
                             <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 2"
-                                  p:fieldLabel.styleClasses="labelTop"/>
+                                  p:fieldLabel.cssClasses="labelTop"/>
                             <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 3"
-                                  p:fieldLabel.styleClasses="labelTop"/>
+                                  p:fieldLabel.cssClasses="labelTop"/>
                             <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
                                   p:required="true" p:labelPlacement="TOP" p:instructionalText="instructions 4"
-                                  p:fieldLabel.styleClasses="labelTop"/>
+                                  p:fieldLabel.cssClasses="labelTop"/>
                           </list>
                         </property>
                       </bean>
@@ -337,15 +347,15 @@
           <property name="items">
             <list>
               <bean parent="Uif-Message" p:messageText="Box 1"
-                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
               <bean parent="Uif-Message" p:messageText="Box 2"
-                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
               <bean parent="Uif-Message" p:messageText="Box 3"
-                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
               <bean parent="Uif-Message" p:messageText="Box 4"
-                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
               <bean parent="Uif-Message" p:messageText="Box 5"
-                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+                    p:cssClasses="fl-font-size-150,fl-input-outline"/>
             </list>
           </property>
         </bean>

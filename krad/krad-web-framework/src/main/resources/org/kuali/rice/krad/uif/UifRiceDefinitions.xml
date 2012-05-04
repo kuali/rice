@@ -38,7 +38,7 @@
   <bean id="Uif-KimPersonControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.UserControl"
         scope="prototype"
         parent="Uif-SmallTextControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-kimPersonControl</value>
       </list>
@@ -49,7 +49,7 @@
   <bean id="Uif-KimGroupControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.GroupControl"
         scope="prototype"
         parent="Uif-SmallTextControl">
-    <property name="styleClasses">
+    <property name="cssClasses">
       <list merge="true">
         <value>uif-kimGroupControl</value>
       </list>

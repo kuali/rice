@@ -38,7 +38,7 @@ public class ComponentUtilsTest {
         component = new InputField();
         componentId = "field1";
         component.setId(componentId);
-        component.setFactoryId(componentId);
+        component.setBaseId(componentId);
     }
     @Test
     /**
@@ -60,11 +60,11 @@ public class ComponentUtilsTest {
      */
     public void testUpdateFactoryIdWithSuffix() {
         ComponentUtils.updateFactoryIdWithSuffix(component, null);
-        assertTrue(component.getFactoryId().equalsIgnoreCase(componentId));
+        assertTrue(component.getBaseId().equalsIgnoreCase(componentId));
 
         String suffix = "_field";
         ComponentUtils.updateFactoryIdWithSuffix(component, suffix);
-        assertEquals(componentId + suffix, component.getFactoryId());
+        assertEquals(componentId + suffix, component.getBaseId());
 
     }
 }

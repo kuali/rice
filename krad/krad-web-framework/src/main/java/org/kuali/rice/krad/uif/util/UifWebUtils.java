@@ -173,7 +173,7 @@ public class UifWebUtils {
             getViewService().buildView(view, form, parameterMap);
 
             // set dirty flag
-            form.setValidateDirty(view.isValidateDirty());
+            form.setValidateDirty(view.isApplyDirtyCheck());
         }
     }
 

@@ -37,7 +37,7 @@ public class CollectionLayoutUtils {
     public static void prepareSelectFieldForLine(Field selectField, CollectionGroup collectionGroup, String lineBindingPath,
             Object line) {
         // if select property name set use as property name for select field
-        String selectPropertyName = collectionGroup.getSelectPropertyName();
+        String selectPropertyName = collectionGroup.getLineSelectPropertyName();
         if (StringUtils.isNotBlank(selectPropertyName)) {
             // if select property contains form prefix, will bind to form and not each line
             if (selectPropertyName.startsWith(UifConstants.NO_BIND_ADJUST_PREFIX)) {

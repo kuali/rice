@@ -18,5 +18,5 @@
 <!-- global variables for scripting are setup here --> 
 <script type="text/javascript">
     var jsContextPath = "${pageContext.request.contextPath}";
-    var dialogMode = ${KualiForm.view.dialogMode};
+    var dialogMode = ${KualiForm.view.renderedInLightBox};
 </script>

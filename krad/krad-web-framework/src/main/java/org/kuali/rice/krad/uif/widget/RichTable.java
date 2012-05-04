@@ -150,7 +150,7 @@ public class RichTable extends WidgetBase {
             }
 
             // skip select field if enabled
-            if (collectionGroup.isRenderSelectField()) {
+            if (collectionGroup.isIncludeLineSelectionField()) {
                 String colOptions = constructTableColumnOptions(false, null, null);
                 tableToolsColumnOptions.append(colOptions + " , ");
             }

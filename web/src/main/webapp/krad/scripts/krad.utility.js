@@ -648,3 +648,12 @@ function openHelpWindow(url) {
     myWindow.close()
     myWindow = window.open(windowUrl, windowName, windowOptions);
 }
+
+/**
+ * Uppercases the current value for the control with the given id
+ *
+ * @param controlId - id for the control whose value should be uppercased
+ */
+function uppercaseValue(controlId) {
+    jq("#" + controlId).css('text-transform', 'uppercase');
+}

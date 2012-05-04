@@ -124,7 +124,7 @@
 
   <%-- transform all text on attribute field to uppercase --%>
   <c:if test="${!readOnly && field.performUppercase}">
-    <krad:script value="jq('#${field.control.id}').css('text-transform', 'uppercase');"/>
+    <krad:script value="uppercaseValue('${field.control.id}');"/>
   </c:if>
 </krad:div>
 

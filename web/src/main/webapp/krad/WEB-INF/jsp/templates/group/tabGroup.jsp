@@ -27,7 +27,7 @@
     <ul id="${group.id}_tabList">
       <c:forEach items="${group.items}" var="item">
         <li data-tabfor="${item.id}">
-          <a  href="#${item.id}_tab">${item.title}</a>
+          <a  href="#${item.id}_tab">${item.header.headerText}</a>
         </li>
       </c:forEach>
     </ul>

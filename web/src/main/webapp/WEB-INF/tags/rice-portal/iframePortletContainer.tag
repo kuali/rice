@@ -79,11 +79,14 @@
       var newHeight = thisIframe.contents().find("body").outerHeight();
       var newWidth = jQuery("#iframe_portlet_container_div").width() - 15;
       thisIframe.contents().find("body").attr("style", "overflow-x: auto; padding-right: 20px;");
-      if (newHeight > 100 && (newHeight != previousHeight || newWidth != previousWidth)) {
-        previousHeight = newHeight;
-        previousWidth = newWidth;
-        thisIframe.height(newHeight);
-        thisIframe.width(newWidth);
+      var skipResize = thisIframe.contents().find("#Uif-Application").attr("data-skipResize");
+      if(skipResize == undefined || skipResize == "false"){
+        if (newHeight > 100 && (newHeight != previousHeight || newWidth != previousWidth)) {
+          previousHeight = newHeight;
+          previousWidth = newWidth;
+          thisIframe.height(newHeight);
+          thisIframe.width(newWidth);
+        }
       }
     }
 

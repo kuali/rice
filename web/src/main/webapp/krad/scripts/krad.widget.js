@@ -438,15 +438,20 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         jq("#" + headerId + " > :header, #" + headerId + " > label").html(headerText);
         jq("#" + headerId + " > :header, #" + headerId + " > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
+        var animationFinishedCallback = function(){
+            jQuery("#Uif-Application").attr("data-skipResize", false);
+        };
         // perform slide and switch image
         if (defaultOpen) {
             jq("#" + groupToggleLinkId).toggle(
                     function() {
-                        jq("#" + groupAccordionSpanId).slideUp(animationSpeed);
+                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jq("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
                         jq("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }, function() {
-                        jq("#" + groupAccordionSpanId).slideDown(animationSpeed);
+                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jq("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
                         jq("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
                     }
@@ -455,11 +460,14 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         else {
             jq("#" + groupToggleLinkId).toggle(
                     function() {
-                        jq("#" + groupAccordionSpanId).slideDown(animationSpeed);
+                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jq("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
                         jq("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
+
                     }, function() {
-                        jq("#" + groupAccordionSpanId).slideUp(animationSpeed);
+                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jq("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
                         jq("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }

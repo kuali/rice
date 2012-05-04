@@ -110,13 +110,13 @@ public class GroupValidationMessages extends ValidationMessages {
                 + ScriptUtils.convertStringListToJsArray(fieldOrder)
                 + ","
                 + "serverErrors:"
-                + ScriptUtils.convertStringListToJsArray(this.getErrors())
+                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors()))
                 + ","
                 + "serverWarnings:"
-                + ScriptUtils.convertStringListToJsArray(this.getWarnings())
+                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings()))
                 + ","
                 + "serverInfo:"
-                + ScriptUtils.convertStringListToJsArray(this.getInfos())
+                + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
                 + "}");
     }
 

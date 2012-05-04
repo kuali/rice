@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -175,5 +177,42 @@ public class ScriptUtils {
         array = StringUtils.removeEnd(array, ",");
         array = array + "]";
         return array;
+    }
+
+    /**
+     * escapes a string using {@link org.apache.commons.lang.StringEscapeUtils#escapeHtml(String)}
+     *
+     * <p>The apostrophe character is included as <code>StringEscapeUtils#escapeHtml(String)</code>
+     * does not consider it a legal entity. </p>
+     *
+     * @param string - the string to be escaped
+     * @return - the escaped string - useful for embedding in server side generated JS scripts
+     */
+    public static String escapeHtml(String string) {
+        if (string == null) {
+            return null;
+        }  else {
+            return StringEscapeUtils.escapeHtml(string).replace("'", "&apos;");
+        }
+    }
+
+    /**
+     * escape an array of strings
+     *
+     * @param strings - an array of strings to escape
+     * @return - the array, with the strings escaped
+     */
+    public static List<String> escapeHtml(List<String> strings) {
+       if (strings == null) {
+           return null;
+       } else if (strings.isEmpty()) {
+           return strings;
+       } else {
+           List<String> result = new ArrayList<String>(strings.size());
+           for (String string: strings) {
+               result.add(escapeHtml(string));
+           }
+           return result;
+       }
     }
 }

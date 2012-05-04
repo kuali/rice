@@ -39,10 +39,10 @@ public class FieldValidationMessages extends ValidationMessages{
         parent.addDataAttribute("validationMessages", "{"
             + "displayMessages:" + this.isDisplayMessages() + ","
             + "useTooltip:"+ useTooltip + ","
-            + "serverErrors:" + ScriptUtils.convertStringListToJsArray(this.getErrors()) + ","
-            + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(this.getWarnings()) + ","
-            + "serverInfo:" + ScriptUtils.convertStringListToJsArray(this.getInfos())
-            + "}");    
+            + "serverErrors:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors())) + ","
+            + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings())) + ","
+            + "serverInfo:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
+                + "}");
     }
 
 

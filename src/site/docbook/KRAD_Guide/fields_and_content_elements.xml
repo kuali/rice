@@ -320,11 +320,11 @@ public class Book {
             default size of ‘30’, and also includes the style classes ‘uif-control’ and ‘uif-textControl’. Finally 
             the framework set a tabindex for us (this happens to be the first field on the page) and added aria markup 
             for accessibility. Don’t worry if this all doesn’t make sense now, we’ll see all these properties many more times!</para>
-            <note>
+            <tip>
                 <title>Data and Input Fields</title>
                 <para>Whenever this training manual refers to data field, the same will also apply to 
                     input fields (by inheritance). However the reverse is not always true. </para>
-            </note>
+            </tip>
         </section>
         <section>
             <title>Default Values</title>
@@ -348,31 +348,943 @@ public class Book {
             <programlisting>bookForm.setBookYear(“2012”);</programlisting>
             <para>The default value given must be convertible to the property type without a custom
                 property editor. </para>
-            <note>
+            <tip>
                 <title>Default Type Conversion</title>
                 <para>Spring uses PropertyEditor classes when converting a configured value in the XML 
                     to the type for the property being populated. Furthermore, these are used when formatting 
                     the value between the user interface and a custom editor can be specified on the data field. 
                     As of Rice 2.0, any custom editor is not used to apply the default value. This 
                     is being looked at for a potential enhancement in 2.2.</para>
-            </note>
+            </tip>
             <para>A very powerful feature we will be looking at later on in this training manual is
                 the Spring Expression Language (EL). KRAD allows you to use expressions for most
                 component properties, including the defaultValue. There are many things you can do
                 with EL, but to give you a taste here are a couple:</para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”@{2010 + 2}”/&gt;</programlisting>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValue=”@{bookId &lt; 1000 ? 2011 : 2012}”/&gt;</programlisting>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookTitle” p:defaultValue=”New Book for @{bookYear}”/&gt;</programlisting>
+            <para>The second way to configure a default value is by setting the <emphasis
+                    role="bold">defaultValueFinderClass</emphasis> property. This is the full class
+                name for the class that implements the <emphasis role="bold"
+                    >org.kuali.rice.krad.valuefinder.ValueFinder</emphasis> interface. This
+                interface is very simple with just the one method:</para>
+            <programlisting>public String getValue();</programlisting>
+            <para>Implementations of this can be made to determine the default value in whatever
+                manner necessary. Previous to KRAD, this was helpful for retrieving the default
+                value from a system parameter. However, with KRAD EL, you can do this with the
+                defaultValue property using the <emphasis role="bold">getParm</emphasis>
+                function.</para>
+            <para>Let’s create a default value finder class that calls a service to retrieve the
+                value. Our finder class would be setup like:</para>
+            <programlisting>
+package edu.myedu.sample;
+public class BookCopyrightYearValueFinder implements ValueFinder {
+  public String getValue() {
+     return getBookService().getDefaultCopyrightYear();
+  }
+
+  Protected BookService getBookService() {
+     ServiceLocator.getBookService();
+  }
+}
+            </programlisting>
+            <para>We would then configure the data field to use our value finder class like
+                this:</para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookYear” p:defaultValueFinderClass=”edu.myedu.sample.BookCopyrightYearValueFinder”/&gt;</programlisting>
+            <para>One additional note that should be made regarding default values is for collection
+                group fields. Data or Input fields declared in these groups behave differently from
+                the standard group, in that for each collection line that exists in the model, a new
+                set of fields is created. When configuring a default value (by either mechanism) for
+                a collection field, the value is picked up each time a new line is created (as a
+                result of an add line request). Thus it is a default value for the collection line. </para>
+        </section>
+        <section>
+            <title>Alternate and Additional Display Properties</title>
+            <para>In certain situations, it is necessary to change the display of a data or input
+                field when it is read only. For example, we might want to display additional
+                information along with the value of the property, or we might want to display a
+                different property value. This can be accomplished using the alternate and
+                additional display properties that are available on data field (and therefore input
+                field through inheritance).</para>
+            <para>As is the case throughout much of the UIF, there is more than one way to
+                accomplish this. The first method we can use is to directly configure the alternate
+                or additional value that should be displayed. This is done using the
+                alternateDisplayValue and additionalDisplayValue properties respectively. For
+                example, instead of display the value for the bookId property, we want to display
+                the string ‘Id Val’:</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:alternateDisplayValue=”Id Val”/&gt;</programlisting>
+            <para>This would result in the text ‘Id Val’ being displayed (along with the field
+                label).</para>
+            <para>Now, we decide we just want to append the ‘Id Val’ string the actual value of the
+                bookId property, our configuration would then be:</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:additionalDisplayValue=”Id Val”/&gt;</programlisting>
+            <para>Assuming the bookId is ‘3’, this would result in the text ‘3 *-* Id Val’ being
+                displayed as shown below.</para>
+            <figure>
+                    <title>Data Field Label</title>
+                    <mediaobject>
+                       <imageobject>
+                        <imagedata fileref="images/fixedDelimiter.png"/>
+                       </imageobject>
+                    </mediaobject>
+            </figure>
+            <note>
+                <title>*-*</title>
+                <para>Where did the *-* come from? KRAD inserts this fixed delimiter between 
+                    the property value and the additional display value. Currently this can only 
+                    be changed by modifying the template; however this will be customizable in the
+                    future.
+                </para>
+            </note>
+            <para>This has limited benefits by itself, but as mentioned earlier, KRAD allows us to
+                use expressions to set a value. With EL we can display one or more other property
+                values, perform operations and functions, and mix in static text! </para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:additionalDisplayValue=”with title @{bookTitle}”/&gt;</programlisting>
+            <para>Again assuming the bookId is ‘3’ and bookTitle is ‘Dogs and Cats’, this would
+                result in the text ‘3 *-* with title Dogs and Cats’ being displayed.</para>
+            <para>Often, there is a need to display another property value as the alternate or
+                additional display value. For example, when we have an id or code field (that
+                generally doesn’t have any meaning to the user), it is preferred to display the name
+                instead of the code or in addition to. For these cases, you can simply configure the
+                alternateDisplayPropertyName or additionalDisplayPropertyName properties with the
+                name of the property whose value should be used:</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:alternateDisplayPropertyName=”bookTitle”/&gt;</programlisting>
+            <para>Assuming bookTitle is ‘Dogs and Cats’, this would result in the text ‘Dogs and
+                Cats’.</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:additionalDisplayPropertyName =”bookTitle”/&gt;</programlisting>
+            <para>Assuming bookId is ‘3’ and bookTitle is ‘Dogs and Cats’, this would result in the text ‘3 *-* Dogs and Cats’.</para>
+            <tip><title>Alternate/Additional Display and Input Field</title>
+                <para>The alternate and additional display values are only used 
+                when the field is read-only. But input field allows the user to edit the value so does it make sense to 
+                configure these properties for an input field? The answer is yes! An input field has a readOnly property 
+                (inherited form ComponentBase) which dictates whether the control is rendered. So there might be conditions 
+                that set this property to true, causing the control not to render and the value.</para></tip>
+        </section>
+        <section>
+            <title>Recap</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>The Data Field and Input Field components are used to perform data
+                            IO</para>
+                    </listitem>
+                    <listitem>
+                        <para>These components are used within an HTML form, corresponding to the
+                            KRAD form view component</para>
+                    </listitem>
+                    <listitem>
+                        <para>Data and input fields are associated with a property on the model
+                            object (object providing the data)</para>
+                    </listitem>
+                    <listitem>
+                        <para>A data field is used to give a read-only display of a property
+                            value</para>
+                    </listitem>
+                    <listitem>
+                        <para>A data field is created with a bean whose parent is
+                            ‘Uif-DataField’</para>
+                    </listitem>
+                    <listitem>
+                        <para>The model property associated with the data field is specified using
+                            the <emphasis role="bold">propertyName</emphasis> property</para>
+                    </listitem>
+                    <listitem>
+                        <para>The property name can refer to a property on a nested object using the
+                            dot notation</para>
+                    </listitem>
+                    <listitem>
+                        <para>An input field adds edit capability for a property’s value</para>
+                    </listitem>
+                    <listitem>
+                        <para>A input field is created with a bean whose parent is
+                            ‘Uif-InputField’</para>
+                    </listitem>
+                    <listitem>
+                        <para>The input field contains a control element component which is used to
+                            set the  property value (for example, a text control)</para>
+                    </listitem>
+                    <listitem>
+                        <para>We can set a default value with the <emphasis role="bold"
+                                >defaultValue</emphasis> property. A static value can be given or an
+                            expression which uses data from the model or a provided variable</para>
+                    </listitem>
+                    <listitem>
+                        <para>Default values can also be set by creating a class that implements the
+                                <emphasis role="bold">ValueFinder</emphasis> interface</para>
+                    </listitem>
+                    <listitem>
+                        <para>The value finder class is configured for use with the field using the
+                                <emphasis role="bold">defaultValueFinderClass</emphasis>
+                            property</para>
+                    </listitem>
+                    <listitem>
+                        <para>Default values for fields with a collection group are used to
+                            initialize properties on new lines for the collection (after the add
+                            action has been taken)</para>
+                    </listitem>
+                    <listitem>
+                        <para>In some cases when the state is read-only we might need to display the
+                            value for another property instead of the field’s property, or display
+                            the value in addition to. this is done by using the <emphasis
+                                role="bold">alternateDisplayPropertyName</emphasis> and <emphasis
+                                role="bold">additionalDisplayPropertyName</emphasis>
+                            properties</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </section>
     </section>
     <section>
         <title>Data Binding </title>
-        <para></para>
+        <para>The purpose for our data and input fields is to perform IO between the user interface
+            and our application model (or domain objects). The population of data between these two
+            layers is known as the data binding process. </para>
+        <para>The binding process is mostly handled for us with use of the Spring MVC framework (in 
+            previous versions on Rice with the KNS this was handled by the Struts framework). In the 
+            majority of cases, all we need to do is correctly point to our property in the model. 
+            Sounds easy, right? In cases such as our BookForm example, it is. However, model objects 
+            (also called form objects) can contain nested data objects that go down several levels and 
+            include collection structures such as List and Map. In order to correctly push and pull the value, 
+            Spring needs to know the full ‘path’ of the property relative to the model.</para>
+        <para>To understand this better, let’s take a look at how Spring performs the binding process. First, 
+            let’s take the outgoing direction (data from model outputted to the page). We know from the 
+            previous sections we must specify a propertyName for the data and input fields. In the case of the 
+            input field, an input HTML element will be generated within the input field template. However, this 
+            is not generated directly but instead uses a helper tag provided by the Spring framework:</para>
+        <programlisting>&lt;form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" ... &gt;</programlisting>
+        <para>Notice the path attribute (disregard the value for now). This is an attribute of the
+            Spring input tag that specifies the path to the property this input should be associated
+            with. Spring will do two things with this information. First, it will retrieve the value
+            for that property from the model and set as the value attribute for the input tag. Next,
+            it will use the path given as the value for the name attribute (if you are wondering the
+            id attribute just gets passed through to the id attribute for the HTML tag). Assuming we
+            had a property path of ‘bookId’ with value ‘3’, the resulting HTML input would be as
+            follows:</para>
+        <programlisting>&lt;input id=”u3” name=”bookId” value=”3” ... &gt;</programlisting>
+        <para>The value of ‘3’ will then appear inside the rendered text box. All other controls
+            types work in a similar manner.</para>
+        <para>In the case of a data field or when the input field is read only, the Spring bind tag
+            is used. This tells Spring to pull the value for the given property and stick the value
+            into a JSP variable (page or request scope). We can then write out that value to stream
+            which result in the static text being display.</para>
+        <programlisting>
+&lt;s:bind path="${field.bindingInfo.bindingPath}"&gt;${status.value}&lt;/s:bind&gt;${status.value}    
+        </programlisting>
+        <tip>
+            <title>Confused by the JSP Syntax?</title>
+            <para>If you didn’t completely follow the previous JSP examples, there are a couple of
+                things that should help. One any tag that starts with '&lt;s' or '&lt;form': is a Spring tag that was bound to the ‘s’ and ‘form’ 
+                namespaces. At the beginning of each template file an include is to done to a JSP that setups the common tag 
+                libraries for use. This looks like the following:</para>
+            <programlisting>&lt;%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%&gt;</programlisting>
+            <para>Within tldHeader.jsp we then have the following line:</para>
+            <programlisting>&lt;%@ taglib uri="http://www.springframework.org/tags" prefix="s" %&gt;</programlisting>
+            <programlisting>&lt;%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%&gt;</programlisting>
+            <para>This allows the Spring tags to be used with the ‘s’ or ‘form’ prefix. A full
+                listing of the Spring tags can be found here: </para>
+            <para><link
+                    xlink:href="http://static.springsource.org/spring/docs/2.0.x/reference/spring.tld.html"
+                    >http://static.springsource.org/spring/docs/2.0.x/reference/spring.tld.html</link></para>
+            <para><link
+                    xlink:href="http://static.springsource.org/spring/docs/2.0.x/reference/spring-form.tld.html"
+                    >http://static.springsource.org/spring/docs/2.0.x/reference/spring-form.tld.html</link></para>
+            <para>The second thing to be aware of are the ‘${ }’ expressions. These are JSTL (Java
+                Standard Tag Library) expression that allow use to evaluate expressions similar to
+                the use of scriptlets. JSTL also includes a set of tags that are bound to the ‘c’
+                namespace. More information on JSTL can be found at the following website:</para>
+            <para><link xlink:href="http://java.sun.com/products/jsp/jstl/reference/docs/index.html"
+                    >http://java.sun.com/products/jsp/jstl/reference/docs/index.html</link></para>
+        </tip>
+        <para>Now let’s look at the incoming direction. This is data contained in the HTML form
+            (with the controls) that we wish to populate onto the model. Recall that when we used
+            the Spring tag, our property path was used for the name attribute value. When the page
+            is submitted, the browser will use the name attribute as the corresponding name of the
+            request parameter. The request parameter value will then be the value that was set on
+            the control. </para>
+        <para>On the server, Spring will then iterate through the request parameter map and attempt
+            to find a property on the model that matches the request parameter key. If a match is
+            made, the corresponding request parameter value is set as the value of the property.
+            That’s it! Our binding is complete. Therefore, as long as we have configured the
+            property name to match a property on our model (nested or not), Spring will take care of
+            the rest.</para>
+        <section>
+            <title>Property Editors</title>
+            <para>When binding the data between the JSP page and the model, Spring will again invoke
+                registered Property Editors to perform the necessary type conversion. All values
+                within the interface are treated as Strings. When going from or to a property type,
+                other than the primitive types or String type, a property editor must be
+                used.</para>
+            <para>Spring provides out-of-the-box property editors for common Java types that are
+                registered by default (registration is the process of configuring the Spring
+                container to use a property editor). Also, some optional property editor
+                implementations are provided that can be used. These include:
+                ByteArrayPropertyEditor, ClassEditor, CustomBooleanEditor, CustomCollectionEditor,
+                CustomDateEditor, CustomNumberEditor, FileEditor, InputStreamEditor, LocaleEditor,
+                PatternEditor, PropertiesEditor, StringTrimmerEditor, and URLEditor.</para>
+            <para>In addition to the provided Spring property editors, KRAD provides a set that can
+                be used with the custom Kuali types (such as KualiDecimal and KualiInteger) and
+                other common formatting practices. These include:</para>
+            <para><emphasis role="bold">UifBooleanEditor</emphasis> – Formats any of the strings
+                "/true/yes/y/on/1/" to the Boolean true, and any of the strings "/false/no/n/off/0/"
+                to Boolean false. Conversely, the Boolean true is formatted as the string “true” and
+                the Boolean false is formatted as the string “false”. </para>
+            <para><emphasis role="bold">UifCurrencyEditor</emphasis> – Used for converting between a
+                KualiDecimal and a string. String is formatted uses commas and to two decimals
+                places.</para>
+            <para><emphasis role="bold">UifDateEditor</emphasis> – Use for converting between a
+                java.util.Date and a string. The Rice <emphasis role="bold"
+                    >DateTimeService</emphasis> is used to perform the string formatting and for
+                parsing the string to create a date object.</para>
+            <para><emphasis role="bold">UifKualiIntegerEditor</emphasis> – Used for converting
+                between a KualiInteger and a string. String is formatted uses commas and to zero
+                decimals places.</para>
+            <para><emphasis role="bold">UifPercentageEditor</emphasis> – Used for converting between
+                a KualiPercent and a string. Formatting is similar to UifCurrencyEditor.</para>
+            <para><emphasis role="bold">UifTimestampEditor</emphasis> – Used for converting between
+                a java.sql.Timestamp and a string. The Rice DateTimeService is used to perform the
+                string formatting and Timestamp creation.</para>
+            <para>These property editors, along with Spring editors, are registered with Spring by
+                property type. This means whenever Spring encounters the associated type for the
+                property being bound to, it will use the registered property editor. For example,
+                the UifCurrencyEditor is registered with the KualiDecimal type. Thus, when binding
+                to a property with type KualiDecimal, the UifCurrencyEditor will be used. </para>
+            <para>If needed, KRAD allows you to also specify a property editor to use for a data field. 
+                This might be needed to support a custom data type or to perform custom formatting 
+                (formatting refers to the process of rendering a String from an object). To create a 
+                new property editor, a class must be created that implements the PropertyEditor interface. 
+                The easiest way to do this is to extend the Spring provided class 
+                java.beans.PropertyEditorSupport, and then override the getAsText() and setAsText(String 
+                text) methods.</para>
+            <programlisting>
+package edu.sampleu.demo.kitchensink;
+public class UITestPropertyEditor extends PropertyEditorSupport implements Serializable {
+    private static final long serialVersionUID = -4113846709722954737L;
+
+    /**
+     * @see java.beans.PropertyEditorSupport#getAsText()
+     */
+    @Override
+    public String getAsText() {
+        Object obj = this.getValue();
+
+        if (obj == null) {
+            return null;
+        }
+
+        String displayValue = obj.toString();
+        if (displayValue.length() > 3) {
+            displayValue = StringUtils.substring(displayValue, 0, 3) + "-" + StringUtils.substring(displayValue, 3);
+        }
+
+        return displayValue;
+    }
+
+    /**
+     * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
+     */
+    @Override
+    public void setAsText(String text) {
+        String value = text;
+        if (StringUtils.contains(value, "-")) {
+            value = StringUtils.replaceOnce(value, "-", "");
+        }
+
+        this.setValue(value);
+    }
+}
+            </programlisting>
+            <para>The two methods implemented here correspond to the two directions: outgoing to the page (to string), 
+                and incoming to the model (to object). The getAsText() method is invoked to build the string that 
+                should be displayed. We can use the getValue() method provided by the base class to get current object, 
+                then build the string and return. The setAsText(String text) method is used to build the object from 
+                the String. After we have constructed the object, we can call the setValue method to set the object 
+                that will be used for the model property value.</para>
+            <para>Once we have the property editor class created, we can configure it to be used
+                with our data field by specifying the full class name in the propertyEditor
+                property:</para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”bookId” p:propertyEditor=”edu.sampleu.demo.kitchensink.UITestPropertyEditor”/&gt;</programlisting>
+            <para>Likewise the property editor can be specified for an input field:</para>
+            <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”bookId” p:propertyEditor=”edu.sampleu.demo.kitchensink.UITestPropertyEditor”/&gt;</programlisting>
+        </section>
+        <section>
+            <title>Complex Paths</title>
+            <para>So far, we have used examples where the property was either directly on the model
+                (form) object or one level down. Now let’s look at more complex paths for binding
+                that include many levels of nesting and collection properties. </para>
+            <para>Let’s assume we have the following objects:</para>
+            <programlisting>
+public class TestForm {
+  private String field1;
+  private Test1Object test1Object;
+}
+
+public class Test1Object {
+  private String t1Field;
+  private Test2Object test2Object;
+  private List&lt;Test2Object&gt; test2List;
+}
+
+public class Test2Object {
+  private String t2Field;
+  private Map&lt;String, String&gt; t2Map;
+}
+                
+            </programlisting>
+            <para>Some examples paths for these properties would be:</para>
+            <programlisting>Field1 on TestForm – “field1”</programlisting>
+            <para>T1Field on Test1Object = “test1Object.t1Field” (each time we go into a nested
+                object, we use a dot)</para>
+            <programlisting>T2Field on Test2Object – “test1Object.test2Object.t2Field”</programlisting>
+            <para>T2Field on Test1List – “test1Object.test2List[0].t2Field”,
+                “test1Object.test2List[1].t2Field”, “test1Object.test2List[2].t2Field”, … (the path
+                for a collection field must specify the item index using the brackets [] and the
+                index within the brackets).</para>
+            <para>T2Map on Test2Object – “test1Object.test2Object.t2Map[‘key1’]”,
+                “test1Object.test2Object.t2Map[‘key2’]” (for binding to a map we again use the
+                brackets with the map key within the brackets and quoted).</para>
+            <para>We can continue forming paths for objects that are nested at deeper levels by
+                adding additional dots to the path. In this way, we can form the path and set as the
+                propertyName value for any model property:</para>
+            <para>&lt;bean parent=”Uif-DataField”
+                p:propertyName=”test1Object.test2Object.t2Field”&gt;</para>
+            <para>Now suppose Test2Object had a large set of fields we wanted to display, we could
+                configure all of them just as the previous example:</para>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”test1Object.test2Object.t2Field1”&gt;</programlisting>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”test1Object.test2Object.t2Field2”&gt;</programlisting>
+            <programlisting>&lt;bean parent=”Uif-DataField” p:propertyName=”test1Object.test2Object.t2Field3”&gt;</programlisting>
+            <para>This is, however, very tedious and repetitive. Luckily, the UIF provides a class
+                named <emphasis role="bold">BindingInfo</emphasis> for which a property exists on
+                data field. This class separates the path into three parts. The first is called the
+                binding object path. This is the path to a data object on the model. The second is
+                called the binding prefix, and the third part is the binding name.</para>
+            <para>The binding name is usually the same as the given property name and will be synced if not set. The binding prefix is 
+                then a prefix to add before the binding name (property name). Finally, the full path is formed by joining the prefix 
+                and name to the object path. This is known as the binding path and is invoked by the templates to set the Spring path 
+                attribute. Please note the binding prefix is optional and not always beneficial to use.</para>
+            <para>Let’s breakdown the path ”test1Object.test2Object.t2Field1” from the previous
+                example. A good candidate for the object path is “test1Object.test2Object”. That
+                just leaves “t2Field1” so there is not really a need for a binding prefix.
+                Therefore, our configuration would be:</para>
+            <para>&lt;bean parent=”Uif-DataField”
+                p:bindingInfo.bindingObjectPath=”test1Object.test2Object”
+                p:propertyName=”t2Field1”&gt;</para>
+            <para>We could also configure out data field as follows:</para>
+            <para>&lt;bean parent=”Uif-DataField” p:bindingInfo.bindingObjectPath=”test1Object”
+                p:bindingInfo.bindByNamePrefix=”test2Object” p:propertyName=”t2Field1”&gt;</para>
+            <para>You might be wondering what the KRAD designers were thinking at this point. This
+                doesn’t seem to remove the repetition, and in fact, it is much more verbose! On an
+                individual field level, that is true. The benefit is that we can put multiple fields
+                which share similar paths together into a group. </para>
+            <para>We will learn all about the Group component in the next chapter, but two
+                properties that exist are fieldBindByNamePrefix and fieldBindingObjectPath. When one
+                or both of these properties are configured on the group, the value will be taken and
+                set on corresponding binding info property for each group field.</para>
+            <para>For example:</para>
+            <programlisting>
+&lt;bean parent=”Uif-VerticalBoxGroup” p:fieldBindingObjectPath=”test1Object.test2Object”&gt;
+    &lt;property name=”items”&gt;
+        &lt;list&gt;
+            &lt;bean parent=”Uif-DataField” p:propertyName=”t2Field1”&gt;
+            &lt;bean parent=”Uif-DataField” p:propertyName=”t2Field2”&gt;
+            &lt;bean parent=”Uif-DataField” p:propertyName=”t2Field3”&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+            <para>This will result in “test1Object.test2Object” being set as the
+                bindingInfo.bindingObjectPath for each of the three contained fields. Now that’s
+                better!</para>
+            <para> But KRAD goes one step further! We can also specify a default object binding path
+                for the entire view. This is done by setting the defaultBindingObjectPath property
+                on the View component. This will set the binding object path for all fields (and
+                collection groups) if not already set (we can override if necessary). This is very
+                useful in particular for the various view types provided. One example is the
+                MaintenanceView. This view targets the maintenance of a data object instance. This
+                data object instance is found in the model with path
+                ‘document.newMaintainableObject.dataObect’. Since typically all of these views do
+                are all data for a particular record to be edited, we just need to specify the
+                properties of the data object we want to present. The maintenance view makes this
+                easy for us by setting “document.newMaintainableObject.dataObject” as the
+                defaultBindingObjectPath. Therefore when specifying the view fields we just need to
+                specify the property name relative to the data object: </para>
+            <programlisting>       
+&lt;bean parent="Uif-InputField" p:propertyName="number"/&gt;
+&lt;bean parent="Uif-InputField" p:propertyName="name"/&gt;
+...</programlisting>
+            <para>Which would result in binding paths:</para>
+            <programlisting>
+‘document.newMaintainableObject.dataObect.number 
+‘document.newMaintainableObject.dataObect.name’
+            </programlisting>
+            <tip>
+                <title>Bean Reuse</title>
+                <para>Separating out the object path or binding prefix also allows for more reuse.
+                    For example, when extending a group bean, it is a simple property change to
+                    modify the binding object path or prefix. However, if the object path and prefix
+                    is embedded on the property name for each field in the group, the child bean
+                    would need to override the entire items list and duplicate all the field
+                    information.</para>
+            </tip>
+            <para>The data and input field components implement the interface <emphasis role="bold"
+                    >org.kuali.rice.krad.uif.component.DataBinding</emphasis>. This indicates to the
+                framework that the component binds to the model and provides the binding info and
+                property name properties. The other component that implements this interface is the
+                CollectionGroup. A collection group is a group that iterates over a model collection
+                and presents fields for each line. Therefore, when configuring a collection group we
+                must point it to the property that holds the collection. This is done exactly the
+                same as for data fields, using the propertyName property and the bindingInfo
+                property. For example:</para>
+            <programlisting>&lt;bean parent=”Uif-TableCollectionGroup” p:propertyName=”mycollection” ... &gt;</programlisting>
+            <para>One thing to note is how the binding path for the fields within the collection
+                group is formed. These fields will automatically receive a binding prefix that is
+                the path for the collection line. This path includes the collection path plus the
+                line index: “mycollection[0]”, “mycollection[1]”. Therefore the fields specified
+                within the collection are relative to the line (data object for the collection).
+                This would be the same as setting the fieldBindByNamePrefix property on a standard
+                group component.</para>
+            <para>Finally, there are a couple other properties on the binding info class that are
+                helpful to know about. The first of these is the bindToMap property. This is
+                necessary when our property name (or binding name) is actually a Map key. Recall in
+                these cases we need to use the special bracket notation. When this property is true,
+                the binding path will be formed using the object path, binding prefix, then the
+                brackets with the binding name in quotes.</para>
+            <programlisting>
+&lt;bean parent=”Uif-DataField” p:bindingInfo.bindingObjectPath=”test1Object.test2Object” p:bindingInfo.bindByNamePrefix=”t2Map” p:bindingInfo.bindToMap=”true” p:propertyName=”key1”&gt;</programlisting>
+            <para>Would result in the following binding path:</para>
+            <para>“test1Object.test2Object.t2Map[‘key1’]”</para>
+            <para>Another useful property on binding info is the <emphasis role="bold"
+                    >bindToForm</emphasis> property. This is essentially an indicator to not add on
+                any binding object path (either from the view or a group). The binding prefix is
+                still added if specified.</para>
+            <para>For example:</para>
+            <programlisting>
+&lt;bean parent=”Uif-VerticalBoxGroup” p:fieldBindingObjectPath=”test1Object.test2Object”&gt;
+    &lt;property name=”items”&gt;
+        &lt;list&gt;
+            &lt;bean parent=”Uif-DataField” p:propertyName=”t2Field1”&gt;
+            &lt;bean parent=”Uif-DataField” p:propertyName=”field1” p:bindingInfo.bindToForm=”true”&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+            <para>The binding path for the first data field would be
+                “test1Object.test2Object.t2Field1”, but the binding path for the second data field
+                will only be “field1”, due to the bindToForm property being set to true.</para>
+        </section>
+        <section>
+            <title>Recap</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>The process of populating the model from an HTTP request and
+                            outputting values to the response from the model is referred to as data
+                            binding</para>
+                    </listitem>
+                    <listitem>
+                        <para>The Spring MVC framework takes performs the binding process </para>
+                    </listitem>
+                    <listitem>
+                        <para>For the incoming direction (request to model), Spring looks for
+                            request parameters that match a property name on the model (starting
+                            from the top object and using dot notation for nested objects)</para>
+                    </listitem>
+                    <listitem>
+                        <para>For the outgoing direction (model to response), we use the provided
+                            Spring JSP tags and specify the path attribute to the property whose
+                            value should be outputted</para>
+                    </listitem>
+                    <listitem>
+                        <para>The Spring tags in KRAD have the namespaces ‘s’ and ‘form’</para>
+                    </listitem>
+                    <listitem>
+                        <para>When a conversion between data types is needed (for example String to
+                            Date), Spring uses a <emphasis role="bold">PropertyEditor</emphasis>. 
+                            Spring comes with default property editors for basic Java types and
+                            additional editors that can be used as needed. In addition KRAD provides
+                            property editors which include:</para>
+                        <itemizedlist>
+                                <listitem>
+                                    <para>UifBooleanEditor</para>
+                                </listitem>
+                                <listitem>
+                                    <para>UifCurrencyEditor</para>
+                                </listitem>
+                                <listitem>
+                                    <para>UifDateEditor</para>
+                                </listitem>
+                                <listitem>
+                                    <para>UifKualiIntegerEditor</para>
+                                </listitem>
+                                <listitem>
+                                    <para>UifPercentageEditor</para>
+                                </listitem>
+                                <listitem>
+                                    <para>UifTimestampEditor</para>
+                                </listitem>
+                            </itemizedlist>
+                    </listitem>
+                    <listitem>
+                        <para>Using the data field propertyEditor property, custom editors can be
+                            associated with a property for binding (this includes using one of the
+                            provided editors or creating a custom editor)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Complex property paths are created in the following manner:</para>
+                        <itemizedlist>
+                                <listitem>
+                                    <para>Each time a nested object is encountered in the path it is
+                                        separated by a dot (eg
+                                        ‘nestedObject.nestedObject2.property’)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>A property on a List type is specified using the
+                                        collection path then the line index inside brackets (eg
+                                        ‘collectionPath[index].property’)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>A Map property is specified using the map path then the
+                                        map key in quotes and inside a bracket (eg
+                                        ‘mapPath[‘key’].property’)</para>
+                                </listitem>
+                            </itemizedlist>
+                    </listitem>
+                    <listitem>
+                        <para>When configuring multiple fields that belong to the same nested object
+                            (or list or map), it can be tedious to specify the full path each time.
+                            To help with this KRAD provides the BindingInfo object. This can be used
+                            to set the following properties:</para>
+                        <itemizedlist>
+                                <listitem>
+                                    <para>bindingObjectPath – Path to the parent data object</para>
+                                </listitem>
+                                <listitem>
+                                    <para>bindByNamePrefix – Prefix to add after the object path and
+                                        before the binding name (property name)</para>
+                                </listitem>
+                            </itemizedlist>
+                    </listitem>
+                    <listitem>
+                        <para>Since specifying the bindingObjectPath for each field does not really
+                            help with the verbosity, the <emphasis role="bold"
+                                >fieldBindingObjectPath</emphasis> on the parent Group can be used
+                            instead. Likewise the group component contains the <emphasis role="bold"
+                                >fieldBindByNamePrefix</emphasis> property.</para>
+                    </listitem>
+                    <listitem>
+                        <para>We can set a default object path for the entire view using the view
+                            component property <emphasis role="bold"
+                                >defaultBindingObjectPath</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para>Separating the property name into an object path helps with the
+                            reusability of bean configuration.</para>
+                    </listitem>
+                    <listitem>
+                        <para> The BindingInfo object also contains the property <emphasis
+                                role="bold">bindToMap</emphasis> which is used to indicate the
+                            property is a map key (which impacts how the final binding path is
+                            formed). In addition, we can set the property bindToForm to true which
+                            means we do not want any binding object path (coming from the group or
+                            the view) to be prepended. </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
     </section>
     <section>
         <title>Data Dictionary Backing </title>
-        <para></para>
+        <para>In Chapter 4, we learned about the data dictionary and attribute definition entries.
+            We learned that we could define a label, control, and certain other properties in the
+            attribute definition that will drive the rendering of that attribute wherever it appears
+            in the UI. So how does this work with the data fields?</para>
+        <para>First, as we have seen, we can configure everything we need directly on the data
+            fields; therefore, the UIF does not require the data dictionary to be used. However, the
+            UIF does have a process for determining and using an attribute definition for backing a
+            data or input field. What this means is if an attribute definition is found, the
+            properties specified on the definition will be used as defaults for the data field. If
+            the same property is specified on the data field, it will override the value from the
+            attribute definition.</para>
+        <para>For example, suppose we have the following data object entry and attribute
+            definition:</para>        
+<programlisting>            
+&lt;bean id="TravelAccount" parent="DataObjectEntry"&gt;
+    &lt;property name="dataObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/&gt;
+        &lt;property name="attributes"&gt;
+            &lt;list&gt;
+                &lt;ref bean="TravelAccount-number"/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;bean id="TravelAccount-number" parent="AttributeDefinition"&gt;
+    &lt;property name="name" value="number"/&gt;
+    &lt;property name="label" value="Travel Account Number"/&gt;
+    &lt;property name="shortLabel" value="Travel Account Number"/&gt;
+    &lt;property name="forceUppercase" value="false"/&gt;
+    &lt;property name="maxLength" value="10"/&gt;
+    &lt;property name="constraintText" value="Must be 10 digits"/&gt;
+    &lt;property name="validationPattern"&gt;
+        &lt;bean parent="AnyCharacterValidationPattern"/&gt;
+    &lt;/property&gt;
+    &lt;property name="controlField"&gt;
+        &lt;bean parent="Uif-TextControl" p:size="10"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>
+        <para>And we have the following input field which the previous attribute definition is
+            backing:</para>
+        <programlisting>  &lt;bean parent=”Uif-InputField” p:propertyName=”number” p:label=”New Travel Account Number” p:forceUppercase=”true”/&gt;</programlisting>
+        <para>During the view lifecycle initialize phase, the properties from the attribute
+            definition are picked up and set onto the input field (if not set). Note that the names
+            do not always match exactly (for example the control property of input field is feed
+            from the controlField property of attribute definition). The above example would result
+            in an input field with the following state:</para>
+        <itemizedlist>
+                <listitem>
+                    <para>Label: “New Travel Account Number” (from the input field config)</para>
+                </listitem>
+                <listitem>
+                    <para>Short Label: “Travel Account Number” (from the attr def config)</para>
+                </listitem>
+                <listitem>
+                    <para>Force Uppercase: true (from the input field config)</para>
+                </listitem>
+                <listitem>
+                    <para>Max Length: 10 (from the attr def config)</para>
+                </listitem>
+                <listitem>
+                    <para>Constraint Text: “Must be 10 digits” (from the attr def config)</para>
+                </listitem>
+                <listitem>
+                    <para>Validation Pattern: Any Character Validation ((from the attr def
+                        config)</para>
+                </listitem>
+                <listitem>
+                    <para>Control: Text control with size 10 (from the attr def config)</para>
+                </listitem>
+            </itemizedlist>
+        <para>An attribute definition can be linked manually through the data field configuration,
+            or the framework will attempt to find one based on the field binding path.</para>
+        <para>For manual configuration, we use the <emphasis role="bold"
+                >dictionaryObjectEntry</emphasis> and <emphasis role="bold"
+                >dictionaryAttributeName</emphasis> properties. The dictionary object entry is the
+            name of the entry in the data dictionary for which the attribute definition belongs.
+            This is generally the full class name a data object. The dictionary attribute name is
+            then the value for the name attribute on the definition we want to pick up. For our
+            previous example this configuration would be as follows:</para>
+        <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”number” p:dictionaryObjectEntry=”edu.sampleu.travel.bo.TravelAccount” p:dictionaryAttributeName=”number”/&gt; </programlisting>
+        <para>We can also leave off the dictionaryAttributeName, in which case the framework will
+            default it to the given propertyName:</para>
+        <para>&lt;bean parent=”Uif-InputField” p:propertyName=”number” </para>
+        <programlisting>p:dictionaryObjectEntry=”edu.sampleu.travel.bo.TravelAccount”/&gt;</programlisting>
+        <para>If the dictionary properties are not set, the UIF will attempt to find an attribute
+            definition with the binding path. This works as follows:</para>
+        <orderedlist>
+                <listitem>
+                    <para>Take the model class as the dictionary object entry (form class which is
+                        given on the view) and the binding path as the dictionary attribute name. Is
+                        there an entry? If so use it. Else go to step 2.</para>
+                </listitem>
+                <listitem>
+                    <para>Is the binding path nested (contains the dot separator)? If so, get the
+                        name before the first dot and gets its type from the form. This will be the
+                        dictionary object entry. Use the part after the first dot as the dictionary
+                        attribute name. Is there an entry? If so use it. If not, repeat step.</para>
+                </listitem>
+            </orderedlist>
+        <para>As an example let’s take the following model:</para>
+        <programlisting>
+package edu.myedu.sample;
+public class TravelForm {
+  private TravelAccount travelAccount;
+}
+
+package edu.myedu.sample;
+public class TravelAccount {
+  private String number;
+}
+        </programlisting>
+        <para>Now suppose we have the following input field:</para>
+        <programlisting>&lt;bean parent=”Uif-InputField” p:propertyName=”travelAccount.number”/&gt;</programlisting>
+        <para>The UIF will first ask the data dictionary if it has an entry for
+            ‘edu.myedu.sample.TravelForm’ and attribute ‘travelAccount.number’, is so that attribute
+            definition will be used to populate the input field. If not, it will then get the
+            property type for ‘travelAccount’ from TravelForm. This is of type
+            edu.myedu.sample.TravelAccount. Therefore, it will ask the data dictionary if it has an
+            entry for ‘edu’myedu.sample.TravelAccount’ and attribute ‘number’, and if so that
+            attribute definition will be used. The process continues until an attribute definition
+            is found or the binding path is no longer nested.</para>
+        <para>The one exception to the above rule is for fields in collection groups. Since the
+            assumption is these are properties on the data object for the collection lines, the
+            framework begins by asking for entries for that data object class and the property name
+            of the field.</para>
+        <programlisting>
+&lt;bean parent=”Uif-TableCollectionGroup” p:propertyName=”testObject1.mycollection” p:collectionObjectClass=”edu.myedu.sample.Test3Object”&gt;
+    &lt;property name=”items”&gt;
+        &lt;list&gt;
+            &lt;bean parent=”Uif-InputField” p:propertyName=”field1”/&gt;
+                ...
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+        </programlisting>
+        <para>The binding path for our field here will be ‘testObject1.mycollection[index].field1’.
+            The framework does not begin asking for a definition with this name and form entry type,
+            but rather asks the data dictionary for a definition with entry
+            ‘edu.myedu.sample.Test3Object’ and attribute name ‘field1’. If the field propertyName is
+            nested (or has a bindingInfo.bindByNamePrefix specified), and an entry was not found for
+            the full name, the framework will recurse down the path as it does for non-collection
+            fields.</para>
+        <section>
+            <title>Recap</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>We can default the properties for a data or input field from a data
+                            dictionary AttributeDefinition</para>
+                    </listitem>
+                    <listitem>
+                        <para> If an AttributeDefinition is used for a data field, the corresponding
+                            properties from the definition are used if a value for that property has
+                            not been specified for the field (in other words we can override any
+                            value on the attribute definition) </para>
+                    </listitem>
+                    <listitem>
+                        <para>We can explicitly associate an attribute definition with a data field
+                            using the properties <emphasis role="bold"
+                                >dictionaryObjectName</emphasis> and <emphasis role="bold"
+                                >dictionaryAttributeName</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para>The dictionary object name gives the name of the data object entry in
+                            the data dictionary</para>
+                    </listitem>
+                    <listitem>
+                        <para>The dictionary attribute name is the name of the property (the
+                            attribute definition ‘name’) associated with the attribute definition.
+                            If not given but the dictionary object name is, the propertyName
+                            configured on the data field will be used</para>
+                    </listitem>
+                    <listitem>
+                        <para>For fields configured on collection groups, the dictionaryObjectName
+                            is automatically set to the collectionObjectClass configured on the
+                            group</para>
+                    </listitem>
+                    <listitem>
+                        <para>If an attribute definition is not explicitly defined, the framework
+                            will attempt to discover an attribute definition to use. This process
+                            involves performing substrings on the binding path (starting from the
+                            object path and substringing on the dot) and making a series of calls to
+                            determine if an attribute definition exists for a given object entry and
+                            attribute name. This continues until a definition is found or until all
+                            substrings of the binding path have been tried</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>        
     </section>
     <section>
         <title>Types of Controls </title>
-        <para></para>
+        <para>A very important type of content element is the control. Control components are used
+            with an HTML Form to allow the user to interact with the data. The control holds one or
+            more data values. These values are first initialized when the page renders (known as the
+            initial value) and then can be changed by the user or script (known as the current
+            value). When the form is submitted, the controls have their name attribute paired with
+            their current value to form a request parameter that is sent to the server.</para>
+        <para>Controls are wrapped with the input field component. As described in the beginning of
+            this chapter, the input field holds the pointer to the model property who value will be
+            used as the initial value of the control. The input field also contains other
+            configuration related to the control and its value, such as helper widgets and
+            validation constraints.</para>
+        <para>HTML controls have different types. Some of these types are represented by different
+            tag elements (such as textarea and select), while variations of the input control are
+            indicated with the type attribute (technically these might all be considered input
+            controls, but KRAD treats each type as a different control). In this section we will
+            learn about the different types of controls and their UIF component
+            representation.</para>
+        <section>
+            <title>Checkbox</title>
+            <para>The Checkbox control renders an HTML input tag with type of “checkbox”. This
+                control is used to toggle the state of a property between two values (usually the
+                Booleans true and false). The image shows an example checkbox
+                control.</para>
+            <figure>
+                <title>Checkbox Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/checkboxControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>To create a new checkbox control, we create a new bean with parent of
+                ‘Uif-CheckboxControl’. Controls cannot set on their own; they must be defined within
+                an input field using the control property:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”acceptIndicator” p:label=”Accept?”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-CheckboxControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+            </programlisting>
+            <para>The checkbox control has one custom property that can be set which is the value property. 
+                This can be used to specify a string value that will be sent to the server when the checkbox
+                is checked. If not set, the default Boolean ‘true’ will be sent.</para>
+            <tip>
+                <title>Checkbox Request Parameters</title>
+                <para>It is important to note that browsers only send a request parameter for
+                    checkbox controls if their state is checked. That is, if the checkbox is not
+                    checked, no request parameter will be sent. Therefore if the value for a
+                    checkbox property was true before rendering the page, then the user unselects
+                    the checkbox and submits, unless special logic is in place the property will not
+                    be set to false. KRAD uses the Spring checkbox tag which adds a hidden that will
+                    indicate the presence of a checkbox for each request, then if a corresponding
+                    checkbox parameter does not exist, Spring will set the property to false.
+                    However when setting the value attribute for use with a non-Boolean type, the
+                    reset logic must be taken care of by the developer. </para>
+            </tip>
+        </section>
+        <section>
+            <title>File</title>
+            <para>The File control is used to allow the user to select a file from their file system
+                whose contents will be submitted with the form. The server can then make use of the
+                file contents or simply store the file on the server (for example a note
+                attachment).</para>
+            <para>To specify a file control should be used, a bean with parent of ‘Uif-FileControl’
+                should be given:</para>
+            <programlisting>
+&lt;bean parent=”Uif-InputField” p:propertyName=”fileUpload” p:label=”File
+                Upload”&gt;
+    &lt;property name=”control”&gt;
+        &lt;bean parent=”Uif-FileControl”/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>
+            <para>This control supports no custom properties (just the inherited component and base
+                control properties). The image below shows an example file control:</para>
+            <figure>
+                <title>File Control</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/fileControl.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>In order to use the control, there are a couple of requirements for the backend.
+                First, the backing property must be of type
+                org.springframework.web.multipart.MultipartFile. This is so Spring can set all the
+                necessary file information (name, content type, size, bytes). Many times, a pattern
+                employed is to have a property on the form with this type that is used for holding
+                the upload, and then in a controller method pull the contents to populate a property
+                with type File (or store the File object). The MultipartFile class provides a
+                convenient method for doing this called transferTo(java.io.File file). </para>
+            <para>The second requirement for uploading files is the HTML form encoding type is
+                "multipart/form-data". KRAD takes care of this by setting this as the encoding type
+                for all forms.</para>
+            <tip>
+                <title>Multipart Form</title>
+                <para>Always using the multipart form encoding (even when no file uploads are present) has 
+                    an impact on performance. An upcoming enhancement to KRAD will be to use this encoding 
+                    only when a file upload is present (with the use of script detection).  </para>
+            </tip>
+        </section>
     </section>
     <section>
         <title>Disabling Controls and Tabbing </title>

@@ -143,26 +143,25 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.maxLength = maxLength;
     }
 
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getExclusiveMin()
+     */
     @Override
     public String getExclusiveMin() {
         return exclusiveMin;
     }
 
     /**
-     * The exclusiveMin element determines the minimum allowable value for data
-     * entry editing purposes. Value can be an integer or decimal value such as
-     * -.001 or 99.
+     * Setter for minimum value
+     *
+     * @param exclusiveMin - minimum allowed value
      */
     public void setExclusiveMin(String exclusiveMin) {
         this.exclusiveMin = exclusiveMin;
     }
 
     /**
-     * The inclusiveMax element determines the maximum allowable value for data
-     * entry editing purposes. Value can be an integer or decimal value such as
-     * -.001 or 99.
-     *
-     * JSTL: This field is mapped into the field named "exclusiveMax".
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getInclusiveMax()
      */
     @Override
     public String getInclusiveMax() {
@@ -170,11 +169,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * The inclusiveMax element determines the maximum allowable value for data
-     * entry editing purposes. Value can be an integer or decimal value such as
-     * -.001 or 99.
+     * Setter for maximum value
      *
-     * JSTL: This field is mapped into the field named "exclusiveMax".
+     * @param inclusiveMax - max allowed value
      */
     public void setInclusiveMax(String inclusiveMax) {
         this.inclusiveMax = inclusiveMax;
@@ -458,9 +455,9 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * Default <code>Control</code> to use when the attribute is to be rendered
+     * Default {@code Control} to use when the attribute is to be rendered
      * for the UI. Used by the UIF when a control is not defined for an
-     * <code>InputField</code>
+     * {@code InputField}
      *
      * @return Control instance
      */
@@ -630,7 +627,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * Instance of <code>KeyValluesFinder</code> that should be invoked to
+     * Instance of {@code KeyValluesFinder} that should be invoked to
      * provide a List of values the field can have. Generally used to provide
      * the options for a multi-value control or to validate the submitted field
      * value

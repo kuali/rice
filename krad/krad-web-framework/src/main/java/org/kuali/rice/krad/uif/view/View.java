@@ -1209,13 +1209,17 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Growls use the messages contained in the message map. If enabled, info
+     * whether to use growls to show messages - info, warning and error
+     *
+     * <p>Growls use the messages contained in the message map. If enabled, info
      * messages in their entirety will be displayed in growls, for warning and
      * error messages a growl message will notify the user that these messages
-     * exist on the page. If this setting is disabled, it is recommended that
+     * exist on the page.</p>
+     *
+     * <p> If this setting is disabled, it is recommended that
      * infoMessage display be enabled for the page ValidationMessages bean in order to
      * display relevant information to the user. Note: the growl scripts are
-     * built out in the PageGroup class.
+     * built out in the PageGroup class.</p>
      *
      * @return the growlMessagingEnabled
      */
@@ -1224,6 +1228,8 @@ public class View extends ContainerBase {
     }
 
     /**
+     * enable or disable showing of messages using growls
+     *
      * @param growlMessagingEnabled the growlMessagingEnabled to set
      */
     public void setGrowlMessagingEnabled(boolean growlMessagingEnabled) {

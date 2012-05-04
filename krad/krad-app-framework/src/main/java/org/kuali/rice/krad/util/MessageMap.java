@@ -33,10 +33,14 @@ import java.util.Set;
 
 
 /**
- * Holds errors due to validation. Keys of map represent property paths, and value is a AutoPopulatingList that contains resource string
- * keys (to retrieve the error message).
+ * Holds errors due to validation
  *
- * Note, prior to rice 0.9.4, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4
+ * <p>Keys of map represent property paths, and value is a AutoPopulatingList that contains resource string
+ * keys (to retrieve the error message).</p>
+ *
+ * <p>Note, prior to rice 0.9.4, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MessageMap implements Serializable {
 	
@@ -75,7 +79,7 @@ public class MessageMap implements Serializable {
 
     /**
      *
-     * This method takes one message map and merges it into another.  Makes sure there are no duplicates.
+     * takes one message map and merges it into another.  Makes sure there are no duplicates.
      *
      * @param messagesFrom
      * @param messagesTo
@@ -103,9 +107,11 @@ public class MessageMap implements Serializable {
 
     }
     /**
-     * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
+     * Adds an error to the map under the given propertyName and adds an array of message parameters
+     *
+     * <p>This will fully prepend the
      * error key with any value in the errorPath list. This should be used when you do not want to add the error with the prepend
-     * pre-built error path.
+     * pre-built error path.</p>
      *
      * @param propertyName name of the property to add error under
      * @param errorKey resource key used to retrieve the error text from the error message resource bundle
@@ -146,8 +152,10 @@ public class MessageMap implements Serializable {
     }
 
     /**
-     * Adds an error related to a particular section identified by its section ID.  For maintenance documents, the section ID is identified
-     * by calling {@link org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition#getId()}
+     * Adds an error related to a particular section identified by its section ID
+     *
+     * <p>For maintenance documents, the section ID is identified
+     * by calling {@link org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition#getId()}</p>
      *
      * @param sectionId
      * @param errorKey

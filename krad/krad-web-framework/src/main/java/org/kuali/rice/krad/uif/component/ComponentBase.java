@@ -1104,6 +1104,10 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         this.onMouseMoveScript = onMouseMoveScript;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
+     * @return
+     */
     public Map<String, String> getTemplateOptions() {
         if (templateOptions == null) {
             templateOptions = new HashMap<String, String>();
@@ -1111,6 +1115,10 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return this.templateOptions;
     }
 
+    /**
+     * @see Component#setTemplateOptions(java.util.Map)
+     * @param templateOptions
+     */
     public void setTemplateOptions(Map<String, String> templateOptions) {
         this.templateOptions = templateOptions;
     }

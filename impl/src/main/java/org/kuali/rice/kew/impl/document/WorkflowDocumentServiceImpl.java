@@ -275,6 +275,20 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 		return actionTakens;
 	}
+
+    @Override
+    public List<ActionTaken> getAllActionsTaken(String documentId){
+        if(StringUtils.isEmpty(documentId)){
+            throw new RiceIllegalArgumentException("documentId is null or empty.");
+        }
+
+		List<ActionTaken> actionsTaken = new ArrayList<ActionTaken>();
+        Collection<ActionTakenValue> actionTakenBos = KEWServiceLocator.getActionTakenService().findByDocumentIdIgnoreCurrentInd(documentId);
+		for (ActionTakenValue actionTakenBo : actionTakenBos) {
+			actionsTaken.add(ActionTakenValue.to(actionTakenBo));
+		}
+       return actionsTaken;
+    }
 	
 	@Override
 	public DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId) {

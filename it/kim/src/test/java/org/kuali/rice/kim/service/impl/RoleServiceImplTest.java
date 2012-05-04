@@ -16,27 +16,36 @@
 package org.kuali.rice.kim.service.impl;
 
 import com.google.common.collect.Maps;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
 import org.junit.Test;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
+import org.kuali.rice.kim.api.common.delegate.DelegateMember;
+import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.role.RoleServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 
 public class RoleServiceImplTest extends KIMTestCase {
 
@@ -73,6 +82,57 @@ public class RoleServiceImplTest extends KIMTestCase {
 		roleIds.add("r2");
 		assertTrue( "p1 has assigned in higher level role r1", roleService.principalHasRole("p1", roleIds,  Collections.<String, String>emptyMap() ));
 	}
+
+    @Test
+    public void testDelegateMemberCreateUpdateRemove() {
+
+        Role r2 = roleService.getRole("r2");
+        RoleMember rm1 = roleService.assignPrincipalToRole("user2", r2.getNamespaceCode(), r2.getName(),
+                new HashMap<String, String>());
+        String kimTypeId = "1";
+
+        //Create delegation
+        String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        DelegateTypeBo delegate = new DelegateTypeBo();
+        delegate.setDelegationId(id);
+        delegate.setDelegationType(DelegationType.PRIMARY);
+        delegate.setRoleId(r2.getId());
+        delegate.setActive(true);
+        delegate.setKimTypeId("" + kimTypeId);
+        delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
+
+        //Create delegate member
+        DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
+        delegateMemberInfo.setAttributes(Collections.<String, String>emptyMap());
+        delegateMemberInfo.setDelegationId(delegate.getDelegationId());
+        delegateMemberInfo.setMemberId("user4");
+        delegateMemberInfo.setRoleMemberId(rm1.getId());
+        delegateMemberInfo.setType( MemberType.PRINCIPAL );
+        DelegateMember inDelegateMember =  delegateMemberInfo.build();
+        DelegateMember newDelegateMember = roleService.createDelegateMember(inDelegateMember);
+        assertNotNull("delegateMember not created",newDelegateMember);
+
+        //Update delegate member
+        Long versionNumber = newDelegateMember.getVersionNumber();
+        DateTime dateTimeFrom   = DateTime.now().minusDays(3);
+        delegateMemberInfo.setActiveFromDate(dateTimeFrom);
+        DateTime dateTimeTo = DateTime.now().plusDays(3);
+        delegateMemberInfo.setActiveToDate(dateTimeTo);
+        inDelegateMember = delegateMemberInfo.build();
+        DelegateMember updateDelegateMember = roleService.createDelegateMember(inDelegateMember);
+        assertNotNull("updateDelegateMember not created",newDelegateMember);
+        assertEquals("activeFromDate not updated",dateTimeFrom,updateDelegateMember.getActiveFromDate());
+        assertEquals("activeToDate not updated",dateTimeTo,updateDelegateMember.getActiveToDate());
+
+        //remove (inactivate) delegate member
+        List<DelegateMember>  removeDelegateMembers = new ArrayList<DelegateMember>();
+        removeDelegateMembers.add(updateDelegateMember);
+        roleService.removeDelegateMembers(removeDelegateMembers);
+        DelegateMember removeDelegate = roleService.getDelegationMemberById(updateDelegateMember.getDelegationMemberId()) ;
+        assertTrue("removeDelegates did not update activeToDate",removeDelegate.getActiveToDate().equals(updateDelegateMember.getActiveToDate()));
+    }
+
+
 	
 	@Test
 	public void testPrincipalHasRoleContainsGroupAssigned() {

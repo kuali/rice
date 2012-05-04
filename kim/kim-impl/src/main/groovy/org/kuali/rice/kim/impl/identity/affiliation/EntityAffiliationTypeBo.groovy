@@ -19,15 +19,14 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import org.kuali.rice.kim.api.identity.CodedAttribute
-import org.kuali.rice.kim.api.identity.CodedAttributeContract
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationTypeContract
+
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType
+import org.kuali.rice.kim.framework.identity.affiliation.EntityAffiliationTypeEbo
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_AFLTN_TYP_T")
-public class EntityAffiliationTypeBo extends PersistableBusinessObjectBase implements EntityAffiliationTypeContract {
+public class EntityAffiliationTypeBo extends PersistableBusinessObjectBase implements EntityAffiliationTypeEbo {
     @Id
     @Column(name="EMP_TYP_CD")
     String code;

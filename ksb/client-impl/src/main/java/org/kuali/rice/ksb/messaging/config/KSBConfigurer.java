@@ -127,12 +127,14 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
                 throw new UnsupportedOperationException("JPA not currently supported for KSB");
             }
 
-
-		    if (isMessagePersistenceEnabled()) {
+            // Loading these beans unconditionally now, see:
+            // KULRICE-6574: Some KSB beans not defined unless message persistence turned on
+            //
+		    // if (isMessagePersistenceEnabled()) {
 			    springFileLocations.add(MESSAGE_CLIENT_SPRING);
 			    springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
-		    }
-        
+		    // }
+
             if (isBamEnabled()) {
         	    springFileLocations.add(BAM_SPRING);
         	    springFileLocations.add(OJB_BAM_SPRING);
@@ -150,6 +152,15 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
     @Override
     public boolean hasWebInterface() {
         return true;
+    }
+
+    // See KULRICE-7093: KSB Module UI is not available on client applications
+    @Override
+    public boolean shouldRenderWebInterface() {
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.WEB_FORCE_ENABLE)) {
+            return true;
+        }
+        return super.shouldRenderWebInterface();
     }
 
     @Override

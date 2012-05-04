@@ -460,6 +460,7 @@
   <param name="location.ehcache.config.location" override="false">classpath:org/kuali/rice/location/config/location.ehcache.xml</param>
 
 	<!-- KSB -->
+  <param name="rice.ksb.web.forceEnable" override="false">false</param>
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
 	<param name="ksb.url" override="false">${application.url}/ksb</param>
 	<param name="ksb.mode" override="false">REMOTE</param>
@@ -474,7 +475,7 @@
 	<param name="rice.ksb.expose.services.on.bus" override="false">true</param>
   <param name="rice.ksb.expose.services.on.bus" override="false">true</param>
   <param name="ksb.soapExposedService.jaxws.security" override="false">true</param>
-	
+
 	<!-- CORE -->
   <param name="rice.core.struts.config.files" override="false">/core/WEB-INF/struts-config.xml</param>
   <param name="core.url" override="false">${application.url}/core</param>

@@ -21,11 +21,12 @@ import javax.persistence.Id
 import javax.persistence.Table
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
+import org.kuali.rice.kim.framework.identity.email.EntityEmailTypeEbo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @Entity
 @Table(name="KRIM_ENT_TYP_T")
-public class EntityEmailTypeBo extends PersistableBusinessObjectBase implements CodedAttributeContract {
+public class EntityEmailTypeBo extends PersistableBusinessObjectBase implements EntityEmailTypeEbo {
     @Id
     @Column(name="ENT_TYP_CD")
     String code;

@@ -76,6 +76,19 @@
         class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl"
         lazy-init="true"/>
 
+  <!--  DocumentSearchService -->
+  <bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl">
+    <property name="documentSearchDAO" ref="enDocumentSearchDAO"/>
+    <property name="userOptionsService" ref="enUserOptionsService"/>
+    <property name="documentSearchCustomizationMediator" ref="rice.kew.documentSearchCustomizationMediator"/>
+  </bean>
+  <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl"
+        lazy-init="true">
+    <property name="dataSource" ref="kewDataSource"/>
+  </bean>
+  <bean id="rice.kew.documentSearchCustomizationMediator"
+        class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl"/>
+
   <bean id="rice.kew.import.kimRoleService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="kimRoleService"/>
@@ -335,6 +348,7 @@
       <list>
         <idref local="enDocumentRouteHeaderService"/>
         <idref local="enActionListService"/>
+        <idref local="enDocumentSearchService"/>
         <idref local="enDocumentTypePermissionService"/>
         <idref local="enActionTakenService"/>
         <idref local="enActionRequestService"/>

@@ -20,16 +20,15 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+
 import org.hibernate.annotations.Type
 import org.kuali.rice.coreservice.api.parameter.ParameterType
-import org.kuali.rice.coreservice.api.parameter.ParameterTypeContract
-
+import org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 @Entity
 @Table(name="KRCR_PARM_TYP_T")
-public class ParameterTypeBo extends PersistableBusinessObjectBase implements ParameterTypeContract, MutableInactivatable {
+public class ParameterTypeBo extends PersistableBusinessObjectBase implements ParameterTypeEbo {
 
     private static final long serialVersionUID = 1L;
 

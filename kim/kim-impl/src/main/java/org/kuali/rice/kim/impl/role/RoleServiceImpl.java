@@ -52,7 +52,9 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -1552,6 +1554,88 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
+    public DelegateMember updateDelegateMember(@WebParam(
+            name = "delegateMember") DelegateMember delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
+
+        //check delegateMember not empty
+        incomingParamCheck(delegateMember, "delegateMember");
+
+        //check key is null
+        if(delegateMember.getDelegationMemberId()!=null )   {
+            throw new RiceIllegalStateException("the delegate member already exists: " + delegateMember.getDelegationMemberId());
+        }
+
+        //check delegate exists
+        String delegationId =  delegateMember.getDelegationId();
+        incomingParamCheck(delegationId,"delegationId");
+        DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
+        if(delegate==null)   {
+            throw new RiceIllegalStateException("the delegate does not exist: " + delegationId);
+        }
+
+        //save the delegateMember  (actually updates)
+        String kimTypeId = getRoleBo(delegate.getRoleId()).getKimTypeId();
+        List<DelegateMemberAttributeDataBo> attrBos = Collections.emptyList();
+        attrBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
+        DelegateMemberBo bo = DelegateMemberBo.from(delegateMember);
+        bo.setAttributeDetails(attrBos);
+        return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(bo));
+    }
+
+    @Override
+    public DelegateMember createDelegateMember(@WebParam(
+            name = "delegateMember") DelegateMember delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        //ensure object not empty
+        incomingParamCheck(delegateMember, "delegateMember");
+
+        //check key is null
+        if(delegateMember.getDelegationMemberId()!=null )   {
+            throw new RiceIllegalStateException("the delegate member already exists: " + delegateMember.getDelegationMemberId());
+        }
+
+        //check delegate exists
+        String delegationId =  delegateMember.getDelegationId();
+        incomingParamCheck(delegationId,"delegationId");
+        DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
+        if(delegate==null)   {
+            throw new RiceIllegalStateException("the delegate does not exist: " + delegationId); 
+        }
+
+        //check member exists
+        String memberId = delegateMember.getMemberId();
+        incomingParamCheck(memberId,"memberId");
+        Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
+        if(kPrincipal==null){
+            throw new RiceIllegalStateException("the user does not exist: " + memberId);
+        }
+
+        //create member delegate
+        String kimTypeId = getRoleBo(delegate.getRoleId()).getKimTypeId();
+        List<DelegateMemberAttributeDataBo> attrBos = Collections.emptyList();
+        attrBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
+        DelegateMemberBo bo = DelegateMemberBo.from(delegateMember);
+        bo.setAttributeDetails(attrBos);
+        return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(bo));
+    }
+
+    @Override
+    public void removeDelegateMembers(@WebParam(
+            name = "delegateMembers") List<DelegateMember> delegateMembers) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(delegateMembers, "delegateMembers");
+        for (DelegateMember delegateMember : delegateMembers) {
+            DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
+            delegateMemberInfo.setAttributes(delegateMember.getAttributes());
+            delegateMemberInfo.setDelegationId(delegateMember.getDelegationId());
+            delegateMemberInfo.setMemberId(delegateMember.getMemberId());
+            delegateMemberInfo.setRoleMemberId(delegateMember.getRoleMemberId());
+            delegateMemberInfo.setType(delegateMember.getType());
+            delegateMemberInfo.setActiveFromDate(delegateMember.getActiveFromDate());
+            delegateMemberInfo.setActiveToDate(DateTime.now());
+            updateDelegateMember(delegateMemberInfo.build());
+        }
+    }
+
+    @Override
     public RoleResponsibilityAction createRoleResponsibilityAction(RoleResponsibilityAction roleResponsibilityAction)
             throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(roleResponsibilityAction, "roleResponsibilityAction");
@@ -1579,7 +1663,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         DelegateTypeBo bo = DelegateTypeBo.from(delegateType);
         return DelegateTypeBo.to(getBusinessObjectService().save(bo));
     	// look up the role
-    	/*RoleBo role = getRoleBo(delegationType.getRoleId());
+        /*RoleBo role = getRoleBo(delegationType.getRoleId());
     	DelegateTypeBo delegation = getDelegationOfType(role.getId(), delegationType.getDelegationTypeCode());
     	// create the new role member object
     	DelegateMemberBo newDelegationMember = new DelegateMemberBo();
@@ -1642,6 +1726,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             }
         }
     }
+
 
     private List<RoleMemberBo> getRoleMembersByDefaultStrategy(RoleBo role, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();

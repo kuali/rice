@@ -262,7 +262,7 @@ function runHiddenScripts(id, isSelector){
         //Interpret new server message state for refreshed InputFields
         jQuery("[data-role='InputField']").each(function(){
             var data = jQuery(this).data("validationMessages");
-            if(!data.processed){
+            if(data != undefined && !data.processed){
                 handleMessagesAtField(jQuery(this).attr('id'));
             }
         });

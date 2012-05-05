@@ -24,10 +24,11 @@ html {
 
 body {
     margin: 0;
-    padding-right: 0;
     font-family: Arial, Helvetica, sans-serif;
     background-color: white;
     color: black;
+    /** do not change - iframe resize specific **/
+    padding-right: 20px;
 }
 
 ul li {
@@ -395,10 +396,16 @@ table.uif-tableCollectionLayout thead th.sorting_desc label{
     cursor: pointer;
 }
 
+.uif-stackedCollectionLayout{
+    background-image: url(../../images/pattern_dotted.png);
+    padding: 10px;
+}
+
 .uif-stackedCollectionLayout > .uif-collectionItem {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     padding: 5px;
+    background-color: white;
 }
 
 .uif-placeholder {
@@ -417,8 +424,9 @@ tr.uif-collectionAddItem td.sorting_1 {
 }
 
 div.uif-collectionAddItem {
-    background-color: #FAFAFA;
-    border: 1px solid #D3D3D3;
+    background: #F9F9F9 !important;
+    border: 1px solid #B2B2B2 !important;
+    padding: 5px;
 }
 
 /* Document header info *******************************************************************************/
@@ -752,6 +760,15 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 }
 
 /** Validation Messages Framework **********************************************************************/
+.uif-messageCount{
+    font-weight: normal;
+    font-size: .95em;
+}
+
+.uif-messageCount img{
+    width: 12px;
+    height: 12px;
+}
 
 .uif-clientMessageItems {
     max-width: 250px;

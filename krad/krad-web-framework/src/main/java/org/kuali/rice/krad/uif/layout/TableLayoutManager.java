@@ -148,7 +148,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()){
             if(StringUtils.isBlank(this.getFirstLineStyle()) && !isSeparateAddLine()){
-                this.setFirstLineStyle("kr-addLine");
+                this.setFirstLineStyle("uif-addLine");
             }
         }
 

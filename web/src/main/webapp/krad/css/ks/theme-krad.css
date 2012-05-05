@@ -511,20 +511,7 @@ ul.ui-autocomplete.ui-widget-content {
     color: #000;
 }
 
-/** datatables ********************************************************************************************/
-
-/*
-.dataTables_length {
-    margin: 1em 0;
-}
-
-.dataTables_scrollBody {
-    border-bottom: 1px solid #999;
-}
-
-.dataTables_info {
-    font-weight: normal;
-}
+/** Datatable customizations *********************************************************************/
 
 .dataTables_scrollBody thead tr th.sorting_asc, .dataTables_scrollBody thead tr th.sorting_desc, .dataTables_scrollBody thead tr th.sorting {
     background: none;
@@ -534,185 +521,89 @@ ul.ui-autocomplete.ui-widget-content {
     margin-top: 5px;
 }
 
-th.sorting_asc, th.sorting_desc {
-    background-color: transparent;
+.dataTables_length {
+    margin-bottom: 5px;
 }
 
 .datatable .field_attribute {
     float: none;
 }
 
-.sorting_asc {
-    background-image: url(../../plugins/rice/datatables/images/sort_asc.png), url(../../images/pattern_dotted.png); */
-/* multiple background images *//*
+.dataTables_wrapper {
+    margin-top: 10px;
+}
 
-    background-position: center right;
-    background-repeat: no-repeat;
+.sorting_asc {
+    background: #f3f3f3 url(../../images/kns/sort_asc.png) no-repeat right center;
 }
 
 .sorting_desc {
-    background-image: url(../../plugins/rice/datatables/images/sort_desc.png), url(../../images/pattern_dotted.png);
-    background-position: center right;
-    background-repeat: no-repeat;
+    background: #f3f3f3 url(../../images/kns/sort_desc.png) no-repeat right center;
 }
 
-.datatable thead tr th.sorting, .datatable thead tr th.sorting_disabled {
-    background-color: #fff;
+.sorting {
+    background: #f3f3f3 url(../../images/kns/sort_both.png) no-repeat right center;
 }
 
-.datatable thead tr th.sorting label, .datatable thead tr th.sorting_desc label, .datatable thead tr th.sorting_asc label {
-    cursor: pointer;
+.sorting_disabled {
+    background: #f3f3f3;
 }
 
-th.sorting label, th.sorting_asc label, th.sorting_desc label, th.sorting_disabled label {
-    color: #3F7826;
-    font-weight: normal;
-    text-transform: uppercase;
+.sorting_asc_disabled {
+    background: #f3f3f3 url(../../images/kns/sort_asc_disabled.png) no-repeat right center;
 }
 
-*/
-/* display tables *//*
-
-table.display thead th {
-    border-top: 3px solid #000;
-    border-bottom: 1px solid #000;
-    text-transform: uppercase;
-    color: #3F7826;
-    font-weight: normal;
-    cursor: text;
+.sorting_desc_disabled {;
+    background: #f3f3f3 url(../../images/kns/sort_desc_disabled.png) no-repeat right center;
 }
 
-table.display thead th.sorting, table.display thead th.sorting_asc, table.display thead th.sorting_desc, table.display thead th.sorting_disabled {
-    text-align: left;
-    cursor: pointer;
+/* Table Collections *************************************************************************************/
+
+table.uif-tableCollectionLayout {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid transparent;
 }
 
-table.display tbody tr {
-    border-bottom: 1px dotted #000;
+table.uif-tableCollectionLayout thead tr{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    background: #f3f3f3;
 }
 
-.display td {
-    vertical-align: top;
-    padding: 3px 10px 3px 3px;
-}
-
-.display tr.odd td.sorting_1, .display tr.even td.sorting_1, table.display tr.odd, table.display tr.even {
-    */
-/* cell colors for sortable table should be white *//*
-
-    background-color: #ffffff;
-}
-
-.ui-datepicker-header {
-    height: 2em;
-}
-
-*/
-/* messing with collections *//*
-
-
-.uif-stackedCollectionGroup a h3.uif-collectionGroup .uif-sectionHeader:hover {
-    background-color: #ECFCE8;
-    color: #07662a
-}
-
-.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeader {
-    color: #fff;
-    background-color: #000;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0.5em;
-}
-
-.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeader img.expand_collapse-buttons[alt="expand"] {
-    background: url("../../images/h3_expand-back-white-ks.png") no-repeat scroll 0 0 transparent;
-}
-
-.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeader:hover img.expand_collapse-buttons[alt="expand"] {
-    background: url("../../images/h3_expand-back-ks.png") no-repeat scroll 0 0 transparent;
-}
-
-.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeader img.expand_collapse-buttons[alt="collapse"] {
-    background: url("../../images/h3_collapse-back-white-ks.png") no-repeat scroll 0 0 transparent;
-}
-
-.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeader:hover img.expand_collapse-buttons[alt="collapse"] {
-    background: url("../../images/h3_collapse-back-ks.png") no-repeat scroll 0 0 transparent;
-}
-
-.uif-collectionGroup.uif-stackedCollectionGroup {
-    background: url(../../images/pattern_dotted.png) repeat;
-    border: 1px solid #ccc;
-}
-
-.uif-collectionItem.uif-collectionAddItem h4.kr-section-subhead.uif-collectionItem-header {
-    padding: 0.25em 0.5em;
-    border-bottom: 1px solid #ccc;
-}
-
-.uif-collectionItem.uif-collectionAddItem>div:nth-child(2) {
-    padding: 1em 0.5em 0 0.5em;
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
-.uif-collectionGroup>div:nth-child(2) {
-    background-color: #fff;
-    margin: 0.5em;
-    padding: 0.5em;
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
-.uif-collectionGroup .uif-collectionGroup>div:nth-child(2) {
-    padding: 0;
-    margin: 0;
-}
-
-.kr-subCollection>.uif-collectionGroup {
-    background: #fff;
-    margin-top: 1em;
+.dataTables_scrollBody table.uif-tableCollectionLayout thead tr{
     border: none;
 }
 
-.kr-subCollection>.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeader, .kr-subCollection>.uif-collectionGroup h3.uif-collectionGroup .uif-sectionHeader {
-    background-color: #eee;
-    color: #000;
-    border-bottom: 0 solid #000;
+.dataTables_scrollBody table.uif-tableCollectionLayout{
+    border-top: none;
 }
 
-.kr-subCollection>.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeader img.expand_collapse-buttons[alt="expand"] {
-    background: url("../../images/h3_expand-back-black-ks.png") no-repeat scroll 0 0 transparent;
+table.uif-tableCollectionLayout tbody tr {
+    border-bottom: 1px dotted black;
 }
 
-.kr-subCollection>.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeader img.expand_collapse-buttons[alt="collapse"] {
-    background: url("../../images/h3_collapse-back-black-ks.png") no-repeat scroll 0 0 transparent;
+table.uif-tableCollectionLayout td {
+    border-left: 1px dotted black;
+    border-collapse: collapse;
 }
 
-.kr-subCollection .uif-collectionGroup h4.uif-collectionGroup .uif-sectionHeader {
-    background-color: #ffffff;
-    color: #000;
-    border: 1px solid rgba(255, 255, 255, 0);
-    border-bottom: 2px solid rgba(0, 0, 0, 1);
-    padding: .25em .25em .25em 0;
-    margin-bottom: .5em;
-    margin-top: 0;
+table.uif-tableCollectionLayout tbody tr.uif-addLine{
+    background-color: #f9f9f9;
+    border-bottom: 2px solid black;
 }
 
-.kr-subCollection .uif-collectionGroup a h4.uif-collectionGroup .uif-sectionHeader {
-    color: #3F7826;
+table.uif-gridLayout{
+    width: auto;
 }
 
-.kr-subCollection a h4.uif-collectionGroup .uif-sectionHeader:hover {
-    background-color: #ECFCE8;
-    border: 1px solid #3F7826;
-    border-bottom: 2px solid #3F7826;
+table.uif-gridLayout th{
+    padding-right: 1em;
 }
 
-.kr-subCollection a h4.uif-collectionGroup .uif-sectionHeader img.expand_collapse-buttons[alt="expand"] {
-    background: url("../../images/h3_expand-back-ks.png") no-repeat scroll 0 0 transparent;
-}
+/** Stacked Collections ********************************************************************************/
 
-.kr-subCollection a h4.uif-collectionGroup .uif-sectionHeader img.expand_collapse-buttons[alt="collapse"] {
-    background: url("../../images/h3_collapse-back-ks.png") no-repeat scroll 0 0 transparent;
-}*/
+/* stacked collection within stacked collection*/
+.uif-stackedCollectionLayout .uif-stackedCollectionLayout{
+    border: 1px dashed black;
+}

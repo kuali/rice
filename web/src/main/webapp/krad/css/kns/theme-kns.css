@@ -551,14 +551,21 @@ table.uif-tableCollectionLayout td {
     border-collapse: collapse;
 }
 
+table.uif-tableCollectionLayout tbody tr.uif-addLine{
+    background-color: #f9f9f9;
+    border-bottom: 2px solid #CCCCCC;
+}
+
 table.uif-gridLayout td {
     border: 1px solid #CCC;
     border-collapse: collapse;
     background-color: white;
 }
 
-/** TODO Navigation Menu *******************************************************************************/
-
+/* Stacked collections *********************************************************************************/
+.uif-stackedCollectionLayout .uif-stackedCollectionLayout {
+    border: none;
+}
 
 /** Breadcrumbs **********************************************************************************/
 span.uif-breadcrumbs {

@@ -71,7 +71,7 @@ function getContext(){
 		context = jq;
 	}
 	else{
-		context = parent.$;
+		context = parent.jQuery;
 	}
 
 	return context;
@@ -89,10 +89,10 @@ function getContext(){
  * @param paramValue - value for the configuration parameter
  */
 function setConfigParam(paramName, paramValue) {
-    var configParams = jq(document).data("ConfigParameters");
+    var configParams = jQuery(document).data("ConfigParameters");
     if (!configParams) {
         configParams = new Object();
-        jq(document).data("ConfigParameters", configParams);
+        jQuery(document).data("ConfigParameters", configParams);
     }
     configParams[paramName] = paramValue;
 }
@@ -106,7 +106,7 @@ function setConfigParam(paramName, paramValue) {
  * @param viewState - map (object) containing the view state
  */
 function initializeViewState(viewState) {
-    jq(document).data("ViewState", viewState);
+    jQuery(document).data("ViewState", viewState);
 }
 
 /**
@@ -121,12 +121,12 @@ function initializeViewState(viewState) {
  * @param viewState - view state to merge in
  */
 function updateViewState(viewState) {
-    var currentViewState = jq(document).data("ViewState");
+    var currentViewState = jQuery(document).data("ViewState");
     if (currentViewState) {
-        jq.extend(currentViewState, viewState);
+        jQuery.extend(currentViewState, viewState);
     }
     else {
-        jq(document).data("ViewState", viewState);
+        jQuery(document).data("ViewState", viewState);
     }
 }
 
@@ -137,10 +137,10 @@ function updateViewState(viewState) {
  * @param value - value for the state
  */
 function setViewState(key, value) {
-    var viewState = jq(document).data("ViewState");
+    var viewState = jQuery(document).data("ViewState");
     if (!viewState) {
         viewState = new Object();
-        jq(document).data("ViewState", viewState);
+        jQuery(document).data("ViewState", viewState);
     }
     viewState[key] = value;
 }
@@ -152,7 +152,7 @@ function setViewState(key, value) {
  * @param key - name of the variable in view state to return
  */
 function getViewState(key) {
-    var viewState = jq(document).data("ViewState");
+    var viewState = jQuery(document).data("ViewState");
     if (viewState && viewState.hasOwnProperty(key)) {
         return viewState[key];
     }
@@ -191,7 +191,7 @@ function getComponentState(componentId, key) {
 
 // gets the the label for field with the corresponding id
 function getLabel(id){
-	var label =  jq("#" + id + "_label");
+	var label =  jQuery("#" + id + "_label");
 	if(label){
 		return label.text();
 	}
@@ -208,10 +208,10 @@ function getLabel(id){
 function runHiddenScripts(id, isSelector){
 	if(id){
         //run dataScript first always
-        jq("#" + id).find("input[data-role='dataScript']").each(function(){
-            eval(jq(this).val());
-            jq(this).attr("script", "first_run");
-            jq(this).removeAttr("name");
+        jQuery("#" + id).find("input[data-role='dataScript']").each(function(){
+            eval(jQuery(this).val());
+            jQuery(this).attr("script", "first_run");
+            jQuery(this).removeAttr("name");
         });
 
         var selector = "#" + id;
@@ -219,16 +219,16 @@ function runHiddenScripts(id, isSelector){
             selector = id;
         }
 
-		jq(selector).find("input[name='script']").each(function(){
-			eval(jq(this).val());
-            jq(this).attr("script", "first_run");
-			jq(this).removeAttr("name");
+		jQuery(selector).find("input[name='script']").each(function(){
+			eval(jQuery(this).val());
+            jQuery(this).attr("script", "first_run");
+			jQuery(this).removeAttr("name");
 		});
 
         runScriptsForId(id);
 
         //reinit dirty fields
-        jq('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
+        jQuery('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
 
         //reinitialize BubblePopup
         initBubblePopups();
@@ -245,16 +245,16 @@ function runHiddenScripts(id, isSelector){
 	}
 	else{
         //run dataScript first always
-        jq("input[data-role='dataScript']").each(function(){
-            eval(jq(this).val());
-            jq(this).attr("script", "first_run");
-            jq(this).removeAttr("name");
+        jQuery("input[data-role='dataScript']").each(function(){
+            eval(jQuery(this).val());
+            jQuery(this).attr("script", "first_run");
+            jQuery(this).removeAttr("name");
         });
 
-		jq("input[name='script']").each(function(){
-			eval(jq(this).val());
-            jq(this).attr("script", "first_run");
-			jq(this).removeAttr("name");
+		jQuery("input[name='script']").each(function(){
+			eval(jQuery(this).val());
+            jQuery(this).attr("script", "first_run");
+			jQuery(this).removeAttr("name");
 		});
 
         //reinitialize BubblePopup
@@ -273,32 +273,32 @@ function runHiddenScripts(id, isSelector){
 
 function runScriptsForId(id) {
     if (id) {
-        jq("input[data-role='dataScript']").each(function () {
-            if (jq(this).data("for") === id) {
-                eval(jq(this).val());
-                jq(this).attr("script", "first_run");
-                jq(this).removeAttr("name");
+        jQuery("input[data-role='dataScript']").each(function () {
+            if (jQuery(this).data("for") === id) {
+                eval(jQuery(this).val());
+                jQuery(this).attr("script", "first_run");
+                jQuery(this).removeAttr("name");
             }
         });
 
-        jq("input[name='script']").each(function () {
-            if (jq(this).data("for") === id) {
-                eval(jq(this).val());
-                jq(this).attr("script", "first_run");
-                jq(this).removeAttr("name");
+        jQuery("input[name='script']").each(function () {
+            if (jQuery(this).data("for") === id) {
+                eval(jQuery(this).val());
+                jQuery(this).attr("script", "first_run");
+                jQuery(this).removeAttr("name");
             }
         });
     }
 }
 
 function runHiddenScriptsAgain(){
-    jq("input[data-role='dataScript']").each(function(){
-        eval(jq(this).val());
-        jq(this).removeAttr("script");
+    jQuery("input[data-role='dataScript']").each(function(){
+        eval(jQuery(this).val());
+        jQuery(this).removeAttr("script");
     });
-    jq("input[script='first_run']").each(function(){
-        eval(jq(this).val());
-        jq(this).removeAttr("script");
+    jQuery("input[script='first_run']").each(function(){
+        eval(jQuery(this).val());
+        jQuery(this).removeAttr("script");
     });
 }
 
@@ -311,7 +311,7 @@ function runHiddenScriptsAgain(){
  *          the value that should be set for the methodToCall parameter
  */
 function setMethodToCall(methodToCall) {
-    jq("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo(jq("#formComplete"));
+    jQuery("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo(jQuery("#formComplete"));
 }
 
 /**
@@ -327,12 +327,12 @@ function setMethodToCall(methodToCall) {
  */
 function writeHiddenToForm(propertyName, propertyValue) {
     //removing because of performFinalize bug
-    jq('input[name="' + escapeName(propertyName) + '"]').remove();
+    jQuery('input[name="' + escapeName(propertyName) + '"]').remove();
 
     if (propertyValue.indexOf("'") != -1) {
-        jq("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jq("#formComplete"));
+        jQuery("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#formComplete"));
     } else {
-        jq("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jq("#formComplete"));
+        jQuery("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jQuery("#formComplete"));
     }
 }
 
@@ -342,20 +342,20 @@ function writeHiddenToForm(propertyName, propertyValue) {
 function coerceValue(name){
 	var value = "";
 	var nameSelect = "[name='" + escapeName(name) + "']";
-	if(jq(nameSelect + ":checkbox").length){
-		value = jq(nameSelect + ":checked").val();
+	if(jQuery(nameSelect + ":checkbox").length){
+		value = jQuery(nameSelect + ":checked").val();
 	}
-	else if(jq(nameSelect + ":radio").length){
-		value = jq(nameSelect + ":checked").val();
+	else if(jQuery(nameSelect + ":radio").length){
+		value = jQuery(nameSelect + ":checked").val();
 	}
-	else if(jq(nameSelect).length){
-		if (jq(nameSelect).hasClass("watermark")) {
-			jq.watermark.hide(nameSelect);
-			value = jq(nameSelect).val();
-			jq.watermark.show(nameSelect);
+	else if(jQuery(nameSelect).length){
+		if (jQuery(nameSelect).hasClass("watermark")) {
+            jQuery.watermark.hide(nameSelect);
+			value = jQuery(nameSelect).val();
+            jQuery.watermark.show(nameSelect);
 		}
 		else{
-			value = jq(nameSelect).val();
+			value = jQuery(nameSelect).val();
 		}
 	}
 
@@ -374,7 +374,7 @@ function coerceValue(name){
  */
 function setValue(name, value) {
     var nameSelect = "[name='" + escapeName(name) + "']";
-    jq(nameSelect).val(value);
+    jQuery(nameSelect).val(value);
 }
 
 function isValueEmpty(value){
@@ -388,13 +388,13 @@ function isValueEmpty(value){
 
 //returns true if the field with name of name1 occurs before field with name2
 function occursBefore(name1, name2){
-	var field1 = jq("[name='" + escapeName(name1) + "']");
-	var field2 = jq("[name='" + escapeName(name2) + "']");
+	var field1 = jQuery("[name='" + escapeName(name1) + "']");
+	var field2 = jQuery("[name='" + escapeName(name2) + "']");
 
 	field1.addClass("prereqcheck");
 	field2.addClass("prereqcheck");
 
-	var fields = jq(".prereqcheck");
+	var fields = jQuery(".prereqcheck");
 
 	field1.removeClass("prereqcheck");
 	field2.removeClass("prereqcheck");
@@ -418,8 +418,8 @@ function occursBefore(name1, name2){
  * @returns true if the form has dirty fields
  */
 function checkDirty(event){
-	var validateDirty = jq("[name='validateDirty']").val()
-	var dirty = jq(".uif-field").find("input.dirty")
+	var validateDirty = jQuery("[name='validateDirty']").val()
+	var dirty = jQuery(".uif-field").find("input.dirty")
 
 	if (validateDirty == "true" && dirty.length > 0)
 	{
@@ -429,15 +429,15 @@ function checkDirty(event){
 			event.stopImmediatePropagation();
 
 			//Change the current nav button class to 'current' if user doesn't wants to leave the page
-			var ul = jq("#" + event.target.id).closest("ul");
+			var ul = jQuery("#" + event.target.id).closest("ul");
 			if (ul.length > 0)
 			{
-				var pageId = jq("[name='pageId']").val();
+				var pageId = jQuery("[name='pageId']").val();
 				if(ul.hasClass("uif-tabMenu")){
-					jq("#" + ul.attr("id")).selectTab({selectPage : pageId});
+					jQuery("#" + ul.attr("id")).selectTab({selectPage : pageId});
 				}
 				else{
-					jq("#" + ul.attr("id")).selectMenuItem({selectPage : pageId});
+					jQuery("#" + ul.attr("id")).selectMenuItem({selectPage : pageId});
 				}
 			}
 			return true;
@@ -462,8 +462,8 @@ function getAttributeId(elementId){
 //The element that is used is based on the hidden value of jumpToId or jumpToName on the form
 //if these hidden attributes do not contain a value it jumps to the top of the page by default
 function performJumpTo(){
-	var jumpToId = jq("[name='jumpToId']").val();
-	var jumpToName = jq("[name='jumpToName']").val();
+	var jumpToId = jQuery("[name='jumpToId']").val();
+	var jumpToName = jQuery("[name='jumpToName']").val();
 	if(jumpToId){
 		if(jumpToId.toUpperCase() === "TOP"){
 			jumpToTop();
@@ -485,18 +485,18 @@ function performJumpTo(){
 
 //performs a focus on an the element with the id preset
 function performFocus(){
-	var focusId = jq("[name='focusId']").val();
+	var focusId = jQuery("[name='focusId']").val();
 	if(focusId){
-		jq("#" + focusId).focus();
+		jQuery("#" + focusId).focus();
 	}
 	else{
-		jq("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
+		jQuery("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
 	}
 }
 
 //performs a focus on an the element with the name specified
 function focusOnElementByName(name){
-	var theElement =  jq("[name='" + escapeName(name) + "']");
+	var theElement =  jQuery("[name='" + escapeName(name) + "']");
 	if(theElement.length != 0){
 		theElement.focus();
 	}
@@ -505,55 +505,55 @@ function focusOnElementByName(name){
 //performs a focus on an the element with the id specified
 function focusOnElementById(focusId){
 	if(focusId){
-		jq("#" + focusId).focus();
+		jQuery("#" + focusId).focus();
 	}
 }
 
 //Jump(scroll) to an element by name
 function jumpToElementByName(name){
-	var theElement =  jq("[name='" + escapeName(name) + "']");
+	var theElement =  jQuery("[name='" + escapeName(name) + "']");
 	if(theElement.length != 0){
-		if(top == self || jq("#fancybox-frame", parent.document).length){
-			jq.scrollTo(theElement, 0);
+		if(top == self || jQuery("#fancybox-frame", parent.document).length){
+            jQuery.scrollTo(theElement, 0);
 		}
 		else{
-			var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
-			top.$.scrollTo(theElement, 0, {offset: {top:headerOffset}});
+			var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
+			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
 		}
 	}
 }
 
 //Jump(scroll) to an element by Id
 function jumpToElementById(id){
-	var theElement =  jq("#" + id);
+	var theElement =  jQuery("#" + id);
 	if(theElement.length != 0){
-		if(top == self || jq("#fancybox-frame", parent.document).length){
-			jq.scrollTo(theElement, 0);
+		if(top == self || jQuery("#fancybox-frame", parent.document).length){
+            jQuery.scrollTo(theElement, 0);
 		}
 		else{
-			var headerOffset = top.$("#header").outerHeight(true) + top.$(".header2").outerHeight(true);
-			top.$.scrollTo(theElement, 0, {offset: {top:headerOffset}});
+			var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
+			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
 		}
 	}
 }
 
 //Jump(scroll) to the top of the current screen
 function jumpToTop(){
-	if(top == self || jq("#fancybox-frame", parent.document).length){
-		jq.scrollTo(jq("html"), 0);
+	if(top == self || jQuery("#fancybox-frame", parent.document).length){
+        jQuery.scrollTo(jQuery("html"), 0);
 	}
 	else{
-		top.$.scrollTo(top.$("html"), 0);
+		top.jQuery.scrollTo(top.jQuery("html"), 0);
 	}
 }
 
 //Jump(scroll) to the bottom of the current screen
 function jumpToBottom(){
-	if(top == self || jq("#fancybox-frame", parent.document).length){
-		jq.scrollTo("max", 0);
+	if(top == self || jQuery("#fancybox-frame", parent.document).length){
+        jQuery.scrollTo("max", 0);
 	}
 	else{
-		top.$.scrollTo("max", 0);
+		top.jQuery.scrollTo("max", 0);
 	}
 }
 
@@ -613,11 +613,11 @@ function resizeTheRouteLogFrame() {
  * @param concatFlag - indicate if value should be added to current value
  */
 function addAttribute(id, attributeName, attributeValue, concatFlag) {
-    hasAttribute = jq("#" + id).is('[' + attributeName + ']');
+    hasAttribute = jQuery("#" + id).is('[' + attributeName + ']');
     if (concatFlag && hasAttribute) {
-        jq("#" + id).attr(attributeName, jq("#" + id).attr(attributeName) + " " + attributeValue);
+        jQuery("#" + id).attr(attributeName, jQuery("#" + id).attr(attributeName) + " " + attributeValue);
     }else{
-        jq("#" + id).attr(attributeName, attributeValue);
+        jQuery("#" + id).attr(attributeName, attributeValue);
     }
 }
 
@@ -655,5 +655,5 @@ function openHelpWindow(url) {
  * @param controlId - id for the control whose value should be uppercased
  */
 function uppercaseValue(controlId) {
-    jq("#" + controlId).css('text-transform', 'uppercase');
+    jQuery("#" + controlId).css('text-transform', 'uppercase');
 }

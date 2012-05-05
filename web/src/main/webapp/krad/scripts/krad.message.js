@@ -53,48 +53,48 @@ function createLoading(showLoading) {
     var loadingMessage =  '<h1><img src="' + getConfigParam("kradImageLocation") + 'loading.gif" alt="working..." />Loading...</h1>';
     var savingMessage = '<h1><img src="' + getConfigParam("kradImageLocation") + 'loading.gif" alt="working..." />Saving...</h1>';
 
-    var methodToCall = jq("input[name='methodToCall']").val();
-    var unblockUIOnLoading = jq("input[name='unblockUIOnLoading']").val();
+    var methodToCall = jQuery("input[name='methodToCall']").val();
+    var unblockUIOnLoading = jQuery("input[name='unblockUIOnLoading']").val();
 
     if (unblockUIOnLoading == null || unblockUIOnLoading.toUpperCase() == "false".toUpperCase()) {
         if (top == self) {
             //no portal
             if (showLoading) {
                 if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                    jq.blockUI({message: savingMessage});
+                    jQuery.blockUI({message: savingMessage});
                 }
                 else {
-                    jq.blockUI({message: loadingMessage});
+                    jQuery.blockUI({message: loadingMessage});
                 }
             }
             else {
-                jq.unblockUI();
+                jQuery.unblockUI();
             }
         }
-        else if (top.jq == null) {
+        else if (top.jQuery == null) {
             if (showLoading) {
                 if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                    top.$.blockUI({message: savingMessage});
+                    top.jQuery.blockUI({message: savingMessage});
                 }
                 else {
-                    top.$.blockUI({message: loadingMessage});
+                    top.jQuery.blockUI({message: loadingMessage});
                 }
             }
             else {
-                top.$.unblockUI();
+                top.jQuery.unblockUI();
             }
         }
         else {
             if (showLoading) {
                 if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
-                    top.jq.blockUI({message: savingMessage});
+                    top.jQuery.blockUI({message: savingMessage});
                 }
                 else {
-                    top.jq.blockUI({message: loadingMessage});
+                    top.jQuery.blockUI({message: loadingMessage});
                 }
             }
             else {
-                top.jq.unblockUI();
+                top.jQuery.unblockUI();
             }
         }
     }
@@ -107,8 +107,8 @@ function createLoading(showLoading) {
  * @param fieldId - id for the field the icon should be added to
  */
 function showChangeIcon(fieldId) {
-    var fieldMarkerSpan = jq("#" + fieldId + "_attribute_markers");
-    var fieldIcon = jq("#" + fieldId + "_changeIcon");
+    var fieldMarkerSpan = jQuery("#" + fieldId + "_attribute_markers");
+    var fieldIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {
         fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
@@ -139,8 +139,8 @@ function showChangeIconOnDisclosure(headerFieldId) {
  * @param fieldId - id for the header field the icon should be added to
  */
 function showChangeIconOnGroupHeader(fieldId, idSuffix) {
-    var targetElement = jq("#" + fieldId + idSuffix).find("[class~=uif-headerText]");
-    var headerIcon = jq("#" + fieldId + "_changeIcon");
+    var targetElement = jQuery("#" + fieldId + idSuffix).find("[class~=uif-headerText]");
+    var headerIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {
         targetElement.append("<img id='" + fieldId + "_changeIcon' class='uif-changedHeaderIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
@@ -149,7 +149,7 @@ function showChangeIconOnGroupHeader(fieldId, idSuffix) {
 
 // Applies the watermark to the input with the id specified
 function createWatermark(id, watermark) {
-    jq("#" + id).watermark(watermark);
+    jQuery("#" + id).watermark(watermark);
 }
 
 /**
@@ -160,9 +160,9 @@ function createWatermark(id, watermark) {
  * @returns {Boolean} true if there was an incident, false otherwise
  */
 function handleIncidentReport(content) {
-    var viewId = jq("#viewId", content);
+    var viewId = jQuery("#viewId", content);
     if (viewId.length && viewId.val() === "Uif-IncidentReportView") {
-        jq('#Uif-Application').replaceWith(content);
+        jQuery('#Uif-Application').replaceWith(content);
         runHiddenScriptsAgain();
         return true;
     }

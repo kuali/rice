@@ -96,7 +96,7 @@ function initMessageTooltip(fieldId) {
         tail:{align:"left"}
     };
 
-    jq(element).mouseenter(function () {
+    jQuery(element).mouseenter(function () {
         var tooltipElement = this;
         var focus = jQuery(tooltipElement).is(":focus");
         if (elementInfo.type == "fieldset") {
@@ -124,7 +124,7 @@ function initMessageTooltip(fieldId) {
             jQuery(tooltipElement).ShowBubblePopup();
         }
     });
-    jq(element).mouseleave(function (event) {
+    jQuery(element).mouseleave(function (event) {
         //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
         //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
         //when entered
@@ -1422,8 +1422,8 @@ function runValidationScript(scriptFunction) {
         scriptFunction();
     }
     else {
-        jq(document).bind('validationSetup', function (event) {
-            jq(this).unbind(event);
+        jQuery(document).bind('validationSetup', function (event) {
+            jQuery(this).unbind(event);
             scriptFunction();
         });
     }
@@ -1437,7 +1437,7 @@ function validateFieldValue(fieldControl){
         jQuery(fieldControl).removeClass("ignoreValid");
         hadIgnore = true;
     }
-    var valid = jq(fieldControl).valid();
+    var valid = jQuery(fieldControl).valid();
     dependsOnCheck(fieldControl, new Array());
     if(hadIgnore){
         jQuery(fieldControl).addClass("ignoreValid");
@@ -1451,30 +1451,30 @@ function validateFieldValue(fieldControl){
 //Note: with the way that validation work the field must have been previously validated (ie validated)
 function dependsOnCheck(element, nameArray) {
     var name;
-    if (jq(element).is("option")) {
-        name = jq(element).parent().attr('name');
+    if (jQuery(element).is("option")) {
+        name = jQuery(element).parent().attr('name');
     }
     else {
-        name = jq(element).attr('name');
+        name = jQuery(element).attr('name');
     }
     name = escapeName(name);
-    jq("[name='" + name + "']").trigger("checkReq");
+    jQuery("[name='" + name + "']").trigger("checkReq");
     nameArray.push(name);
 
-    jq(".dependsOn-" + name).each(function () {
+    jQuery(".dependsOn-" + name).each(function () {
 
         var elementName;
-        if (jq(this).is("option")) {
-            elementName = jq(this).parent().attr('name');
+        if (jQuery(this).is("option")) {
+            elementName = jQuery(this).parent().attr('name');
         }
         else {
-            elementName = jq(this).attr('name');
+            elementName = jQuery(this).attr('name');
         }
         elementName = escapeName(elementName);
 
         //if it has one of these classes it means it was already visited by the user
-        if (jq(this).hasClass("valid") || jq(this).hasClass("error")) {
-            jq.watermark.hide(this);
+        if (jQuery(this).hasClass("valid") || jQuery(this).hasClass("error")) {
+            jQuery.watermark.hide(this);
             
             //remove the ignore class if any due to a bug in the validate plugin for direct validation on certain types
             var hadIgnore = false;
@@ -1482,23 +1482,23 @@ function dependsOnCheck(element, nameArray) {
                 jQuery(this).removeClass("ignoreValid");
                 hadIgnore = true;
             }
-            var valid = jq(this).valid();
+            var valid = jQuery(this).valid();
             if(hadIgnore){
                 jQuery(this).addClass("ignoreValid");
             }
             
             if (valid) {
-                jq(element).removeAttr("aria-invalid");
+                jQuery(element).removeAttr("aria-invalid");
             }
             else {
-                jq(element).attr("aria-invalid", "true");
+                jQuery(element).attr("aria-invalid", "true");
                 if (!jQuery(this).is(":focus")) {
                     var id = getAttributeId(jQuery(this).attr('id'));
                     showMessageTooltip(id, true);
                 }
             }
-            jq.watermark.show(this);
-            var namePresent = jq.inArray(elementName, nameArray);
+            jQuery.watermark.show(this);
+            var namePresent = jQuery.inArray(elementName, nameArray);
             if (namePresent == undefined || namePresent == -1) {
                 dependsOnCheck(this, nameArray);
             }
@@ -1516,13 +1516,13 @@ function dependsOnCheck(element, nameArray) {
  * @param booleanFunction
  */
 function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) {
-    if (jq("[name='" + escapeName(controlName) + "']").length) {
+    if (jQuery("[name='" + escapeName(controlName) + "']").length) {
 
-        var id = jq("[name='" + escapeName(requiredName) + "']").attr("id");
+        var id = jQuery("[name='" + escapeName(requiredName) + "']").attr("id");
         id = getAttributeId(id);
         var indicator;
         if (id) {
-            var label = jq("#" + id + "_label_span");
+            var label = jQuery("#" + id + "_label_span");
             if (label.length) {
                 indicator = label.find(".uif-requiredMessage");
             }
@@ -1535,11 +1535,11 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
         }
 
         //also check condition when corresponding control is changed
-        jq("[name='" + escapeName(controlName) + "']").change(function () {
+        jQuery("[name='" + escapeName(controlName) + "']").change(function () {
             checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
         });
 
-        jq("[name='" + escapeName(controlName) + "']").bind("checkReq", function () {
+        jQuery("[name='" + escapeName(controlName) + "']").bind("checkReq", function () {
             checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
         });
     }
@@ -1557,13 +1557,13 @@ function checkForRequiredness(controlName, requiredName, booleanFunction, indica
     if (indicator != null && indicator.length) {
         if (booleanFunction()) {
             indicator.show();
-            jq("[name='" + escapeName(requiredName) + "']").attr("aria-required", "true");
-            jq("[name='" + escapeName(requiredName) + "']").addClass("required");
+            jQuery("[name='" + escapeName(requiredName) + "']").attr("aria-required", "true");
+            jQuery("[name='" + escapeName(requiredName) + "']").addClass("required");
         }
         else {
             indicator.hide();
-            jq("[name='" + escapeName(requiredName) + "']").attr("aria-required", "false");
-            jq("[name='" + escapeName(requiredName) + "']").removeClass("required");
+            jQuery("[name='" + escapeName(requiredName) + "']").attr("aria-required", "false");
+            jQuery("[name='" + escapeName(requiredName) + "']").removeClass("required");
         }
     }
 }

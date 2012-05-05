@@ -418,7 +418,7 @@ public class ClientValidationUtils {
 					constraintCount++;
 				}
 
-				rule = "jq('[name=\"" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {" + rule + "\n});";
+				rule = "jQuery('[name=\"" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {" + rule + "\n});";
 			}
 			else if (constraint instanceof ValidCharactersConstraint) {
 				String regexMethod = "";
@@ -434,7 +434,7 @@ public class ClientValidationUtils {
 					}
 				}
 				if (StringUtils.isNotEmpty(methodName)) {
-					rule = regexMethod + "jq('[name=\"" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n\"" + methodName
+					rule = regexMethod + "jQuery('[name=\"" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n\"" + methodName
 							+ "\" : function(element){return (" + booleanStatement + ");}\n});";
 				}
 			}
@@ -478,8 +478,8 @@ public class ClientValidationUtils {
 	public static void processPrerequisiteConstraint(InputField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
 		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
 		    String dependsClass = "dependsOn-" + ScriptUtils.escapeName(constraint.getPropertyName());
-		    String addClass = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').addClass('" + dependsClass + "');" +
-		        "jq('[name=\""+ ScriptUtils.escapeName(constraint.getPropertyName()) + "\"]').addClass('" + "dependsOn-" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "');";
+		    String addClass = "jQuery('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').addClass('" + dependsClass + "');" +
+		        "jQuery('[name=\""+ ScriptUtils.escapeName(constraint.getPropertyName()) + "\"]').addClass('" + "dependsOn-" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "');";
 			addScriptToPage(view, field, addClass + getPrerequisiteStatement(field, view, constraint, booleanStatement)
 					+ getPostrequisiteStatement(field, constraint, booleanStatement));
 	        //special requiredness indicator handling
@@ -526,7 +526,7 @@ public class ClientValidationUtils {
 		
 		// field occurs before case
 		String methodName = "prConstraint-" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + methodKey;
-		String addClass = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').addClass('" + methodName + "');\n";
+		String addClass = "jQuery('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').addClass('" + methodName + "');\n";
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
 			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + ScriptUtils.escapeName(constraint.getPropertyName()) + "')));}else{return true;} " +
 			"}, \"" + message + "\");";
@@ -572,7 +572,7 @@ public class ClientValidationUtils {
 		String function = "function(element){\n" +
 			"return (coerceValue('"+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "') && " + booleanStatement + ");}";
 		String postStatement = "\nelse if(occursBefore('" + ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "','" + ScriptUtils.escapeName(constraint.getPropertyName()) +
-			"')){\njq('[name=\""+ ScriptUtils.escapeName(constraint.getPropertyName()) +
+			"')){\njQuery('[name=\""+ ScriptUtils.escapeName(constraint.getPropertyName()) +
 			"\"]').rules(\"add\", { required: \n" + function 
 			+ ", \nmessages: {\nrequired: \""+ message +"\"}});}\n";
 		
@@ -600,7 +600,7 @@ public class ClientValidationUtils {
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
 		" if(" + booleanStatement + "){return (this.optional(element) || ("+ getMustOccurStatement(field, mc) + "));}else{return true;}" +
 		"}, \"" + getMustOccursMessage(view, mc) +"\");";
-		String rule = method + "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n\"" + methodName + "\": function(element){return (" + booleanStatement + ");}\n});";
+		String rule = method + "jQuery('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n\"" + methodName + "\": function(element){return (" + booleanStatement + ");}\n});";
 		addScriptToPage(view, field, rule);
 	}
 
@@ -784,7 +784,7 @@ public class ClientValidationUtils {
                         ((TextControl) field.getControl()).getDatePicker().getTemplateOptions().put("minDate", field.getExclusiveMin());
                     }
                     else{
-                        String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n minExclusive: ["+ field.getExclusiveMin() + "]});";
+                        String rule = "jQuery('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n minExclusive: ["+ field.getExclusiveMin() + "]});";
                         addScriptToPage(view, field, rule);
                     }
                 }
@@ -794,7 +794,7 @@ public class ClientValidationUtils {
                         ((TextControl) field.getControl()).getDatePicker().getTemplateOptions().put("maxDate", field.getInclusiveMax());
                     }
                     else{
-                        String rule = "jq('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n maxInclusive: ["+ field.getInclusiveMax() + "]});";
+                        String rule = "jQuery('[name=\""+ ScriptUtils.escapeName(field.getBindingInfo().getBindingPath()) + "\"]').rules(\"add\", {\n maxInclusive: ["+ field.getInclusiveMax() + "]});";
                         addScriptToPage(view, field, rule);
                     }
                 }

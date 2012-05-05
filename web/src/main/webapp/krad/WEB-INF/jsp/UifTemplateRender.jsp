@@ -22,7 +22,7 @@
 
       <c:if test="${!KualiForm.view.renderedInLightBox}">
         <krad:script value="
-          jq(function(){
+          jQuery(function(){
             publishHeight();
             window.onresize = publishHeight;
             window.setInterval(publishHeight, 249);

@@ -98,7 +98,7 @@
     
     <!-- custom script for the view -->
     <script type="text/javascript">
-      jq(document).ready(function() {
+      jQuery(document).ready(function() {
         ${view.onLoadScript}
       })
     </script>    

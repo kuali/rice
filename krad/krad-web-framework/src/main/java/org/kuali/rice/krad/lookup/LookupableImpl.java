@@ -575,7 +575,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 } else {
                     // Close the light box if return target is not _self or _parent
                     returnLinkField.setOnClickScript(
-                            "e.preventDefault();closeLightbox();createLoading(true);window.open(jq(this).attr('href'), jq(this).attr('target'));");
+                            "e.preventDefault();closeLightbox();createLoading(true);window.open(jQuery(this).attr('href'), jQuery(this).attr('target'));");
                 }
             }
         } else {

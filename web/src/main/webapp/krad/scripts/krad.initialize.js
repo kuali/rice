@@ -33,16 +33,16 @@ var warningImage;
 var infoImage;
 
 // common event registering done here through JQuery ready event
-jq(document).ready(function () {
+jQuery(document).ready(function () {
     setPageBreadcrumb();
 
     // buttons
-    jq("input:submit").button();
-    jq("input:button").button();
-    jq("a.button").button();
+    jQuery("input:submit").button();
+    jQuery("input:button").button();
+    jQuery("a.button").button();
 
     // common ajax setup
-    jq.ajaxSetup({
+    jQuery.ajaxSetup({
         beforeSend:function () {
             createLoading(true);
         },
@@ -56,11 +56,11 @@ jq(document).ready(function () {
     });
 
     runHiddenScripts("");
-    jq("#Uif-Application").show();
+    jQuery("#Uif-Application").show();
     createLoading(false);
 
     // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
-    jq(window).unload(function () {
+    jQuery(window).unload(function () {
         createLoading(false);
     });
 
@@ -78,7 +78,7 @@ function initFieldHandlers() {
 
 
     //when these fields are focus store what the current errors are if any and show the messageTooltip
-    jq(document).on("focus",
+    jQuery(document).on("focus",
             "[data-role='InputField'] input:text, "
                     + "[data-role='InputField'] input:password, "
                     + "[data-role='InputField'] input:file, "
@@ -101,7 +101,7 @@ function initFieldHandlers() {
 
     //when these fields are focused out validate and if this field never had an error before, show and close, otherwise
     //immediately close the tooltip
-    jq(document).on("focusout",
+    jQuery(document).on("focusout",
             "[data-role='InputField'] input:text, "
                     + "[data-role='InputField'] input:password, "
                     + "[data-role='InputField'] input:file, "
@@ -130,7 +130,7 @@ function initFieldHandlers() {
             });
 
     //when these fields are changed validate immediately
-    jq(document).on("change",
+    jQuery(document).on("change",
             "[data-role='InputField'] input:checkbox, "
                     + "[data-role='InputField'] input:radio, "
                     + "[data-role='InputField'] select",
@@ -141,7 +141,7 @@ function initFieldHandlers() {
             });
 
     //Greying out functionality
-    jq(document).on("change",
+    jQuery(document).on("change",
             "[data-role='InputField'] input:text, "
                     + "[data-role='InputField'] input:password, "
                     + "[data-role='InputField'] input:file, "
@@ -157,7 +157,7 @@ function initFieldHandlers() {
             });
 
     //special radio and checkbox control handling for click events
-    jq(document).on("click",
+    jQuery(document).on("click",
             "[data-role='InputField'] input:checkbox, "
                     + "[data-role='InputField'] input:radio,"
                     + "fieldset[data-type='CheckboxSet'] label,"
@@ -170,7 +170,7 @@ function initFieldHandlers() {
             });
 
     //special radio and checkbox control handling for focus events
-    jq(document).on("focus",
+    jQuery(document).on("focus",
             "[data-role='InputField'] input:checkbox, "
                     + "[data-role='InputField'] input:radio",
             function () {
@@ -185,7 +185,7 @@ function initFieldHandlers() {
     //if not part of the fieldset, the closing behavior is similar to normal fields
     //in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
     //in the fieldset has focus)
-    jq(document).on("focusout",
+    jQuery(document).on("focusout",
             "[data-role='InputField'] input:checkbox, "
                     + "[data-role='InputField'] input:radio",
             function () {
@@ -234,7 +234,7 @@ function initFieldHandlers() {
                 }
                 //non-fieldset case
                 else if (!jQuery(this).parent().parent().is("fieldset")) {
-                    var hadError = jq(this).hasClass("error");
+                    var hadError = jQuery(this).hasClass("error");
                     var valid = true;
                     //not in a fieldset - so validate directly
                     if (validateClient) {
@@ -257,14 +257,14 @@ function initBubblePopups() {
     //any other CreateBubblePopup calls besides this one (that explicitly selects any elements that may use them)
     //will cause a severe loss of functionality and buggy behavior
     //if new BubblePopups must be created due to new content on the screen this full selection MUST be run again
-    jq("input, select, textarea, "
+    jQuery("input, select, textarea, "
             + " label, .uif-tooltip").CreateBubblePopup(
             {   manageMouseEvents:false,
                 themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
 }
 
 function hideBubblePopups() {
-    jq("input, select, textarea, "
+    jQuery("input, select, textarea, "
             + " label, .uif-tooltip").HideAllBubblePopups();
 }
 
@@ -273,7 +273,7 @@ function hideBubblePopups() {
  * also sets up the dirty check and other page scripts
  */
 function setupPage(validate, focusFirstField) {
-    jq('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
+    jQuery('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
 
     setupImages();
 
@@ -285,12 +285,12 @@ function setupPage(validate, focusFirstField) {
     validateClient = validate;
 
     //select current page
-    var pageId = jq("[name='pageId']").val();
-    jq("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
-    jq("ul.uif-tabMenu").selectTab({selectPage : pageId});
+    var pageId = jQuery("[name='pageId']").val();
+    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
+    jQuery("ul.uif-tabMenu").selectTab({selectPage : pageId});
 
     //Handle messages at field, if any
-    jq("[data-role='InputField']").each(function () {
+    jQuery("[data-role='InputField']").each(function () {
         var id = jQuery(this).attr('id');
         handleMessagesAtField(id, true);
     });
@@ -303,19 +303,19 @@ function setupPage(validate, focusFirstField) {
     }
 
     //Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
-    jq(window).bind('beforeunload', function (evt) {
-        var validateDirty = jq("[name='validateDirty']").val();
+    jQuery(window).bind('beforeunload', function (evt) {
+        var validateDirty = jQuery("[name='validateDirty']").val();
         if (validateDirty == "true") {
-            var dirty = jq(".uif-field").find("input.dirty");
+            var dirty = jQuery(".uif-field").find("input.dirty");
             //methodToCall check is needed to skip from normal way of unloading (cancel,save,close)
-            var methodToCall = jq("[name='methodToCall']").val();
+            var methodToCall = jQuery("[name='methodToCall']").val();
             if (dirty.length > 0 && methodToCall == null) {
                 return "Form has unsaved data. Do you want to leave anyway?";
             }
         }
     });
 
-    jq('#kualiForm').validate(
+    jQuery('#kualiForm').validate(
             {
                 onsubmit:false,
                 ignore:".ignoreValid",
@@ -334,12 +334,12 @@ function setupPage(validate, focusFirstField) {
                     }
                 },
                 highlight:function (element, errorClass, validClass) {
-                    jq(element).addClass(errorClass).removeClass(validClass);
-                    jq(element).attr("aria-invalid", "true");
+                    jQuery(element).addClass(errorClass).removeClass(validClass);
+                    jQuery(element).attr("aria-invalid", "true");
                 },
                 unhighlight:function (element, errorClass, validClass) {
-                    jq(element).removeClass(errorClass).addClass(validClass);
-                    jq(element).removeAttr("aria-invalid");
+                    jQuery(element).removeClass(errorClass).addClass(validClass);
+                    jQuery(element).removeAttr("aria-invalid");
 
                     var id = getAttributeId(jQuery(element).attr("id"));
                     var data = jQuery("#" + id).data("validationMessages");
@@ -425,14 +425,14 @@ function setupPage(validate, focusFirstField) {
                 }
             });
 
-    jq(".required").each(function () {
-        jq(this).attr("aria-required", "true");
+    jQuery(".required").each(function () {
+        jQuery(this).attr("aria-required", "true");
     });
 
-    jq(document).trigger('validationSetup');
+    jQuery(document).trigger('validationSetup');
     pageValidatorReady = true;
 
-    jq.watermark.showAll();
+    jQuery.watermark.showAll();
     if(focusFirstField){
         performFocus();
     }
@@ -454,7 +454,7 @@ function setupImages() {
  * @param paramName - name of the parameter to retrieve
  */
 function getConfigParam(paramName) {
-    var configParams = jq(document).data("ConfigParameters");
+    var configParams = jQuery(document).data("ConfigParameters");
     if (configParams) {
         return configParams[paramName];
     }
@@ -479,7 +479,7 @@ jQuery.validator.addMethod("maxInclusive", function (value, element, param) {
 });
 jQuery.validator.addMethod("minLengthConditional", function (value, element, param) {
     if (param.length == 1 || param[1]()) {
-        return this.optional(element) || this.getLength(jq.trim(value), element) >= param[0];
+        return this.optional(element) || this.getLength(jQuery.trim(value), element) >= param[0];
     }
     else {
         return true;
@@ -487,7 +487,7 @@ jQuery.validator.addMethod("minLengthConditional", function (value, element, par
 });
 jQuery.validator.addMethod("maxLengthConditional", function (value, element, param) {
     if (param.length == 1 || param[1]()) {
-        return this.optional(element) || this.getLength(jq.trim(value), element) <= param[0];
+        return this.optional(element) || this.getLength(jQuery.trim(value), element) <= param[0];
     }
     else {
         return true;
@@ -563,18 +563,18 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
 
 jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
     var aData = [];
-    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var input = jq(this).find('input:text');
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var input = jQuery(this).find('input:text');
         if (input.length != 0) {
             aData.push(input.val());
         } else {
             // find span for the data or input field and get its text
-            var input1 = jq(this).find('.uif-field');
+            var input1 = jQuery(this).find('.uif-field');
             if (input1.length != 0) {
-                aData.push(jq.trim(input1.find("span:first").text()));
+                aData.push(jQuery.trim(input1.find("span:first").text()));
             } else {
                 // just use the text within the cell
-                aData.push(jq(this).text());
+                aData.push(jQuery(this).text());
             }
         }
 
@@ -586,14 +586,14 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
 /* Create an array with the values of all the select options in a column */
 jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn) {
     var aData = [];
-    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var selected = jq(this).find('select option:selected:first');
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var selected = jQuery(this).find('select option:selected:first');
         if (selected.length != 0) {
             aData.push(selected.text());
         } else {
-            var input1 = jq(this).find('.uif-inputField');
+            var input1 = jQuery(this).find('.uif-inputField');
             if (input1.length != 0) {
-                aData.push(jq.trim(input1.text()));
+                aData.push(jQuery.trim(input1.text()));
             } else {
                 aData.push("");
             }
@@ -607,8 +607,8 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn)
 /* Create an array with the values of all the checkboxes in a column */
 jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn) {
     var aData = [];
-    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var checkboxes = jq(this).find('input:checkbox');
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var checkboxes = jQuery(this).find('input:checkbox');
         if (checkboxes.length != 0) {
             var str = "";
             for (i = 0; i < checkboxes.length; i++) {
@@ -619,9 +619,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
             }
             aData.push(str);
         } else {
-            var input1 = jq(this).find('.uif-inputField');
+            var input1 = jQuery(this).find('.uif-inputField');
             if (input1.length != 0) {
-                aData.push(jq.trim(input1.text()));
+                aData.push(jQuery.trim(input1.text()));
             } else {
                 aData.push("");
             }
@@ -634,8 +634,8 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
 
 jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) {
     var aData = [];
-    jq('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
-        var radioButtons = jq(this).find('input:radio');
+    jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
+        var radioButtons = jQuery(this).find('input:radio');
         if (radioButtons.length != 0) {
             var value = "";
             for (i = 0; i < radioButtons.length; i++) {
@@ -647,9 +647,9 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) 
             }
             aData.push(value);
         } else {
-            var input1 = jq(this).find('.uif-inputField');
+            var input1 = jQuery(this).find('.uif-inputField');
             if (input1.length != 0) {
-                aData.push(jq.trim(input1.text()));
+                aData.push(jQuery.trim(input1.text()));
             } else {
                 aData.push("");
             }
@@ -664,8 +664,8 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) 
 window.onerror = errorHandler;
 
 function errorHandler(msg, url, lno) {
-    jq("#Uif-Application").show();
-    jq("#Uif-PageContentWrapper").show();
+    jQuery("#Uif-Application").show();
+    jQuery("#Uif-PageContentWrapper").show();
     var context = getContext();
     context.unblockUI();
     showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');
@@ -673,7 +673,7 @@ function errorHandler(msg, url, lno) {
 }
 
 // script that should execute when the page unloads
-jq(window).bind('beforeunload', function (evt) {
+jQuery(window).bind('beforeunload', function (evt) {
     // clear server form if closing the browser tab/window or going back
     // TODO: work out back button problem so we can add this clearing
 //    if (!event.pageY || (event.pageY < 0)) {

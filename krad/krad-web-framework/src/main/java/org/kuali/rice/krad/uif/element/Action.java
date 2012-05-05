@@ -192,7 +192,7 @@ public class Action extends ContentElementBase {
                 postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
             }
             if (StringUtils.isBlank(postScript)) {
-                postScript = "writeHiddenToForm('renderFullView' , 'true'); jq('#kualiForm').submit();";
+                postScript = "writeHiddenToForm('renderFullView' , 'true'); jQuery('#kualiForm').submit();";
             }
 
             if (includeDirtyCheckScript) {

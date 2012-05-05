@@ -30,9 +30,9 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 
     // methodToCall checks
     if (methodToCall == null) {
-        var methodToCallInput = jq("input[name='methodToCall']");
+        var methodToCallInput = jQuery("input[name='methodToCall']");
         if (methodToCallInput.length > 0) {
-            methodToCall = jq("input[name='methodToCall']").val();
+            methodToCall = jQuery("input[name='methodToCall']").val();
         }
     }
 
@@ -44,19 +44,19 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
     data.renderFullView = false;
 
     // remove this since the methodToCall was passed in or extracted from the page, to avoid issues
-    jq("input[name='methodToCall']").remove();
+    jQuery("input[name='methodToCall']").remove();
 	
 	if(additionalData != null){
-		jq.extend(data, additionalData);
+        jQuery.extend(data, additionalData);
 	}
 
-    var viewState = jq(document).data("ViewState");
-    if (!jq.isEmptyObject(viewState)) {
-        var jsonViewState = jq.toJSON(viewState);
+    var viewState = jQuery(document).data("ViewState");
+    if (!jQuery.isEmptyObject(viewState)) {
+        var jsonViewState = jQuery.toJSON(viewState);
 
         // change double quotes to single because escaping causes problems on URL
         jsonViewState = jsonViewState.replace(/"/g, "'");
-        jq.extend(data, {clientViewState: jsonViewState});
+        jQuery.extend(data, {clientViewState: jsonViewState});
     }
 	
 	var submitOptions = {
@@ -69,7 +69,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 					successCallback(tempDiv);
 				}
 
-				jq("#formComplete").html("");
+                jQuery("#formComplete").html("");
 			},
             error: function(jqXHR, textStatus) {
                 alert( "Request failed: " + textStatus );
@@ -109,32 +109,32 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 	}
     //hide any tooltips that may be showing
     hideBubblePopups();
-	
-	jq.extend(submitOptions, elementBlockingOptions);
-	var form = jq("#kualiForm");
+
+    jQuery.extend(submitOptions, elementBlockingOptions);
+	var form = jQuery("#kualiForm");
 	form.ajaxSubmit(submitOptions);
 }
 
 //Called when a form is being persisted to assure all validation passes
 function validateAndSubmit(methodToCall, successCallback){
-	jq.watermark.hideAll();
+    jQuery.watermark.hideAll();
 
     var validForm = true;
 
     if(validateClient){
         messageSummariesShown = true;
         pauseTooltipDisplay = true;
-        validForm = jq("#kualiForm").valid();
+        validForm = jQuery("#kualiForm").valid();
         pauseTooltipDisplay = false;
     }
 
 	if(validForm){
-		jq.watermark.showAll();
+        jQuery.watermark.showAll();
 		ajaxSubmitForm(methodToCall, successCallback, null, null);
 	}
 	else{
-		jq.watermark.showAll();
-		jq("#formComplete").html("");
+        jQuery.watermark.showAll();
+        jQuery("#formComplete").html("");
         jumpToTop();
 		alert("The form contains errors.  Please correct these errors and try again.");
         jQuery(".uif-pageValidationHeader").focus();
@@ -154,7 +154,7 @@ function validateAndSubmitUsingFormMethodToCall(){
  * The methodToCall parameter is used to determine the controller method to invoke
  */
 function submitForm(){
-	var methodToCall = jq("input[name='methodToCall']").val();
+	var methodToCall = jQuery("input[name='methodToCall']").val();
 	ajaxSubmitForm(methodToCall, updatePageCallback, null, null);
 }
 
@@ -169,19 +169,19 @@ function submitForm(){
  * @param content - content returned from response
  */
 function updatePageCallback(content) {
-    var page = jq("[data-handler='update-component']", content);
+    var page = jQuery("[data-handler='update-component']", content);
     page.hide();
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
     var pageInLayout = "#Uif-ViewContentWrapper > #Uif-PageContentWrapper";
-	jq(pageInLayout).empty().append(page.find(">*"));
+    jQuery(pageInLayout).empty().append(page.find(">*"));
 
     setPageBreadcrumb();
 
     pageValidatorReady = false;
     runHiddenScripts(pageInLayout, true);
 
-    jq(pageInLayout).show();
+    jQuery(pageInLayout).show();
 }
 
 /**
@@ -210,10 +210,10 @@ function handleActionLink(methodToCall, navigateToPageId) {
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
 function retrieveComponent(id, baseId, methodToCall){
-	var elementToBlock = jq("#" + id);
+	var elementToBlock = jQuery("#" + id);
 
 	var updateRefreshableComponentCallback = function(htmlContent){
-		var component = jq("#" + id + "_update", htmlContent);
+		var component = jQuery("#" + id + "_update", htmlContent);
 
         var displayWithId = id;
         if (id.indexOf('_attribute') > 0) {
@@ -221,33 +221,33 @@ function retrieveComponent(id, baseId, methodToCall){
         }
 
 		// special label handling, if any
-		var theLabel = jq("#" + displayWithId + "_label_span", component);
-		if(jq(".displayWith-" + displayWithId).length && theLabel.length){
+		var theLabel = jQuery("#" + displayWithId + "_label_span", component);
+		if(jQuery(".displayWith-" + displayWithId).length && theLabel.length){
 			theLabel.addClass("displayWith-" + displayWithId);
-			jq("span.displayWith-" + displayWithId).replaceWith(theLabel);
+            jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
 			component.remove("#" + displayWithId + "_label_span");
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
-                var origColor = jq(component).find("#" + id).css("background-color");
-                jq(component).find("#" + id).css("background-color", "");
-                jq(component).find("#" + id).addClass("uif-progressiveDisclosure-highlight");
+                var origColor = jQuery(component).find("#" + id).css("background-color");
+            jQuery(component).find("#" + id).css("background-color", "");
+            jQuery(component).find("#" + id).addClass("uif-progressiveDisclosure-highlight");
 
                 // remove old stuff
-                if(jq("#" + id + "_errors").length){
-                    jq("#" + id + "_errors").remove();
+                if(jQuery("#" + id + "_errors").length){
+                    jQuery("#" + id + "_errors").remove();
                 }
-                jq("input[data-for='"+ id +"']").each(function () {
-                    jq(this).remove();
+            jQuery("input[data-for='"+ id +"']").each(function () {
+                jQuery(this).remove();
                 });
 
 				// replace component
-				if(jq("#" + id).length){
-					jq("#" + id).replaceWith(component.html());
+				if(jQuery("#" + id).length){
+                    jQuery("#" + id).replaceWith(component.html());
 				}
 
-                if(jq("#" + id).parent().is("td")){
-                    jq("#" + id).parent().show();
+                if(jQuery("#" + id).parent().is("td")){
+                    jQuery("#" + id).parent().show();
                 }
 
                 //runs scripts on the span or div with id
@@ -257,11 +257,11 @@ function retrieveComponent(id, baseId, methodToCall){
                     origColor = "transparent";
                 }
 
-                jq("#" + id).animate({backgroundColor: origColor}, 5000);
+            jQuery("#" + id).animate({backgroundColor: origColor}, 5000);
 			}
 		});
 
-		jq(".displayWith-" + displayWithId).show();
+        jQuery(".displayWith-" + displayWithId).show();
 	};
 
     if (!methodToCall) {
@@ -283,14 +283,14 @@ function retrieveComponent(id, baseId, methodToCall){
  * not displayed (false)
  */
 function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
-    var elementToBlock = jq("#" + collectionGroupId);
+    var elementToBlock = jQuery("#" + collectionGroupId);
     var updateCollectionCallback = function(htmlContent){
-    	var component = jq("#" + collectionGroupId, htmlContent);
+    	var component = jQuery("#" + collectionGroupId, htmlContent);
 
 		elementToBlock.unblock({onUnblock: function(){
 				//replace component
-				if(jq("#" + collectionGroupId).length){
-					jq("#" + collectionGroupId).replaceWith(component);
+				if(jQuery("#" + collectionGroupId).length){
+                    jQuery("#" + collectionGroupId).replaceWith(component);
 				}
 				runHiddenScripts(collectionGroupId);
 			}
@@ -304,21 +304,21 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
 
 function performCollectionAction(collectionGroupId){
 	if(collectionGroupId){
-		var elementToBlock = jq("#" + collectionGroupId);
+		var elementToBlock = jQuery("#" + collectionGroupId);
 	    var updateCollectionCallback = function(htmlContent){
-	    	var component = jq("#" + collectionGroupId, htmlContent);
+	    	var component = jQuery("#" + collectionGroupId, htmlContent);
 
 			elementToBlock.unblock({onUnblock: function(){
 					//replace component
-					if(jq("#" + collectionGroupId).length){
-						jq("#" + collectionGroupId).replaceWith(component);
+					if(jQuery("#" + collectionGroupId).length){
+                        jQuery("#" + collectionGroupId).replaceWith(component);
 					}
 					runHiddenScripts(collectionGroupId);
 				}
 			});
 	    };
 	    
-	    var methodToCall = jq("input[name='methodToCall']").val();
+	    var methodToCall = jQuery("input[name='methodToCall']").val();
 		ajaxSubmitForm(methodToCall, updateCollectionCallback, {updateComponentId: collectionGroupId, skipViewInit: "true"},
 				elementToBlock);
 	}
@@ -329,26 +329,26 @@ function performCollectionAction(collectionGroupId){
 //called when a line is added to a collection
 function addLineToCollection(collectionGroupId, collectionBaseId){
 	if(collectionBaseId){
-		var addFields = jq("." + collectionBaseId + "-addField:visible");
-		jq.watermark.hideAll();
+		var addFields = jQuery("." + collectionBaseId + "-addField:visible");
+        jQuery.watermark.hideAll();
 
 		var valid = true;
 		addFields.each(function(){
-			jq(this).removeClass("ignoreValid");
-			jq(this).valid();
-			if(jq(this).hasClass("error")){
+            jQuery(this).removeClass("ignoreValid");
+            jQuery(this).valid();
+			if(jQuery(this).hasClass("error")){
 				valid = false;
 			}
-			jq(this).addClass("ignoreValid");
+            jQuery(this).addClass("ignoreValid");
 		});
 
-		jq.watermark.showAll();
+        jQuery.watermark.showAll();
 
 		if(valid){
 			performCollectionAction(collectionGroupId);
 		}
 		else{
-			jq("#formComplete").html("");
+            jQuery("#formComplete").html("");
 			alert("This addition contains errors.  Please correct these errors and try again.");
 		}
 	}
@@ -382,9 +382,9 @@ function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall){
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
 function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCall){
-	jq("[name='"+ escapeName(controlName) +"']").live('change', function() {
+    jQuery("[name='"+ escapeName(controlName) +"']").live('change', function() {
 		// visible check because a component must logically be visible to refresh
-		var refreshComp = jq("#" + refreshId);
+		var refreshComp = jQuery("#" + refreshId);
 		if(refreshComp.length){
 			if(condition()){
 				retrieveComponent(refreshId, baseId, methodToCall);
@@ -408,8 +408,8 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCa
  */
 function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall){
 	if (!baseId.match("\_c0$")) {
-		jq("[name='"+ escapeName(controlName) +"']").live('change', function() {
-			var refreshDisclosure = jq("#" + disclosureId);
+        jQuery("[name='"+ escapeName(controlName) +"']").live('change', function() {
+			var refreshDisclosure = jQuery("#" + disclosureId);
 			if(refreshDisclosure.length){
                 var displayWithId = disclosureId;
 /*                if (disclosureId.indexOf('_attribute') > 0) {
@@ -435,7 +435,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId);
-						jq(".displayWith-" + displayWithId).show();
+                        jQuery(".displayWith-" + displayWithId).show();
 
 					}
 				}
@@ -443,7 +443,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 					refreshDisclosure.hide();
 					// ignore validation on hidden inputs
 					hiddenInputValidationToggle(disclosureId);
-					jq(".displayWith-" + displayWithId).hide();
+                    jQuery(".displayWith-" + displayWithId).hide();
 				}
 			}
 		});
@@ -458,16 +458,16 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
  * @param id - id for the component for which the input hiddens should be processed
  */
 function hiddenInputValidationToggle(id){
-	var element = jq("#" + id);
+	var element = jQuery("#" + id);
 	if(element.length){
 		if(element.css("display") == "none"){
-			jq(":input:hidden", element).each(function(){
-				jq(this).addClass("ignoreValid");
+            jQuery(":input:hidden", element).each(function(){
+                jQuery(this).addClass("ignoreValid");
 			});
 		}
 		else{
-			jq(":input:visible", element).each(function(){
-				jq(this).removeClass("ignoreValid");
+            jQuery(":input:visible", element).each(function(){
+                jQuery(this).removeClass("ignoreValid");
 			});
 		}
 	}
@@ -486,7 +486,7 @@ function clearServerSideForm(formKey) {
 
     var postUrl = getConfigParam("kradUrl") + "/listener";
 
-    jq.ajax({
+    jQuery.ajax({
         url:postUrl,
         dataType:"json",
         data:queryData,

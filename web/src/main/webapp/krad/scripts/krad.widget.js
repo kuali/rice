@@ -22,43 +22,43 @@
  */
 function setPageBreadcrumb(){
 	//check to see if page has navigation element, if so show breadcrumb
-	if(jq("#Uif-Navigation").html() && jq("#breadcrumbs").length){
-		var pageTitle = jq("#currentPageTitle").val();
-		var pageId = jq("#pageId").val();
-		jq("#breadcrumbs").find("#page_breadcrumb").remove();
+	if(jQuery("#Uif-Navigation").html() && jQuery("#breadcrumbs").length){
+		var pageTitle = jQuery("#currentPageTitle").val();
+		var pageId = jQuery("#pageId").val();
+		jQuery("#breadcrumbs").find("#page_breadcrumb").remove();
 		var bcSet = false;
 		if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
-			jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-			jq("#current_breadcrumb_span").hide();
-            if(jq("#current_breadcrumb_span").parent("li").length){
-                jq("#current_breadcrumb_span").unwrap();
+			jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
+			jQuery("#current_breadcrumb_span").hide();
+            if(jQuery("#current_breadcrumb_span").parent("li").length){
+                jQuery("#current_breadcrumb_span").unwrap();
             }
-            var anchor = jq("#current_breadcrumb_anchor");
-            jq("#current_breadcrumb_anchor").wrap("<li/>");
-			jq("#current_breadcrumb_anchor").show();
+            var anchor = jQuery("#current_breadcrumb_anchor");
+            jQuery("#current_breadcrumb_anchor").wrap("<li/>");
+			jQuery("#current_breadcrumb_anchor").show();
 			bcSet = true;
 		}
 		else if(pageId){
-			pageTitle = jq("a[name='"+ escapeName(pageId) + "']").text();
+			pageTitle = jQuery("a[name='"+ escapeName(pageId) + "']").text();
 			if(pageTitle && pageTitle != "&nbsp;" && pageTitle != ""){
-				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
-				jq("#current_breadcrumb_span").hide();
-                if(jq("#current_breadcrumb_span").parent("li").length){
-                    jq("#current_breadcrumb_span").unwrap();
+				jQuery("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
+				jQuery("#current_breadcrumb_span").hide();
+                if(jQuery("#current_breadcrumb_span").parent("li").length){
+                    jQuery("#current_breadcrumb_span").unwrap();
                 }
-                jq("#current_breadcrumb_anchor").wrap();
-				jq("#current_breadcrumb_anchor").show();
+                jQuery("#current_breadcrumb_anchor").wrap();
+				jQuery("#current_breadcrumb_anchor").show();
 				bcSet=true;
 			}
 		}
 
 		if(!bcSet){
-			jq("#current_breadcrumb_anchor").hide();
-            if(jq("#current_breadcrumb_anchor").parent("li").length){
-                jq("#current_breadcrumb_anchor").unwrap();
+			jQuery("#current_breadcrumb_anchor").hide();
+            if(jQuery("#current_breadcrumb_anchor").parent("li").length){
+                jQuery("#current_breadcrumb_anchor").unwrap();
             }
-            jq("#current_breadcrumb_span").wrap("<li/>");
-			jq("#current_breadcrumb_span").show();
+            jQuery("#current_breadcrumb_span").wrap("<li/>");
+			jQuery("#current_breadcrumb_span").show();
 		}
 	}
 }
@@ -82,8 +82,8 @@ function createNavigation(listId, navigationType, options) {
 }
 
 function createTabMenu(listId, options) {
-	jq(document).ready(function(){
-		jq("#" + listId).tabMenu(options);
+	jQuery(document).ready(function(){
+		jQuery("#" + listId).tabMenu(options);
 	});
 }
 
@@ -94,8 +94,8 @@ function createTabMenu(listId, options) {
  *          unique id for the unordered list
  */
 function createVerticalMenu(listId, options) {
-	jq(document).ready(function() {
-		jq("#" + listId).navMenu(options);
+	jQuery(document).ready(function() {
+		jQuery("#" + listId).navMenu(options);
 	});
 }
 
@@ -113,7 +113,7 @@ function createVerticalMenu(listId, options) {
  */
 function setupTextPopout(id, label, summary, constraint, imageUrl) {
     var options = {label: label, summary: summary, constraint: constraint};
-    jq("#" + id).initPopoutText(options, imageUrl);
+    jQuery("#" + id).initPopoutText(options, imageUrl);
 }
 
 /**
@@ -127,11 +127,11 @@ function setupTextPopout(id, label, summary, constraint, imageUrl) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createLightBoxLink(controlId, options) {
-    jq(function () {
+    jQuery(function () {
         var showHistory = false;
 
         // Check if this is called within a light box
-        if (!jq("#fancybox-frame", parent.document).length) {
+        if (!jQuery("#fancybox-frame", parent.document).length) {
 
             // Perform cleanup when lightbox is closed
             options['onCleanup'] = cleanupClosedLightboxForms;
@@ -139,24 +139,24 @@ function createLightBoxLink(controlId, options) {
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
             if (top == self) {
-                jq("#" + controlId).fancybox(options);
+                jQuery("#" + controlId).fancybox(options);
             } else {
-                jq("#" + controlId).click(function (e) {
+                jQuery("#" + controlId).click(function (e) {
                     e.preventDefault();
-                    options['href'] = jq("#" + controlId).attr('href');
+                    options['href'] = jQuery("#" + controlId).attr('href');
                     top.jQuery.fancybox(options);
                 });
             }
         } else {
-            jq("#" + controlId).attr('target', '_self');
+            jQuery("#" + controlId).attr('target', '_self');
             showHistory = true;
         }
 
         // Set the dialogMode = true param
-        if (jq("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
-            jq("#" + controlId).attr('href', jq("#" + controlId).attr('href') + '&dialogMode=true'
+        if (jQuery("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
+            jQuery("#" + controlId).attr('href', jQuery("#" + controlId).attr('href') + '&dialogMode=true'
                     + '&showHome=false' + '&showHistory=' + showHistory
-                    + '&history=' + jq('#formHistory\\.historyParameterString').val());
+                    + '&history=' + jQuery('#formHistory\\.historyParameterString').val());
         }
     });
 }
@@ -174,15 +174,15 @@ function createLightBoxLink(controlId, options) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createLightBoxPost(controlId, options, actionParameterMapString, lookupReturnByScript) {
-    jq(function () {
+    jQuery(function () {
 
         // Check if this is not called within a lightbox
-        if (!jq("#fancybox-frame", parent.document).length) {
-            jq("#" + controlId).click(function (e) {
+        if (!jQuery("#fancybox-frame", parent.document).length) {
+            jQuery("#" + controlId).click(function (e) {
 
                 // Prevent the default submit
                 e.preventDefault();
-                jq("[name='jumpToId']").val(controlId);
+                jQuery("[name='jumpToId']").val(controlId);
 
                 // Add the lightBoxCall parameter so that the controller can avoid the redirect
                 actionParameterMapString['actionParameters[dialogMode]'] = 'true';
@@ -205,7 +205,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                 }
 
                 // Do the Ajax submit on the kualiForm form
-                jq("#kualiForm").ajaxSubmit({
+                jQuery("#kualiForm").ajaxSubmit({
 
                             success: function(data) {
                                 // Perform cleanup when lightbox is closed
@@ -216,7 +216,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
 
                                 // Open the light box
                                 if (top == self) {
-                                    jq.fancybox(options);
+                                    jQuery.fancybox(options);
                                 } else {
                                     parent.jQuery.fancybox(options);
                                 }
@@ -226,7 +226,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
         } else {
 
             // Add the action parameters hidden to form and allow the submit action
-            jq("#" + controlId).click(function (e) {
+            jQuery("#" + controlId).click(function (e) {
                 actionParameterMapString['actionParameters[dialogMode]'] = 'true';
                 actionParameterMapString['actionParameters[returnTarget]'] = '_self';
                 actionParameterMapString['actionParameters[showHistory]'] = 'true';
@@ -245,10 +245,10 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (parent.jq == null) {
-        returnField = parent.$('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
+    if (parent.jQuery == null) {
+        returnField = parent.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }else{
-        returnField = parent.jq('[name="' + escapeName(fieldName) + '"]');
+        returnField = parent.jQuery('[name="' + escapeName(fieldName) + '"]');
     }
     returnField.val(value);
     returnField.focus();
@@ -263,10 +263,10 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (parent.jq == null) {
-        jq('#kualiForm').attr('target',parent.$('#iframeportlet').attr('name'));
+    if (parent.jQuery == null) {
+        jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
     }else{
-        jq('#kualiForm').attr('target','_parent');
+        jQuery('#kualiForm').attr('target','_parent');
     }
 }
 
@@ -293,18 +293,18 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
     for (i in parameterPairs) {
         parameters = parameterPairs[i].split(":");
 
-        if (jq('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
+        if (jQuery('[name="' + escapeName(parameters[0]) + '"]').val() == "") {
             alert("Please enter a value in the appropriate field.");
             return false;
         } else {
-            queryString = queryString + "&" + parameters[1] + "=" + jq('[name="' + escapeName(parameters[0]) + '"]').val();
+            queryString = queryString + "&" + parameters[1] + "=" + jQuery('[name="' + escapeName(parameters[0]) + '"]').val();
         }
     }
 
     if (showLightBox) {
 
         // Check if this is called within a light box
-        if (!jq("#fancybox-frame", parent.document).length) {
+        if (!jQuery("#fancybox-frame", parent.document).length) {
 
             // Perform cleanup when lightbox is closed
             lightBoxOptions['onCleanup'] = cleanupClosedLightboxForms;
@@ -314,7 +314,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
             queryString = queryString + "&showHistory=false&dialogMode=true";
             if (top == self) {
                 lightBoxOptions['href'] = url + queryString;
-                jq.fancybox(lightBoxOptions);
+                jQuery.fancybox(lightBoxOptions);
             } else {
                 lightBoxOptions['href'] = url + queryString;
                 top.jQuery.fancybox(lightBoxOptions);
@@ -362,14 +362,14 @@ function cleanupClosedLightboxForms() {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createDatePicker(controlId, options) {
-    jq(function() {
-        jq("#" + controlId).datepicker(options);
-        jq("#" + controlId).datepicker('option','onSelect', function(){jq(this).trigger("focusout");});
+    jQuery(function() {
+        jQuery("#" + controlId).datepicker(options);
+        jQuery("#" + controlId).datepicker('option','onSelect', function(){jQuery(this).trigger("focusout");});
     });
 
     // in order to compensate for jQuery's "Today" functionality (which does not actually return the date to the input box), alter the functionality
-    jq.datepicker._gotoToday = function(id) {
-        var target = jq(id);
+    jQuery.datepicker._gotoToday = function(id) {
+        var target = jQuery(id);
         var inst = this._getInst(target[0]);
         if (this._get(inst, 'gotoCurrent') && inst.currentDay) {
             inst.selectedDay = inst.currentDay;
@@ -412,7 +412,7 @@ function createDatePicker(controlId, options) {
  *          boolean that indicates whether the expanded or collapsed image should be rendered
  */
 function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
-    jq(document).ready(function() {
+    jQuery(document).ready(function() {
         var groupToggleLinkId = groupId + "_toggle";
 
         var expandImage = "";
@@ -425,50 +425,50 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         var groupAccordionSpanId = groupId + "_disclosureContent";
 
         // perform initial open/close and insert toggle link and image
-        var headerText = jq("#" + headerId + " > :header, #" + headerId + " > label").html();
+        var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").html();
         if (defaultOpen) {
-            jq("#" + groupAccordionSpanId).slideDown(000);
+            jQuery("#" + groupAccordionSpanId).slideDown(000);
             headerText = expandImage + headerText;
         }
         else {
-            jq("#" + groupAccordionSpanId).slideUp(000);
+            jQuery("#" + groupAccordionSpanId).slideUp(000);
             headerText = collapseImage + headerText;
         }
 
-        jq("#" + headerId + " > :header, #" + headerId + " > label").html(headerText);
-        jq("#" + headerId + " > :header, #" + headerId + " > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
+        jQuery("#" + headerId + " > :header, #" + headerId + " > label").html(headerText);
+        jQuery("#" + headerId + " > :header, #" + headerId + " > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
         var animationFinishedCallback = function(){
             jQuery("#Uif-Application").attr("data-skipResize", false);
         };
         // perform slide and switch image
         if (defaultOpen) {
-            jq("#" + groupToggleLinkId).toggle(
+            jQuery("#" + groupToggleLinkId).toggle(
                     function() {
                         jQuery("#Uif-Application").attr("data-skipResize", true);
-                        jq("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
-                        jq("#" + groupId + "_exp").replaceWith(collapseImage);
+                        jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
+                        jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }, function() {
                         jQuery("#Uif-Application").attr("data-skipResize", true);
-                        jq("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
-                        jq("#" + groupId + "_col").replaceWith(expandImage);
+                        jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
+                        jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
                     }
             );
         }
         else {
-            jq("#" + groupToggleLinkId).toggle(
+            jQuery("#" + groupToggleLinkId).toggle(
                     function() {
                         jQuery("#Uif-Application").attr("data-skipResize", true);
-                        jq("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
-                        jq("#" + groupId + "_col").replaceWith(expandImage);
+                        jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
+                        jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
 
                     }, function() {
                         jQuery("#Uif-Application").attr("data-skipResize", true);
-                        jq("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
-                        jq("#" + groupId + "_exp").replaceWith(collapseImage);
+                        jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
+                        jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }
             );
@@ -480,14 +480,14 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
  * Expands all the disclosure divs on the page
  */
 function expandDisclosures() {
-    jq('img[alt="collapse"]').click();
+    jQuery('img[alt="collapse"]').click();
 }
 
 /**
  * Collapses all the disclosure divs on the page
  */
 function collapseDisclosures() {
-    jq('img[alt="expand"]').click();
+    jQuery('img[alt="expand"]').click();
 }
 
 /**
@@ -502,10 +502,10 @@ function collapseDisclosures() {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createTable(tableId, options) {
-    jq(document).ready(function() {
-        var oTable = jq("#" + tableId).dataTable(options);
+    jQuery(document).ready(function() {
+        var oTable = jQuery("#" + tableId).dataTable(options);
         // allow table column size recalculation on window resize
-        jq(window).bind('resize', function () {
+        jQuery(window).bind('resize', function () {
             oTable.fnAdjustColumnSizing();
         } );
     });
@@ -518,7 +518,7 @@ function createTable(tableId, options) {
  * @param collectionId - id for the collection to select checkboxes for
  */
 function selectAllLines(collectionId) {
-    jq("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', true);
+    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', true);
 }
 
 /**
@@ -528,7 +528,7 @@ function selectAllLines(collectionId) {
  * @param collectionId - id for the collection to deselect checkboxes for
  */
 function deselectAllLines(collectionId) {
-    jq("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', false);
+    jQuery("#" + collectionId + " input:checkbox.kr-select-line").attr('checked', false);
 }
 
 /**
@@ -543,14 +543,14 @@ function deselectAllLines(collectionId) {
  *          map of option settings (option name/value pairs) for the plugin
  */
 function createTree(divId, options) {
-    jq(document).ready(function() {
-        jq("#" + divId).jstree(options);
+    jQuery(document).ready(function() {
+        jQuery("#" + divId).jstree(options);
     });
 }
 
 // Creates tabs for the tabs div id specified, this div is created by tabGroup
 function createTabs(id, options) {
-    jq("#" + id + "_tabs").tabs(options);
+    jQuery("#" + id + "_tabs").tabs(options);
 }
 
 /**
@@ -573,7 +573,7 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
         var queryData = {};
         queryData.methodToCall = 'performFieldSuggest';
         queryData.skipViewInit = 'true';
-        queryData.formKey = jq("input#formKey").val();
+        queryData.formKey = jQuery("input#formKey").val();
         queryData.queryTerm = request.term;
         queryData.queryFieldId = queryFieldId;
 
@@ -581,8 +581,8 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
             queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
         }
 
-        jq.ajax({
-                    url: jq("form#kualiForm").attr("action"),
+        jQuery.ajax({
+                    url: jQuery("form#kualiForm").attr("action"),
                     dataType: "json",
                     beforeSend: null,
                     complete: null,
@@ -594,8 +594,8 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
                 });
     };
 
-    jq(document).ready(function() {
-        jq("#" + controlId).autocomplete(options);
+    jQuery(document).ready(function() {
+        jQuery("#" + controlId).autocomplete(options);
     });
 }
 
@@ -608,7 +608,7 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
  * @param options - options for reorderer plug-in
  */
 function createReorderer(divId, options) {
-    fluid.reorderGrid(jq("#" + divId), options);
+    fluid.reorderGrid(jQuery("#" + divId), options);
 }
 
 /**
@@ -618,7 +618,7 @@ function createReorderer(divId, options) {
  * @param options - options for the spinner
  */
 function createSpinner(id, options) {
-    jq("#" + id).spinit(options);
+    jQuery("#" + id).spinit(options);
 }
 
 /**
@@ -835,7 +835,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
 
     queryData.methodToCall = 'performFieldQuery';
     queryData.skipViewInit = 'true';
-    queryData.formKey = jq("input#formKey").val();
+    queryData.formKey = jQuery("input#formKey").val();
     queryData.queryFieldId = queryFieldId;
 
     for (var parameter in queryParameters) {
@@ -847,8 +847,8 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
         queryData['queryParameter.' + parameter] = coerceValue(parameter);
     }
 
-    jq.ajax({
-                url: jq("form#kualiForm").attr("action"),
+    jQuery.ajax({
+                url: jQuery("form#kualiForm").attr("action"),
                 dataType: "json",
                 data: queryData,
                 beforeSend: null,
@@ -856,7 +856,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 error: null,
                 success: function (data) {
                     // write out return message (or blank)
-                    var returnMessageSpan = jq("#" + queryFieldId + "_info_message");
+                    var returnMessageSpan = jQuery("#" + queryFieldId + "_info_message");
                     if (returnMessageSpan.length > 0) {
                         returnMessageSpan.html(data.resultMessage);
                         if (data.resultMessageStyleClasses) {
@@ -873,7 +873,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                         }
 
                         // check for regular fields
-                        var infoFieldSpan = jq("[name='" + escapeName(returnField) + "']");
+                        var infoFieldSpan = jQuery("[name='" + escapeName(returnField) + "']");
                         if (infoFieldSpan.length > 0) {
                             infoFieldSpan.val(fieldValue);
                             infoFieldSpan.change();
@@ -884,7 +884,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                                 .replace(/\[/g, "-lbrak-")
                                 .replace(/\]/g, "-rbrak-")
                                 .replace(/\'/g, "-quot-");
-                        infoFieldSpan = jq("#" + queryFieldId + "_info_" + returnFieldId);
+                        infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
                         if (infoFieldSpan.length > 0) {
                             infoFieldSpan.html(fieldValue);
                         }

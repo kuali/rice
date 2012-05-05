@@ -155,7 +155,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
             String highlightScript =
-                    "jq(\"#" + container.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
+                    "jQuery(\"#" + container.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
             String onReadyScript = collectionGroup.getOnDocumentReadyScript();
             if (StringUtils.isNotBlank(onReadyScript)) {
                 highlightScript = onReadyScript + highlightScript;

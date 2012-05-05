@@ -191,19 +191,22 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
  	 	 	 PersistableBusinessObject boClass;
              String boPropertyName;
 
+             Matcher matcher = ELEMENT_IN_COLLECTION.matcher(propertyName);
              if (propertyName.startsWith(KRADConstants.MAINTENANCE_ADD_PREFIX)) {
-                 String collectionName = parseAddCollectionName(propertyName.substring(KRADConstants.MAINTENANCE_ADD_PREFIX.length()));
+                 String prefix = matcher.matches() ? "" : KRADConstants.MAINTENANCE_ADD_PREFIX;
+                 String collectionName = parseAddCollectionName(propertyName.substring(prefix.length()));
                  boClass = maintenanceDocument.getNewMaintainableObject().getNewCollectionLine(collectionName);
-                 boPropertyName = propertyName.substring(KRADConstants.MAINTENANCE_ADD_PREFIX.length()).substring(collectionName.length() + 1);
+                 boPropertyName = propertyName.substring(prefix.length()).substring(collectionName.length() + 1);
+
                  setAttachmentProperty(boClass, boPropertyName, propertyValue);
              } else {
                  boClass = maintenanceDocument.getNewMaintainableObject().getBusinessObject();
                  boPropertyName = propertyName;
-                 if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
+                 if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())
+                         && !matcher.matches()) {
                      maintenanceDocument.setFileAttachment((FormFile) propertyValue);
                  }
                  setAttachmentProperty(boClass, boPropertyName, propertyValue);
-
              }
          }
     }

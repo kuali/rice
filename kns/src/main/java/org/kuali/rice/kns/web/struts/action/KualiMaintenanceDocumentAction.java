@@ -417,14 +417,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
             }
         } else {
-            //check to see if attachment is populated on document first, so no copying done unless necessary
-            List<MultiDocumentAttachment> multiDocumentAttachs = document.getAttachments();
-            if (CollectionUtils.isNotEmpty(multiDocumentAttachs)
-                    && multiDocumentAttachs.size() > line) {
-                MultiDocumentAttachment multiAttach = multiDocumentAttachs.get(line);
-                streamToResponse(multiAttach.getAttachmentContent(), multiAttach.getFileName(), multiAttach.getContentType(), response);
-                return null;
-            }
+
             // attachment is part of a collection
             PersistableAttachmentList<PersistableAttachment> attachmentsBo = (PersistableAttachmentList<PersistableAttachment>) document.getNewMaintainableObject().getBusinessObject();
             if (CollectionUtils.isEmpty(attachmentsBo.getAttachments())) {
@@ -438,21 +431,43 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
                 //it is possible that document hasn't been saved (attachment just added) and the attachment content is still in the FormFile
                 //need to grab it if that is the case.
-                byte[] attachmentContent = attachment.getAttachmentContent();
+                byte[] attachmentContent; // = attachment.getAttachmentContent();
                 String fileName = attachment.getFileName();
                 String contentType = attachment.getContentType();
-                if (attachmentContent == null) {
-                    String attachmentPropNm = document.getAttachmentListPropertyName();
+                String attachmentPropNm = document.getAttachmentListPropertyName();
+                FormFile attachmentFromBusinessObject = null;
+                if (StringUtils.isNotBlank(attachmentPropNm)) {
                     String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
+                    attachmentFromBusinessObject = (FormFile)(attachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(attachment));
+                }
+                //Use form file data if it exists
+                //if (attachmentContent == null) {
 
-                    FormFile attachmentFromBusinessObject =  (FormFile)(attachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(attachment));
-                    if (attachmentFromBusinessObject.getInputStream() != null) {
-                        attachmentContent = attachmentFromBusinessObject.getFileData();
-                        fileName = attachmentFromBusinessObject.getFileName();
-                        contentType = attachmentFromBusinessObject.getContentType();
+                if (attachmentFromBusinessObject != null
+                    && attachmentFromBusinessObject.getInputStream() != null) {
+                    attachmentContent = attachmentFromBusinessObject.getFileData();
+                    fileName = attachmentFromBusinessObject.getFileName();
+                    contentType = attachmentFromBusinessObject.getContentType();
+                } else {
+                    attachmentContent = attachment.getAttachmentContent();
+                }
+
+                if (attachmentContent != null) {
+                    streamToResponse(attachmentContent, fileName, contentType, response);
+                } else {
+                    // last ditch effort to find the correct attachment
+                    //check to see if attachment is populated on document first, so no copying done unless necessary
+                    List<MultiDocumentAttachment> multiDocumentAttachs = document.getAttachments();
+                    if (CollectionUtils.isNotEmpty(multiDocumentAttachs)) {
+                        for (MultiDocumentAttachment multiAttach : multiDocumentAttachs) {
+                            if (multiAttach.getFileName().equals(fileName)
+                                    && multiAttach.getContentType().equals(contentType)) {
+                                streamToResponse(multiAttach.getAttachmentContent(), multiAttach.getFileName(), multiAttach.getContentType(), response);
+                                break;
+                            }
+                        }
                     }
                 }
-                streamToResponse(attachmentContent, fileName, contentType, response);
             }
         }
 		return null;

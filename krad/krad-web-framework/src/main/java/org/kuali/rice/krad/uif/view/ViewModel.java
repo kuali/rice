@@ -292,4 +292,18 @@ public interface ViewModel extends Serializable {
      */
     public void setDefaultsApplied(boolean defaultsApplied);
 
+    /**
+     * Script that will run on render (view or component) for generating growl messages
+     *
+     * @return String JS growl script
+     */
+    public String getGrowlScript();
+
+    /**
+     * Setter for the script that generates growls on render
+     *
+     * @param growlScript
+     */
+    public void setGrowlScript(String growlScript);
+
 }

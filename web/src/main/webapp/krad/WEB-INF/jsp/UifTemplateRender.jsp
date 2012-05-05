@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
 <c:choose>
   <c:when test="${KualiForm.renderFullView}">
@@ -29,6 +29,9 @@
           });
       "/>
       </c:if>
+
+      <%-- render growl script --%>
+      <krad:script value="${KualiForm.growlScript}"/>
 
       <div id="Uif-Application" style="display:none;" class="uif-application">
 
@@ -71,23 +74,26 @@
     <%-- render component only --%>
     <html>
       <%-- rerun view pre-load script to get new state variables for page --%>
-      <krad:script value="${view.preLoadScript}"/>
+    <krad:script value="${view.preLoadScript}"/>
 
-    	<s:nestedPath path="KualiForm">
-        <krad:template component="${KualiForm.view.breadcrumbs}"/>
+    <%-- render growl script --%>
+    <krad:script value="${KualiForm.growlScript}"/>
 
-        <c:if test="${!empty KualiForm.updateComponentId}">
-          <%-- render errors field for page so they can be pulled and updated on the view --%>
-          <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
-        </c:if>
+    <s:nestedPath path="KualiForm">
+      <krad:template component="${KualiForm.view.breadcrumbs}"/>
 
-        <%-- now render the updated component (or page) wrapped in an update div --%>
-        <div id="${Component.id}_update" data-handler="update-component">
-          <krad:template componentUpdate="true" component="${Component}"/>
-        </div>
+      <c:if test="${!empty KualiForm.updateComponentId}">
+        <%-- render errors field for page so they can be pulled and updated on the view --%>
+        <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
+      </c:if>
 
-    	</s:nestedPath>
+      <%-- now render the updated component (or page) wrapped in an update div --%>
+      <div id="${Component.id}_update" data-handler="update-component">
+        <krad:template componentUpdate="true" component="${Component}"/>
+      </div>
+
+    </s:nestedPath>
     </html>
-     
+
   </c:otherwise>
 </c:choose>

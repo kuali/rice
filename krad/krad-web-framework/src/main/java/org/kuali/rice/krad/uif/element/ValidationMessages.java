@@ -58,9 +58,6 @@ public class ValidationMessages extends ContentElementBase {
 
     private List<String> additionalKeysToMatch;
 
-    private boolean fireGrowlsForMessages;
-    private String growlScript = "";
-
     private boolean displayMessages;
 
     // Error messages
@@ -143,11 +140,6 @@ public class ValidationMessages extends ContentElementBase {
             errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
             warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
             infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
-        }
-
-        //set up growl script
-        if (fireGrowlsForMessages) {
-            growlScript = getGrowlScript(view);
         }
 
         //insure by default validationMessages container is not displayed - display is handled by the js
@@ -323,82 +315,6 @@ public class ValidationMessages extends ContentElementBase {
      */
     public List<String> getInfos() {
         return this.infos;
-    }
-
-    /**
-     * TODO below needs to be reevaluated and removed/moved/fixed - growls should no longer live here or be used in this
-     * way
-     */
-
-    private String getGrowlScript(View view) {
-        // growls are setup here because they are relevant to the current page, but their
-        // settings are global to the view
-        String growlScript = "";
-        if (view.isGrowlMessagingEnabled()) {
-            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-            MessageMap messageMap = GlobalVariables.getMessageMap();
-            if (messageMap.hasErrors()) {
-                String message = configService.getPropertyValueAsString("growl.hasErrors");
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.error") + "', 'errorGrowl');";
-                }
-            }
-
-            if (messageMap.hasWarnings()) {
-                String message = configService.getPropertyValueAsString("growl.hasWarnings");
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.warning") + "', 'warningGrowl');";
-                }
-            }
-
-            if (messageMap.hasInfo()) {
-                List<String> properties = messageMap.getPropertiesWithInfo();
-                String message = "";
-                for (String property : properties) {
-                    List<AutoPopulatingList<ErrorMessage>> lists = messageMap.getInfoMessagesForProperty(property,
-                            true);
-                    for (List<ErrorMessage> errorList : lists) {
-                        if (errorList != null) {
-                            for (ErrorMessage e : errorList) {
-                                if (StringUtils.isBlank(message)) {
-                                    message = configService.getPropertyValueAsString(e.getErrorKey());
-                                } else {
-                                    message = message + "<br/>" + configService.getPropertyValueAsString(
-                                            e.getErrorKey());
-                                }
-                                if (e.getMessageParameters() != null) {
-                                    message = message.replace("'", "''");
-                                    message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.info") + "', 'infoGrowl');";
-                }
-            }
-        }
-        return growlScript;
-    }
-
-    public boolean isFireGrowlsForMessages() {
-        return fireGrowlsForMessages;
-    }
-
-    public void setFireGrowlsForMessages(boolean fireGrowlsForMessages) {
-        this.fireGrowlsForMessages = fireGrowlsForMessages;
-    }
-
-    public String getGrowlScript() {
-        return growlScript;
     }
 
 }

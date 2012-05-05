@@ -883,13 +883,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return this.dataObjectClass;
     }
 
-    protected ConfigurationService getConfigurationService() {
-        if (configurationService == null) {
-            this.configurationService = KRADServiceLocator.getKualiConfigurationService();
-        }
-        return configurationService;
-    }
-
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

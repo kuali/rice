@@ -330,10 +330,6 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         return this.dataObjectClass;
     }
 
-    protected ConfigurationService getConfigurationService() {
-        return KRADServiceLocator.getKualiConfigurationService();
-    }
-
     protected DataObjectMetaDataService getDataObjectMetaDataService() {
         return KRADServiceLocatorWeb.getDataObjectMetaDataService();
     }

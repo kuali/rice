@@ -56,8 +56,6 @@ import java.util.Random;
 @RequestMapping(value = "/uicomponents")
 public class UifComponentsTestController extends UifControllerBase {
 
-
-
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
@@ -71,6 +69,8 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
+
+        GlobalVariables.getMessageMap().addGrowlMessage("Welcome!", "kitchenSink.welcome");
 
         return super.start(uiTestForm, result, request, response);
     }

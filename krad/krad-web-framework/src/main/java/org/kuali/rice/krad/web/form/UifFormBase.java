@@ -69,6 +69,8 @@ public class UifFormBase implements ViewModel {
     protected String updateComponentId;
     protected boolean renderFullView;
     protected boolean validateDirty;
+    
+    protected String growlScript;
 
     protected View view;
     protected View postedView;
@@ -638,4 +640,17 @@ public class UifFormBase implements ViewModel {
         this.validateDirty = validateDirty;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getGrowlScript()
+     */
+    public String getGrowlScript() {
+        return growlScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setGrowlScript(java.lang.String)
+     */
+    public void setGrowlScript(String growlScript) {
+        this.growlScript = growlScript;
+    }
 }

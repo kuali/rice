@@ -71,9 +71,10 @@
         <value>GLOBAL_ERRORS</value>
         <value>GLOBAL_WARNINGS</value>
         <value>GLOBAL_INFO</value>
+        <!-- TODO: take this out once KNS is removed and the KRADConstant can be fixed -->
+        <value>GlobalMessages</value>
       </list>
     </property>
-    <property name="fireGrowlsForMessages" value="true"/>
   </bean>
 
   <bean id="Uif-Iframe" parent="Uif-Iframe-parentBean"/>

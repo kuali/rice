@@ -24,11 +24,13 @@ import java.util.Arrays;
 
 
 /**
- * Contains the error message key and parameters for a specific instantiation of an error message.
+ * Contains the error message key and parameters for a specific instantiation of an error message
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ErrorMessage implements Serializable {
+    private static final long serialVersionUID = 4397449554212875250L;
+
     private String errorKey;
     private String[] messageParameters;
 

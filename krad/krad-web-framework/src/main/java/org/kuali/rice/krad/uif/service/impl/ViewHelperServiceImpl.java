@@ -16,7 +16,10 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -63,15 +66,20 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.util.AutoPopulatingList;
 import org.springframework.util.MethodInvoker;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -93,6 +101,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluatorService expressionEvaluatorService;
     private transient ViewDictionaryService viewDictionaryService;
+    private transient ConfigurationService configurationService;
 
     /**
      * Uses reflection to find all fields defined on the <code>View</code> instance that have
@@ -933,6 +942,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performFinalize(View view, Object model) {
+        // get script for generating growl messages
+        String growlScript = buildGrowlScript(view);
+        ((ViewModel) model).setGrowlScript(growlScript);
+
         Map<String, Object> clientState = new HashMap<String, Object>();
         performComponentFinalize(view, view, model, null, clientState);
 
@@ -1016,6 +1029,90 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         return clientStateScript;
+    }
+
+    /**
+     * Builds JS script that will invoke the show growl method to display a growl message when the page is
+     * rendered
+     *
+     * <p>
+     * A growl will be created if errors have been added to the message map. Likewise a growl will be created
+     * if warnings have been added to the message map. Finally a growl call will be created for any explicit 
+     * growl messages added to the message map.
+     * </p>
+     *
+     * <p>
+     * Growls are only generated if @{link org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled.
+     * If not, the growl messages are set as info messages for the page
+     * </p>
+     *
+     * @param view - view instance for which growls are being generated
+     * @return String JS script string for generated growl messages
+     */
+    protected String buildGrowlScript(View view) {
+        String growlScript = "";
+
+        MessageMap messageMap = GlobalVariables.getMessageMap();
+
+        if (view.isGrowlMessagingEnabled()) {
+            ConfigurationService configService = getConfigurationService();
+
+            // build message for errors on page
+            if (messageMap.hasErrors()) {
+                String message = configService.getPropertyValueAsString("growl.hasErrors");
+                if (StringUtils.isNotBlank(message)) {
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
+                                    "general.error") + "', 'errorGrowl');";
+                }
+            }
+
+            // build message for warnings on page
+            if (messageMap.hasWarnings()) {
+                String message = configService.getPropertyValueAsString("growl.hasWarnings");
+                if (StringUtils.isNotBlank(message)) {
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
+                                    "general.warning") + "', 'warningGrowl');";
+                }
+            }
+
+            // build growl for messages added to message map
+            for (GrowlMessage growl : messageMap.getGrowlMessages()) {
+                String message = "";
+
+                if (StringUtils.isBlank(message)) {
+                    message = configService.getPropertyValueAsString(growl.getMessageKey());
+                } else {
+                    message = message + "<br/>" + configService.getPropertyValueAsString(growl.getMessageKey());
+                }
+
+                if (growl.getMessageParameters() != null) {
+                    message = message.replace("'", "''");
+                    message = MessageFormat.format(message, (Object[]) growl.getMessageParameters());
+                }
+
+                // escape single quotes in message or title since that will cause problem with plugin
+                message = message.replace("'", "\\'");
+               
+                String title = growl.getTitle();
+                title = title.replace("'", "\\'");
+
+                if (StringUtils.isNotBlank(message)) {
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
+                }
+            }
+        }
+        else {
+            // get any growl messages that were added and put as info messages for the page
+            for (GrowlMessage growl : messageMap.getGrowlMessages()) {
+                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, growl.getMessageKey(),
+                        growl.getMessageParameters());
+            }
+        }
+
+        return growlScript;
     }
 
     /**
@@ -1677,5 +1774,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
         this.viewDictionaryService = viewDictionaryService;
+    }
+
+    public ConfigurationService getConfigurationService() {
+        if (this.configurationService == null) {
+            this.configurationService = KRADServiceLocator.getKualiConfigurationService();
+        }
+        return this.configurationService;
+    }
+
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 }

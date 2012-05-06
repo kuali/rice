@@ -45,6 +45,14 @@
             </list>
           </property>
         </bean>
+        <bean parent="Uif-InputField" p:label="Field Label" p:propertyName="field2"
+              p:refreshWhenChangedPropertyNames="field1" p:disableSessionPersistence="true"
+              p:instructionalText="Test of disable session persistence flag">
+          <property name="control">
+            <bean parent="Uif-TextControl">
+            </bean>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

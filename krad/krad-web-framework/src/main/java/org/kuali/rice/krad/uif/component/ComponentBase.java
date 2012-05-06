@@ -99,6 +99,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private boolean selfRendered;
     private String renderedHtmlOutput;
 
+    private boolean disableSessionPersistence;
     private boolean forceSessionPersistence;
 
     private ComponentSecurity componentSecurity;
@@ -150,6 +151,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         progressiveRenderAndRefresh = false;
         refreshedByAction = false;
         resetDataOnRefresh = false;
+        disableSessionPersistence = false;
         forceSessionPersistence = false;
 
         componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
@@ -672,6 +674,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setRenderedHtmlOutput(String renderedHtmlOutput) {
         this.renderedHtmlOutput = renderedHtmlOutput;
+    }
+
+    /**
+     * @see Component#isDisableSessionPersistence()
+     */
+    public boolean isDisableSessionPersistence() {
+        return disableSessionPersistence;
+    }
+
+    /**
+     * @see Component#setDisableSessionPersistence(boolean)
+     */
+    public void setDisableSessionPersistence(boolean disableSessionPersistence) {
+        this.disableSessionPersistence = disableSessionPersistence;
     }
 
     /**

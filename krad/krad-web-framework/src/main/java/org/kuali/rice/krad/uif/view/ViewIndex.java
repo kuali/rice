@@ -144,10 +144,10 @@ public class ViewIndex implements Serializable {
         for (Component component : index.values()) {
             if (component != null) {
                 // if component has a refresh condition we need to keep it
-                if (StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
+                if ((StringUtils.isNotBlank(component.getProgressiveRender()) || StringUtils.isNotBlank(
                         component.getConditionalRefresh()) || (component.getRefreshWhenChangedPropertyNames() != null
                         && !component.getRefreshWhenChangedPropertyNames().isEmpty()) || component
-                        .isRefreshedByAction()) {
+                        .isRefreshedByAction()) && !component.isDisableSessionPersistence()) {
                     holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
@@ -157,13 +157,13 @@ public class ViewIndex implements Serializable {
                     holdIds.add(component.getId());
                 }
                 // if component is a collection we need to keep it
-                else if (component instanceof CollectionGroup) {
+                else if (component instanceof CollectionGroup && !component.isDisableSessionPersistence()) {
                     ViewCleaner.cleanCollectionGroup((CollectionGroup) component);
                     holdFactoryIds.add(component.getBaseId());
                     holdIds.add(component.getId());
                 }
                 // if component is input field and has a query we need to keep the final state
-                else if ((component instanceof InputField)) {
+                else if ((component instanceof InputField) && !component.isDisableSessionPersistence()) {
                     InputField inputField = (InputField) component;
                     if ((inputField.getAttributeQuery() != null) || inputField.getSuggest().isRender()) {
                         holdIds.add(component.getId());

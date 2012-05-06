@@ -706,6 +706,27 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setRenderedHtmlOutput(String renderOutput);
 
     /**
+     * Disables the storage of the component in session (when the framework determines it needs to be due to a
+     * refresh condition)
+     *
+     * <p>
+     * When the framework determines there is a condition on the component that requires it to keep around between
+     * posts, it will store the component instance in session. This flag can be set to disable this behavior (which
+     * would require custom application logic to support behavior such as refresh)
+     * </p>
+     *
+     * @return boolean true if the component should not be stored in session, false if session storage is allowed
+     */
+    public boolean isDisableSessionPersistence();
+
+    /**
+     * Setter for disabling storage of the component in session
+     *
+     * @param disableSessionPersistence
+     */
+    public void setDisableSessionPersistence(boolean disableSessionPersistence);
+
+    /**
      * Indicates whether the component should be stored with the session view regardless of configuration
      *
      * <p>

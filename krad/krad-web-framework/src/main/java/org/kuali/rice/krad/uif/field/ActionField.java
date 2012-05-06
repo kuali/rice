@@ -1,11 +1,13 @@
 package org.kuali.rice.krad.uif.field;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.ActionSecurity;
 import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +22,18 @@ public class ActionField extends FieldBase {
 
     public ActionField() {
         action = new Action();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(action);
+
+        return components;
     }
 
     /**

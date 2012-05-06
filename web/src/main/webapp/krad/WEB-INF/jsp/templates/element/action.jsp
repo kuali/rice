@@ -96,7 +96,7 @@
 
           <c:when test="${(element.actionImagePlacement eq 'LEFT')}">
             <button id="${tagId}" ${style} ${styleClass} ${title} ${disabled} ${element.simpleDataAttributes} ${dataAttributes}>
-              <img ${height} ${width}
+              <img id="${element.actionImage.id}" ${height} ${width}
                     style="${element.actionImage.style}"
                     class="actionImage leftActionImage ${element.actionImage.styleClassesAsString}"
                     src="${element.actionImage.source}"

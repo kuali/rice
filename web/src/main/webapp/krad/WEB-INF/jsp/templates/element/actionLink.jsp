@@ -84,3 +84,7 @@
       ${dataRoleAttribute} ${dataMetaAttribute} ${dataTypeAttribute}>${element.actionLabel}</a>
   </c:otherwise>
 </c:choose>
+
+<c:if test="${(element.lightBoxLookup != null)}">
+  <krad:template component="${element.lightBoxLookup}" componentId="${element.id}"/>
+</c:if>

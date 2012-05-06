@@ -79,19 +79,23 @@ public class UifWebUtils {
             if (model instanceof UifFormBase) {
                 UifFormBase form = (UifFormBase) model;
 
-                // prepare view instance
-                prepareViewForRendering(request, form);
+                // handle view building if not a redirect
+                if (!UifConstants.SPRING_REDIRECT_ID.equals(modelAndView.getViewName())) {
+                    // prepare view instance
+                    prepareViewForRendering(request, form);
 
-                // for component refresh need to export the component as a model
-                if (!form.isRenderFullView()) {
-                    Component component = null;
-                    if (StringUtils.isBlank(form.getUpdateComponentId())) {
-                        // refresh component is page
-                        component = form.getView().getCurrentPage();
-                    } else {
-                        component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
+                    // for component refresh need to export the component as a model
+                    if (!form.isRenderFullView()) {
+                        Component component = null;
+                        if (StringUtils.isBlank(form.getUpdateComponentId())) {
+                            // refresh component is page
+                            component = form.getView().getCurrentPage();
+                        } else {
+                            component = form.getPostedView().getViewIndex().getComponentById(
+                                    form.getUpdateComponentId());
+                        }
+                        modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
                     }
-                    modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
                 }
 
                 // update history for view

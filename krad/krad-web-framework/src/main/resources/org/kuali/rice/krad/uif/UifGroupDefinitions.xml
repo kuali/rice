@@ -504,7 +504,19 @@
       </list>
     </property>
     <property name="collectionLookup">
-      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true"/>
+      <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
+        <property name="quickfinderAction">
+          <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Lookup/Add Multiple Lines"
+                p:actionImagePlacement="RIGHT">
+            <property name="actionImage">
+              <bean parent="Uif-QuickLookupImage"/>
+            </property>
+            <property name="lightBoxLookup">
+              <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+            </property>
+          </bean>
+        </property>
+      </bean>
     </property>
   </bean>
 

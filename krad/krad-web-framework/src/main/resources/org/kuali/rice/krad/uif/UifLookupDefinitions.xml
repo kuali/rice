@@ -48,7 +48,7 @@
     <property name="resultsGroup">
       <bean parent="Uif-LookupResultsCollectionSection"/>
     </property>
-    <property name="resultsActionsField">
+    <property name="resultsActionsFieldGroup">
       <bean parent="Uif-FieldGroupBase">
         <property name="label" value="Actions"/>
         <property name="group">
@@ -72,7 +72,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-LinkField" p:order="10">
+        <bean parent="Uif-Link" p:order="10">
           <property name="linkText" value="edit"/>
           <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
           <property name="finalizeMethodAdditionalArguments">
@@ -82,7 +82,7 @@
           </property>
           <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line)}"/>
         </bean>
-        <bean parent="Uif-LinkField" p:order="20">
+        <bean parent="Uif-Link" p:order="20">
           <property name="linkText" value="copy"/>
           <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
           <property name="finalizeMethodAdditionalArguments">
@@ -92,7 +92,7 @@
           </property>
           <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction()}"/>
         </bean>
-        <bean parent="Uif-LinkField" p:order="30">
+        <bean parent="Uif-Link" p:order="30">
           <property name="linkText" value="delete"/>
           <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
           <property name="finalizeMethodAdditionalArguments">

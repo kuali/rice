@@ -164,6 +164,8 @@ public class UifComponentsTestForm extends UifFormBase {
     private String field129;
     private String field130;
     private Integer field131;
+    private String field132;
+    private String field133;
 
     private String testPersonId;
     private Person testPerson;
@@ -2092,6 +2094,22 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setField131(Integer field131) {
         this.field131 = field131;
+    }
+
+    public String getField132() {
+        return field132;
+    }
+
+    public void setField132(String field132) {
+        this.field132 = field132;
+    }
+
+    public String getField133() {
+        return field133;
+    }
+
+    public void setField133(String field133) {
+        this.field133 = field133;
     }
 
     public MultipartFile getFileUpload() {

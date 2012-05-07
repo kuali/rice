@@ -199,6 +199,10 @@ public class UifComponentsTestForm extends UifFormBase {
     private Date date1;
     private Date date2;
     private Date date3;
+    private Date date4;
+    private Date date5;
+    private Date date6;
+    private Date date7;
 
     private Map<String, Object> remoteFieldValuesMap;
     private Map<String, Object> remoteFieldValuesMap2;
@@ -245,20 +249,8 @@ public class UifComponentsTestForm extends UifFormBase {
                     RandomStringUtils.randomAlphanumeric(1),
                     RandomStringUtils.randomAlphanumeric(1)));
         }
-
-        Calendar calendar = Calendar.getInstance();
-        dayEvents.add(new DayEvent("Tour", calendar.getTime(), "5.00", "AM", true));
-        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
-        dayEvents.add(new DayEvent("Team Building", calendar.getTime(), "8.00", "AM", true));
-        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
-        dayEvents.add(new DayEvent("Swimming", calendar.getTime(), "11.00", "AM", false));
-        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
-        dayEvents.add(new DayEvent("Meeting", calendar.getTime(), "2.00", "PM", false));
-        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
-        dayEvents.add(new DayEvent("Game", calendar.getTime(), "5.00", "PM", false));
-        calendar.roll(Calendar.WEEK_OF_MONTH, 1);
-        dayEvents.add(new DayEvent("Wedding", calendar.getTime(), "9.00", "AM", true));
-
+        
+        
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
@@ -2140,6 +2132,38 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setDate3(Date date3) {
         this.date3 = date3;
+    }
+
+    public Date getDate4() {
+        return date4;
+    }
+
+    public void setDate4(Date date4) {
+        this.date4 = date4;
+    }
+
+    public Date getDate5() {
+        return date5;
+    }
+
+    public void setDate5(Date date5) {
+        this.date5 = date5;
+    }
+
+    public Date getDate6() {
+        return date6;
+    }
+
+    public void setDate6(Date date6) {
+        this.date6 = date6;
+    }
+
+    public Date getDate7() {
+        return date7;
+    }
+
+    public void setDate7(Date date7) {
+        this.date7 = date7;
     }
 
     public List<DayEvent> getDayEvents() {

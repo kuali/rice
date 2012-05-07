@@ -445,17 +445,37 @@
           </property>
         </bean>
 
-        <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date1" p:label="date format: mm-dd-yy"
-              p:instructionalText="altField, constraintInput options set" p:required="true">
+        <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date2" p:label="date2 format: mm/dd/yyyy"
+              p:instructionalText="constraintInput off" p:required="true">
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm/dd/yyyy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="constrainInput" value="false"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean id="date3" parent="Uif-InputField-LabelTop" p:propertyName="field12" p:label="field12: mm-dd-yy"
+              p:instructionalText="datepicker constraintInput false, no altField, no krad constraints" p:required="true">
           <property name="control">
             <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yy">
             <property name="datePicker.templateOptions">
               <map>
                 <entry key="showOn" value="button"/>
-                <entry key="altField" value="#myDate_control"/>
-                <entry key="altFormat" value="mm-dd-y"/>
-                <entry key="dateFormat" value="mm-dd-yy"/>
-                <entry key="constraintInput" value="true"/>
+                <entry key="dateFormat" value="mm-dd-y"/>
+                <entry key="constrainInput" value="false"/>
                 <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
                 <entry key="buttonImageOnly" value="true"/>
                 <entry key="showAnim" value="fadeIn"/>
@@ -469,7 +489,56 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="date2" p:label="Date 2"
+        <bean id="myDate4" parent="Uif-InputField-LabelTop" p:propertyName="field13" p:label="field13: mm-dd-yyyy"
+              p:instructionalText="krad constraints on, datepicker off" p:required="true">
+          <property name="validCharactersConstraint">
+            <bean parent="BasicDatePatternConstraint" />
+          </property>
+          <property name="control">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yy">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="dateFormat" value="mm-dd-yy"/>
+                <entry key="constrainInput" value="false"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean id="myDate5" parent="Uif-InputField-LabelTop" p:propertyName="date5" p:label="Test Date 5: mm/dd/yyyy"
+              p:instructionalText="krad AND datepicker BOTH constraints ON" p:required="false">
+          <property name="validCharactersConstraint">
+            <bean parent="BasicDatePatternConstraint" />
+          </property>
+          <property name="control">
+            <bean parent="Uif-DateControl">
+            <property name="datePicker.templateOptions">
+              <map>
+                <entry key="showOn" value="button"/>
+                <entry key="constrainInput" value="true"/>
+                <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                <entry key="buttonImageOnly" value="true"/>
+                <entry key="showAnim" value="fadeIn"/>
+                <entry key="showButtonPanel" value="true"/>
+                <entry key="changeMonth" value="true"/>
+                <entry key="changeYear" value="true"/>
+                <entry key="numberOfMonths" value="1"/>
+              </map>
+            </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date6" p:label="2 months"
               p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
           <property name="control">
             <bean parent="Uif-DateControl">
@@ -489,8 +558,8 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="date3" p:label="Date 3"
-              p:instructionalText="Disabled DateControl" p:required="true">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="date7" p:label="Date 7"
+              p:instructionalText="Disabled DateControl" >
           <property name="control">
             <bean parent="Uif-DateControl" p:disabled="true"/>
           </property>

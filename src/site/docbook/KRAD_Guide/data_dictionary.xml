@@ -20,30 +20,315 @@
     <title> The Data Dictionary </title>
     <section>
         <title> Introduction to the Data Dictionary </title>
-        <para></para>
+        <para>The data dictionary is the main repository for metadata storage and provides the glue
+            to combining classes related to a single piece of functionality. The data dictionary is
+            specified in XML and allows for quick changes to be made to functionality. The Data
+            Dictionary files use the Spring Framework for configuration so the notation and parsing
+            operation will match that of the files that define the module configurers.</para>
+        <para>The contents of the data dictionary are defined by two sets of vocabularies; the
+            ‘business object’ and the ‘document’ data.</para>
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                    <para>The Data Dictionary is a repository of metadata primarily describing data
+                        objects and their properties</para>
+                </listitem>
+                    <listitem>
+                    <para>Metadata is provided through Spring bean XML</para>
+                </listitem>
+                    <listitem>
+                    <para>Use of Spring allows for easy overriding by implementers</para>
+                </listitem>
+                    <listitem>
+                    <para>Data dictionary files are configured through the module
+                        configuration</para>
+                </listitem>
+                <listitem>
+                    <para>Much functionality provided by the KRAD frameworks rely on the metadata
+                        provided by the data dictionary</para>
+                </listitem>
+                <listitem>
+                    <para>In addition to describing data objects, the data dictionary is also used
+                        to configure framework behavior (for example ‘business rule class’)</para>
+                </listitem>
+                <listitem>
+                    <para>The data dictionary beans are loaded into a separate Spring bean container
+                        whose information can be accessed through the Data Dictionary Service</para>
+                </listitem>
+                </itemizedlist>
+        </section>
     </section>
-    <section>
-        <title> Attribute Definitions </title>
-        <para></para>
+    <section><title> Attribute Definitions </title>
+        <para>Attribute definitions are used to provide metadata about the attributes (i.e. fields)
+            of a business object. The following is a sampling of attribute definitions from the
+            CampusImpl business object data dictionary file:</para>
+        <programlisting>
+&lt;bean id="Campus-campusCode-parentBean" abstract="true" parent="AttributeDefinition"&gt;
+    &lt;property name="forceUppercase" value="true"/&gt;
+    &lt;property name="shortLabel" value="Campus Code"/&gt;
+    &lt;property name="maxLength" value="2"/&gt;
+    &lt;property name="validationPattern"&gt;
+        &lt;bean parent="AlphaNumericValidationPattern"/&gt;
+    &lt;/property&gt;
+    &lt;property name="required" value="true"/&gt;
+    &lt;property name="control"&gt;
+        &lt;bean parent="TextControlDefinition" p:size="2"/&gt;
+    &lt;/property&gt;
+    &lt;property name="summary" value="Campus Code"/&gt;
+    &lt;property name="name" value="campusCode"/&gt;
+    &lt;property name="label" value="Campus Code"/&gt;
+    &lt;property name="description" value="The code uniquely identifying a particular campus."/&gt;
+&lt;/bean&gt;
+        </programlisting>    
+        <para>In client applications, it is common that several business objects share a field
+            representing the same type of data. For example, a country’s postal code may occur in
+            many different tables. In these circumstances, the use of a parent bean reference
+            (parent="Country-postalCountryCode”) definition allows the reuse of parts of a standard
+            definition from the "master" business object. For instance, the StateImpl business
+            object (business object data dictionary file State.xml) references the postalCountryCode
+            property of the CountryImpl (business object data dictionary file Country.xml). Because
+            the postalCountryCode fields in StateImpl and CountryImpl are identical, a simple
+            attribute definition bean in the Business Object data dictionary file (State.xml) can be
+            used:</para>
+        <programlisting>
+&lt;bean id="State-postalCountryCode" parent="Country-postalCountryCode-parentBean"/&gt;</programlisting>
+        <para>The definition of the
+            Country-postalCountryCode-parentBean bean is seen inside the Country.xml file (for the
+            CountryImpl business object):</para>
+        <programlisting>
+&lt;bean id="Country-postalCountryCode-parentBean" abstract="true" parent="AttributeDefinition"&gt;
+    &lt;property name="name" value="postalCountryCode"/&gt;
+    &lt;property name="forceUppercase" value="true"/&gt;
+    &lt;property name="label" value="Country Code"/&gt;
+    &lt;property name="shortLabel" value="Country Code"/&gt;
+    &lt;property name="maxLength" value="2"/&gt;
+    &lt;property name="validationPattern"&gt;
+        &lt;bean parent="AlphaNumericValidationPattern"/&gt;
+    &lt;/property&gt;
+    &lt;property name="required" value="true"/&gt;
+    &lt;property name="control"&gt;
+        &lt;bean parent="TextControlDefinition" p:size="2"/&gt;
+    &lt;/property&gt;
+    &lt;property name="summary" value="Postal Country Code"/&gt;
+    &lt;property name="description" value="The code uniquely identify a country."/&gt;
+&lt;/bean&gt;
+        </programlisting>    
+            <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                    <para>An Attribute Definition provides metadata about a single data object
+                        property</para>
+                </listitem>
+                <listitem>
+                    <para>Created with a bean whose parent is “AttributeDefinition” (or another
+                        attribute definition bean)</para>
+                </listitem>
+                <listitem>
+                    <para>Properties that can be configured include:<itemizedlist>
+                            <listitem>
+                                <para>name (required) – name of the property on the data object the
+                                    definition describes</para>
+                            </listitem>
+                            <listitem>
+                                <para>label – label text to use when rendering the property</para>
+                            </listitem>
+                            <listitem>
+                                <para>shortLabel – short label text to use when rendering the
+                                    property</para>
+                            </listitem>
+                            <listitem>
+                                <para>minLength/maxLength – min and max length a value for this
+                                    property can have</para>
+                            </listitem>
+                            <listitem>
+                                <para>required – whether a value for this property is always
+                                    required (usually refers to persistence requiredness)</para>
+                            </listitem>
+                            <listitem>
+                                <para>validationPattern – a validation constraint that applies to
+                                    any property value</para>
+                            </listitem>
+                            <listitem>
+                                <para>controlField (and control) – the control component to use by
+                                    default when rendering the property</para>
+                            </listitem>
+                            <listitem>
+                                <para>summary/description – help information for the property</para>
+                            </listitem>
+                        </itemizedlist></para>
+                </listitem>
+                </itemizedlist>
+        </section>
     </section>
     <section>
         <title> Data Object and Business Object Entries </title>
-        <para></para>
+        <para>Data Object entries provide the KRAD framework extra metadata about a data object
+            which is not provided by the persistence mapping or the class itself.</para>
+        <para>The data object entry contains information about:<itemizedlist>
+                <listitem>
+                    <para>Descriptive labels for each attribute in the data object (data dictionary
+                        terminology uses the term “attribute” to refer to fields with getter/setter
+                        methods)</para>
+                </listitem>
+                <listitem>
+                    <para>Primary keys for the data object</para>
+                </listitem>
+                <listitem>
+                    <para>Metadata about each attribute </para>
+                </listitem>
+                <listitem>
+                    <para>How input fields on HTML pages should be rendered for an attribute (e.g.
+                        textbox, drop down, etc.)</para>
+                </listitem>
+                <listitem>
+                    <para>Relationships and collections that exists for the data object</para>
+                </listitem>
+            </itemizedlist></para>
+        <para>The following is an example of a data object entry:</para>
+        <programlisting>  
+&lt;bean id="Book" parent="Book-parentBean"/&gt;
+&lt;bean id="Book-parentBean" abstract="true" parent="DataObjectEntry"&gt;
+    &lt;property name="dataObjectClass" value="edu.sampleu.bookstore.bo.Book"/&gt;
+    &lt;property name="objectLabel" value="Book"/&gt;
+    &lt;property name="collections"&gt;
+        &lt;list&gt;
+            &lt;bean parent="CollectionDefinition" p:name="authors" p:label="Authors" p:shortLabel="Authors" p:elementLabel="Author"/&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="attributes"&gt;
+        &lt;list&gt;
+            &lt;ref bean="Book-id"/&gt;
+            &lt;ref bean="Book-title"/&gt;
+            &lt;ref bean="Book-typeCode"/&gt;
+            &lt;ref bean="Book-isbn"/&gt;
+            &lt;ref bean="Book-publisher"/&gt;
+            &lt;ref bean="Book-publicationDate"/&gt;
+            &lt;ref bean="Book-price"/&gt;
+            &lt;ref bean="Book-rating"/&gt;
+            &lt;ref bean="Book-bookType-name"/&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="titleAttribute" value="id"/&gt;
+    &lt;property name="primaryKeys"&gt;
+        &lt;list&gt;
+            &lt;value&gt;id&lt;/value&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+        </programlisting>
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                    <para>A Data Object (or Business Object) Entry provides metadata about a data
+                        object</para>
+                </listitem>
+                <listitem>
+                    <para>Created with a bean whose parent is “DataObjectEntry” (or extending
+                        another data object entry bean)</para>
+                </listitem>
+                <listitem>
+                    <para>Properties that can be configured include:</para>
+                    <itemizedlist>
+                            <listitem>
+                                <para>dataObjectClass(required) – full classname for the data object
+                                    being described</para>
+                            </listitem>
+                            <listitem>
+                                <para>objectLabel – label text to use when rendering a data object
+                                    record</para>
+                            </listitem>
+                            <listitem>
+                                <para>dataObjectClass(required) – full classname for the data object
+                                    being described</para>
+                            </listitem>
+                            <listitem>
+                                <para>objectLabel – label text to use when rendering a data object
+                                    record</para>
+                            </listitem>
+                            <listitem>
+                                <para>primaryKeys – list of property names that make up the primary
+                                    keys</para>
+                            </listitem>
+                            <listitem>
+                                <para>titleAttribute – name of the property to use as a record
+                                    identifier </para>
+                            </listitem>
+                            <listitem>
+                                <para>attributes – list of attribute definitions for properties
+                                    contained in the data object</para>
+                            </listitem>
+                            <listitem>
+                                <para>relationships/collections – list of relationship (1-1) and
+                                    collection (1-many) definitions for the data object</para>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+                </itemizedlist>
+        </section>
     </section>
     <section>
         <title> Relationship and Collection Definitions </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!--TODO: Add content here
+         -->
     </section>
     <section>
         <title> Constraints </title>
-        <para></para>
+        <para>Constraints define what the acceptable values for a field are.  </para>
+        <para>There are a variety of constraints that can be defined at either the InputField level
+            or the AttributeDefinition level.  These constraints go by the exact same property name
+            at both levels.  Keep in mind that constraints defined at the InputField level always
+            override those at the AttributeDefinition level (when the field is backed by an
+            AttributeDefinition).</para>
+        <para>Constraints are applied during a process called Validation.  Validation can occur on
+            the client during user input, on the server during a submit process, or both.  By
+            default, client-side validation is on and server-side validation is off for FormViews in
+            Rice 2.0.</para>
+        <para>Some constraints mimic those that were in available in the Rice KNS framework and go
+            by similar names.  To help identify which constraints are new and should be used to
+            build KRAD compatible InputFields and AttributeDefinitions, the constraints are all
+            followed by a suffix in both their bean and java class names of “Constraint”.</para>
+        <para>All constraints are enforced client-side during validation, unless noted below. </para>
+        <section>
+            <title>Simple Constraint Properties</title>
+            <para/>
+        </section>
+        <section>
+            <title>Validation Patterns</title>
+            <para/>
+        </section>
+        <section>
+            <title>Case Constraints</title>
+            <para/>
+        </section>
+        <section>
+            <title>Must Occur Constraints</title>
+            <para/>
+        </section>
+        <section>
+            <title>Custom Constraints</title>
+            <para/>
+        </section>
     </section>
     <section>
         <title> Data Dictionary Services </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->        
+    </section>
+    <section>
+        <title>The DATAOBJECTMETADATASERVICE</title>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->        
     </section>
     <section>
         <title> Extending the Data Dictionary </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
     </section>
 </chapter>

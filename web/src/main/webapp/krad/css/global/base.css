@@ -146,11 +146,8 @@ input[disabled="disabled"]+label {
 
 /** Header related styles *********************************************************************/
 
-h1,h2,h3,h4,h5,h6 {
-	margin:1em 0;
-}
-
 .uif-header {
+	margin: .5em 0;
     /* relative to position some icons/links on header line */
     position: relative;
 }
@@ -159,11 +156,15 @@ h1,h2,h3,h4,h5,h6 {
     margin-left: 15px;
 }
 
+.uif-header-rightGroup {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 /* all headers used at view, page, and section levels *************************************************/
 .uif-headerText {
-    font-family: Georgia, Times New roman, Serif;
     clear: both;
-    padding-bottom: 2px;
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -171,28 +172,29 @@ h1,h2,h3,h4,h5,h6{
 }
 
 h1.uif-headerText {
-    font-size: 1.7em;
+    font: bold 21px Helvetica;
 }
 
 h2.uif-headerText {
-    border-bottom: 2px solid #000000;
-    font-size: 1.5em;
+    font: normal 24px Georgia;
 }
 
 h3.uif-headerText {
-    font-size: 1.3em;
+    font: bold 18px Helvetica;
 }
 
 h4.uif-headerText {
-    font-size: 1.2em;
+    font: bold 16px Helvetica;
 }
 
 h5.uif-headerText {
-    font-size: 1.1em;
+    font: normal 14px Helvetica;
+    text-transform: uppercase;
 }
 
 h6.uif-headerText {
-    font-size: 1em;
+    font: normal 12px Helvetica;
+    text-transform: uppercase;
 }
 
 /* DocumentView header custom styling */
@@ -206,7 +208,7 @@ h6.uif-headerText {
 }
 
 /** header disclosure image style **/
-img.expand_collapse-buttons {
+img.uif-disclosure-image {
     margin-bottom: 5px;
     vertical-align: middle;
 }
@@ -430,10 +432,6 @@ div.uif-collectionAddItem {
 }
 
 /* Document header info *******************************************************************************/
-.uif-viewHeader div.uif-docheader {
-    float: right;
-}
-
 .uif-viewHeader div.uif-docheader table {
     height: 60px;
 }
@@ -497,12 +495,6 @@ table.uif-gridLayout th .uif-label {
 }
 
 /** Miscellaneous styles **********************************************************************************/
-
-/** expand collapse container **/
-div.uif-rightAligned-headerFieldGroup {
-    float: right;
-    clear: both;
-}
 
 /** for required message below expand collapse button content */
 .uif-requiredInstructionsMessage{

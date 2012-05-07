@@ -418,8 +418,8 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         var expandImage = "";
         var collapseImage = "";
         if (renderImage) {
-            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='expand_collapse-buttons'/>";
-            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='expand_collapse-buttons'/>";
+            var expandImage = "<img id='" + groupId + "_exp" + "' src='" + expandImgSrc + "' alt='expand' class='uif-disclosure-image'/>";
+            var collapseImage = "<img id='" + groupId + "_col" + "' src='" + collapseImgSrc + "' alt='collapse' class='uif-disclosure-image'/>";
         }
 
         var groupAccordionSpanId = groupId + "_disclosureContent";

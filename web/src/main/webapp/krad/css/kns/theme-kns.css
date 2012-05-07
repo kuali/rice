@@ -31,40 +31,31 @@ a {
 }
 
 h1.uif-headerText {
-    font-family: Georgia, Times New Roman, Serif;
 }
 
 .uif-documentView .uif-viewHeader h1.uif-headerText {
-    font-size: 1.6em;
-    font-weight: bold;
     margin: 0 0 0 15px;
     padding: 0.5em 0;
 }
 
 h2.uif-headerText {
-    font-weight: normal;
-    font-family: Georgia, Times New Roman, Serif;
     border: none;
 }
 
 h3.uif-headerText {
-    font-weight: bold;
-    font-family: Georgia, Times New roman, Serif;
+    font: bold 16px Georgia;
     color: #FFF;
     background: #666;
     padding: .3em;
 }
 
 h4.uif-headerText {
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 h5.uif-headerText {
-    font-family: arial, helvetica, sans-serif;
 }
 
 h6.uif-headerText {
-    font-family: arial, helvetica, sans-serif;
     margin-bottom: 0;
     color: #000;
 }
@@ -85,32 +76,32 @@ h6.uif-headerText {
     margin-bottom: 0px;
 }
 
-h2 img.expand_collapse-buttons[alt="expand"] {
+h2 img.uif-disclosure-image[alt="expand"] {
     background: url(../../images/h2_expand-back-kns.png);
     background-repeat: no-repeat;
 }
 
-h2 img.expand_collapse-buttons[alt="collapse"] {
+h2 img.uif-disclosure-image[alt="collapse"] {
     background: url(../../images/h2_collapse-back-kns.png);
     background-repeat: no-repeat;
 }
 
-h3 img.expand_collapse-buttons[alt="expand"] {
+h3 img.uif-disclosure-image[alt="expand"] {
     background: url(../../images/h3_expand-back-kns.png);
     background-repeat: no-repeat;
 }
 
-h3 img.expand_collapse-buttons[alt="collapse"] {
+h3 img.uif-disclosure-image[alt="collapse"] {
     background: url(../../images/h3_collapse-back-kns.png);
     background-repeat: no-repeat;
 }
 
-h4 img.expand_collapse-buttons[alt="expand"] {
+h4 img.uif-disclosure-image[alt="expand"] {
     background: url(../../images/h3_expand-back-kns.png);
     background-repeat: no-repeat;
 }
 
-h4 img.expand_collapse-buttons[alt="collapse"] {
+h4 img.uif-disclosure-image[alt="collapse"] {
     background: url(../../images/h3_collapse-back-kns.png);
     background-repeat: no-repeat;
 }

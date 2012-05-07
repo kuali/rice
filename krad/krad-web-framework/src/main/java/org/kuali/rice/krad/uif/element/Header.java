@@ -79,6 +79,19 @@ public class Header extends ContentElementBase {
         if ((getLowerGroup() != null) && (getLowerGroup().getItems().isEmpty())) {
             getLowerGroup().setRender(false);
         }
+        
+        //add preset styles to header groups
+        if(getUpperGroup() != null){
+            getUpperGroup().addStyleClass("uif-header-upperGroup");
+        }
+
+        if(getRightGroup() != null){
+            getRightGroup().addStyleClass("uif-header-rightGroup");
+        }
+
+        if(getLowerGroup() != null){
+            getLowerGroup().addStyleClass("uif-header-lowerGroup");
+        }
     }
 
     /**

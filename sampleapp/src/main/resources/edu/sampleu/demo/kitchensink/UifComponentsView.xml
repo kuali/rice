@@ -132,6 +132,7 @@
               <ref bean="Demo-ButtonLevels"/>
               <ref bean="Demo-HeaderLevels"/>
               <ref bean="Demo-Disclosure-HeaderLevels"/>
+              <ref bean="Demo-HeaderGroups"/>
             </list>
           </property>
         </bean>

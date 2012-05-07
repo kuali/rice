@@ -21,71 +21,50 @@ a, a:visited {
 }
 
 /** Basic elements ******************************************************************************/
-
-/**TODO Header styles *************************************************************************/
 .uif-headerText {
-
 }
 
 h1.uif-headerText {
-
 }
 
 h2.uif-headerText {
-
 }
 
 h3.uif-headerText {
-
 }
 
 h4.uif-headerText {
-
 }
 
 h5.uif-headerText {
-
 }
 
 h6.uif-headerText {
-
-}
-
-.uif-sectionHeader h3.uif-headerText {
-    border-bottom: 1px solid #000;
-}
-
-.uif-sectionHeader h4.uif-headerText {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.26em;
-    border-bottom: 1px dotted #000;
-    padding-bottom: 0.3em;
-    font-weight: bold;
 }
 
 /* expand collapse headers */
-h2 img.expand_collapse-buttons[alt="expand"] {
+h2 img.uif-disclosure-image[alt="expand"] {
     /* NOT renamed in xml and/or jsp, as this will break js functionality   */
     background: url(../../images/h2_expand-back-ks.png);
     background-repeat: no-repeat;
     padding-right: .25em;
 }
 
-h2 img.expand_collapse-buttons[alt="collapse"] {
-    /* was h2 img.expand_collapse-buttons[alt="collapse"]*/
+h2 img.uif-disclosure-image[alt="collapse"] {
+    /* was h2 img.uif-disclosure-image[alt="collapse"]*/
     /* NOT renamed in xml and/or jsp, as this will break js functionality   */
     background: url(../../images/h2_collapse-back-ks.png);
     background-repeat: no-repeat;
     padding-right: .25em;
 }
 
-img.expand_collapse-buttons[alt="collapse"] {
+img.uif-disclosure-image[alt="collapse"] {
     background: url(../../images/h3_collapse-back-ks.png);
     background-repeat: no-repeat;
     padding-right: .25em;
 }
 
-img.expand_collapse-buttons[alt="expand"] {
+img.uif-disclosure-image[alt="expand"] {
     background: url(../../images/h3_expand-back-ks.png);
     background-repeat: no-repeat;
     padding-right: .25em;

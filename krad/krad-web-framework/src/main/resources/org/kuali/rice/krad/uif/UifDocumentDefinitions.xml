@@ -258,7 +258,7 @@
   </bean>
 
   <bean id="Uif-DocumentViewHeader" abstract="true" parent="Uif-ViewHeader">
-    <property name="lowerGroup">
+    <property name="rightGroup">
       <bean parent="Uif-DocumentInfoGroup">
         <property name="cssClasses">
           <list merge="true">

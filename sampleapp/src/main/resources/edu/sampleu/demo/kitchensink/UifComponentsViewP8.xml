@@ -27,10 +27,12 @@
         <bean parent="Uif-VerticalBoxSubSection" p:headerText="Primary">
           <property name="items">
             <list>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Normal" p:clientSideJs="alert('You clicked a button');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Normal"
+                    p:clientSideJs="alert('You clicked a button');"/>
               <bean parent="Uif-PrimaryActionButton" p:disabled="true" p:actionLabel="Normal"
                     p:clientSideJs="alert('You clicked a button');"/>
-              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Small" p:clientSideJs="alert('You clicked a button');"/>
+              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Small"
+                    p:clientSideJs="alert('You clicked a button');"/>
               <bean parent="Uif-PrimaryActionButton-Small" p:disabled="true" p:actionLabel="Small"
                     p:clientSideJs="alert('You clicked a button');"/>
             </list>
@@ -39,10 +41,12 @@
         <bean parent="Uif-VerticalBoxSubSection" p:headerText="Secondary">
           <property name="items">
             <list>
-              <bean parent="Uif-SecondaryActionButton" p:actionLabel="Normal" p:clientSideJs="alert('You clicked a button');"/>
+              <bean parent="Uif-SecondaryActionButton" p:actionLabel="Normal"
+                    p:clientSideJs="alert('You clicked a button');"/>
               <bean parent="Uif-SecondaryActionButton" p:disabled="true" p:actionLabel="Normal"
                     p:clientSideJs="alert('You clicked a button');"/>
-              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Small" p:clientSideJs="alert('You clicked a button');"/>
+              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Small"
+                    p:clientSideJs="alert('You clicked a button');"/>
               <bean parent="Uif-SecondaryActionButton-Small" p:disabled="true" p:actionLabel="Small"
                     p:clientSideJs="alert('You clicked a button');"/>
             </list>
@@ -52,9 +56,9 @@
           <property name="items">
             <list>
               <bean parent="Uif-ActionLink" p:actionLabel="Action link" p:clientSideJs="alert('You clicked a link');"/>
-<!--          TODO Does not work yet
-              <bean parent="Uif-ActionLink" p:disabled="true" p:actionLabel="Action link disabled"
-                    p:clientSideJs="alert('You clicked a link');"/>-->
+              <!--          TODO Does not work yet
+     <bean parent="Uif-ActionLink" p:disabled="true" p:actionLabel="Action link disabled"
+           p:clientSideJs="alert('You clicked a link');"/>-->
             </list>
           </property>
         </bean>
@@ -125,6 +129,36 @@
           </property>
         </bean>
       </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection" p:headerText="Header Groups Demo">
+    <property name="header.upperGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Upper Group"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.rightGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Right Group"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HorizontalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Lower Group"/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

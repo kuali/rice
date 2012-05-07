@@ -20,17 +20,227 @@
     <title>Getting Started</title>
     <section>
         <title> KRAD Architecture </title>
+        <para/>
+        <!--TODO: Add content here
+        -->
+        <figure>
+            <title>KRAD Frameworks</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/KRADFrameworks.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <section>
+            <title>Recap</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>KRAD is a complete framework for application development, covering all
+                            the application layers (Presentation, Business, and Data)</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD is comprised of the following feature areas:</para>
+                        <itemizedlist>
+                                <listitem>
+                                <para>Persistence Framework – Provides services and other utilities
+                                    for persisting data. Central to all of this is the Business
+                                    Object.</para>
+                            </listitem>
+                                <listitem>
+                                <para>Data Dictionary – Repository of XML metadata that describes
+                                    data objects and their attributes. This can be used to configure
+                                    common UI attributes along with other things such as
+                                    validation.</para>
+                            </listitem>
+                                <listitem>
+                                <para>Document Framework – Provides the ability to create ‘e-docs’
+                                    that are integrated with the KEW module for workflow and the KIM
+                                    module for authorization. In addition to the integration the
+                                    framework also provides several reusable pieces for creating new
+                                    documents.</para>
+                            </listitem>
+                                <listitem>
+                                <para>Business Rules – Code based Rules framework that can be used
+                                    to writing business rules corresponding to events that occur on
+                                    a document. Future plans include integration with the new KRMS
+                                    module.</para>
+                            </listitem>
+                                <listitem>
+                                <para>UI Framework (UIF) – Framework for building Web based user
+                                    interfaces using a components that are configured with XML. Most
+                                    of the KRAD training is focused on this area.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Inquiry, Lookup, Maintenance – ‘Pre-built’ views complete with
+                                    a backend implementation that can be quickly configured to
+                                    create new search screens, screens that display data for
+                                    information, and screens that allow table data to be
+                                    maintained.</para>
+                            </listitem>
+                            </itemizedlist>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>    
     </section>
     <section>
         <title> Spring Beans </title>
+        <para>Spring provides the foundation for much of the KRAD functionality. Many Spring
+            offerings are consumed throughout the module, including data sources/templates,
+            dependency management, transaction support, remoting, EL, and Spring MVC. In addition to
+            the typical ways of using Spring, KRAD uses its powerful configuration system as a basis
+            for building declarative frameworks. Developers use much of KRAD by interacting with
+            this configuration system. This section will give an overview of using Spring
+            configuration and discuss its role in KRAD.</para>
+        <section>
+            <title>Configuration System</title>
+            <para>Spring provides a configuration system that allows us to configure how to
+                instantiate, configure, and assemble objects in our application. Furthermore, this
+                configuration can take place outside of Java code. As simple as it might sound, this
+                is a very powerful construct that has changed many aspects of application
+                development. An application of this includes configuring the dependencies for an
+                object (other objects it depends on). This is known as Inversion of Control, the
+                opposite of the object getting its own dependencies (for example with a
+                ServiceLocator for service dependencies).</para>
+            <para>KRAD along with the rest of Rice use this feature of Spring to set dependencies
+                such as services, DAOs, and data sources. This gives applications built with Rice
+                much greater flexibility, as the implementations for these dependencies can be
+                changed and configured for us with the Spring configuration.</para>
+            <para>Besides setting other object dependencies, the Spring configuration can be used to
+                set values for primitive properties (String, Integer, Boolean …). In addition, we
+                can instruct Spring on how to set the property value, whether it be by a standard
+                setter, constructor argument, or annotated method. Essentially Spring allows us to
+                give a formula for creating and populating an object instance completely outside of
+                code. This so called formula is known as the bean configuration.</para>
+        </section>
+        <section>
+            <title>Bean Configuration</title>
+            <para>Spring supports various methods for bean configuration, the most common of these
+                being XML. Each XML file must adhere to the Spring bean doctype and is sometimes
+                referred to as ‘Spring Bean XML’. The following is the shows the doctype definition
+                for the 3.1 release:</para>
+            <programlisting>
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans=http://www.springframework.org/schema/beans
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd&gt;
+            </programlisting>    
+            <para>Note this sets up use for the bean namespace. Spring provides many other XML
+                namespaces that are used for various purposes. If one of these are used, the
+                corresponding definition must be declared with the bean doctype. One of these other
+                namespaces, the ‘p’ namespace, will be covered later on in this section.</para>
+            <para>Once we have our XML file setup, we can begin specifying the bean configuration.
+                Each file may contain as many bean configurations as we like (we will see later on
+                certain best practices for Spring file organization). To start a new bean
+                configuration, we use the bean tag:</para>
+            <programlisting>
+&lt;bean id="address" class=”edu.myedu.sample.Address”&gt;
+&lt;/bean&gt;
+            </programlisting> 
+            <para>As we will see in a bit, the bean configuration is loading into a container managed 
+                by Spring. In order to identify a bean configuration, we must give it a unique name 
+                using the id attribute. In addition we see here an attribute named class. Recall the 
+                purpose of the bean configuration is to construct and populate an object, so we must tell 
+                Spring what type of object we want created
+            </para>
+            <note>
+                <title>Bean Names</title>
+                <para>Spring allows us to name our bean using the id attribute or the  name
+                    attribute, or both. In addition, we can give multiple names in the name
+                    attribute that can be used to identify the bean configuration. If all that is
+                    not enough, Spring has an alias tag that can be used to give another name for a
+                    bean. Best practice for Rice applications is to use the id attribute to specify
+                    the main name, and then use the other attributes if needed. </para>
+            </note> 
+        </section>
+        <section><title>Primitive Properties</title><para/>
+            <para>The above definition is perfectly acceptable and would result in Spring creating a
+                new Address object. However, now let’s add some property configuration. In order to
+                do this, we must know the available properties on our Address object:</para>
+            <para>public class Address { </para>
+            <para>  private String street;</para>
+            <para>  private String city;</para>
+            <para>  private String state;</para>
+            <para>  // getters and setters</para>
+            <para>}</para>
+            <para>We see Address has three properties we can configure. To specify a value for one
+                of these properties, we can use the property tag. When using the property tag we
+                must specify the name attribute which must match the property name of the class we
+                want to populate, and then the value attribute which is the value we wish to
+                inject.</para>
+            <programlisting>
+&lt;bean id="address" class=”edu.myedu.sample.Address”&gt;
+    &lt;property name=”street” value=”197 H St”/&gt;
+    &lt;property name=”city” value=”Bloomington”/&gt;
+    &lt;property name=”state” value=”IN”/&gt;
+&lt;/bean&gt;
+            </programlisting>    
+            <para>The above configuration is equivalent to the following Java code:</para>
+            <programlisting>
+Address address = new Address();
+address.setStreet(“197 H St”);
+address.setCity(“Bloomington”);
+address.setState(“IN”);  
+            </programlisting>    
+            <para>Notice that in order for Spring to
+                instantiate our object with the above bean configuration, we needed to have a
+                default no-argument constructor. However, if our class requires a constructor
+                argument, that’s no problem. We can use the constructor-arg tag to specify the
+                values for the arguments. Suppose our Address class looks like the following:</para>
+            <programlisting> 
+public class Address {
+    private String street;
+    private String city;
+    private String state;
+    public Address(String street, String city, String state) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+    }
+        // getters and setters
+}
+            </programlisting>
+            <para>We can then use the constructor-arg tag so Spring can pass the appropriate
+                arguments for instantiation:</para>
+            <programlisting>
+&lt;bean id="address" class=”edu.myedu.sample.Address”&gt;
+    &lt;constructor-arg  index=”0” value=”197 H St”/&gt;
+    &lt;constructor-arg index=”1” value=”Bloomington”/&gt;
+    &lt;constructor-arg index=”2” value=”IN”/&gt;
+>&lt;/bean&gt;
+            </programlisting>
+            <para>Note when specifying the constructor-arg, we indicating
+                the order the argument should be given to the constructor using the index attribute.
+                Spring supports other mechanisms for matching the arguments, such as matching by the
+                argument class type. </para>
+            <note>
+                <title>Property Editors</title>
+                <para>When specifying a value for a property, Spring will use  PropertyEditor
+                    classes to do the datatype conversion. By default, conversion of Strings to
+                    Numbers and Booleans work without any additional configuration. Additional
+                    property editors are provided for other conversions (such as Date), and in
+                    addition custom property editors can be created. However, these must be
+                    configured for use with the bean factory. See the full Spring documentation for
+                    more information </para>
+            </note>
+        </section>
+        <section>
+            <title>Collections</title>
+            <para/>
+        </section>
     </section>
     <section>
         <title> The Development Environment </title>
+        <para/>
     </section>
     <section>
         <title> New Project Setup </title>
+        <para/>
     </section>
     <section>
         <title> Our Sample Application </title>
+        <para/>
     </section>
 </chapter>

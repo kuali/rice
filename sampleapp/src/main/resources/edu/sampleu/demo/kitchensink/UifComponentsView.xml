@@ -495,7 +495,7 @@
             <bean parent="BasicDatePatternConstraint" />
           </property>
           <property name="control">
-            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yy">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yyyy">
             <property name="datePicker.templateOptions">
               <map>
                 <entry key="showOn" value="button"/>
@@ -515,12 +515,9 @@
         </bean>
 
         <bean id="myDate4B" parent="Uif-InputField-LabelTop" p:propertyName="date4" p:label="date4: mm-dd-yyyy"
-              p:instructionalText="same as previous but bound to date" p:required="false">
-          <property name="validCharactersConstraint">
-            <bean parent="BasicDatePatternConstraint" />
-          </property>
+              p:instructionalText="bound to date" p:required="false">
           <property name="control">
-            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yy">
+            <bean parent="Uif-DateControl" p:watermarkText="mm-dd-yyyy">
             <property name="datePicker.templateOptions">
               <map>
                 <entry key="showOn" value="button"/>

@@ -78,7 +78,7 @@
     function resizeIframe() {
       var skipResize = thisIframe.contents().find("#Uif-Application").attr("data-skipResize");
       if(skipResize == undefined || skipResize == "false"){
-        var newHeight = thisIframe.contents().find("body").outerHeight();
+        var newHeight = thisIframe.contents().find("body").outerHeight(true);
         var newWidth = jQuery("#iframe_portlet_container_div").width() - 15;
         thisIframe.contents().find("body").attr("style", "overflow-x: auto; padding-right: 20px;");
 

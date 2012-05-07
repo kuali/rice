@@ -23,7 +23,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 
   <bean id="TravelAccount-InquiryView" parent="Uif-InquiryView">
-     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="headerText" value="Travel Account Inquiry"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="Items">
          <list>
            <bean parent="Uif-Disclosure-GridSection">

@@ -267,8 +267,6 @@ function runHiddenScripts(id, isSelector){
             }
         });
 	}
-
-
 }
 
 function runScriptsForId(id) {

@@ -15,32 +15,26 @@
  */
 package org.kuali.test;
 
-
-
 /**
- * 
- * provides centralized storage of constants that occur throughout the tests
- * 
- * 
+ * Provides centralized storage of constants that occur throughout the tests
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KRADTestConstants {
-    /**
-     * contains Test related constants
-     * 
-     * 
-     */
+
     public static final class TestConstants {
         private static final String HOST = "localhost";
         private static final String PORT = "8080";
         public static final String BASE_PATH = "http://" + HOST + ":" + PORT + "/";
-        public static final String MESSAGE = "JUNIT test entry. If this exist after the tests are not cleaning up correctly. Created by class";
-        
-    	private TestConstants() {
-    		throw new UnsupportedOperationException("do not call");
-    	}
+        public static final String MESSAGE =
+                "JUNIT test entry. If this exist after the tests are not cleaning up correctly. Created by class";
+
+        private TestConstants() {
+            throw new UnsupportedOperationException("do not call");
+        }
     }
-    
-	private KRADTestConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
+
+    private KRADTestConstants() {
+        throw new UnsupportedOperationException("do not call");
+    }
 }

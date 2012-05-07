@@ -48,6 +48,6 @@
         <bean parent="FieldDefinition" p:attributeName="someValue" />
       </list>
     </property>
-    <property name="headerText" value="Lookup Results DD BO Lookup"/>
+    <property name="title" value="Lookup Results DD BO Lookup"/>
   </bean>
 </beans>

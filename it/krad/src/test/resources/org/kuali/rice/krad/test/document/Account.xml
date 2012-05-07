@@ -132,11 +132,11 @@
               <bean parent="FieldDefinition" p:attributeName="amId" p:forceInquiry="true"/>
             </list>
           </property>
-          <property name="headerText" value="Account Information"/>
+          <property name="title" value="Account Information"/>
         </bean>
       </list>
     </property>
-    <property name="headerText" value="Account Inquiry"/>
+    <property name="title" value="Account Inquiry"/>
   </bean>
 
 <!-- Business Object Lookup Definition -->
@@ -166,6 +166,6 @@
         <bean parent="FieldDefinition" p:attributeName="amId" p:forceInquiry="true"/>
       </list>
     </property>
-    <property name="headerText" value="Account Lookup"/>
+    <property name="title" value="Account Lookup"/>
   </bean>
 </beans>

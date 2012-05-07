@@ -23,9 +23,10 @@ import static org.junit.Assert.*;
 /**
  * MaskFormatterSubStringTest tests {@link MaskFormatterSubString} methods
  *
+ * TODO: should be unit test
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class MaskFormatterSubStringTest extends KRADTestCase {
 
     @Test

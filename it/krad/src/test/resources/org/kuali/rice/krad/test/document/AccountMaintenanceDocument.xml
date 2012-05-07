@@ -57,7 +57,7 @@
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
-          <property name="headerText" value="Add/Edit Account"/>
+          <property name="title" value="Add/Edit Account"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="number"/>

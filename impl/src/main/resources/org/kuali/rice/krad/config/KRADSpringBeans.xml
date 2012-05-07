@@ -27,7 +27,6 @@
        xmlns:jms="http://www.springframework.org/schema/jms"
        xmlns:lang="http://www.springframework.org/schema/lang"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:oxm="http://www.springframework.org/schema/oxm"
        xmlns:task="http://www.springframework.org/schema/task"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
@@ -48,8 +47,6 @@
                            http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-                           http://www.springframework.org/schema/oxm
-                           http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
                            http://www.springframework.org/schema/task
                            http://www.springframework.org/schema/task/spring-task-3.0.xsd
                            http://www.springframework.org/schema/tx
@@ -103,7 +100,6 @@
     <property name="persistenceService" ref="persistenceServiceOjb"/>
     <property name="dataDictionaryPackages">
       <list>
-        <!-- from krad -->
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/Attachment.xml</value>

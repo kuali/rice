@@ -116,7 +116,7 @@
           <property name="items">
             <list>
 
-              <bean parent="Uif-InputField" p:propertyName="description" p:label="Description" p:required="true">
+              <bean parent="Uif-InputField" p:propertyName="description" p:label="Description" p:required="true" p:escapeHtmlInPropertyValue="true">
                 <!-- property name="control">
                   <bean parent="Uif-TextAreaControl"/>
                 </property -->
@@ -292,6 +292,7 @@
     <property name="resultFields">
       <list>
         <bean parent="Uif-InputField" p:propertyName="id"/>
+        <bean parent="Uif-InputField" p:propertyName="description" p:escapeHtmlInPropertyValue="true"/>
         <bean parent="Uif-InputField" p:propertyName="specification.id"/>
         <bean parent="Uif-InputField" p:propertyName="specification.namespace"/>
         <bean parent="Uif-InputField" p:propertyName="specification.name"/>

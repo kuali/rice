@@ -117,7 +117,7 @@
   <bean id="ConfigurationTestView-ProgressiveRender-DayEventSection" parent="Uif-Disclosure-TableCollectionSection">
     <property name="headerText" value="Day Events - Sorting enable/disable testing"/>
     <property name="instructionalText"
-              value="Sorting in rich table should work with specified sorting fields"/>
+              value="Initial column sorting in rich table should work with specified sorting fields (Start Date)"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.DayEvent"/>
     <property name="propertyName" value="dayEvents"/>
     <property name="layoutManager.renderSequenceField" value="false" />
@@ -142,7 +142,7 @@
         <entry key="aaSorting" value="[[1,'desc']]"/>
         <entry key="aoColumns"
                value="[ {'bSortable':false, 'sWidth':'20%'},
-                {'bSortable':false, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%'},
+                {'bSortable':false, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%', 'sSortDataType' : 'dom-text'},
                 {'bSortable':false, 'sWidth':'20%'},
                 {'bSortable':false, 'sWidth':'20%'},
                 {'bSortable':false, 'sWidth':'20%'}

@@ -110,12 +110,12 @@
     <property name="description" value="This attribute is used to describe whether the associated object is active or inactive."/>
   </bean>
   <bean id="BookType-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Book Type Inquiry"/>
+    <property name="headerText" value="Book Type Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="Items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">
-          <property name="title" value="Book Type Information"/>
+          <property name="headerText" value="Book Type Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
@@ -127,7 +127,7 @@
           </property>
         </bean>
         <bean parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="title" value="Books"/>
+          <property name="headerText" value="Books"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Book"/>
           <property name="propertyName" value="books"/>
           <property name="items">
@@ -151,7 +151,7 @@
     </property>
   </bean>
   <bean id="BookType-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Book Type Lookup"/>
+    <property name="headerText" value="Book Type Lookup"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="criteriaFields">
       <list>

@@ -197,12 +197,12 @@
     </property>
   </bean>
   <bean id="Book-InquiryView" parent="Uif-InquiryView">
-    <property name="title" value="Book Inquiry"/>
+    <property name="headerText" value="Book Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="Items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">
-          <property name="title" value="Book Information"/>
+          <property name="headerText" value="Book Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
@@ -216,7 +216,7 @@
           </property>
         </bean>
         <bean parent="Uif-Disclosure-GridSection">
-          <property name="title" value="Publishing Information"/>
+          <property name="headerText" value="Publishing Information"/>
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
@@ -226,7 +226,7 @@
           </property>
         </bean>
         <bean parent="Uif-Disclosure-StackedCollectionSection">
-          <property name="title" value="Authors"/>
+          <property name="headerText" value="Authors"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Author"/>
           <property name="propertyName" value="authors"/>
           <property name="items">
@@ -250,7 +250,7 @@
     </property>
   </bean>
   <bean id="Book-LookupView" parent="Uif-LookupView">
-    <property name="title" value="Book Lookup"/>
+    <property name="headerText" value="Book Lookup"/>
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="criteriaFields">
       <list>

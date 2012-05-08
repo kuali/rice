@@ -88,7 +88,7 @@ abstract class RoleServiceBase {
      */
     private Map<String, String> convertQualifierKeys(Map<String, String> qualification) {
         Map<String, String> convertedQualification = new HashMap<String, String>();
-        if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
+        if (qualification != null && CollectionUtils.isNotEmpty(qualification.entrySet())) {
             for (Map.Entry<String, String> entry : qualification.entrySet()) {
                 String kimAttributeId = getKimAttributeId(entry.getKey());
                 if (StringUtils.isNotEmpty(kimAttributeId)) {

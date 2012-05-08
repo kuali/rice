@@ -136,9 +136,9 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         ManagedList list = (ManagedList)peopleFlowBeanDefinition.getPropertyValues().getPropertyValue("Items").getValue();
         ManagedList items = (ManagedList)((BeanDefinitionHolder)list.get(0)).getBeanDefinition().getPropertyValues().getPropertyValue("items").getValue();
 
-        Assert.assertNotNull(((BeanDefinitionHolder) items.get(0)).getBeanDefinition().getPropertyValues().getPropertyValue("fieldInquiry"));
+        Assert.assertNotNull(((BeanDefinitionHolder) items.get(0)).getBeanDefinition().getPropertyValues().getPropertyValue("inquiry"));
 
-        Inquiry inquiry = (Inquiry)((BeanDefinitionHolder) items.get(0)).getBeanDefinition().getPropertyValues().getPropertyValue("fieldInquiry.render").getValue();
+        Inquiry inquiry = (Inquiry)((BeanDefinitionHolder) items.get(0)).getBeanDefinition().getPropertyValues().getPropertyValue("inquiry.render").getValue();
         Assert.assertFalse(inquiry.isRender());
     }
 
@@ -667,9 +667,17 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
 
         Element nameDataField = document.createElement("bean");
         nameDataField.setAttribute("parent", "Uif-DataField");
-        nameDataField.setAttribute("p:propertyName", "name");
-        nameDataField.setAttribute("p:fieldInquiry.render", "false");
 
+        Element nameDataFieldProperty = document.createElement("property");
+        nameDataFieldProperty.setAttribute("name", "propertyName");
+        nameDataFieldProperty.setAttribute("value", "name");
+
+        Element inquiryRenderProperty = document.createElement("property");
+        inquiryRenderProperty.setAttribute("name", "inquiry.render");
+        inquiryRenderProperty.setAttribute("value", "false");
+
+        nameDataField.appendChild(nameDataFieldProperty);
+        nameDataField.appendChild(inquiryRenderProperty);
         gridItemsList.appendChild(nameDataField);
         gridItemsProperty.appendChild(gridItemsList);
         gridBean.appendChild(gridItemsProperty);

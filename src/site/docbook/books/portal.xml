@@ -98,6 +98,12 @@
                     <itemizedlist>
                         <para>* When using Internet Explorer, we recommend viewing the PDF files
                             since the size of the diagrams may be illegible in IE.</para>
+
+                        <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
+                        <listitem>
+                            <para><link xlink:show="new" xlink:href="../schema-spy/index.html">Schema Spy</link></para>
+                        </listitem>
+
 <!-- TODO: regenerate and add back in
                         <listitem>
                             <para><link xlink:show="new" xlink:href="../db_diagrams/schema.html">Schema</link></para>

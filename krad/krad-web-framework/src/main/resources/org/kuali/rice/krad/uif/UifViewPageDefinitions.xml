@@ -74,6 +74,7 @@
         <value>krad/plugins/json/jquery.json-2.2.js</value>
         <value>krad/plugins/infusion/infusion-1.4.js</value>
         <value>krad/plugins/infusion/infusion.reorderer.js</value>
+        <value>krad/scripts/krad.variables.js</value>
         <value>krad/scripts/krad.initialize.js</value>
         <value>krad/scripts/krad.ajax.js</value>
         <value>krad/scripts/krad.message.js</value>

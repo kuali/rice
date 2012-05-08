@@ -28,4 +28,7 @@
 	<param name="datasource.password"><!-- Fill in Password Here! --></param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 
+  <param name="wsdl.test.previous.version">2.0.1</param>
+  <param name="wsdl.test.previous.url">http://maven.kuali.org.s3.amazonaws.com/release/org/kuali/rice/</param>
+
 </config>

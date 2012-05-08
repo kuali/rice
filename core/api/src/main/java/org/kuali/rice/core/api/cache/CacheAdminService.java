@@ -16,11 +16,13 @@
 package org.kuali.rice.core.api.cache;
 
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 
+import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.Collection;
 
@@ -37,6 +39,7 @@ import java.util.Collection;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 2.0
  */
+@WebService(name = "cacheAdminService", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CacheAdminService {
 

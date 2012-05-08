@@ -236,5 +236,10 @@
       <artifactId>junit</artifactId>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.predic8</groupId>
+      <artifactId>soa-model-core</artifactId>
+    </dependency>
   </dependencies>
 </project>

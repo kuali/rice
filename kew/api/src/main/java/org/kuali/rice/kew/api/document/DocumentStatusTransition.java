@@ -40,6 +40,7 @@ import org.w3c.dom.Element;
     DocumentStatusTransition.Elements.OLD_APP_DOC_STATUS,
     DocumentStatusTransition.Elements.NEW_APP_DOC_STATUS,
     DocumentStatusTransition.Elements.STATUS_TRANSITION_DATE,
+        DocumentStatusTransition.Elements.STATUS_TRANSITION_DATE_VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentStatusTransition
@@ -55,9 +56,12 @@ public final class DocumentStatusTransition
     private final String oldStatus;
     @XmlElement(name = Elements.NEW_APP_DOC_STATUS, required = false)
     private final String newStatus;
+    @Deprecated
     @XmlElement(name = Elements.STATUS_TRANSITION_DATE, required = false)
-    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime statusTransitionDate;
+    @XmlElement(name = Elements.STATUS_TRANSITION_DATE_VALUE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime statusTransitionDateValue;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -72,6 +76,8 @@ public final class DocumentStatusTransition
         this.oldStatus = null;
         this.newStatus = null;
         this.statusTransitionDate = null;
+        this.statusTransitionDateValue = null;
+
     }
 
     private DocumentStatusTransition(Builder builder) {
@@ -80,6 +86,7 @@ public final class DocumentStatusTransition
         this.oldStatus = builder.getOldStatus();
         this.newStatus = builder.getNewStatus();
         this.statusTransitionDate = builder.getStatusTransitionDate();
+        this.statusTransitionDateValue = builder.getStatusTransitionDate();
     }
 
     @Override
@@ -104,7 +111,7 @@ public final class DocumentStatusTransition
 
     @Override
     public DateTime getStatusTransitionDate() {
-        return this.statusTransitionDate;
+        return this.statusTransitionDateValue == null ? this.statusTransitionDate : this.statusTransitionDateValue;
     }
 
 
@@ -222,6 +229,7 @@ public final class DocumentStatusTransition
         final static String OLD_APP_DOC_STATUS = "oldStatus";
         final static String NEW_APP_DOC_STATUS = "newStatus";
         final static String STATUS_TRANSITION_DATE = "statusTransitionDate";
+        final static String STATUS_TRANSITION_DATE_VALUE = "statusTransitionDateValue";
 
     }
 

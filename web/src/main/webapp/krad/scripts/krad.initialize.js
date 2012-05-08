@@ -494,7 +494,17 @@ jQuery.validator.addMethod("maxLengthConditional", function (value, element, par
     }
 });
 
-// data table initialize default sorting
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_date in aoColumns in ascending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
 jQuery.fn.dataTableExt.oSort['kuali_date-asc'] = function (a, b) {
     var date1 = a.split('/');
     var date2 = b.split('/');
@@ -503,6 +513,17 @@ jQuery.fn.dataTableExt.oSort['kuali_date-asc'] = function (a, b) {
     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
 };
 
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_date in aoColumns in descending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
 jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function (a, b) {
     var date1 = a.split('/');
     var date2 = b.split('/');
@@ -511,6 +532,17 @@ jQuery.fn.dataTableExt.oSort['kuali_date-desc'] = function (a, b) {
     return ((x < y) ? 1 : ((x > y) ? -1 : 0));
 };
 
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_percent in aoColumns in ascending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
 jQuery.fn.dataTableExt.oSort['kuali_percent-asc'] = function (a, b) {
     var num1 = a.replace(/[^0-9]/g, '');
     var num2 = b.replace(/[^0-9]/g, '');
@@ -519,6 +551,17 @@ jQuery.fn.dataTableExt.oSort['kuali_percent-asc'] = function (a, b) {
     return num1 - num2;
 };
 
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_percent in aoColumns in descending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
 jQuery.fn.dataTableExt.oSort['kuali_percent-desc'] = function (a, b) {
     var num1 = a.replace(/[^0-9]/g, '');
     var num2 = b.replace(/[^0-9]/g, '');
@@ -527,6 +570,17 @@ jQuery.fn.dataTableExt.oSort['kuali_percent-desc'] = function (a, b) {
     return num2 - num1;
 };
 
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_currency in aoColumns in ascending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
 jQuery.fn.dataTableExt.oSort['kuali_currency-asc'] = function (a, b) {
     /* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
     var x = a == "-" ? 0 : a.replace(/,/g, "");
@@ -544,6 +598,17 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-asc'] = function (a, b) {
     return x - y;
 };
 
+/**
+ * a plugin function for sorting values for columns marked with sType:kuali_currency in aoColumns in descending order
+ *
+ * <p>The values to be compared are returned by custom function for returning cell data if it exists, otherwise
+ * the cell contents (innerHtml) are converted to string and compared against each other. One such function is defined
+ * below - jQuery.fn.dataTableExt.afnSortData['dom-text'] - which returns values for the 'dom-text' custom sorting plugin<p>
+ *
+ * @param a - the first value to use in comparison
+ * @param b - the second value to use in comparison
+ * @return a number that will be used to determine whether a is greater than b
+ */
 jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
     /* Remove any commas (assumes that if present all strings will have a fixed number of d.p) */
     var x = a == "-" ? 0 : a.replace(/,/g, "");
@@ -561,6 +626,13 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
     return y - x;
 };
 
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-text in aoColumns
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
 jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
     var aData = [];
     jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
@@ -583,7 +655,15 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn) {
     return aData;
 }
 
-/* Create an array with the values of all the select options in a column */
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-select in aoColumns
+ *
+ * <p>Create an array with the values of all the select options in a column</p>
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
 jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn) {
     var aData = [];
     jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
@@ -604,7 +684,15 @@ jQuery.fn.dataTableExt.afnSortData['dom-select'] = function (oSettings, iColumn)
     return aData;
 }
 
-/* Create an array with the values of all the checkboxes in a column */
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-checkbox in aoColumns
+ *
+ * <p>Create an array with the values of all the checkboxes in a column</p>
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
 jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColumn) {
     var aData = [];
     jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {
@@ -632,6 +720,15 @@ jQuery.fn.dataTableExt.afnSortData['dom-checkbox'] = function (oSettings, iColum
     return aData;
 }
 
+/**
+ * retrieve column values for sorting a column marked with sSortDataType:dom-radio in aoColumns
+ *
+ * <p>Create an array with the values of all the radio buttons in a column</p>
+ *
+ * @param oSettings - an object provided by datatables containing table information and configuration
+ * @param iColumn - the column whose values are to be retrieved
+ * @return an array of column values - extracted from any surrounding markup
+ */
 jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) {
     var aData = [];
     jQuery('td:eq(' + iColumn + ')', oSettings.oApi._fnGetTrNodes(oSettings)).each(function () {

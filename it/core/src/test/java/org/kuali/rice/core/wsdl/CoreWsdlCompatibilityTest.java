@@ -16,6 +16,7 @@
 
 package org.kuali.rice.core.wsdl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,6 +27,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CoreWsdlCompatibilityTest extends WsdlCompareTestCase {
     private static final Logger LOG = Logger.getLogger(CoreWsdlCompatibilityTest.class);
@@ -41,26 +44,20 @@ public class CoreWsdlCompatibilityTest extends WsdlCompareTestCase {
         compareWsdlFiles(files);
     }
 
-    @Ignore
     @Test
     public void compareCoreWsdls() {
         File[] files = new File(getModuleName() + "/api/target/wsdl").listFiles();
-
-        try {
-            FileReader file = new FileReader(files[0].getAbsolutePath());
-            BufferedReader bufferedReader = new BufferedReader(file);
-
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                System.out.println(line);
-                line = bufferedReader.readLine();
+        if (StringUtils.equals("2.0.1", getPreviousVersion())
+                && files != null) {
+            //hack to remove test for CacheAdminService, because 2.0.1's wdsl for that was generated incorrectly
+            List<File> fileList = new ArrayList<File>();
+            for (File file : files) {
+                if (!file.getName().equals("CacheAdminService.wsdl")) {
+                    fileList.add(file);
+                }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            files = fileList.toArray(new File[]{});
         }
-
         compareWsdlFiles(files);
     }
 

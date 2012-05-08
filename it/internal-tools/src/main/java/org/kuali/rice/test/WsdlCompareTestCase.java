@@ -156,8 +156,6 @@ public class WsdlCompareTestCase extends BaselineTestCase {
     //String oldWsdl = MAVEN_REPO_PREFIX + MODULE + "-api/" + PREVIOUS_VERSION + "/rice-" + MODULE + "-api-" + PREVIOUS_VERSION + "-" + file.getName();
     private void populateWsdlUrlPrefix() {
         String wsdlUrl = ConfigContext.getCurrentContextConfig().getProperty(WSDL_URL);
-        setPreviousVersion(ConfigContext.getCurrentContextConfig().getProperty(WSDL_PREVIOUS_VERSION));
-
 
         if (StringUtils.isNotBlank(wsdlUrl)
                 && StringUtils.isNotBlank(getPreviousVersion())) {
@@ -206,7 +204,10 @@ public class WsdlCompareTestCase extends BaselineTestCase {
     }
 
     public String getPreviousVersion() {
-        return previousVersion;
+        if (StringUtils.isEmpty(this.previousVersion)) {
+            this.previousVersion = ConfigContext.getCurrentContextConfig().getProperty(WSDL_PREVIOUS_VERSION);
+        }
+        return this.previousVersion;
     }
 
     public void setPreviousVersion(String previousVersion) {

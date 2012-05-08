@@ -152,9 +152,9 @@ function createLightBoxLink(controlId, options) {
             showHistory = true;
         }
 
-        // Set the dialogMode = true param
-        if (jQuery("#" + controlId).attr('href').indexOf('&dialogMode=true') == -1) {
-            jQuery("#" + controlId).attr('href', jQuery("#" + controlId).attr('href') + '&dialogMode=true'
+        // Set the renderedInLightBox = true param
+        if (jQuery("#" + controlId).attr('href').indexOf('&renderedInLightBox=true') == -1) {
+            jQuery("#" + controlId).attr('href', jQuery("#" + controlId).attr('href') + '&renderedInLightBox=true'
                     + '&showHome=false' + '&showHistory=' + showHistory
                     + '&history=' + jQuery('#formHistory\\.historyParameterString').val());
         }
@@ -185,7 +185,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                 jQuery("[name='jumpToId']").val(controlId);
 
                 // Add the lightBoxCall parameter so that the controller can avoid the redirect
-                actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+                actionParameterMapString['actionParameters[renderedInLightBox]'] = 'true';
                 actionParameterMapString['actionParameters[lightBoxCall]'] = 'true';
                 actionParameterMapString['actionParameters[showHistory]'] = 'false';
                 actionParameterMapString['actionParameters[showHome]'] = 'false';
@@ -227,7 +227,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
 
             // Add the action parameters hidden to form and allow the submit action
             jQuery("#" + controlId).click(function (e) {
-                actionParameterMapString['actionParameters[dialogMode]'] = 'true';
+                actionParameterMapString['actionParameters[renderedInLightBox]'] = 'true';
                 actionParameterMapString['actionParameters[returnTarget]'] = '_self';
                 actionParameterMapString['actionParameters[showHistory]'] = 'true';
                 actionParameterMapString['actionParameters[showHome]'] = 'false';
@@ -311,7 +311,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
-            queryString = queryString + "&showHistory=false&dialogMode=true";
+            queryString = queryString + "&showHistory=false&renderedInLightBox=true";
             if (top == self) {
                 lightBoxOptions['href'] = url + queryString;
                 jQuery.fancybox(lightBoxOptions);
@@ -322,7 +322,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
         } else {
 
             // If this is already in a lightbox just open in current lightbox
-            queryString = queryString + "&showHistory=true&dialogMode=true";
+            queryString = queryString + "&showHistory=true&renderedInLightBox=true";
             window.open(url + queryString, "_self");
         }
     } else {

@@ -67,7 +67,7 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 			if (!instanceId.equals(serviceInfo.getInstanceId())) {
                 StringBuffer errorMessage = new StringBuffer("ServiceInfo given for local service diff does not have a valid instance id.  Should have been '" + instanceId + "' but was '" + serviceInfo.getInstanceId() + "'");
                 if (serviceInfo.getInstanceId() == null) {
-                    errorMessage.append(" Null instanceIds can be the result of the asm.jar not found in the classpath.");
+                    errorMessage.append(" Null instanceIds can be the result of multiple asm.jars or none in the classpath.");
                 }
 				throw new IllegalArgumentException(errorMessage.toString());
 			}

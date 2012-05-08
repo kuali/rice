@@ -42,6 +42,7 @@ function rend(obj, cc) {
 
     if (grpIdx.style.display == 'none') {
       grpIdx.style.display = '';
+      fldIdx.title = 'hide';
       if(cc){
         fldIdx.src = open_file_cc;
       } else {
@@ -49,6 +50,7 @@ function rend(obj, cc) {
       }
     } else {
       grpIdx.style.display = 'none';
+      fldIdx.title = 'show';
       if(cc){
         fldIdx.src = closed_file_cc;
       } else {

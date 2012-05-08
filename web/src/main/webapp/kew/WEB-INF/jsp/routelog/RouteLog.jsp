@@ -141,7 +141,7 @@
                                 <kul:htmlAttributeHeaderCell scope="col" align="left">
                                     <c:if test="${! empty actionTaken.actionRequests}">
                                     <a id="A<c:out value="${atStatus.count}" />" onclick="rend(this, false)">
-                                      <img src="images/tinybutton-show.gif" alt="show" width="45" height="15" border="0"
+                                      <img src="images/tinybutton-show.gif" title="show" alt="show" width="45" height="15" border="0"
                                       align="absmiddle" id="F<c:out value="${atStatus.count}" />"></a>
                                     </c:if>&nbsp;
                                 </kul:htmlAttributeHeaderCell>
@@ -238,10 +238,10 @@
                                     <c:param name="documentId" value="${KualiForm.documentId}" />
                                 </c:url>">
                                     <c:if test="${KualiForm.showFuture}">
-                                        <img src="images/tinybutton-hide1.gif">
+                                        <img src="images/tinybutton-hide1.gif" title="hide">
                                     </c:if>
                                     <c:if test="${!KualiForm.showFuture}">
-                                        <img src="images/tinybutton-show.gif">
+                                        <img src="images/tinybutton-show.gif" title="show">
                                     </c:if>
                                 </a>
                                       </bean:define>

@@ -37,7 +37,7 @@
 <tr>
     <td align="center" align="right" class="<c:out value="${headerClass}"/>">
         <c:if test="${level == 0 || !empty actionRequest.childrenRequests }">
-            <a id="A<c:out value="${index}" />" onclick="rend(this, false)"><img src="images/tinybutton-show.gif" alt="show" width=45 height=15 border=0 align=absmiddle id="F<c:out value="${index}" />"></a>
+            <a id="A<c:out value="${index}" />" onclick="rend(this, false)"><img src="images/tinybutton-show.gif" title="show" alt="show" width=45 height=15 border=0 align=absmiddle id="F<c:out value="${index}" />"></a>
         </c:if>
         &nbsp;
     </td>

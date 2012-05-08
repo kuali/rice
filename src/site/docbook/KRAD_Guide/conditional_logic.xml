@@ -20,30 +20,292 @@
     <title>Conditional Logic </title>
     <section>
         <title>Conditional Logic </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->     
     </section>
     <section>
         <title>Presentation Controllers and Authorizers </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
     </section>
     <section>
         <title>Configuration with Expressions </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
+        <section>
+            <title>Spring EL</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>An expression language statement can be specified within the UIF XML
+                            to conditionally set a property value</para>
+                    </listitem>
+                    <listitem>
+                        <para>An expression starts with the delimiter ‘@{‘ and ends with ‘}’</para>
+                    </listitem>
+                    <listitem>
+                        <para>A property value can contain a single expression, or several
+                            expressions within other literal text (eg ‘liter text @{expresson} more
+                            @{another expression}’)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Expressions are evaluated using the Spring EL engine during the views
+                            apply model phase</para>
+                    </listitem>
+                    <listitem>
+                        <para>Some of the features supported by Spring EL include:</para>
+                        <itemizedlist>
+                                <listitem>
+                                <para>Literal expressions</para>
+                            </listitem>
+                                <listitem>
+                                <para>Boolean and relational operators</para>
+                            </listitem>
+                                <listitem>
+                                <para>Regular expressions</para>
+                            </listitem>
+                                <listitem>
+                                <para>Class expressions</para>
+                            </listitem>
+                                <listitem>
+                                <para>Accessing properties, arrays, lists, maps</para>
+                            </listitem>
+                                <listitem>
+                                <para>Method invocation</para>
+                            </listitem>
+                                <listitem>
+                                <para>Relational operators</para>
+                            </listitem>
+                                <listitem>
+                                <para>Assignment</para>
+                            </listitem>
+                                <listitem>
+                                <para>Calling constructors</para>
+                            </listitem>
+                                <listitem>
+                                <para>Bean references</para>
+                            </listitem>
+                                <listitem>
+                                <para>Array construction</para>
+                            </listitem>
+                                <listitem>
+                                <para>Inline lists</para>
+                            </listitem>
+                                <listitem>
+                                <para>Ternary operator</para>
+                            </listitem>
+                            <listitem>
+                                <para>Variables</para>
+                            </listitem>
+                            <listitem>
+                                <para>User defined functions</para>
+                            </listitem>
+                            <listitem>
+                                <para>Collection projection</para>
+                            </listitem>
+                            <listitem>
+                                <para>Collection selection</para>
+                            </listitem>
+                            <listitem>
+                                <para>Templated expressions</para>
+                            </listitem>
+                            </itemizedlist>
+                    </listitem>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>Componenet Context</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>Built-In and Custom Functions</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>Custom Variables</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>        
     </section>
     <section>
         <title>Component Modifiers </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para/>
+                </listitem>
+            </itemizedlist>
+        </section>
     </section>
     <section>
         <title>Property Replacers </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para/>
+                </listitem>
+            </itemizedlist>
+        </section>
     </section>
     <section>
         <title>Collection Filters </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para/>
+                </listitem>
+            </itemizedlist>
+        </section>
     </section>
     <section>
         <title>Code Support </title>
-        <para></para>
+        <para>Coming Soon!</para>
+        <!-- TODO: Add content here.
+          -->
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para/>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Overriding with the ViewHelperService</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>Component Finalization</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>Group Initialization</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>The Component Factory</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+        <section>
+            <title>Copying Components</title>
+            <para>Coming Soon!</para>
+            <!-- TODO: Add content here.
+            -->
+            <section>
+                <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                        <para/>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
     </section>
 </chapter>

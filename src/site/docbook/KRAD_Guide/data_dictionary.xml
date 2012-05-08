@@ -294,75 +294,63 @@
         <para>All constraints are enforced client-side during validation, unless noted below. </para>
         <section>
             <title>Simple Constraint Properties</title>
-            <section>
-                <title>Required</title>
-                <para>Property: required</para>
-                <para>Values: true if required otherwise false</para>
-                <para>When a field is required, the field must have some inpute value to be considered
-                    valid - it</para>
-                <programlisting>
+            <para><emphasis role="bold">Required</emphasis></para>
+            <para>Property: required</para>
+            <para>Values: true if required otherwise false</para>
+            <para>When a field is required, the field must have some inpute value to be considered
+                valid - it</para>
+            <programlisting>
 &lt;bean parent="Uif-InputField" p:required="true" p:propertyName="field1"&gt;...&lt;/bean&gt;</programlisting>
-            </section>
-            <section>
-                <title>MinLength</title>
-                <para>Property: minLength</para>
-                <para>Values: integer, 0 or greater</para>
-                <para>When a minLength is set, the input value’s character length cannot be less than
+            <para><emphasis role="bold">MinLength</emphasis></para>
+            <para>Property: minLength</para>
+            <para>Values: integer, 0 or greater</para>
+            <para>When a minLength is set, the input value’s character length cannot be less than
                 minLength.</para>
-            </section>    
-            <section>
-                <title>MaxLength</title>
-                <para>Property: maxLength</para>
-                <para>Values: integer - 0 or greater</para>
-                <para>When a maxLength is set, the input value’s character length cannot be greater
-                    than maxLength.  MaxLength should be set to a greater value than minLength (if
-                    set).</para>
-                <programlisting>
+            <para><emphasis role="bold">MaxLength</emphasis></para>
+            <para>Property: maxLength</para>
+            <para>Values: integer - 0 or greater</para>
+            <para>When a maxLength is set, the input value’s character length cannot be greater than
+                maxLength.  MaxLength should be set to a greater value than minLength (if
+                set).</para>
+            <programlisting>
 &lt;bean parent="Uif-InputField" p:minLength="1" p:maxLength="8" p:propertyName="field1"&gt;...&lt;/bean&gt;</programlisting>
-            </section>
-            <section>
-                <title>ExclusiveMin</title>
-                <para>Property: exclusiveMin</para>
-                <para>Values: String representing a number or date value</para>
-                <para>When exclusiveMin is set to a number, and the input’s value is a number, that
-                    number must be greater than exclusiveMin. If exclusiveMin is set to a date, and
-                    the input’s value is a date, that date must be greater than exclusiveMin.  Note
-                    that for dates, exclusiveMin validation is <emphasis role="italic">not enforced
-                        client-side</emphasis>, but the DatePicker widget will limit date selection
-                    based on this value (though the widget will limit min inclusively - not
-                    exclusively - so values should still be checked server-side).</para>
-            </section>
-            <section>
-                <title>InclusiveMax</title>
-                <para>Property: inclusiveMax</para>
-                <para>Values: String representing a number or date value</para>
-                <para>When inclusiveMax is set to a number and the input’s value is a number, that
-                    number must be less than, or equal to, inclusiveMax. If inclusiveMax is set to a
-                    date and the input’s value is a date, that date must be less than, or equal to,
-                    inclusiveMax.  Note that for dates, inclusiveMin validation is <emphasis
-                        role="italic">not enforced client-side</emphasis>, but the DatePicker widget
-                    will limit date selection based on this value.</para>
-                <programlisting>
+            <para><emphasis role="bold">ExclusiveMin</emphasis></para>
+            <para>Property: exclusiveMin</para>
+            <para>Values: String representing a number or date value</para>
+            <para>When exclusiveMin is set to a number, and the input’s value is a number, that
+                number must be greater than exclusiveMin. If exclusiveMin is set to a date, and the
+                input’s value is a date, that date must be greater than exclusiveMin.  Note that for
+                dates, exclusiveMin validation is <emphasis role="italic">not enforced
+                    client-side</emphasis>, but the DatePicker widget will limit date selection
+                based on this value (though the widget will limit min inclusively - not exclusively
+                - so values should still be checked server-side).</para>
+            <para><emphasis role="bold">InclusiveMax</emphasis></para>
+            <para>Property: inclusiveMax</para>
+            <para>Values: String representing a number or date value</para>
+            <para>When inclusiveMax is set to a number and the input’s value is a number, that
+                number must be less than, or equal to, inclusiveMax. If inclusiveMax is set to a
+                date and the input’s value is a date, that date must be less than, or equal to,
+                inclusiveMax.  Note that for dates, inclusiveMin validation is <emphasis
+                    role="italic">not enforced client-side</emphasis>, but the DatePicker widget
+                will limit date selection based on this value.</para>
+            <programlisting>
 &lt;bean parent="Uif-InputField" p:exclusiveMin="0" p:inclusiveMax="500" p:propertyName="field1&gt;...&lt;/bean&gt;</programlisting>
-            </section>
-            <section>
-                <title><emphasis role="bold">dataType</emphasis></title>
-                <para>Property: dataType</para>
-                <para>Values: STRING, MARKUP, DATE, TRUNCATED_DATE, BOOLEAN, INTEGER, FLOAT, DOUBLE,
-                    LONG, DATETIME</para>
-                <para>When dataType is set to one of the above types, it checks to see if the
-                    input’s value can be converted into that type.  This is <emphasis role="italic"
-                        >not enforced client-side</emphasis> and can only be enforced during
-                    server-side validation.</para>
-                <programlisting>
+            <para><emphasis role="bold">dataType</emphasis></para>
+            <para>Property: dataType</para>
+            <para>Values: STRING, MARKUP, DATE, TRUNCATED_DATE, BOOLEAN, INTEGER, FLOAT, DOUBLE,
+                LONG, DATETIME</para>
+            <para>When dataType is set to one of the above types, it checks to see if the input’s
+                value can be converted into that type.  This is <emphasis role="italic">not enforced
+                    client-side</emphasis> and can only be enforced during server-side
+                validation.</para>
+            <programlisting>
 &lt;bean parent="Uif-InputField" p:dataType="INTEGER" p:propertyName="field1"&gt;...&lt;/bean&gt;</programlisting>
-            </section>
-            <section>
-                <title>minOccurs/maxOccurs</title>
-                <para>This constraint is not yet fully supported.  The name and location may change
-                    in the future.  Future intended use is to constrain total collection items in a
-                    collection.</para>
-            </section>
+            <para><emphasis role="bold">
+                minOccurs/maxOccurs
+            </emphasis></para>
+            <para>This constraint is not yet fully supported.  The name and location may change in
+                the future.  Future intended use is to constrain total collection items in a
+                collection.</para>
             <section>
                 <title>SimpleConstraint</title>
                 <para>The SimpleConstraint class is a constraint that contains all of the simple

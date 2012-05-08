@@ -163,6 +163,7 @@
                 <jsSourceFile>plugins/fancybox/jquery.fancybox-1.3.4.pack.js</jsSourceFile>
                 <jsSourceFile>plugins/easydrag/jquery.easydrag.js</jsSourceFile>
                 <jsSourceFile>plugins/easing/jquery.easing-1.3.pack.js</jsSourceFile>
+                <jsSourceFile>scripts/krad.variables.js</jsSourceFile>
                 <jsSourceFile>scripts/krad.initialize.js</jsSourceFile>
                 <jsSourceFile>plugins/json/jquery.json-2.2.js</jsSourceFile>
                 <jsSourceFile>plugins/infusion/infusion-1.4.js</jsSourceFile>

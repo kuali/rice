@@ -245,7 +245,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
  */
 function returnLookupResultByScript(fieldName, value) {
     var returnField;
-    if (parent.jQuery == null) {
+    if (top != self) {
         returnField = parent.jQuery('#iframeportlet').contents().find('[name="' + escapeName(fieldName) + '"]');
     }else{
         returnField = parent.jQuery('[name="' + escapeName(fieldName) + '"]');
@@ -263,7 +263,7 @@ function returnLookupResultByScript(fieldName, value) {
  * Function that sets the return target when returning multiple lookup results
  */
 function setMultiValueReturnTarget() {
-    if (parent.jQuery == null) {
+    if (top != self) {
         jQuery('#kualiForm').attr('target',parent.jQuery('#iframeportlet').attr('name'));
     }else{
         jQuery('#kualiForm').attr('target','_parent');

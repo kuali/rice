@@ -571,10 +571,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                                     "returnLookupResultByScript(\"" + returnField + "\", '" + value + "');");
                         }
                     }
-                    returnLinkField.setOnClickScript(script.append("closeLightbox();").toString());
+                    returnLinkField.getLink().setOnClickScript(script.append("closeLightbox();").toString());
                 } else {
                     // Close the light box if return target is not _self or _parent
-                    returnLinkField.setOnClickScript(
+                    returnLinkField.getLink().setOnClickScript(
                             "e.preventDefault();closeLightbox();createLoading(true);window.open(jQuery(this).attr('href'), jQuery(this).attr('target'));");
                 }
             }

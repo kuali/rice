@@ -65,6 +65,7 @@ public class UifFormBase implements ViewModel {
 
     protected boolean defaultsApplied;
     protected boolean skipViewInit;
+    protected boolean requestRedirect;
 
     protected String updateComponentId;
     protected boolean renderFullView;
@@ -96,6 +97,7 @@ public class UifFormBase implements ViewModel {
         renderFullView = true;
         defaultsApplied = false;
         skipViewInit = false;
+        requestRedirect = false;
 
         formHistory = new History();
 
@@ -158,6 +160,7 @@ public class UifFormBase implements ViewModel {
     public void postRender(HttpServletRequest request) {
         renderFullView = true;
         skipViewInit = false;
+        requestRedirect = false;
 
         updateComponentId = null;
 
@@ -447,6 +450,24 @@ public class UifFormBase implements ViewModel {
      */
     public void setSkipViewInit(boolean skipViewInit) {
         this.skipViewInit = skipViewInit;
+    }
+
+    /**
+     * Indicates whether a redirect has been requested for the view
+     *
+     * @return boolean true if redirect was requested, false if not
+     */
+    public boolean isRequestRedirect() {
+        return requestRedirect;
+    }
+
+    /**
+     * Setter for the request redirect indicator
+     *
+     * @param requestRedirect
+     */
+    public void setRequestRedirect(boolean requestRedirect) {
+        this.requestRedirect = requestRedirect;
     }
 
     /**

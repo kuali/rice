@@ -80,7 +80,7 @@ public class UifWebUtils {
                 UifFormBase form = (UifFormBase) model;
 
                 // handle view building if not a redirect
-                if (!UifConstants.SPRING_REDIRECT_ID.equals(modelAndView.getViewName())) {
+                if (!form.isRequestRedirect()) {
                     // prepare view instance
                     prepareViewForRendering(request, form);
 

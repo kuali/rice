@@ -75,8 +75,6 @@ import java.util.Properties;
 public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
 
-    protected static final String REDIRECT_PREFIX = "redirect:";
-
     /**
      * Create/obtain the model(form) object before it is passed to the Binder/BeanWrapper. This method
      * is not intended to be overridden by client applications as it handles framework setup and session
@@ -618,8 +616,8 @@ public abstract class UifControllerBase {
      * @return ModelAndView configured to redirect to the given URL
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
-        // since we are redirecting and will not be rendering the view, we need to reset the view from the previous
-        form.setView(form.getPostedView());
+        // indicate a redirect is occuring to prevent view processing down the line
+        form.setRequestRedirect(true);
 
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
@@ -637,7 +635,7 @@ public abstract class UifControllerBase {
         }
 
         String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
-        ModelAndView modelAndView = new ModelAndView(REDIRECT_PREFIX + redirectUrl);
+        ModelAndView modelAndView = new ModelAndView(UifConstants.REDIRECT_PREFIX + redirectUrl);
 
         return modelAndView;
     }

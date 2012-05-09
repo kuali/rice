@@ -95,7 +95,11 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
         UifFormBase uifForm = uifFormManager.getCurrentForm();
         if (uifForm != null) {
-            if (uifForm.isSkipViewInit()) {
+            if (uifForm.isRequestRedirect()) {
+                // view wasn't rendered, just set to null and leave previous posted view
+                uifForm.setView(null);
+            }
+            else if (uifForm.isSkipViewInit()) {
                 // partial refresh or query
                 View postedView = uifForm.getPostedView();
                 if (postedView != null) {

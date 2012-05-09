@@ -28,6 +28,7 @@ public class UifConstants {
     public static final String COMPONENT_ID_PREFIX = "u";
     public static final String SPRING_VIEW_ID = "UifTemplateRender";
     public static final String SPRING_REDIRECT_ID = "redirectURL";
+    public static final String REDIRECT_PREFIX = "redirect:";
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
     public static final String EL_PLACEHOLDER_SUFFIX = "}";

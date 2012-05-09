@@ -377,12 +377,12 @@
                 configure JTA without an application server. Atomikos is another JTA product that
                 could be used in the future for Rice and you could consider using it instead of
                 JOTM. Below is the bean definition for JOTM that you can find in Spring:</para>
-            <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+            <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/>
 
 &lt;/bean>
 &lt;bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
-    &lt;property name="transactionManager" ref="jotm" />
+    &lt;property name="transactionManager" ref="transactionManagerXAPool" />
     &lt;property name="driverClassName" value="${datasource.driver.name}" />
     &lt;property name="url" value="${datasource.url}" />
     &lt;property name="maxSize" value="${datasource.pool.maxSize}" />
@@ -404,8 +404,8 @@
             <programlisting>&lt;bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
     &lt;property name=" serviceNamespace" value="KEW" />
     &lt;property name="dataSource" ref="dataSource" />
-    &lt;property name="transactionManager" ref="jotm" />
-    &lt;property name="userTransaction" ref="jotm" />
+    &lt;property name="transactionManager" ref="transactionManagerXAPool" />
+    &lt;property name="userTransaction" ref="transactionManagerXAPool" />
     &lt;property name="rootConfig" ref="config" />
     &lt;property name="modules">    
 &lt;...more.../></programlisting>

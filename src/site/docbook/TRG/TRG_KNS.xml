@@ -2450,12 +2450,12 @@ public Set&lt;String> getConditionallyHiddenPropertyNames() {
                 put in a different database than the application’s logic, if needed. Currently,
                 KNSTestSpringBeans.xml uses JOTM to configure JTA without an application server.
                 Below is the bean definition for JOTM that can be found in Spring.</para>
-            <programlisting>&lt;bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+            <programlisting>&lt;bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
     &lt;property name="defaultTimeout" value="${transaction.timeout}"/>
 
 &lt;/bean>
 &lt;bean id="dataSource" class="org.kuali.rice.database.XAPoolDataSource">
-    &lt;property name="transactionManager" ref="jotm" />
+    &lt;property name="transactionManager" ref="transactionManagerXAPool" />
     &lt;property name="driverClassName" value="${datasource.driver.name}" />
     &lt;property name="url" value="${datasource.url}" />
     &lt;property name="maxSize" value="${datasource.pool.maxSize}" />

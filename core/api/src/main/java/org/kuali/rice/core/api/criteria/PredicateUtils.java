@@ -35,7 +35,12 @@ public final class PredicateUtils {
         List<Predicate> p = new ArrayList<Predicate>();
         for (Map.Entry<String, Object> entry : criteria.entrySet()) {
             if (entry.getValue() != null) {
-                p.add(equal(entry.getKey(), entry.getValue()));
+                if (entry.getValue() instanceof String) {
+                    p.add(equalIgnoreCase(entry.getKey(), (String)entry.getValue()));
+                } else {
+                    p.add(equal(entry.getKey(), (String)entry.getValue()));
+                }
+
             }
         }
         //wrap everything in an 'and'
@@ -113,9 +118,9 @@ public final class PredicateUtils {
             }
         } else {
             if (isNot(value)) {
-                return notEqual(key, stripNot(value));
+                return notEqualIgnoreCase(key, stripNot(value));
             } else {
-                return equal(key, value);
+                return equalIgnoreCase(key, value);
             }
         }
     }

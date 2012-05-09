@@ -86,6 +86,9 @@
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
             <scope>test</scope>
         </dependency>
-
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>${mysql.jdbc.artifactId}</artifactId>
+      </dependency>
     </dependencies>
 </project>

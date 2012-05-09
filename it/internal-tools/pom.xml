@@ -240,6 +240,12 @@
     <dependency>
       <groupId>com.predic8</groupId>
       <artifactId>soa-model-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

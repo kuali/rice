@@ -68,7 +68,11 @@ public final class CacheKeyUtils {
         }
 
         final List<K> sorted = new ArrayList<K>(col);
-        Collections.sort(sorted);
+
+        if (col.size() > 1) {
+            Collections.sort(sorted);
+        }
+
         final StringBuilder b = new StringBuilder("[");
         for (K entry : sorted) {
             if (entry != null) {
@@ -99,7 +103,11 @@ public final class CacheKeyUtils {
         }
 
         final List<K> sorted = new ArrayList<K>(col.keySet());
-        Collections.sort(sorted);
+
+        if (col.size() > 1) {
+            Collections.sort(sorted);
+        }
+
         final StringBuilder b = new StringBuilder("[");
         for (K entry : sorted) {
             if (entry != null) {

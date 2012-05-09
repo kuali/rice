@@ -56,7 +56,7 @@ jQuery(document).ready(function () {
     });
 
     runHiddenScripts("");
-    jQuery("#Uif-Application").show();
+    jQuery("#" + kradVariables.APP_ID).show();
     createLoading(false);
 
     // hide the ajax progress display screen if the page is replaced e.g. by a login page when the session expires
@@ -91,9 +91,9 @@ function initFieldHandlers() {
                 var id = getAttributeId(jQuery(this).attr('id'));
 
                 //keep track of what errors it had on initial focus
-                var data = jQuery("#" + id).data("validationMessages");
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 data.focusedErrors = data.errors;
-                jQuery("#" + id).data("validationMessages", data);
+                jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
 
                 //show tooltip on focus
                 showMessageTooltip(id, false);
@@ -109,7 +109,7 @@ function initFieldHandlers() {
                     + "[data-role='InputField'] textarea",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                var data = jQuery("#" + id).data("validationMessages");
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 var hadError = false;
                 if (data.focusedErrors){
                     hadError = data.focusedErrors.length;
@@ -151,9 +151,9 @@ function initFieldHandlers() {
                     + "[data-role='InputField'] input:radio",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                var data = jQuery("#" + id).data("validationMessages");
+                var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 data.fieldModified = true;
-                jQuery("#" + id).data("validationMessages", data);
+                jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
             });
 
     //special radio and checkbox control handling for click events
@@ -273,7 +273,7 @@ function hideBubblePopups() {
  * also sets up the dirty check and other page scripts
  */
 function setupPage(validate, focusFirstField) {
-    jQuery('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
+    jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
     setupImages();
 
@@ -325,7 +325,7 @@ function setupPage(validate, focusFirstField) {
                 onkeyup:function (element) {
                     if (validateClient) {
                         var id = getAttributeId(jQuery(element).attr('id'));
-                        var data = jQuery("#" + id).data("validationMessages");
+                        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
                         //if this field previously had errors validate on key up
                         if (data.focusedErrors && data.focusedErrors.length) {
@@ -342,10 +342,10 @@ function setupPage(validate, focusFirstField) {
                     jQuery(element).removeAttr("aria-invalid");
 
                     var id = getAttributeId(jQuery(element).attr("id"));
-                    var data = jQuery("#" + id).data("validationMessages");
+                    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
                     data.errors = [];
-                    jQuery("#" + id).data("validationMessages", data);
+                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                     if (messageSummariesShown) {
                         handleMessagesAtField(id);
                     }
@@ -369,7 +369,7 @@ function setupPage(validate, focusFirstField) {
                         var message = elementObjectList[i].message;
                         var id = getAttributeId(jQuery(element).attr('id'));
 
-                        var data = jQuery("#" + id).data("validationMessages");
+                        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
                         var exists = false;
                         if (data.errors.length) {
@@ -383,7 +383,7 @@ function setupPage(validate, focusFirstField) {
                         if (!exists) {
                             data.errors = [];
                             data.errors.push(message);
-                            jQuery("#" + id).data("validationMessages", data);
+                            jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
 
                             if (messageSummariesShown) {
                                 handleMessagesAtField(id);
@@ -410,10 +410,10 @@ function setupPage(validate, focusFirstField) {
                         id = getAttributeId(id);
                     }
 
-                    var data = jQuery("#" + id).data("validationMessages");
+                    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                     if (data.errors.length) {
                         data.errors = [];
-                        jQuery("#" + id).data("validationMessages", data);
+                        jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                         if (messageSummariesShown) {
                             handleMessagesAtField(id);
                         }
@@ -429,7 +429,7 @@ function setupPage(validate, focusFirstField) {
         jQuery(this).attr("aria-required", "true");
     });
 
-    jQuery(document).trigger('validationSetup');
+    jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
     pageValidatorReady = true;
 
     jQuery.watermark.showAll();
@@ -442,10 +442,10 @@ function setupPage(validate, focusFirstField) {
  * Initializes all of the image variables
  */
 function setupImages() {
-    errorImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error.png' alt='Error' /> ";
-    errorGreyImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
-    warningImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/warning.png' alt='Warning' /> ";
-    infoImage = "<img class='uif-validationImage' src='" + getConfigParam("kradImageLocation") + "validation/info.png' alt='Information' /> ";
+    errorImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error.png' alt='Error' /> ";
+    errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
+    warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='Warning' /> ";
+    infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='Information' /> ";
 }
 
 /**
@@ -761,8 +761,8 @@ jQuery.fn.dataTableExt.afnSortData['dom-radio'] = function (oSettings, iColumn) 
 window.onerror = errorHandler;
 
 function errorHandler(msg, url, lno) {
-    jQuery("#Uif-Application").show();
-    jQuery("#Uif-PageContentWrapper").show();
+    jQuery("#" + kradVariables.APP_ID).show();
+    jQuery("#" + kradVariables.PAGE_CONTENT_HEADER_CLASS).show();
     var context = getContext();
     context.unblockUI();
     showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');

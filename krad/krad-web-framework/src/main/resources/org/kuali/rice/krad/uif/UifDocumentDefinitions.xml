@@ -314,7 +314,7 @@
   </bean>
 
   <bean id="Uif-DocumentDescription" parent="Uif-InputField" p:propertyName="documentDescription"
-        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader" p:escapeHtmlInPropertyValue="true">
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
     <property name="styleClasses">
           <list merge="true">
             <value>uif-documentDescription</value>

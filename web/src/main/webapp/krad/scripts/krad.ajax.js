@@ -55,7 +55,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
         var jsonViewState = jQuery.toJSON(viewState);
 
         // change double quotes to single because escaping causes problems on URL
-        jsonViewState = jsonViewState.replace(/"/g, kradVariables.INPUT_FIELD_SELECTOR);
+        jsonViewState = jsonViewState.replace(/"/g, "'");
         jQuery.extend(data, {clientViewState: jsonViewState});
     }
 	

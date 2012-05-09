@@ -180,11 +180,16 @@
             <artifactId>cglib-nodep</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-
+      <dependency>
+        <!--
+        KULRICE-7262: Bad jstl version in maven repository
+        When we are able to bump this version, go back to the javax.servlet artifact
+        -->
+        <!-- <groupId>javax.servlet</groupId>
+       <artifactId>jstl</artifactId> -->
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jstl-impl</artifactId>
+      </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>

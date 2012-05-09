@@ -167,7 +167,6 @@ public class KualiDocumentActionBase extends KualiAction {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionForward returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);
-        KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
 
         // if found methodToCall, pass control to that method
         try {
@@ -268,8 +267,8 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
             }
             // Pull in the pending action requests for the document and attach them to the form
-            List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(documentForm.getDocId());
-            documentForm.setActionRequests(actionRequests);
+            List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(formBase.getDocId());
+            formBase.setActionRequests(actionRequests);
         }
 
 

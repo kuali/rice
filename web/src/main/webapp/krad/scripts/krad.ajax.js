@@ -50,12 +50,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
         jQuery.extend(data, additionalData);
 	}
 
-    var viewState = jQuery(document).data("ViewState");
+    var viewState = jQuery(document).data(kradVariables.VIEW_STATE);
     if (!jQuery.isEmptyObject(viewState)) {
         var jsonViewState = jQuery.toJSON(viewState);
 
         // change double quotes to single because escaping causes problems on URL
-        jsonViewState = jsonViewState.replace(/"/g, "'");
+        jsonViewState = jsonViewState.replace(/"/g, kradVariables.INPUT_FIELD_SELECTOR);
         jQuery.extend(data, {clientViewState: jsonViewState});
     }
 	
@@ -80,12 +80,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 		var elementBlockingOptions = {
 				beforeSend: function() {
 					if(elementToBlock.hasClass("unrendered")){
-						elementToBlock.append('<img src="' + getConfigParam("kradImageLocation") + 'loader.gif" alt="working..." /> Loading...');
+						elementToBlock.append('<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Loading...');
 						elementToBlock.show();
 					}
 					else{
 						elementToBlock.block({
-			                message: '<img src="' + getConfigParam("kradImageLocation") + 'loader.gif" alt="working..." /> Updating...',
+			                message: '<img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loader.gif" alt="working..." /> Updating...',
 			                fadeIn:  400,
 			                fadeOut:  800
 			            });
@@ -173,7 +173,7 @@ function updatePageCallback(content) {
     page.hide();
 
     // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
-    var pageInLayout = "#Uif-ViewContentWrapper > #Uif-PageContentWrapper";
+    var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " > #" + kradVariables.PAGE_CONTENT_HEADER_CLASS;
     jQuery(pageInLayout).empty().append(page.find(">*"));
 
     setPageBreadcrumb();
@@ -231,7 +231,7 @@ function retrieveComponent(id, baseId, methodToCall){
 		elementToBlock.unblock({onUnblock: function(){
                 var origColor = jQuery(component).find("#" + id).css("background-color");
             jQuery(component).find("#" + id).css("background-color", "");
-            jQuery(component).find("#" + id).addClass("uif-progressiveDisclosure-highlight");
+            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
 
                 // remove old stuff
                 if(jQuery("#" + id + "_errors").length){
@@ -423,7 +423,7 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 					else{
                         var origColor = refreshDisclosure.css("background-color");
                         refreshDisclosure.css("background-color", "");
-                        refreshDisclosure.addClass("uif-progressiveDisclosure-highlight");
+                        refreshDisclosure.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
 						refreshDisclosure.show();
                         if(refreshDisclosure.parent().is("td")){
                             refreshDisclosure.parent().show();

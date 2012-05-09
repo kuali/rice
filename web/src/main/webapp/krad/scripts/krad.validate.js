@@ -25,7 +25,7 @@ function hideMessageTooltip(fieldId) {
         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
         element = jQuery(element).filter("label:first");
     }
-    var data = jQuery("#" + fieldId).data("validationMessages");
+    var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
     if (data.showTimer) {
         clearTimeout(data.showTimer);
     }
@@ -114,7 +114,7 @@ function initMessageTooltip(fieldId) {
             if (elementInfo.themeMargins) {
                 options.themeMargins = elementInfo.themeMargins;
             }
-            var data = jQuery("#" + fieldId).data("validationMessages");
+            var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
             options.themeName = data.tooltipTheme;
             options.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
             //set the margin to offset it from the left appropriately
@@ -218,7 +218,7 @@ function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement
  * @param change forces the tooltip show call to deal with placement issues when changing internal content
  */
 function showMessageTooltip(fieldId, showAndClose, change) {
-    var data = jQuery("#" + fieldId).data("validationMessages");
+    var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
     if(data.useTooltip){
         var elementInfo = getHoverElement(fieldId);
         var tooltipElement = jQuery(elementInfo.element);
@@ -301,7 +301,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
 
                     //setup a timer to close the tooltip automatically
                     data.tooltipTimer = setTimeout("hideMessageTooltip('" + fieldId + "')", 3000);
-                    jQuery("#" + fieldId).data("validationMessages", data);
+                    jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES, data);
                 }
             }
 
@@ -320,7 +320,7 @@ function showMessageTooltip(fieldId, showAndClose, change) {
  */
 function writeMessagesAtField(id) {
 
-    var data = jQuery("#" + id).data("validationMessages");
+    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
     if(data.displayMessages){
         //initialize data if not present
@@ -345,16 +345,16 @@ function writeMessagesAtField(id) {
         messagesDiv.empty();
 
         //generate client side based messages
-        var clientMessages = jQuery("<div class='uif-clientMessageItems'><ul>"
-                + generateListItems(data.errors, "uif-errorMessageItem-field", 0, false, errorImage)
-                + generateListItems(data.warnings, "uif-warningMessageItem-field", 0, false, warningImage)
-                + generateListItems(data.info, "uif-infoMessageItem-field", 0, false, infoImage) + "</ul></div>");
+        var clientMessages = jQuery("<div class='" + kradVariables.CLIENT_MESSAGE_ITEMS_CLASS + "'><ul>"
+                + generateListItems(data.errors, kradVariables.ERROR_MESSAGE_ITEM_CLASS, 0, false, errorImage)
+                + generateListItems(data.warnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage)
+                + generateListItems(data.info, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage) + "</ul></div>");
 
         //generate server side based messages
-        var serverMessages = jQuery("<div class='uif-serverMessageItems'><ul>"
-                + generateListItems(data.serverErrors, "uif-errorMessageItem-field", 0, false, errorImage)
-                + generateListItems(data.serverWarnings, "uif-warningMessageItem-field", 0, false, warningImage)
-                + generateListItems(data.serverInfo, "uif-infoMessageItem-field", 0, false, infoImage) + "</ul></div>");
+        var serverMessages = jQuery("<div class='" + kradVariables.SERVER_MESSAGE_ITEMS_CLASS + "'><ul>"
+                + generateListItems(data.serverErrors, kradVariables.ERROR_MESSAGE_ITEM_CLASS, 0, false, errorImage)
+                + generateListItems(data.serverWarnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage)
+                + generateListItems(data.serverInfo, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage) + "</ul></div>");
 
         var hasServerMessages = false;
         //only append if messages exist
@@ -375,10 +375,10 @@ function writeMessagesAtField(id) {
 
         //remove any image and previous styles that may already be present
         jQuery("#" + id + " > .uif-validationImage").remove();
-        jQuery("#" + id).removeClass("uif-hasError");
-        jQuery("#" + id).removeClass("uif-hasError-modified");
-        jQuery("#" + id).removeClass("uif-hasWarning");
-        jQuery("#" + id).removeClass("uif-hasInfo");
+        jQuery("#" + id).removeClass(kradVariables.HAS_ERROR_CLASS);
+        jQuery("#" + id).removeClass(kradVariables.HAS_MODIFIED_ERROR_CLASS);
+        jQuery("#" + id).removeClass(kradVariables.HAS_WARNING_CLASS);
+        jQuery("#" + id).removeClass(kradVariables.HAS_INFO_CLASS);
 
         //show appropriate icons/styles based on message severity level
         if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
@@ -389,13 +389,13 @@ function writeMessagesAtField(id) {
             if(data.fieldModified && data.errors.length == 0){
                 //This is to represent the field has been changed after a server error, but may or
                 //may not be fixed - greyed out image/border
-                jQuery("#" + id).addClass("uif-hasError-modified");
+                jQuery("#" + id).addClass(kradVariables.HAS_MODIFIED_ERROR_CLASS);
                 if (showImage) {
                     jQuery(messagesDiv).before(errorGreyImage);
                 }
             }
             else{
-                jQuery("#" + id).addClass("uif-hasError");
+                jQuery("#" + id).addClass(kradVariables.HAS_ERROR_CLASS);
                 if (showImage) {
                     jQuery(messagesDiv).before(errorImage);
                 }
@@ -413,9 +413,9 @@ function writeMessagesAtField(id) {
         }
         else if (jQuery(messagesDiv).find(".uif-warningMessageItem-field").length) {
             if (data.warnings.length) {
-                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientWarningDiv");
+                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_WARNING_DIV_CLASS);
             }
-            jQuery("#" + id).addClass("uif-hasWarning");
+            jQuery("#" + id).addClass(kradVariables.HAS_WARNING_CLASS);
             if (showImage) {
                 jQuery(messagesDiv).before(warningImage);
             }
@@ -433,7 +433,7 @@ function writeMessagesAtField(id) {
             if (data.info.length) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientInfoDiv");
             }
-            jQuery("#" + id).addClass("uif-hasInfo");
+            jQuery("#" + id).addClass(kradVariables.HAS_INFO_CLASS);
             if (showImage) {
                 jQuery(messagesDiv).before(infoImage);
             }
@@ -459,7 +459,7 @@ function writeMessagesAtField(id) {
             data.init = true;
         }
     }
-    jQuery("#" + id).data("validationMessages", data);
+    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
 }
 
 /**
@@ -475,7 +475,7 @@ function handleMessagesAtField(id, skipGroupWrite) {
         skipGroupWrite = false;
     }
     if (!(skip == "yes")) {
-        var data = jQuery("#" + id).data("validationMessages");
+        var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
         writeMessagesAtField(id);
 
@@ -498,7 +498,7 @@ function handleMessagesAtField(id, skipGroupWrite) {
  * @param fieldData - the new validation data for the field being updated
  */
 function handleMessagesAtGroup(id, fieldId, fieldData, skipWrite) {
-    var data = jQuery("#" + id).data("validationMessages");
+    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
     var pageLevel = false;
     var parent = jQuery("#" + id).data("parent");
     if (data) {
@@ -559,21 +559,21 @@ function writeMessagesForGroup(id, data){
 
         //TabGroups rely on tab error indication to indicate messages - don't show messages here
         var type = jQuery("#" + id).data("type");
-        if (type && type == "Uif-TabGroup") {
+        if (type && type == kradVariables.TAB_GROUP_CLASS) {
             showMessages = false;
         }
 
         //if this group is in a tab in a tab group show your messages because TabGroups will not
         if (parent) {
             var parentType = jQuery("#" + parent).data("type");
-            if (parentType && parentType == "Uif-TabGroup") {
+            if (parentType && parentType == kradVariables.TAB_GROUP_CLASS) {
                 showMessages = true;
             }
         }
 
         if (showMessages) {
 
-            var newList = jQuery("<ul class='uif-validationMessagesList'></ul>");
+            var newList = jQuery("<ul class='" + kradVariables.VALIDATION_MESSAGES_CLASS + "'></ul>");
 
             if(data.messageTotal){
                 newList = generateSectionLevelMessages(id, data, newList);
@@ -599,30 +599,30 @@ function writeMessagesForGroup(id, data){
                         var messagesDiv = jQuery("[data-messagesFor='" + id + "']");
                         var countMessage = generateCountString(data.errorTotal, data.warningTotal,
                                 data.infoTotal);
-                        var pageValidationHeader = jQuery("<h3 tabindex='0' class='uif-pageValidationHeader' "
+                        var pageValidationHeader = jQuery("<h3 tabindex='0' class='" + kradVariables.VALIDATION_PAGE_HEADER_CLASS + "' "
                                 + "id='pageValidationHeader'>The Page submission has " + countMessage + "</h3>");
 
                         pageValidationHeader.find(".uif-validationImage").remove();
                         var pageSummaryClass = "";
                         if (data.errorTotal) {
-                            pageSummaryClass = "uif-pageValidationMessages-error";
+                            pageSummaryClass = kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS;
                             pageValidationHeader.prepend(errorImage);
                         }
                         else if (data.warningTotal) {
-                            pageSummaryClass = "uif-pageValidationMessages-warning";
+                            pageSummaryClass = kradVariables.PAGE_VALIDATION_MESSAGE_WARNING_CLASS;
                             pageValidationHeader.prepend(warningImage);
                         }
                         else if (data.infoTotal) {
-                            pageSummaryClass = "uif-pageValidationMessages-info";
+                            pageSummaryClass = kradVariables.PAGE_VALIDATION_MESSAGE_INFO_CLASS;
                             pageValidationHeader.prepend(infoImage);
                         }
 
                         messagesDiv.prepend(pageValidationHeader);
 
                         //Handle special classes
-                        pageValidationHeader.parent().removeClass("uif-pageValidationMessages-error");
-                        pageValidationHeader.parent().removeClass("uif-pageValidationMessages-warning");
-                        pageValidationHeader.parent().removeClass("uif-pageValidationMessages-info");
+                        pageValidationHeader.parent().removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS);
+                        pageValidationHeader.parent().removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_WARNING_CLASS);
+                        pageValidationHeader.parent().removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_INFO_CLASS);
                         pageValidationHeader.parent().addClass(pageSummaryClass);
 
                         messagesDiv.find(".uif-validationMessagesList").attr("id", "pageValidationList");
@@ -642,7 +642,7 @@ function writeMessagesForPage(){
     //TODO use a more permanent selector
     var page = jQuery(".uif-page");
     var pageId = page.attr("id");
-    var data = page.data("validationMessages");
+    var data = page.data(kradVariables.VALIDATION_MESSAGES);
     writeMessagesForGroup(pageId, data);
     writeMessagesForChildGroups(pageId);
 }
@@ -651,7 +651,7 @@ function writeMessagesForChildGroups(parentId){
     jQuery("[data-parent='"+ parentId +"']").each(function(){
         var currentGroup = jQuery(this);
         var id = currentGroup.attr("id");
-        var data = currentGroup.data("validationMessages");
+        var data = currentGroup.data(kradVariables.VALIDATION_MESSAGES);
         if(!(currentGroup.is("[data-role='InputField']"))){
             writeMessagesForGroup(id, data);
             writeMessagesForChildGroups(id);
@@ -759,7 +759,7 @@ function displayHeaderMessageCount(sectionId, sectionData) {
         jQuery(sectionHeader).find("span.uif-messageCount").remove();
 
         if (countMessage != "") {
-            jQuery("<span class='uif-messageCount'> - " + image + " " + countMessage + "</span>").appendTo(sectionHeader);
+            jQuery("<span class='" + kradVariables.MESSAGE_COUNT_CLASS + "'> - " + image + " " + countMessage + "</span>").appendTo(sectionHeader);
         }
     }
 }
@@ -831,7 +831,7 @@ function clearMessages(messagesForId) {
  * @param newList - the new content to write
  */
 function writeMessages(messagesForId, newList) {
-    var data = jQuery("#" + messagesForId).data("validationMessages");
+    var data = jQuery("#" + messagesForId).data(kradVariables.VALIDATION_MESSAGES);
     var messagesDiv = jQuery("[data-messagesFor='" + messagesForId + "']");
     if (newList.children().length && data.displayMessages) {
         jQuery(messagesDiv).show();
@@ -898,7 +898,7 @@ function generateListItems(messageArray, itemClass, startIndex, focusable, image
  * @param newList - the ul being built by this call
  */
 function generateSummaries(id, messageMap, sections, order, newList) {
-    var data = jQuery("#" + id).data("validationMessages");
+    var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
     //if no nested sections just output the fieldLinks
     if (sections.length == 0) {
         for (var key in messageMap) {
@@ -1081,11 +1081,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                 }
 
                 if (count > 1) {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedErrors'> [+"
+                    collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_ERRORS_CLASS + "'> [+"
                             + count + " errors]</span>";
                 }
                 else {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedErrors'> [+"
+                    collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_ERRORS_CLASS + "'> [+"
                             + count + " error]</span>";
                 }
             }
@@ -1113,11 +1113,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                 }
 
                 if (count > 1) {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedWarnings'> [+"
+                    collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_WARNINGS_CLASS + "'> [+"
                             + count + " warnings]</span>";
                 }
                 else {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedWarnings'> [+"
+                    collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_WARNINGS_CLASS + "'> [+"
                             + count + " warning]</span>";
                 }
             }
@@ -1146,11 +1146,11 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                 }
 
                 if (count > 1) {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedInfo'> [+"
+                    collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_INFO_CLASS + "'> [+"
                             + count + " messages]</span>";
                 }
                 else {
-                    collapsedElements = collapsedElements + "<span class='uif-collapsedInfo'> [+"
+                    collapsedElements = collapsedElements + "<span class='" + kradVariables.COLLAPSED_INFO_CLASS + "'> [+"
                             + count + " message]</span>";
                 }
             }
@@ -1328,7 +1328,7 @@ function generateSummaryLink(sectionId) {
         sectionId = jQuery("#" + sectionId).data("group");
     }
 
-    var sectionData = jQuery("#" + sectionId).data("validationMessages");
+    var sectionData = jQuery("#" + sectionId).data(kradVariables.VALIDATION_MESSAGES);
     var summaryLink = null;
     var summaryMessage = "";
     var image = "";
@@ -1345,17 +1345,17 @@ function generateSummaryLink(sectionId) {
         if (sectionData.errorTotal) {
             image = errorImage;
             linkType = "uif-errorMessageItem";
-            highlight = "uif-errorHighlight-section";
+            highlight = kradVariables.ERROR_HIGHLIGHT_SECTION_CLASS;
         }
         else if (sectionData.warningTotal) {
             image = warningImage;
             linkType = "uif-warningMessageItem";
-            highlight = "uif-warningHighlight-section";
+            highlight = kradVariables.WARNING_HIGHLIGHT_SECTION_CLASS;
         }
         else if (sectionData.infoTotal) {
             image = infoImage;
             linkType = "uif-infoMessageItem";
-            highlight = "uif-infoHighlight-section";
+            highlight = kradVariables.INFO_HIGHLIGHT_SECTION_CLASS;
         }
         summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a href='#'>"
                 + summaryMessage + "</a></li>");
@@ -1422,7 +1422,7 @@ function runValidationScript(scriptFunction) {
         scriptFunction();
     }
     else {
-        jQuery(document).bind('validationSetup', function (event) {
+        jQuery(document).bind(kradVariables.VALIDATION_SETUP_EVENT, function (event) {
             jQuery(this).unbind(event);
             scriptFunction();
         });

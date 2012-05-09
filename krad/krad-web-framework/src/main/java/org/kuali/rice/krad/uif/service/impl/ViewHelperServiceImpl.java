@@ -16,10 +16,8 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -1233,7 +1231,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             finalizeMethodInvoker = new MethodInvoker();
         }
 
-        // if method not set on invoker, use renderingMethodToCall, note staticMethod could be set(don't know since
+        // if method not set on invoker, use finalizeMethodToCall, note staticMethod could be set(don't know since
         // there is not a getter), if so it will override the target method in prepare
         if (StringUtils.isBlank(finalizeMethodInvoker.getTargetMethod())) {
             finalizeMethodInvoker.setTargetMethod(finalizeMethodToCall);
@@ -1261,9 +1259,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
         finalizeMethodInvoker.setArguments(arguments);
 
-        // invoke method and get render output
+        // invoke finalize method
         try {
-            LOG.debug("Invoking render method: "
+            LOG.debug("Invoking finalize method: "
                     + finalizeMethodInvoker.getTargetMethod()
                     + " for component: "
                     + component.getId());
@@ -1279,8 +1277,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 component.setRenderedHtmlOutput(renderOutput);
             }
         } catch (Exception e) {
-            LOG.error("Error invoking rendering method for component: " + component.getId(), e);
-            throw new RuntimeException("Error invoking rendering method for component: " + component.getId(), e);
+            LOG.error("Error invoking finalize method for component: " + component.getId(), e);
+            throw new RuntimeException("Error invoking finalize method for component: " + component.getId(), e);
         }
     }
 

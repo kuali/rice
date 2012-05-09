@@ -44,7 +44,6 @@
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
       <artifactId>rice-core-impl</artifactId>
-      <scope>test</scope>
     </dependency>
             <!-- HACK!! this dependency should not be here -->
     <dependency>

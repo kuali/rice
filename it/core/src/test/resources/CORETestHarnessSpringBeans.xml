@@ -75,7 +75,7 @@
 	</bean>
 
   <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
-  <alias name="transactionManager${connection.pool.impl}" alias="transactionManager"/>
+  <!--<alias name="transactionManager${connection.pool.impl}" alias="transactionManager"/>-->
 
 	<bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
 		<property name="transactionManager" ref="transactionManagerXAPool" />

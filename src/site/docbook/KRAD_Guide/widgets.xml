@@ -1080,6 +1080,296 @@ public class Orange extends Fruit { /*...*/ }    </programlisting>
                     value.</para>
             </section>
         </section>
+        <section>
+            <title>Tooltip</title>
+            <para>The Tooltip widget is used to render a tooltip. The jQuery Bubble Popup plugin is
+                used. See <link
+                    xlink:href="http://www.maxvergelli.com/jquery-bubble-popup/documentation/"
+                    >http://www.maxvergelli.com/jquery-bubble-popup/documentation/</link>.  Tooltips
+                can displays plain text or HTML and can be added to any component by setting the
+                tooltipContent in the Data Dictionary. This is a example of how to add a tooltip on
+                a TextControl : </para>
+            <programlisting>&lt;bean parent="Uif-TextControl">
+    &lt;property name="toolTip">
+        &lt;bean parent="Uif-Tooltip" p:tooltipContent="This is my tooltip"/>
+    &lt;/property>
+&lt;/bean></programlisting>
+            <section>
+                <title>Properties</title>
+                <para>
+                    <table frame="all">
+                        <title>Tooltip Properties</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1.22*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1*"/>
+                            <colspec colname="c3" colnum="3" colwidth="11.85*"/>
+                            <thead>
+                                <row>
+                                    <entry>Property</entry>
+                                    <entry>Default</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>tooltipContent</entry>
+                                    <entry> </entry>
+                                    <entry> Plain text or HTML string that will be used to render
+                                        the tooltip content.</entry>
+                                </row>
+                                <row>
+                                    <entry>onFocus</entry>
+                                    <entry>false</entry>
+                                    <entry>Indicates the tooltip should be triggered by
+                                        focus/blur</entry>
+                                </row>
+                                <row>
+                                    <entry>onMouseHover</entry>
+                                    <entry>true</entry>
+                                    <entry>Indicates the tooltip should be triggered by mouse
+                                        hover</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </section>
+            <section>
+                <title>Plugin (Template) Options</title>
+                <para>
+                    <table frame="all">
+                        <title>Tooltip Options</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1*"/>
+                            <colspec colname="c2" colnum="2" colwidth="2.36*"/>
+                            <colspec colname="c3" colnum="3" colwidth="6.11*"/>
+                            <thead>
+                                <row>
+                                    <entry>Option</entry>
+                                    <entry>Default</entry>
+                                    <entry>Description</entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>position</entry>
+                                    <entry>top</entry>
+                                    <entry>It sets the Bubble Popup on the left, top, right or
+                                        bottom side of the target element;possible values are'left',
+                                        'top', 'right' or 'bottom'.</entry>
+                                </row>
+                                <row>
+                                    <entry>align</entry>
+                                    <entry>left</entry>
+                                    <entry>It sets the Bubble Popup alignment along the side of the
+                                        target element;possible values are 'left', 'center' or
+                                        'right' when position is 'top or 'bottom' otherwise 'top',
+                                        'middle' or 'bottom' when position is 'left' or
+                                        'right'</entry>
+                                </row>
+                                <row>
+                                    <entry>alwaysVisible</entry>
+                                    <entry>false</entry>
+                                    <entry>If it’s  true , the Bubble Popup maintains the position
+                                        and alignment if it’s possible,  also when the browser
+                                        window is resized ; otherwise the plugin changes (or restore
+                                        back) the Bubble Popup’s position to make it always visible
+                                        in the browser’s viewport, this works as well when browser
+                                        window is resized.</entry>
+                                </row>
+                                <row>
+                                    <entry>tail</entry>
+                                    <entry>{ align:'left', hidden: false }</entry>
+                                    <entry><para>"tail" is an object that contains the following properties for the Bubble Popup's tail </para><para>"align" (String)
+                                        option sets the alignment for the tail and possible values
+                                        are 'left', 'center' or 'right' when Bubble Popup's position
+                                        is 'top' or 'bottom' otherwise 'top', 'middle' or 'bottom'
+                                        when position is 'left' or 'right';</para><para>"hidden" (Boolean) option
+                                            can be trueor false and toggle on or off the tail's image.</para> </entry>
+                                </row>
+                                <row>
+                                    <entry>themePath</entry>
+                                    <entry>../krad/plugins/tooltip/jquerybubblepopup-theme/</entry>
+                                    <entry>It sets the  relative path  of the folder that contains
+                                        all the themes.</entry>
+                                </row>
+                                <row>
+                                    <entry>themeName</entry>
+                                    <entry>black</entry>
+                                    <entry>It sets the theme for the Bubble Popup; all the themes
+                                        are saved inside the themePath folder ; possible values are
+                                        : azure, black, blue, green, grey, orange, violet, yellow,
+                                        all-azure, all-black, all-blue, all-green, all-grey,
+                                        all-orange, all-violet, all-yellow</entry>
+                                </row>
+                                <row>
+                                    <entry>selectable</entry>
+                                    <entry>true</entry>
+                                    <entry>When the mouse is over the target element, a bubble popup
+                                        appears; then, if "selectable" is true  you will be able to
+                                        select the content inside it; if the mouse goes out of the 
+                                        button OR the bubble , the popup will be closed.By default,
+                                        this option is  false , then you will not be able to select
+                                        the content because when the mouse is immediately out of the
+                                        button, the popup will be closed. </entry>
+                                </row>
+                                <row>
+                                    <entry>distance</entry>
+                                    <entry>20px</entry>
+                                    <entry>It sets the distance of the point from which the Bubble
+                                        Popup comes </entry>
+                                </row>
+                                <row>
+                                    <entry>width</entry>
+                                    <entry>null</entry>
+                                    <entry>It sets the width of the Bubble Popup, an integer "10" or
+                                        a string as "10px" is accepted;this option sets a CSS width
+                                        property for the main &lt;TABLE> in the markup
+                                        template.</entry>
+                                </row>
+                                <row>
+                                    <entry>height</entry>
+                                    <entry>null</entry>
+                                    <entry>It sets the height of the Bubble Popup, an integer "10"
+                                        or a string as "10px" is accepted;this option sets a CSS
+                                        height property for the main &lt;TABLE> in the markup
+                                        template.</entry>
+                                </row>
+                                <row>
+                                    <entry>divStyle</entry>
+                                    <entry>{}</entry>
+                                    <entry>It is an object that contains CSS properties as {color:
+                                        '#000000', margin:'0px'}the CSS properties inside this
+                                        object will be added to the main &lt;DIV> tag in the  markup
+                                        template; by default it is an empty object. </entry>
+                                </row>
+                                <row>
+                                    <entry>tableStyle</entry>
+                                    <entry>{}</entry>
+                                    <entry>It is an object that contains CSS properties as {color:
+                                        '#000000', margin:'0px'}the CSS properties inside this
+                                        object will be added to the main &lt;TABLE> tag in the 
+                                        markup template ;by default it is an empty object. </entry>
+                                </row>
+                                <row>
+                                    <entry>innerHtml</entry>
+                                    <entry>null</entry>
+                                    <entry>The inner text inside the Bubble Popup, it can contains
+                                        HTML tags. </entry>
+                                </row>
+                                <row>
+                                    <entry>innerHtmlStyle</entry>
+                                    <entry>{}</entry>
+                                    <entry>It is an object that contains CSS properties as {color:
+                                        '#000000', margin:'0px'}the CSS properties inside this
+                                        object will be added to the &lt;TD> tag container with
+                                        "{BASE CLASS}-innerHtml" as class attribute in the  markup
+                                        template ; by default it is an empty object. </entry>
+                                </row>
+                                <row>
+                                    <entry> dropShadow</entry>
+                                    <entry>true</entry>
+                                    <entry>Drop the shadow ( true ) or not ( false ) for the Bubble
+                                        Popup.</entry>
+                                </row>
+                                <row>
+                                    <entry>manageMouseEvents</entry>
+                                    <entry>false</entry>
+                                    <entry>Do not change this property as KRAD overrides this to
+                                        false.</entry>
+                                </row>
+                                <row>
+                                    <entry>mouseOver</entry>
+                                    <entry>show</entry>
+                                    <entry>It adds a managed mouseover event to the target DOM
+                                        element associated with the Bubble Popup; possible values
+                                        are 'show' or 'hide'.  'show' : when mouse is over the
+                                        target element, show the Bubble Popup associated with it.
+                                        'hide' : when mouse is over the target element, hide the
+                                        Bubble Popup associated with it.</entry>
+                                </row>
+                                <row>
+                                    <entry>mouseOut</entry>
+                                    <entry>hide</entry>
+                                    <entry>It adds a managed mouseout event to the target DOM
+                                        element associated with the Bubble Popup;possible values are
+                                        'show' or 'hide'. 'show' : when mouse is out the target
+                                        element, show the Bubble Popup associated with it.  'hide' :
+                                        when mouse is out the target element, hide the Bubble Popup
+                                        associated with it.</entry>
+                                </row>
+                                <row>
+                                    <entry>openingSpeed</entry>
+                                    <entry>250</entry>
+                                    <entry>It sets the opening speed.</entry>
+                                </row>
+                                <row>
+                                    <entry>closingSpeed</entry>
+                                    <entry>250</entry>
+                                    <entry>It sets the closing speed.</entry>
+                                </row>
+                                <row>
+                                    <entry>openingDelay</entry>
+                                    <entry>0</entry>
+                                    <entry>It sets a delay in milliseconds when the Bubble Popup is
+                                        opening.</entry>
+                                </row>
+                                <row>
+                                    <entry>closingDelay</entry>
+                                    <entry>0</entry>
+                                    <entry>It sets a delay in milliseconds when the Bubble Popup is
+                                        closing.</entry>
+                                </row>
+                                <row>
+                                    <entry>baseClass</entry>
+                                    <entry>jquerybubblepopup</entry>
+                                    <entry>It sets the base class name saved in the CSS file
+                                        "jquery-bubble-popup.css"; generally you don’t need to edit
+                                        this option, it is only useful if other CSS classes declared
+                                        inside the document interfere with the main class of the
+                                        Bubble Popup;in this case, You will need only to choose a
+                                        new valid name for the base class and set this option with
+                                        it, then You need to replace all occurrences of the base
+                                        class name "jquerybubblepopup" inside the
+                                        "jquery-bubble-popup.css" file with the new name. </entry>
+                                </row>
+                                <row>
+                                    <entry>themeMargins</entry>
+                                    <entry> azure </entry>
+                                    <entry>It sets the theme for the Bubble Popup; all the themes
+                                        are saved inside the folder "jquerybubblepopup-theme/" ;
+                                        possible values are:azure, black, blue, green, grey, orange,
+                                        violet, yellow, all-azure, all-black, all-blue, all-green,
+                                        all-grey, all-orange, all-violet, all-yellow.</entry>
+                                </row>
+                                <row>
+                                    <entry>afterShown</entry>
+                                    <entry>function(){}</entry>
+                                    <entry>It sets a callback function to execute when Bubble Popup
+                                        is opened; You can set it as
+                                        jQuery('.button').CreateBubblePopup({innerHtml: 'This is a
+                                        Bubble Popup!', afterShown: function(){alert('Bubble Popup
+                                        is open!');}});</entry>
+                                </row>
+                                <row>
+                                    <entry>afterHidden</entry>
+                                    <entry>function(){}</entry>
+                                    <entry>It sets a callback function to execute when Bubble Popup
+                                        is closed.</entry>
+                                </row>
+                                <row>
+                                    <entry>hideElementId</entry>
+                                    <entry>{}</entry>
+                                    <entry>Insert in the array all IDs of the elements that You want
+                                        to hide; it is useful if any element interfere with a Bubble
+                                        Popup. By default, it is an empty array.</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </table>
+                </para>
+            </section>
+        </section>
     </section>
     <section>
         <title>Creating a New Widget </title>

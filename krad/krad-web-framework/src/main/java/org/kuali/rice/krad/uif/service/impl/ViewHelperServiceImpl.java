@@ -1036,9 +1036,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * rendered
      *
      * <p>
-     * A growl will be created if errors have been added to the message map. Likewise a growl will be created
-     * if warnings have been added to the message map. Finally a growl call will be created for any explicit 
-     * growl messages added to the message map.
+     * A growl call will be created for any explicit growl messages added to the message map.
      * </p>
      *
      * <p>
@@ -1052,61 +1050,29 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected String buildGrowlScript(View view) {
         String growlScript = "";
 
+        ConfigurationService configService = getConfigurationService();
+
         MessageMap messageMap = GlobalVariables.getMessageMap();
-
-        if (view.isGrowlMessagingEnabled()) {
-            ConfigurationService configService = getConfigurationService();
-
-            // build message for errors on page
-            if (messageMap.hasErrors()) {
-                String message = configService.getPropertyValueAsString("growl.hasErrors");
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.error") + "', 'errorGrowl');";
-                }
-            }
-
-            // build message for warnings on page
-            if (messageMap.hasWarnings()) {
-                String message = configService.getPropertyValueAsString("growl.hasWarnings");
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.warning") + "', 'warningGrowl');";
-                }
-            }
-
-            // build growl for messages added to message map
-            for (GrowlMessage growl : messageMap.getGrowlMessages()) {
-                String message = "";
-
-                if (StringUtils.isBlank(message)) {
-                    message = configService.getPropertyValueAsString(growl.getMessageKey());
-                } else {
-                    message = message + "<br/>" + configService.getPropertyValueAsString(growl.getMessageKey());
-                }
-
-                if (growl.getMessageParameters() != null) {
-                    message = message.replace("'", "''");
-                    message = MessageFormat.format(message, (Object[]) growl.getMessageParameters());
-                }
-
-                // escape single quotes in message or title since that will cause problem with plugin
-                message = message.replace("'", "\\'");
-               
-                String title = growl.getTitle();
-                title = title.replace("'", "\\'");
+        for (GrowlMessage growl : messageMap.getGrowlMessages()) {
+            if (view.isGrowlMessagingEnabled()) {
+                String message = configService.getPropertyValueAsString(growl.getMessageKey());
 
                 if (StringUtils.isNotBlank(message)) {
+                    if (growl.getMessageParameters() != null) {
+                        message = message.replace("'", "''");
+                        message = MessageFormat.format(message, (Object[]) growl.getMessageParameters());
+                    }
+
+                    // escape single quotes in message or title since that will cause problem with plugin
+                    message = message.replace("'", "\\'");
+
+                    String title = growl.getTitle();
+                    title = title.replace("'", "\\'");
+
                     growlScript =
                             growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
                 }
-            }
-        }
-        else {
-            // get any growl messages that were added and put as info messages for the page
-            for (GrowlMessage growl : messageMap.getGrowlMessages()) {
+            } else {
                 messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, growl.getMessageKey(),
                         growl.getMessageParameters());
             }

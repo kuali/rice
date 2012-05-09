@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -98,11 +99,11 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * field should be set to not render
      * </p>
      *
-     * @param actionLinkField - link field that will be used to return the maintenance URL
+     * @param actionLink - link that will be used to return the maintenance URL
      * @param model - lookup form containing the data
      * @param maintenanceMethodToCall - name of the method that should be invoked in the maintenance controller
      */
-    public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall);
+    public void getMaintenanceActionLink(Link actionLink, Object model, String maintenanceMethodToCall);
 
     /**
      * Set the value for the input field control to contain the field conversion values for the line

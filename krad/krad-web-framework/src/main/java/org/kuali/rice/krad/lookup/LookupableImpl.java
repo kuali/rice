@@ -31,7 +31,6 @@ import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
@@ -40,6 +39,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.LookupInputField;
@@ -671,24 +671,24 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * @see org.kuali.rice.krad.lookup.Lookupable#getMaintenanceActionLink
      */
-    public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall) {
+    public void getMaintenanceActionLink(Link actionLink, Object model, String maintenanceMethodToCall) {
         LookupForm lookupForm = (LookupForm) model;
-        LookupView lookupView = (LookupView) actionLinkField.getContext().get(UifConstants.ContextVariableNames.VIEW);
-        Object dataObject = actionLinkField.getContext().get(UifConstants.ContextVariableNames.LINE);
+        LookupView lookupView = (LookupView) actionLink.getContext().get(UifConstants.ContextVariableNames.VIEW);
+        Object dataObject = actionLink.getContext().get(UifConstants.ContextVariableNames.LINE);
 
         List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
 
         // build maintenance link href
         String href = getActionUrlHref(lookupForm, dataObject, maintenanceMethodToCall, pkNames);
         if (StringUtils.isBlank(href)) {
-            actionLinkField.setRender(false);
+            actionLink.setRender(false);
             return;
         }
         // TODO: need to handle returning anchor
-        actionLinkField.setHref(href);
+        actionLink.setHref(href);
 
         // build action title
-        String prependTitleText = actionLinkField.getLinkText() + " " +
+        String prependTitleText = actionLink.getLinkText() + " " +
                 getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName())
                         .getObjectLabel() + " " +
                 getConfigurationService().getPropertyValueAsString(
@@ -696,9 +696,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
         String title = LookupInquiryUtils.getLinkTitleText(prependTitleText, getDataObjectClass(), primaryKeyValues);
-        actionLinkField.setTitle(title);
+        actionLink.setTitle(title);
         // TODO : do not hardcode the _self string
-        actionLinkField.setTarget("_self");
+        actionLink.setTarget("_self");
         lookupForm.setAtLeastOneRowHasActions(true);
     }
 

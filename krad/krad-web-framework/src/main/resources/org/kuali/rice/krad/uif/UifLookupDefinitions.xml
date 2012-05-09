@@ -167,6 +167,21 @@
     </property>
   </bean>
 
+  <bean id="Uif-CreateNewLink" parent="Uif-Link"
+        p:linkText="Create New"
+        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-createNewLink</value>
+      </list>
+    </property>
+    <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+    <property name="finalizeMethodAdditionalArguments">
+      <list>
+        <value>start</value>
+      </list>
+    </property>
+  </bean>
 
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">
     <property name="items">

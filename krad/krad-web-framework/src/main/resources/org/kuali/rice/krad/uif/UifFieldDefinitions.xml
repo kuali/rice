@@ -317,22 +317,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-CreateNewLink" parent="Uif-LinkField"
-        p:linkText="Create New"
-        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-createNewLink</value>
-      </list>
-    </property>
-    <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-    <property name="finalizeMethodAdditionalArguments">
-      <list>
-        <value>start</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive"

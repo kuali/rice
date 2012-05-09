@@ -106,7 +106,7 @@ function setConfigParam(paramName, paramValue) {
  * @param viewState - map (object) containing the view state
  */
 function initializeViewState(viewState) {
-    jQuery(document).data("ViewState", viewState);
+    jQuery(document).data(kradVariables.VIEW_STATE, viewState);
 }
 
 /**
@@ -121,12 +121,12 @@ function initializeViewState(viewState) {
  * @param viewState - view state to merge in
  */
 function updateViewState(viewState) {
-    var currentViewState = jQuery(document).data("ViewState");
+    var currentViewState = jQuery(document).data(kradVariables.VIEW_STATE);
     if (currentViewState) {
         jQuery.extend(currentViewState, viewState);
     }
     else {
-        jQuery(document).data("ViewState", viewState);
+        jQuery(document).data(kradVariables.VIEW_STATE, viewState);
     }
 }
 
@@ -137,10 +137,10 @@ function updateViewState(viewState) {
  * @param value - value for the state
  */
 function setViewState(key, value) {
-    var viewState = jQuery(document).data("ViewState");
+    var viewState = jQuery(document).data(kradVariables.VIEW_STATE);
     if (!viewState) {
         viewState = new Object();
-        jQuery(document).data("ViewState", viewState);
+        jQuery(document).data(kradVariables.VIEW_STATE, viewState);
     }
     viewState[key] = value;
 }
@@ -152,7 +152,7 @@ function setViewState(key, value) {
  * @param key - name of the variable in view state to return
  */
 function getViewState(key) {
-    var viewState = jQuery(document).data("ViewState");
+    var viewState = jQuery(document).data(kradVariables.VIEW_STATE);
     if (viewState && viewState.hasOwnProperty(key)) {
         return viewState[key];
     }
@@ -228,7 +228,7 @@ function runHiddenScripts(id, isSelector){
         runScriptsForId(id);
 
         //reinit dirty fields
-        jQuery('#kualiForm').dirty_form({changedClass:'dirty', includeHidden:true});
+        jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
         //reinitialize BubblePopup
         initBubblePopups();
@@ -236,7 +236,7 @@ function runHiddenScripts(id, isSelector){
         //Interpret new server message state for refreshed InputFields and write them out
 
         jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
-            var data = jQuery(this).data("validationMessages");
+            var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
             if(!data.processed){
                 handleMessagesAtField(jQuery(this).attr('id'), true);
             }
@@ -261,7 +261,7 @@ function runHiddenScripts(id, isSelector){
         initBubblePopups();
         //Interpret new server message state for refreshed InputFields
         jQuery("[data-role='InputField']").each(function(){
-            var data = jQuery(this).data("validationMessages");
+            var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
             if(data != undefined && !data.processed){
                 handleMessagesAtField(jQuery(this).attr('id'));
             }
@@ -431,7 +431,7 @@ function checkDirty(event){
 			if (ul.length > 0)
 			{
 				var pageId = jQuery("[name='pageId']").val();
-				if(ul.hasClass("uif-tabMenu")){
+				if(ul.hasClass(kradVariables.TAB_MENU_CLASS)){
 					jQuery("#" + ul.attr("id")).selectTab({selectPage : pageId});
 				}
 				else{

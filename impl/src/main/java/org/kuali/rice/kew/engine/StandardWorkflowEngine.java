@@ -703,21 +703,24 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// initialized for reporting purposes.
 		RouteContext context = new RouteContext();
 		context.setDocument(document);
+
 		if (context.getEngineState() == null) {
 			context.setEngineState(new EngineState());
 		}
+
 		ProcessDefinitionBo process = document.getDocumentType().getPrimaryProcess();
-		if (process == null || process.getInitialRouteNode() == null) {
-		    if (process == null) {
-		        throw new IllegalDocumentTypeException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
-		    }
-			return;
-		}
-		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
-		nodeInstance.setActive(true);
-		helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
-		document.getInitialRouteNodeInstances().add(nodeInstance);
-		saveNode(context, nodeInstance);
+
+        if (process == null) {
+            throw new IllegalDocumentTypeException("DocumentType '" + document.getDocumentType().getName() + "' has no primary process configured!");
+        }
+
+        if (process.getInitialRouteNode() != null) {
+            RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
+            nodeInstance.setActive(true);
+            helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+            document.getInitialRouteNodeInstances().add(nodeInstance);
+            saveNode(context, nodeInstance);
+        }
 	}
 
     private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {

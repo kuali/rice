@@ -28,7 +28,10 @@ public interface ProcessDefinitionContract extends Identifiable, Versioned {
     String getName();
     
     String getDocumentTypeId();
-    
+
+    /**
+     * @return the initial route node for the process.  May be null.
+     */
     RouteNodeContract getInitialRouteNode();
     
     boolean isInitial();

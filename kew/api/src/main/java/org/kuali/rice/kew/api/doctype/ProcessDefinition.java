@@ -54,7 +54,7 @@ public final class ProcessDefinition extends AbstractDataTransferObject implemen
     @XmlElement(name = Elements.DOCUMENT_TYPE_ID, required = false)
     private final String documentTypeId;
 
-    @XmlElement(name = Elements.INITIAL_ROUTE_NODE, required = true)
+    @XmlElement(name = Elements.INITIAL_ROUTE_NODE, required = false)
     private final RouteNode initialRouteNode;
 
     @XmlElement(name = Elements.INITIAL, required = true)
@@ -143,6 +143,13 @@ public final class ProcessDefinition extends AbstractDataTransferObject implemen
             setInitial(initial);
         }
 
+        /**
+         * Create a new ProcessDefinition.Builder
+         * @param name The name for the process.
+         * @param initialRouteNode The first route node for the process.  May be null.
+         * @param initial
+         * @return
+         */
         public static Builder create(String name, RouteNode.Builder initialRouteNode, boolean initial) {
             return new Builder(name, initialRouteNode, initial);
         }
@@ -151,8 +158,12 @@ public final class ProcessDefinition extends AbstractDataTransferObject implemen
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create(contract.getName(), RouteNode.Builder.create(contract.getInitialRouteNode()),
-                    contract.isInitial());
+            RouteNode.Builder initialRouteNode = null;
+            if (contract.getInitialRouteNode() != null) {
+                initialRouteNode = RouteNode.Builder.create(contract.getInitialRouteNode());
+            }
+
+            Builder builder = create(contract.getName(), initialRouteNode, contract.isInitial());
             builder.setDocumentTypeId(contract.getDocumentTypeId());
             builder.setId(contract.getId());
             return builder;
@@ -208,9 +219,6 @@ public final class ProcessDefinition extends AbstractDataTransferObject implemen
         }
 
         public void setInitialRouteNode(RouteNode.Builder initialRouteNode) {
-            if (initialRouteNode == null) {
-                throw new IllegalArgumentException("initialRouteNode was null");
-            }
             this.initialRouteNode = initialRouteNode;
         }
 

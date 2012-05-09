@@ -439,18 +439,18 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         jQuery("#" + headerId + " > :header, #" + headerId + " > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
         var animationFinishedCallback = function(){
-            jQuery("#Uif-Application").attr("data-skipResize", false);
+            jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", false);
         };
         // perform slide and switch image
         if (defaultOpen) {
             jQuery("#" + groupToggleLinkId).toggle(
                     function() {
-                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
                         jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
                     }, function() {
-                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
                         jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
@@ -460,13 +460,13 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         else {
             jQuery("#" + groupToggleLinkId).toggle(
                     function() {
-                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
                         jQuery("#" + groupAccordionSpanId).slideDown(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_col").replaceWith(expandImage);
                         setComponentState(widgetId, 'defaultOpen', true);
 
                     }, function() {
-                        jQuery("#Uif-Application").attr("data-skipResize", true);
+                        jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", true);
                         jQuery("#" + groupAccordionSpanId).slideUp(animationSpeed, animationFinishedCallback);
                         jQuery("#" + groupId + "_exp").replaceWith(collapseImage);
                         setComponentState(widgetId, 'defaultOpen', false);
@@ -677,7 +677,7 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
 function isControlWithMessages(id) {
     if (jQuery("#" + id).is(".uif-control")) {
         var fieldId = getAttributeId(id);
-        var messageData = jQuery("#" + fieldId).data("validationMessages");
+        var messageData = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
         if (messageData) {
             if (messageData.serverErrors.length || messageData.errors.length
                     || messageData.serverWarnings.length || messageData.warnings.length
@@ -758,7 +758,7 @@ function hideTooltip(fieldId) {
         //for checkbox/radio fieldsets we put the tooltip on the label of the first input
         element = jQuery(element).filter("label:first");
     }
-    var data = jQuery("#" + fieldId).data("validationMessages");
+    var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
     if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }

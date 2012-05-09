@@ -36,7 +36,7 @@
 
     <title>
       <s:message code="app.title"/>
-      :: ${view.title}
+      :: ${view.headerText}
     </title>
 
     <c:forEach items="${view.theme.cssFiles}" var="cssFile">

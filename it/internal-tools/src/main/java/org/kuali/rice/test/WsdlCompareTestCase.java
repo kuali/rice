@@ -175,21 +175,20 @@ public class WsdlCompareTestCase extends BaselineTestCase {
     }
 
     protected void compareWsdlFiles(File[] files) {
-        if (files != null) {
-            for (File file : files) {
-                if (file.getName().endsWith(".wsdl")) {
-                    LOG.info("new wsdl: " + file.getAbsolutePath());
-                    String newWsdl = file.getAbsolutePath();
-                    String oldWsdl = getPreviousVersionWsdlUrl(file.getName());
-                    if (oldWsdl == null) {
-                        LOG.warn("Old wsdl not found.  Comparing against same version");
-                        oldWsdl = newWsdl;
-                    }
-                    LOG.info("old wsdl: " + oldWsdl + "\n");
-                    List<Difference> differences = compareWsdlDefinitions(oldWsdl, newWsdl);
-                    for (Difference diff : differences) {
-                        verifyWsdlDifferences(diff, "", diff.getDescription());
-                    }
+        assertTrue("There should be wsdls to compare", files != null  && files.length > 0);
+        for (File file : files) {
+            if (file.getName().endsWith(".wsdl")) {
+                LOG.info("new wsdl: " + file.getAbsolutePath());
+                String newWsdl = file.getAbsolutePath();
+                String oldWsdl = getPreviousVersionWsdlUrl(file.getName());
+                if (oldWsdl == null) {
+                    LOG.warn("Old wsdl not found.  Comparing against same version");
+                    oldWsdl = newWsdl;
+                }
+                LOG.info("old wsdl: " + oldWsdl + "\n");
+                List<Difference> differences = compareWsdlDefinitions(oldWsdl, newWsdl);
+                for (Difference diff : differences) {
+                    verifyWsdlDifferences(diff, "", diff.getDescription());
                 }
             }
         }

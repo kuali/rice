@@ -18,17 +18,14 @@ package org.kuali.rice.core.wsdl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.WsdlCompareTestCase;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class CoreWsdlCompatibilityTest extends WsdlCompareTestCase {
     private static final Logger LOG = Logger.getLogger(CoreWsdlCompatibilityTest.class);
@@ -40,13 +37,14 @@ public class CoreWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareCoreServiceWsdls() {
-        File[] files = new File(getModuleName() + "-service/api/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "-service/api/target/wsdl").listFiles();
         compareWsdlFiles(files);
     }
 
     @Test
     public void compareCoreWsdls() {
-        File[] files = new File(getModuleName() + "/api/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
+        assertTrue("There should be wsdls to compare", files != null  && files.length > 0);
         if (StringUtils.equals("2.0.1", getPreviousVersion())
                 && files != null) {
             //hack to remove test for CacheAdminService, because 2.0.1's wdsl for that was generated incorrectly
@@ -58,7 +56,9 @@ public class CoreWsdlCompatibilityTest extends WsdlCompareTestCase {
             }
             files = fileList.toArray(new File[]{});
         }
-        compareWsdlFiles(files);
+        if (files.length > 0) {
+            compareWsdlFiles(files);
+        }
     }
 
 

@@ -32,14 +32,14 @@ public class KrmsWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareApiWsdls() {
-        File[] files = new File(getModuleName() + "/api/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
         compareWsdlFiles(files);
 
     }
 
     @Test
     public void compareFrameworkWsdls() {
-        File[] files = new File(getModuleName() + "/framework/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/framework/target/wsdl").listFiles();
         compareWsdlFiles(files);
 
     }

@@ -32,7 +32,7 @@ public class KsbWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareWsdls() {
-        File[] files = new File(getModuleName() + "/api/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
         compareWsdlFiles(files);
     }
 

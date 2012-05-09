@@ -32,14 +32,14 @@ public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareKewApiWsdls() {
-        File[] files = new File(getModuleName() + "/api/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
         compareWsdlFiles(files);
     }
 
 
     @Test
     public void compareKewFrameworkWsdls() {
-        File[] files = new File(getModuleName() + "/framework/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/framework/target/wsdl").listFiles();
         compareWsdlFiles(files);
     }
 

@@ -32,13 +32,13 @@ public class KimWsdlCompatibilityTest extends WsdlCompareTestCase {
 
     @Test
     public void compareApiWsdls() {
-        File[] files = new File(getModuleName() + "/kim-api/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/kim-api/target/wsdl").listFiles();
         compareWsdlFiles(files);
     }
 
     @Test
     public void compareFrameworkWsdls() {
-        File[] files = new File(getModuleName() + "/kim-framework/target/wsdl").listFiles();
+        File[] files = new File("../../" + getModuleName() + "/kim-framework/target/wsdl").listFiles();
         compareWsdlFiles(files);
     }
 

@@ -50,8 +50,8 @@ function setGrowlDefaults(options) {
  *          (true) or hidden (false)
  */
 function createLoading(showLoading) {
-    var loadingMessage =  '<h1><img src="' + getConfigParam("kradImageLocation") + 'loading.gif" alt="working..." />Loading...</h1>';
-    var savingMessage = '<h1><img src="' + getConfigParam("kradImageLocation") + 'loading.gif" alt="working..." />Saving...</h1>';
+    var loadingMessage =  '<h1><img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loading.gif" alt="working..." />Loading...</h1>';
+    var savingMessage = '<h1><img src="' + getConfigParam(kradVariables.IMAGE_LOCATION) + 'loading.gif" alt="working..." />Saving...</h1>';
 
     var methodToCall = jQuery("input[name='methodToCall']").val();
     var unblockUIOnLoading = jQuery("input[name='unblockUIOnLoading']").val();
@@ -111,7 +111,7 @@ function showChangeIcon(fieldId) {
     var fieldIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (fieldMarkerSpan.length > 0 && fieldIcon.length == 0) {
-        fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
+        fieldMarkerSpan.append("<img id='" + fieldId + "_changeIcon' alt='change' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
     }
 }
 
@@ -143,7 +143,7 @@ function showChangeIconOnGroupHeader(fieldId, idSuffix) {
     var headerIcon = jQuery("#" + fieldId + "_changeIcon");
 
     if (targetElement.length > 0 && headerIcon.length == 0) {
-        targetElement.append("<img id='" + fieldId + "_changeIcon' class='uif-changedHeaderIcon' alt='change' src='" + getConfigParam("kradImageLocation") + "asterisk_orange.png'>");
+        targetElement.append("<img id='" + fieldId + "_changeIcon' class='" + kradVariables.CHANGED_HEADER_ICON_CLASS+"' alt='change' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "asterisk_orange.png'>");
     }
 }
 
@@ -161,8 +161,8 @@ function createWatermark(id, watermark) {
  */
 function handleIncidentReport(content) {
     var viewId = jQuery("#viewId", content);
-    if (viewId.length && viewId.val() === "Uif-IncidentReportView") {
-        jQuery('#Uif-Application').replaceWith(content);
+    if (viewId.length && viewId.val() === kradVariables.INCIDENT_REPORT_VIEW_CLASS) {
+        jQuery('#' + kradVariables.APP_ID).replaceWith(content);
         runHiddenScriptsAgain();
         return true;
     }

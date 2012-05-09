@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	This is the standalone default settings config file.  It is always loaded to read default settings.
-	Parameter replacement is performed in both config files and their parents (at runtime), and the
-	Spring config file (through a PropertyPlaceholderConfigurer).
-	Variable syntax:
-	${varname}
-	${institution}
+  This is the standalone default settings config file. It is always loaded to read default settings.
+  Parameter replacement is performed in both config files and their parents (at runtime), and the
+  Spring config file (through a PropertyPlaceholderConfigurer).
+  Variable syntax:
+  ${varname}
+  ${institution}
 -->
 <config>
-    <param name="config.location">classpath:META-INF/standalone-config-defaults.xml</param>
+  <param name="external.config.home" override="false">${user.home}/kuali/main/${environment}</param>
+  <param name="config.location">classpath:META-INF/standalone-config-defaults.xml</param>
 
-    <!-- default config files -->
-    <param name="config.location">/usr/local/rice/rice-config.xml</param>
-    <param name="config.location">${rice.base}../../../conf/rice-config.xml</param>
-    <param name="config.location">${rice.base}../../conf/rice-config.xml</param>
-    <param name="config.location">${user.home}/.kuali/rice/rice-config.xml</param>
-    <param name="config.location">${additional.config.locations}</param>
-    <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
-	<param name="config.location">classpath:META-INF/common-config-locations.xml</param>
+  <!-- default config files -->
+  <param name="config.location">/usr/local/rice/rice-config.xml</param>
+  <param name="config.location">${rice.base}../../../conf/rice-config.xml</param>
+  <param name="config.location">${rice.base}../../conf/rice-config.xml</param>
+  <param name="config.location">${external.config.home}/rice-config.xml</param>
+  <param name="config.location">${additional.config.locations}</param>
+  <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
+  <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
 
 </config>

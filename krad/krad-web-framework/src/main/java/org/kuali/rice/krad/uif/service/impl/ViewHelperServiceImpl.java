@@ -1504,6 +1504,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (inquirable != null) {
             inquirable.buildInquirableLink(dataObject, propertyName, inquiry);
         } else {
+            // TODO: should we really not render the inquiry just because the top parent doesn't have an inquirable?
+            // it is possible the path is nested and there does exist an inquiry for the property
             // inquirable not found, no inquiry link can be set
             inquiry.setRender(false);
         }

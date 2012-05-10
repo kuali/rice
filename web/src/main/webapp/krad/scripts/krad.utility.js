@@ -294,6 +294,12 @@ function runScriptsForId(id) {
     }
 }
 
+/**
+ * run hidden scripts again
+ *
+ * <p>This is needed in situations where due to some bugs in page refreshes or progressive rendering,
+ * the hidden scripts may have run but not accomplished the desired results</p>
+ */
 function runHiddenScriptsAgain(){
     jQuery("input[data-role='dataScript']").each(function(){
         eval(jQuery(this).val());

@@ -226,6 +226,50 @@
         <!-- TODO: Add content here --> 
         <para></para>
     </section>
+  <section>
+    <title>Data Attributes</title>
+    <listitem>
+      <para>HTML 5 data attributes are a way of adding custom attributes to tags. Data attributes are prefixed with
+        a &apos;data-&apos; prefix e.g &apos;data-role&apos;. JQuery makes data attributes available on the jQuery data object for use
+        in scripting manipulations.
+        Internally, KRAD uses the jQuery data object and data attributes heavily in validation amongst other uses.
+        This can be seen in krad.validate.js.</para>
+      <para>Data attributes are available on all form elements except the radio button.
+        Page elements like image, iframe and links also support data attributes. There are two ways to add data attributes to
+        a control or element. Both these ways involve setting properties in the defining XML configuration files. </para>
+      <para>The first way applies to three data attributes which can be set directly on a component using the property names
+        data-role, data-meta and data-type. These attributes are physically present on the tag for the component on
+        which they have been configured. This can be seen in lines 13 - 15 of the program listing below.
+      </para>
+      <para>The second way is to use the dataAttributes map to set a list of attributes.
+        The map key is the attribute name and the value is the attribute value.
+        Using the map is appropriate when complex attributes need to be set. Complex attributes are those whose values contain
+        &apos;{}&apos;. Data attributes set via this map are not physically present on the tag but are set on the components jQuery
+      data object via an initialization script that runs on page load. This can be seen in lines 5 - 12 of the program listing below.</para>
+      <para></para>
+      <para>A sample configuration is shown below.</para>
+      <programlisting>
+1.    &lt;bean id=&quot;textAreaInputField_attrs&quot; parent=&quot;Uif-InputField&quot; &gt;
+2.      ...
+3       &lt;bean parent=&quot;Uif-TextAreaControl&quot; &gt;
+4.        ...
+5.        &lt;property name=&quot;dataAttributes&quot;&gt;
+6.          &lt;map&gt;
+7.            &lt;entry key=&quot;iconTemplateName&quot; value=&quot;cool-icon-%s.png&quot;/&gt;
+8.            &lt;entry key=&quot;transitions&quot; value=&quot;3&quot;/&gt;
+9.            &lt;entry key=&quot;capitals&quot; value=&quot;{kenya:&apos;nairobi&apos;, uganda:&apos;kampala&apos;, tanzania:&apos;dar&apos;}&quot;/&gt;
+10.           &lt;entry key=&quot;intervals&quot; value=&quot;{short:2, medium:5, long:13}&quot;/&gt;
+11.         &lt;/map&gt;
+12.       &lt;/property&gt;
+13.     &lt;property name=&quot;dataRoleAttribute&quot; value=&quot;role&quot;/&gt;
+14.     &lt;property name=&quot;dataMetaAttribute&quot; value=&quot;meta&quot;/&gt;
+15.     &lt;property name=&quot;dataTypeAttribute&quot; value=&quot;type&quot;/&gt;
+16.     &lt;/bean&gt;
+17.     &lt;/property&gt;
+18.    &lt;/bean&gt;
+      </programlisting>
+    </listitem>
+  </section>
     <section>
         <title>Configuring Event Handling </title>
         <section>

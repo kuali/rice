@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.test;
+package org.kuali.rice.vc.test;
 
 import com.predic8.schema.ComplexType;
 import com.predic8.schema.Sequence;
@@ -26,9 +26,17 @@ import com.predic8.wsdl.WSDLParser;
 import com.predic8.wsdl.diff.WsdlDiffGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.kuali.rice.core.api.lifecycle.Lifecycle;
+import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
+import org.kuali.rice.test.BaselineTestCase;
 
+import javax.xml.namespace.QName;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -57,13 +65,14 @@ import static org.junit.Assert.assertTrue;
  *   - adding a new required WS-Policy assertion or expression
  *   - adding a new ignorable WS-Policy expression (most of the time)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
-public class WsdlCompareTestCase extends BaselineTestCase {
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK)
+public abstract class WsdlCompareTestCase extends BaselineTestCase {
     private static final Logger LOG = Logger.getLogger(WsdlCompareTestCase.class);
     private static final String WSDL_URL = "wsdl.test.previous.url";
     private static final String WSDL_PREVIOUS_VERSION = "wsdl.test.previous.version";
     private String wsdlUrlPrefix;
     private String previousVersion;
+    //private static final String MODULE_NAME = "vc";
 
     public WsdlCompareTestCase(String moduleName) {
         super(moduleName);
@@ -211,5 +220,36 @@ public class WsdlCompareTestCase extends BaselineTestCase {
 
     public void setPreviousVersion(String previousVersion) {
         this.previousVersion = previousVersion;
+    }
+
+    @Override
+    protected Lifecycle getLoadApplicationLifecycle() {
+        SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("VCTestHarnessResourceLoader"), "classpath:VCTestHarnessSpringBeans.xml", null);
+        springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
+        return springResourceLoader;
+    }
+
+    @Override
+    protected List<Lifecycle> getPerTestLifecycles() {
+        return new ArrayList<Lifecycle>();
+    }
+
+    @Override
+    protected List<Lifecycle> getSuiteLifecycles() {
+        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+
+        /**
+         * Initializes Rice configuration from the test harness configuration file.
+         */
+        lifecycles.add(new BaseLifecycle() {
+            @Override
+            public void start() throws Exception {
+                Config config = getTestHarnessConfig();
+                ConfigContext.init(config);
+                super.start();
+            }
+        });
+
+        return lifecycles;
     }
 }

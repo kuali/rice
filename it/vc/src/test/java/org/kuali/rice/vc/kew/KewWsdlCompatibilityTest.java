@@ -14,27 +14,33 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.location.impl.wsdl;
+package org.kuali.rice.vc.kew;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.test.WsdlCompareTestCase;
+import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
 
-public class LocationWsdlCompatibilityTest extends WsdlCompareTestCase {
-    private static final Logger LOG = Logger.getLogger(LocationWsdlCompatibilityTest.class);
-    private static final String LOCATION_MODULE_NAME = "location";
+public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
+    private static final Logger LOG = Logger.getLogger(KewWsdlCompatibilityTest.class);
+    private static final String MODULE_NAME = "kew";
 
-    public LocationWsdlCompatibilityTest() {
-        super(LOCATION_MODULE_NAME);
+    public KewWsdlCompatibilityTest() {
+        super(MODULE_NAME);
     }
 
     @Test
-    public void compareLocationWsdls() {
+    public void compareKewApiWsdls() {
         File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
         compareWsdlFiles(files);
+    }
 
+
+    @Test
+    public void compareKewFrameworkWsdls() {
+        File[] files = new File("../../" + getModuleName() + "/framework/target/wsdl").listFiles();
+        compareWsdlFiles(files);
     }
 
 

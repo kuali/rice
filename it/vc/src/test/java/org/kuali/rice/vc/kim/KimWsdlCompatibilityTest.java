@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kim.wsdl;
+package org.kuali.rice.vc.kim;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.test.WsdlCompareTestCase;
+import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
 

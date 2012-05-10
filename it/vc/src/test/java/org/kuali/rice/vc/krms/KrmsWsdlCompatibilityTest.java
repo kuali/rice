@@ -14,33 +14,34 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kew.wsdl;
+package org.kuali.rice.vc.krms;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.test.WsdlCompareTestCase;
+import org.kuali.rice.vc.test.WsdlCompareTestCase;
 
 import java.io.File;
 
-public class KewWsdlCompatibilityTest extends WsdlCompareTestCase {
-    private static final Logger LOG = Logger.getLogger(KewWsdlCompatibilityTest.class);
-    private static final String MODULE_NAME = "kew";
+public class KrmsWsdlCompatibilityTest extends WsdlCompareTestCase {
+    private static final Logger LOG = Logger.getLogger(KrmsWsdlCompatibilityTest.class);
+    private static final String MODULE_NAME = "krms";
 
-    public KewWsdlCompatibilityTest() {
+    public KrmsWsdlCompatibilityTest() {
         super(MODULE_NAME);
     }
 
     @Test
-    public void compareKewApiWsdls() {
+    public void compareApiWsdls() {
         File[] files = new File("../../" + getModuleName() + "/api/target/wsdl").listFiles();
         compareWsdlFiles(files);
+
     }
 
-
     @Test
-    public void compareKewFrameworkWsdls() {
+    public void compareFrameworkWsdls() {
         File[] files = new File("../../" + getModuleName() + "/framework/target/wsdl").listFiles();
         compareWsdlFiles(files);
+
     }
 
 

@@ -258,13 +258,6 @@ public class CollectionGroupBuilder implements Serializable {
                         control.addStyleClass(collectionGroup.getBaseId() + "-addField");
                         control.addStyleClass("ignoreValid");
                     }
-                    // add to index
-                    view.getViewIndex().indexComponent(f);
-                    // add to initial component state map - set the factory id to null to allow that
-                    String factoryId = f.getBaseId();
-                    f.setBaseId(null);
-                    view.getViewIndex().addInitialComponentStateIfNeeded(f);
-                    f.setBaseId(factoryId);
                 }
             }
 

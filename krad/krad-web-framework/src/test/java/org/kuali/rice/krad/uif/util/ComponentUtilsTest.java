@@ -53,18 +53,4 @@ public class ComponentUtilsTest {
         assertTrue(component.getId().equalsIgnoreCase(componentId + suffix));
 
     }
-
-    @Test
-    /**
-     * test that {@link ComponentUtils#updateFactoryIdWithSuffix} works ok
-     */
-    public void testUpdateFactoryIdWithSuffix() {
-        ComponentUtils.updateFactoryIdWithSuffix(component, null);
-        assertTrue(component.getBaseId().equalsIgnoreCase(componentId));
-
-        String suffix = "_field";
-        ComponentUtils.updateFactoryIdWithSuffix(component, suffix);
-        assertEquals(componentId + suffix, component.getBaseId());
-
-    }
 }

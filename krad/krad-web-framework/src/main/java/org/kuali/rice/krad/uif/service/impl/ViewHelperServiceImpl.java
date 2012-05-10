@@ -212,12 +212,18 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // on existing components
         view.setIdSequence(currentSequenceVal);
 
-        Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
-        component.pushAllToContext(origComponent.getContext());
-
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
         ComponentUtils.updateIdWithSuffix(component, suffix);
+
+        Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
+
+        // update context on all components within the refresh component to catch context set by parent
+        component.pushAllToContext(origComponent.getContext());
+        List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
+        for (Component nestedComponent : nestedComponents) {
+            nestedComponent.pushAllToContext(origComponent.getContext());
+        }
 
         // binding path should stay the same
         if (component instanceof DataBinding) {
@@ -258,8 +264,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // make sure id, binding, and label settings stay the same as initial
         if (component instanceof Group || component instanceof FieldGroup) {
-            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
-            for (Component nestedComponent : nestedComponents) {
+            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(component);
+            for (Component nestedComponent : nestedGroupComponents) {
                 Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
 
                 if (origNestedComponent != null) {

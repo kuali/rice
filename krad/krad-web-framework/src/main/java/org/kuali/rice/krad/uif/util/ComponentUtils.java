@@ -230,6 +230,27 @@ public class ComponentUtils {
         return components;
     }
 
+    /**
+     * Finds the child component of the given parent component that has the required id
+     * 
+     * @param parent - parent component for component to find
+     * @param nestedId - id of the component to find
+     * @return Component instance for child (if found) or null
+     */
+    public static Component findNestedComponentById(Component parent, String nestedId) {
+        Component childComponent = null;
+
+        List<Component> children = getAllNestedComponents(parent);
+        for (Component child : children) {
+            if (StringUtils.equals(nestedId, child.getId())) {
+                childComponent = child;
+                break;
+            }
+        }
+
+        return childComponent;
+    }
+
     public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
         for (Field field : fields) {
             if (field instanceof DataBinding) {
@@ -273,7 +294,7 @@ public class ComponentUtils {
 
     public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
         updateIdWithSuffix(component, idSuffix);
-        updateFactoryIdWithSuffix(component, idSuffix);
+       // updateFactoryIdWithSuffix(component, idSuffix);
 
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -302,18 +323,6 @@ public class ComponentUtils {
     public static void updateIdWithSuffix(Component component, String idSuffix) {
         if (component != null && !StringUtils.isEmpty(idSuffix)) {
             component.setId(component.getId() + idSuffix);
-        }
-    }
-
-    /**
-     * add a suffix to the factory id
-     *
-     * @param component - the component instance whose id will be changed
-     * @param idSuffix - the suffix to be appended
-     */
-    public static void updateFactoryIdWithSuffix(Component component, String idSuffix) {
-        if (component != null && !StringUtils.isEmpty(idSuffix)) {
-            component.setBaseId(component.getBaseId() + idSuffix);
         }
     }
 

@@ -127,7 +127,7 @@
                   </property>
               </bean>
               <bean parent="Uif-PrimaryActionButton" p:methodToCall="copyRule" p:actionLabel="Copy Rule"
-                p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt; float: right;"/>
+                p:style="margin-right: 15pt; float: right;"/>
             </list>
           </property>
         </bean>
@@ -239,8 +239,7 @@
     <property name="disclosure.render" value="false" />
     <property name="items">
       <list>
-        <bean parent="Uif-Message" p:label="Summary" p:showLabel="true" p:labelPlacement="TOP"
-              p:labelStyleClasses="labelTop" p:messageText="@{#dp.agendaItemLine.rule.propositionSummary}" />
+        <bean parent="Uif-Message"  p:messageText="@{#dp.agendaItemLine.rule.propositionSummary}" />
       </list>
     </property>
 
@@ -310,7 +309,7 @@
             </list>
           </property>
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/node-insert-next.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/node-insert-next.png"
               p:altText="Add Proposition"/>
           </property>
         </bean>
@@ -322,7 +321,7 @@
           "
               p:actionLabel="Add Parent">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="../krms/images/node-parent-and-child.png"
+            <bean parent="Uif-Image" p:source="../krms/images/node-parent-and-child.png"
                   p:altText="Add Parent"/>
           </property>
         </bean>
@@ -334,7 +333,7 @@
           "
               p:actionLabel="Edit">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
               p:altText="Edit Proposition"/>
           </property>
         </bean>
@@ -347,7 +346,7 @@
           "
               p:actionLabel="Left">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
                   p:altText="Left"/>
           </property>
         </bean>
@@ -358,7 +357,7 @@
           "
               p:actionLabel="Right">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
                   p:altText="Right"/>
           </property>
         </bean>
@@ -369,7 +368,7 @@
           "
               p:actionLabel="Up">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
                   p:altText="Up"/>
           </property>
         </bean>
@@ -380,7 +379,7 @@
           "
               p:actionLabel="Down">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
                   p:altText="Down"/>
           </property>
         </bean>
@@ -393,7 +392,7 @@
           "
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
                   p:altText="Cut"/>
           </property>
         </bean>
@@ -404,7 +403,7 @@
           "
               p:actionLabel="Paste">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>
         </bean>
@@ -415,7 +414,7 @@
           "
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
                   p:altText="Delete"/>
           </property>
         </bean>
@@ -431,7 +430,7 @@
             </list>
           </property>
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/refresh.png"
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/refresh.png"
                   p:altText="Refresh"/>
           </property>
         </bean>
@@ -490,7 +489,7 @@
             <bean parent="Uif-ActionImage"
                   p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
               <property name="actionImage">
-                <bean parent="Uif-ImageField" p:source="../krms/images/edit.png"
+                <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                       p:altText="Edit" p:cssClasses="actionReveal"/>
               </property>
             </bean>
@@ -674,7 +673,7 @@
         <bean parent="Uif-ActionImage"
               p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="../krms/images/edit.png"
+            <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                   p:altText="Edit"/>
           </property>
         </bean>
@@ -682,7 +681,7 @@
         <bean parent="Uif-ActionImage"
               p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-TreeGroup');">
           <property name="actionImage">
-            <bean parent="Uif-ImageField" p:source="../krms/images/node-parent-and-child.png"
+            <bean parent="Uif-Image" p:source="../krms/images/node-parent-and-child.png"
                   p:altText="Add Parent"/>
           </property>
         </bean>
@@ -739,7 +738,7 @@
             <bean parent="Uif-ActionImage"
                   p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
               <property name="actionImage">
-                <bean parent="Uif-ImageField" p:source="../krms/images/edit.png"
+                <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                       p:altText="Edit" p:cssClasses="actionReveal"/>
               </property>
             </bean>

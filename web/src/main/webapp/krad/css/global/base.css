@@ -184,7 +184,7 @@ h3.uif-headerText {
 }
 
 h4.uif-headerText {
-    font: bold 16px Helvetica;
+    font: normal 16px Helvetica;
 }
 
 h5.uif-headerText {
@@ -526,6 +526,10 @@ table.uif-gridLayout th .uif-label {
 /** highlight color when something is disclosed **/
 .uif-progressiveDisclosure-highlight {
     background-color: #FFF8C6;
+}
+
+.uif-rightAligned-headerFieldGroup{
+    float: right;
 }
 
 /** Block ui plugin customizations ***********************************************************************/

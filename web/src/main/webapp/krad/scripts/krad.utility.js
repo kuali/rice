@@ -269,6 +269,11 @@ function runHiddenScripts(id, isSelector){
 	}
 }
 
+/**
+ * runs hidden scripts. The hidden scripts are contained in hidden input elements
+ *
+ * @param id - the tag id to use
+ */
 function runScriptsForId(id) {
     if (id) {
         jQuery("input[data-role='dataScript']").each(function () {

@@ -688,13 +688,27 @@ public class PermissionServiceImpl implements PermissionService {
         this.criteriaLookupService = criteriaLookupService;
     }
 
+    /**
+     * log the authorization details for the authorization check
+     *
+     * @param checkType - the check type
+     * @param principalId - the principal id for whose authorization is being checked
+     * @param namespaceCode - the name space code
+     * @param permissionName - the permission name
+     * @param qualification - the permission qualifications
+     */
     protected void logAuthorizationCheck(String checkType, String principalId, String namespaceCode, String permissionName, Map<String, String> qualification ) {
         StringBuilder sb = new StringBuilder();
         sb.append(  '\n' );
         sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
         sb.append( "             Principal:  " ).append( principalId );
-        if ( principalId != null ) {
-            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+        if ( principalId != null) {
+            Principal principal = null;
+            // there should be no error in when the spring context has been set up, but in case we are running the unit test
+            try {
+                principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            } catch (NullPointerException e) {
+            }
             if ( principal != null ) {
                 sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
             }
@@ -712,7 +726,17 @@ public class PermissionServiceImpl implements PermissionService {
             LOG.debug(sb.toString());
         }
     }
-    
+
+    /**
+     * log the authorization details when the authorization check is being done by template
+     *
+     * @param checkType - the check type
+     * @param principalId - the principal id for whose authorization is being checked
+     * @param namespaceCode - the name space code
+     * @param permissionName - the permission name
+     * @param permissionDetails - the permission details
+     * @param qualification - the permission qualifications
+     */
     protected void logAuthorizationCheckByTemplate(String checkType, String principalId, String namespaceCode, String permissionName, 
                                                    Map<String, String> permissionDetails, Map<String, String> qualification ) {
         StringBuilder sb = new StringBuilder();
@@ -720,7 +744,12 @@ public class PermissionServiceImpl implements PermissionService {
         sb.append( "Is AuthZ for " ).append( checkType ).append( ": " ).append( namespaceCode ).append( "/" ).append( permissionName ).append( '\n' );
         sb.append( "             Principal:  " ).append( principalId );
         if ( principalId != null ) {
-            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            Principal principal = null;
+            // there should be no error in when the spring context has been set up, but in case we are running the unit test
+            try {
+                principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            } catch (NullPointerException e) {
+            }
             if ( principal != null ) {
                 sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
             }

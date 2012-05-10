@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.1.7</version>
+    <version>1.2.8</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -47,6 +47,7 @@
   </ciManagement>
 
   <properties>
+    <kuali-deploy.version>1.0.6</kuali-deploy.version>
     <!-- Take this out once 2.0 is released and the kuali-common POM starts using this same version -->
     <kuali.cm.tools.version>1.1.7</kuali.cm.tools.version>
     <!-- These properties modify the release process -->

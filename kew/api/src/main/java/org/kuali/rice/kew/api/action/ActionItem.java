@@ -56,6 +56,7 @@ import org.w3c.dom.Element;
     ActionItem.Elements.PRINCIPAL_ID,
     ActionItem.Elements.DELEGATOR_GROUP_ID,
     ActionItem.Elements.DELEGATOR_PRINCIPAL_ID,
+    ActionItem.Elements.DATE_TIME_ASSIGNED_VALUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class ActionItem
@@ -65,8 +66,8 @@ public final class ActionItem
 
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
-    @XmlElement(name = Elements.DATE_TIME_ASSIGNED, required = true)
-    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @Deprecated
+    @XmlElement(name = Elements.DATE_TIME_ASSIGNED, required = false)
     private final DateTime dateTimeAssigned;
     @XmlElement(name = Elements.ACTION_REQUEST_CD, required = true)
     private final String actionRequestCd;
@@ -102,6 +103,9 @@ public final class ActionItem
     private final String delegatorGroupId;
     @XmlElement(name = Elements.DELEGATOR_PRINCIPAL_ID, required = false)
     private final String delegatorPrincipalId;
+    @XmlElement(name = Elements.DATE_TIME_ASSIGNED_VALUE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime dateTimeAssignedValue;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -113,6 +117,7 @@ public final class ActionItem
     private ActionItem() {
         this.id = null;
         this.dateTimeAssigned = null;
+        this.dateTimeAssignedValue = null;
         this.actionRequestCd = null;
         this.actionRequestId = null;
         this.documentId = null;
@@ -135,6 +140,7 @@ public final class ActionItem
     private ActionItem(Builder builder) {
         this.id = builder.getId();
         this.dateTimeAssigned = builder.getDateTimeAssigned();
+        this.dateTimeAssignedValue = builder.getDateTimeAssigned();
         this.actionRequestCd = builder.getActionRequestCd();
         this.actionRequestId = builder.getActionRequestId();
         this.documentId = builder.getDocumentId();
@@ -161,7 +167,7 @@ public final class ActionItem
 
     @Override
     public DateTime getDateTimeAssigned() {
-        return this.dateTimeAssigned;
+        return this.dateTimeAssignedValue == null ? this.dateTimeAssigned : this.dateTimeAssignedValue;
     }
 
     @Override
@@ -549,6 +555,7 @@ public final class ActionItem
 
         final static String ID = "id";
         final static String DATE_TIME_ASSIGNED = "dateTimeAssigned";
+        final static String DATE_TIME_ASSIGNED_VALUE = "dateTimeAssignedValue";
         final static String ACTION_REQUEST_CD = "actionRequestCd";
         final static String ACTION_REQUEST_ID = "actionRequestId";
         final static String DOCUMENT_ID = "documentId";

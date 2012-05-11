@@ -1500,7 +1500,8 @@ public final class FieldUtils {
         List<Field> fields = new ArrayList<Field>();
         if (remotableAttributeField.getAttributeLookupSettings() != null
                 && remotableAttributeField.getAttributeLookupSettings().isRanged()
-                && !remotableAttributeField.getDataType().equals(DataType.DATE)) {
+                && (!remotableAttributeField.getDataType().equals(DataType.DATE)
+                    && !remotableAttributeField.getDataType().equals(DataType.DATETIME))) {
             // create two fields, one for the "from" and one for the "to"
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             // Create a pair of range input fields for a ranged attribute

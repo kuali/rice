@@ -17,12 +17,14 @@ package org.kuali.rice.kew.api.extension;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
+
 
 /**
  * A service which is used for retrieving information about extensions to various
@@ -41,6 +43,7 @@ public interface ExtensionRepositoryService {
      */
     @WebMethod(operationName = "getExtensionById")
     @WebResult(name = "extensionDefinition")
+    @Cacheable(value= ExtensionDefinition.Cache.NAME, key="'id=' + #p0")
     ExtensionDefinition getExtensionById(String id) throws RiceIllegalArgumentException;
 
     /**
@@ -51,6 +54,7 @@ public interface ExtensionRepositoryService {
      */
     @WebMethod(operationName = "getExtensionByName")
     @WebResult(name = "extensionDefinition")
+    @Cacheable(value= ExtensionDefinition.Cache.NAME, key="'name=' + #p0")
     ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException;
 
     /**
@@ -61,6 +65,7 @@ public interface ExtensionRepositoryService {
      */
     @WebMethod(operationName = "getExtensionByResourceDescriptor")
     @WebResult(name = "extensionDefinitions")
+    @Cacheable(value=ExtensionDefinition.Cache.NAME, key="'resourceDescriptor=' + #p0")
     List<ExtensionDefinition> getExtensionsByResourceDescriptor(String resourceDescriptor) throws RiceIllegalArgumentException;
 
 }

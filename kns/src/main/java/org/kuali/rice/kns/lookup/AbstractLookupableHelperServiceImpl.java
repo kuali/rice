@@ -1115,15 +1115,20 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             BusinessObject element = (BusinessObject) iter.next();
             BusinessObject baseElement = element;
             //if ebo, then use base BO to get lookupId and find restrictions
-            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(element.getClass())) {
-                try {
-                    baseElement = (BusinessObject)this.getBusinessObjectClass().newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            //we don't need to do this anymore as the BO is required to implement the EBO interface as of this time
+            //if this needs reimplemented in the future, one should consider what happens/needs to happen
+            //with the base BO fields (OBJ ID in particular) as they are all null/empty on new instantiation
+            //which will fail if we try to depend on any values within it.
+            //KULRICE-7223
+//            if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(element.getClass())) {
+//                try {
+//                    baseElement = (BusinessObject)this.getBusinessObjectClass().newInstance();
+//                } catch (InstantiationException e) {
+//                    e.printStackTrace();
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
             final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(baseElement);
             if (lookupId != null) {

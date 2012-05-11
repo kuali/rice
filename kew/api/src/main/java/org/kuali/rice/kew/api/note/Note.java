@@ -42,7 +42,8 @@ import org.w3c.dom.Element;
 		Note.Elements.AUTHOR_PRINCIPAL_ID,
 		Note.Elements.CREATE_DATE,
 		Note.Elements.TEXT,
-		CoreConstants.CommonElements.VERSION_NUMBER,
+		Note.Elements.CREATE_DATE_VALUE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Note extends AbstractDataTransferObject implements NoteContract {
@@ -57,10 +58,14 @@ public final class Note extends AbstractDataTransferObject implements NoteContra
     
     @XmlElement(name = Elements.AUTHOR_PRINCIPAL_ID, required = true)
     private final String authorPrincipalId;
-    
+
+    @Deprecated
     @XmlElement(name = Elements.CREATE_DATE, required = false)
-    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private final DateTime createDate;
+
+    @XmlElement(name = Elements.CREATE_DATE_VALUE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime createDateValue;
     
     @XmlElement(name = Elements.TEXT, required = false)
     private final String text;
@@ -81,6 +86,7 @@ public final class Note extends AbstractDataTransferObject implements NoteContra
     	this.documentId = null;
         this.authorPrincipalId = null;
         this.createDate = null;
+        this.createDateValue = null;
         this.text = null;
         this.versionNumber = null;
     }
@@ -90,6 +96,7 @@ public final class Note extends AbstractDataTransferObject implements NoteContra
     	this.documentId = builder.getDocumentId();
         this.authorPrincipalId = builder.getAuthorPrincipalId();
         this.createDate = builder.getCreateDate();
+        this.createDateValue = builder.getCreateDate();
         this.text = builder.getText();
         this.versionNumber = builder.getVersionNumber();
     }
@@ -111,7 +118,7 @@ public final class Note extends AbstractDataTransferObject implements NoteContra
 
     @Override
     public DateTime getCreateDate() {
-        return this.createDate;
+        return this.createDateValue == null ? this.createDate : this.createDateValue;
     }
 
     @Override
@@ -241,6 +248,7 @@ public final class Note extends AbstractDataTransferObject implements NoteContra
         final static String DOCUMENT_ID = "documentId";
         final static String AUTHOR_PRINCIPAL_ID = "authorPrincipalId";
         final static String CREATE_DATE = "createDate";
+        final static String CREATE_DATE_VALUE = "createDateValue";
         final static String TEXT = "text";
         final static String ID = "id";
     }

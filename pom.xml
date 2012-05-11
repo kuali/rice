@@ -120,7 +120,13 @@
     <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
+
+    <!--
+    KULRICE-7262: Bad jstl version in maven repository
+    When we are able to bump this version from 1.2, go back to the javax.servlet artifact
+    -->
     <jstl.version>1.2</jstl.version>
+
     <jta.version>1.1</jta.version>
     <junit.version>4.10</junit.version>
     <log4j.version>1.2.16</log4j.version>
@@ -132,6 +138,7 @@
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>2.5</servlet-api.version>
     <slf4j.version>1.6.4</slf4j.version>
+    <soa.model.core.version>1.1.0</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.1.0.RELEASE</spring.version>
     <spring.security.version>3.1.0.RELEASE</spring.security.version>
@@ -526,11 +533,24 @@
 
                       <!-- exclude eh cache in general - only allow at a specific scope -->
                       <exclude>net.sf.ehcache</exclude>
+
+                      <!--
+                      KULRICE-7262: Bad jstl version in maven repository
+                      When we go back to the javax.servlet artifact, we'll need to remove this
+                      -->
+                      <exclude>javax.servlet:jstl</exclude>
                     </excludes>
 
                     <includes>
                       <!-- only allow in this specific version -->
-                      <include>javax.servlet:jstl:${jstl.version}</include>
+
+                      <!--
+                      KULRICE-7262: Bad jstl version in maven repository
+                      When we are able to bump this version, go back to the javax.servlet artifact
+                      -->
+                      <!-- <include>javax.servlet:jstl:${jstl.version}</include> -->
+                      <include>org.glassfish.web:jstl-impl:${jstl.version}</include>
+
                       <include>org.slf4j:*:${slf4j.version}</include>
                       <include>net.sf.ehcache:*:${ehcache.version}:jar:runtime</include>
                     </includes>
@@ -1206,8 +1226,17 @@
       </dependency>
 
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
+        <!--
+        KULRICE-7262: Bad jstl version in maven repository
+        When we are able to bump this version, go back to the javax.servlet artifact.
+
+        Note that the rice-core-impl, rice-core-service-impl, and rice-impl poms also need
+        to have this changed.  Search on the Jira tag to easily find all the changes.
+        -->
+        <!-- <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId> -->
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jstl-impl</artifactId>
         <version>${jstl.version}</version>
         <!-- should be provided scope on newer containers like tomcat 7 -->
         <scope>compile</scope>
@@ -1962,6 +1991,12 @@
         <artifactId>xmlunit</artifactId>
         <version>${xmlunit.version}</version>
         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.predic8</groupId>
+        <artifactId>soa-model-core</artifactId>
+        <version>${soa.model.core.version}</version>
       </dependency>
 
       <!-- Added dependency to improve spring bean loading e.g KualiDefaultListableBeanFactory in rice-core-framework -->

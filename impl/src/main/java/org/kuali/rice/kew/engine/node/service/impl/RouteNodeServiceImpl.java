@@ -154,7 +154,9 @@ public class RouteNodeServiceImpl implements RouteNodeService {
             if (helper.isSubProcessNode(node)) {
                 ProcessDefinitionBo subProcess = node.getDocumentType().getNamedProcess(node.getRouteNodeName());
                 RouteNode subNode = subProcess.getInitialRouteNode();
-                nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, subNode, inspected));
+                if (subNode != null) {
+                    nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, subNode, inspected));
+                }
             }
             for (Iterator<RouteNode> iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
                 RouteNode nextNode = iterator.next();

@@ -48,7 +48,7 @@ public interface SendNotificationService {
      * @param notification
      * @return NotificationResponse
      */
-    @WebMethod(operationName = "findEntityDefaults")
+    @WebMethod(operationName = "sendNotification")
     @WebResult(name = "response")
     NotificationResponse sendNotification(Notification notification);
 }

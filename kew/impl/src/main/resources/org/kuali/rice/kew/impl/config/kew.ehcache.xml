@@ -33,5 +33,6 @@
   <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" maxEntriesLocalHeap="500"/>
   <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" maxEntriesLocalHeap="1000"/>
   <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" maxEntriesLocalHeap="500"/>
-
+  <cache name="http://rice.kuali.org/kew/v2_0/ExtensionDefinitionType" maxEntriesLocalHeap="5000"/>
+  
 </ehcache>

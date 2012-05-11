@@ -71,4 +71,6 @@
   <param name="ksb.mode">LOCAL</param>
   <param name="krms.mode">LOCAL</param>
 
+  <param name="wsdl.test.previous.version">2.0.1</param>
+  <param name="wsdl.test.previous.url">http://maven.kuali.org.s3.amazonaws.com/release/org/kuali/rice/</param>
 </config>

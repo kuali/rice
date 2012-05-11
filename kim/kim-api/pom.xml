@@ -47,12 +47,12 @@
     </dependency>
   </dependencies>
   <properties>
-    <svc.ca.name>CacheAdminService</svc.ca.name>
-    <svc.ca.wsdl>${wsdl.dir}/${svc.ca.name}.wsdl</svc.ca.wsdl>
     <svc.group.name>GroupService</svc.group.name>
     <svc.group.wsdl>${wsdl.dir}/${svc.group.name}.wsdl</svc.group.wsdl>
     <svc.permission.name>PermissionService</svc.permission.name>
     <svc.permission.wsdl>${wsdl.dir}/${svc.permission.name}.wsdl</svc.permission.wsdl>
+    <svc.responsibility.name>ResponsibilityService</svc.responsibility.name>
+    <svc.responsibility.wsdl>${wsdl.dir}/${svc.responsibility.name}.wsdl</svc.responsibility.wsdl>
     <svc.role.name>RoleService</svc.role.name>
     <svc.role.wsdl>${wsdl.dir}/${svc.role.name}.wsdl</svc.role.wsdl>
     <svc.kti.name>KimTypeInfoService</svc.kti.name>
@@ -66,19 +66,6 @@
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2ws-plugin</artifactId>
         <executions>
-          <execution>
-            <id>kimCacheAdminService-wsdl</id>
-            <phase>${rice.java2ws.phase}</phase>
-            <configuration>
-              <className>org.kuali.rice.core.api.cache.CacheAdminService</className>
-              <outputFile>${svc.ca.wsdl}</outputFile>
-              <targetNamespace>http://rice.kuali.org/core</targetNamespace>
-              <serviceName>KimCacheAdminService</serviceName>
-            </configuration>
-            <goals>
-              <goal>java2ws</goal>
-            </goals>
-          </execution>
           <execution>
             <id>groupService-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
@@ -98,6 +85,18 @@
               <className>org.kuali.rice.kim.api.permission.PermissionService</className>
               <outputFile>${svc.permission.wsdl}</outputFile>
               <serviceName>PermissionService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>responsibilityService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kim.api.responsibility.ResponsibilityService</className>
+              <outputFile>${svc.responsibility.wsdl}</outputFile>
+              <serviceName>ResponsibilityService</serviceName>
             </configuration>
             <goals>
               <goal>java2ws</goal>
@@ -152,11 +151,6 @@
             </goals>
             <configuration>
               <artifacts>
-                <artifact>
-                  <file>${svc.ca.wsdl}</file>
-                  <classifier>${svc.ca.name}</classifier>
-                  <type>wsdl</type>
-                </artifact>
                 <artifact>
                   <file>${svc.group.wsdl}</file>
                   <classifier>${svc.group.name}</classifier>

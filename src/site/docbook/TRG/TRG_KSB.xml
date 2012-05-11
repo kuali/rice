@@ -614,6 +614,11 @@
                                 <entry>/ksb/WEB-INF/struts-config.xml</entry>
                             </row>
                             <row>
+                              <entry>rice.ksb.web.forceEnable</entry>
+                              <entry>no</entry>
+                              <entry>false</entry>
+                            </row>
+                            <row>
                                 <entry>threadPool.size</entry>
                                 <entry>The size of the KSB thread pool.</entry>
                                 <entry>5</entry>
@@ -729,6 +734,12 @@
                     attempted you will receive an error message like this:</para>
                 <note><para>It is best practice to only set this to 'true' in non-production
                     environments!</para></note>
+            </sect3>
+            <sect3>
+              <title>rice.ksb.web.forceEnable</title>
+              <para>publish the KSB user interface components (such as the Message Queue, Thread Pool,
+              Service Registry screens) even when the ksb.mode is not set to <emphasis role="italic">local</emphasis>.
+              </para>
             </sect3>
         </sect2>
         <sect2>

@@ -72,10 +72,10 @@ public class LocationRemoteModuleService extends RemoteModuleServiceBase {
             }
         } else if(StateContract.class.isAssignableFrom(businessObjectClass)){
             if(fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.COUNTRY_CODE)
-                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.STATE_CODE)) {
+                    && fieldValues.containsKey(LocationConstants.PrimaryKeyConstants.CODE)) {
                 State state = getStateService().getState((String) fieldValues.get(
                         LocationConstants.PrimaryKeyConstants.COUNTRY_CODE), (String) fieldValues.get(
-                        LocationConstants.PrimaryKeyConstants.STATE_CODE));
+                        LocationConstants.PrimaryKeyConstants.CODE));
                 return (T) StateBo.from(state);
             }
         } else if(CountryContract.class.isAssignableFrom(businessObjectClass)){

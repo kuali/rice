@@ -508,6 +508,17 @@
 				</start>
 			</routeNodes>
 		</documentType>
+		<documentType>
+			<name>EmptyProcessDocType</name>
+			<description>EmptyProcessDocType</description>
+			<label>EmptyProcessDocType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<active>true</active>
+			<routePaths/>
+		</documentType>
 	</documentTypes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>

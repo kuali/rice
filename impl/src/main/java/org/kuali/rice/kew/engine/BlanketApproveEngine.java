@@ -209,7 +209,9 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         if (helper.isSubProcessNode(node)) {
             ProcessDefinitionBo subProcess = node.getDocumentType().getNamedProcess(node.getRouteNodeName());
             RouteNode subNode = subProcess.getInitialRouteNode();
-            isInPath = isInPath || isNodeNameInPath(nodeName, subNode, inspected);
+            if (subNode != null) {
+                isInPath = isInPath || isNodeNameInPath(nodeName, subNode, inspected);
+            }
         }
         for (RouteNode nextNode : node.getNextNodes())
         {

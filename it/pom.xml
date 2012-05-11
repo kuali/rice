@@ -40,6 +40,7 @@
     <module>location</module>
     <module>krms</module>
     <module>remote</module>
+    <module>vc</module>
   </modules>
   <properties>
         <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->

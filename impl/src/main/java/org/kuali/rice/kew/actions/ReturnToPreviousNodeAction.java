@@ -161,11 +161,13 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private void processReturnToInitiator(RouteNodeInstance newNodeInstance) {
 	    // important to pull this from the RouteNode's DocumentType so we get the proper version
         RouteNode initialNode = newNodeInstance.getRouteNode().getDocumentType().getPrimaryProcess().getInitialRouteNode();
-        if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
-            LOG.debug("Document was returned to initiator");
-            ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
-            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(getReturnToInitiatorActionRequestType().getCode(), determineInitialNodePrincipal(getRouteHeader()), getActionTakenCode(), getPrincipal(), "Document initiator");
-            getActionRequestService().activateRequest(notificationRequest);
+        if (initialNode != null) {
+            if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
+                LOG.debug("Document was returned to initiator");
+                ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
+                ActionRequestValue notificationRequest = arFactory.createNotificationRequest(getReturnToInitiatorActionRequestType().getCode(), determineInitialNodePrincipal(getRouteHeader()), getActionTakenCode(), getPrincipal(), "Document initiator");
+                getActionRequestService().activateRequest(notificationRequest);
+            }
         }
     }
 

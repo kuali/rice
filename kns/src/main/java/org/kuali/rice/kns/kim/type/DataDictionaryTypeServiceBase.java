@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -28,6 +29,7 @@ import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
@@ -513,20 +515,25 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 		final String componentClassName = typeAttribute.getKimAttribute().getComponentName();
 		final String attributeName = typeAttribute.getKimAttribute().getAttributeName();
-		final AttributeDefinition baseDefinition;
-		final Class<? extends BusinessObject> componentClass;
+        final Class<? extends BusinessObject> componentClass;
+        final AttributeDefinition baseDefinition;
+
 		// try to resolve the component name - if not possible - try to pull the definition from the app mediation service
 		try {
-			componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
-            baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
-		} catch (ClassNotFoundException ex) {
+            if (StringUtils.isNotBlank(componentClassName)) {
+                componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
+                baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+            } else {
+                baseDefinition = null;
+                componentClass = null;
+            }
+        } catch (ClassNotFoundException ex) {
             throw new KimTypeAttributeException(ex);
 		}
 
         if (baseDefinition == null) {
-            throw new KimTypeAttributeException("Attribute definition '" + attributeName + "' not found on component '" + componentClassName + "'");
+            return null;
         }
-
         final RemotableAttributeField.Builder definition = RemotableAttributeField.Builder.create(baseDefinition.getName());
 
         definition.setLongLabel(baseDefinition.getLabel());

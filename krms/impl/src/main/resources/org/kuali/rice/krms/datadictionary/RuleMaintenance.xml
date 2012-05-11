@@ -173,7 +173,6 @@
 
   <bean name="propositionSection-parent" parent="Uif-VerticalBoxGroup">
     <property name="headerText" value="Proposition Tree" />
-    <property name="disclosure.render" value="true" />
 
     <property name="items">
       <list>

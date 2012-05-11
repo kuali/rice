@@ -191,7 +191,7 @@
                                 sent.</para>
                         </listitem>
                         <listitem>
-                            <para>viewHelperServiceClassName – Full class name for the
+                            <para>viewHelperServiceClass – Full class name for the
                                 ViewHelperService implementation. Defaults to
                                 org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl. Note you
                                 may also inject the ViewHelperService instance by setting the
@@ -498,7 +498,7 @@
                 </listitem>
                 <listitem>
                     <para>Custom implementations of the view helper service can be set using the
-                        view properties viewHelperService and viewHelperServiceClassName</para>
+                        view properties viewHelperService and viewHelperServiceClass</para>
                 </listitem>
                 <listitem>
                     <para>After the view object is retrieved from the Spring container, processing

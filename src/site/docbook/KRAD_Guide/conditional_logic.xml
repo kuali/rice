@@ -489,7 +489,7 @@
                     </listitem>
                     <listitem>
                         <para>We then hook up our view helper service with a view using the
-                                <emphasis role="bold">viewHelperServiceClassName</emphasis>
+                                <emphasis role="bold">viewHelperServiceClass</emphasis>
                             property</para>
                     </listitem>
                 </itemizedlist>

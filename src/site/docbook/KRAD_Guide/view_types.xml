@@ -89,9 +89,9 @@
                 lifecycle is needed, the LookupableImpl can be extended and the necessary methods
                 overridden.</para>
             <para>If we implement our own Lookupable we specify this in the
-                viewHelperServiceClassName property of the view.</para>
+                viewHelperServiceClass property of the view.</para>
             <programlisting>
-&lt;property name=”viewHelperServiceClassName” value=”org.gutenberg.catalog.BookLookupableImpl” /&gt;
+&lt;property name=”viewHelperServiceClass” value=”org.gutenberg.catalog.BookLookupableImpl” /&gt;
             </programlisting>
         </section>
         <section>
@@ -171,9 +171,9 @@
                 lifecycle is needed, the InquirableImpl can be extended and the necessary methods
                 overridden.</para>
             <para>If we implement our own Inquirable we specify this in the
-                viewHelperServiceClassName property of the view.</para>
+                viewHelperServiceClass property of the view.</para>
             <programlisting>
-&lt;property name=”viewHelperServiceClassName” value=”org.gutenberg.catalog.BookInquirableImpl” /&gt;
+&lt;property name=”viewHelperServiceClass” value=”org.gutenberg.catalog.BookInquirableImpl” /&gt;
             </programlisting>
         </section>
         <section>
@@ -249,9 +249,9 @@
                 rendering lifecycle is needed, the MaintainableImpl can be extended and the
                 necessary methods overridden.</para>
             <para>If we implement our own Maintainable we specify this in the
-                viewHelperServiceClassName property of the view.</para>
+                viewHelperServiceClass property of the view.</para>
             <programlisting>
-&lt;property name=”viewHelperServiceClassName” value=”org.gutenberg.catalog.BookMaintainableImpl” /&gt;
+&lt;property name=”viewHelperServiceClass” value=”org.gutenberg.catalog.BookMaintainableImpl” /&gt;
             </programlisting>
         </section>
         <section>

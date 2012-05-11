@@ -2689,12 +2689,12 @@ package edu.myedu.sample;
 public class CustomViewHelperServiceImpl extends ViewHelperServiceImpl {
 }</programlisting><para>Next
                 we configure our view to use the custom view helper service. This is done by setting
-                the viewHelperServiceClassName property on the view component (the View component is
+                the viewHelperServiceClass property on the view component (the View component is
                 covered in complete detail in Chapter
                 9):</para><programlisting>
 &lt;bean id="MyView" parent="Uif-FormView"&gt;
     ...
-    &lt;property name="viewHelperServiceClassName" value="edu.myedu.sample.CustomViewHelperServiceImpl"/&gt;
+    &lt;property name="viewHelperServiceClass" value="edu.myedu.sample.CustomViewHelperServiceImpl"/&gt;
 &lt;/bean&gt;
             </programlisting><para>Now
                 we have a place to put our custom query method. The signature of this method depends

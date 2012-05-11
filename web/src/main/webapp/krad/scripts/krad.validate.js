@@ -26,7 +26,7 @@ function hideMessageTooltip(fieldId) {
         element = jQuery(element).filter("label:first");
     }
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-    if (data.showTimer) {
+    if (data && data.showTimer) {
         clearTimeout(data.showTimer);
     }
     var tooltipId = jQuery(element).GetBubblePopupID();
@@ -219,7 +219,7 @@ function mouseInBubblePopupCheck(event, fieldId, triggerElements, callingElement
  */
 function showMessageTooltip(fieldId, showAndClose, change) {
     var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-    if(data.useTooltip){
+    if(data && data.useTooltip){
         var elementInfo = getHoverElement(fieldId);
         var tooltipElement = jQuery(elementInfo.element);
         if (elementInfo.type == "fieldset") {
@@ -322,7 +322,7 @@ function writeMessagesAtField(id) {
 
     var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
-    if(data.displayMessages){
+    if(data && data.displayMessages){
         //initialize data if not present
         if (!data.errors) {
             data.errors = [];
@@ -459,7 +459,6 @@ function writeMessagesAtField(id) {
             data.init = true;
         }
     }
-    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
 }
 
 /**
@@ -476,16 +475,17 @@ function handleMessagesAtField(id, skipGroupWrite) {
     }
     if (!(skip == "yes")) {
         var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
+        if(data){
+            writeMessagesAtField(id);
 
-        writeMessagesAtField(id);
+            var parent = jQuery("#" + id).data("parent");
 
-        var parent = jQuery("#" + id).data("parent");
+            if (parent) {
+                handleMessagesAtGroup(parent, id, data, skipGroupWrite);
+            }
 
-        if (parent) {
-            handleMessagesAtGroup(parent, id, data, skipGroupWrite);
+            data.processed = true;
         }
-
-        data.processed = true;
     }
 }
 
@@ -502,7 +502,6 @@ function handleMessagesAtGroup(id, fieldId, fieldData, skipWrite) {
     var pageLevel = false;
     var parent = jQuery("#" + id).data("parent");
     if (data) {
-
         var messageMap = data.messageMap;
         pageLevel = data.pageLevel;
 

@@ -92,8 +92,10 @@ function initFieldHandlers() {
 
                 //keep track of what errors it had on initial focus
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                data.focusedErrors = data.errors;
-                jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                if(data){
+                    data.focusedErrors = data.errors;
+                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                }
 
                 //show tooltip on focus
                 showMessageTooltip(id, false);
@@ -111,7 +113,7 @@ function initFieldHandlers() {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
                 var hadError = false;
-                if (data.focusedErrors){
+                if (data && data.focusedErrors){
                     hadError = data.focusedErrors.length;
                 }
                 var valid = true;
@@ -152,8 +154,10 @@ function initFieldHandlers() {
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                data.fieldModified = true;
-                jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                if(data){
+                    data.fieldModified = true;
+                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
+                }
             });
 
     //special radio and checkbox control handling for click events
@@ -328,7 +332,7 @@ function setupPage(validate, focusFirstField) {
                         var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
                         //if this field previously had errors validate on key up
-                        if (data.focusedErrors && data.focusedErrors.length) {
+                        if (data && data.focusedErrors && data.focusedErrors.length) {
                             validateFieldValue(element);
                         }
                     }
@@ -344,20 +348,24 @@ function setupPage(validate, focusFirstField) {
                     var id = getAttributeId(jQuery(element).attr("id"));
                     var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
-                    data.errors = [];
-                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
-                    if (messageSummariesShown) {
-                        handleMessagesAtField(id);
-                    }
-                    else {
-                        writeMessagesAtField(id);
-                    }
-                    if(!(data.warnings.length || data.info.length || data.serverErrors.length
-                            || data.serverWarnings.length || data.serverInfo.length)){
-                        hideMessageTooltip(id);
-                    }
+                    if(data){
+                        data.errors = [];
+                        jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
 
 
+                        if (messageSummariesShown) {
+                            handleMessagesAtField(id);
+                        }
+                        else {
+                            writeMessagesAtField(id);
+                        }
+
+                        //force hide of tooltip if no messages present
+                        if(!(data.warnings.length || data.info.length || data.serverErrors.length
+                                || data.serverWarnings.length || data.serverInfo.length)){
+                            hideMessageTooltip(id);
+                        }
+                    }
                 },
                 errorPlacement:function (error, element) {
                 },
@@ -372,7 +380,7 @@ function setupPage(validate, focusFirstField) {
                         var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
                         var exists = false;
-                        if (data.errors.length) {
+                        if (data && data.errors.length) {
                             for (var j in data.errors) {
                                 if (data.errors[j] === message) {
                                     exists = true;
@@ -380,7 +388,7 @@ function setupPage(validate, focusFirstField) {
                             }
                         }
 
-                        if (!exists) {
+                        if (data && !exists) {
                             data.errors = [];
                             data.errors.push(message);
                             jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
@@ -411,7 +419,7 @@ function setupPage(validate, focusFirstField) {
                     }
 
                     var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                    if (data.errors.length) {
+                    if (data && data.errors.length) {
                         data.errors = [];
                         jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                         if (messageSummariesShown) {

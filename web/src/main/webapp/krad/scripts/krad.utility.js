@@ -14,32 +14,7 @@
  * limitations under the License.
  */
 var bodyHeight;
-var profilingOn = true;
-
-function profile(start, testingText){
-    if(profilingOn){
-        if(start){
-            console.time(testingText);
-            console.profile(testingText);
-        }
-        else{
-            console.profileEnd();
-            console.timeEnd(testingText);
-        }
-
-    }
-}
-
-function time(start, testingText){
-    if(profilingOn){
-        if(start){
-            console.time(testingText);
-        }
-        else{
-            console.timeEnd(testingText);
-        }
-    }
-}
+var profilingOn = false;
 
 /**
  * Takes a name that may have characters incompatible with jQuery selection and escapes them so they can
@@ -691,4 +666,41 @@ function openHelpWindow(url) {
  */
 function uppercaseValue(controlId) {
     jQuery("#" + controlId).css('text-transform', 'uppercase');
+}
+
+/**
+ * Profiling helper method will print out profile info in firefox console
+ *
+ * @param start true to start profiling, false to stop profiling
+ * @param testingText text to be printed with this profile
+ */
+function profile(start, testingText){
+    if(profilingOn){
+        if(start){
+            console.time(testingText);
+            console.profile(testingText);
+        }
+        else{
+            console.profileEnd();
+            console.timeEnd(testingText);
+        }
+
+    }
+}
+
+/**
+ * Timing method for profiling use - will print out in console
+ *
+ * @param start true to start timing, false to stop timing
+ * @param testingText text to be printed out with time results
+ */
+function time(start, testingText){
+    if(profilingOn){
+        if(start){
+            console.time(testingText);
+        }
+        else{
+            console.timeEnd(testingText);
+        }
+    }
 }

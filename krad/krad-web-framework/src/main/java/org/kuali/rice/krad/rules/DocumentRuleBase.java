@@ -52,6 +52,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.krad.util.RouteToCompletionUtil;
 
 /**
  * Contains all of the business rules that are common to all documents
@@ -170,8 +171,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
         isValid = isDocumentAttributesValid(document, true);
 
-        // don't validate the document if the header is invalid
-        if (isValid) {
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(document);
+
+        // Validate the document if the header is valid and no pending completion requests
+        if (isValid && !completeRequestPending) {
             isValid &= processCustomRouteDocumentBusinessRules(document);
         }
         return isValid;
@@ -494,6 +497,29 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         }
 
         return dataValid;
+    }
+
+    /**
+     * Business rules check will include all save action rules and any custom rules required by the document specific rule implementation
+     *
+     * @param document Document
+     * @return true if all validations are passed
+     */
+    public boolean processCompleteDocument(Document document) {
+        boolean isValid = true;
+        isValid &= processSaveDocument(document);
+        isValid &= processCustomCompleteDocumentBusinessRules(document);
+        return isValid;
+    }
+
+    /**
+     * Hook method for deriving business rule classes to provide custom validations required during completion action
+     *
+     * @param document
+     * @return default is true
+     */
+    protected boolean processCustomCompleteDocumentBusinessRules(Document document) {
+        return true;
     }
 
     protected DataDictionaryService getDataDictionaryService() {

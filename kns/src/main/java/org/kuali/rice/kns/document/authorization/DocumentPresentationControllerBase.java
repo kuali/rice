@@ -96,6 +96,10 @@ public class DocumentPresentationControllerBase extends org.kuali.rice.krad.docu
     	if (canAcknowledge(document)) {
     		documentActions.add(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
     	}
+        if (canComplete(document)) {
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_COMPLETE);
+        }
+
     	return documentActions;
     }
 }

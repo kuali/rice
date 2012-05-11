@@ -91,6 +91,7 @@ public final class KRADConstants {
     public static final String KUALI_ACTION_CAN_EXPORT = "canExport";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     public static final String USE_CACHE_ADMINISTRATION_SCREEN = "Use Cache Adminstration Screen";
+    public static final String KUALI_ACTION_CAN_COMPLETE = "canComplete";
     
     public static final class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";

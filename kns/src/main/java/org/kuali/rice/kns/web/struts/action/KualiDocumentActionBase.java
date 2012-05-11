@@ -49,6 +49,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.question.RecallQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
@@ -77,7 +78,6 @@ import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
-import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
@@ -1697,6 +1697,11 @@ public class KualiDocumentActionBase extends KualiAction {
             adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         }
 
+        if ((document.getDocumentHeader().getWorkflowDocument().isInitiated() || document.getDocumentHeader().getWorkflowDocument().isSaved())
+                && documentAuthorizer.canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, GlobalVariables.getUserSession().getPerson())) {
+            // Check if there is already a request for completion pending for the document.
+            adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
+        }
         formBase.setAdHocActionRequestCodes(adHocActionRequestCodes);
 
     }
@@ -2071,5 +2076,35 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         return service;
     }
+    
+    /**
+     * Complete document action
+     * 
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    public ActionForward complete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+        doProcessingAfterPost(kualiDocumentFormBase, request);
+
+        kualiDocumentFormBase.setDerivedValuesOnForm(request);
+        ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
+        if (preRulesForward != null) {
+            return preRulesForward;
+        }
+
+        Document document = kualiDocumentFormBase.getDocument();
+
+        getDocumentService().completeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
+        kualiDocumentFormBase.setAnnotation("");
+
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+    
 }
 

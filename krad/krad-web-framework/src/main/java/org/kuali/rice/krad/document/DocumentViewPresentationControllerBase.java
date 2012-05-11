@@ -123,6 +123,10 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
             documentActions.add(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
         }
 
+        if (canComplete(document)) {
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_COMPLETE);
+        }
+
         return documentActions;
     }
 
@@ -214,6 +218,10 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
 
     public boolean canAcknowledge(Document document) {
         return getDocumentPresentationController().canAcknowledge(document);
+    }
+    
+    public boolean canComplete(Document document) {
+        return getDocumentPresentationController().canComplete(document);
     }
 
     public DocumentPresentationController getDocumentPresentationController() {

@@ -55,6 +55,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.util.AutoPopulatingList;
@@ -153,6 +154,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(maintenanceDocument);
+
+        // Validate the document if the header is valid and no pending completion requests
+        if (completeRequestPending) {
+            return true;
+        }
+        
         // get the documentAuthorizer for this document
         MaintenanceDocumentAuthorizer documentAuthorizer =
                 (MaintenanceDocumentAuthorizer) getDocumentDictionaryService().getDocumentAuthorizer(document);

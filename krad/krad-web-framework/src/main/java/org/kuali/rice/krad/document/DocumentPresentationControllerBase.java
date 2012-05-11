@@ -94,6 +94,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
         return canCopy;
     }
 
+    @Override
     public boolean canPerformRouteReport(Document document) {
         return getParameterService().getParameterValueAsBoolean(KRADConstants.KNS_NAMESPACE,
                 KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE,
@@ -131,7 +132,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canApprove(Document document) {
-        return true;
+        return !canComplete(document);
     }
 
     public boolean canDisapprove(Document document) {
@@ -159,6 +160,15 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
 
     public boolean canAcknowledge(Document document) {
         return true;
+    }
+
+    public boolean canComplete(Document document) {
+        boolean docInInit = document.getDocumentHeader().getWorkflowDocument().isInitiated() || document.getDocumentHeader().getWorkflowDocument().isSaved();
+        boolean completionRequested = document.getDocumentHeader().getWorkflowDocument().isCompletionRequested();
+        if (completionRequested && !docInInit) {
+            return true;
+        }
+        return false;
     }
 
     protected ParameterService getParameterService() {

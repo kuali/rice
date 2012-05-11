@@ -286,4 +286,14 @@ public interface DocumentService {
      * @return
      */
     public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException;
+
+    /**
+     * Complete action for a document
+     * 
+     * @param document Document 
+     * @param annotation Annotation text
+     * @param adHocRecipients list of adhoc recipients
+     */
+    public Document completeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
+
 }

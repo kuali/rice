@@ -395,6 +395,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                         successMessageKey = RiceKeyConstants.MESSAGE_CANCELLED;
                     }
                     break;
+                case COMPLETE:
+                    if (getDocumentService().documentExists(document.getDocumentNumber())) {
+                        getDocumentService().completeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
+                        successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
+                    }
+                    break;
             }
 
             if (successMessageKey != null) {
@@ -786,5 +792,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
     public ConfigurationService getConfigurationService() {
         return KRADServiceLocator.getKualiConfigurationService();
+    }
+    
+    @RequestMapping(params = "methodToCall=complete")
+    public ModelAndView complete(@ModelAttribute("KualiForm")
+    DocumentFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        performWorkflowAction(form, WorkflowAction.COMPLETE, true);
+        return getUIFModelAndView(form);
     }
 }

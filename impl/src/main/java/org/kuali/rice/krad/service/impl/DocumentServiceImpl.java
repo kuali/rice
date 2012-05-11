@@ -47,6 +47,7 @@ import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.BlanketApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.CompleteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
@@ -1081,8 +1082,22 @@ public class DocumentServiceImpl implements DocumentService {
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
-
-    protected ConfigurationService getKualiConfigurationService() {
-        return kualiConfigurationService;
+    
+    /**
+     * Handles complete document event for a document
+     * 
+     * @see org.kuali.rice.krad.service.DocumentService#completeDocument(org.kuali.rice.krad.document.Document, java.lang.String,
+     *      java.util.List)
+     */
+    @Override
+    public Document completeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException {
+        checkForNulls(document);    
+        document.prepareForSave();
+        validateAndPersistDocument(document, new CompleteDocumentEvent(document));
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), document.getDocumentHeader().getWorkflowDocument());        
+        removeAdHocPersonsAndWorkgroups(document);
+        return document;
     }
 }

@@ -114,7 +114,6 @@ public interface WorkflowDocumentService {
      * 
      * @param workflowDocument
      * @param annotation
-     * @param adHocRecipients
      */
     public void superUserApprove(WorkflowDocument workflowDocument, String annotation) throws WorkflowException;
 
@@ -239,6 +238,15 @@ public interface WorkflowDocumentService {
      * than one.
      */
     public String getCurrentRouteNodeNames(WorkflowDocument workflowDocument);
+    
+    /**
+     * Completes document
+     * 
+     * @param workflowDocument
+     * @param annotation
+     * @param adHocRecipients
+     */
+    public void complete(WorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
 
     /**
      * recall this workflowDocument optionally providing an annotation for this action taken which

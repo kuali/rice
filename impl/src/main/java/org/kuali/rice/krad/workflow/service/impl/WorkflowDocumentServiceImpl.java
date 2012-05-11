@@ -232,7 +232,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("routing document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
-        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ }));
+        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ }));
         workflowDocument.route(annotation);
     }
 
@@ -370,4 +370,16 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return realAdHocRecipients;
     }
 
+    /**
+     * Completes workflow document
+     * 
+     * @see WorkflowDocumentService#complete(org.kuali.rice.kew.api.WorkflowDocument, String, java.util.List)
+     */
+    public void complete(WorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("routing flexDoc(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
+        }
+        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ }));
+        workflowDocument.complete(annotation);
+    }
 }

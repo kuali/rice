@@ -62,6 +62,8 @@ public interface DocumentPresentationController {
     public boolean canFyi(Document document);
 
     public boolean canAcknowledge(Document document);
+    
+    public boolean canComplete(Document document);
 
     /**
      * @since 2.1

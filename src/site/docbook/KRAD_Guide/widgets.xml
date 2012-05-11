@@ -360,6 +360,81 @@
             </section>
         </section>
         <section>
+            <title>Help</title>
+            <para>The Help widget is used to render tooltip help and/or external help.</para>
+            <para>The tooltip help appears when the mouse is placed over the header text of a view, page, section or
+                sub-section or over the label of a field.  Plain text and HTML formatted text are supported.  Tooltip
+                help content is defined in the data dictionary. This is an example of how to add a tooltip on a
+                TextControl:</para>
+            <programlisting>
+&lt;bean parent="Uif-TextControl"&gt;
+    &lt;property name="help"&gt;
+        &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+            <para>The external help renders as a clickable help icon which opens a separate window for the help URL.
+                The URL of the help can either be specified via the data dictionary or through a system parameter.
+                This is an example of how to add a external help with the URL from the data dictionary to a View:</para>
+            <programlisting>
+&lt;bean parent="Uif-View"&gt;
+    &lt;property name="help"&gt;
+        &lt;bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+            <para>This is an example of how to add a external help with the URL from the systems parameter to a View:</para>
+            <programlisting>
+&lt;bean parent="Uif-View"&gt;
+    &lt;property name="help"&gt;
+        &lt;bean parent="Uif-Help"&gt;
+            &lt;property name="helpDefinition"&gt;
+                &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+          <section>
+            <title>Properties</title>
+            <para>
+              <table frame="all">
+                <title>Help Properties</title>
+                <tgroup cols="3">
+                  <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                  <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                  <colspec colname="c3" colnum="3" colwidth="1.0*"/>
+                  <thead>
+                    <row>
+                      <entry>Property</entry>
+                      <entry>Default</entry>
+                      <entry>Description</entry>
+                    </row>
+                  </thead>
+                  <tbody>
+                    <row>
+                      <entry> tooltipHelpContent </entry>
+                      <entry/>
+                      <entry> Plain or HTML formatted text that should be displayed inside the help tooltip. </entry>
+                    </row>
+                    <row>
+                      <entry> externalHelpUrl </entry>
+                      <entry/>
+                      <entry> The URL for the external help. </entry>
+                    </row>
+                    <row>
+                      <entry> helpDefinition </entry>
+                      <entry/>
+                      <entry> The HelpDefinition bean that contains the keys for retrieving the external help URL from the system parameters. </entry>
+                    </row>
+                  </tbody>
+                </tgroup>
+              </table>
+            </para>
+          </section>
+          <section>
+            <title>Plugin (Template) Options</title>
+            <para>None</para>
+          </section>
+        </section>
+        <section>
             <title>Inquiry</title>
             <para>The inquiry widget is used render the link fields that will open an inquiry
                 window. The default setting is to open the inquiry view in a lightbox. This can be

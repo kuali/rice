@@ -212,7 +212,7 @@
               p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage" p:actionLabel="deselect all from this page"
               p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:onClickScript="setMultiValueReturnTarget();closeLightbox();"
+        <bean parent="Uif-PrimaryActionButton" p:clientSideJs="setMultiValueReturnTarget();jQuery('#kualiForm').submit();closeLightbox();"
               p:methodToCall="returnSelected" p:actionLabel="return selected"/>
       </list>
     </property>

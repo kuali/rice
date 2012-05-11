@@ -209,7 +209,9 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
 
                             success: function(data) {
                                 // Perform cleanup when lightbox is closed
-                                options['onCleanup'] = cleanupClosedLightboxForms;
+                                // TODO: this stomps on the post form (clear out) so need to another
+                                // way to clear forms when the lightbox performs a post back
+                               // options['onCleanup'] = cleanupClosedLightboxForms;
 
                                 // Add the returned URL to the FancyBox href setting
                                 options['href'] = data;

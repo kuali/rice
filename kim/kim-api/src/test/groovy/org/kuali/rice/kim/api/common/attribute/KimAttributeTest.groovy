@@ -50,21 +50,6 @@ class KimAttributeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_first_null() {
-        KimAttribute.Builder.create(null, ATTRIBUTE_NAME, NAMESPACE_CODE);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_first_empty() {
-        KimAttribute.Builder.create("", ATTRIBUTE_NAME, NAMESPACE_CODE);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_first_whitespace() {
-        KimAttribute.Builder.create("  ", ATTRIBUTE_NAME, NAMESPACE_CODE);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     void test_Builder_fail_second_null() {
         KimAttribute.Builder.create(COMPONENT_NAME, null, NAMESPACE_CODE);
     }

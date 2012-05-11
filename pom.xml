@@ -2,19 +2,19 @@
 
 <!--
 
-    Copyright 2005-2012 The Kuali Foundation
+  Copyright 2005-2012 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.2.8</version>
+    <version>1.2.9</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -185,6 +185,18 @@
   </properties>
 
   <profiles>
+    <!-- Optimize the nightly build -->
+    <profile>
+      <id>nightly</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <server.phase>none</server.phase>
+        <src.phase>none</src.phase>
+        <bin.phase>none</bin.phase>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <kuali.gpg.phase>none</kuali.gpg.phase>
+      </properties>
+    </profile>
     <!-- Profile for quickly creating basic Maven site -->
     <profile>
       <id>minsite</id>
@@ -1701,8 +1713,8 @@
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
           </exclusion>
-          <!--Removing the asm 1.5.3 version that comes with OJB-->
-           <exclusion>
+          <!--Removing the asm 1.5.3 version that comes with OJB -->
+          <exclusion>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
           </exclusion>

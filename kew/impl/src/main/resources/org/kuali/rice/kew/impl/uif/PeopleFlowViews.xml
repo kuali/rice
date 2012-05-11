@@ -199,7 +199,7 @@
   <bean id="PeopleFlow-Member" parent="Uif-InputField" p:propertyName="memberName" p:label="Member"
         p:refreshWhenChangedPropertyNames="#lp.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
         p:resetDataOnRefresh="true">
-    <property name="quickfinder.render" value="@{!view.readOnly}"/>
+    <property name="quickfinder.render" value="@{!#view.readOnly}"/>
     <property name="control">
       <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name" p:watermarkText="Name"/>
     </property>
@@ -213,13 +213,13 @@
         <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="quickfinder" p:condition="#line.memberTypeCode eq 'R'">
           <property name="replacement">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
-                  p:fieldConversions="id:memberId" p:render="@{!view.readOnly}"/>
+                  p:fieldConversions="id:memberId" p:render="@{!#view.readOnly}"/>
           </property>
         </bean>
         <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="quickfinder" p:condition="#line.memberTypeCode eq 'G'">
           <property name="replacement">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
-                  p:fieldConversions="id:memberId" p:render="@{!view.readOnly}"/>
+                  p:fieldConversions="id:memberId" p:render="@{!#view.readOnly}"/>
           </property>
         </bean>
       </list>

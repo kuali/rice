@@ -403,6 +403,11 @@ table.uif-tableCollectionLayout thead th.sorting_desc label{
     padding: 10px;
 }
 
+/* stacked collection within stacked collection*/
+.uif-stackedCollectionLayout .uif-stackedCollectionLayout{
+    background-image: url(../../images/pattern_dotted_dark.png);
+}
+
 .uif-stackedCollectionLayout > .uif-collectionItem {
     display: block;
     margin-bottom: 10px;
@@ -426,9 +431,13 @@ tr.uif-collectionAddItem td.sorting_1 {
 }
 
 div.uif-collectionAddItem {
-    background: #F9F9F9 !important;
+    background: #D9D9D9 !important;
     border: 1px solid #B2B2B2 !important;
     padding: 5px;
+}
+
+table.uif-tableCollectionLayout tbody tr.uif-addLine{
+    background-color: #D9D9D9;
 }
 
 /* Document header info *******************************************************************************/
@@ -757,8 +766,11 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
 
 /** Validation Messages Framework **********************************************************************/
 .uif-messageCount{
+    font-size: 0.9em;
     font-weight: normal;
-    font-size: .95em;
+    padding-left: 1.3em;
+    vertical-align: baseline;
+    display: inline;
 }
 
 .uif-messageCount img{
@@ -971,12 +983,4 @@ li.uif-infoMessageItem:before {
 
 .jquerybubblepopup-ie {
     filter: none !important;
-}
-
-/** Help components *************************************************************************************/
-
-.uif-header .uif-helpImage {
-    position: absolute;
-    right: 5px;
-    top: 7px;
 }

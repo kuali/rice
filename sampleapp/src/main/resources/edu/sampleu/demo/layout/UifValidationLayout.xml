@@ -47,6 +47,12 @@
     <property name="items">
       <list>
         <bean id="Demo-ValidationLayout-SectionsPage" parent="Uif-Page" p:headerText="Standard Sections Page">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="externalHelpUrl" value="http://www.kuali.org"/>
+              <property name="tooltipHelpContent" value="Page help"/>
+            </bean>
+          </property>
           <property name="items">
             <list>
               <ref bean="Demo-ValidationLayout-Section1"/>
@@ -200,6 +206,12 @@
   </bean>
 
   <bean id="Demo-ValidationLayout-Section1" parent="Uif-Disclosure-HorizontalBoxSection">
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="externalHelpUrl" value="http://www.kuali.org"/>
+        <property name="tooltipHelpContent" value="Section help"/>
+      </bean>
+    </property>
     <property name="headerText" value="Section 1 Title"/>
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
@@ -266,13 +278,24 @@
   </bean>
 
   <bean id="Demo-ValidationLayout-Section2" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Section 1 Title"/>
+    <property name="headerText" value="Section 2 Title"/>
     <property name="instructionalText" value="Fields are direct children of this section"/>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="externalHelpUrl" value="http://www.kuali.org"/>
+        <property name="tooltipHelpContent" value="Section help"/>
+      </bean>
+    </property>
     <property name="items">
       <list>
         <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field5" p:label="Field 5">
           <property name="control">
-            <bean parent="Uif-TextAreaControl"/>
+            <bean parent="Uif-TextAreaControl">
+              <!--<property name="toolTip">
+                <bean parent="Uif-Tooltip"
+                      p:tooltipContent='Testing tooltips mixed with validation messages - may not be working'/>
+              </property>-->
+            </bean>
           </property>
         </bean>
 

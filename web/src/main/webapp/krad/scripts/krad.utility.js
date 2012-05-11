@@ -14,6 +14,32 @@
  * limitations under the License.
  */
 var bodyHeight;
+var profilingOn = true;
+
+function profile(start, testingText){
+    if(profilingOn){
+        if(start){
+            console.time(testingText);
+            console.profile(testingText);
+        }
+        else{
+            console.profileEnd();
+            console.timeEnd(testingText);
+        }
+
+    }
+}
+
+function time(start, testingText){
+    if(profilingOn){
+        if(start){
+            console.time(testingText);
+        }
+        else{
+            console.timeEnd(testingText);
+        }
+    }
+}
 
 /**
  * Takes a name that may have characters incompatible with jQuery selection and escapes them so they can

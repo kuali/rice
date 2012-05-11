@@ -216,9 +216,6 @@ function retrieveComponent(id, baseId, methodToCall){
 		var component = jQuery("#" + id + "_update", htmlContent);
 
         var displayWithId = id;
-        if (id.indexOf('_attribute') > 0) {
-            displayWithId = id.replace('_attribute', '');
-        }
 
 		// special label handling, if any
 		var theLabel = jQuery("#" + displayWithId + "_label_span", component);
@@ -261,7 +258,11 @@ function retrieveComponent(id, baseId, methodToCall){
 			}
 		});
 
-        jQuery(".displayWith-" + displayWithId).show();
+        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
+        displayWithLabel.show();
+        if(displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")){
+            displayWithLabel.parent().show();
+        }
 	};
 
     if (!methodToCall) {
@@ -412,9 +413,6 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 			var refreshDisclosure = jQuery("#" + disclosureId);
 			if(refreshDisclosure.length){
                 var displayWithId = disclosureId;
-/*                if (disclosureId.indexOf('_attribute') > 0) {
-                    displayWithId = disclosureId.replace('_attribute', '');
-                }*/
 
 				if(condition()){
 					if(refreshDisclosure.data("role") == "placeholder" || alwaysRetrieve){
@@ -435,7 +433,11 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId);
-                        jQuery(".displayWith-" + displayWithId).show();
+                        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
+                        displayWithLabel.show();
+                        if(displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")){
+                            displayWithLabel.parent().show();
+                        }
 
 					}
 				}
@@ -443,7 +445,11 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 					refreshDisclosure.hide();
 					// ignore validation on hidden inputs
 					hiddenInputValidationToggle(disclosureId);
-                    jQuery(".displayWith-" + displayWithId).hide();
+                    var displayWithLabel = jQuery(".displayWith-" + displayWithId);
+                    displayWithLabel.hide();
+                    if(displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")){
+                        displayWithLabel.parent().hide();
+                    }
 				}
 			}
 		});

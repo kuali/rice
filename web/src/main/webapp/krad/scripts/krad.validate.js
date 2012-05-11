@@ -742,6 +742,11 @@ function calculateMessageTotals(data) {
 function displayHeaderMessageCount(sectionId, sectionData) {
     var sectionHeader = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, "
             + "> a > label");
+
+    if(errorImage == undefined){
+        setupImages();
+    }
+
     if (sectionHeader.length) {
 
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
@@ -756,10 +761,10 @@ function displayHeaderMessageCount(sectionId, sectionData) {
             image = infoImage;
         }
 
-        jQuery(sectionHeader).find("span.uif-messageCount").remove();
+        jQuery(sectionHeader).find("div." + kradVariables.MESSAGE_COUNT_CLASS).remove();
 
         if (countMessage != "") {
-            jQuery("<span class='" + kradVariables.MESSAGE_COUNT_CLASS + "'> - " + image + " " + countMessage + "</span>").appendTo(sectionHeader);
+            jQuery("<div class='" + kradVariables.MESSAGE_COUNT_CLASS + "'>[" + image + " " + countMessage + "]</div>").appendTo(sectionHeader);
         }
     }
 }
@@ -1306,6 +1311,7 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
         disclosureLink = jQuery("<li tabindex='0' class='" + linkType + "'>" + disclosureText + "</li>");
         jQuery(disclosureLink).find(".uif-messageCount").remove();
         jQuery(disclosureLink).find("img").remove();
+        jQuery(disclosureLink).find("input[type='image']").remove();
         //jQuery(disclosureLink).prepend(image);
         jQuery(subSummary).appendTo(disclosureLink);
     }
@@ -1361,6 +1367,7 @@ function generateSummaryLink(sectionId) {
                 + summaryMessage + "</a></li>");
         summaryLink.find(".uif-messageCount").remove();
         summaryLink.find("img").remove();
+        summaryLink.find("input[type='image']").remove();
 
         summaryLink.find("a").click(function () {
             var header = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");

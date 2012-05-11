@@ -542,15 +542,14 @@ table.uif-tableCollectionLayout td {
     border-collapse: collapse;
 }
 
-table.uif-tableCollectionLayout tbody tr.uif-addLine{
-    background-color: #f9f9f9;
-    border-bottom: 2px solid #CCCCCC;
-}
-
 table.uif-gridLayout td {
     border: 1px solid #CCC;
     border-collapse: collapse;
     background-color: white;
+}
+
+table.uif-tableCollectionLayout tbody tr.uif-addLine > td{
+    background: transparent;
 }
 
 /* Stacked collections *********************************************************************************/

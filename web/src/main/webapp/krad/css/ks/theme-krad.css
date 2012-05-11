@@ -567,11 +567,6 @@ table.uif-tableCollectionLayout td {
     border-collapse: collapse;
 }
 
-table.uif-tableCollectionLayout tbody tr.uif-addLine{
-    background-color: #f9f9f9;
-    border-bottom: 2px solid black;
-}
-
 table.uif-gridLayout{
     width: auto;
 }
@@ -580,9 +575,3 @@ table.uif-gridLayout th{
     padding-right: 1em;
 }
 
-/** Stacked Collections ********************************************************************************/
-
-/* stacked collection within stacked collection*/
-.uif-stackedCollectionLayout .uif-stackedCollectionLayout{
-    border: 1px dashed black;
-}

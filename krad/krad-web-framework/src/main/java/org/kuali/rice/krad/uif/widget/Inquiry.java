@@ -72,11 +72,10 @@ public class Inquiry extends WidgetBase {
     private Link inquiryLink;
 
     private Action directInquiryAction;
+    private boolean enableDirectInquiry;
 
     private boolean adjustInquiryParameters;
     private BindingInfo fieldBindingInfo;
-
-    private boolean hideDirectInquiry;
 
     public Inquiry() {
         super();
@@ -117,9 +116,10 @@ public class Inquiry extends WidgetBase {
 
         // Do checks for direct inquiry when editable
         if (!isReadOnly() && parent instanceof InputField) {
-            if (hideDirectInquiry) {
+            if (!enableDirectInquiry) {
                 return;
             }
+
             // determine whether inquiry parameters will need adjusted
             if (StringUtils.isBlank(getDataObjectClassName())
                     || (getInquiryParameters() == null)
@@ -473,18 +473,18 @@ public class Inquiry extends WidgetBase {
     /**
      * Indicates that the direct inquiry will not be rendered
      *
-     * @return boolean - hideDirectInquiry flag
+     * @return boolean true if the direct inquiry should be rendered, false if not
      */
-    public boolean isHideDirectInquiry() {
-        return hideDirectInquiry;
+    public boolean isEnableDirectInquiry() {
+        return enableDirectInquiry;
     }
 
     /**
      * Setter for the hideDirectInquiry flag
      *
-     * @param hideDirectInquiry
+     * @param enableDirectInquiry
      */
-    public void setHideDirectInquiry(boolean hideDirectInquiry) {
-        this.hideDirectInquiry = hideDirectInquiry;
+    public void setEnableDirectInquiry(boolean enableDirectInquiry) {
+        this.enableDirectInquiry = enableDirectInquiry;
     }
 }

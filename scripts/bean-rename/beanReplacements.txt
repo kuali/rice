@@ -222,7 +222,6 @@ hiddenPropertyNames,additionalHiddenPropertyNames
 informationalDisplayPropertyNames,propertyNamesForAdditionalDisplay
 performUppercase,uppercaseValue
 fieldLookup,quickfinder
-fieldDirectInquiry,directInquiry
 fieldSuggest,suggest
 fieldAttributeQuery,attributeQuery
 treatWildcardsAndOperatorsAsLiteral,disableWildcardsAndOperators
@@ -241,4 +240,5 @@ translateCodes,translateCodesOnReadOnlyDisplay
 viewMenuGrouping,viewMenuGroupName
 dialogMode,renderedInLightBox
 fieldInquiry,inquiry
+fieldDirectInquiry.render,inquiry.enableDirectInquiry
 

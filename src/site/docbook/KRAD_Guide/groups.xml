@@ -20,7 +20,121 @@
     <title>Groups </title>
     <section>
         <title>Groups </title>
-        <para></para>
+        <para>In the last chapter we learned a great deal about the Content Element and Field
+            component types. These types are essentially KRAD representations of the HTML content
+            markup. They form the palate from which to paint our picture. </para>
+        <para>In this chapter, we will move on to the Group component. This is one of the general
+            Container types in KRAD. These allow us to bundle our fields together and structure them
+            for layout purpose. In other words, they allow us organize our content into the top most
+            container, the view.</para>
+        <para>A group component is represented by the org.kuali.rice.krad.uif.container.Group class.
+            This is the ‘general’ group component, meaning there are no restrictions on the type of
+            fields or content elements we can put into the group. Other special group types exist
+            that allow only a subset of fields and elements. They do this to target a more specify
+            behavior. For example, the LinkGroup only supports adding Link components. These group
+            types have a class that extends the Group class and add properties specific to the
+            behavior or rendering they provide.</para>
+        <para>Besides holding fields and content elements, groups can also contain other groups.
+            This means we can nest groups within each other. Although a simple concept, it becomes
+            very powerful in terms of building our view. Essentially we can break complete web page
+            up into several group layers. This process will be discussed more in the next
+            section.</para>
+        <para>As we stated in the UIF Overview, there are common properties for all containers. The
+            first of these is of course the container ‘items’. This is the list of components that
+            belong to the container. By itself, the items lists just performs grouping of the
+            components, it tells us nothing about how the items should be arranged on the page. For
+            this information, an object called a Layout Manager is associated with the group. The
+            layout manager encapsulates the information for how to arrange and decorate the items.
+            Therefore, the same group can be reused and presented in different ways we changing its
+            associated layout manager. A large part of this chapter will discuss the concept of
+            layout managers and the particular managers provided by KRAD out of the box.</para>
+        <para>The items that are rendered form the majority of the group’s contents. However, we can
+            configure additional content before and after the container items. The before content is
+            known as the group’s header, while the after content is known as the group’s footer. In
+            code the corresponding objects found on group are the Header and Footer groups. The
+            Header component contains another group itself. But in addition containing a group with
+            configurable items, it also generates a HTML header tag (h tag) using the Header content
+            element. The header generally indicates visually the beginning of the group
+            presentation. The footer is just a standard group. It adds nothing special and is simply
+            known as the footer because of if falls after the main group content.</para>
+        <para>The group also allows an instructional text message to be configured. Similar to the
+            input field instructional message, this gives directions to the user for completing the
+            form. However, this applies to the group as a whole and not to an individual field.
+            Finally, also similar to the input field, the group contains an errors field component.
+            This is used for presenting error/warning/info messages that apply to the group
+            contents, or to display message counts.</para>
+        <para>The group template controls how these various pieces are rendered. Basically the
+            rendering order is: header group, instructional message, errors field, container items
+            (delegate to layout manager), and footer. </para>
+        <para>Ok, so where’s the beans? There are several base beans provided for group (they
+            actually have their own file ‘UifGroupDefinitions.xml’). These correspond to various
+            layout manager configurations and the special types of groups. Therefore we will cover
+            the beans with each subsequent section. </para>
+        <tip>
+            <title>Group Base Bean</title>
+            <para>An abstract bean with name ‘Uif-GroupBase’ is provided from which all the group
+                beans extend. This sets the class, template, base style, errors field setup, and
+                some disclosure options. The use of abstract base beans is done throughout the
+                framework to match the abstract classes. Included in this is a top level bean named
+                ‘Uif-ComponentBase’. Therefore the bean hierarchy closely resembles the actual class
+                hierarchy. </para>
+        </tip>
+        <section>
+            <title>Recap</title>
+            <itemizedlist>
+                <listitem>
+                    <para>The group component allows us to bundle together components for layout
+                            purposes</para>
+                </listitem>
+                <listitem>
+                    <para>The base group component is generic and can hold any field or content
+                            element</para>
+                </listitem>
+                <listitem>
+                    <para>More special groups exist the extend group and restrict the type of
+                        components that can be added. They do so to target more specific behavior or
+                        rendering. An example is the link group</para>
+                </listitem>
+                <listitem>
+                    <para>Groups can nest within each other, therefore we can organize our entire
+                        view with groups</para>
+                </listitem>
+                <listitem>
+                    <para>Groups have an associated object called a layout manger. The layout
+                        manager encapsulates information on how to present the group’s
+                        items</para>
+                </listitem>
+                <listitem>
+                    <para>We can easily reuse a group and change it presentations by switching
+                        layout managers</para>
+                </listitem>
+                <listitem>
+                    <para>Groups also allow content to be added before the group items and after.
+                        The before content is configured with a header group, and the after content
+                        with a group footer</para>
+                </listitem>
+                <listitem>
+                    <para>Instructional text message can also be configured for the group. It gives
+                        the users directions on how to complete the set of fields within the
+                        group</para>
+                </listitem>
+                <listitem>
+                    <para>Like input fields, groups have an associated errors group. This errors
+                        group display error/warning/info messages related to the group in general
+                        (or display message counts)</para>
+                </listitem>
+                <listitem>
+                    <para>The group template controls how the various group parts are rendered. The
+                        default template rendering order is: header group, instructional message,
+                        errors field, group items (delegates to layout manager), and the
+                        footer</para>
+                </listitem>
+                <listitem>
+                    <para>Several group base beans are provided that correspond to various
+                        configurations with various layout managers</para>
+                </listitem>
+            </itemizedlist>
+        </section>
     </section>
     <section>
         <title>Page Decomposition with Groups </title>

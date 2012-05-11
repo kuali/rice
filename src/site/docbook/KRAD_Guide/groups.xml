@@ -147,6 +147,14 @@
         <para>First we start with one large box that will cover the entire interface (everything in
             the window, with the exception of any application header or footer such as the portal
             wrapper).</para>
+        <figure>
+            <title>One Large Box</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/pageLargeTextbox.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>This top level box will be our view container. The view is always at the top of the
             hierarchy (not nested within any other component). To do the further breakdown, we need
             to know the parts of a view component. We will cover this more in 9, but besides the
@@ -157,6 +165,14 @@
             followed by the view header. The view footer will be the very last thing rendered.
             Assuming our mock has all of these (which we can take out as needed) let’s then block
             off those areas:</para>
+        <figure>
+            <title>Full View Page</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/fullViewPage.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>Notice after we mark off the pieces of the view we have an area left for content. This
             is where we can add content with a Group component. This top level group (with view
             parent) is known as a <emphasis role="bold">Page</emphasis> and has a base bean named
@@ -168,11 +184,27 @@
             the page contents. This will allow the user to clearly see fields that go together and
             provide a cleaner organization to our page. So to do this we break our page into a set
             of vertical boxes, each known as a section:</para>
+        <figure>
+            <title>Vertical Sections</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/verticalSections.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>Here we see we have divided the page into three groups. A group at this level is known
             as a <emphasis role="bold">Section</emphasis>. Again we could now add content to one or
             all of our sections, but there might be a case where we need to divide again. Thus we
             can break each section into a set of vertical boxes. These are known as
             sub-sections:</para>
+        <figure>
+            <title>Vertical SubSections</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/verticalSubSections.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>The first section we have divided into two groups and likewise for the third section.
             A group at this level is called a <emphasis role="bold">Sub-Section</emphasis>.</para>
         <para>There are a couple of things that should be noted from the example. First, each group
@@ -181,8 +213,16 @@
             vertically one on top of another. This depends on the layout manager we use for the
             parent group. Finally, the actual type of group (whether it the base group, collection
             group, or whatever) does not matter. It is the level at which the group is at that makes
-            the different in our conceptual naming. Figure 13 gives us another picture of the
-            conceptual groupings. </para>
+            the different in our conceptual naming. Below gives us another picture of the conceptual
+            groupings. </para>
+        <figure>
+            <title>Conceptual Groupings</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/KRAD_Conceptual_Groupings.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>So what is the point of this? These are all just group components so why not just call
             them that? That is a true point. However, recall we can have multiple bean definitions
             for the same component. Therefore the UIF provides a set of bean definitions with names
@@ -338,6 +378,14 @@
 &lt;bean id=”MySection” parent=”Uif-VerticalBoxSection” p:title=”Section 1 Title”&gt;
         </programlisting>
         <para>The resulting header is shown below. </para>
+        <figure>
+            <title>Header Text Example</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/headerTextExample.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>Now suppose we want to add other content to the header group. For example we might
             want to display links or buttons to the right of the header text. We do this just like
             adding content to any other group, using the items property:</para>
@@ -364,7 +412,14 @@
             (notice in this case there is no actual header text) Besides the different items, notice
             the difference in styling between the header areas based on their associated container
             level. </para>
-        <para/>
+        <figure>
+            <title>Additional Header Examples</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/additionalHeaderExamples.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <section>
             <title>Recap</title>
             <itemizedlist>
@@ -451,7 +506,15 @@
         <para>In this example we have configured our group to have two buttons (‘calculate’ and
             ‘clear’) by setting the group’s footer property. To set the property we used the
             provided footer base bean and added two action components through the footer’s items
-            property. Screen Shot 36 shows the “MyGroup” bean. </para>
+            property. Below shows the “MyGroup” bean. </para>
+        <figure>
+            <title>Group Footer Example</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/myGroupFooter.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>It is common for the View and Page footers to have buttons. For these containers the
             footer is already initialized and we can use the nested notation:</para>
         <programlisting>
@@ -661,6 +724,14 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
             (header, instructions) and then invokes the layout manger and finally the footer.
             Therefore the layout manager positions the group items in the box between the group
             header and footer.</para>
+        <figure>
+            <title>Group Layout</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/groupLayoutDiagram.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <section>
             <title>Grid Layout</title>
             <para>The Grid Layout manager divides the layout area
@@ -671,11 +742,27 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
                 equal to two, two items will be positioned on each row. New rows will be created
                 until all the items are positioned. Assuming we had five items in our group, they
                 would be positioned as shown here: </para>
+            <figure>
+                <title>Grid Layout</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/gridLayout.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>The group layout manager can then be
                 configured to meet any grid configuration. We could take our same group of five
                 items with a one column grid which would stack all the items on top of each other.
                 Or we could use a 5 column grid would be put all the items on one horizontal row.
                 The next figure depicts the general N columns by M rows layout. </para>
+            <figure>
+                <title>Grid Layout Examples</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Grid_Layout.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>The
                 default template for the grid layout uses HTML tables to achieve the grid
                 positioning. A single table is created for the group items, with each item being
@@ -762,10 +849,26 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
                 <para>Note for items without the row or col span properties set, they receive a
                     default of one. The following figure shows the corresponding blocks for each
                     item.</para>
+                <figure>
+                    <title>Row, Col Span Layout</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/rowColSpanLayout.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
                 <para>Using row and col span, along with the ability to nest grid groups (nested
                     tables), we have a great amount of flexibility in the layouts we can achieve.
                     Below shows what a grid group with different row and col spans looks like in the
                     legacy look and feel. </para>
+                <figure>
+                    <title>Row, Col Span Example</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/rowColSpanExample.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
                 <para>As you might have noticed the previous figures depict even widths for each
                     cell. This is the default behavior for the grid layout (the area will be divided
                     by the number of columns to set a percentage width for each column). We can
@@ -811,8 +914,8 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
                     vertically. If we were to put the labels in their own column, the cell width
                     would expand to cover the longest label, and our controls would all start in the
                     next column. Thus we would have alignment:</para>
-                <para>Label One:                ___________</para>
-                <para>Second Label:          ______</para>
+                <para>Label One:             ___________</para>
+                <para>Second Label:        ______</para>
                 <para>Third Field Label:  ______________</para>
                 <para>The framework provides the option for doing this through a Component Modifier.
                     Component modifiers are classes that perform some modification to the component
@@ -887,9 +990,25 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
                 group item which will receive the last position.</para>
             <para>Within the layout area we can think of the box layout as dividing the area
                 horizontally (in the case of horizontal orientation):</para>
+            <figure>
+                <title>Horizontal Box Layout</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/horizontalBoxLayout.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>The box layout manager contains a property named orientation that determines the
                 direction of the rendered items. The valid values for this property are HORIZONTAL
                 and VERTICAL. The following figure shows an example of each orientation. </para>
+            <figure>
+                <title>Box Layout Manager</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Box_Layout_Manager.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>To accomplish these layouts the box manager uses CSS display styles. Recall our
                 component types and their HTML output:</para>
             <para>Groups – div element </para>
@@ -1206,6 +1325,14 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
 &lt;/bean&gt;
         </programlisting>    
         <para>This result of this is show below. </para>
+        <figure>
+            <title>Field Group Checkbox</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/fieldGroupCheckboxes.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>Notice here the labels appear in separate cells due to the label field separator being
             enabled. What if we wanted the two checkboxes (field3 and field4) to appear in one cell
             together instead of two separate cells? We could add a nested group in our items but
@@ -1259,6 +1386,14 @@ public Class&lt;? extends Container&gt; getSupportedContainer() {
             group we just specified “items” instead of “group.items”. This is because the field
             group class provides a convenience getter and setter that worked with the nested group.
             The result of the above is shown below.</para>
+        <figure>
+            <title>Nested Field Groups</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/nestedFieldGroup.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <section>
             <title>Recap</title>
                 <itemizedlist>
@@ -1863,6 +1998,14 @@ public class Test2Object {
                 </listitem>
                 </orderedlist>
             <para>The basic table layout is shown below.</para>
+            <figure>
+                <title>Table Layout Manager</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Table_Layout.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>In addition to the columns rendered for the group items, the table layout manager
                 will create two additional columns. One of these will hold the line actions. Recall
                 our line actions are configured as a list of Action components on the collection
@@ -1900,6 +2043,14 @@ public class Test2Object {
             <para>Coming Soon!</para>
             <!-- TODO: Add content here.
           -->
+            <figure>
+                <title>Stacked Layout Manager</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Stacked_Layout_Manager.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>    
         </section>
         <section>
             <title>The List Template</title>

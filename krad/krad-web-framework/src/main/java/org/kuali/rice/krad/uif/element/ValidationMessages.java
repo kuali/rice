@@ -141,9 +141,6 @@ public class ValidationMessages extends ContentElementBase {
             warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
             infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
         }
-
-        //insure by default validationMessages container is not displayed - display is handled by the js
-        this.setStyle("display: none;");
     }
 
     /**

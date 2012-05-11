@@ -32,6 +32,8 @@
         class="org.kuali.rice.krad.uif.element.ValidationMessages"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
+    <!--By default not displayed - all display is handled by the framework - do not change-->
+    <property name="style" value="display: none;"/>
     <property name="cssClasses">
       <list>
         <value>uif-validationMessages</value>

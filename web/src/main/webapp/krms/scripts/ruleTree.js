@@ -50,7 +50,7 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
     };
 
     ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-            {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+            {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
             elementToBlock);
 }
 

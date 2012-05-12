@@ -46,7 +46,7 @@ function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
         };
 
         ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-                {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+                {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
                 elementToBlock);
     } else {
         // TODO: refactor to disabled buttons, or externalize

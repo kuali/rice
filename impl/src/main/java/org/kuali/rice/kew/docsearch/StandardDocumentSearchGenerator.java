@@ -1273,7 +1273,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             whereSQL.append(getDateCreatedSql(criteria.getFromDateCreated(), criteria.getToDateCreated(), getGeneratedPredicatePrefix(whereSQL.length())));
         }
 
-        String docTypeFullNameSql = getDocTypeFullNameWhereSql(criteria.getDocTypeFullName(), getGeneratedPredicatePrefix(whereSQL.length()));
+        String sanitizedDocTypeFullName = getDbPlatform().escapeString(StringUtils.trim(criteria.getDocTypeFullName()));
+        String docTypeFullNameSql = getDocTypeFullNameWhereSql(sanitizedDocTypeFullName, getGeneratedPredicatePrefix(whereSQL.length()));
         if (!("".equals(docTypeFullNameSql))) {
             whereSQL.append(docTypeFullNameSql);
         }

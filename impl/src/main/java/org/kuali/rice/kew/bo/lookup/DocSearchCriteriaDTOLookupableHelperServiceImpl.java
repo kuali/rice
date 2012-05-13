@@ -18,7 +18,10 @@ package org.kuali.rice.kew.bo.lookup;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -70,6 +73,7 @@ KualiLookupableHelperServiceImpl {
 	DateTimeService dateTimeService;
 	DocumentLookupCriteriaProcessor processor;
 	boolean savedSearch = false;
+        static DatabasePlatform dbPlatform = (DatabasePlatform) GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
 	private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
 	/**
@@ -709,7 +713,8 @@ KualiLookupableHelperServiceImpl {
     private static DocumentType getValidDocumentType(String docTypeName) {
     	if (StringUtils.isNotEmpty(docTypeName)) {
             DocumentType dTypeCriteria = new DocumentType();
-    		dTypeCriteria.setName(docTypeName.trim());
+                String escapedString = dbPlatform.escapeString(docTypeName.trim());
+                dTypeCriteria.setName(escapedString);
     		dTypeCriteria.setActive(true);
     		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
 

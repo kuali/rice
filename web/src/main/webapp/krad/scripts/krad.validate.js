@@ -644,6 +644,7 @@ function writeMessagesForPage(){
     var data = page.data(kradVariables.VALIDATION_MESSAGES);
     writeMessagesForGroup(pageId, data);
     writeMessagesForChildGroups(pageId);
+    jQuery(".uif-errorMessageItem > div").show();
 }
 
 function writeMessagesForChildGroups(parentId){
@@ -1410,8 +1411,9 @@ function generateSummaryLink(sectionId) {
         if(!sectionData.displayMessages){
             var sectionLinks = jQuery("[data-messagesfor='" + sectionId + "']");
             sectionLinks.removeAttr("class");
+            sectionLinks.removeAttr("style");
             summaryLink.append(sectionLinks);
-            sectionLinks.show();
+            jQuery(sectionLinks).show();
         }
     }
     return summaryLink;

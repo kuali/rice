@@ -352,4 +352,9 @@
     <KRIM_PERM_T ACTV_IND="Y" NM="Recall Document" NMSPC_CD="KR-WKFLW"
         OBJ_ID="BD74D7B702AB02CEE0402E0AA9D75B2D" PERM_ID="847"
         PERM_TMPL_ID="68" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to send Complete ad hoc requests for Kuali Documents"
+        NM="Send Complete Request Kuali Document" NMSPC_CD="KR-SYS"
+        OBJ_ID="BFCADCB34017249AE0402E0AA9D7065D" PERM_ID="848"
+        PERM_TMPL_ID="49" VER_NBR="1"/>
 </dataset>

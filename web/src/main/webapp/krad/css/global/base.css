@@ -800,7 +800,8 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     background-repeat: repeat;
     border: 1px solid #cbcbcb;
     padding-top: .5em;
-    padding-bottom: .5em;
+    padding-bottom: .3em;
+    margin-bottom: 8px;
 }
 
 .uif-validationMessages, .uif-clientMessageItems, .uif-serverMessageItems {

@@ -72,9 +72,13 @@ public class Help extends WidgetBase {
      * When the externalHelpUrl is blank and the helpDefinition is specified then the external help URL is
      * looked up via the helpDefinition from the system parameters.  The namespace in the helpDefinition
      * does not need to be specified and will default to the namespace of the view.
-     * </p><p>
+     * </p>
+     *
+     * <p>
      * Set the javascript action to open the external help in a window.
-     * </p><p>
+     * </p>
+     *
+     * <p>
      * Set the html title attribute of the help icon.
      * </p>
      *

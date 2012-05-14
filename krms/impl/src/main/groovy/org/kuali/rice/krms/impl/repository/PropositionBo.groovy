@@ -54,7 +54,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
     String newTermDescription = "new term " + UUID.randomUUID().toString();
     Map<String, String> termParameters = new HashMap<String, String>();
 
-    private SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
+    private static SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
 
     private void setupParameterDisplayString(){
         if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(getPropositionTypeCode())){
@@ -333,17 +333,37 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         newProp.setCompoundComponents(newCompoundComponents);
         return newProp;
     }
-    private static String getNewPropId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
-                PropositionBo.class);
-        return id.toString();
+
+    /**
+     * Set the SequenceAccessorService, useful for testing.
+     * @param sas SequenceAccessorService to use for getNewId()
+     */
+    public static void setSequenceAccessorService(SequenceAccessorService sas) {
+        sequenceAccessorService = sas;
     }
-    private static String getNewPropParameterId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_PARM_S",
-                PropositionParameterBo.class);
+
+    private static String getNewId(String table, Class clazz) {
+        if (sequenceAccessorService == null) {
+            // we don't assign to sequenceAccessorService to preserve existing behavior
+            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
+        }
+        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
         return id.toString();
     }
 
+    /**
+     * Returns the next available Proposition id.
+     * @return String the next available id
+     */
+    private static String getNewPropId(){
+        return getNewId("KRMS_PROP_S", PropositionBo.class);
+    }
+
+    /**
+     * Returns the next available PropParameter id.
+     * @return String the next available id
+     */
+    private static String getNewPropParameterId(){
+        return getNewId("KRMS_PROP_PARM_S", PropositionParameterBo.class);
+    }
 }

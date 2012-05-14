@@ -58,6 +58,8 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    private StringBuffer propositionSummaryBuffer;
    String selectedPropositionId;
 
+   private static SequenceAccessorService sequenceAccessorService;
+
    public RuleBo() {
        actions = new ArrayList<ActionBo>();
        attributeBos = new ArrayList<RuleAttributeBo>();
@@ -314,7 +316,6 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
         newRule.setTypeId( existing.getTypeId() );
         newRule.setActive(true);
 
-        // copy proposition(s)
         PropositionBo newProp = PropositionBo.copyProposition(existing.getProposition());
         newProp.setRuleId( newRule.getId() );
         newRule.setProposition( newProp );
@@ -383,28 +384,40 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
         return newActionList;
     }
 
+    /**
+     * Set the SequenceAccessorService, useful for testing.
+     * @param sas SequenceAccessorService to use for getNewId()
+     */
+    public static void setSequenceAccessorService(SequenceAccessorService sas) {
+        sequenceAccessorService = sas;
+    }
+
+    /**
+     * Returns the next available Rule id.
+     * @return String the next available id
+     */
     private static String getNewRuleId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class);
+        return getNewId("KRMS_RULE_S", RuleBo.class);
+    }
+
+    private static String getNewId(String table, Class clazz) {
+        if (sequenceAccessorService == null) {
+            // we don't assign to sequenceAccessorService to preserve existing behavior
+            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
+        }
+        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
         return id.toString();
     }
 
     private static String getNewActionId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_ACTN_S", ActionBo.class);
-        return id.toString();
+        return getNewId("KRMS_ACTN_S", ActionBo.class);
     }
 
     private static String getNewRuleAttributeId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_RULE_ATTR_S", RuleAttributeBo.class);
-        return id.toString();
+        return getNewId("KRMS_RULE_ATTR_S", RuleAttributeBo.class);
     }
 
     private static String getNewActionAttributeId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_ACTN_ATTR_S", ActionAttributeBo.class);
-        return id.toString();
+        return getNewId("KRMS_ACTN_ATTR_S", ActionAttributeBo.class);
     }
-
 }

@@ -412,9 +412,27 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
                 return null;
             }
             PersistableAttachment attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
-            if (StringUtils.isNotBlank(attachment.getFileName())
-                    && attachment.getAttachmentContent() != null) {
-                streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
+            String attachmentPropNm = document.getAttachmentPropertyName();
+            FormFile attachmentFromBusinessObject = null;
+            byte[] attachmentContent;
+            String fileName = attachment.getFileName();
+            String contentType = attachment.getContentType();
+            if (StringUtils.isNotBlank(attachmentPropNm)) {
+                String attachmentPropNmSetter = "get" + attachmentPropNm.substring(0, 1).toUpperCase() + attachmentPropNm.substring(1, attachmentPropNm.length());
+                attachmentFromBusinessObject = (FormFile)(attachment.getClass().getDeclaredMethod(attachmentPropNmSetter).invoke(attachment));
+            }
+            if (attachmentFromBusinessObject != null
+                    && attachmentFromBusinessObject.getInputStream() != null) {
+                attachmentContent = attachmentFromBusinessObject.getFileData();
+                fileName = attachmentFromBusinessObject.getFileName();
+                contentType = attachmentFromBusinessObject.getContentType();
+            } else {
+                attachmentContent = attachment.getAttachmentContent();
+            }
+            if (StringUtils.isNotBlank(fileName)
+                    && contentType != null
+                    && attachmentContent != null) {
+                streamToResponse(attachmentContent, fileName, contentType, response);
             }
         } else {
 

@@ -220,12 +220,6 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
                     files.remove(key);
                 }
             }
-            // records exist that were not currently in bo attachments.  add them
-            if (!files.isEmpty()) {
-                for (MultiDocumentAttachment multi : files.values()) {
-                    updatedBoAttachments.add(convertDocToBoAttachment(multi, true));
-                }
-            }
         }
         boAttachments.setAttachments(updatedBoAttachments);
     }

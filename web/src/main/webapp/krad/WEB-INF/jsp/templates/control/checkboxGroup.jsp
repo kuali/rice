@@ -25,7 +25,7 @@
     
  --%>
 <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
-        data-type="CheckboxSet" id="${field.id}">
+        data-type="CheckboxSet" id="${field.id}_fieldset">
   <legend style="display: none">${field.label}</legend>
   <form:checkboxes id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                      items="${control.options}" itemValue="key" itemLabel="value"

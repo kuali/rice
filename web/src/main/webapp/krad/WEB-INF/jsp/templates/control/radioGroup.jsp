@@ -24,7 +24,7 @@
     
  --%>
 <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
-          data-type="RadioSet" id="${field.id}">
+          data-type="RadioSet" id="${field.id}_fieldset">
   <legend style="display: none">${field.label}</legend>
   <form:radiobuttons id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
        items="${control.options}" itemValue="key" itemLabel="value" cssClass="${control.styleClassesAsString}"

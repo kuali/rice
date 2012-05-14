@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.junit.Test;
+
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
@@ -34,8 +36,7 @@ import static org.junit.Assert.*;
 public class AgendaBoTest {
 
     public static final String TEST_PREFIX = "AgendaBoTest";
-    // Commented out on first delivery to avoid dependencies on groovy changes which have been causing build failures locally first run.
-    //Test
+    @Test
     public void testCopy() {
         SequenceAccessorService mapSas = new IncrementalSas();
         AgendaBo.setSequenceAccessorService(mapSas);

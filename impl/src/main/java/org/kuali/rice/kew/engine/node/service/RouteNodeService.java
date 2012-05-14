@@ -69,7 +69,29 @@ public interface RouteNodeService {
      */
     public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
     
+    /**
+     * Retrieves the names of active node instances for the document with the
+     * given id.  The active node instances represent where in the route path
+     * the document is currently located.
+     * @param documentId of the document
+     * @return list of names of route node instances
+     * @since 2.1
+     */
+    public List<String> getActiveRouteNodeNames(String documentId);
+    
     public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document);
+    
+    /**
+     * Retrieves the names of terminal node instances for the document with the
+     * given id. The terminal node instances are nodes in the route path which
+     * are both inactive and complete and have no next nodes in their path.
+     * Terminal node instances will typically only exist on documents which are
+     * no longer enroute.
+     * @param documentId for the given Document
+     * @return list of terminal node instances
+     * @since 2.1
+     */
+    public List<String> getTerminalRouteNodeNames(String documentId);
     
     /**
      * Retrieves the terminal node instances of the given Document.  The terminal node instances

@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kew.engine.node.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.sql.DataSource;
 
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
@@ -30,6 +35,11 @@ import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 
 public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 
@@ -101,6 +111,40 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
     	return (List<RouteNodeInstance>)query.getResultList();
     }
+    
+    @Override
+	public List<String> getActiveRouteNodeNames(final String documentId) {
+    	final DataSource dataSource = KEWServiceLocator.getDataSource();
+    	JdbcTemplate template = new JdbcTemplate(dataSource);
+    	List<String> names = template.execute(
+				new PreparedStatementCreator() {
+					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+						PreparedStatement statement = connection.prepareStatement(
+								"SELECT rn.nm FROM krew_rte_node_t rn, krew_rte_node_instn_t rni WHERE rn.rte_node_id = rni.rte_node_id AND rni.doc_hdr_id = ? AND rni.actv_ind = ?");
+						return statement;
+					}
+				},
+				new PreparedStatementCallback<List<String>>() {
+					public List<String> doInPreparedStatement(PreparedStatement statement) throws SQLException, DataAccessException {
+						List<String> routeNodeNames = new ArrayList<String>();
+						statement.setString(1, documentId);
+						statement.setBoolean(2, Boolean.TRUE);
+						ResultSet rs = statement.executeQuery();
+						try {
+							while(rs.next()) {
+								String name = rs.getString("nm");
+								routeNodeNames.add(name);
+							}
+						} finally {
+							if(rs != null) {
+								rs.close();
+							}
+						}
+						return routeNodeNames;
+					}
+				});
+    	return names;
+	}
 
     @SuppressWarnings("unchecked")
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
@@ -117,6 +161,50 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 		}
 		return terminalNodes;
     }
+    
+    @Override
+	public List<String> getTerminalRouteNodeNames(final String documentId) {
+		final DataSource dataSource = KEWServiceLocator.getDataSource();
+    	JdbcTemplate template = new JdbcTemplate(dataSource);
+    	List<String> names = template.execute(
+				new PreparedStatementCreator() {
+					public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+						PreparedStatement statement = connection.prepareStatement(
+								"SELECT rn.nm" +
+								"  FROM krew_rte_node_t rn," +
+								"       krew_rte_node_instn_t rni" +
+								"  LEFT JOIN krew_rte_node_lnk_t rnl" +
+								"    ON rnl.from_rte_node_id = rni.rte_node_id" +
+								"  WHERE rn.rte_node_id = rni.rte_node_id AND" +
+								"        rni.doc_hdr_id = ? AND" +
+								"        rni.actv_ind = ? AND" +
+								"        rni.cmplt_ind = ? AND" +
+								"        rnl.from_rte_node_id IS NULL");
+						return statement;
+					}
+				},
+				new PreparedStatementCallback<List<String>>() {
+					public List<String> doInPreparedStatement(PreparedStatement statement) throws SQLException, DataAccessException {
+						List<String> routeNodeNames = new ArrayList<String>();
+						statement.setString(1, documentId);
+						statement.setBoolean(2, Boolean.FALSE);
+						statement.setBoolean(3, Boolean.TRUE);
+						ResultSet rs = statement.executeQuery();
+						try {
+							while(rs.next()) {
+								String name = rs.getString("nm");
+								routeNodeNames.add(name);
+							}
+						} finally {
+							if(rs != null) {
+								rs.close();
+							}
+						}
+						return routeNodeNames;
+					}
+				});
+    	return names;
+	}
 
     public List getInitialNodeInstances(String documentId) {
     	//FIXME: Not sure this query is returning what it needs to     	                                              

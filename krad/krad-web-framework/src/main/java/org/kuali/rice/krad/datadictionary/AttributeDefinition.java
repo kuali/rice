@@ -178,23 +178,21 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     /**
-     * @return true if a validationPattern has been set
+     * Indicates whether a validation pattern has been set
+     *
+     * @return boolean
      */
     public boolean hasValidationPattern() {
         return (validationPattern != null);
     }
 
-    public ValidationPattern getValidationPattern() {
-        return this.validationPattern;
-    }
-
     /**
-     * The validationPattern element defines the allowable character-level or
-     * field-level values for an attribute.
+     * Defines the allowable character-level or
+     * field-level values for an attribute
      *
-     * JSTL: validationPattern is a Map which is accessed using a key of
-     * "validationPattern". Each entry may contain some of the keys listed
-     * below. The keys that may be present for a given attribute are dependent
+     * <p>
+     * ValidationPattern is a Map which is accessed using a key of "validationPattern". Each entry may contain
+     * some of the keys listed below. The keys that may be present for a given attribute are dependent
      * upon the type of validationPattern.
      *
      * maxLength (String) exactLength type allowWhitespace allowUnderscore
@@ -224,11 +222,22 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * Note: See ApplicationResources.properties for exact regex patterns. e.g.
      * validationPatternRegex.date for regex used in date validation.
+     * </p>
+     *
+     * @return ValidationPattern
+     */
+    public ValidationPattern getValidationPattern() {
+        return this.validationPattern;
+    }
+
+    /**
+     *
+     * @param validationPattern
      */
     public void setValidationPattern(ValidationPattern validationPattern) {
         this.validationPattern = validationPattern;
 
-        // FIXME: JLR - need to recreate this functionality using the ValidCharsConstraint logic
+        // TODO: JLR - need to recreate this functionality using the ValidCharsConstraint logic
     }
 
     /**

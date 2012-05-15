@@ -183,9 +183,9 @@ if (attributeEntry == null) {
 			   	    java.util.List propertyValue = new java.util.ArrayList();
 			   	    Object value = TagUtils.lookup(pageCtx, "org.apache.struts.taglib.html.BEAN", property, null);
 			   	    if (value instanceof String) {
-			   		  propertyValue.add(value);
+			   		    propertyValue.add(value);
 			   	    } else if (value instanceof java.util.Collection) {
-			   		  propertyValue.addAll((java.util.Collection)value);
+			   		    propertyValue.addAll((java.util.Collection)value);
 			   	    }
               java.util.List collection;
               if (methodAndParms.length() > 0) {
@@ -198,16 +198,16 @@ if (attributeEntry == null) {
               }
 
 			   	    if(collection != null && collection.size() > 0) {
-			   		  for(Object obj : collection) {
-				   	    org.kuali.rice.core.api.util.KeyValue pair = (org.kuali.rice.core.api.util.KeyValue) obj;
-				   	    for (Object val : propertyValue) {
-					   	  if(pair.getKey() != null && pair.getKey().equals(val)) {
-					   	    if (!selectedOptionDescription.trim().equals("")) {
-					   	      selectedOptionDescription += "<br />";
+				   	  for (Object val : propertyValue) {
+                for (Object obj : collection) {
+                  org.kuali.rice.core.api.util.KeyValue pair = (org.kuali.rice.core.api.util.KeyValue) obj;
+					   	    if(pair.getKey() != null && pair.getKey().equals(val)) {
+					   	      if (!selectedOptionDescription.trim().equals("")) {
+					   	        selectedOptionDescription += "<br />";
+					   	      }
+					   	      selectedOptionDescription += pair.getValue();
+					   	      break;
 					   	    }
-					   	    selectedOptionDescription += pair.getValue();
-					   	    break;
-					   	  }
 				   	    }
 				   	  }
 				   	  pageCtx.setAttribute("readOnlyAlternateDisplay", selectedOptionDescription);

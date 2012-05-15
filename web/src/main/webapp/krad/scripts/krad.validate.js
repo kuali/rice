@@ -1435,6 +1435,7 @@ function runValidationScript(scriptFunction) {
 /**
  * Validate the a specific field's control defined by the selector/jQuery array passed in.  Also calls dependsOnCheck
  * to validate any dependant fields.
+ *
  * @param fieldControl selector/jQuery array that represents the control to validate
  */
 function validateFieldValue(fieldControl){

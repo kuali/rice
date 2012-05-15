@@ -187,6 +187,18 @@
   </properties>
 
   <profiles>
+    <!-- Optimize the nightly build -->
+    <profile>
+      <id>nightly</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <server.phase>none</server.phase>
+        <src.phase>none</src.phase>
+        <bin.phase>none</bin.phase>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <kuali.gpg.phase>none</kuali.gpg.phase>
+      </properties>
+    </profile>
     <!-- Profile for quickly creating basic Maven site -->
     <profile>
       <id>minsite</id>

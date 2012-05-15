@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.2.9</version>
+    <version>1.2.12</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -46,9 +46,6 @@
   </ciManagement>
 
   <properties>
-    <kuali-deploy.version>1.0.6</kuali-deploy.version>
-    <!-- Take this out once 2.0 is released and the kuali-common POM starts using this same version -->
-    <kuali.cm.tools.version>1.1.7</kuali.cm.tools.version>
     <!-- These properties modify the release process -->
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
@@ -321,9 +318,9 @@
           <artifactId>maven-checkstyle-plugin</artifactId>
           <dependencies>
             <dependency>
-              <groupId>org.kuali.common.cm</groupId>
-              <artifactId>cm-tools</artifactId>
-              <version>${kuali.cm.tools.version}</version>
+              <groupId>org.kuali.common</groupId>
+              <artifactId>kuali-cm</artifactId>
+              <version>${kuali-cm.version}</version>
             </dependency>
             <dependency>
               <groupId>org.kuali.rice</groupId>

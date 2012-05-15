@@ -1432,6 +1432,11 @@ function runValidationScript(scriptFunction) {
     }
 }
 
+/**
+ * Validate the a specific field's control defined by the selector/jQuery array passed in.  Also calls dependsOnCheck
+ * to validate any dependant fields.
+ * @param fieldControl selector/jQuery array that represents the control to validate
+ */
 function validateFieldValue(fieldControl){
     //remove the ignore class if any due to a bug in the validate 
     //plugin for direct validation on certain types
@@ -1449,10 +1454,19 @@ function validateFieldValue(fieldControl){
     return valid;
 }
 
-//checks to see if any fields depend on the field being validated, if they do calls validate
-//on them as well which will either add errors or remove them
-//Note: with the way that validation work the field must have been previously validated (ie validated)
+/**
+ * Checks to see if any controls depend on the control being validated, if they do calls validate
+ * on them as well which will either add errors or remove them
+ * Note: with the way that validation works the field must have been previously validated
+ *
+ * @param element control to check and validate dependent controls for
+ * @param nameArray an array that is passed into this method that collects the names that have already been
+ * validated/checked, to skip those names in future iterations because this method is recursive
+ */
 function dependsOnCheck(element, nameArray) {
+    if(nameArray == undefined){
+        nameArray = new Array();
+    }
     var name;
     if (jQuery(element).is("option")) {
         name = jQuery(element).parent().attr('name');

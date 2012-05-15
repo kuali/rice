@@ -214,6 +214,8 @@
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="route report"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="complete" p:actionLabel="complete"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COMPLETE]}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="send adhoc"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="submit" p:clientSideValidate="true"

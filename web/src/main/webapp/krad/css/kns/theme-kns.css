@@ -49,6 +49,10 @@ h3.uif-headerText {
     padding: .3em;
 }
 
+h3.uif-headerText a{
+    color: #FFF;
+}
+
 h4.uif-headerText {
 }
 

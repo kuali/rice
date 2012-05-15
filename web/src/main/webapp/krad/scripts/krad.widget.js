@@ -427,18 +427,17 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         var groupAccordionSpanId = groupId + "_disclosureContent";
 
         // perform initial open/close and insert toggle link and image
-        var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").html();
+        var headerText = jQuery("#" + headerId + " > :header, #" + headerId + " > label").find(".uif-headerText-span");
         if (defaultOpen) {
             jQuery("#" + groupAccordionSpanId).slideDown(000);
-            headerText = expandImage + headerText;
+            headerText.prepend(expandImage);
         }
         else {
             jQuery("#" + groupAccordionSpanId).slideUp(000);
-            headerText = collapseImage + headerText;
+            headerText.prepend(collapseImage);
         }
 
-        jQuery("#" + headerId + " > :header, #" + headerId + " > label").html(headerText);
-        jQuery("#" + headerId + " > :header, #" + headerId + " > label").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
+        headerText.wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
         var animationFinishedCallback = function(){
             jQuery("#" + kradVariables.APP_ID).attr("data-skipResize", false);

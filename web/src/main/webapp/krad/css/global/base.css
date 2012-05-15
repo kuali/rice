@@ -183,6 +183,10 @@ h3.uif-headerText {
     font: bold 18px Helvetica;
 }
 
+h3.uif-headerText a{
+    font-weight: bold;
+}
+
 h4.uif-headerText {
     font: normal 16px Helvetica;
 }
@@ -209,6 +213,7 @@ h6.uif-headerText {
 
 /** header disclosure image style **/
 img.uif-disclosure-image {
+    padding-right: 0.25em;
     margin-bottom: 5px;
     vertical-align: middle;
 }
@@ -769,7 +774,7 @@ li.uif-navigationItem-current a, li.uif-navigationItem-current a:hover {
     font-size: 0.9em;
     font-weight: normal;
     padding-left: 1.3em;
-    vertical-align: baseline;
+    vertical-align: top;
     display: inline;
 }
 
@@ -960,6 +965,11 @@ li.uif-infoMessageItem:before {
 /** true when rendering outside tooltip **/
 .uif-validationMessages > .uif-clientMessageItems ul {
     border: 1px dashed black;
+}
+
+/** Help  *******************************************************************************************/
+.uif-helpImage{
+    margin-left: .2em;
 }
 
 /* Toooltip styles for validation messages **************************************************************/

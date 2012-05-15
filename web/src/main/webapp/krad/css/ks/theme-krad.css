@@ -47,7 +47,6 @@ h2 img.uif-disclosure-image[alt="expand"] {
     /* NOT renamed in xml and/or jsp, as this will break js functionality   */
     background: url(../../images/h2_expand-back-ks.png);
     background-repeat: no-repeat;
-    padding-right: .25em;
 }
 
 h2 img.uif-disclosure-image[alt="collapse"] {
@@ -55,19 +54,16 @@ h2 img.uif-disclosure-image[alt="collapse"] {
     /* NOT renamed in xml and/or jsp, as this will break js functionality   */
     background: url(../../images/h2_collapse-back-ks.png);
     background-repeat: no-repeat;
-    padding-right: .25em;
 }
 
 img.uif-disclosure-image[alt="collapse"] {
     background: url(../../images/h3_collapse-back-ks.png);
     background-repeat: no-repeat;
-    padding-right: .25em;
 }
 
 img.uif-disclosure-image[alt="expand"] {
     background: url(../../images/h3_expand-back-ks.png);
     background-repeat: no-repeat;
-    padding-right: .25em;
 }
 
 /** Buttons *********************************************************************************************/

@@ -1240,9 +1240,10 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
  */
 function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, sectionId, before) {
 
-    var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label").html();
+    var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header .uif-headerText-span, "
+                + "> label .uif-headerText-span").text();
     var sectionType = "section";
-    if (sectionTitle == null) {
+    if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
         sectionType = "field group";
@@ -1309,10 +1310,6 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
 
         //write disclosure link and div
         disclosureLink = jQuery("<li tabindex='0' class='" + linkType + "'>" + disclosureText + "</li>");
-        jQuery(disclosureLink).find(".uif-messageCount").remove();
-        jQuery(disclosureLink).find("img").remove();
-        jQuery(disclosureLink).find("input[type='image']").remove();
-        //jQuery(disclosureLink).prepend(image);
         jQuery(subSummary).appendTo(disclosureLink);
     }
     return disclosureLink;
@@ -1325,9 +1322,10 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
  */
 function generateSummaryLink(sectionId) {
     //determine section title and section type
-    var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label").html();
+    var sectionTitle = jQuery("[data-headerFor='" + sectionId + "']").find("> :header .uif-headerText-span, "
+            + "> label .uif-headerText-span").text();
     var sectionType = "section";
-    if (sectionTitle == null) {
+    if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
         sectionType = "field group";
@@ -1365,9 +1363,6 @@ function generateSummaryLink(sectionId) {
         }
         summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a href='#'>"
                 + summaryMessage + "</a></li>");
-        summaryLink.find(".uif-messageCount").remove();
-        summaryLink.find("img").remove();
-        summaryLink.find("input[type='image']").remove();
 
         summaryLink.find("a").click(function () {
             var header = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");

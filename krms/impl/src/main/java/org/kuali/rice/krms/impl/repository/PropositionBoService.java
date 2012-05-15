@@ -24,6 +24,13 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+/**
+ * This is the interface for accessing KRMS repository Proposition related
+ * business objects.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public interface PropositionBoService {
 
     /**

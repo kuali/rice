@@ -1432,7 +1432,9 @@ config.parseConfig();             </programlisting>
                     xlink:href="http://www.atomikos.com/Main/TransactionsEssentials">Atomikos
                     TransactionsEssentials</link>, and there are also commercial and open source JTA
                 implementations that come as part of an application server (i.e. JBoss, WebSphere,
-                GlassFish).</para>
+                GlassFish).  Alternatively, Kuali Rice can be configured to use
+                <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link>.
+            </para>
             <para>If installing Rice using the standalone server option and a full Java application
                 server is not being utilized, then the libraries required for JTA will need to be
                 moved to the servlet server which is being used. These libraries have already been
@@ -1588,6 +1590,7 @@ config.parseConfig();             </programlisting>
             </sect3>
             <sect3>
               <title>Configuring Bitronix Transactional Data Sources</title>
+              <para>An example configuration of Btironix Transactional Data Sources:</para>
   <programlisting>&lt;bean id="riceDataSourceBitronixXa" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
          destroy-method="close" lazy-init="true">
     &lt;property name="className" value="oracle.jdbc.xa.client.OracleXADataSource" />
@@ -1613,7 +1616,8 @@ config.parseConfig();             </programlisting>
             </sect3>
             <sect3>
               <title>Configuring Bitronix Non-Transactional Data Sources</title>
-              <para>Notice the addition of the driverClassName prop in the dirverProperties.</para>
+              <para>Notice the addition of the driverClassName prop in the dirverProperties in the non-transaction data
+                source configuration</para>
   <programlisting>&lt;bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
         destroy-method="close" lazy-init="true">
     &lt;property name="className" value="bitronix.tm.resource.jdbc.lrc.LrcXADataSource" />

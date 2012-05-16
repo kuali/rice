@@ -111,7 +111,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-Label" p:labelText="Help widget not attached to any component (nothing will be show)" />
+        <bean id="mouse-out" parent="Uif-Label" p:labelText="Help widget not attached to any component (nothing will be show)" />
         <bean id="standalone-help-not-rendered" parent="Uif-Help">
           <property name="tooltipHelpContent" value="Sample text for standalone help widget tooltip which will never be rendered"/>
         </bean>
@@ -263,7 +263,7 @@
         </bean>
 
         <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
-        <bean id="standalone-external-help" parent="Uif-Help">
+        <bean p:helpAction.id="standalone-external-help" parent="Uif-Help">
           <property name="externalHelpUrl" value="http://www.kuali.org/?widget_only"/>
         </bean>
 
@@ -304,12 +304,10 @@
     <property name="items">
       <list>
 
-        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+        <bean id="external-help-externalHelpUrl-empty" parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
           <property name="help">
             <bean parent="Uif-Help">
-              <property name="helpDefinition">
-                <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
-              </property>
+              <property name="externalHelpUrl" value=""/>
             </bean>
           </property>
           <property name="control">
@@ -317,7 +315,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+        <bean id="external-help-helpdefinition-empty" parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
           <property name="help">
             <bean parent="Uif-Help">
               <property name="helpDefinition">
@@ -330,8 +328,21 @@
           </property>
         </bean>
 
+        <bean id="external-help-system-parm-missing" parent="Uif-InputField" p:propertyName="field102" p:label="Field Label">
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="helpDefinition">
+                <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
+              </property>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
         <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
-        <bean parent="Uif-Help">
+        <bean p:helpAction.id="standalone-external-help-missing" parent="Uif-Help">
           <property name="helpDefinition">
             <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
           </property>
@@ -414,7 +425,7 @@
         <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
               p:help.helpDefinition.parameterNamespace="KR-SAP" p:help.helpDefinition.parameterName="TEST_PARAM"
               p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
-              p:help.tooltipHelpContent="Check box help&lt;br&gt;&lt;font color=&quot;green&quot;&gt;with &lt;b&gt;html&lt;/b&gt; formating&lt;/font&gt;">
+              p:help.tooltipHelpContent="Sample text for check box help&lt;br&gt; &lt;a href='http://google.com'&gt;dd&lt;/a&gt; &lt;font color=&quot;green&quot;&gt;with &lt;b&gt;html&lt;/b&gt; formatting&lt;/font&gt;">
           <property name="control">
             <bean parent="Uif-CheckboxControl"/>
           </property>

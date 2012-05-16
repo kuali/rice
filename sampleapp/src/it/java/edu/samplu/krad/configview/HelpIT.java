@@ -28,6 +28,12 @@ import static org.junit.Assert.*;
 /**
  * Test the help widget
  *
+ * <p>
+ * Selenium RC does not allow us to test the external help popup windows due to an error on JavaScrips window.close
+ * method when selenium is running.  To test the external help we use the {@link HelpIT2} test
+ * which utilizes WebDriver.  Unfortunately due to a WebDriver bug/feature we can't test the tooltip help there.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HelpIT {
@@ -228,87 +234,7 @@ public class HelpIT {
         assertFalse(selenium.isElementPresent("css=.jquerybubblepopup"));
     }
 
-    /**
-     * Test the external help on the section and fields
-     */
-    // TODO: The test fails due to the javascript error
-    //   Error: Permission denied to access property 'close'
-    //   Source File: http://localhost:8080/kr-dev/krad/scripts/krad.utility.js
-    //   Line: 657
-    // when closing the help window.  It works when selenium is not running.
-    @Ignore
-    @Test
-    public void testExternalHelp() throws Exception {
-
-        // test external help of section
-        selenium.click("css=input[title=\"Help for External Help\"]");
-        selenium.waitForPopUp("HelpWindow", "30000");
-        selenium.selectPopUp("HelpWindow");
-        assertEquals("http://www.kuali.org/?section", selenium.getLocation());
-        selenium.deselectPopUp();
-
-        // test external help of field with label left
-        selenium.click("css=#field-label-left-external-help .uif-helpImage");
-        selenium.waitForPopUp("HelpWindow", "30000");
-        Thread.sleep(HELP_WINDOW_LOAD_DELAY);
-        selenium.selectPopUp("HelpWindow");
-        assertEquals("http://www.kuali.org/?label_left", selenium.getLocation());
-        selenium.deselectPopUp();
-
-        // test external help of field with label right
-        selenium.click("css=#field-label-right-external-help .uif-helpImage");
-        selenium.waitForPopUp("HelpWindow", "30000");
-        Thread.sleep(HELP_WINDOW_LOAD_DELAY);
-        selenium.selectPopUp("HelpWindow");
-        assertEquals("http://www.kuali.org/?label_right", selenium.getLocation());
-        selenium.deselectPopUp();
-
-        // test external help of field with label top and help URL from system parameters
-        // TODO: insert database data
-//        selenium.click("css=#field-label-top-external-help .uif-helpImage");
-//        selenium.waitForPopUp("HelpWindow", "30000");
-//        Thread.sleep(HELP_WINDOW_LOAD_DELAY);
-        //        selenium.selectPopUp("HelpWindow");
-//        assertEquals("http://www.kuali.org/?label_top", selenium.getLocation());
-//        selenium.deselectPopUp();
-
-        // test external help of standalone help widget
-        selenium.click("css=#standalone-external-help .uif-helpImage");
-        selenium.waitForPopUp("HelpWindow", "30000");
-        Thread.sleep(HELP_WINDOW_LOAD_DELAY);
-        selenium.selectPopUp("HelpWindow");
-        assertEquals("http://www.kuali.org/?label_top", selenium.getLocation());
-        selenium.deselectPopUp();
-    }
-
-    /**
-     * Test the external help on the sub-section and display only fields
-     */
-    @Ignore
-    @Test
-    public void testDisplayOnlyExternalHelp() throws Exception {
-        //TODO: create test
-    }
-
-    /**
-     * Test the external help on the section and fields with missing help URL
-     */
-    @Ignore
-    @Test
-    public void testMissingExternalHelp() throws Exception {
-        //TODO: create test
-    }
-
-    /**
-     * Test the tooltip help and external help when both are specified
-     */
-    @Ignore
-    @Test
-    public void testTooltipExternalHelp() throws Exception {
-        //TODO: create test
-    }
-
-    @After
+   @After
     public void tearDown() throws Exception {
         selenium.stop();
     }

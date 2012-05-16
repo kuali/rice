@@ -214,12 +214,12 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         /**
          * Sets the value of the value on this builder to the given value.
          *
-         * @param value the value value to set, must not be null or blank
-         * @throws IllegalArgumentException if the value is null or blank
+         * @param value the value value to set, may be null, must not be an empty string
+         * @throws IllegalArgumentException if the value an empty string
          */
 		public void setValue(String value) {
-            if (StringUtils.isBlank(value)) {
-                throw new IllegalArgumentException("value must not be null or blank");
+            if ("".equals(value)) {
+                throw new IllegalArgumentException("value must not be an empty string");
             }
 			this.value = value;
 		}

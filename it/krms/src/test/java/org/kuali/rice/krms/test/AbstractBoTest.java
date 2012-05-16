@@ -65,10 +65,14 @@ public abstract class AbstractBoTest extends KRMSTestCase {
         }
 
         // KrmsType for context
-        KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
-        krmsContextTypeDefnBuilder.setAttributes(contextAttributeBuilders);
-        KrmsTypeDefinition krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
-        krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
+        KrmsTypeDefinition krmsContextTypeDefinition = krmsTypeRepository.getTypeByName(nameSpace, "KrmsTestContextType");
+
+        if (krmsContextTypeDefinition == null) {
+            KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
+            krmsContextTypeDefnBuilder.setAttributes(contextAttributeBuilders);
+            krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
+            krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
+        }
 
         // Context
         ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(nameSpace, name);

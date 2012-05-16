@@ -73,6 +73,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     static final String EARTHQUAKE_EVENT = "Earthquake";
     static final String CONTEXT1 = "Context1";
     static final String CONTEXT2 = "Context2";
+    static final String CONTEXT3 = "Context3";
     static final String NAME = "name";
     static final String CONTEXT1_QUALIFIER = "Context1Qualifier";
     static final String CONTEXT1_QUALIFIER_VALUE = "BLAH1";
@@ -82,11 +83,13 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     static final String AGENDA2 = "Agenda2";
     static final String AGENDA3 = "Agenda3";
     static final String AGENDA4 = "Agenda4";
+    static final String AGENDA5 = "Agenda5";
     static final String PREREQ_TERM_NAME = "prereqTermSpec";
     static final String PREREQ_TERM_VALUE = "prereqValue";
     static final String NAMESPACE_CODE = "namespaceCode";
     static final String BOOL1 = "bool1";
     static final String BOOL2 = "bool2";
+    static final String NULL_FACT = "nullFact";
 
 //    // Services needed for creation:
 	private TermBoService termBoService;
@@ -141,15 +144,60 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
             ContextDefinition contextDefinition2 = createContextDefinition(NAMESPACE2, CONTEXT2, Collections.singletonMap(
                     CONTEXT2_QUALIFIER, CONTEXT2_QUALIFIER_VALUE));
 
+            ContextDefinition contextDefinition3 = createContextDefinition(NAMESPACE1, CONTEXT3,
+                    Collections.<String,String>emptyMap());
+
             // Create multiple agendas so that we can test selection
             createAgendaDefinition(AGENDA2, contextDefinition2, EARTHQUAKE_EVENT, NAMESPACE2);
             createAgendaDefinition(AGENDA3, contextDefinition2, EARTHQUAKE_EVENT, NAMESPACE2);
             createAgendaDefinition(AGENDA4, contextDefinition2, TSUNAMI_EVENT, NAMESPACE2);
+            createAgendaDefinition2(AGENDA5, contextDefinition3, NAMESPACE1);
 
             perfLog.log("finished agenda creation", true);
         }
     }
 
+    @Transactional
+    @Test
+    public void testNullFact() {
+
+        Map<String,String> contextQualifiers = new HashMap<String,String>();
+        contextQualifiers.put(NAMESPACE_CODE, NAMESPACE1);
+        contextQualifiers.put(NAME, CONTEXT3);
+
+        Map<String,String> agendaQualifiers = new HashMap<String,String>();
+        agendaQualifiers.put(NAME, AGENDA5);
+
+        DateTime now = new DateTime();
+
+        SelectionCriteria sc1 = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
+
+        Facts.Builder factsBuilder1 = Facts.Builder.create();
+        factsBuilder1.addFact(NULL_FACT, null);
+
+        ExecutionOptions xOptions1 = new ExecutionOptions();
+        xOptions1.setFlag(ExecutionFlag.LOG_EXECUTION, true);
+
+        PerformanceLogger perfLog = new PerformanceLogger();
+        perfLog.log("starting rule execution");
+        EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(sc1, factsBuilder1.build(), xOptions1);
+        perfLog.log("finished rule execution", true);
+        List<ResultEvent> rEvents1 = eResults1.getAllResults();
+
+        List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
+
+        assertEquals("1 rules should have been evaluated", 1, ruleEvaluationResults1.size());
+
+        assertTrue("rule 0 should have evaluated to true", ruleEvaluationResults1.get(0).getResult());
+
+        // ONLY agenda 1 should have been selected
+        assertTrue(TestActionTypeService.actionFired("Agenda5::Rule5::TestAction"));
+
+        assertAgendaDidNotExecute(AGENDA1);
+        assertAgendaDidNotExecute(AGENDA2);
+        assertAgendaDidNotExecute(AGENDA3);
+        assertAgendaDidNotExecute(AGENDA4);
+    }    
 
     @Transactional
     @Test
@@ -200,6 +248,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         assertAgendaDidNotExecute(AGENDA2);
         assertAgendaDidNotExecute(AGENDA3);
         assertAgendaDidNotExecute(AGENDA4);
+        assertAgendaDidNotExecute(AGENDA5);
     }
 
     @Transactional
@@ -253,6 +302,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         assertTrue(TestActionTypeService.actionFired("Agenda3::Rule3::TestAction"));
 
         assertAgendaDidNotExecute(AGENDA4);
+        assertAgendaDidNotExecute(AGENDA5);
     }
 
 
@@ -306,6 +356,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         assertTrue(TestActionTypeService.actionFired("Agenda3::Rule3::TestAction"));
 
         assertAgendaDidNotExecute(AGENDA4);
+        assertAgendaDidNotExecute(AGENDA5);
     }
 
     private void assertAgendaDidNotExecute(String agendaName) {
@@ -353,6 +404,24 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         agendaBoService.updateAgenda(agendaDef);
     }
 
+    private void createAgendaDefinition2(String agendaName, ContextDefinition contextDefinition, String nameSpace ) {
+
+        AgendaDefinition agendaDef =
+                AgendaDefinition.Builder.create(null, agendaName, null, contextDefinition.getId()).build();
+        agendaDef = agendaBoService.createAgenda(agendaDef);
+
+        AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
+        agendaItemBuilder1.setRuleId(createRuleDefinition5(contextDefinition, agendaName, nameSpace).getId());
+
+        AgendaItemDefinition agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
+
+        AgendaDefinition.Builder agendaDefBuilder1 = AgendaDefinition.Builder.create(agendaDef);
+        agendaDefBuilder1.setFirstItemId(agendaItem1.getId());
+        agendaDef = agendaDefBuilder1.build();
+
+        agendaBoService.updateAgenda(agendaDef);
+    }
+
     private KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
         String ACTION_TYPE_NAME = "KrmsActionResolverType";
         KrmsTypeDefinition krmsActionTypeDefinition =  krmsTypeRepository.getTypeByName(nameSpace, ACTION_TYPE_NAME);
@@ -387,7 +456,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
             propositionNameBuilder.append("::");
             for (Object[] param : params.params) {
-                propositionNameBuilder.append(param[0].toString());
+                propositionNameBuilder.append((param[0] == null) ? "null" : param[0].toString());
                 propositionNameBuilder.append("--");
             }
 
@@ -544,6 +613,16 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         params2.add("=", PropositionParameterType.OPERATOR);
 
         return createRuleDefinition(nameSpace, agendaName+"::Rule4", contextDefinition, LogicalOperator.AND, params1, params2);
+    }
+
+    private RuleDefinition createRuleDefinition5(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+
+        PropositionParametersBuilder params1 = new PropositionParametersBuilder();
+        params1.add(createTermDefinition(NULL_FACT, Boolean.class, contextDefinition).getId(), PropositionParameterType.TERM);
+        params1.add(null, PropositionParameterType.CONSTANT);
+        params1.add("=", PropositionParameterType.OPERATOR);
+
+        return createRuleDefinition(nameSpace, agendaName+"::Rule5", contextDefinition, LogicalOperator.AND, params1);
     }
 
 

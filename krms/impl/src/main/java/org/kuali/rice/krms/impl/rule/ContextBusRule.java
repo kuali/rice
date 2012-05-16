@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
@@ -29,17 +30,28 @@ public class ContextBusRule extends MaintenanceDocumentRuleBase {
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
         boolean isValid = true;
 
-        ContextBo context = (ContextBo) document.getNewMaintainableObject().getDataObject();
-        isValid &= validateId(context);
-        isValid &= validateNameNamespace(context);
+        ContextBo newContext = (ContextBo) document.getNewMaintainableObject().getDataObject();
+        ContextBo oldContext = (ContextBo) document.getOldMaintainableObject().getDataObject();
+        boolean isEditAction = KRADConstants.MAINTENANCE_EDIT_ACTION.equals(document.getNewMaintainableObject().getMaintenanceAction());
+
+        isValid &= validateId(oldContext, newContext, isEditAction);
+        isValid &= validateNameNamespace(newContext, isEditAction);
 
         return isValid;
     }
 
-    private boolean validateId(ContextBo context) {
-        if (StringUtils.isNotBlank(context.getId())) {
-            ContextDefinition contextInDatabase = getContextBoService().getContextByContextId(context.getId());
-            if ((contextInDatabase  != null) && (!StringUtils.equals(contextInDatabase.getId(), context.getId()))) {
+    private boolean validateId(ContextBo oldContext, ContextBo newContext, boolean isEditAction) {
+        if (StringUtils.isBlank(newContext.getId())) {
+            this.putFieldError(KRMSPropertyConstants.Context.CONTEXT_ID, "error.context.blankId");
+            return false;
+        }
+        if (isEditAction) {
+            if (!oldContext.getId().equals(newContext.getId())) {
+                throw new IllegalStateException("The ID of a Context being edited must not change.");
+            }
+        } else {
+            ContextDefinition contextInDatabase = getContextBoService().getContextByContextId(newContext.getId());
+            if (contextInDatabase  != null) {
                 this.putFieldError(KRMSPropertyConstants.Context.CONTEXT_ID, "error.context.duplicateId");
                 return false;
             }
@@ -50,16 +62,32 @@ public class ContextBusRule extends MaintenanceDocumentRuleBase {
 
     /**
      * Check if the name-namespace pair already exist.
-     * @param context
+     * @param newContext
      * @return true if the name-namespace pair is unique, false otherwise
      */
-    private boolean validateNameNamespace(ContextBo context) {
-        if (StringUtils.isNotBlank(context.getName()) && StringUtils.isNotBlank(context.getNamespace())) {
-            ContextDefinition contextInDatabase = getContextBoService().getContextByNameAndNamespace(context.getName(), context.getNamespace());
-            if((contextInDatabase != null) && (!StringUtils.equals(contextInDatabase.getId(), context.getId()))) {
+    private boolean validateNameNamespace(ContextBo newContext, boolean isEditAction) {
+        if (isEditAction) {
+            ContextDefinition contextInDatabase = getContextBoService().getContextByNameAndNamespace(newContext.getName(), newContext
+                    .getNamespace());
+            if (!contextInDatabase.getId().equals(newContext.getId())) { // if ID is the same, it's not a duplicate
                 this.putFieldError(KRMSPropertyConstants.Context.NAME, "error.context.duplicateNameNamespace");
                 return false;
             }
+        } else if (StringUtils.isNotBlank(newContext.getName()) && StringUtils.isNotBlank(newContext.getNamespace())) {
+            ContextDefinition contextInDatabase = getContextBoService().getContextByNameAndNamespace(newContext.getName(), newContext
+                    .getNamespace());
+            if(contextInDatabase != null) {
+                this.putFieldError(KRMSPropertyConstants.Context.NAME, "error.context.duplicateNameNamespace");
+                return false;
+            }
+        } else {
+            if (StringUtils.isBlank(newContext.getName())) {
+                this.putFieldError(KRMSPropertyConstants.Context.NAME, "error.context.blankName");
+            }
+            if (StringUtils.isBlank(newContext.getNamespace())) {
+                this.putFieldError(KRMSPropertyConstants.Context.NAME, "error.context.blankNamespace");
+            }
+            return false;
         }
 
         return true;

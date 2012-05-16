@@ -31,7 +31,7 @@
         <bean parent="Uif-MaintenanceGridSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="id" p:label="Id"/>
+              <bean parent="Uif-InputField" p:propertyName="id" p:label="Id" p:readOnly="@{maintenanceAction eq 'Edit'}"/>
               <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
               <bean parent="Uif-InputField" p:propertyName="namespace" p:label="Namespace"/>
               <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Type"/>

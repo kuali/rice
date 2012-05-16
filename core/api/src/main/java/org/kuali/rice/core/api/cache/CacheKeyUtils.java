@@ -97,7 +97,7 @@ public final class CacheKeyUtils {
      *
      * @return the map as a string value
      */
-    public static <K extends Comparable<K>> String key(Map<K, Object> col) {
+    public static <K extends Comparable<K>> String mapKey(Map<K, ?> col) {
         if (col == null) {
             return "";
         }

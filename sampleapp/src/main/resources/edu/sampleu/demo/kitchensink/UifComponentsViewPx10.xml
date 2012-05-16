@@ -112,7 +112,7 @@
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 1" p:required="false" p:propertyName="field1" p:readOnly="false"
-              p:instructionalText="Hover mouse over label or select control to display tooltip">
+              p:exclusiveMin="2" p:instructionalText="Hover mouse over label or select control to display tooltip. Default tooltip should not display when field contains a message.">
           <property name="fieldLabel">
             <bean parent="Uif-Label">
               <property name="toolTip">

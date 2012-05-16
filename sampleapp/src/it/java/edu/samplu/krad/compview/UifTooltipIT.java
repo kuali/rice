@@ -65,6 +65,12 @@ public class UifTooltipIT {
         selenium.mouseOut("name=field2");
         Assert.assertFalse(selenium.isVisible(
                 "//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        // check that default tooltip does not display when there are an error message on the field
+        selenium.type("name=field1", "1");
+        selenium.fireEvent("name=field1", "blur");
+        selenium.fireEvent("name=field1", "focus");
+        Assert.assertFalse(selenium.isVisible(
+                "//td[contains(.,\"This tooltip is triggered by focus or and mouse over.\")]"));
     }
 
     @After

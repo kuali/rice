@@ -639,7 +639,7 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
         jQuery("#" + id).focus(function() {
 //            if (!jQuery("#" + id).IsBubblePopupOpen()) {
                 // TODO : use data attribute to check if control
-                if (!isControlWithMessages()) {
+                if (!isControlWithMessages(id)) {
                     jQuery("#" + id).SetBubblePopupOptions(options, true);
                     jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
                     jQuery("#" + id).ShowBubblePopup();
@@ -654,7 +654,7 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
         // Add mouse hover trigger
         jQuery("#" + id).hover(function() {
             if (!jQuery("#" + id).IsBubblePopupOpen()) {
-                if (!isControlWithMessages()) {
+                if (!isControlWithMessages(id)) {
                     jQuery("#" + id).SetBubblePopupOptions(options, true);
                     jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
                     jQuery("#" + id).ShowBubblePopup();
@@ -672,20 +672,31 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
 }
 
 /**
- * Checks if the component is a control that contains validation messages
+ * Checks if the component is a control or contains a control that contains validation messages
+ *
  * @param id the id of the field
  */
 function isControlWithMessages(id) {
-    if (jQuery("#" + id).is(".uif-control")) {
-        var fieldId = getAttributeId(id);
-        var messageData = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-        if (messageData) {
-            if (messageData.serverErrors.length || messageData.errors.length
-                    || messageData.serverWarnings.length || messageData.warnings.length
-                    || messageData.serverInfo.length || messageData.info.length) {
-                return true;
-            }
-        }
+    // check if component is or contains a control
+    if (jQuery("#" + id).is(".uif-control")
+            || (jQuery("#" + id).is(".uif-inputField") && jQuery("#" + id + "_control").is(".uif-control"))) {
+        return hasMessage(id)
+    }
+    return false;
+}
+
+/**
+ * Checks if a field has any messages
+ *
+ * @param id
+ */
+function hasMessage(id) {
+    var fieldId = getAttributeId(id);
+    var messageData = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+    if (messageData && (messageData.serverErrors.length || messageData.errors.length
+            || messageData.serverWarnings.length || messageData.warnings.length
+            || messageData.serverInfo.length || messageData.info.length)) {
+        return true;
     }
     return false;
 }

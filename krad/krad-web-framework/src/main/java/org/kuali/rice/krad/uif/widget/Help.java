@@ -128,7 +128,7 @@ public class Help extends WidgetBase {
      * @param parent used for checking misconfigurations
      */
     protected void buildTooltipHelp(Component parent) {
-        if (StringUtils.isNotBlank(tooltipHelpContent)) {
+        if (StringUtils.isNotBlank(tooltipHelpContent) && this.isRender()) {
             // make sure that we are the component's native help and not a misconfigured standalone help bean.
             if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
                 this.getToolTip().setTooltipContent(tooltipHelpContent);

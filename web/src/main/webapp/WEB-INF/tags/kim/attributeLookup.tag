@@ -51,4 +51,5 @@
 <c:set var="params" value="${fn:substringAfter(params, ',')}"/>
   <kul:lookup boClassName="${attr.dataObjectClass}"
               fieldConversions="${fieldConversion}"
-              lookupParameters="${params}"/>
+              lookupParameters="${params}"
+              baseLookupUrl="${attr.baseLookupUrl}"/>

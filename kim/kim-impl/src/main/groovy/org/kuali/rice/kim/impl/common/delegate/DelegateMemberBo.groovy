@@ -30,6 +30,7 @@ import org.springframework.util.AutoPopulatingList
 import java.sql.Timestamp
 import javax.persistence.Transient
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
+import org.apache.commons.collections.CollectionUtils
 
 @Entity
 @Table(name = "KRIM_DLGN_MBR_T")
@@ -79,7 +80,7 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
     }
 
     Map<String,String> getAttributes() {
-        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
+        return CollectionUtils.isNotEmpty(attributeDetails) ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
 
@@ -100,7 +101,8 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
                 memberId: immutable.memberId,
                 roleMemberId: immutable.roleMemberId,
                 typeCode: immutable.typeCode,
-                versionNumber: immutable.versionNumber
+                versionNumber: immutable.versionNumber,
+                attributes: immutable.attributes
         )
     }
 }

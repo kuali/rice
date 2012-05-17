@@ -22,6 +22,7 @@ import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.type.KimAttributeField;
@@ -51,7 +52,7 @@ public interface UiDocumentService {
 	 * 	  
 	 * @param identityManagementPersonDocument
 	 */
-    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, Principal.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
     void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument);
     
     /**

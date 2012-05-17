@@ -59,11 +59,20 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	 * @see org.kuali.rice.krad.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
 	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
-        	try {
-			return (T) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
-		} catch ( DataAccessException ex ) {
-    		// it doesn't exist, just return null
-			return null;
+		if (primaryKey.getClass().getName().startsWith("java.lang.")
+                || primaryKey.getClass().getName().startsWith("java.sql.")
+                || primaryKey.getClass().getName().startsWith("java.math.")
+                || primaryKey.getClass().getName().startsWith("java.util.")) {
+			try {
+				return (T) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
+			} catch ( DataAccessException ex ) {
+	    		// it doesn't exist, just return null
+				return null;
+			}
+		} else {
+			Criteria criteria = buildCriteria(clazz, primaryKey);
+
+	        return (T) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(clazz, criteria));
 		}
 	}
 

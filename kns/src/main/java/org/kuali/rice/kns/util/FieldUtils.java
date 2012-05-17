@@ -358,7 +358,7 @@ public final class FieldUtils {
         field.setPropertyName(attributeName);
         
         //hack to get correct BO impl in case of ebos....
-        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(businessObjectClass)) {
+        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
             ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
             businessObjectClass = moduleService.getExternalizableBusinessObjectDictionaryEntry(businessObjectClass).getDataObjectClass();
         }

@@ -44,8 +44,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 
     private static final Log LOG = LogFactory.getLog(ParameterLookupableHelperServiceImpl.class);
     private static final String COMPONENT_NAME = "component.name";
-    private static final String DERIVED_COMPONENT_NAME = "derivedComponent.name";
-    private static final String NAMESPACE_CODE = "namespaceCode";
+    private static final String COMPONENT_CODE = "componentCode";
 
     @Override
     protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
@@ -65,20 +64,13 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
 
-        List<ParameterBo> parametersWithDerivedComponents = null;
-
-        if (fieldValues.containsKey(COMPONENT_NAME) && StringUtils.isNotBlank(fieldValues.get(COMPONENT_NAME))) {
-            // also search based on derived component name
-            Map<String, String> derivedComponentFieldValues = new HashMap<String, String>(fieldValues);
-            String componentName = derivedComponentFieldValues.remove(COMPONENT_NAME);
-            derivedComponentFieldValues.put(DERIVED_COMPONENT_NAME, componentName);
-            parametersWithDerivedComponents = (List<ParameterBo>)super.getSearchResultsUnbounded(derivedComponentFieldValues);
+        if (fieldValues.containsKey(COMPONENT_NAME) && StringUtils.isNotBlank(fieldValues.get(COMPONENT_NAME)) && fieldValues.containsKey(COMPONENT_NAME)) {
+            //remove parameter code if parameter name exists.
+            fieldValues.remove(COMPONENT_CODE);
+            fieldValues.put(COMPONENT_CODE,"");
         }
 
         List<ParameterBo> results = (List<ParameterBo>)super.getSearchResultsUnbounded(fieldValues);
-        if (parametersWithDerivedComponents != null) {
-            results.addAll(parametersWithDerivedComponents);
-        }
         normalizeParameterComponents(results);
         return results;
     }

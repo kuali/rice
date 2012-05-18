@@ -111,7 +111,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
 
- 
+
+    private static final String WATCH_NAME = "PojoFormBase.populate";
 
     /**
      * Populates the form with values from the current request. Uses instances of Formatter to convert strings to the Java types of
@@ -120,11 +121,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      */
     @Override
 	public void populate(HttpServletRequest request) {
-        String watchName = "PojoFormBase.populate";
-        StopWatch watch = new StopWatch();
-        watch.start();
+
+        StopWatch watch = null;
         if (LOG.isDebugEnabled()) {
-            LOG.debug(watchName + ": started");
+            watch = new StopWatch();
+            watch.start();
+            LOG.debug(WATCH_NAME + ": started");
         }
         unconvertedValues.clear();
         unknownKeys = new ArrayList();
@@ -171,9 +173,9 @@ public class PojoFormBase extends ActionForm implements PojoForm {
             }
         }
         this.registerIsNewForm(false);
-        watch.stop();
         if (LOG.isDebugEnabled()) {
-            LOG.debug(watchName + ": " + watch.toString());	
+            watch.stop();
+            LOG.debug(WATCH_NAME + ": " + watch.toString());
         }
     }
 
@@ -185,7 +187,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * @param paramValue the value of that property
 	 * @param params the Map of parameters from the request
 	 */
-	protected void populateForProperty(String paramPath, Object paramValue,
+	public void populateForProperty(String paramPath, Object paramValue,
 			Map params) {
 		// get type for property
 		Class type = null;

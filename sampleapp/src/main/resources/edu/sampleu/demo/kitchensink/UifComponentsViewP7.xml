@@ -57,11 +57,13 @@
      <property name="headerText"
        value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
      <property name="instructionalText"
-       value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and multi-value lookup" />
+       value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and
+       multi-value lookup and having the actions in the first column" />
      <property name="collectionObjectClass"
        value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list2" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
+     <property name="layoutManager.actionColumnIndex" value="1" />
      <property name="layoutManager.richTable.render" value="true" />
      <property name="collectionLookup.render" value="true"/>
      <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>

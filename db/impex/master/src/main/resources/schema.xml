@@ -3419,6 +3419,9 @@
         <unique name="KRNS_NTE_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
+        <index name="KRNS_NTE_TI1">
+            <index-column name="RMT_OBJ_ID"/>
+        </index>
     </table>
     <table name="KRNS_NTE_TYP_T">
         <column name="NTE_TYP_CD" primaryKey="true" size="4" type="VARCHAR"/>

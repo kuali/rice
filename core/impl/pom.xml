@@ -432,9 +432,18 @@
         <id>monitoring</id>
         <properties>
           <monitoring.spring.import><![CDATA[
+
+          begin monitoring config
+  -->
           <import resource="classpath:net/bull/javamelody/monitoring-spring.xml" />
+  <!--
+  end monitoring config
+
           ]]></monitoring.spring.import>
           <monitoring.spring.service><![CDATA[
+
+          begin monitoring config
+  -->
           <import resource="classpath:net/bull/javamelody/monitoring-spring.xml" />
           <bean id="facadeMonitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
           <property name="pointcut">
@@ -443,6 +452,9 @@
           </bean>
           </property>
           </bean>
+  <!--
+  end monitoring config
+
           ]]></monitoring.spring.service>
         </properties>
       </profile>

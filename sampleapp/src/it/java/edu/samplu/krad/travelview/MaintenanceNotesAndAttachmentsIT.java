@@ -21,9 +21,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class MaintenanceConstraintTextIT {
+public class MaintenanceNotesAndAttachmentsIT {
     private Selenium selenium;
 
     @Before
@@ -34,9 +34,9 @@ public class MaintenanceConstraintTextIT {
 
     @Test
     /**
-     * Verify constraint text matches specific values
+     * Verify Notes and Attachments section and fields exist
      */
-    public void testVerifyConstraintText() throws Exception {
+    public void testVerifyNotesAndAttachments() throws Exception {
         selenium.open("/kr-dev/portal.do");
         selenium.type("name=__login_user", "admin");
         selenium.click("css=input[type=\"submit\"]");
@@ -45,10 +45,26 @@ public class MaintenanceConstraintTextIT {
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
-        assertEquals("Must be 10 digits", selenium.getText("css=#u802_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));
-        assertEquals("* indicates required field", selenium.getText("css=#u1138_span"));
+        selenium.selectFrame("iframeportlet");
+        selenium.click("css=#u168_col");
+
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                fail("timeout");
+            }
+
+            if (selenium.isElementPresent("css=#u221_add")) {
+                break;
+            }
+
+            Thread.sleep(1000);
+        }
+
+        assertTrue(selenium.isElementPresent("css=#u168_toggle > span.uif-headerText-span"));
+        assertTrue(selenium.isElementPresent("//textarea[@name=\"newCollectionLines['document.notes'].noteText\"]"));
+        assertTrue(selenium.isElementPresent("//input[@name='attachmentFile']"));
+        assertTrue(selenium.isElementPresent("//input[@name=\"newCollectionLines['document.notes'].attachment.attachmentTypeCode\"]"));
+
     }
 
     @After

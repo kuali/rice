@@ -21,9 +21,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class MaintenanceConstraintTextIT {
+public class MaintenanceAddDeleteFiscalOfficerIT {
     private Selenium selenium;
 
     @Before
@@ -34,9 +34,9 @@ public class MaintenanceConstraintTextIT {
 
     @Test
     /**
-     * Verify constraint text matches specific values
+     * Verify a fiscal officer line can be added and deleted
      */
-    public void testVerifyConstraintText() throws Exception {
+    public void testVerifyAddDeleteFiscalOfficer() throws Exception {
         selenium.open("/kr-dev/portal.do");
         selenium.type("name=__login_user", "admin");
         selenium.click("css=input[type=\"submit\"]");
@@ -45,10 +45,38 @@ public class MaintenanceConstraintTextIT {
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
-        assertEquals("Must be 10 digits", selenium.getText("css=#u802_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));
-        assertEquals("* indicates required field", selenium.getText("css=#u1138_span"));
+        selenium.selectFrame("iframeportlet");
+        selenium.type("id=u1067_add_control", "1234567890");
+        selenium.type("id=u1101_add_control", "2");
+        selenium.click("id=u1066_add");
+
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                fail("timeout");
+            }
+
+            if (selenium.isElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number")) {
+                break;
+            }
+
+            Thread.sleep(1000);
+        }
+
+        assertEquals("1234567890", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
+        assertEquals("2", selenium.getValue("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId"));
+        selenium.click("css=#u1065_line0");
+
+        for (int second = 0;; second++) {
+            if (second >= 15) {
+                fail("timeout");
+            }
+
+            if (!selenium.isElementPresent("name=document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number")) {
+                break;
+            }
+
+            Thread.sleep(1000);
+        }
     }
 
     @After

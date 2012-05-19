@@ -21,9 +21,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class MaintenanceConstraintTextIT {
+public class MaintenanceLookupAddMultipleLinesIT {
     private Selenium selenium;
 
     @Before
@@ -34,9 +34,9 @@ public class MaintenanceConstraintTextIT {
 
     @Test
     /**
-     * Verify constraint text matches specific values
+     * Verify Lookup/Add Multiple Lines link appears
      */
-    public void testVerifyConstraintText() throws Exception {
+    public void testVerifyLookupAddMultipleLines() throws Exception {
         selenium.open("/kr-dev/portal.do");
         selenium.type("name=__login_user", "admin");
         selenium.click("css=input[type=\"submit\"]");
@@ -45,10 +45,8 @@ public class MaintenanceConstraintTextIT {
         selenium.waitForPageToLoad("50000");
         selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
-        assertEquals("Must be 10 digits", selenium.getText("css=#u802_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));
-        assertEquals("* indicates required field", selenium.getText("css=#u1138_span"));
+        selenium.selectFrame("iframeportlet");
+        assertTrue(selenium.isElementPresent("//a[contains(text(),'Lookup/Add Multiple Lines')]"));
     }
 
     @After

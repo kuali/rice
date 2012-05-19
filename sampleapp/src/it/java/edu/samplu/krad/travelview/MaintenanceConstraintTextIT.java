@@ -35,19 +35,19 @@ public class MaintenanceConstraintTextIT {
 
     @Test
     /**
-     * Verify expand and collapse all buttons appear
+     * Verify constraint text matches specific values
      */
-    public void testVerifyHeaderFields() throws Exception {
+    public void testVerifyConstraintText() throws Exception {
         selenium.open("/kr-dev/portal.do");
         selenium.type("name=__login_user", "admin");
         selenium.click("css=input[type=\"submit\"]");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (Edit)");
+        selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
-        assertEquals("Must be 10 digits", selenium.getText("css=#u802_comp1_constraint_span"));
-        assertEquals("Must be 10 digits", selenium.getText("css=#u853_comp1_constraint_span"));
+        assertEquals("Must be 10 digits", selenium.getText("css=#u802_constraint_span"));
+        assertEquals("Must be 10 digits", selenium.getText("css=#u853_constraint_span"));
         assertEquals("Must be 10 digits", selenium.getText("css=#u1067_add_constraint_span"));
         assertEquals("* indicates required field", selenium.getText("css=#u1138_span"));
     }

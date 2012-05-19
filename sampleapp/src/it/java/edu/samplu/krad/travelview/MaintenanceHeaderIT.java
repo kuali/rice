@@ -42,7 +42,7 @@ public class MaintenanceHeaderIT {
         selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (Edit)");
+        selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
         selenium.selectFrame("iframeportlet");
         assertTrue(selenium.isElementPresent("//div[contains(@class, 'uif-documentNumber')]"));

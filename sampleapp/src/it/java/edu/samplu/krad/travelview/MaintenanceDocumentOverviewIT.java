@@ -36,14 +36,14 @@ public class MaintenanceDocumentOverviewIT {
     /**
      * Verify document overview section and contained fields appear
      */
-    public void testVerifyHeaderFields() throws Exception {
+    public void testVerifyDocumentOverview() throws Exception {
         selenium.open("/kr-dev/portal.do");
         selenium.type("name=__login_user", "admin");
         selenium.click("css=input[type=\"submit\"]");
         selenium.waitForPageToLoad("30000");
         selenium.click("link=KRAD");
         selenium.waitForPageToLoad("50000");
-        selenium.click("link=Travel Account Maintenance (Edit)");
+        selenium.click("link=Travel Account Maintenance (New)");
         selenium.waitForPageToLoad("100000");
         selenium.selectFrame("iframeportlet");
         assertTrue(selenium.isTextPresent("Document Overview"));

@@ -176,7 +176,7 @@
 									 <c:set var="mapKey" value = "getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" />
 									 <c:set var="attachmentTypeFinderMap" value="${KualiForm.actionFormUtilMap[mapKey]}"  />
                                        <c:forEach items="${attachmentTypeFinderMap}" var="type">
-                                         <c:if test="${type.key eq note.attachment.attachmentTypeCode}">${type.label}</c:if>
+                                         <c:if test="${type.key eq note.attachment.attachmentTypeCode}">${type.value}</c:if>
                                        </c:forEach>
                                      </td>
                                   </c:if>

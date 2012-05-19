@@ -224,6 +224,13 @@
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jsp-2.1-glassfish</artifactId>
       <scope>compile</scope>
+      <exclusions>
+        <!-- prevent ant:ant versus org.apache.ant:ant collision -->
+        <exclusion>
+        <groupId>ant</groupId>
+        <artifactId>ant</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     
     <dependency>
@@ -237,5 +244,10 @@
       <scope>compile</scope>
     </dependency>
 
+   <dependency>
+    <groupId>org.apache.ant</groupId>
+    <artifactId>ant</artifactId>
+   <version>${ant.version}</version>
+  </dependency>
   </dependencies>
 </project>

@@ -301,29 +301,17 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
                 name = ((RouteNode)routeLevelNodes.get(routeLevelInt)).getRouteNodeName();
             }
         } else {
-            name = "";
-            for (Iterator<String> iterator = getCurrentNodeNames().iterator(); iterator.hasNext();) {
-                String nodeName = iterator.next();
-                name += nodeName + (iterator.hasNext() ? CURRENT_ROUTE_NODE_NAME_DELIMITER : "");
-            }
+        	List<String> currentNodeNames = getCurrentNodeNames();
+        	name = StringUtils.join(currentNodeNames, CURRENT_ROUTE_NODE_NAME_DELIMITER);
         }
         return name;
     }
 
     public List<String> getCurrentNodeNames() {
-        List<String> currentNodeNames = new ArrayList<String>();
-        Collection<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getDocumentId());
-        if (nodeInstances.isEmpty()) {
-            nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getDocumentId());
-        }
-        for (RouteNodeInstance nodeInstance : nodeInstances) {
-            if (nodeInstance.getRouteNode() != null) {
-                currentNodeNames.add(nodeInstance.getRouteNode().getRouteNodeName());
-            }
-            else {
-                currentNodeNames.add("");
-            }
-        }
+    	List<String> currentNodeNames = KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(getDocumentId());
+    	if(currentNodeNames.isEmpty()) {
+    		currentNodeNames = KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(getDocumentId());
+    	}
         return currentNodeNames;
     }
 

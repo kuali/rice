@@ -74,6 +74,7 @@
     <maven.surefire.skip>false</maven.surefire.skip>
 
     <!-- project dependencies -->
+    <ant.version>1.7.0</ant.version>
     <antlr.version>2.7.7</antlr.version>
     <aopalliance.version>1.0</aopalliance.version>
     <asm.version>3.3.1</asm.version>

@@ -23,13 +23,15 @@
  * Additionally, the generated project can be imported into Eclipse.
  */
 
-if (args.length < 2 || args.length > 9) {
+
+if (args.length < 2 || args.length > 10) {
 	println 'usage: groovy createproject.groovy -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR] [-mdir MAVEN_HOME] [-sampleapp] [-standalone]'
 	System.exit(1)
 }
 
 PROJECT_DIR = '/java/projects'
 RICE_DIR = '/java/projects/rice'
+TESTMODE = false
 MAVEN_HOME = ''
 SAMPLEAPP = false
 STANDALONE = false
@@ -42,6 +44,7 @@ for (arg in args) {
 	if (arg == '-mdir') MAVEN_HOME = args[count + 1]
 	if (arg == '-sampleapp') SAMPLEAPP = true
 	if (arg == '-standalone') STANDALONE = true
+    if (arg == '-testmode') TESTMODE = true
 	count++
 }
 
@@ -68,18 +71,18 @@ TEMPLATE_BINDING = [
 			"\${monitoring.mapping}":"",
 			"sample-app":PROJECT_NAME
 		]
-
-println warningtext()
-
-input = new BufferedReader(new InputStreamReader(System.in))
-answer = input.readLine()
-if (!"yes".equals(answer.trim().toLowerCase())) {
-	System.exit(2)
+if(!TESTMODE) {
+    println warningtext()
+    input = new BufferedReader(new InputStreamReader(System.in))
+    answer = input.readLine()
+    if (!"yes".equals(answer.trim().toLowerCase())) {
+	    System.exit(2)
+    }
 }
 
 def maven = detectMaven(MAVEN_HOME)
 
-if (!maven) {
+if (!maven && !TESTMODE) {
 	println mavenwarningtext()
 	input = new BufferedReader(new InputStreamReader(System.in))
 	answer = input.readLine()
@@ -87,6 +90,7 @@ if (!maven) {
 		System.exit(2)
 	}
 }
+
 
 removeFile("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml")
 removeFile("${System.getProperty('user.home')}/kuali/main/dev/rice.keystore")
@@ -350,7 +354,9 @@ new File(PROJECT_PATH + '/instructions.txt') << instructionstext()
 
 println instructionstext()
 
-System.exit(0)
+if(!TESTMODE) {
+    System.exit(0)
+}
 
 def removeFile(path) {
 	if (new File(path).exists()) {

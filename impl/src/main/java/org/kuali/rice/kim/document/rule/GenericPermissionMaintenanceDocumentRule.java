@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.common.template.Template;
@@ -149,7 +150,7 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
     		return null;
     	}
     	try {
-	    	Object service = KIMServiceLocatorInternal.getService(serviceName);
+	    	Object service = GlobalResourceLoader.getService(serviceName);
 	    	// if we have a service name, it must exist
 	    	if ( service == null ) {
 				LOG.warn("null returned for permission type service for service name: " + serviceName);

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -984,16 +985,39 @@ public class KualiDocumentActionBase extends KualiAction {
         Document document = docForm.getDocument();
         // only want to prompt them to save if they already can save
         if (canSave(docForm)) {
+
+            // key for stashing unconvertedValues in the session
+            String unconvertedValuesSessionAttributeKey = "preCloseUnconvertedValues." + docForm.getDocId();
+
             Object question = getQuestion(request);
             // logic for close question
             if (question == null) {
+                if (MapUtils.isNotEmpty(docForm.getUnconvertedValues())) {
+                    // stash unconvertedValues so that we can use them for pre-save validation
+                    request.getSession().setAttribute(unconvertedValuesSessionAttributeKey, new HashMap(docForm.getUnconvertedValues()));
+                }
+
                 // ask question if not already asked
                 return this.performQuestionWithoutInput(mapping, form, request, response, KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION, getKualiConfigurationService().getPropertyValueAsString(
                         RiceKeyConstants.QUESTION_SAVE_BEFORE_CLOSE), KRADConstants.CONFIRMATION_QUESTION, KRADConstants.MAPPING_CLOSE, "");
             } else {
                 Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+
+                // first restore unconvertedValues and clear out of session
+                Map<String, Object> unconvertedValues = (Map<String, Object>)request.getSession().getAttribute(unconvertedValuesSessionAttributeKey);
+                if (MapUtils.isNotEmpty(unconvertedValues)) {
+                    request.getSession().removeAttribute(unconvertedValuesSessionAttributeKey);
+                    ((KualiDocumentFormBase) form).setUnconvertedValues(unconvertedValues);
+                }
+
                 if ((KRADConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
                     // if yes button clicked - save the doc
+
+                    // need to attempt to populate the unconverted values to set the appropriate global errors
+                    if (MapUtils.isNotEmpty(unconvertedValues)) for (Map.Entry<String, Object> entry : unconvertedValues.entrySet()) {
+                        ((KualiDocumentFormBase) form).populateForProperty(entry.getKey(), entry.getValue(), unconvertedValues);
+                    }
+
                     ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KRADPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "save", "");
                     if (forward != null) {
                         return forward;

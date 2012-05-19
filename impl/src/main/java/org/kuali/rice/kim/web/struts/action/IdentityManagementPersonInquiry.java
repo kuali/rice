@@ -17,6 +17,7 @@ package org.kuali.rice.kim.web.struts.action;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -79,7 +80,8 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
 
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
-	        KimTypeService kimTypeService = (KimTypeService) KIMServiceLocatorInternal.getService(getKimTypeServiceName(KimTypeBo.to(role.getKimRoleType())));
+	        KimTypeService kimTypeService = (KimTypeService) GlobalResourceLoader.getService(getKimTypeServiceName(
+                    KimTypeBo.to(role.getKimRoleType())));
 	        //it is possible that the the kimTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

@@ -17,6 +17,7 @@ package org.kuali.rice.kns.maintenance;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kim.api.identity.PersonService;
@@ -589,8 +590,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 		try {
 			ObjectUtils.setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
 					boolean.class, true, 2);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error("unable to set newCollectionRecord property: " + e.getMessage(), e);
 			throw new RuntimeException("unable to set newCollectionRecord property: " + e.getMessage(), e);
 		}

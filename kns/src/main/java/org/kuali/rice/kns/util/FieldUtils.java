@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -357,7 +358,7 @@ public final class FieldUtils {
         field.setPropertyName(attributeName);
         
         //hack to get correct BO impl in case of ebos....
-        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(businessObjectClass)) {
+        if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(businessObjectClass)) {
             ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(businessObjectClass);
             businessObjectClass = moduleService.getExternalizableBusinessObjectDictionaryEntry(businessObjectClass).getDataObjectClass();
         }
@@ -606,7 +607,7 @@ public final class FieldUtils {
                 if (isPropertyNested(propertyName) && !isObjectTreeNonNullAllTheWayDown(bo, propertyName) && ((!element.getFieldType().equals(Field.IMAGE_SUBMIT)) && !(element.getFieldType().equals(Field.CONTAINER)) && (!element.getFieldType().equals(Field.QUICKFINDER)))) {
                     element.setPropertyValue(null);
                 }
-                else if (PropertyUtils.isReadable(bo, propertyName)) {
+                else if (isPropertyReadable(bo, propertyName)) {
                 	populateReadableField(element, bo);
                 }
                 
@@ -626,6 +627,22 @@ public final class FieldUtils {
         }
 
         return populatedFields;
+    }
+    
+    private static boolean isPropertyReadable(Object bean, String name) {
+        try {
+            return PropertyUtils.isReadable(bean, name);
+        } catch (NestedNullException e) {
+            return false;
+        }
+    }
+
+    private static boolean isPropertyWritable(Object bean, String name) {
+        try {
+            return PropertyUtils.isWriteable(bean, name);
+        } catch (NestedNullException e) {
+            return false;
+        }
     }
 
     public static void populateReadableField(Field field, BusinessObject businessObject){
@@ -789,7 +806,7 @@ public final class FieldUtils {
                         String checkboxValue = (String) fieldValues.get(checkboxName);
                         if (checkboxValue == null) {
                             // didn't find a checkbox value, assume that it is unchecked
-                            if (PropertyUtils.isWriteable(bo, checkboxName)) {
+                            if (isPropertyWritable(bo, checkboxName)) {
                                 Class type = ObjectUtils.easyGetPropertyType(bo, checkboxName);
                                 if (type == Boolean.TYPE || type == Boolean.class) {
                                     // ASSUMPTION: unchecked means false
@@ -801,7 +818,7 @@ public final class FieldUtils {
                     // else, if not null, then it has a value, and we'll let the rest of the code handle it when the param is processed on
                     // another iteration (may be before or after this iteration).
                 }
-                else if (PropertyUtils.isWriteable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
+                else if (isPropertyWritable(bo, propertyName) && fieldValues.get(propertyName) != null ) {
                     // if the field propertyName is a valid property on the bo class
                     Class type = ObjectUtils.easyGetPropertyType(bo, propertyName);
                     try {

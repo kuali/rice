@@ -188,6 +188,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             if (StringUtils.isNotEmpty(field.fieldEvaluationExpr)) {
                 List<String> values = new ArrayList<String>();
                 try {
+                    LOG.debug("Trying to retrieve node set with expression: '" + field.fieldEvaluationExpr + "'.");
                     NodeList searchValues = (NodeList) xpath.evaluate(field.fieldEvaluationExpr, document.getDocumentElement(), XPathConstants.NODESET);
                     // being that this is the standard xml attribute we will return the key with an empty value
                     // so we can find it from a doc search using this key
@@ -198,7 +199,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                         }
                     }
                 } catch (XPathExpressionException e) {
-                    LOG.error("Error retrieving node set with expression: '" + field.fieldEvaluationExpr + "'. Trying string return type.", e);
+                    LOG.debug("Could not retrieve node set with expression: '" + field.fieldEvaluationExpr + "'. Trying string return type.");
                     //try for a string being returned from the expression.  This
                     //seems like a poor way to determine our expression return type but
                     //it's all I can come up with at the moment.

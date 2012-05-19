@@ -31,6 +31,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
+import org.kuali.rice.krad.exception.ClassNotPersistableException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -559,9 +560,14 @@ public final class ObjectUtils {
         }
 
         // need to materialize the updateable collections before resetting the property, because it may be used in the retrieval
-        materializeUpdateableCollections(bo);
+        try {
+            materializeUpdateableCollections(bo);
+        } catch(ClassNotPersistableException ex){
+            //Not all classes will be persistable in a collection. For e.g. externalizable business objects.
+            LOG.info("Not persistable dataObjectClass: "+bo.getClass().getName()+", field: "+propertyName);
+        }
 
-        // Set the property in the BO
+    // Set the property in the BO
         setObjectProperty(bo, propertyName, type, propertyValue);
 
         // Now drill down and check nested BOs and BO lists

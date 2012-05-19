@@ -48,6 +48,10 @@ public class URLMonitor {
         this.reloadIntervalMilliseconds = reloadIntervalMilliseconds;
     }
 
+    public void shutdownScheduler() {
+        scheduler.shutdown();
+    }
+
     public synchronized void addListener(URLContentChangedListener listener) {
 
         listeners.add(listener);

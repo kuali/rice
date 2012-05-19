@@ -111,8 +111,18 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return activeNodeInstances;
     }
     
+    @Override
+	public List<String> getActiveRouteNodeNames(String documentId) {
+    	return routeNodeDAO.getActiveRouteNodeNames(documentId);
+    }
+    
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
         return routeNodeDAO.getTerminalNodeInstances(documentId);
+    }
+    
+    @Override
+	public List<String> getTerminalRouteNodeNames(String documentId) {
+    	return routeNodeDAO.getTerminalRouteNodeNames(documentId);
     }
     
     public List getInitialNodeInstances(String documentId) {

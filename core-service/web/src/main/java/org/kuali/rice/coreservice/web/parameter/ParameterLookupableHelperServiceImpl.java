@@ -48,9 +48,9 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 
     @Override
     protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
-    	
+
         ParameterBo parm = (ParameterBo)businessObject;
-        
+
         Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
@@ -60,7 +60,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
                 KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER, permissionDetails,
                 Collections.<String, String>emptyMap());
     }
-    
+
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
 
@@ -75,14 +75,14 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         return results;
     }
 
-	private void normalizeParameterComponents(List<ParameterBo> parameters) {
-		// attach the derived components where needed
+    private void normalizeParameterComponents(List<ParameterBo> parameters) {
+        // attach the derived components where needed
         for (ParameterBo parameterBo : parameters) {
             if (parameterBo.getComponent() == null) {
                 parameterBo.setComponent(DerivedComponentBo.toComponentBo(parameterBo.getDerivedComponent()));
             }
         }
-	}
+    }
 
 }
 

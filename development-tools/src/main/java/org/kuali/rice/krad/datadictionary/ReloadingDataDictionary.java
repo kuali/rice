@@ -23,7 +23,13 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -52,7 +58,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReloadingDataDictionary extends DataDictionary implements FileListener, URLMonitor.URLContentChangedListener {
+public class ReloadingDataDictionary extends DataDictionary implements FileListener, URLMonitor.URLContentChangedListener, ApplicationContextAware {
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
 
 	private static final String CLASS_DIR_CONFIG_PARM = "reload.data.dictionary.classes.dir";
@@ -164,6 +170,21 @@ public class ReloadingDataDictionary extends DataDictionary implements FileListe
         }
         catch (Exception e) {
             LOG.info("Exception in dictionary hot deploy: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        // register a context close handler
+        if (applicationContext instanceof ConfigurableApplicationContext) {
+            ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
+            context.addApplicationListener(new ApplicationListener<ContextClosedEvent>() {
+                @Override
+                public void onApplicationEvent(ContextClosedEvent e) {
+                    LOG.info("Context '" + e.getApplicationContext().getDisplayName() + "' closed, shutting down URLMonitor scheduler");
+                    dictionaryUrlMonitor.shutdownScheduler();
+                }
+            });
         }
     }
 }

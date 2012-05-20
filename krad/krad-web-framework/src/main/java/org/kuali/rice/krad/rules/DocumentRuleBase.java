@@ -133,12 +133,17 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     public boolean processSaveDocument(Document document) {
         boolean isValid = true;
+
         isValid = isDocumentOverviewValid(document);
+
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
+
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document,
                 getMaxDictionaryValidationDepth(), false);
         getDictionaryValidationService().validateDefaultExistenceChecksForTransDoc((TransactionalDocument) document);
+
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
+
         isValid &= GlobalVariables.getMessageMap().hasNoErrors();
         isValid &= processCustomSaveDocumentBusinessRules(document);
 
@@ -177,6 +182,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         if (isValid && !completeRequestPending) {
             isValid &= processCustomRouteDocumentBusinessRules(document);
         }
+
         return isValid;
     }
 

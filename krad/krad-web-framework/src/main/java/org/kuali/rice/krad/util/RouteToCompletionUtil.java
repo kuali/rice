@@ -25,27 +25,33 @@ import java.util.ListIterator;
 
 public class RouteToCompletionUtil {
 
-    /***
-     * Checks if there is atleast one Ad-Hoc Completion request for the document and based on that returns a boolean value.
+    /**
+     * Checks if there is atleast one Ad-Hoc Completion request for the document and based on that returns a boolean
+     * value.
      */
     public static boolean checkIfAtleastOneAdHocCompleteRequestExist(Document document) {
         boolean foundAtleastOneCompleteReq = false;
         // iterating the adhoc recpients list to check if there is atleast on complete request for the document.
-        foundAtleastOneCompleteReq = loopAndCheckValue(document.getAdHocRouteWorkgroups()) || loopAndCheckValue(document.getAdHocRoutePersons());
+        foundAtleastOneCompleteReq = loopAndCheckValue(document.getAdHocRouteWorkgroups()) || loopAndCheckValue(
+                document.getAdHocRoutePersons());
+
         return foundAtleastOneCompleteReq;
     }
 
-    /***
-     * Loops and checks if the required value is present in the loop used for checking if there is atleast one adhoc completion
+    /**
+     * Loops and checks if the required value is present in the loop used for checking if there is atleast one adhoc
+     * completion
      * request present for a person or work group
      */
     private static boolean loopAndCheckValue(List adhoc) {
         if (adhoc == null) {
             return false;
         }
+
         ListIterator<AdHocRouteRecipient> groupIter = adhoc.listIterator();
         String valueToCheck = null;
         AdHocRouteRecipient recipient = null;
+
         boolean foundAtleastOneCompleteReq = false;
         while (groupIter.hasNext()) {
             recipient = groupIter.next();
@@ -57,6 +63,7 @@ public class RouteToCompletionUtil {
                 }
             }
         }
+
         return foundAtleastOneCompleteReq;
     }
 }

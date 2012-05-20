@@ -398,6 +398,31 @@ public class DocumentServiceImpl implements DocumentService {
         return document;
     }
 
+    /**
+     * @see org.kuali.rice.krad.service.DocumentService#completeDocument(org.kuali.rice.krad.document.Document,
+     *      java.lang.String,
+     *      java.util.List)
+     */
+    @Override
+    public Document completeDocument(Document document, String annotation,
+            List adHocRecipients) throws WorkflowException {
+        checkForNulls(document);
+
+        document.prepareForSave();
+        validateAndPersistDocument(document, new CompleteDocumentEvent(document));
+
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation,
+                adHocRecipients);
+
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
+
+        removeAdHocPersonsAndWorkgroups(document);
+
+        return document;
+    }
+
     protected void checkForNulls(Document document) {
         if (document == null) {
             throw new IllegalArgumentException("invalid (null) document");
@@ -1082,22 +1107,5 @@ public class DocumentServiceImpl implements DocumentService {
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
-    
-    /**
-     * Handles complete document event for a document
-     * 
-     * @see org.kuali.rice.krad.service.DocumentService#completeDocument(org.kuali.rice.krad.document.Document, java.lang.String,
-     *      java.util.List)
-     */
-    @Override
-    public Document completeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException {
-        checkForNulls(document);    
-        document.prepareForSave();
-        validateAndPersistDocument(document, new CompleteDocumentEvent(document));
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), document.getDocumentHeader().getWorkflowDocument());        
-        removeAdHocPersonsAndWorkgroups(document);
-        return document;
-    }
+
 }

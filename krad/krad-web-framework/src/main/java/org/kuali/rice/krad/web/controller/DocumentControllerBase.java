@@ -248,6 +248,20 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
+     * Completes the document instance contained on the form
+     *
+     * @param form - document form base containing the document instance that will be completed
+     * @return ModelAndView
+     */
+    @RequestMapping(params = "methodToCall=complete")
+    public ModelAndView complete(@ModelAttribute("KualiForm")
+    DocumentFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        performWorkflowAction(form, WorkflowAction.COMPLETE, true);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Routes the document instance contained on the form
      *
      * @param form - document form base containing the document instance that will be routed
@@ -793,11 +807,5 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     public ConfigurationService getConfigurationService() {
         return KRADServiceLocator.getKualiConfigurationService();
     }
-    
-    @RequestMapping(params = "methodToCall=complete")
-    public ModelAndView complete(@ModelAttribute("KualiForm")
-    DocumentFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.COMPLETE, true);
-        return getUIFModelAndView(form);
-    }
+
 }

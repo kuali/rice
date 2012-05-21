@@ -47,6 +47,7 @@ public class ViewIndex implements Serializable {
     private Map<String, PropertyEditor> fieldPropertyEditors;
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
     private Map<String, Integer> idSequenceSnapshot;
+    private Map<String, Map<String, String>> componentExpressionGraphs;
 
     /**
      * Constructs new instance
@@ -59,6 +60,7 @@ public class ViewIndex implements Serializable {
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         idSequenceSnapshot = new HashMap<String, Integer>();
+        componentExpressionGraphs = new HashMap<String, Map<String, String>>();
     }
 
     /**
@@ -185,7 +187,13 @@ public class ViewIndex implements Serializable {
         Map<String, Component> holdComponentStates = new HashMap<String, Component>();
         for (String id : index.keySet()) {
             if (holdIds.contains(id)) {
-                holdComponentStates.put(id, index.get(id));
+                Component component = index.get(id);
+                holdComponentStates.put(id, component);
+
+                // hold expressions for refresh (since they could have been pushed from a parent)
+                if (!component.getRefreshExpressionGraph().isEmpty()) {
+                    componentExpressionGraphs.put(component.getBaseId(), component.getRefreshExpressionGraph());
+                }
             }
         }
         index = holdComponentStates;
@@ -331,15 +339,6 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Setter for the Map that holds view property paths to configured Property Editors (non secure fields only)
-     *
-     * @param fieldPropertyEditors
-     */
-    public void setFieldPropertyEditors(Map<String, PropertyEditor> fieldPropertyEditors) {
-        this.fieldPropertyEditors = fieldPropertyEditors;
-    }
-
-    /**
      * Maintains configuration of secure properties that have been configured for the view (if render was set to
      * true) and there corresponding PropertyEdtior (if configured)
      *
@@ -356,23 +355,41 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Setter for the Map that holds view property paths to configured Property Editors (secure fields only)
+     * Map of components ids to starting id sequences used for the component refresh process
      *
-     * @param secureFieldPropertyEditors
+     * @return Map<String, Integer> key is component id and value is id sequence value
      */
-    public void setSecureFieldPropertyEditors(Map<String, PropertyEditor> secureFieldPropertyEditors) {
-        this.secureFieldPropertyEditors = secureFieldPropertyEditors;
-    }
-
     public Map<String, Integer> getIdSequenceSnapshot() {
         return idSequenceSnapshot;
     }
 
-    public void setIdSequenceSnapshot(Map<String, Integer> idSequenceSnapshot) {
-        this.idSequenceSnapshot = idSequenceSnapshot;
-    }
-    
+    /**
+     * Adds a sequence value to the id snapshot map for the given component id
+     *
+     * @param componentId - id for the component the id sequence value is associated it
+     * @param sequenceVal - current sequence value to insert into the snapshot
+     */
     public void addSequenceValueToSnapshot(String componentId, int sequenceVal) {
         idSequenceSnapshot.put(componentId, sequenceVal);
     }
+
+    /**
+     * Map of components with their associated expression graphs that will be used during
+     * the component refresh process
+     *
+     * <p>
+     * Because expressions that impact a component being refreshed might be on a parent component, a special
+     * map needs to be held around that contains expressions that apply to the component and all its nested
+     * components. This map is populated during the initial view processing and populating of the property
+     * expressions from the initial expression graphs
+     * </p>
+     *
+     * @return Map<String, Map<String, String>> key is component id and value is expression graph map
+     * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.uif.component.Configurable,
+     *      boolean)
+     */
+    public Map<String, Map<String, String>> getComponentExpressionGraphs() {
+        return componentExpressionGraphs;
+    }
+
 }

@@ -31,7 +31,6 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.beans.factory.support.ManagedArray;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
@@ -69,7 +68,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * Iterates through all beans in the factory and invokes processing
      *
      * @param beanFactory - bean factory instance to process
-     * @throws BeansException
+     * @throws org.springframework.beans.BeansException
      */
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -89,81 +88,105 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     /**
-     * If the bean class is type Component, LayoutManager, or BindingInfo, iterate through configured property values
-     * and check for expressions
+     * Processes a top level (non nested) bean definition for expressions
      *
      * <p>
-     * If a expression is found for a property, it is added to the 'propertyExpressions' map and then the original
-     * property value is removed to prevent binding errors (when converting to a non string type)
+     * A bean that is non nested (or top of a collection) will hold all the expressions for the graph. A new
+     * expression graph is initialized and expressions are collected as the bean and all its children are processed.
+     * The expression graph is then set as a property on the top bean definition
      * </p>
      *
-     * @param beanName - name of the bean in the factory (only set for top level beans, not nested)
-     * @param beanDefinition - bean definition to process for expressions
-     * @param beanFactory - bean factory being processed
+     * @param beanName - name of the bean to process
+     * @param beanDefinition - bean definition to process
+     * @param beanFactory - factory holding all the bean definitions
+     * @param processedBeanNames - set of bean names that have already been processed
      */
     protected void processBeanDefinition(String beanName, BeanDefinition beanDefinition,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
         Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
-        if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass)) {
-            return;
+        if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
+                beanName)) {
+              return;
         }
 
-        if (processedBeanNames.contains(beanName)) {
+        // process bean definition and all nested definitions for expressions
+        ManagedMap<String, String> expressionGraph = new ManagedMap<String, String>();
+        expressionGraph.setMergeEnabled(false);
+        processNestedBeanDefinition(beanName, beanDefinition, "", expressionGraph, beanFactory, processedBeanNames);
+
+        // add property for expression graph
+        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
+        pvs.addPropertyValue(UifPropertyPaths.EXPRESSION_GRAPH, expressionGraph);
+    }
+
+    /**
+     * If the bean class is type Component, LayoutManager, or BindingInfo, iterate through configured property values
+     * and check for expressions
+     *
+     * @param beanName - name of the bean in the factory (only set for top level beans, not nested)
+     * @param beanDefinition - bean definition to process for expressions
+     * @param nestedPropertyName
+     * @param expressionGraph
+     * @param beanFactory - bean factory being processed
+     * @param processedBeanNames
+     */
+    protected void processNestedBeanDefinition(String beanName, BeanDefinition beanDefinition,
+            String nestedPropertyName, Map<String, String> expressionGraph, ConfigurableListableBeanFactory beanFactory,
+            Set<String> processedBeanNames) {
+        Class<?> beanClass = getBeanClass(beanDefinition, beanFactory);
+        if ((beanClass == null) || !Configurable.class.isAssignableFrom(beanClass) || processedBeanNames.contains(
+                beanName)) {
             return;
         }
 
         LOG.debug("Processing bean name '" + beanName + "'");
 
-        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
-
-        if (pvs.getPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS) != null) {
-            // already processed so skip (could be reloading dictionary)
-            return;
-        }
-
-        Map<String, String> propertyExpressions = new ManagedMap<String, String>();
-        Map<String, String> parentPropertyExpressions = getPropertyExpressionsFromParent(beanDefinition.getParentName(),
+        Map<String, String> parentExpressionGraph = getExpressionGraphFromParent(beanDefinition.getParentName(),
                 beanFactory, processedBeanNames);
-        boolean parentExpressionsExist = !parentPropertyExpressions.isEmpty();
 
         // process expressions on property values
+        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
         PropertyValue[] pvArray = pvs.getPropertyValues();
         for (PropertyValue pv : pvArray) {
             if (hasExpression(pv.getValue())) {
                 // process expression
                 String strValue = getStringValue(pv.getValue());
-                propertyExpressions.put(pv.getName(), strValue);
+
+                String expressionPath = pv.getName();
+                if (StringUtils.isNotBlank(nestedPropertyName)) {
+                    expressionPath = nestedPropertyName + "." + expressionPath;
+                }
+                expressionGraph.put(expressionPath, strValue);
 
                 // remove property value so expression will not cause binding exception
                 pvs.removePropertyValue(pv.getName());
             } else {
                 // process nested objects
-                Object newValue = processPropertyValue(pv.getName(), pv.getValue(), parentPropertyExpressions,
-                        propertyExpressions, beanFactory, processedBeanNames);
+                String propertyPath = pv.getName();
+                if (StringUtils.isNotBlank(nestedPropertyName)) {
+                    propertyPath = nestedPropertyName + "." + propertyPath;
+                }
+
+                Object newValue = processPropertyValue(propertyPath, pv.getValue(), parentExpressionGraph,
+                        expressionGraph, beanFactory, processedBeanNames);
+
                 pvs.removePropertyValue(pv.getName());
                 pvs.addPropertyValue(pv.getName(), newValue);
             }
 
             // removed expression (if exists) from parent map since the property was set on child
-            if (parentPropertyExpressions.containsKey(pv.getName())) {
-                parentPropertyExpressions.remove(pv.getName());
-            }
-
-            // if property is nested, need to override any parent expressions set on nested beans
-            if (StringUtils.contains(pv.getName(), ".") && beanDefinition.getParentName() != null) {
-                handleExpressionOverridesOnParentNestedBeans(pv.getName(), pv.getValue(), pvs,
-                        beanDefinition.getParentName(), beanFactory);
+            if (parentExpressionGraph.containsKey(pv.getName())) {
+                parentExpressionGraph.remove(pv.getName());
             }
         }
 
-        if (!propertyExpressions.isEmpty() || parentExpressionsExist) {
-            // merge two maps
-            ManagedMap<String, String> mergedPropertyExpressions = new ManagedMap<String, String>();
-            mergedPropertyExpressions.setMergeEnabled(false);
-            mergedPropertyExpressions.putAll(parentPropertyExpressions);
-            mergedPropertyExpressions.putAll(propertyExpressions);
-
-            pvs.addPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS, mergedPropertyExpressions);
+        // add remaining expressions from parent to expression graph
+        for (Map.Entry<String, String> parentExpression : parentExpressionGraph.entrySet()) {
+            String expressionPath = parentExpression.getKey();
+            if (StringUtils.isNotBlank(nestedPropertyName)) {
+                expressionPath = nestedPropertyName + "." + expressionPath;
+            }
+            expressionGraph.put(expressionPath, parentExpression.getValue());
         }
 
         // if bean name is given and factory does not have it registered we need to add it (inner beans that
@@ -175,102 +198,6 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         if (StringUtils.isNotBlank(beanName)) {
             processedBeanNames.add(beanName);
-        }
-    }
-
-    /**
-     * In the cases whether the property name for a child bean is nested and an expression exits on the same property
-     * in the parent bean (but is nested in a bean within the parent), special handling is needed to copy the bean
-     * definition and remove the expression from the property expressions map
-     *
-     * @param propertyName - property name configured on child bean for which to find matching parent configuration
-     * @param propertyValue - value for the property configuration
-     * @param pvs - property values configured on child bean
-     * @param parentBeanName - name of the child bean's parent
-     * @param beanFactory - factory containing the bean definitions
-     */
-    protected void handleExpressionOverridesOnParentNestedBeans(String propertyName, Object propertyValue,
-            MutablePropertyValues pvs, String parentBeanName, ConfigurableListableBeanFactory beanFactory) {
-        BeanDefinition parentBeanDefinition = beanFactory.getMergedBeanDefinition(parentBeanName);
-
-        MutablePropertyValues parentPvs = parentBeanDefinition.getPropertyValues();
-        PropertyValue[] pvArray = parentPvs.getPropertyValues();
-
-        BeanDefinition overrideBeanDefinition = null;
-        String overridePropertyPath = null;
-
-        String[] splitPropertyPath = StringUtils.split(propertyName, ".");
-        String currentPath = null;
-        for (String pathPart : splitPropertyPath) {
-            if (currentPath == null) {
-                currentPath = pathPart;
-            } else {
-                currentPath += "." + pathPart;
-            }
-
-            if (overridePropertyPath == null) {
-                overridePropertyPath = pathPart;
-            } else {
-                overridePropertyPath += "." + pathPart;
-            }
-
-            // continue until we find a matching property value from the parent bean
-            if (!parentPvs.contains(currentPath)) {
-                continue;
-            }
-
-            PropertyValue pv = parentPvs.getPropertyValue(currentPath);
-            if ((pv.getValue() instanceof BeanDefinition) || (pv.getValue() instanceof BeanDefinitionHolder)) {
-                BeanDefinition propertyBeanDefinition;
-                if (pv.getValue() instanceof BeanDefinition) {
-                    propertyBeanDefinition = (BeanDefinition) pv.getValue();
-                } else {
-                    propertyBeanDefinition = ((BeanDefinitionHolder) pv.getValue()).getBeanDefinition();
-                }
-
-                // get property expressions from nested bean to check for match against child property
-                parentPvs = propertyBeanDefinition.getPropertyValues();
-                PropertyValue propertyExpressionsPV = parentPvs.getPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS);
-                if (propertyExpressionsPV != null) {
-                    Map<String, String> propertyExpressions = new HashMap<String, String>();
-
-                    Object value = propertyExpressionsPV.getValue();
-                    if ((value != null) && (value instanceof ManagedMap)) {
-                        propertyExpressions.putAll((ManagedMap) value);
-                    }
-
-                    String nestedPropertyName = StringUtils.substringAfter(propertyName, overridePropertyPath + ".");
-                    if (propertyExpressions.containsKey(nestedPropertyName)) {
-                        // found an expression, make a copy of the bean definition for override
-                        overrideBeanDefinition = new GenericBeanDefinition(propertyBeanDefinition);
-
-                        // need to make copy of property value with expression removed from map
-                        ManagedMap<String, String> copiedPropertyExpressions = new ManagedMap<String, String>();
-                        copiedPropertyExpressions.setMergeEnabled(false);
-                        copiedPropertyExpressions.putAll(propertyExpressions);
-                        copiedPropertyExpressions.remove(nestedPropertyName);
-
-                        overrideBeanDefinition.getPropertyValues().add(UifPropertyPaths.PROPERTY_EXPRESSIONS,
-                                copiedPropertyExpressions);
-
-                        // if child property was not expression, add property config to bean (instead of separate 
-                        // nested property which would get overridden by the bean)
-                        if (!hasExpression(propertyValue)) {
-                            overrideBeanDefinition.getPropertyValues().add(nestedPropertyName, propertyValue);
-                            pvs.removePropertyValue(propertyName);
-                        }
-
-                        break;
-                    }
-                }
-
-                // no matching expression, continue on checking properties of nested bean
-                currentPath = null;
-            }
-        }
-
-        if (overrideBeanDefinition != null) {
-            pvs.addPropertyValue(overridePropertyPath, overrideBeanDefinition);
         }
     }
 
@@ -302,38 +229,36 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     /**
-     * Retrieves the property expressions map set on the bean with given name. If the bean has not been processed
+     * Retrieves the expression graph map set on the bean with given name. If the bean has not been processed
      * by the bean factory post processor, that is done before retrieving the map
      *
      * @param parentBeanName - name of the parent bean to retrieve map for (if empty a new map will be returned)
      * @param beanFactory - bean factory to retrieve bean definition from
      * @param processedBeanNames - set of bean names that have been processed so far
-     * @return Map<String, String> property expressions map from parent or new instance
+     * @return Map<String, String> expression graph map from parent or new instance
      */
-    protected Map<String, String> getPropertyExpressionsFromParent(String parentBeanName,
+    protected Map<String, String> getExpressionGraphFromParent(String parentBeanName,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
-        Map<String, String> propertyExpressions = new HashMap<String, String>();
+        Map<String, String> expressionGraph = new HashMap<String, String>();
         if (StringUtils.isBlank(parentBeanName) || !beanFactory.containsBeanDefinition(parentBeanName)) {
-            return propertyExpressions;
-        }
-
-        if (!processedBeanNames.contains(parentBeanName)) {
-            processBeanDefinition(parentBeanName, beanFactory.getBeanDefinition(parentBeanName), beanFactory,
-                    processedBeanNames);
+            return expressionGraph;
         }
 
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition(parentBeanName);
-        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
+        if (!processedBeanNames.contains(parentBeanName)) {
+            processBeanDefinition(parentBeanName, beanDefinition, beanFactory, processedBeanNames);
+        }
 
-        PropertyValue propertyExpressionsPV = pvs.getPropertyValue(UifPropertyPaths.PROPERTY_EXPRESSIONS);
+        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
+        PropertyValue propertyExpressionsPV = pvs.getPropertyValue(UifPropertyPaths.EXPRESSION_GRAPH);
         if (propertyExpressionsPV != null) {
             Object value = propertyExpressionsPV.getValue();
             if ((value != null) && (value instanceof ManagedMap)) {
-                propertyExpressions.putAll((ManagedMap) value);
+                expressionGraph.putAll((ManagedMap) value);
             }
         }
 
-        return propertyExpressions;
+        return expressionGraph;
     }
 
     /**
@@ -365,18 +290,26 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      *
      * @param propertyName - name of the property whose value is being processed
      * @param propertyValue - value to check
-     * @param parentPropertyExpressions - map that holds property expressions for the parent bean definition, used for
+     * @param parentExpressionGraph - map that holds property expressions for the parent bean definition, used for
      * merging
-     * @param propertyExpressions - map that holds property expressions for the bean definition being processed
+     * @param expressionGraph - map that holds property expressions for the bean definition being processed
      * @param beanFactory - bean factory that contains the bean definition being processed
      * @param processedBeanNames - set of bean names that have been processed so far
      * @return Object new value to set for property
      */
     protected Object processPropertyValue(String propertyName, Object propertyValue,
-            Map<String, String> parentPropertyExpressions, Map<String, String> propertyExpressions,
+            Map<String, String> parentExpressionGraph, Map<String, String> expressionGraph,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
-        if (propertyValue == null) {
-            return null;
+        if (propertyValue instanceof TypedStringValue) {
+            TypedStringValue typedStringValue = (TypedStringValue) propertyValue;
+
+            String value = typedStringValue.getValue();
+            if (value == null) {
+                // if property is object and set to null, clear any parent expressions for the property
+                removeExpressionsByPrefix(propertyName, parentExpressionGraph);
+            }
+
+            return value;
         }
 
         // process nested bean definitions
@@ -391,24 +324,25 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             }
 
             // since overriding the entire bean, clear any expressions from parent that start with the bean property
-            removeExpressionsByPrefix(propertyName, parentPropertyExpressions);
-            processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
+            removeExpressionsByPrefix(propertyName, parentExpressionGraph);
+            processNestedBeanDefinition(beanName, beanDefinition, propertyName, expressionGraph, beanFactory,
+                    processedBeanNames);
 
             return propertyValue;
         }
 
         // recurse into collections
         if (propertyValue instanceof Object[]) {
-            visitArray(propertyName, parentPropertyExpressions, propertyExpressions, (Object[]) propertyValue,
-                    beanFactory, processedBeanNames);
+            visitArray(propertyName, parentExpressionGraph, expressionGraph, (Object[]) propertyValue, beanFactory,
+                    processedBeanNames);
         } else if (propertyValue instanceof List) {
-            visitList(propertyName, parentPropertyExpressions, propertyExpressions, (List) propertyValue, beanFactory,
+            visitList(propertyName, parentExpressionGraph, expressionGraph, (List) propertyValue, beanFactory,
                     processedBeanNames);
         } else if (propertyValue instanceof Set) {
-            visitSet(propertyName, parentPropertyExpressions, propertyExpressions, (Set) propertyValue, beanFactory,
+            visitSet(propertyName, parentExpressionGraph, expressionGraph, (Set) propertyValue, beanFactory,
                     processedBeanNames);
         } else if (propertyValue instanceof Map) {
-            visitMap(propertyName, parentPropertyExpressions, propertyExpressions, (Map) propertyValue, beanFactory,
+            visitMap(propertyName, parentExpressionGraph, expressionGraph, (Map) propertyValue, beanFactory,
                     processedBeanNames);
         }
 
@@ -420,18 +354,18 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * Removes entries from the given expressions map whose key starts with the given prefix
      *
      * @param propertyNamePrefix - prefix to search for and remove
-     * @param propertyExpressions - map of property expressions to filter
+     * @param expressionGraph - map of property expressions to filter
      */
-    protected void removeExpressionsByPrefix(String propertyNamePrefix, Map<String, String> propertyExpressions) {
-        Map<String, String> adjustedPropertyExpressions = new HashMap<String, String>();
-        for (String propertyName : propertyExpressions.keySet()) {
-            if (!propertyName.startsWith(propertyNamePrefix)) {
-                adjustedPropertyExpressions.put(propertyName, propertyExpressions.get(propertyName));
+    protected void removeExpressionsByPrefix(String propertyNamePrefix, Map<String, String> expressionGraph) {
+        Map<String, String> adjustedExpressionGraph = new HashMap<String, String>();
+        for (String propertyName : expressionGraph.keySet()) {
+            if (!propertyName.startsWith(propertyNamePrefix + ".")) {
+                adjustedExpressionGraph.put(propertyName, expressionGraph.get(propertyName));
             }
         }
 
-        propertyExpressions.clear();
-        propertyExpressions.putAll(adjustedPropertyExpressions);
+        expressionGraph.clear();
+        expressionGraph.putAll(adjustedExpressionGraph);
     }
 
     /**
@@ -452,8 +386,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitArray(String propertyName, Map<String, String> parentPropertyExpressions,
-            Map<String, String> propertyExpressions, Object array, ConfigurableListableBeanFactory beanFactory,
+    protected void visitArray(String propertyName, Map<String, String> parentExpressionGraph,
+            Map<String, String> expressionGraph, Object array, ConfigurableListableBeanFactory beanFactory,
             Set<String> processedBeanNames) {
         Object newArray = null;
         Object[] arrayVal = null;
@@ -476,31 +410,31 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             if (hasExpression(elem)) {
                 String strValue = getStringValue(elem);
-                propertyExpressions.put(elemPropertyName, strValue);
+                expressionGraph.put(elemPropertyName, strValue);
                 arrayVal[i] = null;
             } else {
-                Object newElem = processPropertyValue(elemPropertyName, elem, parentPropertyExpressions,
-                        propertyExpressions, beanFactory, processedBeanNames);
+                Object newElem = processPropertyValue(elemPropertyName, elem, parentExpressionGraph, expressionGraph,
+                        beanFactory, processedBeanNames);
                 arrayVal[i] = newElem;
             }
 
-            if (isMergeEnabled && parentPropertyExpressions.containsKey(elemPropertyName)) {
-                parentPropertyExpressions.remove(elemPropertyName);
+            if (isMergeEnabled && parentExpressionGraph.containsKey(elemPropertyName)) {
+                parentExpressionGraph.remove(elemPropertyName);
             }
         }
 
         // determine if we need to clear any parent expressions for this list
         if (!isMergeEnabled) {
             // clear any expressions that match the property name minus index
-            Map<String, String> adjustedParentExpressions = new HashMap<String, String>();
-            for (Map.Entry<String, String> parentExpression : parentPropertyExpressions.entrySet()) {
+            Map<String, String> adjustedParentExpressionGraph = new HashMap<String, String>();
+            for (Map.Entry<String, String> parentExpression : parentExpressionGraph.entrySet()) {
                 if (!parentExpression.getKey().startsWith(propertyName + "[")) {
-                    adjustedParentExpressions.put(parentExpression.getKey(), parentExpression.getValue());
+                    adjustedParentExpressionGraph.put(parentExpression.getKey(), parentExpression.getValue());
                 }
             }
 
-            parentPropertyExpressions.clear();
-            parentPropertyExpressions.putAll(adjustedParentExpressions);
+            parentExpressionGraph.clear();
+            parentExpressionGraph.putAll(adjustedParentExpressionGraph);
         }
 
         if (array instanceof ManagedArray) {
@@ -511,8 +445,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitList(String propertyName, Map<String, String> parentPropertyExpressions,
-            Map<String, String> propertyExpressions, List listVal, ConfigurableListableBeanFactory beanFactory,
+    protected void visitList(String propertyName, Map<String, String> parentExpressionGraph,
+            Map<String, String> expressionGraph, List listVal, ConfigurableListableBeanFactory beanFactory,
             Set<String> processedBeanNames) {
         boolean isMergeEnabled = false;
         if (listVal instanceof ManagedList) {
@@ -528,28 +462,39 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             if (hasExpression(elem)) {
                 String strValue = getStringValue(elem);
-                propertyExpressions.put(elemPropertyName, strValue);
+                expressionGraph.put(elemPropertyName, strValue);
                 newList.add(i, null);
             } else {
-                Object newElem = processPropertyValue(elemPropertyName, elem, parentPropertyExpressions,
-                        propertyExpressions, beanFactory, processedBeanNames);
-                newList.add(i, newElem);
+                // process list value bean definition as a top level bean
+                if ((elem instanceof BeanDefinition) || (elem instanceof BeanDefinitionHolder)) {
+                    String beanName = null;
+                    BeanDefinition beanDefinition;
+                    if (elem instanceof BeanDefinition) {
+                        beanDefinition = (BeanDefinition) elem;
+                    } else {
+                        beanDefinition = ((BeanDefinitionHolder) elem).getBeanDefinition();
+                        beanName = ((BeanDefinitionHolder) elem).getBeanName();
+                    }
+
+                    processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
+                }
+
+                newList.add(i, elem);
             }
         }
 
         // determine if we need to clear any parent expressions for this list
         if (!isMergeEnabled) {
             // clear any expressions that match the property name minus index
-            Map<String, String> adjustedParentExpressions = new HashMap<String, String>();
-            for (Map.Entry<String, String> parentExpression : parentPropertyExpressions.entrySet()) {
-                if (!parentExpression.getKey().startsWith(
-                        propertyName + ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR)) {
-                    adjustedParentExpressions.put(parentExpression.getKey(), parentExpression.getValue());
+            Map<String, String> adjustedParentExpressionGraph = new HashMap<String, String>();
+            for (Map.Entry<String, String> parentExpression : parentExpressionGraph.entrySet()) {
+                if (!parentExpression.getKey().startsWith(propertyName + "[")) {
+                    adjustedParentExpressionGraph.put(parentExpression.getKey(), parentExpression.getValue());
                 }
             }
 
-            parentPropertyExpressions.clear();
-            parentPropertyExpressions.putAll(adjustedParentExpressions);
+            parentExpressionGraph.clear();
+            parentExpressionGraph.putAll(adjustedParentExpressionGraph);
         }
 
         listVal.clear();
@@ -574,9 +519,20 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 propertyExpressions.put(propertyName + ExpressionEvaluatorService.EMBEDDED_PROPERTY_NAME_ADD_INDICATOR,
                         strValue);
             } else {
-                newSet.remove(elem);
-                Object newElem = processPropertyValue(propertyName, elem, parentPropertyExpressions,
-                        propertyExpressions, beanFactory, processedBeanNames);
+                // process set value bean definition as a top level bean
+                if ((elem instanceof BeanDefinition) || (elem instanceof BeanDefinitionHolder)) {
+                    String beanName = null;
+                    BeanDefinition beanDefinition;
+                    if (elem instanceof BeanDefinition) {
+                        beanDefinition = (BeanDefinition) elem;
+                    } else {
+                        beanDefinition = ((BeanDefinitionHolder) elem).getBeanDefinition();
+                        beanName = ((BeanDefinitionHolder) elem).getBeanName();
+                    }
+
+                    processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
+                }
+
                 newSet.add(elem);
             }
         }
@@ -601,8 +557,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitMap(String propertyName, Map<String, String> parentPropertyExpressions,
-            Map<String, String> propertyExpressions, Map<?, ?> mapVal, ConfigurableListableBeanFactory beanFactory,
+    protected void visitMap(String propertyName, Map<String, String> parentExpressionGraph,
+            Map<String, String> expressionGraph, Map<?, ?> mapVal, ConfigurableListableBeanFactory beanFactory,
             Set<String> processedBeanNames) {
         boolean isMergeEnabled = false;
         if (mapVal instanceof ManagedMap) {
@@ -621,29 +577,41 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             if (hasExpression(val)) {
                 String strValue = getStringValue(val);
-                propertyExpressions.put(elemPropertyName, strValue);
+                expressionGraph.put(elemPropertyName, strValue);
             } else {
-                Object newElem = processPropertyValue(elemPropertyName, val, parentPropertyExpressions,
-                        propertyExpressions, beanFactory, processedBeanNames);
-                newMap.put(key, newElem);
+                // process map value bean definition as a top level bean
+                if ((val instanceof BeanDefinition) || (val instanceof BeanDefinitionHolder)) {
+                    String beanName = null;
+                    BeanDefinition beanDefinition;
+                    if (val instanceof BeanDefinition) {
+                        beanDefinition = (BeanDefinition) val;
+                    } else {
+                        beanDefinition = ((BeanDefinitionHolder) val).getBeanDefinition();
+                        beanName = ((BeanDefinitionHolder) val).getBeanName();
+                    }
+
+                    processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
+                }
+
+                newMap.put(key, val);
             }
 
-            if (isMergeEnabled && parentPropertyExpressions.containsKey(elemPropertyName)) {
-                parentPropertyExpressions.remove(elemPropertyName);
+            if (isMergeEnabled && parentExpressionGraph.containsKey(elemPropertyName)) {
+                parentExpressionGraph.remove(elemPropertyName);
             }
         }
 
         if (!isMergeEnabled) {
             // clear any expressions that match the property minus key
-            Map<String, String> adjustedParentExpressions = new HashMap<String, String>();
-            for (Map.Entry<String, String> parentExpression : parentPropertyExpressions.entrySet()) {
+            Map<String, String> adjustedParentExpressionGraph = new HashMap<String, String>();
+            for (Map.Entry<String, String> parentExpression : parentExpressionGraph.entrySet()) {
                 if (!parentExpression.getKey().startsWith(propertyName + "[")) {
-                    adjustedParentExpressions.put(parentExpression.getKey(), parentExpression.getValue());
+                    adjustedParentExpressionGraph.put(parentExpression.getKey(), parentExpression.getValue());
                 }
             }
 
-            parentPropertyExpressions.clear();
-            parentPropertyExpressions.putAll(adjustedParentExpressions);
+            parentExpressionGraph.clear();
+            parentExpressionGraph.putAll(adjustedParentExpressionGraph);
         }
 
         mapVal.clear();

@@ -128,7 +128,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
         for (ComparableInfo comparable : groupComparables) {
-            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateObjectExpressions(comparable, model, context);
+            KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, comparable,
+                    model, context);
         }
 
         // generate compare header

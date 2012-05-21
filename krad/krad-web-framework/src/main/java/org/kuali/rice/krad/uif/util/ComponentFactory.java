@@ -180,6 +180,9 @@ public class ComponentFactory {
         component.setId(null);
         component.setBaseId(null);
 
+        // populate property expressions from expression graph
+        ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
+
         return component;
     }
 

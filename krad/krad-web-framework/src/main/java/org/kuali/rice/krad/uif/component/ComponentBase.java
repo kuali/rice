@@ -20,6 +20,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -190,12 +191,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
-        if (StringUtils.isNotEmpty(progressiveRender)) {
-            // progressive anded with conditional render, will not render at least one of the two are false
-            Boolean progRenderEval = (Boolean) KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpression(
-                    model, context, progressiveRender);
+        if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
+            // progressive anded with render, will not render at least one of the two are false
+            ExpressionEvaluatorService expressionEvaluatorService =
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService();
+            String adjustedProgressiveRender = expressionEvaluatorService.replaceBindingPrefixes(view, this,
+                    progressiveRender);
+            Boolean progRenderEval = (Boolean) expressionEvaluatorService.evaluateExpression(model, context,
+                    adjustedProgressiveRender);
 
-            this.setRender(progRenderEval && this.render);
+            this.setRender(progRenderEval);
         }
     }
 
@@ -213,14 +218,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void performFinalize(View view, Object model, Component parent) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
-            progressiveRender = ExpressionUtils.replaceBindingPrefixes(view, this, progressiveRender);
+            progressiveRender = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                    progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
                     progressiveDisclosureControlNames);
         }
 
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
-            conditionalRefresh = ExpressionUtils.replaceBindingPrefixes(view, this, conditionalRefresh);
+            conditionalRefresh = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view,
+                    this, conditionalRefresh);
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
                     conditionalRefreshControlNames);
@@ -228,7 +235,9 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
         List<String> adjustedRefreshPropertyNames = new ArrayList<String>();
         for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
-            adjustedRefreshPropertyNames.add(ExpressionUtils.replaceBindingPrefixes(view, this, refreshPropertyName));
+            adjustedRefreshPropertyNames.add(
+                    KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view, this,
+                            refreshPropertyName));
         }
         refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
 
@@ -487,6 +496,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     /**
      * Vertical alignment of the component within its container
+     *
      * <p>
      * All components belong to a <code>Container</code> and are placed using a
      * <code>LayoutManager</code>. This property specifies how the component

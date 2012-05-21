@@ -224,6 +224,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : nestedComponents) {
             nestedComponent.pushAllToContext(origComponent.getContext());
         }
+        
+        // the expression graph for refreshed components is captured in the view index (initially it might expressoins
+        // might have come from a parent), after getting the expression graph then we need to populate the expressions
+        // on the configurable for which they apply
+        Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
+                component.getBaseId());
+        component.setExpressionGraph(expressionGraph);
+        ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
 
         // binding path should stay the same
         if (component instanceof DataBinding) {
@@ -350,6 +358,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (!(component instanceof View)) {
             view.getViewIndex().addInitialComponentStateIfNeeded(component);
         }
+
+        // the component can have an expression graph for which the expressions need pulled to
+        // the list the expression service will evaluate
+        ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
 
         // invoke component to initialize itself after properties have been set
         component.performInitialization(view, model);
@@ -662,24 +674,25 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
-        // evaluate expressions on component properties
+        // set context on component for evaluating expressions
         component.pushAllToContext(getCommonContext(view, component));
-        ExpressionUtils.adjustPropertyExpressions(view, component);
-        getExpressionEvaluatorService().evaluateObjectExpressions(component, model, component.getContext());
+
+        getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, component, model,
+                component.getContext());
 
         // evaluate expressions on component security
         ComponentSecurity componentSecurity = component.getComponentSecurity();
-        ExpressionUtils.adjustPropertyExpressions(view, componentSecurity);
-        getExpressionEvaluatorService().evaluateObjectExpressions(componentSecurity, model, component.getContext());
+        getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, componentSecurity, model,
+                component.getContext());
 
         // evaluate expressions on the binding info object
         if (component instanceof DataBinding) {
             BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            ExpressionUtils.adjustPropertyExpressions(view, bindingInfo);
-            getExpressionEvaluatorService().evaluateObjectExpressions(bindingInfo, model, component.getContext());
+            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, bindingInfo, model,
+                    component.getContext());
         }
 
-        // evaluate expressions on the layout manager
+        // set context evaluate expressions on the layout manager
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
@@ -688,8 +701,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
                 layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
 
-                ExpressionUtils.adjustPropertyExpressions(view, layoutManager);
-                getExpressionEvaluatorService().evaluateObjectExpressions(layoutManager, model,
+                getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, layoutManager, model,
                         layoutManager.getContext());
             }
         }

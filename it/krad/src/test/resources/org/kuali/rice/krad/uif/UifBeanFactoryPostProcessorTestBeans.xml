@@ -74,4 +74,42 @@
     </property>
   </bean>
 
+  <bean id="testExpressionMapNonMerging" parent="testExpressionMapMerging">
+    <property name="map1">
+      <map>
+        <entry key="key3" value="true"/>
+        <entry key="key4" value="@{expr4}"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="testNestedMap" class="org.kuali.rice.krad.uif.UifTestBeanObject">
+    <property name="reference1">
+      <bean class="org.kuali.rice.krad.uif.UifTestBeanObject">
+        <property name="map1">
+          <map>
+            <entry key="key1" value="@{expr1}"/>
+            <entry key="key2" value="foo"/>
+            <entry key="key3" value="@{expr3}"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="testListBeanExpressionMerging" class="org.kuali.rice.krad.uif.UifTestBeanObject">
+    <property name="listReference1">
+      <list>
+        <bean parent="testNestedMap">
+          <property name="reference1.map1">
+            <map merge="true">
+              <entry key="key3" value="true"/>
+              <entry key="key4" value="@{expr4}"/>
+            </map>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

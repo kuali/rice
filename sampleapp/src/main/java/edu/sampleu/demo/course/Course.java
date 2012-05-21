@@ -25,6 +25,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Course implements Serializable {
+    private static final long serialVersionUID = 4700818811272201371L;
 
     private String subjectId;
     private String prefix;

@@ -407,7 +407,8 @@ public class CollectionGroupBuilder implements Serializable {
 
                 // Adjust the condition as ExpressionUtils.adjustPropertyExpressions will only be
                 // executed after the collection is built.
-                conditionalRender = ExpressionUtils.replaceBindingPrefixes(view, lineField, conditionalRender);
+                conditionalRender = KRADServiceLocatorWeb.getExpressionEvaluatorService().replaceBindingPrefixes(view,
+                        lineField, conditionalRender);
 
                 Boolean render = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
                         conditionalRender);
@@ -513,10 +514,9 @@ public class CollectionGroupBuilder implements Serializable {
             // evaluate expression on fields component security (since apply model phase has not been invoked on
             // them yet
             ComponentSecurity componentSecurity = lineField.getComponentSecurity();
-            ExpressionUtils.adjustPropertyExpressions(view, componentSecurity);
 
             Map<String, Object> context = getContextForField(view, collectionGroup, lineField);
-            getExpressionEvaluatorService().evaluateObjectExpressions(componentSecurity, model, context);
+            getExpressionEvaluatorService().evaluateExpressionsOnConfigurable(view, componentSecurity, model, context);
 
             // check view field auth
             if (lineField.isRender() && !lineField.isHidden()) {

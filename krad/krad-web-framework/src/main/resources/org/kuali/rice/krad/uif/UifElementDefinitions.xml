@@ -152,8 +152,7 @@
     <property name="richTable">
       <bean parent="Uif-PagedRichTable">
         <property name="templateOptions">
-          <map>
-            <entry key="sDom" value="fTrtip"/>
+          <map merge="true">
             <entry key="bRetrieve" value="true"/>
             <entry key="bDeferRender" value="true"/>
             <entry key="bAutoWidth" value="false"/>

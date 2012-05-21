@@ -26,6 +26,7 @@ import static junit.framework.Assert.assertTrue;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtilsTest {
@@ -40,6 +41,7 @@ public class ComponentUtilsTest {
         component.setId(componentId);
         component.setBaseId(componentId);
     }
+
     @Test
     /**
      * test that {@link ComponentUtils#updateIdWithSuffix} works ok

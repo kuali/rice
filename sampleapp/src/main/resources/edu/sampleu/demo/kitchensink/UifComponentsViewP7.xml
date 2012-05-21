@@ -63,7 +63,7 @@
        value="edu.sampleu.demo.kitchensink.UITestObject" />
      <property name="propertyName" value="list2" />
      <property name="layoutManager.sequencePropertyName" value="field1" />
-     <property name="layoutManager.actionColumnIndex" value="1" />
+     <property name="layoutManager.actionColumnPlacement" value="LEFT" />
      <property name="layoutManager.richTable.render" value="true" />
      <property name="collectionLookup.render" value="true"/>
      <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>

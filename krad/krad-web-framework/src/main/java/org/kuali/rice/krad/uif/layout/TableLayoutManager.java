@@ -80,9 +80,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private RichTable richTable;
     private boolean headerAdded;
 
-    private boolean renderActionColumnFirst;
-
     private int actionColumnIndex = -1;
+    
+    private String actionColumnPlacement;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -890,28 +890,32 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * Defines whether the action field column should be rendered as the first column
+     * Indicates the actions column placement
      *
-     * @return boolean
+     * <p>
+     * Valid values are 'LEFT', 'RIGHT' or any valid number. The default is 'RIGHT' or '-1'.
+     * </p>
+     *
+     * @return String - the action column placement
      */
-    public boolean isRenderActionColumnFirst() {
-        return renderActionColumnFirst;
+    public String getActionColumnPlacement() {
+        return actionColumnPlacement;
     }
 
     /**
-     * Setter for the renderActionColumnFirst flag
+     * Setter for the action column placement
      *
-     * @param renderActionColumnFirst
+     * @param actionColumnPlacement - action column placement string
      */
-    public void setRenderActionColumnFirst(boolean renderActionColumnFirst) {
-        this.renderActionColumnFirst = renderActionColumnFirst;
-    }
+    public void setActionColumnPlacement(String actionColumnPlacement) {        
+        this.actionColumnPlacement = actionColumnPlacement;
 
-    public int getActionColumnIndex() {
-        return actionColumnIndex;
-    }
-
-    public void setActionColumnIndex(int actionColumnIndex) {
-        this.actionColumnIndex = actionColumnIndex;
+        if ("LEFT".equals(actionColumnPlacement)) {
+            actionColumnIndex = 1;    
+        } else if ("RIGHT".equals(actionColumnPlacement)) {
+            actionColumnIndex = -1;
+        } else if (StringUtils.isNumeric(actionColumnPlacement)) {
+            actionColumnIndex = Integer.parseInt(actionColumnPlacement);
+        }
     }
 }

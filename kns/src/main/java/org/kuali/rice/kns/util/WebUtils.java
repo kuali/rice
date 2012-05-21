@@ -185,7 +185,7 @@ public class WebUtils {
 	 */
 	private static String getMethodToCallSettingAttribute(ActionForm form, HttpServletRequest request, String string) {
 
-		if (form instanceof ActionForm
+		if (form instanceof KualiForm
 				&& !((KualiForm) form).shouldMethodToCallParameterBeUsed(string, request.getParameter(string), request)) {
 			throw new RuntimeException("Cannot verify that the methodToCall should be " + string);
 		}

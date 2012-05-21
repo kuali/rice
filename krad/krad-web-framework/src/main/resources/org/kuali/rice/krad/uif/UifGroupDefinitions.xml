@@ -940,5 +940,35 @@
     </property>
   </bean>
 
+  <!-- Dialog Groups -->
+  <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
+  <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
+        parent="Uif-GroupBase">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
+    <property name="hidden" value="false"/>
+    <property name="questionText" value="Are You Sure"/>
+    <property name="trueActionText" value="OK"/>
+    <property name="falseActionText" value="Cancel"/>
+    <property name="renderTextArea" value="false"/>
+    <property name="displayTrueActionFirst" value="true"/>
+    <property name="question">
+      <bean parent="Uif-Message"/>
+    </property>
+    <property name="trueAction">
+      <bean parent="Uif-PrimaryActionButton"/>
+    </property>
+    <property name="falseAction">
+      <bean parent="Uif-PrimaryActionButton"/>
+    </property>
+    <property name="responseTextArea">
+      <bean parent="Uif-TextAreaControl"/>
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogGroup</value>
+      </list>
+    </property>
+  </bean>
+
 
 </beans>

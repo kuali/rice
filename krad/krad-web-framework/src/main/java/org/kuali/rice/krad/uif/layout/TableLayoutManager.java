@@ -302,7 +302,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
         }
 
-        if (renderActionsLast) {
+        if (renderActions && renderActionsLast) {
             addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
         }
 
@@ -410,7 +410,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
         }
 
-        if (renderActionsLast) {
+        if (renderActions && renderActionsLast) {
             cellPosition += 1;
             addActionHeader(rowCount, cellPosition);
         }

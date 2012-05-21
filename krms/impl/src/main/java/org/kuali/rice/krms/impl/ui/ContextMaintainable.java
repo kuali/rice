@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krms.api.KrmsConstants;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
 import java.util.Map;
@@ -54,7 +58,15 @@ public class ContextMaintainable extends MaintainableImpl {
                 requestParameters);
     }
 
+    @Override
+    public void saveDataObject() {
+        super.saveDataObject();
 
+        //flush context cache
+        DistributedCacheManagerDecorator distributedCacheManagerDecorator =
+                GlobalResourceLoader.getService(KrmsConstants.KRMS_DISTRIBUTED_CACHE);
+        distributedCacheManagerDecorator.getCache(ContextDefinition.Cache.NAME).clear();
+    }
 
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {

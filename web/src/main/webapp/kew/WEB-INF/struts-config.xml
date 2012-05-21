@@ -195,8 +195,8 @@
           <forward name="finalStateError" path="/WEB-INF/jsp/stats/StatsReport.jsp"/>
       </action>
 
-      <action path="/Ingester" name="IngesterForm" scope="request" validate="false"
-      	type="org.kuali.rice.kew.batch.web.IngesterAction"  input="/WEB-INF/jsp/batch/ingester.jsp">
+      <action path="/Ingester" name="IngesterForm" scope="request" validate="false" parameter="methodToCall"
+      	type="org.kuali.rice.core.web.impex.IngesterAction"  input="/WEB-INF/jsp/batch/ingester.jsp">
       	<forward name="view" path="/WEB-INF/jsp/batch/ingester.jsp"/>
 	  </action>
 

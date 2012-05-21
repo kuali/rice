@@ -704,3 +704,33 @@ function time(start, testingText){
         }
     }
 }
+
+/**
+ * Adds a class to the collection item related to the delete action
+ *
+ * @param deleteButton
+ * @param highlightItemClass - the class to add to the item that should be highlighted
+ */
+function deleteLineMouseOver(deleteButton, highlightItemClass) {
+    innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    if (innerLayout == 'uif-tableCollectionLayout') {
+        jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
+    }else{
+        jQuery(deleteButton).closest('.uif-collectionItem').addClass(highlightItemClass);
+    }
+}
+
+/**
+ * Removes a class from the collection item related to the delete action
+ *
+ * @param deleteButton
+ * @param highlightItemClass - the class remove from the collection item
+ */
+function deleteLineMouseOut(deleteButton, highlightItemClass) {
+    innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    if (innerLayout == 'uif-tableCollectionLayout') {
+        jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
+    }else{
+        jQuery(deleteButton).closest('.uif-collectionItem').removeClass(highlightItemClass);
+    }
+}

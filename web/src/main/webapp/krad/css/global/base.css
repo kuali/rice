@@ -420,6 +420,14 @@ table.uif-tableCollectionLayout thead th.sorting_desc label{
     background-color: white;
 }
 
+.uif-stackedCollectionLayout > .uif-collectionDeleteHighlight {
+    background-color: #FFE1E9;
+}
+
+.uif-collectionDeleteHighlight {
+    background-color: #FFE1E9;
+}
+
 .uif-placeholder {
     display: none !important;
     margin: 0px !important;

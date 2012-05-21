@@ -500,7 +500,9 @@
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
+              p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
+              p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');" />
       </list>
     </property>
     <property name="collectionLookup">

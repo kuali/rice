@@ -36,7 +36,7 @@ import java.util.Map;
  * general maintenance of a Document (transactional or maintenance) and its attributes
  *
  * <p>
- * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process
+ * The setters do validation to facilitate generating errors during the parsing process.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -86,8 +86,9 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The documentClass element is the name of the java class
-     * associated with the document.
+     * Setter for document class
+     *
+     * @param documentClass
      */
     public void setDocumentClass(Class<? extends Document> documentClass) {
         if (documentClass == null) {
@@ -97,6 +98,11 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.documentClass = documentClass;
     }
 
+    /**
+     * The {@link Document} subclass associated with the document
+     *
+     * @return Class<? extends Document>
+     */
     public Class<? extends Document> getDocumentClass() {
         return documentClass;
     }
@@ -143,7 +149,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Validate common fields for subclass' benefit.
+     * Validate common fields for subclass' benefit
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#completeValidation()
      */
@@ -156,8 +162,8 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         }
 
         if (workflowProperties != null && workflowAttributes != null) {
-            throw new DataDictionaryException(documentTypeName +
-                    ": workflowProperties and workflowAttributes cannot both be defined for a document");
+            throw new DataDictionaryException(documentTypeName
+                    + ": workflowProperties and workflowAttributes cannot both be defined for a document");
         }
     }
 

@@ -209,19 +209,16 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
 
         //want to just copy over file if possible, as there can be other fields that are not on PersistableAttachment
         //these arrays should be somewhat synched by the other populate methods
-        List<PersistableAttachment> updatedBoAttachments = new ArrayList<PersistableAttachment>();
         if (CollectionUtils.isNotEmpty(boAttachments.getAttachments())) {
             for (PersistableAttachment attach : boAttachments.getAttachments()) {
                 //try to get a new instance of the correct object...
                 String key = new StringBuffer(attach.getFileName()).append("|").append(attach.getContentType()).toString();
                 if (files.containsKey(key)) {
                     attach.setAttachmentContent(files.get(key).getAttachmentContent());
-                    updatedBoAttachments.add(attach);
                     files.remove(key);
                 }
             }
         }
-        boAttachments.setAttachments(updatedBoAttachments);
     }
 
     @Override
@@ -291,8 +288,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
         PersistableAttachmentList<PersistableAttachment> boAttachmentList = (PersistableAttachmentList<PersistableAttachment>) newMaintainableObject.getDataObject();
 
         if (CollectionUtils.isNotEmpty(boAttachmentList.getAttachments())) {
-            //Populate DocumentAttachment BO
-            attachments = new ArrayList<MultiDocumentAttachment>();
+
 
             //build map for comparison
             Map<String, MultiDocumentAttachment> md5Hashes = new HashMap<String, MultiDocumentAttachment>();
@@ -301,6 +297,9 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
                     md5Hashes.put(DigestUtils.md5Hex(currentAttachment.getAttachmentContent()), currentAttachment);
                 }
             }
+
+            //Populate DocumentAttachment BO
+            attachments = new ArrayList<MultiDocumentAttachment>();
 
             for (PersistableAttachment persistableAttachment : boAttachmentList.getAttachments()) {
                 try {
@@ -350,4 +349,5 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
 
         }
     }
+
 }

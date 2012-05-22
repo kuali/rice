@@ -510,8 +510,12 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
         int lineNum = getSelectedLine(request);
 
         if (lineNum < 0) {
+
             document.refreshReferenceObject("attachment");
+            documentForm.setAttachmentFile(null);
+            document.setFileAttachment(null);
             getBusinessObjectService().delete(document.getAttachment());
+            document.setAttachment(null);
 
             PersistableAttachment attachment = (PersistableAttachment) document.getNewMaintainableObject().getBusinessObject();
 

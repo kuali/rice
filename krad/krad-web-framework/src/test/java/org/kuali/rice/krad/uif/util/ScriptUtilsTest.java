@@ -57,4 +57,34 @@ public class ScriptUtilsTest {
         List<String> emptyList = Collections.emptyList();
         assertEquals(emptyList, ScriptUtils.escapeHtml(emptyList));
     }
+
+    @Test
+    /**
+     * tests {@link ScriptUtils#convertToJsValue(String)} for a function value
+     */
+    public void testConvertToJSValue_function() {
+        // test for white space
+        String jsFunction = "\n function () {alert('1 + 1 ' is 1 + 1);} \n\n";
+        assertEquals("function was not converted to js value as expected", jsFunction, ScriptUtils.convertToJsValue(jsFunction));
+    }
+
+    @Test
+    /**
+     * tests {@link ScriptUtils#convertToJsValue(String)} for numeric values
+     */
+    public void testConvertToJSValue_numeric() {
+        assertEquals("number was not converted to js value as expected", " -1 ", ScriptUtils.convertToJsValue(" -1 "));
+        assertEquals("number was not converted to js value as expected", "1.01 ", ScriptUtils.convertToJsValue("1.01 "));
+        assertEquals("string was not converted to js value as expected", "'1.o1 '", ScriptUtils.convertToJsValue("1.o1 "));
+    }
+
+    @Test
+    /**
+     * tests {@link ScriptUtils#convertToJsValue(String)} for  maps and arrays
+     */
+    public void testConvertToJSValue_mapAndArray() {
+        assertEquals("array was not converted to js value as expected", " [-1, 4, 5] ", ScriptUtils.convertToJsValue(" [-1, 4, 5] "));
+        String jsMap = " {'a':1, 'b':2} \n";
+        assertEquals("map was not converted to js value as expected", jsMap, ScriptUtils.convertToJsValue(jsMap));
+    }
 }

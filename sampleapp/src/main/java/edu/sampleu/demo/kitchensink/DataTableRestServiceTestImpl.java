@@ -26,7 +26,16 @@ public class DataTableRestServiceTestImpl {
 
         for (int i = 0; i < 800; i++) {
             sb.append("[\"CHEM " + i + "\",");
-            sb.append("\"INTRODUCTION TO GENERAL CHEMISTRY\",");
+            // add a hidden script to verify that it runs successfully
+            if (i % 10 == 0) {
+                String spanId = "nm_row_" + i;
+                sb.append("\"<span id='" + spanId + "'>INTRODUCTION TO GENERAL CHEMISTRY</span>");
+                sb.append("<input type='hidden' name='script' value=\\\"jQuery('#"
+                        + spanId + "').attr('style', 'color:green');\\\"/>\"");
+                sb.append(",");
+            } else {
+                sb.append("\"INTRODUCTION TO GENERAL CHEMISTRY\",");
+            }
             sb.append("\"3\",");
             sb.append("\"AU\",");
             sb.append("\"NW\",");

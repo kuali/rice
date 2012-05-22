@@ -118,10 +118,14 @@ public class ScriptUtils {
      */
     public static String convertToJsValue(String value) {
         boolean isNumber = false;
-        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.trim().substring(0, 1)) || value.trim()
+        // save input value to preserve any whitespace formatting
+        String originalValue = value;
+        // remove whitespace for correct string matching
+        value = StringUtils.strip(value);
+        if (StringUtils.isNotBlank(value) && (StringUtils.isNumeric(value.substring(0, 1)) || value
                 .substring(0, 1).equals("-"))) {
             try {
-                Double.parseDouble(value.trim());
+                Double.parseDouble(value);
                 isNumber = true;
             } catch (NumberFormatException e) {
                 isNumber = false;
@@ -131,23 +135,23 @@ public class ScriptUtils {
         // If an option value starts with { or [, it would be a nested value
         // and it should not use quotes around it
         if (StringUtils.startsWith(value, "{") || StringUtils.startsWith(value, "[")) {
-            return value;
+            return originalValue;
         }
         // need to be the base boolean value "false" is true in js - a non
         // empty string
         else if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
-            return value;
+            return originalValue;
         }
         // if it is a call back function, do not add the quotes
         else if (StringUtils.startsWith(value, "function") && StringUtils.endsWith(value, "}")) {
-            return value;
+            return originalValue;
         }
         // for numerics
         else if (isNumber) {
-            return value;
+            return originalValue;
         } else {
             // use single quotes since hidden scripts are placed in the value attribute which surrounds the script with double quotes
-            return "'" + value + "'";
+            return "'" + originalValue + "'";
         }
     }
 

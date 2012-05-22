@@ -210,9 +210,7 @@ function runHiddenScripts(id, isSelector){
 	if(id){
         //run dataScript first always
         jQuery("#" + id).find("input[data-role='dataScript']").each(function(){
-            eval(jQuery(this).val());
-            jQuery(this).attr("script", "first_run");
-            jQuery(this).removeAttr("name");
+            evalHiddenScript(jQuery(this));
         });
 
         var selector = "#" + id;
@@ -221,9 +219,7 @@ function runHiddenScripts(id, isSelector){
         }
 
 		jQuery(selector).find("input[name='script']").each(function(){
-			eval(jQuery(this).val());
-            jQuery(this).attr("script", "first_run");
-			jQuery(this).removeAttr("name");
+            evalHiddenScript(jQuery(this));
 		});
 
         runScriptsForId(id);
@@ -247,15 +243,11 @@ function runHiddenScripts(id, isSelector){
 	else{
         //run dataScript first always
         jQuery("input[data-role='dataScript']").each(function(){
-            eval(jQuery(this).val());
-            jQuery(this).attr("script", "first_run");
-            jQuery(this).removeAttr("name");
+            evalHiddenScript(jQuery(this));
         });
 
 		jQuery("input[name='script']").each(function(){
-			eval(jQuery(this).val());
-            jQuery(this).attr("script", "first_run");
-			jQuery(this).removeAttr("name");
+            evalHiddenScript(jQuery(this));
 		});
 
         //reinitialize BubblePopup
@@ -270,8 +262,15 @@ function runHiddenScripts(id, isSelector){
 	}
 }
 
+function runHiddenScriptsTemp(id, isSelector){
+    runHiddenScripts(id, isSelector);
+}
+
 /**
  * runs hidden scripts. The hidden scripts are contained in hidden input elements
+ *
+ * <p>Finds all hidden inputs with the attribute data-role having a value of 'dataScript' or 'script'
+ * then runs the script in the value attribute if the input's data-for attribute value is equal to the id provided</p>
  *
  * @param id - the tag id to use
  */
@@ -279,20 +278,27 @@ function runScriptsForId(id) {
     if (id) {
         jQuery("input[data-role='dataScript']").each(function () {
             if (jQuery(this).data("for") === id) {
-                eval(jQuery(this).val());
-                jQuery(this).attr("script", "first_run");
-                jQuery(this).removeAttr("name");
+                evalHiddenScript(jQuery(this));
             }
         });
 
         jQuery("input[name='script']").each(function () {
             if (jQuery(this).data("for") === id) {
-                eval(jQuery(this).val());
-                jQuery(this).attr("script", "first_run");
-                jQuery(this).removeAttr("name");
+                evalHiddenScript(jQuery(this));
             }
         });
     }
+}
+
+/**
+ * do the actual work of evaluating a script once it has been located
+ *
+ * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
+ */
+function evalHiddenScript(jqueryObj) {
+    eval(jqueryObj.val());
+    jqueryObj.attr("script", "first_run");
+    jqueryObj.removeAttr("name");
 }
 
 /**

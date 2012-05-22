@@ -2386,7 +2386,7 @@
 					{
 						_fnAddData( oSettings, json.aaData[i] );
 					}
-					
+
 					/* Reset the init display for cookie saving. We've already done a filter, and
 					 * therefore cleared it before. So we need to make it appear 'fresh'
 					 */
@@ -2405,6 +2405,13 @@
 					
 					_fnProcessingDisplay( oSettings, false );
 					_fnInitComplete( oSettings, json );
+                    /*
+                     * Begin Kuali Customization
+                     * 22 May 2012 - Eric Njogu
+                     * KULRICE-5889 - run hidden scripts for ajax content - first page
+                     */
+                    runHiddenScripts(oSettings.sTableId, false);
+                    /* end kuali customization */
 				} );
 				return;
 			}
@@ -3732,6 +3739,13 @@
 								_fnPageChange( oSettings, 'next' );
 								_fnCalculateEnd( oSettings );
 								_fnDraw( oSettings );
+                                /*
+                                 * Begin Kuali Customization
+                                 * 22 May 2012 - Eric Njogu
+                                 * KULRICE-5889 - run hidden scripts for new pages
+                                 */
+                                runHiddenScripts(oSettings.sTableId, false);
+                                /* end kuali customization */
 							}
 						}
 					}

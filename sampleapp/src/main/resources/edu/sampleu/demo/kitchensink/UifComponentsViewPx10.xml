@@ -181,7 +181,7 @@
 
   <bean id="UifCompDataTable" parent="Uif-VerticalBoxSection" p:headerText="Data Table - Ajax Source">
     <property name="instructionalText"
-              value="Standard section with a DataTable (builds table using Ajax source)"/>
+              value="Standard section with a DataTable (builds table using Ajax source) with infinite scrolling enabled"/>
     <property name="items">
       <list>
         <bean parent="Uif-DataTable"
@@ -201,6 +201,11 @@
                                 {'sTitle':'Min Credits', 'bSortable':true, 'bSearchable':false},
                                 {'sTitle':'Grading', 'bSortable':true, 'bSearchable':false}
                             ]"/>
+              <!-- infinite scrolling settings from http://datatables.net/examples/basic_init/scroll_y_infinite.html -->
+              <entry key="'bScrollInfinite'" value="true"/>
+              <entry key="'bScrollCollapse'" value="true"/>
+              <entry key="'sScrollY'" value="200px"/>
+              <!-- end of infinite scrolling settings -->
             </map>
           </property>
         </bean>

@@ -95,11 +95,11 @@ public final class KRADUtils {
     private static final KualiDecimal ONE_HUNDRED = new KualiDecimal("100.00");
 
     /**
-     * Convert the given monney amount into an interger string. Since the return string cannot have decimal point,
+     * Convert the given money amount into an integer string. Since the return string cannot have decimal point,
      * multiplies the
      * amount by 100 so the decimal places are not lost, for example, 320.15 is converted into 32015.
      *
-     * @return an integer string of the given money amount through multiplicating by 100 and removing the fraction
+     * @return an integer string of the given money amount through multiplying by 100 and removing the fraction
      *         portion.
      */
     public final static String convertDecimalIntoInteger(KualiDecimal decimalNumber) {
@@ -131,7 +131,13 @@ public final class KRADUtils {
             return null;
         }
     }
-
+     /**
+     * Creates a comma separated String representation of the given list.
+     * For example 'a','b',c'.
+     * <p>
+     * @param list
+     * @return the joined String, empty if the list is null or has no elements
+     */
     public static String joinWithQuotes(List<String> list) {
         if (list == null || list.size() == 0)
             return "";

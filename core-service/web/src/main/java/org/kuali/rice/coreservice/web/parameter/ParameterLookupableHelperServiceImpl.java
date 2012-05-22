@@ -64,8 +64,8 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
 
-        if (fieldValues.containsKey(COMPONENT_NAME) && StringUtils.isNotBlank(fieldValues.get(COMPONENT_NAME)) && fieldValues.containsKey(COMPONENT_NAME)) {
-            //remove parameter code if parameter name exists.
+        if (fieldValues.containsKey(COMPONENT_NAME) && fieldValues.containsKey(COMPONENT_CODE)) {
+            //remove hidden derived component code if component name exists.
             fieldValues.remove(COMPONENT_CODE);
             fieldValues.put(COMPONENT_CODE,"");
         }

@@ -163,12 +163,12 @@
             <bean parent="GenericFieldGroup" p:fieldLabel.render="false">
               <property name="items">
                 <list>
-                  <bean parent="Uif-Message" p:label="Seats Left" p:fieldLabel.render="true"
+                  <bean parent="Uif-MessageField" p:label="Seats Left" p:fieldLabel.render="true"
                         p:messageText="@{#line.registeredNumber} (of @{#line.totalMaxEnrollment}) &lt;span class='kr-highlight-red'&gt;@{#line.waitlistNumber} on waitlist&lt;/span&gt;"
                         p:fieldLabel.cssClasses="labelLeft" p:fieldLabel.renderColon="false"/>
                   <bean parent="GenericTextFieldMedium" p:propertyName="instructor" p:label="Instructor"
                         p:fieldLabel.cssClasses="labelLeft" p:labelPlacement="LEFT"/>
-                  <bean parent="Uif-Message" p:label="Location" p:fieldLabel.render="true"
+                  <bean parent="Uif-MessageField" p:label="Location" p:fieldLabel.render="true"
                         p:messageText="&lt;span class='kr-highlight-blue'&gt;@{#line.location}&lt;/span&gt;"
                         p:fieldLabel.cssClasses="labelLeft" p:fieldLabel.renderColon="false"/>
                   <bean parent="Uif-LinkField" p:label="Syllabus" p:linkText="Download" p:target="foo"

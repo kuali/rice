@@ -359,7 +359,7 @@
   
   <!-- image field -->
   <bean id="imageField_attrs" parent="Uif-ImageField" p:fieldLabel.render="false" p:altText="computer programming"
-        p:captionHeaderText="Image Caption Text" p:cutlineMessageText="Image cutline text here" p:cssClasses="kr-photo"
+        p:captionHeaderText="Image Caption Text" p:cutlineText="Image cutline text here" p:cssClasses="kr-photo"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg">
     <!-- set simple attributes on image -->
     <property name="image.dataAttributes">

@@ -426,10 +426,28 @@ public class Inquiry extends WidgetBase {
         this.viewName = viewName;
     }
 
+    /**
+     * Map that determines what properties from a calling view will be sent to properties on the inquiry data object
+     *
+     * <p>
+     * When invoking an inquiry view, a query is done against the inquiries configured data object and the resulting
+     * record is display. The values for the properties configured within the inquiry parameters Map will be
+     * pulled and passed along as values for the inquiry data object properties (thus they form the criteria for
+     * the inquiry)
+     * </p>
+     *
+     * @return Map<String, String> mapping of calling view properties to inquiry data object properties
+     */
     public Map<String, String> getInquiryParameters() {
         return this.inquiryParameters;
     }
 
+    /**
+     * Setter for the map that determines what property values on the calling view will be sent to properties on the
+     * inquiry data object
+     *
+     * @param inquiryParameters
+     */
     public void setInquiryParameters(Map<String, String> inquiryParameters) {
         this.inquiryParameters = inquiryParameters;
     }

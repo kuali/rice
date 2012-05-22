@@ -129,6 +129,7 @@
     <property name="persistFormToSession" value="true"/>
     <property name="presentationControllerClass" value="org.kuali.rice.krad.uif.view.ViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.uif.view.ViewAuthorizerBase"/>
+    <property name="preloadPoolSize" value="1"/>
     <property name="breadcrumbs">
       <bean parent="Uif-Breadcrumbs"/>
     </property>

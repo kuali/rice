@@ -143,6 +143,8 @@ public class View extends ContainerBase {
 
     @RequestParameter
     private boolean renderedInLightBox;
+    
+    private int preloadPoolSize;
 
     private Class<? extends ViewHelperService> viewHelperServiceClass;
 
@@ -162,6 +164,7 @@ public class View extends ContainerBase {
 
         idSequence = 0;
         this.viewIndex = new ViewIndex();
+        preloadPoolSize = 0;
 
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();
@@ -699,12 +702,53 @@ public class View extends ContainerBase {
         this.additionalCssFiles = additionalCssFiles;
     }
 
+    /**
+     * Indicates whether the view is rendered within a lightbox
+     *
+     * <p>
+     * Some discussion (for example how a close button behaves) need to change based on whether the
+     * view is rendered within a lightbox or the standard browser window. This boolean is true when it is
+     * within a lightbox
+     * </p>
+     *
+     * @return boolean true if view is rendered within a lightbox, false if not
+     */
     public boolean isRenderedInLightBox() {
         return this.renderedInLightBox;
     }
 
+    /**
+     * Setter for the rendered within lightbox indicator
+     *
+     * @param renderedInLightBox
+     */
     public void setRenderedInLightBox(boolean renderedInLightBox) {
         this.renderedInLightBox = renderedInLightBox;
+    }
+
+    /**
+     * Specifies the size of the pool that will contain pre-loaded views
+     *
+     * <p>
+     * The spring loading of some views can take a few seconds which hurts performance. The framework supports
+     * pre-loading of view instances so they are available right away when a request is made. This property configures
+     * how many view instances will be pre-loaded. A value of 0 (the default) means no view instances will be
+     * pre-loaded
+     * </p>
+     *
+     * @return int number of view instances to pre-load
+     */
+    public int getPreloadPoolSize() {
+        return preloadPoolSize;
+    }
+
+    /**
+     * Setter for the preloaded view pool size
+     *
+     * @param preloadPoolSize
+     */
+    public void setPreloadPoolSize(int preloadPoolSize) {
+        this.preloadPoolSize = preloadPoolSize;
     }
 
     /**

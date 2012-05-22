@@ -38,6 +38,7 @@
     <property name="defaultBindingObjectPath" value="dataObject"/>
     <property name="readOnly" value="true"/>
     <property name="singlePageView" value="true"/>
+    <property name="preloadPoolSize" value="0"/>
     <property name="page">
       <bean parent="Uif-InquiryPage"/>
     </property>

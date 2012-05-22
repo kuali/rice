@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.document.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -180,16 +181,18 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         if(!principalIds.isEmpty())       {
             List<Principal> validPrincipals = getIdentityService().getPrincipals(principalIds);
             for(KimDocumentRoleMember roleMember: roleMembers) {
-                boolean validPrincipalId = false;
-                for(Principal validPrincipal: validPrincipals) {
-                    if(roleMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
-                        validPrincipalId = true;
+                if (StringUtils.equals(roleMember.getMemberTypeCode(), MemberType.PRINCIPAL.getCode()) ) {
+                    boolean validPrincipalId = false;
+                    for(Principal validPrincipal: validPrincipals) {
+                        if(roleMember.getMemberId().equals(validPrincipal.getPrincipalId()))     {
+                            validPrincipalId = true;
+                        }
                     }
-                }
-                if(!validPrincipalId) {
-                    GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
-                            new String[] {roleMember.getMemberId()});
-                    valid = false;
+                    if(!validPrincipalId) {
+                        GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+                                new String[] {roleMember.getMemberId()});
+                        valid = false;
+                    }
                 }
             }
         }

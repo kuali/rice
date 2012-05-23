@@ -1062,6 +1062,8 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
             Document.Builder documentBuilder = Document.Builder.create(originalDocument);
             documentBuilder.setApplicationDocumentId(builder.getApplicationDocumentId());
             documentBuilder.setTitle(builder.getTitle());
+            documentBuilder.setApplicationDocumentStatus(builder.getApplicationDocumentStatus());
+            documentBuilder.setVariables(builder.getVariables());
             return documentBuilder.build();
         }
 

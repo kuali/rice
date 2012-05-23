@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.samplu.krad.compview;
+package edu.samplu.krad.configview;
 
 import com.thoughtworks.selenium.Selenium;
 import junit.framework.Assert;
@@ -39,18 +39,22 @@ public class CollectionsIT {
         String baseUrl = "http://localhost:8080/";
         selenium = new WebDriverBackedSelenium(driver, baseUrl);
 
-        // open Collections page in kitchen sink view
+        // open Collections test view
         selenium.open(
-                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page7");
+                "http://localhost:8080/kr-dev/kr-krad/uicomponents?viewId=ConfigurationTestView-Collections&methodToCall=start");
         selenium.type("name=__login_user", "admin");
         selenium.click("//input[@value='Login']");
         selenium.waitForPageToLoad("30000");
     }
 
     @Test
-    public void testActionColumnLeft() throws Exception {
+    public void testActionColumnPlacement() throws Exception {
+        // check if actions column RIGHT by default
+        Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         // check if actions column is LEFT
-        Assert.assertTrue(selenium.isElementPresent("//div[@id='collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        // check if actions column is 3rd in a sub collection
+        Assert.assertTrue(selenium.isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
     }
 
     @After

@@ -119,6 +119,7 @@
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-ProgressiveRender.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Help.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/DialogTestView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Collections.xml</value>
 
 
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>

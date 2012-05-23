@@ -125,6 +125,12 @@ public class ValidationMessages extends ContentElementBase {
             allPossibleKeys.addAll(securePropertyEditors.keySet());
 
             this.addNestedGroupKeys(allPossibleKeys, parent);
+            if (additionalKeysToMatch != null) {
+                allPossibleKeys.addAll(additionalKeysToMatch);
+            }
+            if (StringUtils.isNotBlank(parent.getId())) {
+                allPossibleKeys.add(parent.getId());
+            }
 
             Set<String> messageKeys = new HashSet<String>();
             messageKeys.addAll(messageMap.getAllPropertiesWithErrors());

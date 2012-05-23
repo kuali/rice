@@ -548,8 +548,7 @@ function writeMessagesForGroup(id, data){
 
         //retrieve header for section
         if(data.isSection == undefined){
-            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label, "
-                    + "> a > :header, > a > label");
+            var sectionHeader = jQuery("[data-headerFor='" + id + "']").find("> :header, > label");
             data.isSection = sectionHeader.length;
         }
 
@@ -729,7 +728,7 @@ function calculateMessageTotals(data) {
     data.errorTotal = errorTotal + data.serverErrors.length + data.errors.length;
     data.warningTotal = warningTotal + data.serverWarnings.length + data.warnings.length;
     data.infoTotal = infoTotal + data.serverInfo.length + data.info.length;
-    data.messageTotal = errorTotal + warningTotal + infoTotal;
+    data.messageTotal = data.errorTotal + data.warningTotal + data.infoTotal;
     return data;
 }
 
@@ -740,8 +739,7 @@ function calculateMessageTotals(data) {
  * @param sectionData - 'validationMessages' data of the section
  */
 function displayHeaderMessageCount(sectionId, sectionData) {
-    var sectionHeader = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label, > a > :header, "
-            + "> a > label");
+    var sectionHeader = jQuery("[data-headerFor='" + sectionId + "']").find("> :header, > label");
 
     if(errorImage == undefined){
         setupImages();
@@ -1201,6 +1199,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             jQuery(link).find("a").click(function () {
                 var control = jQuery("#" + fieldId + "_control");
                 if (control.length) {
+
                     jQuery(control).focus();
                 }
                 else {

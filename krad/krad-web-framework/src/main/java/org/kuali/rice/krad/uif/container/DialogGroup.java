@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.field.InputField;
 
 import java.util.List;
 
@@ -30,12 +32,12 @@ import java.util.List;
  * content inside the LightBox widget when the modal dialog is displayed.
  * For convenience, this group contains some standard component properties for commonly used modal dialogs
  * <ul>
- *     <li>a message or question to display in the lightbox</li>
+ *     <li>a prompt to display in the lightbox</li>
  *     <li>an optional text area for holding the user's textual response</li>
  *     <li>two actions. one representing an affirmative response, the other a negative response</li>
  * </ul>
  * The DialogGroup may also serve as a base class for more complex dialogs.
- * The default settings for this DialogGroup is to display a question message of "Are You Sure".
+ * The default settings for this DialogGroup is to display a prompt message of "Are You Sure".
  * And two actions buttons labeled. OK and Cancel.  With OK on the left and Cancel on the Right.
  * The optional TextAreaControl is hidden by default.
  * </p>
@@ -45,21 +47,16 @@ import java.util.List;
 public class DialogGroup extends Group {
     private static final long serialVersionUID = 1L;
 
-    public static final String trueActionDefaultLabel = "OK";
-    public static final String falseActionDefaultLabel = "Cancel";
-    public static final String questionDefaultLabel = "Are You Sure";
+    public static final String promptDefaultLabel = "Are You Sure";
+    protected String promptText;
 
-    protected String questionText;
-    protected String trueActionText;
-    protected String falseActionText;
+    protected Message prompt;
+    protected InputField explanation;
+    protected List<KeyValue> availableResponses;
+    protected InputField responseInputField;
 
-    protected Message question;
-    protected TextAreaControl responseTextArea;
-    protected Action trueAction;
-    protected Action falseAction;
-    
-    boolean displayTrueActionFirst = true;
-    boolean renderTextArea = false;
+    boolean displayOrderLeftToRight = true;
+    boolean displayExplanation = false;
 
     public DialogGroup() {
         super();
@@ -73,69 +70,31 @@ public class DialogGroup extends Group {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(question);
-        components.add(responseTextArea);
-        components.add(trueAction);
-        components.add(falseAction);
+        components.add(prompt);
+        components.add(explanation);
+        components.add(responseInputField);
 
         return components;
     }
 
-
     // Getters and Setters
 
     /**
-     * Returns the text to be displayed as the question or main message in this simple dialog
+     * Returns the text to be displayed as the prompt or main message in this simple dialog
      *
-     * @return String containing the question text
+     * @return String containing the prompt text
      */
-    public String getQuestionText() {
-        return questionText;
+    public String getPromptText() {
+        return promptText;
     }
 
     /**
      * Sets the text String to display as the main message in this dialog
      *
-     * @param questionText - the String to be displayed as the main message
+     * @param promptText - the String to be displayed as the main message
      */
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
-    }
-
-    /**
-     * Retrieves the  label text to be displayed on the positive action button
-     *
-     * @return The label to use on the positive action button
-     */
-    public String getTrueActionText() {
-        return trueActionText;
-    }
-
-    /**
-     * Sets the label text to be displayed on the positive action button
-     *
-     * @param trueActionText - String label for the positive button
-     */
-    public void setTrueActionText(String trueActionText) {
-        this.trueActionText = trueActionText;
-    }
-
-    /**
-     * Retrieves the  label text to be displayed on the negative action button
-     *
-     * @return The label to use on the nagative action button
-     */
-    public String getFalseActionText() {
-        return falseActionText;
-    }
-
-    /**
-     * Sets the label for the negative action button
-     *
-     * @param falseActionText - String label for the button
-     */
-    public void setFalseActionText(String falseActionText) {
-        this.falseActionText = falseActionText;
+    public void setPromptText(String promptText) {
+        this.promptText = promptText;
     }
 
     /**
@@ -143,108 +102,134 @@ public class DialogGroup extends Group {
      *
      * @return Message - the text element containing the message string
      */
-    public Message getQuestion() {
-        return question;
+    public Message getPrompt() {
+        return prompt;
     }
 
     /**
-     * Sets the question Message for this dialog
+     * Sets the prompt Message for this dialog
      *
-     * @param question - The Message element for this dialog
+     * @param prompt - The Message element for this dialog
      */
-    public void setQuestion(Message question) {
-        this.question = question;
+    public void setPrompt(Message prompt) {
+        this.prompt = prompt;
     }
 
+
     /**
-     * Retrieves the TextAreaControl used to gather user input text from the dialog
+     * Retrieves the InputField used to gather user input text from the dialog
      *
-     * @return TextAreaControl component within this dialog
-     */
-    public TextAreaControl getResponseTextArea() {
-        return responseTextArea;
-    }
-
-    /**
-     * Setter for the TextAreaControl for this basic dialog
-     * @param responseTextArea
-     */
-    public void setResponseTextArea(TextAreaControl responseTextArea) {
-        this.responseTextArea = responseTextArea;
-    }
-
-    /**
-     * Gets the Action element representing an affirmative response from the user
+     * <p>
+     * By default, the control for this input is configured as a TextAreaControl
+     * </p>
      *
-     * @return Action element for the positive response choice
+     * @return InputField component
      */
-    public Action getTrueAction() {
-        return trueAction;
+    public InputField getExplanation() {
+        return explanation;
     }
 
     /**
-     * Setter for the Action element representing the affirmative or positive response from the user
+     * Sets the InputField for gathering user text input
      *
-     * @param trueAction - Action element
+     * @param explanation - InputField
      */
-    public void setTrueAction(Action trueAction) {
-        this.trueAction = trueAction;
+    public void setExplanation(InputField explanation) {
+        this.explanation = explanation;
     }
 
     /**
-     * Retrieves the Action Element representing a negative response from the user
+     * determines if the explanation InputField is to be displayed in this dialog
      *
-     * @return Action Element for the negative response choice
+     * <p>
+     *     False by default.
+     * </p>
+     * @return
      */
-    public Action getFalseAction() {
-        return falseAction;
+    public boolean isDisplayExplanation() {
+        return displayExplanation;
     }
 
     /**
-     * Setter for the Action element representing the negative response choice
+     * Sets whether to display the Explanation InputField on this dialog
      *
-     * @param falseAction - Action element
+     * @param displayExplanation
      */
-    public void setFalseAction(Action falseAction) {
-        this.falseAction = falseAction;
+    public void setDisplayExplanation(boolean displayExplanation) {
+        this.displayExplanation = displayExplanation;
     }
 
     /**
-     * Determines the positioning order of the buttons
+     * Gets the choices provided for user response.
      *
-     * @return - true if trueAction is to be displayed on the left (default),
-     *           false if trueAction is to be displayed on the right
+     * <p>
+     *     A List of KeyValue pairs for each of the choices provided on this dialog.
+     * </p>
+     *
+     * @return the List of response actions to provide the user.
      */
-    public boolean isDisplayTrueActionFirst() {
-        return displayTrueActionFirst;
+    public List<KeyValue> getAvailableResponses() {
+        return availableResponses;
     }
 
     /**
-     * Sets whether the true action button will be displayed on the right or left
+     * Sets the list of user responses to provide on this dialog
      *
-     * @param displayTrueActionFirst - boolean (true: button on left, false: button on right)
+     * @param availableResponses
      */
-    public void setDisplayTrueActionFirst(boolean displayTrueActionFirst) {
-        this.displayTrueActionFirst = displayTrueActionFirst;
+    public void setAvailableResponses(List<KeyValue> availableResponses) {
+        this.availableResponses = availableResponses;
     }
 
     /**
-     * Determines whether to render the optional TextAreaControl used to gather a textual
-     * response from the user
+     * Retrieves the InputField containing the choices displayed in this dialog
      *
-     * @return true if TextAreaControl is to be displayed, false if not
+     * <p>
+     *     By default, this InputField is configured to be a HorizontalCheckboxControl.
+     *     Styling is then used to make the checkboxes appear to be buttons.
+     *     The values of the availableResponses List are used as labels for the "buttons".
+     * </p>
+     *
+     * @return InputField component within this dialog
      */
-    public boolean isRenderTextArea() {
-        return renderTextArea;
+    public InputField getResponseInputField() {
+        return responseInputField;
     }
 
     /**
-     * Sets the indicator used to determine whether to render the option TextAreaControl or not
+     * Sets the type of InputField used to display the user choices in this dialog
      *
-     * @param renderTextArea - boolean true if text area is to be rendered, false otherwise (default)
+     * @param responseInputField
      */
-    public void setRenderTextArea(boolean renderTextArea) {
-        this.renderTextArea = renderTextArea;
+    public void setResponseInputField(InputField responseInputField) {
+        this.responseInputField = responseInputField;
     }
 
+    /**
+     * Determines the positioning order of the choices displayed on this dialog
+     *
+     * <p>
+     *     Some page designers like the positive choice on the left and the negative choice on the right.
+     *     Others, prefer just the opposite. This allows the order to easily be switched.
+     * </p>
+     *
+     * @return - true if choices left to right
+     *           false if choices right to left
+     */
+    public boolean isDisplayOrderLeftToRight() {
+        return displayOrderLeftToRight;
+    }
+
+    /**
+     * Sets the display order of the choices displayed on this dialog
+     *
+     * <p>
+     *     By default, the choices are displayed left to right
+     * </p>
+     *
+     * @param displayOrderLeftToRight
+     */
+    public void setDisplayOrderLeftToRight(boolean displayOrderLeftToRight) {
+        this.displayOrderLeftToRight = displayOrderLeftToRight;
+    }
 }

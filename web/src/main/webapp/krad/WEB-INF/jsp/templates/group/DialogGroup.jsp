@@ -20,10 +20,9 @@
 <krad:group group="${group}">
 
   <%-- render message --%>
-  <krad:template component="${group.question}" parent="${group}"/>
-  <krad:template component="${group.responseTextArea}" parent="${group}"/>
-  <krad:template component="${group.trueAction}" parent="${group}"/>
-  <krad:template component="${group.falseAction}" parent="${group}"/>
+  <krad:template component="${group.prompt}" parent="${group}"/>
+  <krad:template component="${group.explanation}" parent="${group}"/>
+  <krad:template component="${group.responseInputField}" parent="${group}"/>
 </krad:group>
 
 

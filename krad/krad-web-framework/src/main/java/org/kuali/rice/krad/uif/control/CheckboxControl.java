@@ -55,10 +55,20 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
         this.value = value;
     }
 
+    /**
+     * Returns the label text for this checkbox
+     *
+     * @return String representing the checkbox label text
+     */
     public String getCheckboxLabel() {
         return checkboxLabel;
     }
 
+    /**
+     * Sets the label text for this checkbox
+     *
+     * @param checkboxLabel - String containing the label text
+     */
     public void setCheckboxLabel(String checkboxLabel) {
         this.checkboxLabel = checkboxLabel;
     }

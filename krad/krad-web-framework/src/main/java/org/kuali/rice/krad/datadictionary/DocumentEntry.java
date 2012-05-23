@@ -86,9 +86,9 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * Setter for document class
+     * Setter for document class associated with the document
      *
-     * @param documentClass
+     * @param documentClass - the document class associated with the document
      */
     public void setDocumentClass(Class<? extends Document> documentClass) {
         if (documentClass == null) {
@@ -108,14 +108,23 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The optional baseDocumentClass element is the name of the java superclass
-     * associated with the document. This gives the data dictionary the ability
-     * to index by the superclass in addition to the current class.
+     * Setter for the optional java superclass associated with the document
+     *
+     * @param baseDocumentClass - the superclass associated with the document
      */
     public void setBaseDocumentClass(Class<? extends Document> baseDocumentClass) {
         this.baseDocumentClass = baseDocumentClass;
     }
 
+    /**
+     * The optional {@link Document} superclass associated with the document
+     *
+     * <p>
+     * This gives the data dictionary the ability to index by the superclass in addition to the current class.
+     * </p>
+     *
+     * @return Class<? extends Document>
+     */
     public Class<? extends Document> getBaseDocumentClass() {
         return baseDocumentClass;
     }

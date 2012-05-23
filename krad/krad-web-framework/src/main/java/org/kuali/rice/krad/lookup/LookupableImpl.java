@@ -24,7 +24,6 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
@@ -84,8 +83,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     private transient EncryptionService encryptionService;
 
     /**
-     * Initialization of Lookupable requires that the business object class be set for the {@link
-     * #initializeInputFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.InputField)} method
+     * Initialization of Lookupable requires that the business object class be set for the
+     * {@link #initializeDataFieldFromDataDictionary(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.field.DataField)} method
      *
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
@@ -117,9 +116,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 !bounded);
 
         // TODO delyea - is this the best way to set that the entire set has a returnable row?
-        List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());
-        Person user = GlobalVariables.getUserSession().getPerson();
-
         for (Object object : displayList) {
             if (isResultReturnable(object)) {
                 form.setAtLeastOneRowReturnable(true);
@@ -129,14 +125,20 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return displayList;
     }
 
+    /**
+     * Get the search results of the lookup
+     *
+     * @param form lookup form instance containing the lookup data
+     * @param searchCriteria map of criteria currently set
+     * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
+     *                  limited (if necessary) to the max search result limit configured.
+     * @return the list of result objects, possibly bounded
+     */
     protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
         List<?> searchResults;
 
         // removed blank search values and decrypt any encrypted search values
         Map<String, String> nonBlankSearchCriteria = processSearchCriteria(form, searchCriteria);
-
-        boolean searchUsingOnlyPrimaryKeyValues = getLookupService().allPrimaryKeyValuesPresentAndNotWildcard(
-                getDataObjectClass(), searchCriteria);
 
         // if this class is an EBO, just call the module service to get the results
         if (ExternalizableBusinessObject.class.isAssignableFrom(getDataObjectClass())) {
@@ -181,6 +183,18 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return searchResults;
     }
 
+    /**
+     * Process the search criteria to be used with the lookup
+     *
+     * <p>
+     * Processing entails primarily of the removal of unused/blank search criteria.  Encrypted field values are
+     * decrypted in this process as well.
+     * </p>
+     *
+     * @param lookupForm lookup form instance containing the lookup data
+     * @param searchCriteria map of criteria currently set
+     * @return map with the non blank search criteria
+     */
     protected Map<String, String> processSearchCriteria(LookupForm lookupForm, Map<String, String> searchCriteria) {
         Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getPostedView(),
                 lookupForm);
@@ -190,7 +204,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             String fieldValue = searchCriteria.get(fieldName);
 
             // don't add hidden criteria
-            LookupView lookupView = (LookupView) lookupForm.getPostedView();
             InputField inputField = criteriaFields.get(fieldName);
             if (inputField.getControl() instanceof HiddenControl) {
                 continue;
@@ -218,6 +231,14 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return nonBlankSearchCriteria;
     }
 
+    /**
+     * Get the search results of an {@linkExternalizableBusinessObject}
+     *
+     * @param searchCriteria map of criteria currently set
+     * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
+     *                  limited (if necessary) to the max search result limit configured.
+     * @return list of result objects, possibly bounded
+     */
     protected List<?> getSearchResultsForEBO(Map<String, String> searchCriteria, boolean unbounded) {
         ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(
                 getDataObjectClass());
@@ -238,6 +259,15 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return searchResults;
     }
 
+    /**
+     *
+     * @param searchCriteria map of criteria currently set
+     * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
+     *                  limited (if necessary) to the max search result limit configured.
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     protected Map<String, String> adjustCriteriaForNestedEBOs(Map<String, String> searchCriteria,
             boolean unbounded) throws InstantiationException, IllegalAccessException {
         if (LOG.isDebugEnabled()) {
@@ -435,6 +465,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return valid;
     }
 
+    /**
+     * Returns the criteria fields in a map keyed by the field property name.
+     *
+     * @param lookupView
+     * @param form lookup form instance containing the lookup data
+     * @return map of criteria fields
+     */
     protected Map<String, InputField> getCriteriaFieldsForValidation(LookupView lookupView, LookupForm form) {
         Map<String, InputField> criteriaFieldMap = new HashMap<String, InputField>();
 

@@ -29,6 +29,7 @@
      <li><portal:portalLink displayTitle="true" title="Incident Report" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2&methodToCall=foo" /></li>
      <li><portal:portalLink displayTitle="true" title="Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Dialog Test View" url="${ConfigProperties.application.url}/kr-krad/dialog-test-view-uif-controller?viewId=DialogTestView&methodToCall=start" /></li>
+    <li><portal:portalLink displayTitle="true" title="Generated Fields Test" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifGeneratedFields&methodToCall=start" /></li>
   </ul>
    <br/>
 

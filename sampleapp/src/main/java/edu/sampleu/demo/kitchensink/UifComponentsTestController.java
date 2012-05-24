@@ -69,6 +69,25 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
+        //for generated view:
+        if(form.getView().getId().equals("UifGeneratedFields")){
+            for(int i=0; i<100; i++){
+                ((UifComponentsTestForm)form).getList1generated().add(
+                        new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
+            }
+            for(int i=0; i<100; i++){
+                ((UifComponentsTestForm)form).getList2generated().add(
+                        new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
+            }
+            for(int i=0; i<100; i++){
+                ((UifComponentsTestForm)form).getList3generated().add(
+                        new UITestObject("A" + i, "B" + i, "C" + i, "D" + i));
+                for(int j=0; j<10; j++){
+                    ((UifComponentsTestForm)form).getList3generated().get(i).getSubList().add(
+                            new UITestObject("i" + i + "-" + j, "i" + i + "-" + j, "i" + i + "-" + j, "i" + i + "-" + j));
+                }
+            }
+        }
 
         GlobalVariables.getMessageMap().addGrowlMessage("Welcome!", "kitchenSink.welcome");
 

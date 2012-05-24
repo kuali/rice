@@ -188,6 +188,9 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<UITestObject> list1generated = new ArrayList<UITestObject>();
+    private List<UITestObject> list2generated = new ArrayList<UITestObject>();
+    private List<UITestObject> list3generated = new ArrayList<UITestObject>();
     private List<TimeInfo> listTimeInfo = new ArrayList<TimeInfo>();
     private List<DayEvent> dayEvents = new ArrayList<DayEvent>();
 
@@ -213,6 +216,8 @@ public class UifComponentsTestForm extends UifFormBase {
         super();
 
         uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
+        
+
 
         list1.add(new UITestObject("A", "B", "C", "D"));
         list1.add(new UITestObject("1", "2", "3", "4"));
@@ -2190,5 +2195,29 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setDayEvents(List<DayEvent> dayEvents) {
         this.dayEvents = dayEvents;
+    }
+
+    public List<UITestObject> getList1generated() {
+        return list1generated;
+    }
+
+    public void setList1generated(List<UITestObject> list1generated) {
+        this.list1generated = list1generated;
+    }
+
+    public List<UITestObject> getList2generated() {
+        return list2generated;
+    }
+
+    public void setList2generated(List<UITestObject> list2generated) {
+        this.list2generated = list2generated;
+    }
+
+    public List<UITestObject> getList3generated() {
+        return list3generated;
+    }
+
+    public void setList3generated(List<UITestObject> list3generated) {
+        this.list3generated = list3generated;
     }
 }

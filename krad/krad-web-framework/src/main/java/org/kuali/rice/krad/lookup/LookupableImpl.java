@@ -923,6 +923,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return this.dataObjectClass;
     }
 
+
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
@@ -960,6 +961,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.documentDictionaryService = documentDictionaryService;
     }
 
+    /**
+     * Returns the <code>LookupService</code>
+     * <p>
+     * If the <code>LookupService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
+     * </p>
+     * @return configurationService - the <code>ConfigurationService></code> that is set
+     */
     protected LookupService getLookupService() {
         if (lookupService == null) {
             this.lookupService = KRADServiceLocatorWeb.getLookupService();

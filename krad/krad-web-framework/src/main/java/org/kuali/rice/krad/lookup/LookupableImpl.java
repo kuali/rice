@@ -689,9 +689,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     * Returns the configured return key property names or if not configured defaults to the primary keys
+     * <p>Returns the configured return key property names or if not configured defaults to the primary keys
      * for the data object class
-     *
+     * </p>
+     * @param lookupView - lookup view instance containing lookup configuration
+     * @param lookupForm - lookup form instance containing the data
+     * @param dataObject - data object instance
      * @return List<String> property names which should be passed back on the return URL
      */
     protected List<String> getReturnKeys(LookupView lookupView, LookupForm lookupForm, Object dataObject) {

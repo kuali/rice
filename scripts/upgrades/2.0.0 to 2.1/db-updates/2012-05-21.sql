@@ -14,6 +14,7 @@
 -- limitations under the License.
 --
 
-update krim_perm_attr_data_t set ATTR_VAL='org.kuali.rice.core.web.impex.IngesterAction' where ATTR_VAL='org.kuali.rice.kew.batch.web.IngesterAction'/
+update krim_perm_attr_data_t set ATTR_VAL='org.kuali.rice.core.web.impex.IngesterAction' where ATTR_VAL='org.kuali.rice.kew.batch.web.IngesterAction'
+/
 
 

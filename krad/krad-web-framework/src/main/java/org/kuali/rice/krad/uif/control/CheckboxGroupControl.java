@@ -39,8 +39,11 @@ public class CheckboxGroupControl extends MultiValueControlBase {
     }
 
     /**
-     * Delimiter string to be rendered between the checkbox group options,
-     * defaults to none
+     * Delimiter string to be rendered between the checkbox group options
+     *
+     * <p>
+     * defaults to none.
+     * </p>
      * 
      * @return String delimiter string
      */

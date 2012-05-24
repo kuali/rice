@@ -507,6 +507,9 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Indicates if the full view is to be rendered or if its just a component that
+     * needs to be refreshed
+     *
      * @return the renderFullView
      */
     public boolean isRenderFullView() {
@@ -514,6 +517,8 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Setter for renderFullView
+     *
      * @param renderFullView
      */
     public void setRenderFullView(boolean renderFullView) {

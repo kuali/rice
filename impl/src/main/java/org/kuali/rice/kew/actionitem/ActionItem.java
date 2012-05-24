@@ -399,8 +399,6 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
     public String toString() {
         return new ToStringBuilder(this).append("id", id)
                                         .append("workflowId", principalId)
-                                        .append("id", id)
-                                        .append("workflowId", principalId)
                                         .append("dateAssigned", dateAssigned)
                                         .append("actionRequestCd", actionRequestCd)
                                         .append("actionRequestId", actionRequestId)

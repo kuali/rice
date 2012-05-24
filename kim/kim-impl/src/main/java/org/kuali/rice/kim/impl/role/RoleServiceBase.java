@@ -46,6 +46,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -492,7 +493,7 @@ abstract class RoleServiceBase {
         String serviceName = typeInfo.getServiceName();
         if (serviceName != null) {
             try {
-                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(serviceName);
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
                 if (service != null && service instanceof RoleTypeService) {
                     return (RoleTypeService) service;
                 }

@@ -37,7 +37,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
-
+import javax.xml.namespace.QName;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -80,8 +80,8 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
 
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
-	        KimTypeService kimTypeService = (KimTypeService) GlobalResourceLoader.getService(getKimTypeServiceName(
-                    KimTypeBo.to(role.getKimRoleType())));
+	        KimTypeService kimTypeService = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(
+                    getKimTypeServiceName(KimTypeBo.to(role.getKimRoleType()))));
 	        //it is possible that the the kimTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

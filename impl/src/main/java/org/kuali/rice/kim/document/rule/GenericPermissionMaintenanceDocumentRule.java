@@ -31,6 +31,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -128,7 +129,7 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
     		return null;
     	}
     	try {
-	    	Object service = GlobalResourceLoader.getService(serviceName);
+	    	Object service = GlobalResourceLoader.getService(QName.valueOf(serviceName));
 	    	// if we have a service name, it must exist
 	    	if ( service == null ) {
 				LOG.warn("null returned for permission type service for service name: " + serviceName);

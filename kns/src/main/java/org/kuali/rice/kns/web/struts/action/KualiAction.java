@@ -446,8 +446,9 @@ public abstract class KualiAction extends DispatchAction {
         Class boClass = null;
 
         //no point in even trying if the lookup is for a class on a remote application
-		if (StringUtils.isNotEmpty(baseLookupUrl)
-                && baseLookupUrl.startsWith(getApplicationBaseUrl() + "/kr/")) {
+		if ((StringUtils.isNotEmpty(baseLookupUrl)
+                  && baseLookupUrl.startsWith(getApplicationBaseUrl() + "/kr/"))
+                || StringUtils.isEmpty(baseLookupUrl)) {
             try{
                 boClass = Class.forName(boClassName);
             } catch(ClassNotFoundException cnfex){

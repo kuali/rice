@@ -64,13 +64,12 @@
     <property name="width" value="75%"/>
     <property name="templateOptions">
       <map>
-        <entry key="autoScale" value="true"/>
-        <entry key="centerOnScroll" value="true"/>
-        <entry key="transitionIn" value="fade"/>
-        <entry key="transitionOut" value="fade"/>
-        <entry key="speedIn" value="200"/>
-        <entry key="speedOut" value="200"/>
-        <entry key="hideOnOverlayClick" value="false"/>
+        <entry key="fitToView" value="true"/>
+        <entry key="openEffect" value="fade"/>
+        <entry key="closeEffect" value="fade"/>
+        <entry key="openSpeed" value="200"/>
+        <entry key="closeSpeed" value="200"/>
+        <entry key="helpers" value="{overlay:{closeClick:false}}"/>
         <entry key="type" value="iframe"/>
       </map>
     </property>

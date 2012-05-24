@@ -529,7 +529,7 @@ function focusOnElementById(focusId){
 function jumpToElementByName(name){
 	var theElement =  jQuery("[name='" + escapeName(name) + "']");
 	if(theElement.length != 0){
-		if(top == self || jQuery("#fancybox-frame", parent.document).length){
+		if(top == self || jQuery(".fancybox-iframe", parent.document).length){
             jQuery.scrollTo(theElement, 0);
 		}
 		else{
@@ -543,7 +543,7 @@ function jumpToElementByName(name){
 function jumpToElementById(id){
 	var theElement =  jQuery("#" + id);
 	if(theElement.length != 0){
-		if(top == self || jQuery("#fancybox-frame", parent.document).length){
+		if(top == self || jQuery(".fancybox-iframe", parent.document).length){
             jQuery.scrollTo(theElement, 0);
 		}
 		else{
@@ -555,7 +555,7 @@ function jumpToElementById(id){
 
 //Jump(scroll) to the top of the current screen
 function jumpToTop(){
-	if(top == self || jQuery("#fancybox-frame", parent.document).length){
+	if(top == self || jQuery(".fancybox-iframe", parent.document).length){
         jQuery.scrollTo(jQuery("html"), 0);
 	}
 	else{
@@ -565,7 +565,7 @@ function jumpToTop(){
 
 //Jump(scroll) to the bottom of the current screen
 function jumpToBottom(){
-	if(top == self || jQuery("#fancybox-frame", parent.document).length){
+	if(top == self || jQuery(".fancybox-iframe", parent.document).length){
         jQuery.scrollTo("max", 0);
 	}
 	else{

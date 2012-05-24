@@ -131,10 +131,10 @@ function createLightBoxLink(controlId, options) {
         var showHistory = false;
 
         // Check if this is called within a light box
-        if (!jQuery("#fancybox-frame", parent.document).length) {
+        if (!jQuery(".fancybox-iframe", parent.document).length) {
 
             // Perform cleanup when lightbox is closed
-            options['onCleanup'] = cleanupClosedLightboxForms;
+            options['beforeClose'] = cleanupClosedLightboxForms;
 
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
@@ -177,7 +177,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
     jQuery(function () {
 
         // Check if this is not called within a lightbox
-        if (!jQuery("#fancybox-frame", parent.document).length) {
+        if (!jQuery(".fancybox-iframe", parent.document).length) {
             jQuery("#" + controlId).click(function (e) {
 
                 // Prevent the default submit
@@ -211,10 +211,10 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                                 // Perform cleanup when lightbox is closed
                                 // TODO: this stomps on the post form (clear out) so need to another
                                 // way to clear forms when the lightbox performs a post back
-                               // options['onCleanup'] = cleanupClosedLightboxForms;
+                               // options['beforeClose'] = cleanupClosedLightboxForms;
 
                                 // Add the returned URL to the FancyBox href setting
-                                options['href'] = data;
+                                options['href'] = data.replace(/&amp;/g, '&');
 
                                 // Open the light box
                                 if (top == self) {
@@ -306,10 +306,10 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
     if (showLightBox) {
 
         // Check if this is called within a light box
-        if (!jQuery("#fancybox-frame", parent.document).length) {
+        if (!jQuery(".fancybox-iframe", parent.document).length) {
 
             // Perform cleanup when lightbox is closed
-            lightBoxOptions['onCleanup'] = cleanupClosedLightboxForms;
+            lightBoxOptions['beforeClose'] = cleanupClosedLightboxForms;
 
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
@@ -346,7 +346,7 @@ function closeLightbox() {
 function cleanupClosedLightboxForms() {
     // get the formKey of the lightbox (fancybox)
     var context = getContext();
-    var formKey = context('iframe#fancybox-frame').contents().find('input#formKey').val();
+    var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
 
     clearServerSideForm(formKey);
 }

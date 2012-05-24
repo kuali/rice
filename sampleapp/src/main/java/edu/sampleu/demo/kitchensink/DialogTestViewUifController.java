@@ -40,7 +40,7 @@ public class DialogTestViewUifController extends UifControllerBase {
 
     @Override
     protected UifFormBase createInitialForm(HttpServletRequest request) {
-        return new UifComponentsTestForm();
+        return new UifDialogTestForm();
     }
 
     /**

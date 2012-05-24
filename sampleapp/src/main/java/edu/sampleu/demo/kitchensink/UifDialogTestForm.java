@@ -28,6 +28,8 @@ public class UifDialogTestForm extends UifFormBase {
     private static final long serialVersionUID = -7525378097732916418L;
 
     private String field1;
+    private String field2;
+
     private boolean bField1;
 
     public UifDialogTestForm() {
@@ -51,6 +53,21 @@ public class UifDialogTestForm extends UifFormBase {
      */
     public void setField1(String field1) {
         this.field1 = field1;
+    }
+
+
+    /**
+     * @return the field2
+     */
+    public String getField2() {
+        return this.field2;
+    }
+
+    /**
+     * @param field1 the field2 to set
+     */
+    public void setField2(String field2) {
+        this.field2 = field2;
     }
 
 

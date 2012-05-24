@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.view.View;
 
 import java.util.List;
 
@@ -47,12 +50,11 @@ import java.util.List;
 public class DialogGroup extends Group {
     private static final long serialVersionUID = 1L;
 
-    public static final String promptDefaultLabel = "Are You Sure";
     protected String promptText;
+    protected List<KeyValue> availableResponses;
 
     protected Message prompt;
     protected InputField explanation;
-    protected List<KeyValue> availableResponses;
     protected InputField responseInputField;
 
     boolean displayOrderLeftToRight = true;
@@ -75,6 +77,35 @@ public class DialogGroup extends Group {
         components.add(responseInputField);
 
         return components;
+    }
+
+    /**
+     * Performs the final phase of the component lifecycle.
+     *
+     * <p>For this DialogGroup component, perform the following:
+     * <ul>
+     *     <li>set the promptText in the message</li>
+     *     <li>set the options for the checkbox control to the availableResponses KeyValue property of
+     *     this dialogGroup</li>
+     * </ul>
+     * </p>
+     *
+     * @param view
+     * @param model
+     * @param parent
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        // set the messageTest to the promptText
+        prompt.setMessageText(promptText);
+
+        // add options to checkbox
+        if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
+            MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
+            multiValueControl.setOptions(availableResponses);
+        }
     }
 
     // Getters and Setters

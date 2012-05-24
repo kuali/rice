@@ -943,13 +943,13 @@
   <!-- Dialog Groups -->
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
-        parent="Uif-GroupBase">
+        parent="Uif-VerticalBoxGroup">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
     <property name="layoutManager">
       <bean parent="Uif-VerticalBoxLayout"/>
     </property>
-    <property name="hidden" value="false"/>
-    <property name="promptText" value="Are You Sure"/>
+    <property name="hidden" value="true"/>
+    <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">
       <list>
         <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>
@@ -962,7 +962,7 @@
       <bean parent="Uif-Message"/>
     </property>
     <property name="explanation">
-      <bean parent="Uif-InputField">
+      <bean parent="Uif-InputField" p:render="false">
         <property name="control">
           <bean parent="Uif-TextAreaControl" />
         </property>

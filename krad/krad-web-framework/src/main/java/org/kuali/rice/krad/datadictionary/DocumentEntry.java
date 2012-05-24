@@ -130,13 +130,17 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The businessRulesClass element is the full class name of the java
-     * class which contains the business rules for a document.
+     * Setter for the {@link BusinessRule} to execute rules for the document
      */
     public void setBusinessRulesClass(Class<? extends BusinessRule> businessRulesClass) {
         this.businessRulesClass = businessRulesClass;
     }
 
+    /**
+     * The {@link BusinessRule} that will be used to execute business rules for the document
+     *
+     * @return BusinessRule
+     */
     public Class<? extends BusinessRule> getBusinessRulesClass() {
         return businessRulesClass;
     }

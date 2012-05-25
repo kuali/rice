@@ -228,26 +228,78 @@ public class ComponentFactory {
         return (HiddenControl) getNewComponentInstance(HIDDEN_CONTROL);
     }
 
+    /**
+     * Retrieves a new select control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return SelectControl
+     */
     public static SelectControl getSelectControl() {
         return (SelectControl) getNewComponentInstance(SELECT_CONTROL);
     }
 
+    /**
+     * Retrieves a new checkbox group control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * <p>
+     * Return checkbox group set for vertical orientation
+     * </p>
+     *
+     * @return CheckboxGroupControl
+     */
     public static CheckboxGroupControl getCheckboxGroupControl() {
         return (CheckboxGroupControl) getNewComponentInstance(CHECKBOX_GROUP_CONTROL);
     }
 
+    /**
+     * Retrieves a new checkbox group control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * <p>
+     * Return checkbox group set for horizontal orientation
+     * </p>
+     *
+     * @return CheckboxGroupControl
+     */
     public static CheckboxGroupControl getCheckboxGroupControlHorizontal() {
         return (CheckboxGroupControl) getNewComponentInstance(CHECKBOX_GROUP_CONTROL_HORIZONTAL);
     }
 
+    /**
+     * Retrieves a new radio group control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * <p>
+     * Return radio group set for vertical orientation
+     * </p>
+     *
+     * @return RadioGroupControl
+     */
     public static RadioGroupControl getRadioGroupControl() {
         return (RadioGroupControl) getNewComponentInstance(RADIO_GROUP_CONTROL);
     }
 
+    /**
+     * Retrieves a new radio group control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * <p>
+     * Return radio group set for horizontal orientation
+     * </p>
+     *
+     * @return RadioGroupControl
+     */
     public static RadioGroupControl getRadioGroupControlHorizontal() {
         return (RadioGroupControl) getNewComponentInstance(RADIO_GROUP_CONTROL_HORIZONTAL);
     }
 
+    /**
+     * Retrieves a new file control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return FileControl
+     */
     public static FileControl getFileControl() {
         return (FileControl) getNewComponentInstance(FILE_CONTROL);
     }

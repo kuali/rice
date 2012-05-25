@@ -56,7 +56,7 @@ public class DialogGroup extends Group {
     protected InputField explanation;
     protected InputField responseInputField;
 
-    boolean displayOrderLeftToRight = true;
+    boolean reverseButtonOrder = false;
     boolean displayExplanation = false;
 
     public DialogGroup() {
@@ -108,13 +108,13 @@ public class DialogGroup extends Group {
         // add options to checkbox
         if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
             MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
-            if (displayOrderLeftToRight) {
-                multiValueControl.setOptions(availableResponses);
-            }else{
-                // for right to left, reverse the button order (without changing original list)
+            if (reverseButtonOrder) {
+                // reverse the button order (without changing original list)
                 List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
                 Collections.reverse(buttonList);
                 multiValueControl.setOptions(buttonList);
+            }else{
+                multiValueControl.setOptions(availableResponses);
             }
         }
     }
@@ -258,8 +258,8 @@ public class DialogGroup extends Group {
      * @return - true if choices left to right
      *           false if choices right to left
      */
-    public boolean isDisplayOrderLeftToRight() {
-        return displayOrderLeftToRight;
+    public boolean isReverseButtonOrder() {
+        return reverseButtonOrder;
     }
 
     /**
@@ -269,9 +269,9 @@ public class DialogGroup extends Group {
      *     By default, the choices are displayed left to right
      * </p>
      *
-     * @param displayOrderLeftToRight - true if buttons displayed left to right, false if right to left
+     * @param reverseButtonOrder - true if buttons displayed left to right, false if right to left
      */
-    public void setDisplayOrderLeftToRight(boolean displayOrderLeftToRight) {
-        this.displayOrderLeftToRight = displayOrderLeftToRight;
+    public void setReverseButtonOrder(boolean reverseButtonOrder) {
+        this.reverseButtonOrder = reverseButtonOrder;
     }
 }

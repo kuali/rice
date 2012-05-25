@@ -957,19 +957,19 @@
       </list>
     </property>
     <property name="displayExplanation" value="false"/>
-    <property name="displayOrderLeftToRight" value="true"/>
+    <property name="reverseButtonOrder" value="false"/>
     <property name="prompt">
       <bean parent="Uif-Message"/>
     </property>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:render="false">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
         <property name="control">
           <bean parent="Uif-TextAreaControl" />
         </property>
       </bean>
     </property>
     <property name="responseInputField">
-      <bean parent="Uif-InputField">
+      <bean parent="Uif-InputField" p:propertyName="dialogResponse">
         <property name="control">
           <bean parent="Uif-HorizontalCheckboxesControl"/>
         </property>

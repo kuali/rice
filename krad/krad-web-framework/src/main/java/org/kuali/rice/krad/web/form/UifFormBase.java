@@ -92,6 +92,10 @@ public class UifFormBase implements ViewModel {
 
     protected History formHistory;
 
+    // dialog fields
+    protected String dialogExplanation;
+    protected String dialogResponse;
+
     public UifFormBase() {
         formKey = generateFormKey();
         renderFullView = true;
@@ -679,4 +683,50 @@ public class UifFormBase implements ViewModel {
     public void setGrowlScript(String growlScript) {
         this.growlScript = growlScript;
     }
+
+    /**
+     * Returns the String entered by the user when presented a dialog
+     *
+     * <p>
+     *     Field defined here so all forms will be able to bind to a dialog using the same property
+     * </p>
+     *
+     * @return String - the text entered by a user as a reply in a modal dialog.
+     */
+    public String getDialogExplanation() {
+        return dialogExplanation;
+    }
+
+    /**
+     * Sets the dialogExplanation text value.
+     *
+     * @param dialogExplanation - text entered by user when replying to a modal dialog
+     */
+    public void setDialogExplanation(String dialogExplanation) {
+        this.dialogExplanation = dialogExplanation;
+    }
+
+    /**
+     * Represents the option chosen by the user when interacting with a modal dialog
+     *
+     * <p>
+     *     This is used to determine which option was chosen by the user. The value is the key in the key/value pair
+     *     selected in the control.
+     * </p>
+     *
+     * @return - String key selected by the user
+     */
+    public String getDialogResponse() {
+        return dialogResponse;
+    }
+
+    /**
+     * Sets the response key text selected by the user as a response to a modal dialog
+     *
+     * @param dialogResponse - the key of the option chosen by the user
+     */
+    public void setDialogResponse(String dialogResponse) {
+        this.dialogResponse = dialogResponse;
+    }
+
 }

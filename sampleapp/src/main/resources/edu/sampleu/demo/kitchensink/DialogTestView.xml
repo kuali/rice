@@ -59,7 +59,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="This is the main page of the view. Regular content goes here."/>
-        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See dialog" p:defaultValue="true"
+        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See dialog" p:defaultValue="false"
               p:instructionalText="show/hide dialog content">
           <property name="onChangeScript" value="jQuery('#myDialog').toggle();" />
           <property name="control">
@@ -71,9 +71,6 @@
   </bean>
 
   <bean id="DialogTestView-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="hidden" value="false"/>
     <property name="promptText" value="You are about to erase your hard drive. Continue?"/>
-    <property name="explanation.propertyName" value="field1"/>
-    <property name="responseInputField.propertyName" value="field2"/>
   </bean>
 </beans>

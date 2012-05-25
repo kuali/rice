@@ -156,7 +156,9 @@ public class ComponentFactory {
         } else {
             component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                     origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '" + id + "' was NOT found in initialStates. New one fetched from DD");
+            LOG.debug("getNewInstanceForRefresh: id '"
+                    + id
+                    + "' was NOT found in initialStates. New one fetched from DD");
         }
 
         if (component != null) {
@@ -186,18 +188,42 @@ public class ComponentFactory {
         return component;
     }
 
+    /**
+     * Retrieves a new Text control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return TextControl
+     */
     public static TextControl getTextControl() {
         return (TextControl) getNewComponentInstance(TEXT_CONTROL);
     }
 
+    /**
+     * Retrieves a new Text area control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return TextAreaControl
+     */
     public static TextAreaControl getTextAreaControl() {
         return (TextAreaControl) getNewComponentInstance(TEXTAREA_CONTROL);
     }
 
+    /**
+     * Retrieves a new checkbox control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return CheckboxControl
+     */
     public static CheckboxControl getCheckboxControl() {
         return (CheckboxControl) getNewComponentInstance(CHECKBOX_CONTROL);
     }
 
+    /**
+     * Retrieves a new hidden control instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return HiddenControl
+     */
     public static HiddenControl getHiddenControl() {
         return (HiddenControl) getNewComponentInstance(HIDDEN_CONTROL);
     }

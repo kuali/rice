@@ -146,9 +146,9 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * The documentTypeName element is the name of the document
-     * as defined in the workflow system.
-     * Example: "AddressTypeMaintenanceDocument"
+     * Setter for the name of the document as defined in the workflow system
+     *
+     * @param documentTypeName - name of the document in workflow
      */
     public void setDocumentTypeName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
@@ -157,6 +157,11 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         this.documentTypeName = documentTypeName;
     }
 
+    /**
+     * The name of the document in the workflow system
+     *
+     * @return String
+     */
     public String getDocumentTypeName() {
         return this.documentTypeName;
     }

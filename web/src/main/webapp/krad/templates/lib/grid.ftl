@@ -15,146 +15,112 @@
   -->
 
 <#macro grid items firstLineStyle numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
-        applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
+applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
 
-    <#if renderHeaderRow>
-        <#assign headerScope="col"/>
-    </#if>
+    <#assign defaultCellWidth="${100/numberOfColumns}"/>
 
-  <#assign defaultCellWidth="${100/numberOfColumns}"/>
+    <#assign colCount=0/>
+    <#assign carryOverColCount=0/>
+    <#assign tmpCarryOverColCount=0/>
+
+    <#list items as item>
+        <#assign colCount=colCount + 1/>
+        <#assign firstRow=(item_index == 0)/>
+
+        <#-- begin table row -->
+        <#if (colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)>
+            <#if applyAlternatingRowStyles>
+                <#if evenOddClass == "even">
+                    <#assign eventOddClass="odd"/>
+                <#else>
+                    <#assign eventOddClass="even"/>
+                </#if>
+            </#if>
 
 
-<c:set var="defaultCellWidth" value="${100/numberOfColumns}"/>
+            <#if firstRow && firstLineStyle?has_content>
+              <tr class="${firstLineStyle}">
+            <#else>
+              <tr class="${evenOddClass}">
+            </#if>
 
-<c:set var="colCount" value="0"/>
-<c:set var="carryOverColCount" value="0"/>
-<c:set var="tmpCarryOverColCount" value="0"/>
+            <#-- if alternating header columns, force first cell of row to be header -->
+            <#if renderAlternatingHeaderColumns>
+                <#assign renderAlternateHeader=true/>
+            </#if>
 
-<c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-  <c:set var="colCount" value="${colCount + 1}"/>
-  <c:set var="actualColCount" value="${actualColCount + 1}"/>
+            <#-- if render first cell of each row as header, set cell to be rendered as header -->
+            <#if renderRowFirstCellHeader>
+                <#assign renderFirstCellHeader=true/>
+            </#if>
+        </#if>
 
-  <%-- begin table row --%>
-  <c:if test="${(colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)}">
-    <%-- determine if even or add style should be applied --%>
-    <c:if test="${applyAlternatingRowStyles}">
-      <c:choose>
-        <c:when test="${evenOddClass eq 'even'}">
-          <c:set var="evenOddClass" value="odd"/>
-        </c:when>
-        <c:otherwise>
-          <c:set var="evenOddClass" value="even"/>
-        </c:otherwise>
-      </c:choose>
-    </c:if>
+        <#-- build cells for row -->
 
-    <c:choose>
-      <c:when test="${itemVarStatus.first}">
-        <tr class="${firstLineStyle}">
-        <c:set var="firstRow" value="true"/>
-      </c:when>
-      <c:otherwise>
-        <tr class="${evenOddClass}">
-        <c:set var="firstRow" value="false"/>
-      </c:otherwise>
-    </c:choose>
+        <#-- skip column positions from previous rowspan -->
+        <#list 1..carryOverColCount as i>
+            <#assign colCount=colCount + 1/>
+            <#assign carryOverColCount=carryOverColCount - 1/>
 
-    <%-- if alternating header columns, force first cell of row to be header --%>
-    <c:if test="${renderAlternatingHeaderColumns}">
-      <c:set var="renderAlternateHeader" value="true"/>
-    </c:if>
+            <#if colCount % numberOfColumns == 0>
+              </tr><tr>
+            </#if>
+        </#list>
 
-    <%-- if render first cell of each row as header, set cell to be rendered as header --%>
-    <c:if test="${renderRowFirstCellHeader}">
-      <c:set var="renderFirstCellHeader" value="true"/>
-    </c:if>
-  </c:if>
+        <#-- determine cell width by using default or configured width -->
+        <#if item.width?has_content>
+            <#assign cellWidth=item.width/>
+        <#elseif applyDefaultCellWidths>
+            <#assign cellWidth="${defaultCellWidth * item.colSpan}%"/>
+        </#if>
 
-  <%-- skip column positions from previous rowspan --%>
-  <c:forEach var="i" begin="1" end="${carryOverColCount}" step="1" varStatus="status">
-    <c:set var="colCount" value="${colCount + 1}"/>
-    <c:set var="carryOverColCount" value="${carryOverColCount - 1}"/>
+        <#if cellWidth?has_content>
+            <#assign cellWidth="width=\"${cellWidth}\""/>
+        </#if>
+    
+        <#assign singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
+        <#assign renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow)
+                 || ((renderFirstCellHeader || renderAlternateHeader) && !singleCellRow)/>
 
-    <c:if test="${colCount % numberOfColumns == 0}">
-      </tr><tr>
-    </c:if>
-  </c:forEach>
+        <#if renderHeaderColumn>
+            <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
+              <#assign headerScope="col"/>
+            <#else>
+              <#assign headerScope="row"/>
+            </#if>
 
-  <%-- determine cell width by using default or configured width --%>
-  <c:set var="cellWidth" value=""/>
-  <c:if test="${applyDefaultCellWidths}">
-    <c:set var="cellWidth" value="${defaultCellWidth * item.colSpan}%"/>
-  </c:if>
+            <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
+                rowspan="${item.rowSpan}" ${attrBuild(component)}>
+                <@template component=item/>
+            </th>
+        <#else>
+            <td role="presentation" ${cellWidth} colspan="${item.colSpan}"
+                rowspan="${item.rowSpan}" ${attrBuild(component)}>
+                <@template component=item/>
+            </td>
+        </#if>
 
-  <c:if test="${!empty item.width}">
-    <c:set var="cellWidth" value="${item.width}"/>
-  </c:if>
+        <#-- flip alternating flags -->
+        <#if renderAlternatingHeaderColumns>
+            <#assign renderAlternateHeader=!renderAlternateHeader/>
+        </#if>
 
-  <c:if test="${!empty cellWidth}">
-    <c:set var="cellWidth" value="width=\"${cellWidth}\""/>
-  </c:if>
+        <#if renderRowFirstCellHeader>
+            <#assign renderFirstCellHeader=false/>
+        </#if>
 
-  <%-- determine if we only have one cell for a non header row, in which case we don't want to render a th --%>
-  <c:set var="singleCellOnly" value="false"/>
-  <c:if test="${(numberOfColumns == 1) || (item.colSpan == numberOfColumns)}">
-    <c:set var="singleCellOnly" value="true"/>
-  </c:if>
+        <#assign colCount=colCount + item.colSpan - 1/>
 
-  <c:set var="renderHeaderColumn" value="false"/>
-  <c:if test="${renderHeaderRow || (renderFirstRowHeader && firstRow) ||
-              ((renderFirstCellHeader || renderAlternateHeader) && !singleCellOnly)}">
-    <c:set var="renderHeaderColumn" value="true"/>
+        <#-- set carry over count to hold positions for fields that span multiple rows -->
+        <#assign tmpCarryOverColCount=tmpCarryOverColCount + item.rowSpan - 1/>
 
-    <c:choose>
-      <c:when test="${renderHeaderRow || (renderFirstRowHeader && firstRow)}">
-        <c:set var="headerScope" value="col"/>
-      </c:when>
-      <c:otherwise>
-        <c:set var="headerScope" value="row"/>
-      </c:otherwise>
-    </c:choose>
-  </c:if>
+        <#-- end table row -->
+        <#if !item_has_next || (colCount % numberOfColumns) == 0>
+           </tr>
 
-  <krad:attributeBuilder component="${item}"/>
-
-  <%-- render cell and item template --%>
-  <c:choose>
-    <c:when test="${renderHeaderColumn}">
-      <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
-          rowspan="${item.rowSpan}" ${style} ${title}>
-        <krad:template component="${item}"/>
-      </th>
-    </c:when>
-    <c:otherwise>
-      <td role="presentation" ${cellWidth} colspan="${item.colSpan}" rowspan="${item.rowSpan}"
-        ${style} ${title}>
-        <krad:template component="${item}"/>
-      </td>
-    </c:otherwise>
-  </c:choose>
-
-  <%-- if alternating headers flip header flag --%>
-  <c:if test="${renderAlternatingHeaderColumns}">
-    <c:set var="renderAlternateHeader" value="${!renderAlternateHeader}"/>
-  </c:if>
-
-  <c:if test="${renderRowFirstCellHeader}">
-    <c:set var="renderFirstCellHeader" value="false"/>
-  </c:if>
-
-  <%-- handle colspan for the count --%>
-  <c:set var="colCount" value="${colCount + item.colSpan - 1}"/>
-
-  <%-- set carry over count to hold positions for fields that span multiple rows --%>
-  <c:set var="tmpCarryOverColCount" value="${tmpCarryOverColCount + item.rowSpan - 1}"/>
-
-  <%-- end table row --%>
-  <c:if test="${itemVarStatus.last || (colCount % numberOfColumns == 0)}">
-    <c:set var="actualColCount" value="0"/>
-    </tr>
-    <c:set var="carryOverColCount" value="${carryOverColCount + tmpCarryOverColCount}"/>
-    <c:set var="tmpCarryOverColCount" value="0"/>
-  </c:if>
-</c:forEach>
+           <#assign carryOverColCount=carryOverColCount + tmpCarryOverColCount/>
+           <#assign tmpCarryOverColCount=0/>
+        </#if>
+    </#list>
 
 </#macro>

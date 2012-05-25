@@ -281,9 +281,11 @@ public class EntityDefault extends AbstractDataTransferObject {
           
             List<EntityAffiliation.Builder> affiliationBuilders = new ArrayList<EntityAffiliation.Builder>( );
             for ( EntityAffiliationContract aff : contract.getAffiliations() ) {
-                affiliationBuilders.add(EntityAffiliation.Builder.create(aff));
-                if ( aff.isActive() && aff.isDefaultValue() ) {
-                  builder.setDefaultAffiliation( EntityAffiliation.Builder.create(aff) );
+                if (aff.isActive()) {
+                    affiliationBuilders.add(EntityAffiliation.Builder.create(aff));
+                    if ( aff.isDefaultValue() ) {
+                      builder.setDefaultAffiliation( EntityAffiliation.Builder.create(aff) );
+                    }
                 }
             }
             builder.setAffiliations(affiliationBuilders);

@@ -160,7 +160,7 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      *
      * @return boolean true if the maintainable can generate custom lock descriptors,
      *         false otherwise
-     * @see #getCustomLockDescriptor(Map, org.kuali.rice.kim.api.identity.Person)
+     * @see #getCustomLockDescriptor(org.kuali.rice.kim.api.identity.Person)
      */
     public boolean useCustomLockDescriptors();
 
@@ -173,7 +173,6 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      * @return String representing the lock descriptor
      * @see #useCustomLockDescriptors()
      * @see org.kuali.rice.krad.service.PessimisticLockService
-     * @see org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl
      */
     public String getCustomLockDescriptor(Person user);
 

@@ -51,7 +51,7 @@ public interface MaintenanceDocument extends Document {
     public void setNewMaintainableObject(Maintainable newMaintainableObject);
 
     /**
-     * @param newMaintainableObject - Initializes the old maintainable
+     * @param oldMaintainableObject - Initializes the old maintainable
      */
     public void setOldMaintainableObject(Maintainable oldMaintainableObject);
 
@@ -109,9 +109,9 @@ public interface MaintenanceDocument extends Document {
 
     /**
      * 
-     * This method sets the value of the fieldsClearedOnCopy.
+     * This method sets the value of the keysClearedOnCopy.
      * 
-     * @param fieldsClearedOnCopy - true or false
+     * @param keysClearedOnCopy - true or false
      * 
      */
     public void setFieldsClearedOnCopy(boolean keysClearedOnCopy);

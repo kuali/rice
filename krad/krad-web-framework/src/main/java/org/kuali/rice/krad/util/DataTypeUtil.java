@@ -35,7 +35,7 @@ public class DataTypeUtil {
 	}
 	 /**
      * Determines the datatype of the given class.
-     *<p>
+     *
      * @param attributeClass the class whose datatype is to be determined.
      * @return String representation of the datatype. Defaults to string.
      */

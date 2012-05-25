@@ -133,8 +133,11 @@ public final class KRADUtils {
     }
      /**
      * Creates a comma separated String representation of the given list.
-     * For example 'a','b',c'.
+     *
      * <p>
+     * For example 'a','b',c'.
+     * </p>
+     *
      * @param list
      * @return the joined String, empty if the list is null or has no elements
      */

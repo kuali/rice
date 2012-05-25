@@ -210,7 +210,7 @@
     &lt;servlet-class>org.kuali.rice.kns.web.servlet.KualiDWRServlet&lt;/servlet-class>
     &lt;init-param>
         &lt;param-name>debug&lt;/param-name>
-        &lt;param-value>true&lt;/param-value>
+        &lt;param-value>false&lt;/param-value>
     &lt;/init-param>
     &lt;init-param>
         &lt;param-name>springpath&lt;/param-name>

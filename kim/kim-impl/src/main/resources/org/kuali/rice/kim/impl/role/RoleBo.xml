@@ -67,12 +67,12 @@
 
   <bean id="RoleBo-id" parent="RoleBo-id-parentBean"/>
   <bean id="RoleBo-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:forceUppercase="false"
-        p:label="Role" p:shortLabel="Role" p:maxLength="10" p:required="false">
+        p:label="Role" p:shortLabel="Role" p:maxLength="40" p:required="false">
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="10"/>
+      <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 

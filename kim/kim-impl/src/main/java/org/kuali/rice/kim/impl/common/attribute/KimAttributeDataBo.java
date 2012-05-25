@@ -70,7 +70,7 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
                 if (it != null) {
                     KimTypeAttribute attribute = null;
                     if ( it.getKimType() != null ) {
-                        attribute = KimTypeBo.to(it.kimType).getAttributeDefinitionById(it.getKimAttributeId());
+                        attribute = KimTypeBo.to(it.getKimType()).getAttributeDefinitionById(it.getKimAttributeId());
                     }
                     if ( attribute != null ) {
                         m.put(attribute.getKimAttribute().getAttributeName(), it.getAttributeValue());

@@ -53,11 +53,10 @@ public class UTF8AnyCharacterValidationPattern extends CharacterLevelValidationP
 	protected String getRegexString() {
 		StringBuffer regexString = new StringBuffer("[");
 		
-		if(!allowWhitespace)
-		regexString.append("[\\\u0000-\u10FFFF&&[^\\p{Space}]]");
-		
-		else{
-			regexString.append("\\\u0000-\u10FFFF");
+		if(!allowWhitespace) {
+        regexString.append("[\\u0000-\\uFFFF&&[^\\p{Space}]]");
+        } else {
+            regexString.append("\\u0000-\\uFFFF");
 		}
 		
 		regexString.append("]");

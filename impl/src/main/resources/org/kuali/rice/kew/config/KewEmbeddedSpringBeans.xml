@@ -238,9 +238,15 @@
   <bean id="reviewResponsibilityTypeService"
         class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl"/>
 
+
+  <bean id="rice.kew.actionListCustomizationMediator"
+        class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationMediatorImpl">
+    <property name="documentTypeService" ref="enDocumentTypeService"/>
+  </bean>
+
   <bean id="rice.kew.actionListCustomizationHandlerService"
         class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationHandlerServiceImpl">
-    <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
+    <property name="documentTypeService" ref="enDocumentTypeService"/>
   </bean>
 
   <bean id="rice.kew.documentSearchCustomizationHandlerService"

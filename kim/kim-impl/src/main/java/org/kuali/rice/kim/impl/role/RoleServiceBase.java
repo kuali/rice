@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -45,6 +46,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -491,7 +493,7 @@ abstract class RoleServiceBase {
         String serviceName = typeInfo.getServiceName();
         if (serviceName != null) {
             try {
-                KimTypeService service = (KimTypeService) KimImplServiceLocator.getService(serviceName);
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
                 if (service != null && service instanceof RoleTypeService) {
                     return (RoleTypeService) service;
                 }

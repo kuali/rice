@@ -93,7 +93,9 @@
 	<bean id="AnyCharacterValidationPattern"
 		class="org.kuali.rice.kns.datadictionary.validation.charlevel.AnyCharacterValidationPattern"
 		abstract="true" />
-
+  <bean id="UTF8AnyCharacterValidationPattern"
+        class="org.kuali.rice.kns.datadictionary.validation.charlevel.UTF8AnyCharacterValidationPattern"
+        abstract="true" />
   	<bean id="InquirySubSectionHeaderDefinition"
 		class="org.kuali.rice.kns.datadictionary.InquirySubSectionHeaderDefinition"
 		abstract="true" />

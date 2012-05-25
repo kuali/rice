@@ -18,6 +18,7 @@ package org.kuali.rice.kew.framework;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
+import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationMediator;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService;
 import org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService;
 import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
@@ -34,7 +35,8 @@ public class KewFrameworkServiceLocator {
     public static final String DOCUMENT_SEARCH_CUSTOMIZATION_HANDLER_SERVICE = "documentSearchCustomizationHandlerService";
     public static final String DOCUMENT_SECURITY_HANDLER_SERVICE = "documentSecurityHandlerService";
     public static final String RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE = "ruleValidationAttributeExporterService";
-    public static final String ACTION_LIST_CUSTOMIZATION_HANDLER_SERVICE = "actionListCustomizationHandler";
+    public static final String ACTION_LIST_CUSTOMIZATION_MEDIATOR = "rice.kew.actionListCustomizationMediator";
+    public static final String ACTION_LIST_CUSTOMIZATION_HANDLER_SERVICE = "actionListCustomizationHandlerService";
     public static final String WORKFLOW_RULE_ATTRIBUTE_HANDLER_SERVICE = "workflowRuleAttributeHandlerService";
 
 
@@ -78,6 +80,10 @@ public class KewFrameworkServiceLocator {
 
     public static WorkflowRuleAttributeHandlerService getWorkflowRuleAttributeHandlerService(String applicationId) {
         return getServiceOnBus(WORKFLOW_RULE_ATTRIBUTE_HANDLER_SERVICE, applicationId);
+    }
+
+    public static ActionListCustomizationMediator getActionListCustomizationMediator() {
+        return getService(ACTION_LIST_CUSTOMIZATION_MEDIATOR);
     }
     
     public static ActionListCustomizationHandlerService getActionListCustomizationHandlerService(

@@ -173,7 +173,9 @@
     <bean id="AnyCharacterPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.AnyCharacterPatternConstraint" />
-
+  <bean id="UTF8AnyCharacterPatternConstraint"
+        abstract="true"
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint" />
     <bean id="CharsetPatternConstraint" 
         abstract="true" 
         class="org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint" />

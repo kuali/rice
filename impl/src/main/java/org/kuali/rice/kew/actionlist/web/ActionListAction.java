@@ -15,22 +15,6 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -51,23 +35,22 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.ActionToTake;
-import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionItemCustomization;
 import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
 import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
+import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationMediator;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -77,8 +60,20 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -110,6 +105,8 @@ public class ActionListAction extends KualiAction {
 	private static final String HELPDESK_LOGIN_EMPTY_ERRKEY = "helpdesk.login.empty";
 	private static final String HELPDESK_LOGIN_INVALID_ERRKEY = "helpdesk.login.invalid";
 
+    private static final ActionType [] actionListActionTypes =
+            { ActionType.APPROVE, ActionType.DISAPPROVE, ActionType.CANCEL, ActionType.ACKNOWLEDGE, ActionType.FYI };
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -556,68 +553,68 @@ public class ActionListAction extends KualiAction {
     protected PaginatedList buildCurrentPage(List actionList, Integer page, String sortCriterion, String sortDirection, 
     		int pageSize, Preferences preferences, ActionListForm form) throws WorkflowException {
     	List currentPage = new ArrayList(pageSize);
-    	boolean haveFyis = false;
-    	boolean haveApproves = false;
-    	boolean haveAcknowledges = false;
-    	boolean haveCancels = false;
-    	boolean haveDisapproves = false;
+
     	boolean haveCustomActions = false;
     	boolean haveDisplayParameters = false;
+
+        final boolean showClearFyi = KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi());
+
+        // collects all the actions for items on this page
+        Set<ActionType> pageActions = new HashSet<ActionType>();
+
     	List customActionListProblemIds = new ArrayList();
     	SortOrderEnum sortOrder = parseSortOrder(sortDirection);
     	int startIndex = (page.intValue() - 1) * pageSize;
     	int endIndex = startIndex + pageSize;
     	generateActionItemErrors(actionList);
-    	Map<String,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(org.kuali.rice.kew.actionitem.ActionItem.to(actionList));
+
+        LOG.info("Beginning processing of Action List Customizations (total: " + actionList.size() + " Action Items)");
+        long start = System.currentTimeMillis();
+
+        Map<String, ActionItemCustomization>  customizationMap =
+                getActionListCustomizationMediator().getActionListCustomizations(
+                        getUserSession().getPrincipalId(), convertToApiActionItems(actionList)
+                );
+
+        long end = System.currentTimeMillis();
+        LOG.info("Finished processing of Action List Customizations (total time: " + (end - start) + " ms)");
+
     	for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)actionList.get(index);
     		// evaluate custom action list component for mass actions
     		try {
-    			boolean itemHasApproves = false;
-    			boolean itemHasDisapproves = false;
-    			boolean itemHasCancels = false;
-    			boolean itemHasAcknowledges = false;
-    			boolean itemHasFyis = false;
-    			boolean itemHasCustomActions = false;
-    			// TODO see DocumentSecurityServiceImpl.checkAuthorizations to see how the Handler replaces the Attribute
-    			CustomActionListAttribute customActionListAttribute = routeHeaders.get(actionItem.getDocumentId()).getCustomActionListAttribute();
-    			if (customActionListAttribute != null) {
-    				Map customActions = new LinkedHashMap();
-    				customActions.put("NONE", "NONE");
-    				ActionSet legalActions = customActionListAttribute.getLegalActions(getUserSession().getPrincipalId(), ActionItem.to(actionItem));
-    				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_APPROVED_CD)) {
-    					customActions.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
-    					itemHasApproves = true;
-    				}
-    				if (legalActions != null && legalActions.hasDisapprove() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_DENIED_CD)) {
-    					customActions.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
-    					itemHasDisapproves = true;
-    				}
-    				if (legalActions != null && legalActions.hasCancel() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_CANCELED_CD)) {
-    					customActions.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
-    					itemHasCancels = true;
-    				}
-    				if (legalActions != null && legalActions.hasAcknowledge() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD)) {
-    					customActions.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-    					itemHasAcknowledges = true;
-    				}
-    				if (legalActions != null && legalActions.hasFyi() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_FYI_CD) && KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
-    					customActions.put(KewApiConstants.ACTION_TAKEN_FYI_CD, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-    					itemHasFyis = true;
-    				}
-    				if (customActions.size() > 1) {
-    					actionItem.setCustomActions(customActions);
-    					itemHasCustomActions = true;
-    				}
-    				actionItem.setDisplayParameters(customActionListAttribute.getDocHandlerDisplayParameters(getUserSession().getPrincipalId(), ActionItem.to(actionItem)));
-    				haveApproves = haveApproves || itemHasApproves;
-    				haveAcknowledges = haveAcknowledges || itemHasAcknowledges;
-    				haveFyis = haveFyis || itemHasFyis;
-    				haveDisapproves = haveDisapproves || itemHasDisapproves;
-    				haveCancels = haveCancels || itemHasCancels;
-    				haveCustomActions = haveCustomActions || itemHasCustomActions;
-    				haveDisplayParameters = haveDisplayParameters || (actionItem.getDisplayParameters() != null);
-    			}
+                ActionItemCustomization customization = customizationMap.get(actionItem.getId());
+                if (customization != null) {
+                    ActionSet actionSet = customization.getActionSet();
+
+                    // If only it were this easy: actionItem.setCustomActions(customization.getActionSet());
+
+                    Map customActions = new LinkedHashMap();
+                    customActions.put("NONE", "NONE");
+
+                    for (ActionType actionType : actionListActionTypes) {
+                        if (actionSet.hasAction(actionType.getCode()) &&
+                                isActionCompatibleRequest(actionItem, actionType.getCode())) {
+
+                            final boolean isFyi = ActionType.FYI == actionType; // make the conditional easier to read
+
+                            if (!isFyi || (isFyi && showClearFyi)) { // deal with special FYI preference
+                                customActions.put(actionType.getCode(), actionType.getLabel());
+                                pageActions.add(actionType);
+                            }
+                        }
+                    }
+
+                    if (customActions.size() > 1) {
+                        actionItem.setCustomActions(customActions);
+                        haveCustomActions = true;
+                    }
+
+                    actionItem.setDisplayParameters(customization.getDisplayParameters());
+
+                    haveDisplayParameters = haveDisplayParameters || (actionItem.getDisplayParameters() != null);
+                }
+
     		} catch (Exception e) {
     			// if there's a problem loading the custom action list attribute, let's go ahead and display the vanilla action item
     			LOG.error("Problem loading custom action list attribute", e);
@@ -627,29 +624,28 @@ public class ActionListAction extends KualiAction {
     	}
 
     	// configure custom actions on form
-    	form.setHasCustomActions(Boolean.valueOf(haveCustomActions));
+    	form.setHasCustomActions(haveCustomActions);
+
     	Map defaultActions = new LinkedHashMap();
     	defaultActions.put("NONE", "NONE");
-    	if (haveApproves) {
-    		defaultActions.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
-    		form.setCustomActionList(Boolean.TRUE);
-    	}
-    	if (haveDisapproves) {
-    		defaultActions.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
-    		form.setCustomActionList(Boolean.TRUE);
-    	}
-    	if (haveCancels) {
-    		defaultActions.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
-    		form.setCustomActionList(Boolean.TRUE);
-    	}
-    	if (haveAcknowledges) {
-    		defaultActions.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-    		form.setCustomActionList(Boolean.TRUE);
-    	}
-    	//clearing FYI's can be done in any action list not just a customized one
-    	if (haveFyis && KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
-    		defaultActions.put(KewApiConstants.ACTION_TAKEN_FYI_CD, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-    	}
+
+        for (ActionType actionType : actionListActionTypes) {
+            if (pageActions.contains(actionType)) {
+
+                final boolean isFyi = ActionType.FYI == actionType;
+                // special logic for FYIs:
+                if (isFyi) {
+                    // clearing FYIs can be done in any action list not just a customized one
+                    if(showClearFyi) {
+                        defaultActions.put(actionType.getCode(), actionType.getLabel());
+                    }
+                } else { // all the other actions
+                    defaultActions.put(actionType.getCode(), actionType.getLabel());
+                    form.setCustomActionList(Boolean.TRUE);
+                }
+            }
+        }
+
     	if (defaultActions.size() > 1) {
     		form.setDefaultActions(defaultActions);
     	}
@@ -658,6 +654,17 @@ public class ActionListAction extends KualiAction {
     	
     	generateActionItemErrors(CUSTOMACTIONLIST_PROP, ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY, customActionListProblemIds);
     	return new PaginatedActionList(currentPage, actionList.size(), page.intValue(), pageSize, "actionList", sortCriterion, sortOrder);
+    }
+
+    // convert a List of org.kuali.rice.kew.actionitem.ActionItemS to org.kuali.rice.kew.api.action.ActionItemS
+    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List actionList) {
+        List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
+
+        for (Object actionItemObj : actionList) {
+            apiActionItems.add(
+                    org.kuali.rice.kew.api.action.ActionItem.Builder.create((ActionItem)actionItemObj).build());
+        }
+        return apiActionItems;
     }
 
     private void generateActionItemErrors(String propertyName, String errorKey, List documentIds) {
@@ -883,37 +890,14 @@ public class ActionListAction extends KualiAction {
 		}
     }
     
-    protected void processActionListCustomizations(String principalId, List<ActionItem> actionItems){
-        if (CollectionUtils.isNotEmpty(actionItems)) {
-            LOG.info("Beginning processing of Action List Customizations (total: "
-                    + actionItems.size()
-                    + " Action Items)");
-            long start = System.currentTimeMillis();
-            MultiValueMap<PartitionKey, ActionItem> partitions = partitionActionItems(actionItems);
-            
-            // TODO fill this out - DocumentSecurityServiceImpl.processDocumentRequiringExtensionProcessing
-    
-            long end = System.currentTimeMillis();
-            LOG.info("Finished processing of Action List Customizations (total time: "
-                    + (start - end)
-                    + ")");
-        }
+    // Lazy initialization holder class (see Effective Java Item #71)
+    private static class ActionListCustomizationMediatorHolder {
+        static final ActionListCustomizationMediator actionListCustomizationMediator =
+                KewFrameworkServiceLocator.getActionListCustomizationMediator();
     }
-    
-    protected MultiValueMap<PartitionKey,ActionItem> partitionActionItems(List<ActionItem> actionItems){
-        // TODO fill this out - see DocumentSecurityServiceImpl.partitionDocumentsForSecurity
-        MultiValueMap<PartitionKey, ActionItem> partitions = new LinkedMultiValueMap<PartitionKey, ActionItem>();
 
-        return partitions;
-    }
-     
-    protected ActionListCustomizationHandlerService loadActionListCustomizationHandler(String applicationId){
-        ActionListCustomizationHandlerService service = KewFrameworkServiceLocator.getActionListCustomizationHandlerService(applicationId);
-        if (service == null) {
-            throw new WorkflowRuntimeException(
-                    "Failed to locate ActionListCustomizationHandlerService for applicationId: " + applicationId);
-        }
-        return service;
+    private ActionListCustomizationMediator getActionListCustomizationMediator() {
+        return ActionListCustomizationMediatorHolder.actionListCustomizationMediator;
     }
     
     /**

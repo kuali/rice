@@ -480,6 +480,22 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return documentTypeAttributes.get(0);
     }
 
+    /**
+     * Returns the RuleAttribute for the action list attribute for this DocumentType.  Walks the document type hierarchy
+     * if none exists directly on this DocumentType.
+     * @return The RuleAttribute.  May be null.
+     */
+    public RuleAttribute getCustomActionListRuleAttribute() {
+        List<DocumentTypeAttributeBo> documentTypeAttributes = getDocumentTypeAttributes(KewApiConstants.ACTION_LIST_ATTRIBUTE_TYPE);
+        if (documentTypeAttributes.size() > 1) {
+            throw new IllegalStateException("Encountered more than one ActionListAttribute on this document type: " + getName());
+        }
+        if (documentTypeAttributes.isEmpty()) {
+            return null;
+        }
+        return documentTypeAttributes.get(0).getRuleAttribute();
+    }
+
     public List<ExtensionHolder<SearchableAttribute>> loadSearchableAttributes() {
         List<DocumentTypeAttributeBo> searchableAttributes = getSearchableAttributes();
         List<ExtensionHolder<SearchableAttribute>> loadedAttributes = new ArrayList<ExtensionHolder<SearchableAttribute>>();

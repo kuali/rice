@@ -447,11 +447,17 @@ public abstract class KualiAction extends DispatchAction {
             throw new RuntimeException("Illegal call to perform lookup, no business object class name specified.");
         }
         Class boClass = null;
-		try{
-			boClass = Class.forName(boClassName);
-		} catch(ClassNotFoundException cnfex){
-            throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class which this application understands.");
-		}
+
+        //no point in even trying if the lookup is for a class on a remote application
+		if ((StringUtils.isNotEmpty(baseLookupUrl)
+                  && baseLookupUrl.startsWith(getApplicationBaseUrl() + "/kr/"))
+                || StringUtils.isEmpty(baseLookupUrl)) {
+            try{
+                boClass = Class.forName(boClassName);
+            } catch(ClassNotFoundException cnfex){
+                throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class which this application understands.");
+            }
+        }
 		
         // build the parameters for the lookup url
         Properties parameters = new Properties();

@@ -17,9 +17,26 @@ package org.kuali.rice.kew.api.action;
 
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 
+/**
+ * Contract interface for action item customizations
+ */
 public interface ActionItemCustomizationContract {
-    
-        String getId();
-        DisplayParameters getDisplayParameters();
-        ActionSet getActionSet();
+
+    /**
+     * Gets the ID of the action item this customization is for
+     * @return the action item id.  Never null.
+     */
+    String getActionItemId();
+
+    /**
+     * Gets the display parameters in this action item customization.
+     * @return the display parameters.  May be null.
+     */
+    DisplayParameters getDisplayParameters();
+
+    /**
+     * Gets the set of actions in this action item customization.
+     * @return the action set.  Never null.
+     */
+    ActionSet getActionSet();
 }

@@ -259,7 +259,7 @@
         KIM_ATTR_DEFN_ID="4" KIM_TYP_ID="12"
         OBJ_ID="606763510FF396D3E0404F8189D857A2" PERM_ID="265" VER_NBR="1"/>
     <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="874"
-        ATTR_VAL="org.kuali.rice.kew.batch.web.IngesterAction"
+        ATTR_VAL="org.kuali.rice.core.web.impex.IngesterAction"
         KIM_ATTR_DEFN_ID="2" KIM_TYP_ID="12"
         OBJ_ID="606763510FF496D3E0404F8189D857A2" PERM_ID="265" VER_NBR="1"/>
     <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="880"

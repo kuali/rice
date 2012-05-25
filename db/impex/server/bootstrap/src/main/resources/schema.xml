@@ -1105,9 +1105,6 @@
         <column name="RTE_NODE_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="255" type="VARCHAR"/>
         <column name="VAL" size="4000" type="VARCHAR"/>
-        <foreign-key foreignTable="KREW_RTE_NODE_T" name="EN_RTE_NODE_CFG_PARM_TR1">
-            <reference foreign="RTE_NODE_ID" local="RTE_NODE_ID"/>
-        </foreign-key>
         <index name="KREW_RTE_NODE_CFG_PARM_TI1">
             <index-column name="RTE_NODE_ID"/>
         </index>
@@ -1178,7 +1175,7 @@
     </table>
     <table name="KREW_RTE_NODE_T">
         <column name="RTE_NODE_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="DOC_TYP_ID" size="19" type="DECIMAL"/>
+        <column name="DOC_TYP_ID" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column name="TYP" required="true" size="255" type="VARCHAR"/>
         <column name="RTE_MTHD_NM" size="255" type="VARCHAR"/>

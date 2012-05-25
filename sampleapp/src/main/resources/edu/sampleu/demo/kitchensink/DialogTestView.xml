@@ -36,7 +36,7 @@
           <property name="items">
             <list>
               <bean parent="DialogTestView-MainGroup"/>
-              <bean parent="DialogTestView-DialogGroup"/>
+              <bean id="myDialog" parent="DialogTestView-DialogGroup"/>
             </list>
           </property>
         </bean>
@@ -54,11 +54,18 @@
     </property>
   </bean>
 
-  <bean id="DialogTestView-MainGroup" parent="Uif-HorizontalBoxSection">
+  <bean id="DialogTestView-MainGroup" parent="Uif-VerticalBoxSection">
     <property name="headerText" value="Main Section"/>
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="This is the main page of the view. Regular content goes here."/>
+        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See dialog" p:defaultValue="true"
+              p:instructionalText="show/hide dialog content">
+          <property name="onChangeScript" value="jQuery('#myDialog').toggle();" />
+          <property name="control">
+            <bean parent="Uif-CheckboxControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

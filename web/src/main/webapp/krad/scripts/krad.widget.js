@@ -904,3 +904,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 }
             });
 }
+
+function styleDialogButtons() {
+    jQuery(".uif-dialogButtons").find(".uif-checkboxesControl").button();
+}

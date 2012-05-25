@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
-import org.kuali.rice.krad.uif.control.TextAreaControl;
-import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -85,8 +84,10 @@ public class DialogGroup extends Group {
      * <p>For this DialogGroup component, perform the following:
      * <ul>
      *     <li>set the promptText in the message</li>
+     *     <li>sets whether to render explanation field</li>
      *     <li>set the options for the checkbox control to the availableResponses KeyValue property of
      *     this dialogGroup</li>
+     *     <li>orders response buttons</li>
      * </ul>
      * </p>
      *
@@ -101,10 +102,20 @@ public class DialogGroup extends Group {
         // set the messageTest to the promptText
         prompt.setMessageText(promptText);
 
+        // hide or show explanation
+        explanation.setRender(displayExplanation);
+
         // add options to checkbox
         if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
             MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
-            multiValueControl.setOptions(availableResponses);
+            if (displayOrderLeftToRight) {
+                multiValueControl.setOptions(availableResponses);
+            }else{
+                // for right to left, reverse the button order (without changing original list)
+                List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
+                Collections.reverse(buttonList);
+                multiValueControl.setOptions(buttonList);
+            }
         }
     }
 
@@ -175,7 +186,7 @@ public class DialogGroup extends Group {
      * <p>
      *     False by default.
      * </p>
-     * @return
+     * @return boolean - true if this user input is to be rendered, false if not.
      */
     public boolean isDisplayExplanation() {
         return displayExplanation;
@@ -184,7 +195,7 @@ public class DialogGroup extends Group {
     /**
      * Sets whether to display the Explanation InputField on this dialog
      *
-     * @param displayExplanation
+     * @param displayExplanation - true if explanation control is to be displayed, false if not
      */
     public void setDisplayExplanation(boolean displayExplanation) {
         this.displayExplanation = displayExplanation;
@@ -206,7 +217,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the list of user responses to provide on this dialog
      *
-     * @param availableResponses
+     * @param availableResponses - a List of KeyValue pairs representing the user response choices
      */
     public void setAvailableResponses(List<KeyValue> availableResponses) {
         this.availableResponses = availableResponses;
@@ -230,7 +241,7 @@ public class DialogGroup extends Group {
     /**
      * Sets the type of InputField used to display the user choices in this dialog
      *
-     * @param responseInputField
+     * @param responseInputField - A component used to display the response choices
      */
     public void setResponseInputField(InputField responseInputField) {
         this.responseInputField = responseInputField;
@@ -258,7 +269,7 @@ public class DialogGroup extends Group {
      *     By default, the choices are displayed left to right
      * </p>
      *
-     * @param displayOrderLeftToRight
+     * @param displayOrderLeftToRight - true if buttons displayed left to right, false if right to left
      */
     public void setDisplayOrderLeftToRight(boolean displayOrderLeftToRight) {
         this.displayOrderLeftToRight = displayOrderLeftToRight;

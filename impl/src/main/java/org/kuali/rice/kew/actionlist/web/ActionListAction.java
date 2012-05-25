@@ -47,7 +47,7 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
+import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationMediator;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -102,23 +102,8 @@ public class ActionListAction extends KualiAction {
 	private static final String HELPDESK_LOGIN_EMPTY_ERRKEY = "helpdesk.login.empty";
 	private static final String HELPDESK_LOGIN_INVALID_ERRKEY = "helpdesk.login.invalid";
 
-    private static final Map<String, String> actionCodeToLabelMap;
-    // static initializer for actionCodeToLabelMap
-    static {
-        Map<String, String> map = new LinkedHashMap<String, String>(); // LinkedHashMap to preserve order
-
-        map.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
-        map.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
-        map.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
-        map.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-        map.put(KewApiConstants.ACTION_TAKEN_FYI_CD, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
-
-        actionCodeToLabelMap = Collections.unmodifiableMap(map);
-    }
-
-    protected Map<String, String> getActionCodeToLabelMap() {
-        return actionCodeToLabelMap;
-    }
+    private static final ActionType [] actionListActionTypes =
+            { ActionType.APPROVE, ActionType.DISAPPROVE, ActionType.CANCEL, ActionType.ACKNOWLEDGE, ActionType.FYI };
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -542,7 +527,7 @@ public class ActionListAction extends KualiAction {
         final boolean showClearFyi = KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi());
 
         // collects all the actions for items on this page
-        Set<String> pageActions = new HashSet<String>();
+        Set<ActionType> pageActions = new HashSet<ActionType>();
 
     	List customActionListProblemIds = new ArrayList();
     	SortOrderEnum sortOrder = parseSortOrder(sortDirection);
@@ -574,15 +559,15 @@ public class ActionListAction extends KualiAction {
                     Map customActions = new LinkedHashMap();
                     customActions.put("NONE", "NONE");
 
-                    for (Map.Entry<String, String> actionCodeToLabel : getActionCodeToLabelMap().entrySet()) {
-                        if (actionSet.hasAction(actionCodeToLabel.getKey()) &&
-                                isActionCompatibleRequest(actionItem, actionCodeToLabel.getValue())) {
+                    for (ActionType actionType : actionListActionTypes) {
+                        if (actionSet.hasAction(actionType.getCode()) &&
+                                isActionCompatibleRequest(actionItem, actionType.getCode())) {
 
-                            final boolean isFyi = KewApiConstants.ACTION_TAKEN_FYI_CD.equals(actionCodeToLabel.getKey());
+                            final boolean isFyi = ActionType.FYI == actionType; // make the conditional easier to read
 
                             if (!isFyi || (isFyi && showClearFyi)) { // deal with special FYI preference
-                                customActions.put(actionCodeToLabel.getKey(), actionCodeToLabel.getValue());
-                                pageActions.add(actionCodeToLabel.getKey());
+                                customActions.put(actionType.getCode(), actionType.getLabel());
+                                pageActions.add(actionType);
                             }
                         }
                     }
@@ -611,18 +596,18 @@ public class ActionListAction extends KualiAction {
     	Map defaultActions = new LinkedHashMap();
     	defaultActions.put("NONE", "NONE");
 
-        for (Map.Entry<String, String> actionCodeToLabel : getActionCodeToLabelMap().entrySet()) {
-            if (pageActions.contains(actionCodeToLabel.getKey())) {
+        for (ActionType actionType : actionListActionTypes) {
+            if (pageActions.contains(actionType)) {
 
-                final boolean isFyi = KewApiConstants.ACTION_TAKEN_FYI_CD.equals(actionCodeToLabel.getKey());
+                final boolean isFyi = ActionType.FYI == actionType;
                 // special logic for FYIs:
                 if (isFyi) {
                     // clearing FYIs can be done in any action list not just a customized one
                     if(showClearFyi) {
-                        defaultActions.put(actionCodeToLabel.getKey(), actionCodeToLabel.getValue());
+                        defaultActions.put(actionType.getCode(), actionType.getLabel());
                     }
                 } else { // all the other actions
-                    defaultActions.put(actionCodeToLabel.getKey(), actionCodeToLabel.getValue());
+                    defaultActions.put(actionType.getCode(), actionType.getLabel());
                     form.setCustomActionList(Boolean.TRUE);
                 }
             }
@@ -875,11 +860,11 @@ public class ActionListAction extends KualiAction {
     
     // Lazy initialization holder class (see Effective Java Item #71)
     private static class ActionListCustomizationMediatorHolder {
-        static final ActionListCustomizationHandlerService actionListCustomizationMediator =
+        static final ActionListCustomizationMediator actionListCustomizationMediator =
                 KewFrameworkServiceLocator.getActionListCustomizationMediator();
     }
 
-    private ActionListCustomizationHandlerService getActionListCustomizationMediator() {
+    private ActionListCustomizationMediator getActionListCustomizationMediator() {
         return ActionListCustomizationMediatorHolder.actionListCustomizationMediator;
     }
     

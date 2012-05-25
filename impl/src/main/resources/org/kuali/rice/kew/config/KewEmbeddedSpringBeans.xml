@@ -249,7 +249,8 @@
 
 
   <bean id="rice.kew.actionListCustomizationMediator"
-        class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationMediator">
+        class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationMediatorImpl">
+    <property name="documentTypeService" ref="enDocumentTypeService"/>
   </bean>
 
   <bean id="rice.kew.actionListCustomizationHandlerService"

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.impl.actionlist;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
+import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionItemCustomization;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -44,27 +45,13 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
     @Override
     public List<ActionItemCustomization> customizeActionList(String principalId, List<ActionItem> actionItems)
             throws RiceIllegalArgumentException {
-        Map<String, ActionItemCustomization> customizationMap = getActionListCustomizations(principalId, actionItems);
-        List<ActionItemCustomization> results = new ArrayList<ActionItemCustomization>(actionItems.size());
-
-        for (ActionItem item : actionItems) {
-            ActionItemCustomization customization = customizationMap.get(item.getId());
-            // customization may be null, in that case we'll put a null item in the list
-            results.add(customization);
-        }
-
-        return results;
-    }
-
-    @Override
-    public Map<String, ActionItemCustomization> getActionListCustomizations(String principalId,
-            List<ActionItem> actionItems) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId was null or blank");
         }
         if (actionItems == null) { actionItems = Collections.emptyList(); }
 
-        Map<String, ActionItemCustomization> actionItemCustomizations = new HashMap<String, ActionItemCustomization>();
+        List<ActionItemCustomization> actionItemCustomizations =
+                new ArrayList<ActionItemCustomization>(actionItems.size());
 
         for (ActionItem actionItem : actionItems) {
             DocumentType documentType = getDocumentTypeService().findByName(actionItem.getDocName());
@@ -75,13 +62,18 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
             }
             try { // try to get the custom action list attribute and convert it to an ActionItemCustomization
                 CustomActionListAttribute customActionListAttribute = documentType.getCustomActionListAttribute();
-                if (customActionListAttribute != null) {
-                    ActionItemCustomization actionItemCustomization = ActionItemCustomization.Builder.create(
-                            customActionListAttribute.getLegalActions(principalId, actionItem),
-                            customActionListAttribute.getDocHandlerDisplayParameters(principalId, actionItem)).build();
-                    // add to our map of results
-                    actionItemCustomizations.put(actionItem.getId(), actionItemCustomization);
+
+                if (customActionListAttribute == null) {
+                    customActionListAttribute = getDefaultCustomActionListAttribute();
                 }
+
+                ActionItemCustomization actionItemCustomization = ActionItemCustomization.Builder.create(
+                        actionItem.getId(),
+                        customActionListAttribute.getLegalActions(principalId, actionItem),
+                        customActionListAttribute.getDocHandlerDisplayParameters(principalId, actionItem)).build();
+                // add to our results
+                actionItemCustomizations.add(actionItemCustomization);
+
             } catch (Exception e) {
                 LOG.error("Problem loading custom action list attribute " + actionItem.getId(), e);
             }
@@ -96,5 +88,16 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
 
     public void setDocumentTypeService(DocumentTypeService documentTypeService) {
         this.documentTypeService = documentTypeService;
+    }
+
+    // Lazy initialization holder class (see Effective Java Item #71)
+    private static class DefaultCustomActionListAttributeHolder {
+        // lazy initing in case customizations require services for instantiation -- could happen ;-)
+        static final CustomActionListAttribute defaultCustomActionListAttribute =
+                new DefaultCustomActionListAttribute();
+    }
+
+    private CustomActionListAttribute getDefaultCustomActionListAttribute() {
+        return DefaultCustomActionListAttributeHolder.defaultCustomActionListAttribute;
     }
 }

@@ -20,14 +20,15 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionItemCustomization;
-import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
+import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationMediator;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,27 +38,9 @@ import java.util.Map;
  * Internal utility class that partitions ActionItems by application id, and calls the appropriate
  * {@link ActionListCustomizationHandlerService} for each parition to retrieve any customizations.
  */
-public class ActionListCustomizationMediator implements ActionListCustomizationHandlerService {
+public class ActionListCustomizationMediatorImpl implements ActionListCustomizationMediator {
 
-    /**
-     * {@inheritDoc}
-     * @deprecated use {@link #getActionListCustomizations(String, java.util.List)}
-     */
-    @Deprecated
-    @Override
-    public List<ActionItemCustomization> customizeActionList(String principalId, List<ActionItem> actionItems)
-            throws RiceIllegalArgumentException {
-        Map<String, ActionItemCustomization> customizationMap = getActionListCustomizations(principalId, actionItems);
-        List<ActionItemCustomization> results = new ArrayList<ActionItemCustomization>(actionItems.size());
-
-        for (ActionItem item : actionItems) {
-            ActionItemCustomization customization = customizationMap.get(item.getId());
-            // customization may be null, in case we'll put a null item in the list
-            results.add(customization);
-        }
-
-        return results;
-    }
+    private DocumentTypeService documentTypeService;
 
     /**
      * <p>partitions ActionItems by application id, and calls the appropriate
@@ -85,14 +68,16 @@ public class ActionListCustomizationMediator implements ActionListCustomizationH
         ListMultimap<String, ActionItem> itemsByApplicationId = ArrayListMultimap.create();
 
         for (ActionItem actionItem : actionItems) {
-            DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(actionItem.getDocName());
+            //DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(actionItem.getDocName());
+            DocumentType docType = getDocumentTypeService().findByName(actionItem.getDocName());
             if (docType == null) {
                 throw new IllegalStateException(
                         String.format("Document Type with name %s does not exist", actionItem.getDocName())
                 );
             }
+
             // OK to have a null key, this represents the default app id
-            itemsByApplicationId.put(docType.getApplicationId(), actionItem);
+            itemsByApplicationId.put(getActionListCustomizationApplicationId(docType), actionItem);
         }
 
         // For each application id, pass all action items which might need to be customized (because they have a
@@ -109,16 +94,38 @@ public class ActionListCustomizationMediator implements ActionListCustomizationH
                         KewFrameworkServiceLocator.getActionListCustomizationHandlerService(null);
             }
 
-            Map<String, ActionItemCustomization> customizations =
-                    actionListCustomizationHandler.getActionListCustomizations(principalId, itemsByApplicationId.get(
+            List<ActionItemCustomization> customizations =
+                    actionListCustomizationHandler.customizeActionList(principalId, itemsByApplicationId.get(
                             applicationId));
 
 
             // Get back the customized results and reassemble with customized results from all different application
             // customizations (as well as default customizations)
-            results.putAll(customizations);
+            if (customizations != null) for (ActionItemCustomization customization : customizations) {
+                results.put(customization.getActionItemId(), customization);
+            }
         }
 
         return results;
+    }
+
+    // CustomActionListAttributes are configured in RuleAttributes, so that is the
+    // applicationId we need to use
+    private String getActionListCustomizationApplicationId(DocumentType docType) {
+        String applicationId = null;
+        RuleAttribute ruleAttribute = docType.getCustomActionListRuleAttribute();
+        if (ruleAttribute != null) {
+            applicationId = ruleAttribute.getApplicationId();
+        }
+        // we may return null
+        return applicationId;
+    }
+
+    public DocumentTypeService getDocumentTypeService() {
+        return documentTypeService;
+    }
+
+    public void setDocumentTypeService(DocumentTypeService documentTypeService) {
+        this.documentTypeService = documentTypeService;
     }
 }

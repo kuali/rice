@@ -88,6 +88,8 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private CollectionGroupBuilder collectionGroupBuilder;
 
+    private int displayCollectionSize = -1;
+
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
@@ -820,6 +822,24 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public boolean isRenderInactiveToggleButton() {
         return renderInactiveToggleButton;
+    }
+
+    /**
+     * The number of records to display for a collection
+     *
+     * @return int
+     */
+    public int getDisplayCollectionSize() {
+        return this.displayCollectionSize;
+    }
+
+    /**
+     * Setter for the display collection size
+     *
+     * @param displayCollectionSize
+     */
+    public void setDisplayCollectionSize(int displayCollectionSize) {
+        this.displayCollectionSize = displayCollectionSize;
     }
 
 }

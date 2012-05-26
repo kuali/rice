@@ -100,6 +100,24 @@ public class CollectionGroupBuilder implements Serializable {
             // filter inactive model
             List<Integer> showIndexes = performCollectionFiltering(view, model, collectionGroup, modelCollection);
 
+            if (collectionGroup.getDisplayCollectionSize() != -1 && showIndexes.size() > collectionGroup.getDisplayCollectionSize()) {
+                // remove all indexes in showIndexes beyond the collection's size limitation
+                List<Integer> newShowIndexes = new ArrayList<Integer>();
+                Integer counter = 0;
+
+                for (int index = 0; index < showIndexes.size(); index++) {
+                    newShowIndexes.add(showIndexes.get(index));
+
+                    counter++;
+
+                    if (counter == collectionGroup.getDisplayCollectionSize()) {
+                        break;
+                    }
+                }
+
+                showIndexes = newShowIndexes;
+            }
+
             // for each collection row build the line fields
             for (int index = 0; index < modelCollection.size(); index++) {
                 // display only records that passed filtering

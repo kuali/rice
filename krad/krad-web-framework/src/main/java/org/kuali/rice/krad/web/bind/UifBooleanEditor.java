@@ -45,6 +45,17 @@ public class UifBooleanEditor extends PropertyEditorSupport implements Serializa
 		}
 	}
 
+    /**
+     * Sets the property value by parsing a given String
+     *
+     * <p>
+     *     The text is compared against the configured acceptable string values for
+     *     boolean true and false
+     * </p>
+     *
+     * @param text  The string to be parsed.
+     * @throws IllegalArgumentException if text does not contain either true or false
+     */
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		String input = null;

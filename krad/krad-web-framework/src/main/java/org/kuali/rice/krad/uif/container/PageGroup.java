@@ -37,6 +37,8 @@ public class PageGroup extends Group {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
+        
+        this.addDataAttribute("type", "Page");
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {

@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,11 +82,17 @@ public class GroupValidationMessages extends ValidationMessages {
         if (parent instanceof PageGroup) {
             pageLevel = true;
             forceShow = true;
+            parent.addDataAttribute("server-messages",
+                    Boolean.toString(GlobalVariables.getMessageMap().hasMessages()));
         } else if (parentContainer instanceof FieldGroup) {
             //note this means container of the parent is a FieldGroup
             forceShow = true;
         }
 
+        boolean hasMessages = false;
+        if(!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()){
+            hasMessages = true;
+        }
         parent.addDataAttribute("validationMessages", "{"
                 + "summarize:"
                 + true
@@ -98,6 +105,9 @@ public class GroupValidationMessages extends ValidationMessages {
                 + ","
                 + "displayLabel:"
                 + displayFieldLabelWithMessages
+                + ","
+                + "hasOwnMessages:"
+                + hasMessages
                 + ","
                 + "pageLevel:"
                 + pageLevel

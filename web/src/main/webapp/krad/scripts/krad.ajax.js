@@ -179,7 +179,7 @@ function updatePageCallback(content) {
     setPageBreadcrumb();
 
     pageValidatorReady = false;
-    runHiddenScripts(pageInLayout, true);
+    runHiddenScripts(jQuery(pageInLayout).attr("id"), false, true);
 
     jQuery(pageInLayout).show();
 }

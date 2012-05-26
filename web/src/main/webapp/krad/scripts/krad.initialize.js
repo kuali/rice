@@ -75,7 +75,82 @@ jQuery(document).ready(function () {
  */
 function initFieldHandlers() {
     // var HANDLE_FIELD_MESSAGES_EVENT = "handleFieldsetMessages";
+    var validationTooltipOptions = {
+        position:"top",
+        align:"left",
+        distance:0,
+        manageMouseEvents:false,
+        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
+        alwaysVisible:false,
+        tail:{align:"left"}
+    };
 
+    jQuery(document).on("mouseenter",
+            "[data-role='InputField'] input,"
+                    + "[data-role='InputField'] fieldset, "
+                    + "[data-role='InputField'] fieldset input, "
+                    + "[data-role='InputField'] fieldset label, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea",
+            function (event) {
+                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var data = jQuery("#" + fieldId).data("validationMessages");
+                if(data && data.useTooltip){
+                    var elementInfo = getHoverElement(fieldId);
+                    var element = elementInfo.element;
+                    var tooltipElement = this;
+                    var focus = jQuery(tooltipElement).is(":focus");
+                    if (elementInfo.type == "fieldset") {
+                        //for checkbox/radio fieldsets we put the tooltip on the label of the first input
+                        tooltipElement = jQuery(element).filter("label:first");
+                        //if the fieldset or one of the inputs have focus then the fieldset is considered focused
+                        focus = jQuery(element).filter("fieldset").is(":focus")
+                                || jQuery(element).filter("input").is(":focus");
+                    }
+
+                    var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
+
+                    //only display the tooltip if not already focused or already showing
+                    if (!focus && hasMessages && !jQuery(tooltipElement).IsBubblePopupOpen()) {
+                        if (elementInfo.themeMargins) {
+                            validationTooltipOptions.themeMargins = elementInfo.themeMargins;
+                        }
+                        var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
+                        validationTooltipOptions.themeName = data.tooltipTheme;
+                        validationTooltipOptions.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
+                        //set the margin to offset it from the left appropriately
+                        validationTooltipOptions.divStyle = {margin:getTooltipMargin(tooltipElement)};
+                        jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
+                        jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
+                        jQuery(tooltipElement).ShowBubblePopup();
+                    }
+                }
+            });
+
+    jQuery(document).on("mouseleave",
+            "[data-role='InputField'] input,"
+                    + "[data-role='InputField'] fieldset, "
+                    + "[data-role='InputField'] fieldset input, "
+                    + "[data-role='InputField'] fieldset label, "
+                    + "[data-role='InputField'] select, "
+                    + "[data-role='InputField'] textarea",
+            function (event) {
+                var fieldId = jQuery(this).closest("[data-role='InputField']").attr("id");
+                var data = jQuery("#" + fieldId).data("validationMessages");
+                if(data && data.useTooltip){
+                    var elementInfo = getHoverElement(fieldId);
+                    var element = elementInfo.element;
+                    //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
+                    //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
+                    //when entered
+                    var result = mouseInBubblePopupCheck(event, fieldId, element, this, elementInfo.type);
+                    if (!result) {
+                        return false;
+                    }
+                    //continue with the mouseleave event
+                    mouseLeaveHideMessageTooltip(fieldId, this, element, elementInfo.type);
+                }
+            });
 
     //when these fields are focus store what the current errors are if any and show the messageTooltip
     jQuery(document).on("focus",
@@ -92,9 +167,8 @@ function initFieldHandlers() {
 
                 //keep track of what errors it had on initial focus
                 var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                if(data){
+                if(data && data.errors){
                     data.focusedErrors = data.errors;
-                    jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                 }
 
                 //show tooltip on focus
@@ -293,13 +367,18 @@ function setupPage(validate, focusFirstField) {
     jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage : pageId});
     jQuery("ul.uif-tabMenu").selectTab({selectPage : pageId});
 
-    //Handle messages at field, if any
-    jQuery("[data-role='InputField']").each(function () {
-        var id = jQuery(this).attr('id');
-        handleMessagesAtField(id, true);
-    });
-    //Write the result of the validation messages
-    writeMessagesForPage();
+    //skip input field iteration and validation message writing, if no server messages
+    var hasServerMessagesData = jQuery("[data-type='Page']").data("server-messages");
+    if(hasServerMessagesData){
+        //Handle messages at field, if any
+        jQuery("[data-role='InputField']").each(function () {
+            var id = jQuery(this).attr('id');
+            handleMessagesAtField(id, true);
+        });
+        //Write the result of the validation messages
+        writeMessagesForPage();
+        messageSummariesShown = true;
+    }
 
     //focus on pageValidation header if there are messages on this page
     if(jQuery(".uif-pageValidationHeader").length){
@@ -380,7 +459,7 @@ function setupPage(validate, focusFirstField) {
                         var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
                         var exists = false;
-                        if (data && data.errors.length) {
+                        if (data && data.errors && data.errors.length) {
                             for (var j in data.errors) {
                                 if (data.errors[j] === message) {
                                     exists = true;
@@ -419,7 +498,7 @@ function setupPage(validate, focusFirstField) {
                     }
 
                     var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
-                    if (data && data.errors.length) {
+                    if (data && data.errors && data.errors.length) {
                         data.errors = [];
                         jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
                         if (messageSummariesShown) {
@@ -784,7 +863,6 @@ jQuery(window).bind('beforeunload', function (evt) {
 //    if (!event.pageY || (event.pageY < 0)) {
 //        clearServerSideForm();
 //    }
-    console.log("unload");
 });
 
 

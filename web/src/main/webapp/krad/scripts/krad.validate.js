@@ -79,67 +79,6 @@ function getHoverElement(fieldId) {
 }
 
 /**
- * Initializes the mouse event handlers for the field for when to show the MessageTooltip
- * @param fieldId the id of the field
- */
-function initMessageTooltip(fieldId) {
-    var elementInfo = getHoverElement(fieldId);
-    var element = elementInfo.element;
-
-    var options = {
-        position:"top",
-        align:"left",
-        distance:0,
-        manageMouseEvents:false,
-        themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/",
-        alwaysVisible:false,
-        tail:{align:"left"}
-    };
-
-    jQuery(element).mouseenter(function () {
-        var tooltipElement = this;
-        var focus = jQuery(tooltipElement).is(":focus");
-        if (elementInfo.type == "fieldset") {
-            //for checkbox/radio fieldsets we put the tooltip on the label of the first input
-            tooltipElement = jQuery(element).filter("label:first");
-            //if the fieldset or one of the inputs have focus then the fieldset is considered focused
-            focus = jQuery(element).filter("fieldset").is(":focus")
-                    || jQuery(element).filter("input").is(":focus");
-        }
-
-        var hasMessages = jQuery("[data-messagesFor='" + fieldId + "']").children().length;
-
-        //only display the tooltip if not already focused or already showing
-        if (!focus && hasMessages && !jQuery(tooltipElement).IsBubblePopupOpen()) {
-            if (elementInfo.themeMargins) {
-                options.themeMargins = elementInfo.themeMargins;
-            }
-            var data = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-            options.themeName = data.tooltipTheme;
-            options.innerHTML = jQuery("[data-messagesFor='" + fieldId + "']").html();
-            //set the margin to offset it from the left appropriately
-            options.divStyle = {margin:getTooltipMargin(tooltipElement)};
-            jQuery(tooltipElement).SetBubblePopupOptions(options, true);
-            jQuery(tooltipElement).SetBubblePopupInnerHtml(options.innerHTML, true);
-            jQuery(tooltipElement).ShowBubblePopup();
-        }
-    });
-    jQuery(element).mouseleave(function (event) {
-        //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
-        //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
-        //when entered
-        var result = mouseInBubblePopupCheck(event, fieldId, element, this, elementInfo.type);
-        if (!result) {
-            return false;
-        }
-        //continue with the mouseleave event
-        mouseLeaveHideMessageTooltip(fieldId, this, element, elementInfo.type);
-    });
-
-    return elementInfo;
-}
-
-/**
  * Method to hide the messages when the mouse leave event was successful for the field
  * @param id id of the field
  * @param currentElement the current element be iterated on
@@ -453,11 +392,6 @@ function writeMessagesAtField(id) {
             handleTabStyle(id, false, false, false);
         }
 
-        //initialize mouse handlers for tooltips
-        if (!data.init && data.useTooltip) {
-            initMessageTooltip(id);
-            data.init = true;
-        }
     }
 }
 
@@ -468,23 +402,25 @@ function writeMessagesAtField(id) {
  * summary is already present
  * @param id - id of the field to handle messages
  */
-function handleMessagesAtField(id, skipGroupWrite) {
+function handleMessagesAtField(id, pageSetupPhase) {
     var skip = jQuery("#" + id).data("vignore");
-    if(skipGroupWrite == undefined){
-        skipGroupWrite = false;
+    if(pageSetupPhase == undefined){
+        pageSetupPhase = false;
     }
     if (!(skip == "yes")) {
         var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
         if(data){
-            writeMessagesAtField(id);
+            if(!pageSetupPhase || (pageSetupPhase && data.hasOwnMessages)){
+                writeMessagesAtField(id);
 
-            var parent = jQuery("#" + id).data("parent");
+                var parent = jQuery("#" + id).data("parent");
 
-            if (parent) {
-                handleMessagesAtGroup(parent, id, data, skipGroupWrite);
+                if (parent) {
+                    handleMessagesAtGroup(parent, id, data, pageSetupPhase);
+                }
+
+                data.processed = true;
             }
-
-            data.processed = true;
         }
     }
 }
@@ -497,7 +433,7 @@ function handleMessagesAtField(id, skipGroupWrite) {
  * @param fieldId - the id of the field with message updates
  * @param fieldData - the new validation data for the field being updated
  */
-function handleMessagesAtGroup(id, fieldId, fieldData, skipWrite) {
+function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
     var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
     var pageLevel = false;
     var parent = jQuery("#" + id).data("parent");
@@ -522,10 +458,11 @@ function handleMessagesAtGroup(id, fieldId, fieldData, skipWrite) {
 
         //add fresh data to group's message data based on the new field info
         messageMap[fieldId] = fieldData;
+
         data = calculateMessageTotals(data);
 
         //write messages for this group
-        if(!skipWrite){
+        if(!pageSetupPhase){
             //Display counts in the header even if messages aren't displayed at that level
             displayHeaderMessageCount(id, data);
             writeMessagesForGroup(id, data);
@@ -574,7 +511,9 @@ function writeMessagesForGroup(id, data){
             var newList = jQuery("<ul class='" + kradVariables.VALIDATION_MESSAGES_CLASS + "'></ul>");
 
             if(data.messageTotal){
-                newList = generateSectionLevelMessages(id, data, newList);
+                if(data.hasOwnMessages){
+                    newList = generateSectionLevelMessages(id, data, newList);
+                }
 
                 if (data.summarize) {
                     newList = generateSummaries(id, messageMap, sections, order, newList);
@@ -588,7 +527,7 @@ function writeMessagesForGroup(id, data){
                 }
 
                 //clear and write the new list of summary items
-                clearMessages(id);
+                clearMessages(id, false);
                 handleTabStyle(id, data.errorTotal, data.warningTotal, data.infoTotal);
                 writeMessages(id, newList);
                 //page level validation messsage header handling
@@ -630,15 +569,14 @@ function writeMessagesForGroup(id, data){
                 }
             }
             else{
-                clearMessages(id);
+                clearMessages(id, true);
             }
         }
     }
 }
 
 function writeMessagesForPage(){
-    //TODO use a more permanent selector
-    var page = jQuery(".uif-page");
+    var page = jQuery("[data-type='Page']");
     var pageId = page.attr("id");
     var data = page.data(kradVariables.VALIDATION_MESSAGES);
     writeMessagesForGroup(pageId, data);
@@ -822,10 +760,14 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
 /**
  * Clear all the messages in the messages div for this group or field by id
  * @param messagesForId - id of the group or field to clear messages for
+ * @param hide - wherether or not to also hide the message div after clearing
  */
-function clearMessages(messagesForId) {
+function clearMessages(messagesForId, hide) {
     var messagesDiv = jQuery("[data-messagesFor='" + messagesForId + "']");
     jQuery(messagesDiv).empty();
+    if(hide){
+        jQuery(messagesDiv).hide();
+    }
 }
 
 /**
@@ -839,7 +781,6 @@ function writeMessages(messagesForId, newList) {
     if (newList.children().length && data.displayMessages) {
         jQuery(messagesDiv).show();
         jQuery(newList).appendTo(messagesDiv);
-        messageSummariesShown = true;
     }
     else if(newList.children().length && !data.displayMessages){
         jQuery(messagesDiv).hide();

@@ -36,9 +36,14 @@ public class FieldValidationMessages extends ValidationMessages{
      */
     public void generateMessages(boolean reset, View view, Object model, Component parent) {
         super.generateMessages(reset, view, model, parent);
+        boolean hasMessages = false;
+        if(!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()){
+            hasMessages = true;
+        }
         parent.addDataAttribute("validationMessages", "{"
             + "displayMessages:" + this.isDisplayMessages() + ","
             + "useTooltip:"+ useTooltip + ","
+            + "hasOwnMessages:"+ hasMessages + ","
             + "serverErrors:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors())) + ","
             + "serverWarnings:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings())) + ","
             + "serverInfo:" + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))

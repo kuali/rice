@@ -205,8 +205,10 @@ function getLabel(id){
  *
  * @param id - the tag id or selector expression to use. If empty, run all hidden scripts
  * @param isSelector - when present and true, the value given for the id used as jquery selector expression
+ * @param skipValidationBubbling - set to true to skip processing each field - ONLY is ever true for pages since
+ * they handle this during the setupPage call
  */
-function runHiddenScripts(id, isSelector){
+function runHiddenScripts(id, isSelector, skipValidationBubbling){
 	if(id){
         //run dataScript first always
         jQuery("#" + id).find("input[data-role='dataScript']").each(function(){
@@ -231,14 +233,12 @@ function runHiddenScripts(id, isSelector){
         initBubblePopups();
 
         //Interpret new server message state for refreshed InputFields and write them out
-
-        jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
-            var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
-            if(!data.processed){
-                handleMessagesAtField(jQuery(this).attr('id'), true);
-            }
-        });
-        writeMessagesForPage();
+        if(!skipValidationBubbling){
+            jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
+                var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
+                handleMessagesAtField(jQuery(this).attr('id'));
+            });
+        }
 	}
 	else{
         //run dataScript first always
@@ -252,13 +252,6 @@ function runHiddenScripts(id, isSelector){
 
         //reinitialize BubblePopup
         initBubblePopups();
-        //Interpret new server message state for refreshed InputFields
-        jQuery("[data-role='InputField']").each(function(){
-            var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
-            if(data != undefined && !data.processed){
-                handleMessagesAtField(jQuery(this).attr('id'));
-            }
-        });
 	}
 }
 

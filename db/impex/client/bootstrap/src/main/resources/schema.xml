@@ -816,7 +816,7 @@
     <table name="KREW_DOC_TYP_PROC_T">
         <column name="DOC_TYP_PROC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="INIT_RTE_NODE_ID" size="22" type="DECIMAL"/>
+        <column name="INIT_RTE_NODE_ID" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="255" type="VARCHAR"/>
         <column default="0" name="INIT_IND" required="true" size="1" type="DECIMAL"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>

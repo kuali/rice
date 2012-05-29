@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value = "/dialog-test-view-uif-controller")
+@RequestMapping(value = "/dialog-configuration-test")
 public class DialogTestViewUifController extends UifControllerBase {
 
     @Override

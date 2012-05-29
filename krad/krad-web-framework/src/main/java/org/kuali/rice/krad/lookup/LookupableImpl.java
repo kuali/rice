@@ -939,6 +939,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.dataObjectAuthorizationService = dataObjectAuthorizationService;
     }
 
+    /**
+     * Returns the <code>DataObjectMetaDataService</code>
+     * <p>
+     * If the <code>DataObjectMetaDataService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
+     * </p>
+     * @return dataObjectMetaDataService - the <code>DataObjectMetaDataService</code> that is set
+     */
     protected DataObjectMetaDataService getDataObjectMetaDataService() {
         if (dataObjectMetaDataService == null) {
             this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
@@ -953,7 +960,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * Returns the <code>DocumentDictionaryService</code>
      * <p>
-     * If the <code>DocumentDictionaryService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
+     * If the <code>DocumentDictionaryService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
      * </p>
      * @return documentDictionaryService - the <code>DocumentDictionaryService</code> that is set
      */
@@ -971,7 +978,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * Returns the <code>LookupService</code>
      * <p>
-     * If the <code>LookupService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
+     * If the <code>LookupService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
      * </p>
      * @return configurationService - the <code>ConfigurationService</code> that is set
      */
@@ -989,7 +996,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * Returns the <code>EncryptionService</code>
      * <p>
-     * If the <code>EncryptionService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
+     * If the <code>EncryptionService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>.
      * </p>
      * @return encryptionService - the <code>EncryptionService</code> that is set
      */

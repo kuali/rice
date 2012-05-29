@@ -979,6 +979,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.lookupService = lookupService;
     }
 
+    /**
+     * Returns the <code>EncryptionService</code>
+     * <p>
+     * If the <code>EncryptionService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
+     * </p>
+     * @return encryptionService - the <code>EncryptionService</code> that is set
+     */
     protected EncryptionService getEncryptionService() {
         if (encryptionService == null) {
             this.encryptionService = CoreApiServiceLocator.getEncryptionService();

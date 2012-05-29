@@ -950,6 +950,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         this.dataObjectMetaDataService = dataObjectMetaDataService;
     }
 
+    /**
+     * Returns the <code>DocumentDictionaryService</code>
+     * <p>
+     * If the <code>DocumentDictionaryService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
+     * </p>
+     * @return documentDictionaryService - the <code>DocumentDictionaryService</code> that is set
+     */
     public DocumentDictionaryService getDocumentDictionaryService() {
         if (documentDictionaryService == null) {
             documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
@@ -966,7 +973,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * <p>
      * If the <code>LookupService</code> doesn't exist, get it from the <code>KRADServiceLocatorWeb</code>
      * </p>
-     * @return configurationService - the <code>ConfigurationService></code> that is set
+     * @return configurationService - the <code>ConfigurationService</code> that is set
      */
     protected LookupService getLookupService() {
         if (lookupService == null) {

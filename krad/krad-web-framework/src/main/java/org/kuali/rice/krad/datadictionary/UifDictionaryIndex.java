@@ -268,7 +268,7 @@ public class UifDictionaryIndex implements Runnable {
 
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);
         for (int i = 0; i < beanNames.length; i++) {
-            String beanName = beanNames[i];
+            final String beanName = beanNames[i];
             BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
@@ -292,11 +292,18 @@ public class UifDictionaryIndex implements Runnable {
                     continue;
                 }
 
-                UifViewPool viewPool = new UifViewPool();
+                final UifViewPool viewPool = new UifViewPool();
                 viewPool.setMaxSize(poolSize);
                 for (int j = 0; j < poolSize; j++) {
-                    View view = (View) ddBeans.getBean(beanName);
-                    viewPool.addViewInstance(view);
+                    Runnable createView = new Runnable() {
+                        public void run() {
+                            View view = (View) ddBeans.getBean(beanName);
+                            viewPool.addViewInstance(view);
+                        }
+                    };
+
+                    Thread t = new Thread(createView);
+                    t.start();
                 }
 
                 viewPools.put(id, viewPool);

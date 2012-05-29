@@ -70,7 +70,6 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
      * @param beanFactory - bean factory instance to process
      * @throws org.springframework.beans.BeansException
      */
-    @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         Set<String> processedBeanNames = new HashSet<String>();
 
@@ -111,11 +110,20 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         // process bean definition and all nested definitions for expressions
         ManagedMap<String, String> expressionGraph = new ManagedMap<String, String>();
+        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
+        if (pvs.contains(UifPropertyPaths.EXPRESSION_GRAPH)) {
+            expressionGraph = (ManagedMap<String, String>) pvs.getPropertyValue(UifPropertyPaths.EXPRESSION_GRAPH)
+                    .getValue();
+            if (expressionGraph == null) {
+                expressionGraph = new ManagedMap<String, String>();
+            }
+        }
+
         expressionGraph.setMergeEnabled(false);
         processNestedBeanDefinition(beanName, beanDefinition, "", expressionGraph, beanFactory, processedBeanNames);
 
         // add property for expression graph
-        MutablePropertyValues pvs = beanDefinition.getPropertyValues();
+        pvs = beanDefinition.getPropertyValues();
         pvs.addPropertyValue(UifPropertyPaths.EXPRESSION_GRAPH, expressionGraph);
     }
 
@@ -148,25 +156,29 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         MutablePropertyValues pvs = beanDefinition.getPropertyValues();
         PropertyValue[] pvArray = pvs.getPropertyValues();
         for (PropertyValue pv : pvArray) {
+            if (pv.getName().equals(UifPropertyPaths.EXPRESSION_GRAPH)) {
+                continue;
+            }
+
+            String propertyPath = pv.getName();
+            if (StringUtils.isNotBlank(nestedPropertyName)) {
+                propertyPath = nestedPropertyName + "." + propertyPath;
+            }
+
+            // for reloading, need to remove the property from the previously loaded bean definition
+            if (expressionGraph.containsKey(propertyPath)) {
+                expressionGraph.remove(propertyPath);
+            }
+
             if (hasExpression(pv.getValue())) {
                 // process expression
                 String strValue = getStringValue(pv.getValue());
-
-                String expressionPath = pv.getName();
-                if (StringUtils.isNotBlank(nestedPropertyName)) {
-                    expressionPath = nestedPropertyName + "." + expressionPath;
-                }
-                expressionGraph.put(expressionPath, strValue);
+                expressionGraph.put(propertyPath, strValue);
 
                 // remove property value so expression will not cause binding exception
                 pvs.removePropertyValue(pv.getName());
             } else {
                 // process nested objects
-                String propertyPath = pv.getName();
-                if (StringUtils.isNotBlank(nestedPropertyName)) {
-                    propertyPath = nestedPropertyName + "." + propertyPath;
-                }
-
                 Object newValue = processPropertyValue(propertyPath, pv.getValue(), parentExpressionGraph,
                         expressionGraph, beanFactory, processedBeanNames);
 
@@ -300,16 +312,23 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     protected Object processPropertyValue(String propertyName, Object propertyValue,
             Map<String, String> parentExpressionGraph, Map<String, String> expressionGraph,
             ConfigurableListableBeanFactory beanFactory, Set<String> processedBeanNames) {
+        boolean clearExpressionsForNull = false;
         if (propertyValue instanceof TypedStringValue) {
             TypedStringValue typedStringValue = (TypedStringValue) propertyValue;
 
             String value = typedStringValue.getValue();
             if (value == null) {
-                // if property is object and set to null, clear any parent expressions for the property
-                removeExpressionsByPrefix(propertyName, parentExpressionGraph);
+                clearExpressionsForNull = true;
             }
+        } else if (propertyValue == null) {
+            clearExpressionsForNull = true;
+        }
 
-            return value;
+        // if property is object and set to null, clear any parent expressions for the property
+        if (clearExpressionsForNull) {
+            removeExpressionsByPrefix(propertyName, parentExpressionGraph);
+
+            return propertyValue;
         }
 
         // process nested bean definitions

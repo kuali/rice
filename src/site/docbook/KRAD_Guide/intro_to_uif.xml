@@ -557,25 +557,6 @@
             <para>By default, the variable will be exported with the same name as the attribute
                 (specified by the name attribute). A different variable name can be given using the
                 id attribute.</para>
-            <para> The benefit of using this alternate template approach is that we can clearly see
-                the attributes a template expects and also allows us to manipulate the attribute
-                value using JSTL. </para>
-            <tip><para>
-                <emphasis role="bold">Why Not Tags? </emphasis> Why not just use JSP 2 tags? The
-                KRAD templates look very similar to JSP 2 tags, and so a reasonable question would
-                be why not use tags instead of Apache Tiles.? Remember, the actual template that
-                gets included is configured with the bean XML,, therefore it is not possible to
-                statically include the template from JSP (it must be a variable). The problem with
-                this is the JSP specification does not support a variable tag name! However, the
-                jsp:include tag does support a variable (e.g. &lt;jsp:include
-                page=”${template}”/&gt;). Apache Tiles is essentially a wrapper for JSP include that
-                gives us a more formal way of passing parameters. In addition to the variable
-                problem, the restriction on tag file location (tags are required to be under
-                WEB-INF/tags) was a factor in the decision. KRAD still makes use of tag files to
-                provide utility functions for the JSP templates. </para></tip>
-            <para>By default, the variable will be exported with the same name as the attribute
-                (specified by the name attribute). A different variable name can be given using the
-                id attribute.</para>
             <para>The benefit of using this alternate template approach is that we can clearly see
                 the attributes a template expects and also allows us to manipulate the attribute
                 value using JSTL. </para>
@@ -651,6 +632,91 @@
                 parameters gives us a uniform way of invoking templates. As we will see in a bit,
                 the framework provides a generic tag that can be used to invoke any template for a
                 tag.</para>
+        </section>
+        <section>
+            <title>TLD Includes</title>
+            <para>Although components are rendered using Apache Tiles, tags are still widely used in
+                KRAD. Foremost among these are the Spring tags, JSTL, and KRAD tags that provide
+                utility functions. KRAD simplifies including the tag libraries by providing a JSP
+                file that perform all includes. Template developers just need to include this one
+                JSP file which will bring in all necessary tag libraries. Furthermore, the addition
+                of tag libraries can be made with the one include JSP without modifying all
+                templates. The following code snippet shows this JSP include:</para>
+            <programlisting>
+&lt;%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%&gt;
+            </programlisting>
+        </section>
+        <section>
+            <title>Template Tag</title>
+            <para>In Chapter 8 we will learn how to assemble UIF components into a View. The View is
+                a component itself that among other things encapsulates all other components for our
+                UI. It can also be thought of as a tree of components. The rendering processes
+                starts by invoking the configured view template. The view template then in turn
+                renders its child components and so on until the complete tree has been traversed.
+                Therefore, the responsibility of a template is not only render the necessary markup,
+                but to invoke rendering for its child components. To help with this, KRAD provides
+                the template tag.</para>
+            <para>The template tag requires the component attribute to be specified. This is the
+                child component that should be rendered:</para>
+            <programlisting>
+&lt;krad:template component=”${component.childComponent}”/&gt;
+            </programlisting>
+            <tip>
+                <title>KRAD Tags</title>
+                <para>All KRAD tags belong to the KRAD namespace.</para>
+            </tip>            
+            <para>The template tag will then create the tags from Tiles for invoking the template
+                and passing the component parameter. Some types of components require additional
+                parameters to be passed. These will be covered in the section ‘Types of Components’.
+                The figure below depicts the rendering process.</para>
+            <figure>
+                <title>KRAD Rendering Process</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Rendering_Process.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>Besides invoking the template for the child component, the template tag does many
+                more useful things for us. These things will be explained as the corresponding
+                topics are covered.</para>
+        </section>
+        <section>
+            <title>Recap</title>
+                <itemizedlist>
+                    <listitem>
+                    <para>JSP templates mix component variables with static content to
+                        produce the final HTML markup for a page</para>
+                </listitem>
+                    <listitem>
+                    <para>The Apache Tiles framework is used for creating the
+                        templates</para>
+                </listitem>
+                    <listitem>
+                    <para>Tiles provides us a mechanism to pass content to the template with
+                        a named attribute</para>
+                </listitem>
+                    <listitem>
+                    <para>KRAD uses Tiles runtime composition which does not make use of XML.
+                        In addition, templates declare parameters at the beginning of the file with
+                        the Tiles useAttribute tag</para>
+                </listitem>
+                    <listitem>
+                    <para>All templates take in the component instance as a parameter</para>
+                </listitem>
+                    <listitem>
+                    <para>KRAD provides a common JSP include to bring in all needed tag
+                        libraries</para>
+                </listitem>
+                    <listitem>
+                    <para>Templates generate the necessary markup, and make invocations to
+                        render child components</para>
+                </listitem>
+                    <listitem>
+                    <para>The template tag can be used to render components. One of the many things
+                        this tag does is invoke the template for the component</para>
+                </listitem>
+                </itemizedlist>
         </section>
     </section>
     <section>
@@ -1201,8 +1267,15 @@
                 named <emphasis role="bold">Container</emphasis>. The main job of container
                 components is to hold a configured list of components and render them using a
                 layout. A container is divided into three parts: the header, the body, and the
-                footer. Generally, these appear in the user interface as show by Figure 10: </para>
-            <para>&lt;insert Figure 10></para>
+                footer. Generally, these appear in the user interface as show by the figure below: </para>
+            <figure>
+                <title>KRAD Containter Parts</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Container_Parts.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>Besides the group component, another type of container is a View. Views do many
                 things in the framework that will be discussed throughout this manual, including the
                 container duty. A view instance actually contains all other components of an
@@ -1293,7 +1366,15 @@
                     </listitem>
                 </itemizedlist>
             </para>
-            <para>&lt;insert Figure 11></para>
+            <para>The below figure depicts the composition of components.</para>
+            <figure>
+                <title>KRAD Component Hierarchy</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/KRAD_Component_Hierarchy.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
         </section>
         <section>
             <title>Recap</title>
@@ -1444,8 +1525,16 @@
             are divided into files for better management and easier browsing. All of these ‘base
             bean’ files are located in the resource folder (src/main/resources) of the KRAD web
             module. Within the resources folder they are contained in the package
-            org.kuali.rice.krad.uif. Screen Shot 3 shows this package in the Intellij project pane. </para>
-        <para>&lt;insert screen shot 3></para>
+            org.kuali.rice.krad.uif. The below screen shot shows this package in the Intellij
+            project pane. </para>
+        <figure>
+            <title>KRAD Intellij Project Pane</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD_Guide/kradProjectPane.png"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <section>
             <title>UIF Configuration Definitions </title>
             <para>This file contains bean definitions that are related to component configuration.

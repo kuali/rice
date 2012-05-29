@@ -66,6 +66,8 @@
             <bean parent="Uif-CheckboxControl"/>
           </property>
         </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox" p:clientSideJs="showLightboxComponent('myDialog');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
       </list>
     </property>
   </bean>

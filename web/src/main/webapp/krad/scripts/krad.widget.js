@@ -220,6 +220,7 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
                                 if (top == self) {
                                     jQuery.fancybox(options);
                                 } else {
+                                    // for portal usage
                                     parent.jQuery.fancybox(options);
                                 }
                             }

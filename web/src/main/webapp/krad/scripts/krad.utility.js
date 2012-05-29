@@ -733,3 +733,60 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
         jQuery(deleteButton).closest('.uif-collectionItem').removeClass(highlightItemClass);
     }
 }
+
+/**
+ * Display the component of the id in a light box
+ *
+ * <p>
+ * jQuery Fancybox is used to create the lightbox.  The specified component is used as the content of the fancy box.
+ * The second argument is optional and allows the FancyBox options to be overridden.
+ * </p>
+ *
+ * @param componentId the id of the component that will be used for the lightbox content (usually a group id)
+ * @parm overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
+ */
+function showLightboxComponent(componentId, overrideOptions) {
+    var options = {fitToView : true,
+                   openEffect : 'fade',
+                   closeEffect : 'fade',
+                   openSpeed : 200,
+                   closeSpeed : 200,
+                   helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}},
+                   type : 'inline',
+                   href : "#" + componentId
+                  };
+
+    // override fancybox options
+    if (overrideOptions !== undefined) {
+        _mergeOptionsMap(options, overrideOptions);
+    }
+
+    // Open the light box
+    if (top == self) {
+        jQuery.fancybox(options);
+    } else {
+        // for portal usage (the href anchor from the portal page will not work so the content is explicitly passed to fancybox)
+        options.content = jQuery('#' + componentId).html();
+        parent.jQuery.fancybox(options);
+    }
+}
+
+/**
+ * Internal function for merging fancybox options
+ *
+ * <p>
+ * Existing options will not be deleted but overridden.
+ * </p>
+ *
+ * @param options the existing fancybox options
+ * @param overrideOptions the fancybox options that should be added/overwritten
+ */
+function _mergeOptionsMap(options, overrideOptions) {
+    for(var overrideOption in overrideOptions) {
+        if (overrideOptions[overrideOption] instanceof Object) {
+            _mergeOptionsMap(options[overrideOption], overrideOptions[overrideOption]);
+        } else {
+            options[overrideOption] = overrideOptions[overrideOption];
+        }
+    }
+}

@@ -304,22 +304,54 @@ public class ComponentFactory {
         return (FileControl) getNewComponentInstance(FILE_CONTROL);
     }
 
+    /**
+     * Retrieves a new text control instance from Spring (initialized by the bean definition
+     * with the given id) configured for a date (enabled data picker)
+     *
+     * @return TextControl
+     */
     public static TextControl getDateControl() {
         return (TextControl) getNewComponentInstance(DATE_CONTROL);
     }
 
+    /**
+     * Retrieves a new text control instance from Spring (initialized by the bean definition
+     * with the given id) configured for KIM user input
+     *
+     * @return TextControl
+     */
     public static TextControl getUserControl() {
         return (TextControl) getNewComponentInstance(USER_CONTROL);
     }
 
+    /**
+     * Retrieves a new text control instance from Spring (initialized by the bean definition
+     * with the given id) configured for KIM group input
+     *
+     * @return TextControl
+     */
     public static TextControl getGroupControl() {
         return (TextControl) getNewComponentInstance(GROUP_CONTROL);
     }
 
+    /**
+     * Retrieves a new data field instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return DataField
+     */
     public static DataField getDataField() {
         return (DataField) getNewComponentInstance(DATA_FIELD);
     }
 
+    /**
+     * Retrieves a new data field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name and label to the given parameters
+     *
+     * @param propertyName - name of the property the data field should bind to
+     * @param label - label for the field
+     * @return DataField
+     */
     public static DataField getDataField(String propertyName, String label) {
         DataField field = (DataField) getNewComponentInstance(DATA_FIELD);
 

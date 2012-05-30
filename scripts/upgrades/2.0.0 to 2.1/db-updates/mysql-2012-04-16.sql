@@ -26,7 +26,7 @@ Insert into `krim_typ_attr_t`
 VALUES
 ((select KIM_TYP_ATTR_ID from (select (max(cast(KIM_TYP_ATTR_ID as decimal)) + 1)
   as KIM_TYP_ATTR_ID from krim_typ_attr_t
-  where KIM_TYP_ATTR_ID is not NULL and cast(KIM_TYP_ATTR_ID as decimal) < 10000) as tmptable),
+  where KIM_TYP_ATTR_ID is not NULL and KIM_TYP_ATTR_ID REGEXP '^[1-9][0-9]*$' and cast(KIM_TYP_ATTR_ID as decimal) < 10000) as tmptable),
   '69FA55ACC2EE2598E0404F8189D86880',
   1,
   'e',

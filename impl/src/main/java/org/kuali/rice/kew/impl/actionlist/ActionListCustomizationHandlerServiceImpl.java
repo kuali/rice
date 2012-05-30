@@ -56,12 +56,11 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
         for (ActionItem actionItem : actionItems) {
             DocumentType documentType = getDocumentTypeService().findByName(actionItem.getDocName());
 
-            if (documentType == null) {
-                throw new IllegalStateException("Could not retrieve a document type by name: " +
-                        actionItem.getDocName());
-            }
             try { // try to get the custom action list attribute and convert it to an ActionItemCustomization
-                CustomActionListAttribute customActionListAttribute = documentType.getCustomActionListAttribute();
+                CustomActionListAttribute customActionListAttribute = null;
+                if (documentType != null) {
+                    customActionListAttribute = documentType.getCustomActionListAttribute();
+                }
 
                 if (customActionListAttribute == null) {
                     customActionListAttribute = getDefaultCustomActionListAttribute();
@@ -75,7 +74,7 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
                 actionItemCustomizations.add(actionItemCustomization);
 
             } catch (Exception e) {
-                LOG.error("Problem loading custom action list attribute " + actionItem.getId(), e);
+                LOG.error("Problem loading custom action list attribute for action item " + actionItem.getId(), e);
             }
         }
 

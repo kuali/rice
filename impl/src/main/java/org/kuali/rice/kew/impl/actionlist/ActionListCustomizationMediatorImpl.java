@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2012 The Kuali Foundation
+/*
+ * Copyright 2006-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,8 @@ import java.util.Map;
  */
 public class ActionListCustomizationMediatorImpl implements ActionListCustomizationMediator {
 
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListCustomizationMediatorImpl.class);
+
     private DocumentTypeService documentTypeService;
 
     /**
@@ -70,13 +72,14 @@ public class ActionListCustomizationMediatorImpl implements ActionListCustomizat
             //DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(actionItem.getDocName());
             DocumentType docType = getDocumentTypeService().findByName(actionItem.getDocName());
             if (docType == null) {
-                throw new IllegalStateException(
-                        String.format("Document Type with name %s does not exist", actionItem.getDocName())
-                );
+                LOG.error(String.format("Action item %s has an invalid document type name of %s",
+                        actionItem.getId(), actionItem.getDocName()));
+                // OK to have a null key, this represents the default app id
+                itemsByApplicationId.put(null, actionItem);
+            } else {
+                // OK to have a null key, this represents the default app id
+                itemsByApplicationId.put(getActionListCustomizationApplicationId(docType), actionItem);
             }
-
-            // OK to have a null key, this represents the default app id
-            itemsByApplicationId.put(getActionListCustomizationApplicationId(docType), actionItem);
         }
 
         // For each application id, pass all action items which might need to be customized (because they have a

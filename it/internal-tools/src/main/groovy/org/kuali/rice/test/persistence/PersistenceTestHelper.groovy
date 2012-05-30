@@ -99,8 +99,7 @@ class PersistenceTestHelper {
             println(e.getKey());
             println(e.getValue());
         }*/
-        Map sortedFields = new TreeMap(fields);
-        Map sortedRows = new TreeMap(row);
-        Assert.assertTrue(CollectionUtils.isEqualCollection(sortedFields.entrySet(), sortedRows.entrySet()));
+
+        Assert.assertEquals(fields, row);
     }
 }

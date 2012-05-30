@@ -19,4 +19,4 @@
 --
 
 ALTER TABLE krew_doc_typ_plcy_reln_t MODIFY PLCY_VAL VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_bin
-/
+;

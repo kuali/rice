@@ -854,7 +854,7 @@
                      * subtracts the add line row - if present - from the row count
                      */
             this.subtractAddLineRow = function (recordCount) {
-                if ($(this.nTable).find("[class ~= 'kr-addLine']").length != 0) {
+                if ($(this.nTable).find("[class ~= 'uif-addLine']").length != 0) {
                     return recordCount - 1;
                 } else {
                     return recordCount;

@@ -773,7 +773,13 @@ public class PermissionServiceImpl implements PermissionService {
             LOG.debug(sb.toString());
         }
     }
-        
+
+    /**
+     *  confirms that the an object supplied as a parameter is valid
+     *
+     * @param object - an object which should not be null
+     * @param name - a descriptive name for the object for use in error messages
+     */
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new RiceIllegalArgumentException(name + " was null");

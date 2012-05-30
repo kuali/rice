@@ -49,6 +49,14 @@ public abstract class KRADTestCase extends BaselineTestCase {
         super(KRAD_MODULE_NAME);
     }
 
+    /**
+     * propagate constructor
+     * @param moduleName - the name of the module
+     */
+    public KRADTestCase(String moduleName) {
+        super(moduleName);
+    }
+
     @Override
     protected void setUpInternal() throws Exception {
         super.setUpInternal();

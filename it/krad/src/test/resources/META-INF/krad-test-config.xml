@@ -16,7 +16,8 @@
 
 -->
 <config>
-  <param name="module.name">sample-app</param>
+  <!-- allow the module name to be changed, if set in an earlier parsed file -->
+  <param name="module.name" override="false">sample-app</param>
   <param name="application.id">RICE</param>
 
   <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>

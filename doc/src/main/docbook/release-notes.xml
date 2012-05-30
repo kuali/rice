@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="5.0">
     <info>
         <title>Kuali Rice ${pom.version} Release Notes</title>
         <edition>${pom.version}</edition>
@@ -9,35 +10,37 @@
         </author>
         <pubdate>${reldate}</pubdate>
         <releaseinfo>This document contains a cumulative list of work accomplished between versions
-            ${previous.version} and ${pom.version}. It also contains the steps necessary in
-            upgrading from release ${previous.version} to ${pom.version} </releaseinfo>
+            1.0.3.3 and ${pom.version}. It also contains the steps necessary in upgrading from
+            release 1.0.3.3 to ${pom.version} </releaseinfo>
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
         <para>This Release Notes documentation includes information on the list of changes between
-            Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}. There
-            are no database or impacting changes between Rice ${previous.version} and ${pom.version}
-            and ${pom.version} should be a drop-in replacement.</para>
+            Rice 1.0.3.3 (released ${previous.reldate}) and Rice ${pom.version}. There are no
+            database or impacting changes between Rice 1.0.3.3 and ${pom.version} and ${pom.version}
+            should be a drop-in replacement.</para>
         <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our
             public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
         <itemizedlist>
-            <title>Highlights of this release include:</title>
-            <listitem><para>Bug fixes</para></listitem>
+            <title>Fixes in this release include:</title>
+            <listitem>
+                <para>Bug fixes for two security issues of high severity and one at medium
+                    severity.</para>
+            </listitem>
+            <listitem>
+                <para>[<link xlink:href="https://jira.kuali.org/browse/KULRICE-6632"
+                        >KULRICE-6632</link>] - KualiMaintenanceDocumentAction is modifying the http
+                    request parameter map which is not permitted</para>
+            </listitem>
         </itemizedlist>
-        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
+        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link
+                xlink:href="http://kuali.org/rice/download"
+            >http://kuali.org/rice/download</link>.</para>
         <para>There are three differient distributions of Rice available: source, binary and server.
             Please read the Installation Guide for more details on each of these
             distributions.</para>
         <para>Documentation for this release can be found at at <link
-            xlink:href="http://kuali.org/rice/docs/${pom.version}"
-                >http://kuali.org/rice/docs/${pom.version}</link>.</para>
-            <sect2 xml:id="bug-fix" xreflabel="Bug Fix">
-                <title>Bug Fix</title>            
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5249">KULRICE-5249</link>: Case Insensitive flag ignored in KNS</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5314">KULRICE-5314</link>: KEN Notification's FYI / ACK buttons in detail view throw RuntimeException on click</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5438">KULRICE-5438</link>: install-ant-jar and other maven related tasks in rice build.xml do not work with maven 3.0.x</para>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-5520">KULRICE-5520</link>: page's header menu bar has title/hover "Create a new record"</para>
-           </sect2>
+                xlink:href="https://wiki.kuali.org/display/KULRICE/Home+%281.0.4%29"
+                >https://wiki.kuali.org/display/KULRICE/Home+%281.0.4%29</link>.</para>
     </sect1>
-    <!-- Note: Include sections for Database Changes or Impacting Changed if we have them. See previous revisions of this file for template on these sections -->
 </article>

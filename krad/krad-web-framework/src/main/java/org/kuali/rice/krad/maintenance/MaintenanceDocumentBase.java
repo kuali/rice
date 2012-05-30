@@ -159,8 +159,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * Builds out the document title for maintenance documents - this will get loaded into the flex doc and passed into
+     * Builds out the document title for maintenance documents
+     *
+     * <p>This will get loaded into the flex doc and passed into
      * workflow. It will be searchable.
+     * </p>
+     *
+     * @return document title
      */
     @Override
     public String getDocumentTitle() {
@@ -187,8 +192,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * @param xmlDocument
-     * @return
+     * Check if oldMaintainable is specified in the XML of the maintenance document
+     *
+     * @param xmlDocument Maintenance document in XML form
+     * @return true if an oldMainainable exists in the xmlDocument, false otherwise
      */
     protected boolean isOldMaintainableInDocument(Document xmlDocument) {
         boolean isOldMaintainableInExistence = false;
@@ -199,8 +206,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * Checks old maintainable bo has key values
+     * @see org.kuali.rice.krad.maintenance.Maintainable#isOldDataObjectInDocument()
      */
+    @Override
     public boolean isOldDataObjectInDocument() {
         boolean isOldBusinessObjectInExistence = false;
         if (oldMaintainableObject == null || oldMaintainableObject.getDataObject() == null) {
@@ -212,26 +220,29 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * This method is a simplified-naming wrapper around isOldDataObjectInDocument(), so that the method name
-     * matches the functionality.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#isNew()
      */
+    @Override
     public boolean isNew() {
         return MaintenanceUtils.isMaintenanceDocumentCreatingNewRecord(newMaintainableObject.getMaintenanceAction());
     }
 
     /**
-     * This method is a simplified-naming wrapper around isOldDataObjectInDocument(), so that the method name
-     * matches the functionality.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#isEdit()
      */
+    @Override
     public boolean isEdit() {
         if (KRADConstants.MAINTENANCE_EDIT_ACTION.equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
             return true;
         } else {
             return false;
         }
-        // return isOldDataObjectInDocument();
     }
 
+    /**
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#isNewWithExisting()
+     */
+    @Override
     public boolean isNewWithExisting() {
         if (KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION
                 .equalsIgnoreCase(newMaintainableObject.getMaintenanceAction())) {
@@ -241,6 +252,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
     }
 
+    /**
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#populateMaintainablesFromXmlDocumentContents()
+     */
+    @Override
     public void populateMaintainablesFromXmlDocumentContents() {
         // get a hold of the parsed xml document, then read the classname,
         // then instantiate one to two instances depending on content
@@ -327,6 +342,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         return maintenanceAction;
     }
 
+    /**
+     * Get notes from XML
+     *
+     * @param notesTagName the xml tag name of the notes
+     * @return list of <code>Note</code>s
+     */
     private List<Note> getNotesFromXml(String notesTagName) {
         String notesXml =
                 StringUtils.substringBetween(xmlDocumentContents, "<" + notesTagName + ">", "</" + notesTagName + ">");
@@ -341,9 +362,15 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
+     * Get data object from XML
+     *
+     * <p>
      * Retrieves substring of document contents from maintainable tag name. Then use xml service to translate xml into
-     * a
-     * business object.
+     * a business object.
+     * </p>
+     *
+     * @param maintainableTagName the xml tag name of the maintainable
+     * @return data object
      */
     protected Object getDataObjectFromXML(String maintainableTagName) {
         String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">",
@@ -353,10 +380,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * Populates the xml document contents from the maintainables.
-     *
-     * @see MaintenanceDocument#populateXmlDocumentContentsFromMaintainables()
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#populateXmlDocumentContentsFromMaintainables()
      */
+    @Override
     public void populateXmlDocumentContentsFromMaintainables() {
         StringBuilder docContentBuffer = new StringBuilder();
         docContentBuffer.append("<maintainableDocumentContents maintainableImplClass=\"")
@@ -467,10 +493,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
     }
 
-    @Override
     /**
      * @see org.kuali.rice.krad.document.DocumentBase#getWorkflowEngineDocumentIdsToLock()
      */
+    @Override
     public List<String> getWorkflowEngineDocumentIdsToLock() {
         if (newMaintainableObject != null) {
             return newMaintainableObject.getWorkflowEngineDocumentIdsToLock();
@@ -479,8 +505,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * Pre-Save hook.
-     *
      * @see org.kuali.rice.krad.document.Document#prepareForSave()
      */
     @Override
@@ -511,33 +535,40 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * @return Returns the newMaintainableObject.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#getNewMaintainableObject()
      */
+    @Override
     public Maintainable getNewMaintainableObject() {
         return newMaintainableObject;
     }
 
     /**
-     * @param newMaintainableObject The newMaintainableObject to set.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#setNewMaintainableObject(Maintainable)
      */
+    @Override
     public void setNewMaintainableObject(Maintainable newMaintainableObject) {
         this.newMaintainableObject = newMaintainableObject;
     }
 
     /**
-     * @return Returns the oldMaintainableObject.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#getOldMaintainableObject()
      */
+    @Override
     public Maintainable getOldMaintainableObject() {
         return oldMaintainableObject;
     }
 
     /**
-     * @param oldMaintainableObject The oldMaintainableObject to set.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#setOldMaintainableObject(Maintainable)
      */
+    @Override
     public void setOldMaintainableObject(Maintainable oldMaintainableObject) {
         this.oldMaintainableObject = oldMaintainableObject;
     }
 
+    /**
+     * @see org.kuali.rice.krad.document.DocumentBase#setDocumentNumber(java.lang.String)
+     */
     @Override
     public void setDocumentNumber(String documentNumber) {
         super.setDocumentNumber(documentNumber);
@@ -548,37 +579,33 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * Gets the fieldsClearedOnCopy attribute.
-     *
-     * @return Returns the fieldsClearedOnCopy.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#isFieldsClearedOnCopy()
      */
+    @Override
     public final boolean isFieldsClearedOnCopy() {
         return fieldsClearedOnCopy;
     }
 
     /**
-     * Sets the fieldsClearedOnCopy attribute value.
-     *
-     * @param fieldsClearedOnCopy The fieldsClearedOnCopy to set.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#setFieldsClearedOnCopy(boolean)
      */
+    @Override
     public final void setFieldsClearedOnCopy(boolean fieldsClearedOnCopy) {
         this.fieldsClearedOnCopy = fieldsClearedOnCopy;
     }
 
     /**
-     * Gets the xmlDocumentContents attribute.
-     *
-     * @return Returns the xmlDocumentContents.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#getXmlDocumentContents()
      */
+    @Override
     public String getXmlDocumentContents() {
         return xmlDocumentContents;
     }
 
     /**
-     * Sets the xmlDocumentContents attribute value.
-     *
-     * @param xmlDocumentContents The xmlDocumentContents to set.
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#setXmlDocumentContents(String)
      */
+    @Override
     public void setXmlDocumentContents(String xmlDocumentContents) {
         this.xmlDocumentContents = xmlDocumentContents;
     }
@@ -586,28 +613,31 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * @see org.kuali.rice.krad.document.Document#getAllowsCopy()
      */
+    @Override
     public boolean getAllowsCopy() {
         return getDocumentDictionaryService().getAllowsCopy(this);
     }
 
     /**
-     * @see MaintenanceDocument#getDisplayTopicFieldInNotes()
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#isDisplayTopicFieldInNotes()
      */
-    public boolean getDisplayTopicFieldInNotes() {
+    @Override
+    public boolean isDisplayTopicFieldInNotes() {
         return displayTopicFieldInNotes;
     }
 
     /**
      * @see MaintenanceDocument#setDisplayTopicFieldInNotes(boolean)
      */
+    @Override
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;
     }
 
-    @Override
     /**
      * Overridden to avoid serializing the xml twice, because of the xmlDocumentContents property of this object
      */
+    @Override
     public String serializeDocumentToXml() {
         String tempXmlDocumentContents = xmlDocumentContents;
         xmlDocumentContents = null;
@@ -616,6 +646,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         return xmlForWorkflow;
     }
 
+    /**
+     * @see DocumentBase#prepareForSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
+     */
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
@@ -786,7 +819,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * @see org.kuali.rice.krad.document.DocumentBase#getDocumentBusinessObject()
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocument#getDocumentDataObject()
      */
     @Override
     public Object getDocumentDataObject() {

@@ -142,7 +142,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
-    @Cacheable(value= Permission.Cache.NAME, key="'{isAuthorized}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
+    //@Cacheable(value= Permission.Cache.NAME, key="'{isAuthorized}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
     boolean isAuthorized( @WebParam(name="principalId") String principalId,
     					  @WebParam(name="namespaceCode") String namespaceCode,
     					  @WebParam(name="permissionName") String permissionName,
@@ -201,7 +201,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isAuthorizedByTemplate")
     @WebResult(name = "isAuthorized")
-    @Cacheable(value= Permission.Cache.NAME, key="'{isAuthorizedByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)")
+    //@Cacheable(value= Permission.Cache.NAME, key="'{isAuthorizedByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)")
     boolean isAuthorizedByTemplate(@WebParam(name = "principalId") String principalId,
                                    @WebParam(name = "namespaceCode") String namespaceCode,
                                    @WebParam(name = "permissionTemplateName") String permissionTemplateName,
@@ -327,7 +327,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
-    @Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissions}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
+    //@Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissions}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
     List<Permission> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
     										   @WebParam(name="namespaceCode") String namespaceCode,
     										   @WebParam(name="permissionName") String permissionName,
@@ -365,7 +365,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
-    @Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissionsByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)")
+    //@Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissionsByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)")
     List<Permission> getAuthorizedPermissionsByTemplate(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,

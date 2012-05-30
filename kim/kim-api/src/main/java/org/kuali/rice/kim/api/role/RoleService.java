@@ -309,7 +309,7 @@ public interface RoleService {
      */
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
+    //@Cacheable(value= RoleMember.Cache.NAME, key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
             @WebParam(name="roleIds") List<String> roleIds,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )

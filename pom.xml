@@ -850,8 +850,8 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.4</connection>
-    <developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.4</developerConnection>
-    <url>https://test.kuali.org/svn/rice/tags/rice-1.0.4</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-1.0</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-1.0</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/branches/rice-1.0</url>
   </scm>
 </project>

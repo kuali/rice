@@ -1347,6 +1347,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
         }
 
+        ((UifFormBase)model).addAddedCollectionItem(collectionPath, addLine);
+
         processAfterAddLine(view, collectionGroup, model, addLine);
     }
 

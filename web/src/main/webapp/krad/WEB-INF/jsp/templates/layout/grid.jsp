@@ -50,5 +50,5 @@
               renderFirstRowHeader="${manager.renderFirstRowHeader}"
               renderRowFirstCellHeader="${manager.renderRowFirstCellHeader}"
               renderAlternatingHeaderColumns="${manager.renderAlternatingHeaderColumns}"
-              firstLineStyle="${manager.firstLineStyle}"/>
+              rowCssClasses="${manager.rowCssClasses}"/>
 </table>

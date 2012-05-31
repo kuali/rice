@@ -32,8 +32,8 @@
               description="Boolean that indicates whether the first cell of each row should be rendered as a th, defaults to false" %>
 <%@ attribute name="renderAlternatingHeaderColumns" required="false"
               description="Boolean that indicates whether alternating header columns should be rendered, defaults to false" %>
-<%@ attribute name="firstLineStyle" required="false"
-              description="Style given to the first line in this table" %>
+<%@ attribute name="rowCssClasses" required="false"
+              type="java.util.List" description="Styles for each row" %>
 
 <c:if test="${empty numberOfColumns}">
   <c:set var="numberOfColumns" value="2"/>
@@ -72,6 +72,7 @@
 <c:set var="colCount" value="0"/>
 <c:set var="carryOverColCount" value="0"/>
 <c:set var="tmpCarryOverColCount" value="0"/>
+<c:set var="rowCount" value="0"/>
 
 <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
   <c:set var="colCount" value="${colCount + 1}"/>
@@ -91,16 +92,7 @@
       </c:choose>
     </c:if>
 
-    <c:choose>
-      <c:when test="${itemVarStatus.first}">
-        <tr class="${firstLineStyle}">
-        <c:set var="firstRow" value="true"/>
-      </c:when>
-      <c:otherwise>
-        <tr class="${evenOddClass}">
-        <c:set var="firstRow" value="false"/>
-      </c:otherwise>
-    </c:choose>
+    <tr class="${evenOddClass} ${rowCssClasses[rowCount]}">
 
     <%-- if alternating header columns, force first cell of row to be header --%>
     <c:if test="${renderAlternatingHeaderColumns}">
@@ -111,6 +103,11 @@
     <c:if test="${renderRowFirstCellHeader}">
       <c:set var="renderFirstCellHeader" value="true"/>
     </c:if>
+
+    <c:set var="rowCount" value="${rowCount + 1}"/>
+
+    <c:set var="firstRow" value="${itemVarStatus.first}"/>
+
   </c:if>
 
   <%-- skip column positions from previous rowspan --%>

@@ -90,12 +90,21 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private int displayCollectionSize = -1;
 
+    private boolean highlightNewItems;
+
+    private boolean highlightAddItem;
+
+    private String newItemsCssClass;
+
+    private String addItemCssClass;
+
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
         showInactiveLines = false;
         renderInactiveToggleButton = true;
         includeLineSelectionField = false;
+        highlightNewItems = true;
 
         filters = new ArrayList<CollectionFilter>();
         lineActions = new ArrayList<Action>();
@@ -842,4 +851,75 @@ public class CollectionGroup extends Group implements DataBinding {
         this.displayCollectionSize = displayCollectionSize;
     }
 
+    /**
+     * Indicates whether new items should be styled with the #newItemsCssClass
+     *
+     * @return boolean true if new items must be highlighted
+     */
+    public boolean isHighlightNewItems() {
+        return highlightNewItems;
+    }
+
+    /**
+     * Setter for the flag that allows for different styling of new items
+     *
+     * @param highlightNewItems
+     */
+    public void setHighlightNewItems(boolean highlightNewItems) {
+        this.highlightNewItems = highlightNewItems;
+    }
+
+    /**
+     * The css style class that will be added on new items
+     *
+     * @return String - the new items css style class
+     */
+    public String getNewItemsCssClass() {
+        return newItemsCssClass;
+    }
+
+    /**
+     * Setter for the new items css style class
+     *
+     * @param newItemsCssClass
+     */
+    public void setNewItemsCssClass(String newItemsCssClass) {
+        this.newItemsCssClass = newItemsCssClass;
+    }
+
+    /**
+     * The css style class that will be added on the add item group or row
+     *
+     * @return String - the add item group or row css style class
+     */
+    public String getAddItemCssClass() {
+        return addItemCssClass;
+    }
+
+    /**
+     * Setter for the add item css style class
+     *
+     * @param addItemCssClass
+     */
+    public void setAddItemCssClass(String addItemCssClass) {
+        this.addItemCssClass = addItemCssClass;
+    }
+
+    /**
+     * Indicates whether the add item group or row should be styled with the #addItemCssClass
+     *
+     * @return boolean true if add item group or row must be highlighted
+     */
+    public boolean isHighlightAddItem() {
+        return highlightAddItem;
+    }
+
+    /**
+     * Setter for the flag that allows for different styling of the add item group or row
+     *
+     * @param highlightAddItem
+     */
+    public void setHighlightAddItem(boolean highlightAddItem) {
+        this.highlightAddItem = highlightAddItem;
+    }
 }

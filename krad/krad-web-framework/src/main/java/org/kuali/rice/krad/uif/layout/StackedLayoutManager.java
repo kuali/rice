@@ -29,20 +29,21 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Layout manager that works with <code>CollectionGroup</code> containers and
+ * Layout manager that works with {@code CollectionGroup} containers and
  * renders the collection lines in a vertical row
  *
  * <p>
- * For each line of the collection, a <code>Group</code> instance is created.
+ * For each line of the collection, a {@code Group} instance is created.
  * The group header contains a label for the line (summary information), the
  * group fields are the collection line fields, and the group footer contains
  * the line actions. All the groups are rendered using the
- * <code>BoxLayoutManager</code> with vertical orientation.
+ * {@code BoxLayoutManager} with vertical orientation.
  * </p>
  *
  * <p>
@@ -118,17 +119,17 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * Builds a <code>Group</code> instance for a collection line. The group is
+     * Builds a {@code Group} instance for a collection line. The group is
      * built by first creating a copy of the configured prototype. Then the
      * header for the group is created using the configured summary fields on
-     * the <code>CollectionGroup</code>. The line fields passed in are set as
+     * the {@code CollectionGroup}. The line fields passed in are set as
      * the items for the group, and finally the actions are placed into the
      * group footer
      *
-     * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup,
-     *      java.util.List, java.util.List, java.lang.String, java.util.List,
-     *      java.lang.String, java.lang.Object, int)
+     * @see CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
+     *      Object, org.kuali.rice.krad.uif.container.CollectionGroup,
+     *      java.util.List, java.util.List, String, java.util.List,
+     *      String, Object, int)
      */
     public void buildLine(View view, Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<Action> actions, String idSuffix,
@@ -144,11 +145,16 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
                 lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
             } else {
                 lineGroup = ComponentUtils.copy(getAddLineGroup(), idSuffix);
+                lineGroup.addStyleClass(collectionGroup.getAddItemCssClass());
             }
         } else {
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
         }
 
+        if (((UifFormBase)model).isAddedCollectionItem(collectionGroup.getBindingInfo().getBindingPath(), currentLine)) {
+            lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
+        }
+        
         ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex);
 
         // build header text for group
@@ -233,7 +239,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.ContainerAware#getSupportedContainer()
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getSupportedContainer()
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {
@@ -298,7 +304,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * placed together with a separator.
      *
      * @return List<String> summary field names
-     * @see #buildLineHeaderText(java.lang.Object)
+     * @see #buildLineHeaderText(Object, org.kuali.rice.krad.uif.container.Group)
      */
     public List<String> getSummaryFields() {
         return this.summaryFields;
@@ -318,7 +324,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * <p>
      * Add line fields and actions configured on the
-     * <code>CollectionGroup</code> will be set onto the add line group (if add
+     * {@code CollectionGroup} will be set onto the add line group (if add
      * line is enabled). If the add line group is not configured, a new instance
      * of the line group prototype will be used for the add line.
      * </p>
@@ -430,7 +436,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * Final <code>List</code> of Groups to render for the collection
+     * Final {@code List} of Groups to render for the collection
      *
      * @return List<Group> collection groups
      */

@@ -39,15 +39,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Layout manager that works with <code>CollectionGroup</code> components and
+ * Layout manager that works with {@code CollectionGroup} components and
  * renders the collection as a Table
  *
  * <p>
- * Based on the fields defined, the <code>TableLayoutManager</code> will
+ * Based on the fields defined, the {@code TableLayoutManager} will
  * dynamically create instances of the fields for each collection row. In
  * addition, the manager can create standard fields like the action and sequence
  * fields for each row. The manager supports options inherited from the
- * <code>GridLayoutManager</code> such as rowSpan, colSpan, and cell width
+ * {@code GridLayoutManager} such as rowSpan, colSpan, and cell width
  * settings.
  * </p>
  *
@@ -81,7 +81,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private boolean headerAdded;
 
     private int actionColumnIndex = -1;
-    
+
     private String actionColumnPlacement;
 
     public TableLayoutManager() {
@@ -109,7 +109,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     @Override
     public void performInitialization(View view, Object model, Container container) {
         super.performInitialization(view, model, container);
-
+        getRowCssClasses().clear();
         if (generateAutoSequence && !(sequenceFieldPrototype instanceof Message)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
             view.assignComponentIds(sequenceFieldPrototype);
@@ -150,12 +150,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             totalColumns++;
         }
 
-        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
-            if (StringUtils.isBlank(this.getFirstLineStyle()) && !isSeparateAddLine()) {
-                this.setFirstLineStyle("uif-addLine");
-            }
-        }
-
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
             String highlightScript = "jQuery(\"#" + container.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
@@ -187,6 +181,18 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         boolean isAddLine = lineIndex == -1;
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
         int extraColumns = 0;
+
+        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) model).isAddedCollectionItem(
+                collectionGroup.getBindingInfo().getBindingPath(), currentLine)) {
+            getRowCssClasses().add(collectionGroup.getNewItemsCssClass());
+        } else if (isAddLine
+                && collectionGroup.isRenderAddLine()
+                && !collectionGroup.isReadOnly()
+                && !isSeparateAddLine()) {
+            getRowCssClasses().add(collectionGroup.getAddItemCssClass());
+        } else if (lineIndex != -1) {
+            getRowCssClasses().add("");
+        }
 
         // if separate add line prepare the add line group
         if (isAddLine && separateAddLine) {
@@ -336,7 +342,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * Create the <code>Label</code> instances that will be used to render
+     * Create the {@code Label} instances that will be used to render
      * the table header
      *
      * <p>
@@ -565,7 +571,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * <code>Label</code> instance to use as a prototype for creating the
+     * {@code Label} instance to use as a prototype for creating the
      * tables header fields. For each header field the prototype will be copied
      * and adjusted as necessary
      *
@@ -585,7 +591,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * List of <code>Label</code> instances that should be rendered to make
+     * List of {@code Label} instances that should be rendered to make
      * up the tables header
      *
      * @return List of label field instances
@@ -666,7 +672,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * <code>Field</code> instance to serve as a prototype for the
+     * {@code Field} instance to serve as a prototype for the
      * sequence field. For each collection line this instance is copied and
      * adjusted as necessary
      *
@@ -686,7 +692,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * <code>FieldGroup</code> instance to serve as a prototype for the actions
+     * {@code FieldGroup} instance to serve as a prototype for the actions
      * column. For each collection line this instance is copied and adjusted as
      * necessary. Note the actual actions for the group come from the collection
      * groups actions List
@@ -807,7 +813,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * List of <code>Component</code> instances that make up the tables body. Pulled
+     * List of {@code Component} instances that make up the tables body. Pulled
      * by the layout manager template to send through the Grid layout
      *
      * @return List<Component> table body fields
@@ -907,11 +913,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @param actionColumnPlacement - action column placement string
      */
-    public void setActionColumnPlacement(String actionColumnPlacement) {        
+    public void setActionColumnPlacement(String actionColumnPlacement) {
         this.actionColumnPlacement = actionColumnPlacement;
 
         if ("LEFT".equals(actionColumnPlacement)) {
-            actionColumnIndex = 1;    
+            actionColumnIndex = 1;
         } else if ("RIGHT".equals(actionColumnPlacement)) {
             actionColumnIndex = -1;
         } else if (StringUtils.isNumeric(actionColumnPlacement)) {

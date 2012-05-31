@@ -25,6 +25,7 @@
   <packaging>pom</packaging>
   <name>Kuali Rice</name>
   <version>1.0.4-SNAPSHOT</version>
+  <url>http://${kuali.site.hostname}/rice/${project.version}</url>
   <description>
         The Kuali Rice effort provides an enterprise class
 		middleware suite of integrated products that allows both Kuali and

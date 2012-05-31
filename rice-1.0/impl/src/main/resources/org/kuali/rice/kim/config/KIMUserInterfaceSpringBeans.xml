@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2006-2007 The Kuali Foundation
+
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.opensource.org/licenses/ecl2.php
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-2.5.xsd	
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+  <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.UiDocumentServiceImpl" />
+
+    <bean id="groupLookupable" class="org.kuali.rice.kim.lookup.GroupLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.GroupLookupableHelperServiceImpl"
+                parent="lookupableHelperService"
+                p:groupDao-ref="kimGroupDao">
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="roleLookupable" class="org.kuali.rice.kim.lookup.RoleLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl"
+                parent="lookupableHelperService"
+                p:roleDao-ref="kimRoleDao">
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="roleMemberImplLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.RoleMemberImplLookupableHelperServiceImpl"
+                parent="lookupableHelperService">
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="kimPersonLookupable" class="org.kuali.rice.kim.lookup.PersonLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.PersonLookupableHelperServiceImpl"
+                parent="lookupableHelperService">
+            </bean>
+        </property>
+    </bean>
+
+	<bean id="permissionLookupable" class="org.kuali.rice.kim.lookup.PermissionLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.PermissionLookupableHelperServiceImpl" parent="lookupableHelperService">
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="responsibilityLookupable" class="org.kuali.rice.kim.lookup.ResponsibilityLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.ResponsibilityLookupableHelperServiceImpl" parent="lookupableHelperService" />
+        </property>
+    </bean>
+
+	<bean id="kimTypeLookupableHelperServiceImpl" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl" parent="lookupableHelperService">
+            </bean>
+        </property>
+    </bean>
+
+	<bean id="kimDocumentRoleMemberLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
+        <property name="lookupableHelperService">
+            <bean class="org.kuali.rice.kim.lookup.KimDocumentRoleMemberLookupableHelperServiceImpl" parent="lookupableHelperService">
+            </bean>
+        </property>
+    </bean>
+</beans>

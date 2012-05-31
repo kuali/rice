@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRSB_QRTZ_CRON_TRIGGERS CRON_EXPRESSION="0 0 1 * * ?"
+        TIME_ZONE_ID="America/Chicago" TRIGGER_GROUP="Email Batch" TRIGGER_NAME="Daily Email Trigger"/>
+    <KRSB_QRTZ_CRON_TRIGGERS CRON_EXPRESSION="0 0 2 ? * 2"
+        TIME_ZONE_ID="America/Chicago" TRIGGER_GROUP="Email Batch" TRIGGER_NAME="Weekly Email Trigger"/>
+</dataset>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRIM_ENTITY_CACHE_T ENTITY_ID="1100" ENTITY_TYP_CD="PERSON"
+        FIRST_NM="admin" LAST_NM="admin" LAST_UPDT_TS="20090915135958"
+        OBJ_ID="27566A3C-3E4E-98C9-C742-297D4167D2F0" PRNCPL_ID="admin"
+        PRNCPL_NM="admin" PRSN_NM="admin, admin"/>
+</dataset>

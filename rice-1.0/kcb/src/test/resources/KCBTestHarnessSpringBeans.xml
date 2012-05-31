@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- this is a bootstrap Spring file that the unit tests use  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-2.5.xsd	
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
+
+    <bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+        <property name="configLocations">
+            <list>
+                <value>classpath:META-INF/kcb-test-config.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+        <property name="serviceNamespace" value="KCB" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
+        <property name="transactionManager" ref="jotm" />
+        <property name="userTransaction" ref="jotm" />
+        <property name="rootConfig" ref="config" />
+        <property name="additionalSpringFiles">
+			<list>
+				<value>classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</value>
+			</list>
+		</property>
+        <property name="ksbConfigurer" >
+	        <bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+	            <property name="serviceServletUrl" value="${serviceServletUrl}" />
+	        </bean>
+	    </property>
+        <property name="kcbConfigurer" >
+	        <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
+	            <property name="testMode" value="true"/>
+	        </bean>
+	    </property>
+        <!--
+        <bean class="org.kuali.rice.ken.config.KENConfigurer">
+            <property name="testMode" value="true"/>
+        </bean>
+        -->
+    </bean>
+</beans>

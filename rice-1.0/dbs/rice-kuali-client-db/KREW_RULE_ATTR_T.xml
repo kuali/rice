@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KREW_RULE_ATTR_T
+        CLS_NM="org.kuali.kfs.sys.document.workflow.FinancialSystemSearchableAttribute"
+        DESC_TXT="Financial System Searchable Attribute"
+        LBL="Financial System Searchable Attribute"
+        NM="FinancialSystemSearchableAttribute"
+        OBJ_ID="918E5FEB-9181-02CC-E4B3-6F3D73F6B5A9"
+        RULE_ATTR_ID="13776" RULE_ATTR_TYP_CD="SearchableAttribute" VER_NBR="6"/>
+    <KREW_RULE_ATTR_T
+        CLS_NM="org.kuali.kfs.sys.document.workflow.DataDictionaryDocumentSearchCustomizer"
+        DESC_TXT="Financial System Document Search Result Processor Attribute"
+        LBL="Financial System Document Search Result Processor Attribute"
+        NM="FinancialSystemDocumentSearchResultProcessorAttribute"
+        OBJ_ID="371F4922-B963-1579-E5AA-BD76B2B1E869"
+        RULE_ATTR_ID="13796"
+        RULE_ATTR_TYP_CD="DocumentSearchResultProcessorAttribute" VER_NBR="5"/>
+    <KREW_RULE_ATTR_T
+        CLS_NM="org.kuali.kfs.sys.document.workflow.DataDictionaryDocumentSearchCustomizer"
+        DESC_TXT="Financial System Document Search Generator Attribute"
+        LBL="Financial System Document Search Generator Attribute"
+        NM="FinancialSystemDocumentSearchGeneratorAttribute"
+        OBJ_ID="D31FF9BB-73C2-5D3F-53A6-B1DF0DAAFDCB"
+        RULE_ATTR_ID="13816"
+        RULE_ATTR_TYP_CD="DocumentSearchGeneratorAttribute" VER_NBR="1"/>
+    <KREW_RULE_ATTR_T
+        CLS_NM="org.kuali.kfs.module.purap.document.workflow.PurchaseOrderActionListAttribute"
+        DESC_TXT="No FYI Action List Attribute" LBL="No FYI"
+        NM="NoFyiActionListAttribute"
+        OBJ_ID="9FD10F9B-25A0-ED4D-95E2-A493B5A12C40"
+        RULE_ATTR_ID="13836" RULE_ATTR_TYP_CD="ActionListAttribute" VER_NBR="3"/>
+</dataset>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>XmlImportDocumentType1</name>
+			<description>XmlImportDocumentType</description>
+			<label>XmlImportDocumentType</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>_blank</docHandler>
+			<!--  below will make the parser blow chunks if white space is not handled correctly -->
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<active>true</active>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<exceptionGroupName namespace="KR-WKFLW">TestWorkgroup</exceptionGroupName>
+					<activationType>P</activationType>
+				</start>
+			</routeNodes>
+		</documentType>
+	</documentTypes>
+</data>

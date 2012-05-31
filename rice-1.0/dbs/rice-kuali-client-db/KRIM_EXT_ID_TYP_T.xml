@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRIM_EXT_ID_TYP_T ACTV_IND="Y" DISPLAY_SORT_CD="03"
+        ENCR_REQ_IND="Y" EXT_ID_TYP_CD="TAX"
+        LAST_UPDT_DT="20080820184450" NM="Tax ID"
+        OBJ_ID="54ECF3B797147CDCE0404F8189D86ED9" VER_NBR="1"/>
+</dataset>

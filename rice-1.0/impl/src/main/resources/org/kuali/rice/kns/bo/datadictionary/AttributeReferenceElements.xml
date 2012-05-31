@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="AttributeReferenceElements" parent="AttributeReferenceElements-parentBean"/>
+
+  <bean id="AttributeReferenceElements-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kns.bo.AttributeReferenceElements"/>
+    <property name="attributes">
+      <list>
+        <ref bean="AttributeReferenceElements-infoTextArea"/>
+        <ref bean="AttributeReferenceElements-extendedTextArea"/>
+      </list>
+    </property>
+    <property name="objectLabel" value="Attribute Reference Elements"/>
+  </bean>
+
+<!-- Attribute Definitions -->
+
+  <bean id="AttributeReferenceElements-infoTextArea" parent="AttributeReferenceElements-infoTextArea-parentBean"/>
+
+  <bean id="AttributeReferenceElements-infoTextArea-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Information Text Area"/>
+    <property name="maxLength" value="1000"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="control">
+      <bean parent="TextareaControlDefinition" p:cols="100" p:rows="10"/>
+    </property>
+    <property name="summary" value="&amp;nbsp;"/>
+    <property name="name" value="infoTextArea"/>
+    <property name="label" value="Info Text Area Attribute"/>
+    <property name="description" value="This attribute should always be overriden on the descriptive elements."/>
+  </bean>
+
+  <bean id="AttributeReferenceElements-extendedTextArea" parent="AttributeReferenceElements-extendedTextArea-parentBean"/>
+
+  <bean id="AttributeReferenceElements-extendedTextArea-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Extended Text Area"/>
+    <property name="maxLength" value="1000"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+    </property>
+    <property name="control">
+      <bean parent="TextareaControlDefinition" p:cols="100" p:rows="40"/>
+    </property>
+    <property name="summary" value="&amp;nbsp;"/>
+    <property name="name" value="extendedTextArea"/>
+    <property name="label" value="Extended Text Area Attribute"/>
+    <property name="description" value="This attribute should always be overriden on the descriptive elements."/>
+  </bean>
+
+</beans>

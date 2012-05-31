@@ -1,0 +1,9 @@
+org.kuali.workflow.postprocessor.KualiPostProcessor, org.kuali.rice.kns.workflow.postprocessor.KualiPostProcessor
+edu.iu.uis.eden.removereplace.RemoveReplacePostProcessor, org.kuali.rice.kew.removereplace.RemoveReplacePostProcessor
+edu.iu.uis.eden.routetemplate.RulePostProcessor, org.kuali.rice.kew.rule.RulePostProcessor
+edu.iu.uis.eden.postprocessor.DefaultPostProcessor, org.kuali.rice.kew.postprocessor.DefaultPostProcessor
+edu.iu.uis.eden.edl.EDocLitePostProcessor, org.kuali.rice.kew.edl.EDocLitePostProcessor
+edu.iu.uis.eden.workgroup.WorkgroupPostProcessor, org.kuali.rice.kew.workgroup.WorkgroupPostProcessor
+edu.iu.uis.eden.edl.EDLDatabasePostProcessor, org.kuali.rice.kew.edl.EDLDatabasePostProcessor
+org.kuali.notification.postprocessor.kew.NotificationPostProcessor, org.kuali.rice.ken.postprocessor.kew.NotificationPostProcessor
+org.kuali.notification.postprocessor.kew.NotificationSenderFormPostProcessor, org.kuali.rice.ken.postprocessor.kew.NotificationSenderFormPostProcessor

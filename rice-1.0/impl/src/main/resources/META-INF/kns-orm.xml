@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd">
+    <!--
+	<entity class="edu.sampleu.travel.bo.TravelAccount">
+		<attributes>
+			<one-to-one name="extension" fetch="EAGER" target-entity="edu.sampleu.travel.bo.TravelAccountExtension">
+				<join-column name="ACCT_NUM" />
+				<cascade>
+					<cascade-all />
+				</cascade>
+			</one-to-one>
+		</attributes>
+	</entity>
+    -->
+</entity-mappings>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2010 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-2.5.xsd	
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+  <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.routemanager.TestExceptionRoutingServiceImpl"/>
+  <bean id="enEmailService" class="mocks.MockDefaultEmailServiceImpl" />
+  <bean id="enDocumentRequeuerService" class="mocks.MockDocumentRequeuerImpl" />
+  <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
+    <property name="deploymentEnvironment">
+      <value>${environment}</value>
+    </property>
+    <property name="emailContentGenerator">
+      <bean class="mocks.MockStyleableEmailContentServiceImpl">
+        <property name="styleService" ref="enStyleService"/>
+      </bean>
+    </property>
+  </bean>
+
+  <!--
+    a "fake" service, used by ServiceInvocationRuleTest; in an ideal demonstration this would live in
+    application space/context/resource loader, but for now it's still in the KEW module context  
+  -->
+  <bean id="fakeService" class="org.kuali.rice.kew.test.FakeServiceImpl"/>
+
+  <bean class="org.kuali.rice.ksb.messaging.KSBExporter">
+	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>  
+    <property name="serviceDefinition">
+      <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+        <property name="serviceInterface"><value>org.kuali.rice.kew.test.FakeService</value></property>
+        <property name="service">
+          <ref bean="fakeService"/>
+        </property>
+        <property name="localServiceName" value="fakeService-remote"/>
+        <property name="serviceNameSpaceURI" value="fake"/>
+        <property name="retryAttempts" value="0"/>
+      </bean>
+    </property>
+    <property name="forceRefresh" value="true"/>
+  </bean>
+</beans>

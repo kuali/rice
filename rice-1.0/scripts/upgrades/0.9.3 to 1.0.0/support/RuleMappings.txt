@@ -1,0 +1,5 @@
+edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR, org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR
+edu.iu.uis.eden.routetemplate.RoutedByUserRoleAttribute!ROUTED_BY_USER, org.kuali.rice.kew.rule.RoutedByUserRoleAttribute!ROUTED_BY_USER
+edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute!networkId, org.kuali.rice.kew.rule.NetworkIdRoleAttribute!networkId
+edu.iu.uis.eden.routetemplate.UniversityIdRoleAttribute!universityId, org.kuali.rice.kew.rule.UniversityIdRoleAttribute!universityId
+org.kuali.notification.kew.ChannelReviewerRoleAttribute!reviewers, org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute!reviewers

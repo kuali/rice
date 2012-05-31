@@ -1,0 +1,15 @@
+--- xapool/org/enhydra/jdbc/pool/GenericPool.java-1.13	2005-06-14 21:57:10.756790600 -0500
++++ xapool/org/enhydra/jdbc/pool/GenericPool.java	2005-06-15 13:11:09.601072300 -0500
+@@ -189,6 +189,12 @@
+ 			
+ 		    o = (GenerationObject) e.nextElement();
+ 		    life = (Long) unlocked.get(o);
++		    if (life == null) {
++			// Fix for #303462; note that this fixes the problem, but Enumeration's on Hashtable's 
++			// are by definition somewhat unpredictable; a more robust fix may be in order
++			log.debug("GenericPool:getFromPool fix for #303462 encountered");
++			continue;
++		    }
+ 		    unlocked.remove(o);
+ 		    // In any case the object will be removed.
+ 		    // Prevents others accessing the object while we are

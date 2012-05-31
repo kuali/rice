@@ -1,0 +1,159 @@
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-2.5.xsd	
+                           http://www.springframework.org/schema/lang
+                           http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/kns-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="config" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+      <property name="defaultTimeout" value="${transaction.timeout}"/>
+    </bean>
+
+	<bean id="knsDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+		<property name="transactionManager" ref="jotm" />
+		<property name="driverClassName" value="${datasource.driver.name}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="maxSize" value="${datasource.pool.maxSize}" />
+		<property name="minSize" value="${datasource.pool.minSize}" />
+		<property name="maxWait" value="${datasource.pool.maxWait}" />
+		<property name="validationQuery" value="${datasource.pool.validationQuery}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+	</bean>
+
+    <bean id="knsNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="${datasource.minIdle}" />
+        <property name="initialSize" value="${datasource.initialSize}"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
+    </bean>
+
+	<bean id="testModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
+  		<property name="moduleConfiguration">
+  			<bean id="testModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+				<property name="namespaceCode" value="TEST" />
+				<property name="initializeDataDictionary" value="true"/>
+				<property name="dataDictionaryPackages">
+					<list>
+						<value>org/kuali/rice/kns/test/document</value>
+					</list>
+				</property>
+				<property name="databaseRepositoryFilePaths">
+					<list>
+						<value>OJB-repository-kns-test.xml</value>
+					</list>
+				</property>
+			</bean>
+    	</property>
+	</bean>
+	
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+		<property name="dataSource" ref="knsDataSource" />
+		<property name="nonTransactionalDataSource" ref="knsNonTransactionalDataSource" />
+		<property name="transactionManager" ref="jotm" />
+		<property name="userTransaction" ref="jotm" />
+		<property name="rootConfig" ref="config" />
+		<property name="serviceNamespace" value="TEST" />
+		<property name="ksbConfigurer">
+				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+					<property name="serviceServletUrl" value="${serviceServletUrl}" />
+					<property name="services">
+						<list>
+							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" p:serviceEndPoint-ref="lookupResultsDDBoLookupableHelperUrl" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
+								<property name="service">
+									<ref bean="lookupResultsDDBoLookupable" />
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+        </property>
+        <property name="kimConfigurer">
+	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" />
+		</property>
+		<property name="kcbConfigurer">
+                <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
+        </property>
+		<property name="knsConfigurer">
+				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
+		</property>
+		<property name="kewConfigurer">
+				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
+					<property name="clientProtocol" value="local" />
+				</bean>
+		</property>
+		<property name="kenConfigurer">
+        	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
+		</property>
+	</bean>
+		
+	<bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.kns.lookup.LookupResultsDDBoLookupableHelperServiceImpl" />
+
+	<bean id="lookupResultsDDBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl">
+		<property name="lookupableHelperService">
+			<ref bean="lookupResultsDDBoLookupableHelperService" />
+		</property>
+	</bean>
+	
+	<bean id="lookupResultsDDBoLookupableHelperUrl" class="java.net.URL">
+		<constructor-arg value="${serviceServletUrl}" />
+	</bean>
+	
+	<!-- bean class="org.kuali.rice.ksb.messaging.KSBExporter" depends-on="rice">
+		<property name="serviceDefinition">
+			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" p:service-ref="lookupResultsDDBoLookupable"
+				p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" />
+		</property>
+	</bean-->
+</beans>

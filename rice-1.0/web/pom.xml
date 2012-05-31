@@ -1,0 +1,110 @@
+<!--
+ Copyright 2007-2010 The Kuali Foundation
+
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl2.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<name>Kuali Rice Web</name>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.kuali.rice</groupId>
+		<artifactId>rice</artifactId>
+		<version>1.0.4</version>
+	</parent>
+	<artifactId>rice-web</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-sampleapp</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--  dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency -->
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <tasks>
+                                <echo>Extracting Help Files</echo>
+                                <unzip src="${basedir}/RiceHelp.zip" dest="${project.build.directory}/help/kr/static/help/" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+				    <!-- exclude the sample app files and the jars that we don't want to include -->
+					<packagingExcludes>**/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/jetty*.jar, **/jasper*.jar, **/jsp*.jar</packagingExcludes>
+                    <webResources>
+                        <resource>
+                            <!-- Including the extracted help files -->
+                            <directory>${basedir}/target/help</directory>
+                        </resource>
+                    </webResources>
+				</configuration>
+			</plugin>
+            <!-- set up JSP compliation for validation purposes (*not* for inclusion in the war) -->
+            <!-- plugin>
+                <groupId>org.codehaus.mojo.jspc</groupId>
+                <artifactId>jspc-maven-plugin</artifactId>
+                <configuration>
+                    <includeInProject>false</includeInProject>
+                    <source>1.5</source>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                             <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo.jspc</groupId>
+                        <artifactId>jspc-compiler-tomcat6</artifactId>
+                        <version>2.0-alpha-3</version>
+                    </dependency>
+                </dependencies>
+            </plugin -->
+		</plugins>
+	</build>
+
+</project>

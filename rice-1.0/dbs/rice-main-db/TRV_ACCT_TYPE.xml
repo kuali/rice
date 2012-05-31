@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <TRV_ACCT_TYPE ACCT_TYPE="CAT" ACCT_TYPE_NAME="Clearing Account Type"/>
+    <TRV_ACCT_TYPE ACCT_TYPE="EAT" ACCT_TYPE_NAME="Expense Account Type"/>
+    <TRV_ACCT_TYPE ACCT_TYPE="IAT" ACCT_TYPE_NAME=" Income Account Type"/>
+</dataset>

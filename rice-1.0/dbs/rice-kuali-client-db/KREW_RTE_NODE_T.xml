@@ -1,0 +1,3235 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2994" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2898"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2994" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="InvoiceRecurrenceIsInactivating"
+        RTE_NODE_ID="2899"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="2900"
+        DOC_TYP_ID="2994" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="RecurrenceCreator" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2901" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2994" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinInvoiceRecurrenceIsInactivating"
+        RTE_NODE_ID="2902"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="2903"
+        DOC_TYP_ID="2994" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpInvoiceRecurrenceIsInactivating" RTE_NODE_ID="2904"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2994" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="InitiatedBySystemUser" RTE_NODE_ID="2905"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="2906"
+        DOC_TYP_ID="2994" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpInitiatedBySystemUser" RTE_NODE_ID="2907"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2994" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinInitiatedBySystemUser"
+        RTE_NODE_ID="2908"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="2909"
+        DOC_TYP_ID="2994" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Recurrence" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2910" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="2909"
+        DOC_TYP_ID="2994" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2911" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2995" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2913"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="2995" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2914" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="3000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2916"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2917" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2918" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2919" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="3005" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2921"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="3006" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2923"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="3008" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2926"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3008" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2927" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3008" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2928" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3008" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2929" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="3010" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2931"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3010" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2932" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="3011" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2934"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3011" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2935" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320480" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360189"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320481" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360191"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="21"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320496" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360193"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="25"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320497" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360195"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="10"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320497" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360196"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="6"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320498" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360198"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="10"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320511" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360200"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320511" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360201"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320511" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360202"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320512" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360204"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320512" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360205"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320512" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360206"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320513" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360208"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320513" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360209"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320513" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360210"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320514" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360212"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320514" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360213"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320514" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360214"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320516" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360216"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320516" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360217"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320516" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360218"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320516" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360219"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320516" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Subfund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360220"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320516" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360221"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320529" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360223"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320529" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360224"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320530" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360226"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320530" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360227"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320530" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360228"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320537" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360230"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320537" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360231"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320537" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360232"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320539" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360234"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320539" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360235"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320539" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360236"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320543" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360238"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320543" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360239"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320547" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360241"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320547" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360242"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320547" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360243"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320550" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360245"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320550" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountSupervisor" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360246"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320550" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360247"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320550" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360248"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320550" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360249"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320551" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360251"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320551" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360252"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320551" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360253"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320555" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360255"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="20"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320555" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360256"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="19"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320555" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360257"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="19"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320555" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360258"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="19"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320555" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360259"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="19"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320556" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360261"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="7"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320556" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360262"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="6"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320556" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360263"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320556" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360264"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320557" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360266"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320558" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360268"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320558" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360269"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320558" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360270"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320559" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360272"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320559" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresFullApproval"
+        RTE_NODE_ID="563360273"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360274"
+        DOC_TYP_ID="320559" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360275"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360274"
+        DOC_TYP_ID="320559" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360276"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360274"
+        DOC_TYP_ID="320559" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360277"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360274"
+        DOC_TYP_ID="320559" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360278"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320559" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresFullApproval"
+        RTE_NODE_ID="563360279"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360280"
+        DOC_TYP_ID="320559" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Do Nothing" RTE_NODE_ID="563360281"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320561" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360283"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320562" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360285"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320562" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="CashManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360286"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320563" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360288"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360290"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563360291"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360292"
+        DOC_TYP_ID="320566" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Purchasing" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360293"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinPayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563360294"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360295"
+        DOC_TYP_ID="320566" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPayee" RTE_NODE_ID="563360296"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360297"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360298"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTaxReview"
+        RTE_NODE_ID="563360299"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360300"
+        DOC_TYP_ID="320566" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360301"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTaxReview"
+        RTE_NODE_ID="563360302"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360303"
+        DOC_TYP_ID="320566" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTaxReview" RTE_NODE_ID="563360304"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Campus" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360305"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTravelReview"
+        RTE_NODE_ID="563360306"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360307"
+        DOC_TYP_ID="320566" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Travel" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360308"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTravelReview"
+        RTE_NODE_ID="563360309"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360310"
+        DOC_TYP_ID="320566" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTravelReview" RTE_NODE_ID="563360311"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PaymentMethod" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360312"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320566" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360313"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320568" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360315"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320568" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360316"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320568" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360317"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320568" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360318"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320568" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360319"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320571" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360321"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320571" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360322"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320571" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360323"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320571" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360324"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320571" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360325"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320572" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360327"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320572" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360328"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320572" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360329"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320572" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360330"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320572" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360331"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320573" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360333"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320573" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360334"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320573" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360335"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320573" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Subfund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360336"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320574" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360338"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320575" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360340"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320575" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360341"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320575" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360342"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320575" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360343"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320575" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360344"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320579" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360346"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320579" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360347"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320579" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360348"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320579" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360349"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320580" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360351"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320580" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountFullEdit" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360352"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320580" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360353"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320580" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360354"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320580" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360355"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320581" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360357"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320584" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360359"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320584" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360360"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320584" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360361"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320584" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360362"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320584" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360363"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320595" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360365"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320608" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360367"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="17"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320625" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360369"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320625" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresApproval" RTE_NODE_ID="563360370"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360371"
+        DOC_TYP_ID="320625" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360372"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360371"
+        DOC_TYP_ID="320625" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Initiator" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360373"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320625" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360374"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360375"
+        DOC_TYP_ID="320625" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Do Nothing" RTE_NODE_ID="563360376"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320630" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360378"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320630" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Lockbox" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360379"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320630" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AssociatedWithElectronicPayment"
+        RTE_NODE_ID="563360380"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360381"
+        DOC_TYP_ID="320630" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ElectronicPayment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360382"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320630" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360383"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360384"
+        DOC_TYP_ID="320630" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360385"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320632" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360387"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320632" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360388"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320633" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360390"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320633" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="HasReccurence" RTE_NODE_ID="563360391"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360392"
+        DOC_TYP_ID="320633" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360393"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360392"
+        DOC_TYP_ID="320633" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Recurrence" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360394"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320633" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360395"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360396"
+        DOC_TYP_ID="320633" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360397"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320635" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360399"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320635" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresApproval" RTE_NODE_ID="563360400"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplit" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360401"
+        DOC_TYP_ID="320635" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360402"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320635" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360403"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360404"
+        DOC_TYP_ID="320635" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360405"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320636" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360407"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320636" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresApproval" RTE_NODE_ID="563360408"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360409"
+        DOC_TYP_ID="320636" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360410"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320636" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360411"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360412"
+        DOC_TYP_ID="320636" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360413"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320638" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360415"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320638" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360416"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320638" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360417"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320639" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360419"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320639" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360420"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320640" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360422"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320640" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360423"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320640" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360424"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320662" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360426"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320662" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360427"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320662" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360428"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320662" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360429"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320663" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360431"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320663" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360432"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320663" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360433"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320668" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360435"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320668" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PlantFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360436"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360438"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360439"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RetiredAssetTransferredExternally"
+        RTE_NODE_ID="563360440"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360441"
+        DOC_TYP_ID="320669" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ExternalTransfer" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360442"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRetiredAssetTransferredExternally"
+        RTE_NODE_ID="563360443"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360444"
+        DOC_TYP_ID="320669" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpExternal" RTE_NODE_ID="563360445"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360446"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RetiredAssetSoldOrGifted"
+        RTE_NODE_ID="563360447"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360448"
+        DOC_TYP_ID="320669" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Purchasing" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360449"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320669" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRetiredAssetSoldOrGifted"
+        RTE_NODE_ID="563360450"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360451"
+        DOC_TYP_ID="320669" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360452"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320672" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360454"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320672" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360455"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320672" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360456"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320675" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360458"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320675" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360459"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320675" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360460"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320675" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Borrower" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360461"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320676" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360463"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="29"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320678" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360465"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320678" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="ProjectManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360466"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320682" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360468"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320682" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360469"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320682" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="ResearchRisk" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360470"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320693" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360476"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320694" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360478"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320694" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Workflow Review" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360479"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320702" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360481"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320702" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360482"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320702" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="ResearchRisk" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360483"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360491"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="ProjectManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360492"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360493"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360494"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="DoAwardSplit" RTE_NODE_ID="563360495"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360496"
+        DOC_TYP_ID="320713" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360497"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AwardJoin" RTE_NODE_ID="563360498"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360499"
+        DOC_TYP_ID="320713" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="AwardDoNothing" RTE_NODE_ID="563360500"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="DoRecreateSplit" RTE_NODE_ID="563360501"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360502"
+        DOC_TYP_ID="320713" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Recreate" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360503"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320713" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RecreateJoin" RTE_NODE_ID="563360504"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360505"
+        DOC_TYP_ID="320713" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="RecreateDoNothing" RTE_NODE_ID="563360506"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320720" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360508"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320720" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360509"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320720" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360510"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320720" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360511"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320721" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360513"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320721" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360514"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320721" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360515"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320721" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360516"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320721" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360517"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320724" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360519"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320725" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360521"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320729" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360523"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320729" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360524"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320729" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360525"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320729" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360526"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320729" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360527"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320732" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360529"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="33"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360531"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="10"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresContractManagementReview"
+        RTE_NODE_ID="563360532"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="9"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360533"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ContractManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360534"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="18"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresContractManagementReview"
+        RTE_NODE_ID="563360535"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="18"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360536"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresContractManagementReview"
+        RTE_NODE_ID="563360537"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="18"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360538"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="18"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360539"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="18"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresBudgetReview"
+        RTE_NODE_ID="563360540"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="18"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360541"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Budget" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360542"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="36"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresBudgetReview"
+        RTE_NODE_ID="563360543"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="36"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360544"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpBudget" RTE_NODE_ID="563360545"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="36"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="VendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360546"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="36"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360547"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360548"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="72"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360549"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="72"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360550"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360551"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="72"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="TransmissionMethodIsPrint"
+        RTE_NODE_ID="563360552"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="72"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360553"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="PrintTransmission" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360554"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="144"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320737" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinTransmissionMethodIsPrint"
+        RTE_NODE_ID="563360555"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="144"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360556"
+        DOC_TYP_ID="320737" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPrint" RTE_NODE_ID="563360557"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="144"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320743" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360559"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320747" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360561"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320751" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360563"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320751" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RelatesToOutstandingTransactions"
+        RTE_NODE_ID="563360564"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360565"
+        DOC_TYP_ID="320751" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="OutstandingTransactions" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360566"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320751" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360567"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360568"
+        DOC_TYP_ID="320751" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360569"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360571"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresInvoiceAttachment"
+        RTE_NODE_ID="563360572"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360573"
+        DOC_TYP_ID="320754" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="InvoiceAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360574"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresInvoiceAttachment"
+        RTE_NODE_ID="563360575"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360576"
+        DOC_TYP_ID="320754" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresInvoiceAttachment" RTE_NODE_ID="563360577"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PurchaseWasReceived"
+        RTE_NODE_ID="563360578"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360579"
+        DOC_TYP_ID="320754" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Receiving" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360580"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360581"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360582"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360583"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360584"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320754" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360585"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360586"
+        DOC_TYP_ID="320754" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpReceiving" RTE_NODE_ID="563360587"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320756" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360589"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320756" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="HasNewUnorderedItems"
+        RTE_NODE_ID="563360590"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360591"
+        DOC_TYP_ID="320756" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NewUnorderedItems" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360592"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320756" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360593"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360594"
+        DOC_TYP_ID="320756" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360595"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320756" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360596"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320757" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360598"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320759" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360600"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320763" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360602"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320763" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountsPayable" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360603"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320764" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360605"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320765" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360607"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320770" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360609"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="5"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360611"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Organization" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360612"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360613"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360614"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360615"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360616"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AmountRequiresSeparationOfDutiesReview"
+        RTE_NODE_ID="563360617"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360618"
+        DOC_TYP_ID="320775" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="SeparationOfDuties" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360619"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320775" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360620"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360621"
+        DOC_TYP_ID="320775" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360622"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320780" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360624"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320780" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresInvoiceAttachment"
+        RTE_NODE_ID="563360625"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360626"
+        DOC_TYP_ID="320780" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="InvoiceAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360627"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320780" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresInvoiceAttachment"
+        RTE_NODE_ID="563360628"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360629"
+        DOC_TYP_ID="320780" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresInvoiceAttachment" RTE_NODE_ID="563360630"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320780" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360631"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360649"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresInvoiceAttachment"
+        RTE_NODE_ID="563360650"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360651"
+        DOC_TYP_ID="320800" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="InvoiceAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360652"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresInvoiceAttachment"
+        RTE_NODE_ID="563360653"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360654"
+        DOC_TYP_ID="320800" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresInvoiceAttachment" RTE_NODE_ID="563360655"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PurchaseWasReceived"
+        RTE_NODE_ID="563360656"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360657"
+        DOC_TYP_ID="320800" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Receiving" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360658"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinReceiving" RTE_NODE_ID="563360659"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360660"
+        DOC_TYP_ID="320800" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpReceiving" RTE_NODE_ID="563360661"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360662"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360663"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360664"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360665"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320800" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360666"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360669"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="ProjectManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360670"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360671"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360672"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="DoAwardSplit" RTE_NODE_ID="563360673"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360674"
+        DOC_TYP_ID="320820" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360675"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AwardJoin" RTE_NODE_ID="563360676"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360677"
+        DOC_TYP_ID="320820" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="AwardDoNothing" RTE_NODE_ID="563360678"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="DoRecreateSplit" RTE_NODE_ID="563360679"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360680"
+        DOC_TYP_ID="320820" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360681"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320820" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RecreateJoin" RTE_NODE_ID="563360682"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360683"
+        DOC_TYP_ID="320820" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="RecreateDoNothing" RTE_NODE_ID="563360684"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320822" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360686"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320823" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360688"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320823" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360689"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320824" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360691"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320824" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresImageAttachment"
+        RTE_NODE_ID="563360692"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360693"
+        DOC_TYP_ID="320824" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ImageAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360694"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320824" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresImageAttachment"
+        RTE_NODE_ID="563360695"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360696"
+        DOC_TYP_ID="320824" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresImageAttachment" RTE_NODE_ID="563360697"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320824" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360698"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360700"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresImageAttachment"
+        RTE_NODE_ID="563360701"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360702"
+        DOC_TYP_ID="320825" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ImageAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360703"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresImageAttachment"
+        RTE_NODE_ID="563360704"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360705"
+        DOC_TYP_ID="320825" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresImageAttachment" RTE_NODE_ID="563360706"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PurchaseWasReceived"
+        RTE_NODE_ID="563360707"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360708"
+        DOC_TYP_ID="320825" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Receiving" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360709"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinReceiving" RTE_NODE_ID="563360710"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360711"
+        DOC_TYP_ID="320825" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpReceiving" RTE_NODE_ID="563360712"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360713"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360714"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360715"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360716"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320825" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360717"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320831" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360719"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320831" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360720"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320831" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360721"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320832" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360723"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320832" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresFullApproval"
+        RTE_NODE_ID="563360724"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360725"
+        DOC_TYP_ID="320832" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360726"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360725"
+        DOC_TYP_ID="320832" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="AccountingOrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360727"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360725"
+        DOC_TYP_ID="320832" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360728"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360725"
+        DOC_TYP_ID="320832" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360729"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320832" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresFullApproval"
+        RTE_NODE_ID="563360730"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360731"
+        DOC_TYP_ID="320832" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Do Nothing" RTE_NODE_ID="563360732"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360734"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563360735"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360736"
+        DOC_TYP_ID="320833" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Purchasing" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360737"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinPayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563360738"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360739"
+        DOC_TYP_ID="320833" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPayee" RTE_NODE_ID="563360740"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360741"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360742"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTaxReview"
+        RTE_NODE_ID="563360743"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360744"
+        DOC_TYP_ID="320833" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360745"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTaxReview"
+        RTE_NODE_ID="563360746"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360747"
+        DOC_TYP_ID="320833" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTaxReview" RTE_NODE_ID="563360748"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Campus" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360749"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTravelReview"
+        RTE_NODE_ID="563360750"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360751"
+        DOC_TYP_ID="320833" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Travel" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360752"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTravelReview"
+        RTE_NODE_ID="563360753"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360754"
+        DOC_TYP_ID="320833" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTravelReview" RTE_NODE_ID="563360755"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PaymentMethod" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360756"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320833" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360757"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320834" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360759"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320834" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360760"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320834" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360761"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320834" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360762"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320834" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360763"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320835" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360765"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320835" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360766"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320835" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360767"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320835" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360768"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320835" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360769"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320836" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360771"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320836" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360772"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320836" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360773"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320836" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360774"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320836" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360775"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320837" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360777"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320837" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360778"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320837" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360779"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320837" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Subfund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360780"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320838" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360782"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320838" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360783"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320838" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360784"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320838" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360785"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320838" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360786"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320839" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360788"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320839" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360789"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320839" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360790"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320839" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360791"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320840" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360793"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320840" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountFullEdit" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360794"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320840" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360795"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320840" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360796"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320840" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360797"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320841" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360799"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320841" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360800"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320841" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360801"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320841" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360802"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320841" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360803"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320842" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360805"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320842" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360806"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320842" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360807"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320842" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360808"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360810"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="ProjectManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360811"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360812"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360813"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="DoAwardSplit" RTE_NODE_ID="563360814"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360815"
+        DOC_TYP_ID="320843" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360816"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AwardJoin" RTE_NODE_ID="563360817"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360818"
+        DOC_TYP_ID="320843" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="AwardDoNothing" RTE_NODE_ID="563360819"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="DoRecreateSplit" RTE_NODE_ID="563360820"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360821"
+        DOC_TYP_ID="320843" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360822"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320843" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RecreateJoin" RTE_NODE_ID="563360823"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360824"
+        DOC_TYP_ID="320843" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="RecreateDoNothing" RTE_NODE_ID="563360825"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320844" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360827"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320844" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360828"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320844" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360829"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320844" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360830"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320844" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360831"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320845" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360833"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="3"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320845" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360834"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320845" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360835"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320845" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360836"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320846" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360838"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320846" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360839"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320846" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360840"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320846" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360841"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320846" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360842"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360844"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresImageAttachment"
+        RTE_NODE_ID="563360845"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360846"
+        DOC_TYP_ID="320847" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ImageAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360847"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresImageAttachment"
+        RTE_NODE_ID="563360848"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360849"
+        DOC_TYP_ID="320847" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresImageAttachment" RTE_NODE_ID="563360850"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PurchaseWasReceived"
+        RTE_NODE_ID="563360851"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360852"
+        DOC_TYP_ID="320847" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Receiving" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360853"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinReceiving" RTE_NODE_ID="563360854"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360855"
+        DOC_TYP_ID="320847" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpReceiving" RTE_NODE_ID="563360856"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360857"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360858"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360859"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360860"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320847" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360861"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360863"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Organization" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360864"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360865"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360866"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360867"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360868"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AmountRequiresSeparationOfDutiesReview"
+        RTE_NODE_ID="563360869"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360870"
+        DOC_TYP_ID="320848" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="SeparationOfDuties" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360871"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320848" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360872"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360873"
+        DOC_TYP_ID="320848" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360874"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360889"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Organization" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360890"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="HasAccountingLines"
+        RTE_NODE_ID="563360891"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360892"
+        DOC_TYP_ID="320900" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpHasAccountingLines" RTE_NODE_ID="563360893"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinHasAccountingLines"
+        RTE_NODE_ID="563360894"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360895"
+        DOC_TYP_ID="320900" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Initiator" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360896"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360897"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360898"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360899"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360900"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AmountRequiresSeparationOfDutiesReview"
+        RTE_NODE_ID="563360901"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563360902"
+        DOC_TYP_ID="320900" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="SeparationOfDuties" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360903"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320900" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563360904"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360905"
+        DOC_TYP_ID="320900" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563360906"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320920" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360909"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320920" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Unprocessed" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360910"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320920" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Management" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360911"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360929"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresContractManagementReview"
+        RTE_NODE_ID="563360930"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360931"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ContractManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360932"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresContractManagementReview"
+        RTE_NODE_ID="563360933"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360934"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresContractManagementReview"
+        RTE_NODE_ID="563360935"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360936"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360937"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresBudgetReview"
+        RTE_NODE_ID="563360938"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360939"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Budget" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360940"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresBudgetReview"
+        RTE_NODE_ID="563360941"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360942"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpBudget" RTE_NODE_ID="563360943"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="VendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360944"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360945"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360946"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360947"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360948"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563360949"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="TransmissionMethodIsPrint"
+        RTE_NODE_ID="563360950"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360951"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="PrintTransmission" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360952"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320940" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinTransmissionMethodIsPrint"
+        RTE_NODE_ID="563360953"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563360954"
+        DOC_TYP_ID="320940" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPrint" RTE_NODE_ID="563360955"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320941" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360957"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320941" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360958"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320941" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360959"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320941" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360960"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320941" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360961"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320942" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360963"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320943" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360965"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320943" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360966"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320943" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360967"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320943" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360968"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320943" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360969"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320946" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360971"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320961" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563360989"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320961" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360990"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320961" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563360991"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361009"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresImageAttachment"
+        RTE_NODE_ID="563361010"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361011"
+        DOC_TYP_ID="320980" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ImageAttachment" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361012"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresImageAttachment"
+        RTE_NODE_ID="563361013"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361014"
+        DOC_TYP_ID="320980" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresImageAttachment" RTE_NODE_ID="563361015"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PurchaseWasReceived"
+        RTE_NODE_ID="563361016"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361017"
+        DOC_TYP_ID="320980" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Receiving" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361018"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinReceiving" RTE_NODE_ID="563361019"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361020"
+        DOC_TYP_ID="320980" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpReceiving" RTE_NODE_ID="563361021"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubAccount" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361022"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361023"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361024"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="VendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361025"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361026"
+        DOC_TYP_ID="320980" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361027"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320980" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361028"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361029"
+        DOC_TYP_ID="320980" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361030"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361032"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresContractManagementReview"
+        RTE_NODE_ID="563361033"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361034"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ContractManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361035"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresContractManagementReview"
+        RTE_NODE_ID="563361036"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361037"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresContractManagementReview"
+        RTE_NODE_ID="563361038"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361039"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361040"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresBudgetReview"
+        RTE_NODE_ID="563361041"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361042"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Budget" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361043"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresBudgetReview"
+        RTE_NODE_ID="563361044"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361045"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpBudget" RTE_NODE_ID="563361046"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="VendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361047"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361048"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361049"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361050"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361051"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361052"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="TransmissionMethodIsPrint"
+        RTE_NODE_ID="563361053"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361054"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="PrintTransmission" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.kfs.module.purap.document.workflow.PrintRoleRouteModule"
+        RTE_NODE_ID="563361055"
+        TYP="org.kuali.rice.kew.engine.node.RequestsNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="320989" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinTransmissionMethodIsPrint"
+        RTE_NODE_ID="563361056"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361057"
+        DOC_TYP_ID="320989" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPrint" RTE_NODE_ID="563361058"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361069"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresContractManagementReview"
+        RTE_NODE_ID="563361070"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361071"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ContractManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361072"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresContractManagementReview"
+        RTE_NODE_ID="563361073"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361074"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresContractManagementReview"
+        RTE_NODE_ID="563361075"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361076"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361077"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresBudgetReview"
+        RTE_NODE_ID="563361078"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361079"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Budget" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361080"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresBudgetReview"
+        RTE_NODE_ID="563361081"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361082"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpBudget" RTE_NODE_ID="563361083"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="VendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361084"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361085"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361086"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361087"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361088"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361089"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="TransmissionMethodIsPrint"
+        RTE_NODE_ID="563361090"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361091"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="PrintTransmission" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.kfs.module.purap.document.workflow.PrintRoleRouteModule"
+        RTE_NODE_ID="563361092"
+        TYP="org.kuali.rice.kew.engine.node.RequestsNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321000" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinTransmissionMethodIsPrint"
+        RTE_NODE_ID="563361093"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361094"
+        DOC_TYP_ID="321000" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPrint" RTE_NODE_ID="563361095"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321060" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361109"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321060" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresApproval" RTE_NODE_ID="563361110"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplit" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361111"
+        DOC_TYP_ID="321060" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361112"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321060" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563361113"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361114"
+        DOC_TYP_ID="321060" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563361115"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321100" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361129"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321141" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361171"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321141" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="autoApproveForAsynchronousProcessing"
+        RTE_NODE_ID="563361172"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321142" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361174"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321142" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="autoApproveForAsynchronousProcessing"
+        RTE_NODE_ID="563361175"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321162" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361189"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321162" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresReview" RTE_NODE_ID="563361190"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361191"
+        DOC_TYP_ID="321162" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361192"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361191"
+        DOC_TYP_ID="321162" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361193"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321162" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresReview"
+        RTE_NODE_ID="563361194"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361195"
+        DOC_TYP_ID="321162" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresReview" RTE_NODE_ID="563361196"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321180" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361198"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321180" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresReview" RTE_NODE_ID="563361199"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361200"
+        DOC_TYP_ID="321180" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361201"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361200"
+        DOC_TYP_ID="321180" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361202"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321180" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresReview"
+        RTE_NODE_ID="563361203"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361204"
+        DOC_TYP_ID="321180" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresReview" RTE_NODE_ID="563361205"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321200" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361209"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321200" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361210"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321200" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361211"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321200" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361212"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321201" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361214"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321201" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361215"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321201" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361216"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321201" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361217"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321201" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361218"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321201" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361219"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361229"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563361230"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361231"
+        DOC_TYP_ID="321220" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Purchasing" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361232"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinPayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563361233"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361234"
+        DOC_TYP_ID="321220" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPayee" RTE_NODE_ID="563361235"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361236"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361237"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTaxReview"
+        RTE_NODE_ID="563361238"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361239"
+        DOC_TYP_ID="321220" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361240"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTaxReview"
+        RTE_NODE_ID="563361241"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361242"
+        DOC_TYP_ID="321220" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTaxReview" RTE_NODE_ID="563361243"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Campus" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361244"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresPaymentReview"
+        RTE_NODE_ID="563361245"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361246"
+        DOC_TYP_ID="321220" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="PaymentMethod" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361247"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321220" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresPaymentReview"
+        RTE_NODE_ID="563361248"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361249"
+        DOC_TYP_ID="321220" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPaymentReview" RTE_NODE_ID="563361250"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361269"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563361270"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361271"
+        DOC_TYP_ID="321240" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Purchasing" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361272"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinPayeeIsPurchaseOrderVendor"
+        RTE_NODE_ID="563361273"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361274"
+        DOC_TYP_ID="321240" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpPayee" RTE_NODE_ID="563361275"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361276"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AccountingOrganizationHierarchy"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361277"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTaxReview"
+        RTE_NODE_ID="563361278"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361279"
+        DOC_TYP_ID="321240" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361280"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTaxReview"
+        RTE_NODE_ID="563361281"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361282"
+        DOC_TYP_ID="321240" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTaxReview" RTE_NODE_ID="563361283"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361284"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresTravelReview"
+        RTE_NODE_ID="563361285"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361286"
+        DOC_TYP_ID="321240" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Travel" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361287"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresTravelReview"
+        RTE_NODE_ID="563361288"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361289"
+        DOC_TYP_ID="321240" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpTravelReview" RTE_NODE_ID="563361290"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Campus" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361291"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321240" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="PaymentMethod" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361292"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321260" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361309"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321260" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresApproval" RTE_NODE_ID="563361310"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361311"
+        DOC_TYP_ID="321260" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361312"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321260" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563361313"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361314"
+        DOC_TYP_ID="321260" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563361315"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321261" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361317"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321261" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361318"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321300" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361329"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321300" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361330"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321300" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361331"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321300" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="SubFund" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361332"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321300" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361333"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321300" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361334"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321301" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361336"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321301" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Initiator" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361337"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321320" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361349"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321320" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361350"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321320" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361351"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321340" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361369"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321340" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361370"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321340" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Chart" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361371"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361389"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresContractManagementReview"
+        RTE_NODE_ID="563361390"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361391"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="ContractManagement" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361392"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresContractManagementReview"
+        RTE_NODE_ID="563361393"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361394"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresContractManagementReview"
+        RTE_NODE_ID="563361395"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Commodity" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361396"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresAwardReview"
+        RTE_NODE_ID="563361397"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361398"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Award" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361399"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresAwardReview"
+        RTE_NODE_ID="563361400"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361401"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpRequiresAwardReview" RTE_NODE_ID="563361402"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RequiresBudgetReview"
+        RTE_NODE_ID="563361403"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="4"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361404"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Budget" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361405"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinRequiresBudgetReview"
+        RTE_NODE_ID="563361406"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361407"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpBudget" RTE_NODE_ID="563361408"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="VendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361409"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="8"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361410"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Tax" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361411"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321360" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361412"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361413"
+        DOC_TYP_ID="321360" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpVendorIsEmployeeOrNonResidentAlien"
+        RTE_NODE_ID="563361414"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="16"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321380" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361429"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321380" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361430"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321400" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361449"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321400" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="OrganizationHierarchy" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361450"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321421" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361469"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321421" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RoleType" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361470"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321422" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361472"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321422" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="GroupType" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361473"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321423" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361475"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321423" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="GroupType" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361476"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321423" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="RoleType" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361477"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321460" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361489"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321460" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="HasReccurence" RTE_NODE_ID="563361490"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361491"
+        DOC_TYP_ID="321460" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361492"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361491"
+        DOC_TYP_ID="321460" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="Recurrence" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361493"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321460" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Join" RTE_NODE_ID="563361494"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361495"
+        DOC_TYP_ID="321460" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOp" RTE_NODE_ID="563361496"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321461" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="563361498"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321461" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="InvoiceRecurrenceIsInactivating"
+        RTE_NODE_ID="563361499"
+        TYP="org.kuali.kfs.sys.document.workflow.SimpleBooleanSplitNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" BRCH_PROTO_ID="563361500"
+        DOC_TYP_ID="321461" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="RecurrenceCreator" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361501"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="321461" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="JoinInvoiceRecurrenceIsInactivating"
+        RTE_NODE_ID="563361502"
+        TYP="org.kuali.rice.kew.engine.node.SimpleJoinNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="S" BRCH_PROTO_ID="563361503"
+        DOC_TYP_ID="321461" FNL_APRVR_IND="0" MNDTRY_RTE_IND="0"
+        NM="NoOpInvoiceRecurrenceIsInactivating" RTE_NODE_ID="563361504"
+        TYP="org.kuali.rice.kew.engine.node.NoOpNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321461" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Account" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361505"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="321461" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Recurrence" RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="563361506"
+        TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="2"/>
+</dataset>

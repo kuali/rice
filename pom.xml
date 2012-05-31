@@ -18,7 +18,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.2.13</version>
+    <version>1.2.24</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -34,6 +34,11 @@
 		quality business applications.
   </description>
   <properties>
+    <!-- These properties modify the release process -->
+    <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
+    <kuali.release.goals>deploy</kuali.release.goals>
+    <kuali.release.arguments>-DskipTests</kuali.release.arguments>
+
     <kuali.compile.source>1.5</kuali.compile.source>
     <kuali.compile.target>1.5</kuali.compile.target>
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>

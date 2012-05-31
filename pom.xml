@@ -24,7 +24,7 @@
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
   <name>Kuali Rice</name>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
   <description>
         The Kuali Rice effort provides an enterprise class
@@ -851,8 +851,8 @@
   </dependencyManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-1.0.4</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/tags/rice-1.0.4</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/tags/rice-1.0.4</url>
+    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-1.0</connection>
+    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-1.0</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/branches/rice-1.0</url>
   </scm>
 </project>

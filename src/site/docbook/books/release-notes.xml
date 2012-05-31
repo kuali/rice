@@ -24,8 +24,7 @@
     </info>
     <section xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
-        <para xlink:href="http://site.kuali.org/rice/2.0.1/reference/html/release-notes.html"
-            >Welcome to ${project.version}! This is the second patch release containing bug fixes
+        <para>Welcome to ${project.version}! This is the second patch release containing bug fixes
             for Rice 2.0 and you can read about the changes for Rice 2.0 in the <link
                 xlink:href="http://site.kuali.org/rice/2.0.0/reference/html/release-notes.html">Rice
                 2.0 Release Notes</link> and the bug fixes in Rice 2.0.1 in the <link

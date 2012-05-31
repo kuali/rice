@@ -64,10 +64,8 @@ public class UifFormBase implements ViewModel {
     protected String formPostUrl;
 
     protected boolean defaultsApplied;
-    protected boolean skipViewInit;
     protected boolean requestRedirect;
 
-    protected String updateComponentId;
     protected boolean renderFullView;
     protected boolean validateDirty;
 
@@ -102,7 +100,6 @@ public class UifFormBase implements ViewModel {
         formKey = generateFormKey();
         renderFullView = true;
         defaultsApplied = false;
-        skipViewInit = false;
         requestRedirect = false;
 
         formHistory = new History();
@@ -156,10 +153,7 @@ public class UifFormBase implements ViewModel {
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
         }
 
-        // reset skip view init parameter if not passed
-        if (!request.getParameterMap().containsKey(UifParameters.SKIP_VIEW_INIT)) {
-            skipViewInit = false;
-        }
+
     }
 
     /**
@@ -167,11 +161,14 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public void postRender(HttpServletRequest request) {
-        renderFullView = true;
-        skipViewInit = false;
+        if (request.getParameterMap().containsKey(UifParameters.RENDER_FULL_VIEW)) {
+            renderFullView = Boolean.parseBoolean(request.getParameter(UifParameters.RENDER_FULL_VIEW));
+        } else {
+            renderFullView = true;
+        }
         requestRedirect = false;
 
-        updateComponentId = null;
+
 
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
@@ -467,24 +464,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Indicates whether a new view is being initialized or the call is refresh (or query) call
-     *
-     * @return boolean true if view initialization was skipped, false if new view is being created
-     */
-    public boolean isSkipViewInit() {
-        return skipViewInit;
-    }
-
-    /**
-     * Setter for the skip view initialization flag
-     *
-     * @param skipViewInit
-     */
-    public void setSkipViewInit(boolean skipViewInit) {
-        this.skipViewInit = skipViewInit;
-    }
-
-    /**
      * Indicates whether a redirect has been requested for the view
      *
      * @return boolean true if redirect was requested, false if not
@@ -518,24 +497,6 @@ public class UifFormBase implements ViewModel {
      */
     public void setAttachmentFile(MultipartFile attachmentFile) {
         this.attachmentFile = attachmentFile;
-    }
-
-    /**
-     * Id for the component that should be updated for a component refresh process
-     *
-     * @return String component id
-     */
-    public String getUpdateComponentId() {
-        return updateComponentId;
-    }
-
-    /**
-     * Setter for the component id that should be refreshed
-     *
-     * @param updateComponentId
-     */
-    public void setUpdateComponentId(String updateComponentId) {
-        this.updateComponentId = updateComponentId;
     }
 
     /**

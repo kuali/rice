@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -87,12 +88,13 @@ public class UifWebUtils {
                     // for component refresh need to export the component as a model
                     if (!form.isRenderFullView()) {
                         Component component = null;
-                        if (StringUtils.isBlank(form.getUpdateComponentId())) {
+
+                        if (StringUtils.isBlank(request.getParameter(UifParameters.UPDATE_COMPONENT_ID))){
                             // refresh component is page
                             component = form.getView().getCurrentPage();
                         } else {
                             component = form.getPostedView().getViewIndex().getComponentById(
-                                    form.getUpdateComponentId());
+                                    request.getParameter(UifParameters.UPDATE_COMPONENT_ID));
                         }
                         modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
                     }
@@ -147,9 +149,9 @@ public class UifWebUtils {
      */
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
-        if (!form.isRenderFullView() && StringUtils.isNotBlank(form.getUpdateComponentId())) {
-            String refreshComponentId = form.getUpdateComponentId();
+        if (!form.isRenderFullView() && StringUtils.isNotBlank(request.getParameter(UifParameters.UPDATE_COMPONENT_ID))) {
 
+              String refreshComponentId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID) ;
             // get a new instance of the component
             Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 

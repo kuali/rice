@@ -270,7 +270,7 @@ function retrieveComponent(id, baseId, methodToCall){
     }
 	
 	ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-			{updateComponentId: id, skipViewInit: "true"}, elementToBlock);
+			{updateComponentId: id, skipViewInit: "true", renderFullView: "false"}, elementToBlock);
 }
 
 /**

@@ -99,7 +99,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 // view wasn't rendered, just set to null and leave previous posted view
                 uifForm.setView(null);
             }
-            else if (uifForm.isSkipViewInit()) {
+            else if (KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT) !=null && KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT)) {
                 // partial refresh or query
                 View postedView = uifForm.getPostedView();
                 if (postedView != null) {

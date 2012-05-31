@@ -67,4 +67,5 @@ public class UifParameters {
     public static final String QUERY_PARAMETER = "queryParameter";
     public static final String QUERY_FIELD_ID = "queryFieldId";
     public static final String QUERY_TERM = "queryTerm";
+    public static final String UPDATE_COMPONENT_ID = "updateComponentId";
 }

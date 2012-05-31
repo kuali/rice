@@ -96,6 +96,12 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         throw new RuntimeException("Direct Field access is not allowed in Kuali");
     }
 
+    /**
+     * Performs data binding from servlet request parameters to the form and then calls
+     * <code>postBind(request)</code>.
+     *
+     * @param request
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void bind(ServletRequest request) {
@@ -104,8 +110,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         UifFormBase form = (UifFormBase) this.getTarget();
 
         // check for request param that indicates to skip view initialize
-        Boolean skipViewInit = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);
-        if ((skipViewInit == null) || !skipViewInit.booleanValue()) {
+        Boolean skipViewInitialization = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);
+        if ((skipViewInitialization == null) || !skipViewInitialization.booleanValue()) {
             // initialize new view for request
             View view = null;
 

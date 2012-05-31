@@ -34,6 +34,13 @@ import org.kuali.rice.krad.bo.DataObjectAuthorizer;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentAuthorizer extends DataObjectAuthorizer {
+    /**
+     * Checks if a user has the permissions to initiate a  document
+     *
+     * @param documentTypeName, user
+     *
+     * @return boolean, true if the user has the permissions to initiate a document else false
+     */
 
     public boolean canInitiate(String documentTypeName, Person user);
 

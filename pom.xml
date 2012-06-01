@@ -195,18 +195,9 @@
               </instrumentation>
             </configuration>
           </plugin>
-          <!--
-            <plugin> <artifactId>maven-clover-plugin</artifactId> <executions> <execution> <id>main</id> <phase>verify</phase> <goals> <goal>instrument</goal> <goal>aggregate</goal> <goal>log</goal> </goals> </execution> <execution> <phase>pre-site</phase> <goals> <goal>instrument</goal> <goal>aggregate</goal> <goal>save-history</goal> </goals> </execution> </executions> <configuration> <jdk>1.5</jdk> <licenseLocation>kns/src/test/config/clover.license</licenseLocation> </configuration> </plugin>
-          -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-eclipse-plugin</artifactId>
-            <!-- Note that the most recent version of eclipse:eclipse (2.8) cannot be used because it results in
-              an error when trying to perform test resource filtering
-
-              See here for details: http://jira.codehaus.org/browse/MECLIPSE-551
-
-            -->
             <version>2.6</version>
           </plugin>
         </plugins>

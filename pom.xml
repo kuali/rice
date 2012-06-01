@@ -210,6 +210,34 @@
         <plugin.site.version>3.0-beta-3</plugin.site.version>
       </properties>
     </profile>
+    <profile>
+      <id>upload-dist-all</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>wagon-maven-plugin</artifactId>
+            <version>1.0-beta-4</version>
+            <executions>
+              <execution>
+                <id>upload-dist-all</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>upload</goal>
+                </goals>
+                <configuration>
+                  <fromDir>${project.build.directory}</fromDir>
+                  <includes>rice-*.zip,rice-*.gz,rice-*.bz2</includes>
+                  <url>s3://maven.kuali.org/</url>
+                  <toDir>releases/org/kuali/rice/rice-dist/${project.version}</toDir>
+                  <serverId>kuali.release</serverId>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <modules>

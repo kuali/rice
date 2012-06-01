@@ -303,10 +303,10 @@ public class FileConverter {
             // Get the package change rules
 
             XPathExpression exprPackageNames = xpath.compile("//*[@name='maint_doc_moved_packages']/pattern");
-            NodeList packageNamesList = (NodeList) exprClassNames.evaluate(doc, XPathConstants.NODESET);
-            for (int s = 0; s < classNamesList.getLength(); s++) {
-                String matchText = xpath.evaluate("match/text()", classNamesList.item(s));
-                String replaceText = xpath.evaluate("replacement/text()", classNamesList.item(s));
+            NodeList packageNamesList = (NodeList) exprPackageNames.evaluate(doc, XPathConstants.NODESET);
+            for (int s = 0; s < packageNamesList.getLength(); s++) {
+                String matchText = xpath.evaluate("match/text()", packageNamesList.item(s));
+                String replaceText = xpath.evaluate("replacement/text()", packageNamesList.item(s));
                 packageNameRuleMap.put(matchText, replaceText);
             }
 

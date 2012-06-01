@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -25,12 +26,12 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -254,8 +255,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 sequenceField = ComponentUtils.copy(sequenceFieldPrototype, idSuffix);
                 //Ignore in validation processing
                 sequenceField.addDataAttribute("vignore", "yes");
-                if (generateAutoSequence && (sequenceField instanceof Message)) {
-                    ((Message) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
+                if (generateAutoSequence && (sequenceField instanceof MessageField)) {
+                    ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
                 }
             } else {
                 sequenceField = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);

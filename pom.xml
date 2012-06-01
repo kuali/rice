@@ -229,7 +229,7 @@
                   <fromDir>${project.build.directory}</fromDir>
                   <includes>rice-*.zip,rice-*.gz,rice-*.bz2</includes>
                   <url>s3://maven.kuali.org/</url>
-                  <toDir>releases/org/kuali/rice/rice-dist/${project.version}</toDir>
+                  <toDir>release/org/kuali/rice/rice-dist/${project.version}</toDir>
                   <serverId>kuali.release</serverId>
                 </configuration>
               </execution>

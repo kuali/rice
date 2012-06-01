@@ -205,22 +205,24 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         return getDocumentClass();
     }
 
+    @Override
     public String toString() {
         return "DocumentEntry for documentType " + documentTypeName;
     }
 
     /**
-     * Accessor method for contained displayTopicFieldInNotes
+     * Indicates whether the "Notes and Attachments" tab will render a column for a note topic
      *
-     * @return displayTopicFieldInNotes boolean
+     * @return boolean
      */
     public boolean getDisplayTopicFieldInNotes() {
         return displayTopicFieldInNotes;
     }
 
     /**
-     * This field contains a value of true or false.
-     * If true, then the "Notes and Attachments" tab will render a column for a note topic.
+     * Setter for the flag indicating whether the note topic field will be rendered in the notes tab
+     *
+     * @param displayTopicFieldInNotes
      */
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
         this.displayTopicFieldInNotes = displayTopicFieldInNotes;

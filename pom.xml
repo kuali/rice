@@ -18,7 +18,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.2.24</version>
+    <version>1.3.1</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -44,8 +44,7 @@
     <kuali.compile.target>1.5</kuali.compile.target>
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
     <kuali.javadoc.report.2>javadoc</kuali.javadoc.report.2>
-    <kuali.site.plugin.version>2.3</kuali.site.plugin.version>
-    <kuali-deploy.version>1.0.5</kuali-deploy.version>
+    <plugin.site.version>2.3</plugin.site.version>
 
     <!-- must provide an explicit pattern - surefire default does not work
       b/c of non-unit test classes that are included in default expression -->
@@ -210,73 +209,15 @@
             -->
             <version>2.6</version>
           </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <version>${kuali.site.plugin.version}</version>
-            <configuration>
-              <reportPlugins>
-                <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-javadoc-plugin</artifactId>
-                  <!-- Version is included here only because it does not inherit correctly from the pluginManagement section of the parent pom -->
-                  <version>2.7</version>
-                  <configuration>
-                    <excludePackageNames>${kuali.javadoc.exclude.package.names}</excludePackageNames>
-                    <links>
-                      <link>${kuali.javadoc.link.1}</link>
-                      <link>${kuali.javadoc.link.2}</link>
-                      <link>${kuali.javadoc.link.3}</link>
-                      <link>${kuali.javadoc.link.4}</link>
-                      <link>${kuali.javadoc.link.5}</link>
-                      <link>${kuali.javadoc.link.6}</link>
-                      <link>${kuali.javadoc.link.7}</link>
-                      <link>${kuali.javadoc.link.8}</link>
-                      <link>${kuali.javadoc.link.9}</link>
-                      <link>${kuali.javadoc.link.10}</link>
-                    </links>
-                    <additionalJOption>${kuali.javadoc.additional.joption}</additionalJOption>
-                    <maxmemory>${kuali.javadoc.maxmemory}</maxmemory>
-                    <linksource>${kuali.javadoc.linksource}</linksource>
-                    <javadocVersion>${kuali.javadoc.tool.version}</javadocVersion>
-                    <show>${kuali.javadoc.show}</show>
-                    <debug>${kuali.javadoc.debug}</debug>
-                    <source>${kuali.compile.source}</source>
-                    <quiet>${kuali.javadoc.quiet}</quiet>
-                    <aggregate>${kuali.javadoc.aggregate}</aggregate>
-                  </configuration>
-                  <reportSets>
-                    <reportSet>
-                      <id>generate-javadocs</id>
-                      <reports>
-                        <report>${kuali.javadoc.report.1}</report>
-                        <report>${kuali.javadoc.report.2}</report>
-                      </reports>
-                    </reportSet>
-                  </reportSets>
-                </plugin>
-                <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-project-info-reports-plugin</artifactId>
-                  <!-- Version is included here only because it does not inherit correctly from the pluginManagement section of the parent pom -->
-                  <version>2.3</version>
-                  <configuration>
-                    <dependencyLocationsEnabled>${kuali.reporting.dependency.locations}</dependencyLocationsEnabled>
-                  </configuration>
-                </plugin>
-                <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-jxr-plugin</artifactId>
-                  <configuration>
-                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
-                    <aggregate>${kuali.reporting.aggregate}</aggregate>
-                  </configuration>
-                </plugin>
-              </reportPlugins>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>site</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <plugin.site.version>3.0-beta-3</plugin.site.version>
+      </properties>
     </profile>
   </profiles>
 

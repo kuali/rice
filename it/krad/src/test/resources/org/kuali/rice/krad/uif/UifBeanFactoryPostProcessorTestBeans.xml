@@ -112,4 +112,35 @@
     </property>
   </bean>
 
+  <bean class="org.kuali.rice.krad.uif.UifTestBeanObject" id="testSimpleBean1" name="SimpleBean1">
+    <property name="property3" value="@{1 eq 1}"/>
+  </bean>
+
+  <bean id="testSimpleBean2" name="SimpleBean2" parent="testSimpleBean1">
+    <property name="property3" value="false"/>
+  </bean>
+
+  <bean class="org.kuali.rice.krad.uif.UifTestBeanObject" id="testSimpleBean3" name="SimpleBean3">
+    <property name="reference1">
+      <bean parent="testSimpleBean1"/>
+    </property>
+  </bean>
+
+  <bean id="testSimpleBean4" name="SimpleBean4" parent="testSimpleBean3">
+    <property name="reference1.property3" value="false"/>
+  </bean>
+
+  <bean id="testPeopleFlow-InquiryView" parent="Uif-InquiryView">
+    <property name="Items">
+      <list>
+        <bean parent="Uif-Disclosure-GridSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="name" p:inquiry.render="false"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

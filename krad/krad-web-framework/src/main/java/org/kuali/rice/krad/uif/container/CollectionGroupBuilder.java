@@ -156,7 +156,7 @@ public class CollectionGroupBuilder implements Serializable {
             Collection<?> collection) {
         List<Integer> filteredIndexes = new ArrayList<Integer>();
         for (int i = 0; i < collection.size(); i++) {
-            filteredIndexes.add(new Integer(i));
+            filteredIndexes.add(Integer.valueOf(i));
         }
 
         if (Inactivatable.class.isAssignableFrom(collectionGroup.getCollectionObjectClass()) && !collectionGroup
@@ -312,7 +312,7 @@ public class CollectionGroupBuilder implements Serializable {
                 readOnlyLine, lineFields, actions);
 
 		if (bindToForm) {
-			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
+			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
 		}		
 		
         // remove fields from the line that have render false

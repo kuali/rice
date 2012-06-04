@@ -32,6 +32,17 @@ public class UifBooleanEditor extends PropertyEditorSupport implements Serializa
 	private static final String TRUE_VALUE = "true";
 	private static final String FALSE_VALUE = "false";
 
+    /**
+     * Gets the property value as a string suitable for presentation
+     * to a human to edit
+     *
+     * @return The property value as a string suitable for presentation
+     *       to a human to edit.
+     * <p>   Returns String "true" or "false".
+     * <p>   Returns "null" is the value can't be expressed as a string.
+     * <p>   If a non-null value is returned, then the PropertyEditor should
+     *	     be prepared to parse that string back in setAsText().
+     */
     @Override
 	public String getAsText() {
 		if(this.getValue() == null) {

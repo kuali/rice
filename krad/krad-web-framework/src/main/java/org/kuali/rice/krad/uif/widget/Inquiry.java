@@ -100,7 +100,6 @@ public class Inquiry extends WidgetBase {
 
         // Do checks for inquiry when read only
         if (isReadOnly()) {
-
             if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath())) {
                 return;
             }
@@ -111,7 +110,6 @@ public class Inquiry extends WidgetBase {
             if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
                 return;
             }
-
         }
 
         // Do checks for direct inquiry when editable
@@ -128,7 +126,6 @@ public class Inquiry extends WidgetBase {
                 adjustInquiryParameters = true;
                 fieldBindingInfo = ((InputField) parent).getBindingInfo();
             }
-
         }
 
         setupLink(view, model, (DataField) parent);

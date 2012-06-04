@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
-import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -39,6 +38,7 @@ import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
@@ -1190,18 +1190,17 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
+        CustomActionListAttribute result = null;
+        RuleAttribute customActionListRuleAttribute = getCustomActionListRuleAttribute();
 
-        ObjectDefinition objDef = getAttributeObjectDefinition(KewApiConstants.ACTION_LIST_ATTRIBUTE_TYPE);
-        if (objDef == null) {
-            return null;
-        }
-        try {
-            return (CustomActionListAttribute) GlobalResourceLoader.getObject(objDef);
-        } catch (RuntimeException e) {
-            LOG.error("Error obtaining custom action list attribute: " + objDef, e);
-            throw e;
+        if (customActionListRuleAttribute != null) {
+            ExtensionDefinition extensionDefinition =
+                    KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(customActionListRuleAttribute.getId());
+
+            result = ExtensionUtils.loadExtension(extensionDefinition, customActionListRuleAttribute.getApplicationId());
         }
 
+        return result;
     }
 
     public CustomEmailAttribute getCustomEmailAttribute() throws ResourceUnavailableException {

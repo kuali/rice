@@ -949,9 +949,6 @@
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxGroup">
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
-    <property name="layoutManager">
-      <bean parent="Uif-VerticalBoxLayout"/>
-    </property>
     <property name="hidden" value="true"/>
     <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">

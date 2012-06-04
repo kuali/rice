@@ -19,10 +19,27 @@
 
 <krad:group group="${group}">
 
-  <krad:template component="${group.prompt}" parent="${group}"/>
-  <krad:template component="${group.explanation}" parent="${group}"/>
-  <krad:template component="${group.responseInputField}" parent="${group}"/>
 
+  <%-- get layout manager styles --%>
+  <c:if test="${!empty group.layoutManager.styleClassesAsString}">
+    <c:set var="styleClass" value="class=\"${group.layoutManager.styleClassesAsString}\""/>
+  </c:if>
+
+  <c:if test="${!empty group.layoutManager.style}">
+    <c:set var="style" value="${group.layoutManager.style}"/>
+  </c:if>
+
+  <%-- render items via layout manager --%>
+  <div id="${group.layoutManager.id}_boxLayout" ${style} ${styleClass}>
+
+
+    <krad:template component="${group.prompt}" parent="${group}"/>
+    <krad:template component="${group.explanation}" parent="${group}"/>
+    <c:forEach items="${group.items}" var="item" varStatus="itemVarStatus">
+      <krad:template component="${item}"/>
+    </c:forEach>
+    <krad:template component="${group.responseInputField}" parent="${group}"/>
+  </div>
 </krad:group>
 
 <%-- style checkboxes to look like buttons --%>

@@ -1194,10 +1194,19 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         RuleAttribute customActionListRuleAttribute = getCustomActionListRuleAttribute();
 
         if (customActionListRuleAttribute != null) {
-            ExtensionDefinition extensionDefinition =
-                    KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(customActionListRuleAttribute.getId());
+            try {
+                ExtensionDefinition extensionDefinition =
+                        KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(customActionListRuleAttribute.getId());
 
-            result = ExtensionUtils.loadExtension(extensionDefinition, customActionListRuleAttribute.getApplicationId());
+                if (extensionDefinition != null) {
+                    result = ExtensionUtils.loadExtension(extensionDefinition, customActionListRuleAttribute.getApplicationId());
+                } else {
+                    LOG.warn("Could not load ExtensionDefinition for " + customActionListRuleAttribute);
+                }
+
+            } catch (RiceRemoteServiceConnectionException e) {
+                LOG.warn("Unable to connect to load custom action list attribute for " + customActionListRuleAttribute, e);
+            }
         }
 
         return result;

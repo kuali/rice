@@ -47,6 +47,9 @@ public class CollectionsIT {
         selenium.waitForPageToLoad("30000");
     }
 
+    /**
+     * Test action column placement in table layout collections
+     */
     @Test
     public void testActionColumnPlacement() throws Exception {
         // check if actions column RIGHT by default

@@ -361,10 +361,24 @@ public class ComponentFactory {
         return field;
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id)
+     *
+     * @return InputField
+     */
     public static InputField getInputField() {
         return (InputField) getNewComponentInstance(INPUT_FIELD);
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name and label to the given parameters
+     *
+     * @param propertyName - name of the property the input field should bind to
+     * @param label - label for the field
+     * @return InputField
+     */
     public static InputField getInputField(String propertyName, String label) {
         InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
@@ -374,6 +388,15 @@ public class ComponentFactory {
         return field;
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name, control, and label to the given parameters
+     *
+     * @param propertyName - name of the property the input field should bind to
+     * @param label - label for the field
+     * @param controlType - enum that identifies the type of control to create for the input field
+     * @return InputField
+     */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType) {
         InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
@@ -384,6 +407,16 @@ public class ComponentFactory {
         return field;
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name, control, defaultValue, and label to the given parameters
+     *
+     * @param propertyName - name of the property the input field should bind to
+     * @param label - label for the field
+     * @param controlType - enum that identifies the type of control to create for the input field
+     * @param defaultValue - default value for the property backing the input field
+     * @return InputField
+     */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
             String defaultValue) {
         InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
@@ -396,6 +429,16 @@ public class ComponentFactory {
         return field;
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name, control, options finder, and label to the given parameters
+     *
+     * @param propertyName - name of the property the input field should bind to
+     * @param label - label for the field
+     * @param controlType - enum that identifies the type of control to create for the input field
+     * @param optionsFinderClass - class that will provide options for the control (assume control type is multi-value)
+     * @return InputField
+     */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
             Class<? extends KeyValuesFinder> optionsFinderClass) {
         InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
@@ -408,6 +451,16 @@ public class ComponentFactory {
         return field;
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name, control, options, and label to the given parameters
+     *
+     * @param propertyName - name of the property the input field should bind to
+     * @param label - label for the field
+     * @param controlType - enum that identifies the type of control to create for the input field
+     * @param options - list of key value objects to set as the controls options
+     * @return InputField
+     */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
             List<KeyValue> options) {
         InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
@@ -425,6 +478,19 @@ public class ComponentFactory {
         return field;
     }
 
+    /**
+     * Retrieves a new input field instance from Spring (initialized by the bean definition
+     * with the given id) and sets the property name, control, size, min and max length,
+     * and label to the given parameters
+     *
+     * @param propertyName - name of the property the input field should bind to
+     * @param label - label for the field
+     * @param controlType - enum that identifies the type of control to create for the input field
+     * @param size - size for the control
+     * @param maxLength - max length for the field's value (also used for the control)
+     * @param minLength - min length for the field's value (also used for the control)
+     * @return InputField
+     */
     public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
             int size, int maxLength, int minLength) {
         InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);

@@ -694,9 +694,9 @@ function isControlWithMessages(id) {
 function hasMessage(id) {
     var fieldId = getAttributeId(id);
     var messageData = jQuery("#" + fieldId).data(kradVariables.VALIDATION_MESSAGES);
-    if (messageData && (messageData.serverErrors.length || messageData.errors.length
-            || messageData.serverWarnings.length || messageData.warnings.length
-            || messageData.serverInfo.length || messageData.info.length)) {
+    if (messageData && (messageData.serverErrors.length || (messageData.errors && messageData.errors.length)
+            || messageData.serverWarnings.length || (messageData.warnings && messageData.warnings.length)
+            || messageData.serverInfo.length || (messageData.info && messageData.info.length))) {
         return true;
     }
     return false;

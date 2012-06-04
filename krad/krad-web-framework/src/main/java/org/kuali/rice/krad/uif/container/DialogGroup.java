@@ -27,21 +27,30 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Special type <code>Group</code> that presents a the content for a modal dialog
+ * Special type of <code>Group</code> that presents a the content for a modal dialog
  *
  * <p>
  * This type of group will be hidden when the main view is displayed. It will be used as
  * content inside the LightBox widget when the modal dialog is displayed.
- * For convenience, this group contains some standard component properties for commonly used modal dialogs
+ * For convenience, this group contains a standard set of components for commonly used modal dialogs
  * <ul>
  *     <li>a prompt to display in the lightbox</li>
- *     <li>an optional text area for holding the user's textual response</li>
- *     <li>two actions. one representing an affirmative response, the other a negative response</li>
+ *     <li>an optional explanation <code>InputField</code> for holding the user's textual response</li>
+ *     <li>a set of response options for the user to choose from</li>
  * </ul>
+ * <p>
  * The DialogGroup may also serve as a base class for more complex dialogs.
- * The default settings for this DialogGroup is to display a prompt message of "Are You Sure".
- * And two actions buttons labeled. OK and Cancel.  With OK on the left and Cancel on the Right.
- * The optional TextAreaControl is hidden by default.
+ * The default settings for this DialogGroup is to display a prompt message
+ * with two buttons labeled OK and Cancel.
+ * The optional explanation <code>TextAreaControl</code> is hidden by default.
+ * </p>
+ * <p>
+ * The prompt text, number of user options and their corresponding label are configurable.
+ * The <code>InputField</code> for the explanation is <code>TextAreaControl</code> by default.
+ * It may be configured to other types of InputFields.
+ * The Component for ResponseInputField is a <code>HorizontalCheckboxGroup</code> by default.
+ * JQuery styling is then used to style the checkboxes as buttons. The ResponseInputField may
+ * be configured to other <code>InputField</code> types.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,15 +58,15 @@ import java.util.List;
 public class DialogGroup extends Group {
     private static final long serialVersionUID = 1L;
 
-    protected String promptText;
-    protected List<KeyValue> availableResponses;
+    private String promptText;
+    private List<KeyValue> availableResponses;
 
-    protected Message prompt;
-    protected InputField explanation;
-    protected InputField responseInputField;
+    private Message prompt;
+    private InputField explanation;
+    private InputField responseInputField;
 
-    boolean reverseButtonOrder = false;
-    boolean displayExplanation = false;
+    private boolean reverseButtonOrder = false;
+    private boolean displayExplanation = false;
 
     public DialogGroup() {
         super();
@@ -91,9 +100,9 @@ public class DialogGroup extends Group {
      * </ul>
      * </p>
      *
-     * @param view
-     * @param model
-     * @param parent
+     * @param view - view instance that should be finalized for rendering
+     * @param model - top level object containing the data
+     * @param parent - parent component
      */
     @Override
     public void performFinalize(View view, Object model, Component parent) {
@@ -159,10 +168,11 @@ public class DialogGroup extends Group {
 
 
     /**
-     * Retrieves the InputField used to gather user input text from the dialog
+     * Retrieves the explanation InputField used to gather user input text from the dialog
      *
      * <p>
-     * By default, the control for this input is configured as a TextAreaControl
+     * By default, the control for this input is configured as a TextAreaControl. It may be configured for
+     * other types of input fields.
      * </p>
      *
      * @return InputField component

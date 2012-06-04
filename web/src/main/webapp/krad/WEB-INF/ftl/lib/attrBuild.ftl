@@ -35,6 +35,6 @@ variables -->
         <#assign title="title=\"${component.title}\""/>
     </#if>
 
-    <#return "${styleClass} ${style} ${title}">
+    <#return "${styleClass!} ${style!} ${title!}">
 
 </#function>

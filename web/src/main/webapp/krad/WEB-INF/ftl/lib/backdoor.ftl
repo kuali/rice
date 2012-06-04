@@ -14,20 +14,12 @@
   ~ limitations under the License.
   -->
 
-<#macro script value component role>
+<#macro backdoor>
 
-    <#if component?has_content && component.id?has_content>
-        <#assign dataFor="data-for=\"${component.id}\""/>
-    </#if>
-
-    <#if role?has_content>
-        <#assign roleString="role"/>
-    <#else>
-        <#assign roleString="script"/>
-    </#if>
-
-    <#if value?has_content>
-        <input name="script" type="hidden" data-role="${roleString}" ${dataFor} value="${value}"/>
+    <#if UserSession?? && UserSession.backdoorInUse>
+        <div class="backdoor">
+            Backdoor Id <b>${UserSession.principalName}</b> is in use
+        </div>
     </#if>
 
 </#macro>

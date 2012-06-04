@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<#macro template component body componentUpdate tmplParms...>
+<#macro template component='' body='' componentUpdate=false tmplParms...>
 
     <#if !component?has_content>
         <#return>
@@ -26,16 +26,26 @@
         && !component.progressiveRenderAndRefresh)>
 
         <#if component.selfRendered>
-        ${component.renderedHtmlOutput}
+            ${component.renderedHtmlOutput}
         <#else>
+            <#-- since everything executes in one namespace, need to hold previously set value for variable -->
+            <#assign preInvokeSrc="<#assign tmp${component.componentTypeName}=${component.componentTypeName}!/>"/>
+            <#assign preInvokeSrc="${preInvokeSrc}<#assign ${component.componentTypeName}=component/>"/>
+            <#assign preInvoke = preInvokeSrc?interpret>
+
+            <#assign postInvokeSrc="<#assign ${component.componentTypeName}=tmp${component.componentTypeName}/>"/>
+            <#assign postInvoke = postInvokeSrc?interpret>
+
+            <@preInvoke />
             <#include "${component.template}" parse=true/>
+            <@postInvoke />
         </#if>
 
         <#-- write data attributes -->
-        <@script component=component role="dataScript" value="${component.complexDataAttributesJs}"/>
+        <@krad.script component=component role="dataScript" value="${component.complexDataAttributesJs}"/>
 
         <#-- generate event code for component -->
-        <@eventScript component=component/>
+        <@krad.eventScript component=component/>
     </#if>
 
     <#if componentUpdate>
@@ -44,14 +54,14 @@
 
     <#-- setup progressive render -->
     <#if component.progressRender?has_content>
-    <#-- for progressive rendering requiring an ajax call, put in place holder div -->
+        <#-- for progressive rendering requiring an ajax call, put in place holder div -->
         <#if !component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)>
         <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
         </#if>
 
         <#-- setup progressive handlers for each control which may satisfy a disclosure condition -->
         <#list component.progressiveDisclosureControlNames as cName>
-            <@script value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
+            <@krad.script value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
                   setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition,
                   ${component.progressiveRenderAndRefresh}, '${component.methodToCallOnRefresh}');"/>
         </#list>
@@ -61,7 +71,7 @@
     <#-- conditional Refresh setup -->
     <#if component.conditionalRefresh?has_content>
         <#list component.conditionalRefreshControlNames as cName>
-            <@script value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
+            <@krad.script value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
                  setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition,
                  '${component.methodToCallOnRefresh}');"/>
         </#list>
@@ -69,11 +79,11 @@
 
     <#-- refresh when changed setup -->
     <#list component.refreshWhenChangedPropertyNames as cName>
-        <@script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.baseId}',
+        <@krad.script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.baseId}',
         '${component.methodToCallOnRefresh}');"/>
     </#list>
 
     <#-- generate tooltip for component -->
-    <@tooltip component=component/>
+    <@krad.tooltip component=component/>
 
 </#macro>

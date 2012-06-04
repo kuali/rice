@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<#macro html>
+<#macro html view>
 
 <!DOCTYPE HTML>
 <html lang="en">
@@ -40,7 +40,7 @@
         <#if cssFile?starts_with('http')>
             <link href="${cssFile}" rel="stylesheet" type="text/css"/>
         <#else>
-            <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
+            <link href="${request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
         </#if>
     </#list>
 
@@ -48,7 +48,7 @@
         <#if cssFile?starts_with('http')>
             <link href="${cssFile}" rel="stylesheet" type="text/css"/>
         <#else>
-            <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
+            <link href="${request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
         </#if>
     </#list>
 
@@ -57,7 +57,7 @@
             <script language="JavaScript" type="text/javascript" src="${javascriptFile}"></script>
         <#else>
             <script language="JavaScript" type="text/javascript"
-                    src="${pageContext.request.contextPath}/${javascriptFile}"></script>
+                    src="${request.contextPath}/${javascriptFile}"></script>
         </#if>
     </#list>
 
@@ -66,21 +66,25 @@
             <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
         <#else>
             <script language="JavaScript" type="text/javascript"
-                                        src="${pageContext.request.contextPath}/${scriptFile}"></script>
+                                        src="${request.contextPath}/${scriptFile}"></script>
         </#if>
     </#list>
 
     <!-- preload script (server variables) -->
-    <script type="text/javascript">
-        ${view.preLoadScript}
-    </script>
+    <#if view.preLoadScript?has_content>
+        <script type="text/javascript">
+            ${view.preLoadScript}
+        </script>
+    </#if>
 
     <!-- custom script for the view -->
-    <script type="text/javascript">
-        jQuery(document).ready(function () {
-        ${view.onLoadScript}
-        })
-    </script>
+    <#if view.onLoadScript?has_content>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+            ${view.onLoadScript}
+            })
+        </script>
+    </#if>
 </head>
 
 <body>

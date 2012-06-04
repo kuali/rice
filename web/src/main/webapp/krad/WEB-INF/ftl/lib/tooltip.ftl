@@ -16,8 +16,8 @@
 
 <#macro tooltip component>
 
-    <#if component.toolTip.tooltipContent?has_content>
-        <@script component=component value="createTooltip('${component.id}', '${component.toolTip.tooltipContent}', ${component.toolTip.templateOptionsJSString}, ${component.toolTip.onMouseHover}, ${component.toolTip.onFocus});" />
+    <#if component.toolTip?? && component.toolTip.tooltipContent?has_content>
+        <@script component=component value="createTooltip('${component.id}', '${component.toolTip.tooltipContent}', ${component.toolTip.templateOptionsJSString!''}, ${component.toolTip.onMouseHover!''}, ${component.toolTip.onFocus!''});" />
         <@script component=component value="addAttribute('${component.id}', 'class', 'uif-tooltip', true);" />
     </#if>
 

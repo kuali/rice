@@ -14,5 +14,20 @@
   ~ limitations under the License.
   -->
 
-<#import "lib/kul.ftl" as kul />
-<#import "/spring.ftl" as spring />
+<@krad.groupWrap group=group>
+
+    <#assign tmpItems=items!/>
+    <#assign tmpManager=manager!/>
+    <#assign tmpContainer=container!/>
+
+    <#assign items=group.items/>
+    <#assign manager=group.layoutManager/>
+    <#assign container=group/>
+
+    <#include "${group.layoutManager.template}" parse=true/>
+
+    <#assign items=tmpItems/>
+    <#assign manager=tmpManager/>
+    <#assign container=tmpContainer/>
+
+</@krad.groupWrap>

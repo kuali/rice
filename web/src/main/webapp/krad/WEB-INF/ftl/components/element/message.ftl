@@ -14,28 +14,12 @@
   ~ limitations under the License.
   -->
 
-<#macro group group>
+<#--
+    Renders text in a span tag
+ -->
 
-    <@div component=group>
+<@krad.span component=element>
 
-        <@template component=group.header/>
+    ${element.messageText}
 
-        <#if group.disclosure.render>
-            <div id="${group.id}_disclosureContent" class="uif-disclosureContent">
-        </#if>
-
-        <@template component=group.validationMessages/>
-        <@template component=group.instructionalMessage/>
-
-        <#nested/>
-
-        <@template component=group.footer/>
-
-        <#if group.disclosure.render>
-            <@template component=group.disclosure parent=group/>
-            </div>
-        </#if>
-
-    </@div>
-
-</#macro>
+</@krad.span>

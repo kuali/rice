@@ -19,7 +19,7 @@ supported and configured on the component -->
 
 <#macro eventScript component>
 
-    <#assign script>
+    <#assign eventHandlers>
         <#if component.onLoadScript?has_content>
           jQuery('#' + '${component.id}').load(function() {
             ${component.onLoadScript}
@@ -117,9 +117,9 @@ supported and configured on the component -->
         </#if>
     </#assign>
 
-    <#assign script="${script?trim}"/>
-    <#if script?has_content>
-        <@script component="${component}" value="${script}" />
+    <#assign eventHandlers="${eventHandlers?trim}"/>
+    <#if eventHandlers?has_content>
+        <@krad.script component=component value="${eventHandlers}" />
     </#if>
 
 </#macro>

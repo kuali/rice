@@ -1640,6 +1640,15 @@ public final class FieldUtils {
             }
         }
 
+        if (!field.isColumnVisible()) {
+            RemotableAttributeLookupSettings.Builder lookupSettings =
+                    builder.getAttributeLookupSettings() == null
+                            ? RemotableAttributeLookupSettings.Builder.create()
+                            : RemotableAttributeLookupSettings.Builder.create(builder.getAttributeLookupSettings());
+            lookupSettings.setInResults(field.isColumnVisible());
+            builder.setAttributeLookupSettings(lookupSettings);
+        }
+
         if (field.getFieldType().equals(Field.CURRENCY)) {
             builder.setDataType(DataType.CURRENCY);
             builder.setMaxLength(field.getFormattedMaxLength());
@@ -1769,7 +1778,7 @@ public final class FieldUtils {
     private static void applyLookupAttributes(RemotableAttributeField remotableField, Field field) {
         AttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
         if (lookupSettings != null) {
-            field.setColumnVisible(lookupSettings.isInCriteria());
+            field.setColumnVisible(lookupSettings.isInResults());
             if (!lookupSettings.isInCriteria()) {
                 field.setFieldType(Field.HIDDEN);
             }
@@ -1855,7 +1864,7 @@ public final class FieldUtils {
         List<Column> attributeColumns = new ArrayList<Column>();
         if (attributeFields != null) {
             for (RemotableAttributeField attributeField : attributeFields) {
-                attributeColumns.add(constructColumnFromAttributeField(attributeField));
+                    attributeColumns.add(constructColumnFromAttributeField(attributeField));
             }
         }
         return attributeColumns;

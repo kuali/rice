@@ -48,6 +48,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -422,7 +423,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
             final String serviceName = type.getServiceName();
             if (serviceName != null) {
-                ResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(serviceName);
+                ResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(QName.valueOf(serviceName));
                 if (responsibiltyTypeService != null) {
                     responsibilityTypeServices.put(responsibility.getTemplate().getId(), responsibiltyTypeService);
                 } else {

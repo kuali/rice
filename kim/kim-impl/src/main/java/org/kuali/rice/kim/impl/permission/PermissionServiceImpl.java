@@ -48,6 +48,7 @@ import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -85,7 +86,7 @@ public class PermissionServiceImpl implements PermissionService {
     		return defaultPermissionTypeService;
     	}
     	try {
-	    	Object service = GlobalResourceLoader.getService(serviceName);
+	    	Object service = GlobalResourceLoader.getService(QName.valueOf(serviceName));
 	    	// if we have a service name, it must exist
 	    	if ( service == null ) {
 				throw new RuntimeException("null returned for permission type service for service name: " + serviceName);

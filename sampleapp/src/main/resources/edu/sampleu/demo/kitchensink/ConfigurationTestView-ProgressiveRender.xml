@@ -95,9 +95,9 @@
   <!-- testing https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/52bbf392a44c312d/6cfac6367373e3a8?lnk=gst&q=expression+error#6cfac6367373e3a8
   expression error on refresh for components within a collection -->
   <bean id="ConfigurationTestView-ProgressiveRender-TimeInfoSection" parent="Uif-Disclosure-TableCollectionSection">
-    <property name="headerText" value="TimeInfo - Spring Expression Test"/>
+    <property name="headerText" value="TimeInfo - Spring Expression and Multiple Component refresh Test"/>
     <property name="instructionalText"
-              value="testing expression error on refresh for components within a collection"/>
+              value="testing expression error on refresh and multiple component refresh for components within a collection"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.TimeInfo"/>
     <property name="propertyName" value="listTimeInfo"/>
     <property name="layoutManager.renderSequenceField" value="false" />

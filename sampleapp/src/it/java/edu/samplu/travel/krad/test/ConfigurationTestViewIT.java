@@ -121,6 +121,38 @@ public class ConfigurationTestViewIT {
     }
 
     /**
+         * test adding a line to a collection which  has the property refreshWhenChangedPropertyNames
+         * set on more than one component.
+         */
+        @Test
+        public void testAddLineWithAllDay() throws Exception{
+            openConfigurationTestView();
+            confirmAddLineControlsPresent();
+
+            String startTimeId = "id=" +idPrefix + "StartTime" + addLineIdSuffix;
+            selenium.focus(startTimeId);
+            String inputTime = "5:20";
+            selenium.type(startTimeId, inputTime);
+
+            String allDaySelector = "id=" + idPrefix + "AllDay" + addLineIdSuffix;
+            selenium.focus(allDaySelector);
+            Thread.sleep(5000); //allow for ajax refresh
+            selenium.click(allDaySelector);
+
+            String amPmSelectLocator = "id=" + idPrefix + "StartTimeAmPm" + addLineIdSuffix;
+            selenium.click(amPmSelectLocator);
+            selenium.select(amPmSelectLocator, "label=PM");
+            assertEquals("PM", selenium.getSelectedLabel(amPmSelectLocator));
+
+            Thread.sleep(5000); //allow for ajax refresh
+            selenium.click("css=div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+            Thread.sleep(5000); //allow for line to be added
+
+            //confirm that line has been added
+            assertTrue("line is not present", selenium.isElementPresent("//input[@value='5:20']"));
+        }
+
+    /**
      * verify that add line controls are present
      */
     private void confirmAddLineControlsPresent() {

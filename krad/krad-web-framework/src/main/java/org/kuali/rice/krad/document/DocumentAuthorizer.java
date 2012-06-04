@@ -38,13 +38,27 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
      * Checks if a user has the permissions to initiate a  document
      *
      * @param documentTypeName, user
-     *
      * @return boolean, true if the user has the permissions to initiate a document else false
      */
 
     public boolean canInitiate(String documentTypeName, Person user);
 
+    /**
+     * Checks if a user has the permissions to open a  document
+     *
+     * @param document, user
+     * @return boolean, true if the user has the permissions to open a document else false
+     */
+
     public boolean canOpen(Document document, Person user);
+
+    /**
+     * Determines if the document can be edited; if false is returned, then all fields are in a
+     * read only state
+     *
+     * @param document, user
+     * @return boolean, true if the user has the permissions to edit a document else false
+     */
 
     public boolean canEdit(Document document, Person user);
 

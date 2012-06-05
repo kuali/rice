@@ -40,7 +40,7 @@
   <bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
   <bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/text.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-textControl</value>
@@ -91,7 +91,7 @@
   <bean id="Uif-CheckboxControl" parent="Uif-CheckboxControl-parentBean"/>
   <bean id="Uif-CheckboxControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.CheckboxControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkbox.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/checkbox.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-checkboxControl</value>
@@ -102,7 +102,7 @@
   <bean id="Uif-HiddenControl" parent="Uif-HiddenControl-parentBean"/>
   <bean id="Uif-HiddenControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.HiddenControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/hidden.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/hidden.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-hiddenControl</value>
@@ -113,7 +113,7 @@
   <bean id="Uif-TextAreaControl" parent="Uif-TextAreaControl-parentBean"/>
   <bean id="Uif-TextAreaControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextAreaControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/textArea.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/textArea.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-textAreaControl</value>
@@ -159,7 +159,7 @@
   <bean id="Uif-DropdownControl" parent="Uif-DropdownControl-parentBean"/>
   <bean id="Uif-DropdownControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControl"
         scope="prototype" parent="Uif-ControlBase" p:multiple="false">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/select.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/select.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-dropdownControl</value>
@@ -170,7 +170,7 @@
   <bean id="Uif-MultiSelectControl" parent="Uif-MultiSelectControl-parentBean"/>
   <bean id="Uif-MultiSelectControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControl"
         scope="prototype" parent="Uif-ControlBase" p:multiple="true">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/select.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/select.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-multiSelectControl</value>
@@ -181,7 +181,7 @@
   <bean id="Uif-VerticalRadioControl" parent="Uif-VerticalRadioControl-parentBean"/>
   <bean id="Uif-VerticalRadioControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.RadioGroupControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/radioGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/radioGroup.ftl"/>
     <property name="fieldsetClasses">
       <list merge="true">
         <value>uif-verticalRadioFieldset</value>
@@ -199,7 +199,7 @@
   <bean id="Uif-HorizontalRadioControl-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.control.RadioGroupControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/radioGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/radioGroup.ftl"/>
     <property name="delimiter" value="&amp;nbsp;"/>
     <property name="fieldsetClasses">
       <list merge="true">
@@ -218,7 +218,7 @@
   <bean id="Uif-VerticalCheckboxesControl-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.control.CheckboxGroupControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkboxGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/jsp/ftl/components/checkboxGroup.ftl"/>
     <property name="fieldsetClasses">
       <list merge="true">
         <value>uif-verticalCheckboxesFieldset</value>
@@ -236,7 +236,7 @@
   <bean id="Uif-HorizontalCheckboxesControl-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.control.CheckboxGroupControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/checkboxGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/jsp/ftl/components/checkboxGroup.ftl"/>
     <property name="delimiter" value="&amp;nbsp;"/>
     <property name="fieldsetClasses">
       <list merge="true">
@@ -254,7 +254,7 @@
   <bean id="Uif-FileControl" parent="Uif-FileControl-parentBean"/>
   <bean id="Uif-FileControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.FileControl"
         scope="prototype" parent="Uif-ControlBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/file.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/file.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-fileControl</value>
@@ -284,7 +284,7 @@
   <bean id="Uif-SpinnerControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SpinnerControl"
         scope="prototype"
         parent="Uif-SmallTextControl">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/control/spinner.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/control/spinner.ftl"/>
     <property name="spinner">
       <bean parent="Uif-Spinner"/>
     </property>

@@ -32,13 +32,13 @@
   <bean id="Uif-Tabs" parent="Uif-Tabs-parentBean"/>
   <bean id="Uif-Tabs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tabs" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tabs.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/tabs.ftl"/>
   </bean>
 
   <bean id="Uif-DatePicker" parent="Uif-DatePicker-parentBean"/>
   <bean id="Uif-DatePicker-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DatePicker"
         scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/datePicker.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/datePicker.ftl"/>
     <property name="cssClasses" value="calendar"/>
     <property name="templateOptions">
       <map>
@@ -56,7 +56,7 @@
   <bean id="Uif-LightBox" parent="Uif-LightBox-parentBean"/>
   <bean id="Uif-LightBox-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxLink.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/lightBoxLink.ftl"/>
     <property name="height" value="95%"/>
     <property name="width" value="75%"/>
     <property name="templateOptions">
@@ -74,13 +74,13 @@
 
   <bean id="Uif-LightBoxPost" parent="Uif-LightBoxPost-parentBean"/>
   <bean id="Uif-LightBoxPost-parentBean" parent="Uif-LightBox" abstract="true">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxPost.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/lightBoxPost.ftl"/>
   </bean>
 
   <bean id="Uif-RichTable" parent="Uif-RichTable-parentBean"/>
   <bean id="Uif-RichTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.RichTable"
         scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/richTable.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/richTable.ftl"/>
     <property name="templateOptions">
       <map>
         <entry key="sDom" value="fTrtip"/>
@@ -118,7 +118,7 @@
   <bean id="Uif-QuickFinder" parent="Uif-QuickFinder-parentBean"/>
   <bean id="Uif-QuickFinder-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.QuickFinder"
         scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/quickFinder.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/quickFinder.ftl"/>
     <!-- TODO: change to use config krad.url -->
     <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
     <property name="multipleValuesSelect" value="false"/>
@@ -151,7 +151,7 @@
   <bean id="Uif-Inquiry" parent="Uif-Inquiry-parentBean"/>
   <bean id="Uif-Inquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Inquiry" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/inquiry.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/inquiry.ftl"/>
     <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
     <property name="enableDirectInquiry" value="true"/>
     <property name="inquiryLink">
@@ -187,7 +187,7 @@
   <bean id="Uif-Disclosure" parent="Uif-Disclosure-parentBean"/>
   <bean id="Uif-Disclosure-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Disclosure"
         scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/disclosure.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/disclosure.ftl"/>
     <property name="collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h3_expand.png"/>
     <property name="expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h3_collapse.png"/>
     <property name="animationSpeed" value="500"/>
@@ -198,7 +198,7 @@
   <bean id="Uif-Breadcrumbs" parent="Uif-Breadcrumbs-parentBean"/>
   <bean id="Uif-Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.BreadCrumbs"
         scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/templates/widget/breadcrumbs.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/breadcrumbs.ftl"/>
     <property name="displayHomewardPath" value="true"/>
     <property name="displayPassedHistory" value="true"/>
     <property name="displayBreadcrumbsWhenOne" value="false"/>
@@ -222,7 +222,7 @@
   <bean id="Uif-Tree" parent="Uif-Tree-parentBean"/>
   <bean id="Uif-Tree-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tree" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tree.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/tree.ftl"/>
     <property name="templateOptions">
       <map>
         <entry key="themes" value="{'theme' : 'default', 'dots' : 'true', 'icons' : 'false'}"/>
@@ -234,7 +234,7 @@
   <bean id="Uif-Suggest" parent="Uif-Suggest-parentBean"/>
   <bean id="Uif-Suggest-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Suggest" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/suggest.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/suggest.ftl"/>
     <property name="templateOptions">
       <map>
         <entry key="minLength" value="2"/>
@@ -249,7 +249,7 @@
   <bean id="Uif-Reorderer" parent="Uif-Reorderer-parentBean"/>
   <bean id="Uif-Reorderer-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Reorderer"
         scope="prototype" parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/reorderer.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/reorderer.ftl"/>
     <property name="movableStyleClass" value="flc-reorderer-movable"/>
   </bean>
 
@@ -299,7 +299,7 @@
 
   <bean id="Uif-Help" parent="Uif-Help-parentBean"/>
   <bean id="Uif-Help-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Help" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/help.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/help.ftl"/>
     <property name="toolTip">
       <bean parent="Uif-TooltipHelp"/>
     </property>

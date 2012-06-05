@@ -27,7 +27,7 @@
   <bean id="Uif-GroupBase" abstract="true" parent="Uif-GroupBase-parentBean"/>
   <bean id="Uif-GroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype"
         parent="Uif-ComponentBase">
-    <property name="template" value="/krad/templates/group/group.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/group.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-group</value>
@@ -273,7 +273,7 @@
   <bean id="Uif-TabGroup" parent="Uif-TabGroup-parentBean"/>
   <bean id="Uif-TabGroup-parentBean" abstract="true" parent="Uif-GroupBase"
         class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/tabGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-tabGroup</value>
@@ -320,7 +320,7 @@
   <bean id="Uif-NavigationGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.NavigationGroup"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/navigationGroup.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-navigationGroup</value>
@@ -353,7 +353,7 @@
   <bean id="Uif-TreeGroup" parent="Uif-TreeGroup-parentBean"/>
   <bean id="Uif-TreeGroup-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Uif-GroupBase">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/treeGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-treeGroup</value>
@@ -417,7 +417,7 @@
   <bean id="Uif-ReorderGroup" parent="Uif-ReorderGroup-parentBean"/>
   <bean id="Uif-ReorderGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
         scope="prototype" parent="Uif-VerticalBoxGroup">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/reorderingGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderGroup</value>
@@ -430,7 +430,7 @@
 
   <bean id="Uif-ReorderSection" parent="Uif-ReorderSection-parentBean"/>
   <bean id="Uif-ReorderSection-parentBean" abstract="true" scope="prototype" parent="Uif-ReorderGroup">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/reorderingGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderSection</value>
@@ -482,7 +482,7 @@
         <value>uif-collectionGroup</value>
       </list>
     </property>
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/collectionGroup.ftl"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
@@ -944,7 +944,7 @@
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxGroup">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/dialogGroup.ftl"/>
     <property name="layoutManager">
       <bean parent="Uif-VerticalBoxLayout"/>
     </property>

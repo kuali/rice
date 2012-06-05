@@ -14,23 +14,14 @@
   ~ limitations under the License.
   -->
 
-<#-- Used to wrap field templates and handle the label rendering -->
+<#-- used to make a property path safe for use in an id -->
 
-<#macro fieldLbl field>
+<#function cleanPath path>
 
-    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#assign renderLabel=field.label?has_content && !field.labelRendered/>
+    <#assign path="${path?replace('.','_')}"/>
+    <#assign path="${path?replace('[','-lbrak-')}"/>
+    <#assign path="${path?replace(']','-rbrak-')}"/>
+    <#assign path="${path?replace('\\\'','-quot-')}"/>
 
-    <#-- render field label left -->
-    <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>
-        <@template component=field.fieldLabel/>
-    </#if>
-
-    <#nested>
-
-    <#-- render field label right -->
-    <#if renderLabel && (field.labelPlacement == 'RIGHT')>
-        <@template component=field.fieldLabel/>
-    </#if>
-
-</#macro>
+    <#return path/>
+</#function>

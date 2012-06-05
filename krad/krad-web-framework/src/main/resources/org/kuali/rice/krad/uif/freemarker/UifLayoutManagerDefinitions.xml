@@ -27,7 +27,7 @@
   <bean id="Uif-BoxLayoutBase" abstract="true" parent="Uif-BoxLayoutBase-parentBean"/>
   <bean id="Uif-BoxLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/templates/layout/box.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/box.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-boxLayout</value>
@@ -60,7 +60,7 @@
   <bean id="Uif-GridLayoutBase" abstract="true" parent="Uif-GridLayoutBase-parentBean"/>
   <bean id="Uif-GridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/grid.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-gridLayout</value>
@@ -95,7 +95,7 @@
   <bean id="Uif-TableCollectionLayout" parent="Uif-TableCollectionLayout-parentBean"/>
   <bean id="Uif-TableCollectionLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/table.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/table.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-tableCollectionLayout</value>
@@ -141,7 +141,7 @@
   <bean id="Uif-StackedCollectionLayoutBase" abstract="true" parent="Uif-StackedCollectionLayoutBase-parentBean"/>
   <bean id="Uif-StackedCollectionLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/layout/stacked.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-stackedCollectionLayout</value>

@@ -31,7 +31,7 @@
   <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ValidationMessages"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/validationMessages.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/validationMessages.ftl"/>
     <!--By default not displayed - all display is handled by the framework - do not change-->
     <property name="style" value="display: none;"/>
     <property name="cssClasses">
@@ -82,7 +82,7 @@
   <bean id="Uif-Iframe" parent="Uif-Iframe-parentBean"/>
   <bean id="Uif-Iframe-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Iframe"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/iframe.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/iframe.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-iFrame</value>
@@ -93,7 +93,7 @@
   <bean id="Uif-Image" parent="Uif-Image-parentBean"/>
   <bean id="Uif-Image-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Image"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/image.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/image.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-image</value>
@@ -111,7 +111,7 @@
   <bean id="Uif-Label" parent="Uif-Label-parentBean"/>
   <bean id="Uif-Label-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Label"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/label.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/label.ftl"/>
     <property name="cssClasses">
       <list>
         <value>uif-label</value>
@@ -125,7 +125,7 @@
   <bean id="Uif-Link" parent="Uif-Link-parentBean"/>
   <bean id="Uif-Link-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Link"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/link.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/link.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-link</value>
@@ -142,7 +142,7 @@
   <bean id="Uif-DataTable" parent="Uif-DataTable-parentBean"/>
   <bean id="Uif-DataTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DataTable"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/dataTable.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/dataTable.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-tableCollectionLayout</value>
@@ -168,7 +168,7 @@
   <bean id="Uif-Action" parent="Uif-Action-parentBean"/>
   <bean id="Uif-Action-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Action"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/action.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/action.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-action</value>
@@ -224,7 +224,7 @@
 
   <bean id="Uif-ActionLink" parent="Uif-ActionLink-parentBean"/>
   <bean id="Uif-ActionLink-parentBean" abstract="true" parent="Uif-Action" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/element/actionLink.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/actionLink.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-actionLink</value>
@@ -285,7 +285,7 @@
   <bean id="Uif-Message" parent="Uif-Message-parentBean"/>
   <bean id="Uif-Message-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Message"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/templates/element/message.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/message.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-message</value>

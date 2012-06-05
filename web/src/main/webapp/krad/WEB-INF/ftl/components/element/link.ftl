@@ -14,23 +14,20 @@
   ~ limitations under the License.
   -->
 
-<#-- Used to wrap field templates and handle the label rendering -->
+<#--
+    Standard HTML Link
 
-<#macro fieldLbl field>
+ -->
 
-    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#assign renderLabel=field.label?has_content && !field.labelRendered/>
+<#if element.skipInTabOrder>
+    <#assign tabindex="tabindex=-1"/>
+</#if>
 
-    <#-- render field label left -->
-    <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>
-        <@template component=field.fieldLabel/>
-    </#if>
+<#if !body?trim?has_content>
+    <#assign body="${element.linkText!}"/>
+</#if>
 
-    <#nested>
+<a id="${element.id}" href="${element.href!}" target="${element.target!}"
+   ${attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}>${body!}</a>
 
-    <#-- render field label right -->
-    <#if renderLabel && (field.labelPlacement == 'RIGHT')>
-        <@template component=field.fieldLabel/>
-    </#if>
-
-</#macro>
+<@krad.template component=element.lightBox componentId="${element.id}"/>

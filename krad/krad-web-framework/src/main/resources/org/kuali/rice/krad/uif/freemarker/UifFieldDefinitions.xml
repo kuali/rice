@@ -21,7 +21,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
   <!-- Base Fields -->
 
   <bean id="Uif-FieldBase" abstract="true" parent="Uif-FieldBase-parentBean"/>
@@ -45,7 +44,7 @@
   <bean id="Uif-DataField" parent="Uif-DataField-parentBean"/>
   <bean id="Uif-DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
         parent="Uif-FieldBase-withLabel">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
     <property name="readOnly" value="true"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
@@ -90,7 +89,7 @@
   <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"
         parent="Uif-DataField"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-inputField</value>
@@ -159,7 +158,7 @@
   <bean id="Uif-ActionField" parent="Uif-ActionField-parentBean"/>
   <bean id="Uif-ActionField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/actionField.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-actionField</value>
@@ -173,7 +172,7 @@
   <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
   <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/messageField.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-messageField</value>
@@ -187,7 +186,7 @@
   <bean id="Uif-LinkField" parent="Uif-LinkField-parentBean"/>
   <bean id="Uif-LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/linkField.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-linkField</value>
@@ -201,7 +200,7 @@
   <bean id="Uif-ImageField" parent="Uif-ImageField-parentBean"/>
   <bean id="Uif-ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/imageField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/imageField.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-imageField</value>
@@ -215,7 +214,7 @@
   <bean id="Uif-SpaceField" parent="Uif-SpaceField-parentBean"/>
   <bean id="Uif-SpaceField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.SpaceField"
         parent="Uif-FieldBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/spaceField.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/spaceField.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-spaceField</value>
@@ -236,7 +235,7 @@
   <bean id="Uif-FieldGroupBase" parent="Uif-FieldGroupBase-parentBean"/>
   <bean id="Uif-FieldGroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup"
         parent="Uif-FieldBase-withLabel" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/field/fieldGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/fieldGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-fieldGroup</value>
@@ -349,7 +348,5 @@
       <bean parent="Uif-CheckboxControl"/>
     </property>
   </bean>
-
-
 
 </beans>

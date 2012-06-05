@@ -111,7 +111,7 @@
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean"/>
   <bean id="Uif-View-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.View" scope="prototype" parent="Uif-ComponentBase">
-    <property name="template" value="/krad/templates/view/view.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/view/view.ftl"/>
     <property name="theme">
       <bean parent="Uif-KradTheme"/>
     </property>
@@ -173,7 +173,7 @@
 
   <bean id="Uif-Page" parent="Uif-Page-parentBean"/>
   <bean id="Uif-Page-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
-    <property name="template" value="/krad/templates/group/page.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/page.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-page</value>

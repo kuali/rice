@@ -20,7 +20,7 @@
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.SpaceField"/>
 
 <%--
-    Writes out HTML space entity with a span wrapper
+    Writes out HTML space entity with a div wrapper
     
  --%>
 

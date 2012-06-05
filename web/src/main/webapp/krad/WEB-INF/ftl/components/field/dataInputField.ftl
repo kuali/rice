@@ -56,7 +56,7 @@
           <@krad.template component=field.instructionalMessage/>
 
           <#-- render control for input -->
-          <@krad.template component=field.control field="${field}"/>
+          <@krad.template component=field.control field=field/>
 
       </#if>
 
@@ -87,50 +87,33 @@
   <span id="${field.id}_info_message"></span>
 
   <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
-      <span id="${field.id}_info_${infoPropertyPath_index}" class="uif-informationalMessage">
-
+      <span id="${field.id}_info_${cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
+          <@spring.bind path="KualiForm.${infoPropertyPath}"/>
+          ${spring.status.value?default("")}
       </span>
   </#list>
 
+  <#-- render field help -->
+  <@krad.template component=field.help/>
+
+  <#-- render field suggest if field is editable -->
+  <#if !readOnly>
+      <@krad.template component=field.suggest parent=field/>
+  </#if>
+
+  <#-- render hidden fields -->
+  <#-- TODO: always render hiddens if configured? -->
+  <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
+      <@spring.formHiddenInput path="KualiForm.${hiddenPropertyName}"
+                               attributes='id="${field.id}_h${hiddenPropertyName_index}"'/>
+  </#list>
+
+  <#-- transform all text on attribute field to uppercase -->
+  <#if !readOnly && field.control?? && field.uppercaseValue>
+      <@krad.script value="uppercaseValue('${field.control.id}');"/>
+  </#if>
+
 </@krad.div>
-
-
-
-
-
-
-  <%-- render span and values for informational properties --%>
-  <span id="${field.id}_info_message"></span>
-  <c:forEach items="${field.propertyNamesForAdditionalDisplay}" var="infoPropertyPath" varStatus="status">
-    <%-- TODO: clean this up somehow! --%>
-    <c:set var="infoPropertyId" value="${fn:replace(infoPropertyPath,'.','_')}"/>
-    <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'[','-lbrak-')}"/>
-    <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,']','-rbrak-')}"/>
-    <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'\\\'','-quot-')}"/>
-     <span id="${field.id}_info_${infoPropertyPath_index}" class="uif-informationalMessage">
-        <s:bind path="${infoPropertyPath}">${status.value}</s:bind>
-     </span>
-  </c:forEach>
-
-  <%-- render field help --%>
-  <krad:template component="${field.help}"/>
-
-  <%-- render field suggest if field is editable --%>
-  <c:if test="${!readOnly}">
-    <krad:template component="${field.suggest}" parent="${field}"/>
-  </c:if>
-
-  <%-- render hidden fields --%>
-  <%-- TODO: always render hiddens if configured? --%>
-  <c:forEach items="${field.additionalHiddenPropertyNames}" var="hiddenPropertyName" varStatus="status">
-    <form:hidden id="${field.id}_h${status.count}" path="${hiddenPropertyName}"/>
-  </c:forEach>
-
-  <%-- transform all text on attribute field to uppercase --%>
-  <c:if test="${!readOnly && field.uppercaseValue}">
-    <krad:script value="uppercaseValue('${field.control.id}');"/>
-  </c:if>
-</krad:div>
 
 
 

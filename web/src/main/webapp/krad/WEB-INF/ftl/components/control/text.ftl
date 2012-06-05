@@ -19,12 +19,30 @@
 
  -->
 
+<#assign attributes='id="${control.id}" size="${control.size!}" cssClass="${control.styleClassesAsString!}"
+         tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
 
-<#assign attributes='id="${control.id}" disabled="${control.disabled}" size="${control.size}" maxlength="${control.maxLength}" 
-         readonly="${control.readOnly}" cssClass="${control.styleClassesAsString!}" cssStyle="${control.style!}"
-         tabindex="${control.tabIndex}" minLength="${control.minLength}" ${element.simpleDataAttributes!}'/>
+<#if control.disabled>
+    <#assign attributes='${attributes} disabled="true"'/>
+</#if>
 
-<@spring.formInput path="${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+<#if control.readOnly>
+    <#assign attributes='${attributes} readonly="true"'/>
+</#if>
+
+<#if control.style?has_content>
+    <#assign attributes='${attributes} cssStyle="${control.style}"'/>
+</#if>
+
+<#if control.maxLength??>
+    <#assign attributes='${attributes} maxlength="${control.maxLength}"'/>
+</#if>
+
+<#if control.minLength??>
+    <#assign attributes='${attributes} minLength="${control.minLength}"'/>
+</#if>
+
+<@spring.formInput path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
 <#--
 Use double quotes around watermark text to avoid apostrophe trouble

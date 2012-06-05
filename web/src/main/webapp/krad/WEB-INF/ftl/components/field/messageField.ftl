@@ -14,23 +14,15 @@
   ~ limitations under the License.
   -->
 
-<#-- Used to wrap field templates and handle the label rendering -->
+<#--
+    Generates span and label then invoked template for message component
 
-<#macro fieldLbl field>
+ -->
 
-    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#assign renderLabel=field.label?has_content && !field.labelRendered/>
+<@krad.div component=field>
 
-    <#-- render field label left -->
-    <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>
-        <@template component=field.fieldLabel/>
-    </#if>
+    <@krad.fieldLbl field=field>
+        <@krad.template component=field.message/>
+    </@krad.fieldLbl>
 
-    <#nested>
-
-    <#-- render field label right -->
-    <#if renderLabel && (field.labelPlacement == 'RIGHT')>
-        <@template component=field.fieldLabel/>
-    </#if>
-
-</#macro>
+</@krad.div>

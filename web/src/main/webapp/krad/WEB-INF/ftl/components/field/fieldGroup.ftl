@@ -14,23 +14,20 @@
   ~ limitations under the License.
   -->
 
-<#-- Used to wrap field templates and handle the label rendering -->
+<#--
+    Field that contains a nested Group
 
-<#macro fieldLbl field>
+ -->
 
-    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#assign renderLabel=field.label?has_content && !field.labelRendered/>
+<@krad.div component=field>
 
-    <#-- render field label left -->
-    <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>
-        <@template component=field.fieldLabel/>
-    </#if>
+   <@krad.fieldLbl field=field>
 
-    <#nested>
+       <fieldset aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
+           <legend style="display: none">${field.label!}</legend>
+           <@krad.template component=field.group/>
+       </fieldset>
 
-    <#-- render field label right -->
-    <#if renderLabel && (field.labelPlacement == 'RIGHT')>
-        <@template component=field.fieldLabel/>
-    </#if>
+   </@krad.fieldLbl>
 
-</#macro>
+</@krad.div>

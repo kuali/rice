@@ -14,23 +14,13 @@
   ~ limitations under the License.
   -->
 
-<#-- Used to wrap field templates and handle the label rendering -->
+<#--
+    Writes out HTML space entity with a div wrapper
 
-<#macro fieldLbl field>
+ -->
 
-    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#assign renderLabel=field.label?has_content && !field.labelRendered/>
+<@krad.div component=field>
 
-    <#-- render field label left -->
-    <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>
-        <@template component=field.fieldLabel/>
-    </#if>
+    &nbsp;
 
-    <#nested>
-
-    <#-- render field label right -->
-    <#if renderLabel && (field.labelPlacement == 'RIGHT')>
-        <@template component=field.fieldLabel/>
-    </#if>
-
-</#macro>
+</@krad.div>

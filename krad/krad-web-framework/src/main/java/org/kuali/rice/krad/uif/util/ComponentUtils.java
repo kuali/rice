@@ -434,7 +434,7 @@ public class ComponentUtils {
      */
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
-        pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
+        pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
         
         boolean isAddLine = (lineIndex == -1);
         pushObjectToContext(component, UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
@@ -475,9 +475,9 @@ public class ComponentUtils {
                 orderedItems.add(component);
             }
             // check if the order value has been used already
-            else if (!foundOrders.contains(new Integer(order))) {
+            else if (!foundOrders.contains(Integer.valueOf(order))) {
                 orderedItems.add(component);
-                foundOrders.add(new Integer(order));
+                foundOrders.add(Integer.valueOf(order));
             }
         }
 
@@ -490,7 +490,7 @@ public class ComponentUtils {
             // if order property not set assign default
             if (order == 0) {
                 defaultOrderSequence++;
-                while (foundOrders.contains(new Integer(defaultOrderSequence))) {
+                while (foundOrders.contains(Integer.valueOf(defaultOrderSequence))) {
                     defaultOrderSequence++;
                 }
                 component.setOrder(defaultOrderSequence);

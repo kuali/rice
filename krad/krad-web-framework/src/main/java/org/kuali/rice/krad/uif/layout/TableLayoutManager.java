@@ -87,6 +87,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     private boolean renderAddBlankLineButton;
     private Action addBlankLineAction;
+    private String addBlankLineActionPlacement;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -94,7 +95,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         renderSequenceField = true;
         generateAutoSequence = false;
         separateAddLine = false;
-        renderAddBlankLineButton = false;
+        addBlankLineActionPlacement = "TOP";
 
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
@@ -984,5 +985,28 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public void setAddBlankLineAction(Action addBlankLineAction) {
         this.addBlankLineAction = addBlankLineAction;
+    }
+
+    /**
+     * Indicates the add blank line action placement
+     *
+     * <p>
+     * Valid values are 'TOP' or 'BOTTOM'. The default is 'TOP'. When the value is 'BOTTOM' the blank line will be added
+     * to the end of the collection.
+     * </p>
+     *
+     * @return String - the add blank line action placement
+     */
+    public String getAddBlankLineActionPlacement() {
+        return addBlankLineActionPlacement;
+    }
+
+    /**
+     * Setter for the add blank line action placement
+     *
+     * @param addBlankLineActionPlacement - add blank line action placement string
+     */
+    public void setAddBlankLineActionPlacement(String addBlankLineActionPlacement) {
+        this.addBlankLineActionPlacement = addBlankLineActionPlacement;
     }
 }

@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
@@ -1337,7 +1338,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            addLine(collection, addLine);
+            addLine(collection, addLine, true);
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
@@ -1368,7 +1369,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
         applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
-        addLine(collection, newLine);
+        boolean insertFirst = collectionGroup.getLayoutManager() instanceof TableLayoutManager
+                && ((TableLayoutManager) collectionGroup.getLayoutManager()).getAddBlankLineActionPlacement().equals("TOP");
+        addLine(collection, newLine, insertFirst);
 
         ((UifFormBase) model).addAddedCollectionItem(collectionPath, newLine);
 
@@ -1380,9 +1383,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @param collection - the Collection to add the given addLine to
      * @param addLine - the line to add to the given collection
+     * @param insertFirst - indicates if the item should be inserted as the first item
      */
-    protected void addLine(Collection<Object> collection, Object addLine) {
-        if (collection instanceof List) {
+    protected void addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
+        if (insertFirst && (collection instanceof List)) {
             ((List) collection).add(0, addLine);
         } else {
             collection.add(addLine);

@@ -28,6 +28,7 @@
           <property name="items">
             <list>
               <ref bean="CollectionsM2Test-collectionTest"/>
+              <ref bean="CollectionsM2Test-collectionTest3"/>
               <ref bean="CollectionsM2Test-collectionTest2"/>
             </list>
           </property>
@@ -52,7 +53,7 @@
               value="CollectionGroupTableLayout" />
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject" />
-    <property name="propertyName" value="list2" />
+    <property name="propertyName" value="list1" />
     <property name="layoutManager.generateAutoSequence" value="true" />
     <property name="layoutManager.richTable.render" value="true" />
     <property name="layoutManager.renderAddBlankLineButton" value="true"/>
@@ -69,6 +70,11 @@
         </bean>
       </list>
     </property>
+  </bean>
+
+  <bean id="CollectionsM2Test-collectionTest3" parent="CollectionsM2Test-collectionTest">
+    <property name="propertyName" value="list1" />
+    <property name="layoutManager.addBlankLineActionPlacement" value="BOTTOM"/>
   </bean>
 
   <bean id="CollectionsM2Test-collectionTest2" parent="Uif-Disclosure-StackedCollectionSection">

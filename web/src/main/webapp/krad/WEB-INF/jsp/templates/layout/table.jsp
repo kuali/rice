@@ -38,7 +38,7 @@
   <krad:template component="${manager.addLineGroup}"/>
 </c:if>
 
-<c:if test="${manager.renderAddBlankLineButton}">
+<c:if test="${manager.renderAddBlankLineButton && manager.addBlankLineActionPlacement eq 'TOP'}">
   <krad:template component="${manager.addBlankLineAction}"/>
 </c:if>
 
@@ -60,6 +60,10 @@
 		  </tbody>
 	  	
 	</table>
+</c:if>
+
+<c:if test="${manager.renderAddBlankLineButton && manager.addBlankLineActionPlacement eq 'BOTTOM'}">
+  <krad:template component="${manager.addBlankLineAction}"/>
 </c:if>
 
 <%-- invoke table tools widget --%>

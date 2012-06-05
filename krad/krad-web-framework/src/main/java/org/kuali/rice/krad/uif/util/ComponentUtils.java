@@ -40,8 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Utility class providing methods to help create and modify
- * <code>Component</code> instances
+ * ComponentUtils is a utility class providing methods to help create and modify <code>Component</code> instances
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -357,12 +356,29 @@ public class ComponentUtils {
         return componentProperties;
     }
 
+    /**
+     * places a key, value pair in each context map of a list of components
+     *
+     * @param components - the list components
+     * @param contextName - a value to be used as a key to retrieve the object
+     * @param contextValue - the value to be placed in the context
+     */
     public static void pushObjectToContext(List<? extends Component> components, String contextName, Object contextValue) {
         for (Component component : components) {
             pushObjectToContext(component, contextName, contextValue);
         }
     }
 
+    /**
+     * pushes object to a component's context so that it is available from {@link Component#getContext()}
+     *
+     * <p>The component's nested components that are available via {@code Component#getComponentsForLifecycle}
+     * are also updated recursively</p>
+     *
+     * @param component - the component whose context is to be updated
+     * @param contextName - a value to be used as a key to retrieve the object
+     * @param contextValue - the value to be placed in the context
+     */
     public static void pushObjectToContext(Component component, String contextName, Object contextValue) {
         if (component == null) {
             return;
@@ -374,10 +390,13 @@ public class ComponentUtils {
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
             if (layoutManager != null) {
-                layoutManager.pushObjectToContext(contextName, contextValue);
+                // add to layout manager context only if not present
+                if (layoutManager.getContext().get(contextName) != contextValue) {
+                    layoutManager.pushObjectToContext(contextName, contextValue);
 
-                for (Component nestedComponent : layoutManager.getComponentsForLifecycle()) {
-                    pushObjectToContext(nestedComponent, contextName, contextValue);
+                    for (Component nestedComponent : layoutManager.getComponentsForLifecycle()) {
+                        pushObjectToContext(nestedComponent, contextName, contextValue);
+                    }
                 }
             }
         }
@@ -387,6 +406,15 @@ public class ComponentUtils {
         }
     }
 
+    /**
+     * update the contexts of the given components
+     *
+     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int)} for each component</p>
+     *
+     * @param components - the components whose components to update
+     * @param collectionLine - an instance of the data object for the line
+     * @param lineIndex - the line index
+     */
     public static void updateContextsForLine(List<? extends Component> components, Object collectionLine,
             int lineIndex) {
         for (Component component : components) {
@@ -394,6 +422,16 @@ public class ComponentUtils {
         }
     }
 
+    /**
+     * update the context map for the given component
+     *
+     * <p>The values of {@code UifConstants.ContextVariableNames.LINE} and {@code UifConstants.ContextVariableNames.INDEX}
+     * are set to {@code collectionLine} and {@code lineIndex} respectively.</p>
+     *
+     * @param component - the component whose context is to be updated
+     * @param collectionLine - an instance of the data object for the line
+     * @param lineIndex - the line index
+     */
     public static void updateContextForLine(Component component, Object collectionLine, int lineIndex) {
         pushObjectToContext(component, UifConstants.ContextVariableNames.LINE, collectionLine);
         pushObjectToContext(component, UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));

@@ -221,6 +221,26 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Called by the add blank line action for a new collection line. Method
+     * determines which collection the add action was selected for and invokes
+     * the view helper service to add the blank line
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
+    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        if (StringUtils.isBlank(selectedCollectionPath)) {
+            throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
+        }
+
+        View view = uifForm.getPostedView();
+        view.getViewHelperService().processCollectionAddBlankLine(view, uifForm, selectedCollectionPath);
+
+        return getUIFModelAndView(uifForm);
+    }
+
+    /**
      * Called by the delete line action for a model collection. Method
      * determines which collection the action was selected for and the line
      * index that should be removed, then invokes the view helper service to

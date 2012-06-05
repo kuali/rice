@@ -179,6 +179,19 @@ public interface ViewHelperService {
 	 */
 	public void processCollectionAddLine(View view, Object model, String collectionPath);
 
+    /**
+     * Adds a blank line to the collection
+     *
+     * <p>
+     * Adds a new collection item to the collection and applies any default values.
+     * </p>
+     *
+     * @param view - view instance that is being presented (the action was taken on)
+     * @param model - Top level object containing the view data including the collection and new line
+     * @param collectionPath - full path to the collection on the model
+     */
+    public void processCollectionAddBlankLine(View view, Object model, String collectionPath);
+
 	/**
 	 * Invoked when the delete line action is chosen for a collection. The
 	 * collection path gives the full path to the collection that action was

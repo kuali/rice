@@ -196,7 +196,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     public void performComponentLifecycle(View view, Object model, Component component, String origId) {
         Component origComponent = view.getViewIndex().getComponentById(origId);
-        
+
         // run through and assign any ids starting with the id for the refreshed component (this might be
         // necessary if we are getting a new component instance from the bean factory)
         Integer currentSequenceVal = view.getIdSequence();
@@ -224,7 +224,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nestedComponent : nestedComponents) {
             nestedComponent.pushAllToContext(origComponent.getContext());
         }
-        
+
         // the expression graph for refreshed components is captured in the view index (initially it might expressoins
         // might have come from a parent), after getting the expression graph then we need to populate the expressions
         // on the configurable for which they apply
@@ -337,7 +337,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * </p>
      *
      * @throws RiceRuntimeException if the component id or factoryId is not specified
-     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
@@ -858,8 +857,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             if (field instanceof Action) {
                 Action action = (Action) field;
 
-                boolean canTakeAction = authorizer.canPerformAction(view, model, action,
-                        action.getActionEvent(), action.getId(), user);
+                boolean canTakeAction = authorizer.canPerformAction(view, model, action, action.getActionEvent(),
+                        action.getId(), user);
                 if (canTakeAction) {
                     canTakeAction = presentationController.canPerformAction(view, model, action,
                             action.getActionEvent(), action.getId());
@@ -1037,11 +1036,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     + "');";
 
             String kradURL = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString("krad.url");
-            clientStateScript += "setConfigParam('"
-                    + UifConstants.ClientSideVariables.KRAD_URL
-                    + "','"
-                    + kradURL
-                    + "');";
+            clientStateScript +=
+                    "setConfigParam('" + UifConstants.ClientSideVariables.KRAD_URL + "','" + kradURL + "');";
         }
 
         return clientStateScript;
@@ -1347,9 +1343,35 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
         }
 
-        ((UifFormBase)model).addAddedCollectionItem(collectionPath, addLine);
+        ((UifFormBase) model).addAddedCollectionItem(collectionPath, addLine);
 
         processAfterAddLine(view, collectionGroup, model, addLine);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddBlankLine(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, java.lang.String)
+     */
+    @Override
+    public void processCollectionAddBlankLine(View view, Object model, String collectionPath) {
+        // get the collection group from the view
+        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+        if (collectionGroup == null) {
+            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+        }
+
+        // get the collection instance for adding the new line
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+        if (collection == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+        }
+
+        Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
+        applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
+        addLine(collection, newLine);
+
+        ((UifFormBase) model).addAddedCollectionItem(collectionPath, newLine);
+
     }
 
     /**
@@ -1366,7 +1388,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             collection.add(addLine);
         }
     }
-
 
     /**
      * Performs validation on the new collection line before it is added to the

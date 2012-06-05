@@ -85,12 +85,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     private String actionColumnPlacement;
 
+    private boolean renderAddBlankLineButton;
+    private Action addBlankLineAction;
+
     public TableLayoutManager() {
         useShortLabels = false;
         repeatHeader = false;
         renderSequenceField = true;
         generateAutoSequence = false;
         separateAddLine = false;
+        renderAddBlankLineButton = false;
 
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
@@ -138,6 +142,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         CollectionGroup collectionGroup = (CollectionGroup) container;
 
+        if (renderAddBlankLineButton) {
+            String clientSideJs = "performCollectionAction('" + collectionGroup.getId() + "');";
+            if (StringUtils.isNotBlank(addBlankLineAction.getClientSideJs())) {
+                clientSideJs = addBlankLineAction.getClientSideJs() + clientSideJs;
+            }
+            addBlankLineAction.setClientSideJs(clientSideJs);
+        }
+
         int totalColumns = getNumberOfDataColumns();
         if (renderSequenceField) {
             totalColumns++;
@@ -151,6 +163,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             totalColumns++;
         }
 
+        setNumberOfColumns(totalColumns);
+
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
             String highlightScript = "jQuery(\"#" + container.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
@@ -160,7 +174,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
             collectionGroup.setOnDocumentReadyScript(highlightScript);
         }
-        setNumberOfColumns(totalColumns);
     }
 
     /**
@@ -180,6 +193,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             Object currentLine, int lineIndex) {
 
         boolean isAddLine = lineIndex == -1;
+
+        if (isAddLine && renderAddBlankLineButton) {
+            return;
+        }
+
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
         int extraColumns = 0;
 
@@ -511,6 +529,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         components.add(addLineGroup);
         components.addAll(headerLabels);
         components.addAll(dataFields);
+        components.add(addBlankLineAction);
 
         return components;
     }
@@ -924,5 +943,46 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         } else if (StringUtils.isNumeric(actionColumnPlacement)) {
             actionColumnIndex = Integer.parseInt(actionColumnPlacement);
         }
+    }
+
+    /**
+     * Indicates that a button will be rendered that allows the user to add blank lines to the collection
+     *
+     * <p>
+     * The button will be added separately from the collection items. The default add line wil not be rendered. The
+     * action of the button will call the controller, add the blank line to the collection and do a component refresh.
+     * </p>
+     *
+     * @return boolean
+     */
+    public boolean isRenderAddBlankLineButton() {
+        return renderAddBlankLineButton;
+    }
+
+    /**
+     * Setter for the flag indicating that the add blank line button must be rendered
+     *
+     * @param renderAddBlankLineButton
+     */
+    public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
+        this.renderAddBlankLineButton = renderAddBlankLineButton;
+    }
+
+    /**
+     * The add blank line {@link Action} field rendered when renderAddBlankLineButton is true
+     *
+     * @return boolean
+     */
+    public Action getAddBlankLineAction() {
+        return addBlankLineAction;
+    }
+
+    /**
+     * Setter for the add blank line {@link Action} field
+     *
+     * @param addBlankLineAction
+     */
+    public void setAddBlankLineAction(Action addBlankLineAction) {
+        this.addBlankLineAction = addBlankLineAction;
     }
 }

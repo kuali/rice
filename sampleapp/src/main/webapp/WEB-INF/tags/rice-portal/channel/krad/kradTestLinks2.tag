@@ -30,6 +30,7 @@
     <li><portal:portalLink displayTitle="true" title="Configuration Test View" url="${ConfigProperties.application.url}/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Dialog Test View" url="${ConfigProperties.application.url}/kr-krad/dialog-configuration-test?viewId=DialogTestView&methodToCall=start" /></li>
     <li><portal:portalLink displayTitle="true" title="Generated Fields Test" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifGeneratedFields&methodToCall=start" /></li>
+    <li><portal:portalLink displayTitle="true" title="Collections M2 items Test View" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=CollectionsM2Test&methodToCall=start" /></li>
   </ul>
    <br/>
 

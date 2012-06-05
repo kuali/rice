@@ -38,6 +38,10 @@
   <krad:template component="${manager.addLineGroup}"/>
 </c:if>
 
+<c:if test="${manager.renderAddBlankLineButton}">
+  <krad:template component="${manager.addBlankLineAction}"/>
+</c:if>
+
 <c:if test="${!empty manager.headerLabels}">
 	<table id="${manager.id}" ${style} ${styleClass}>
 		

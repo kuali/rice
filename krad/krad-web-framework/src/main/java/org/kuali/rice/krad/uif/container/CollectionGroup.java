@@ -255,8 +255,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(components, Action.class);
         for (Action action : actions) {
-            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
-                    this.getBindingInfo().getBindingPath());
+            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, this.getBindingInfo().getBindingPath());
         }
     }
 
@@ -289,12 +288,12 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Retrieve list of components that are contained within the component and should be sent through
      * the lifecycle
-     * 
+     *
      * <p>The items need to be included when an object is being copied to all the groups nested components
      * @see #pushCollectionGroupToReference()
      * The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
      *
-     * @param includeItems - whether the components items should be included. 
+     * @param includeItems - whether the components items should be included.
      * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
      */
     public List<Component> getComponentsForLifecycle(boolean includeItems) {

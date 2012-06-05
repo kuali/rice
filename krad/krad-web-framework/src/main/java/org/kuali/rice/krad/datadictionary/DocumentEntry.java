@@ -391,22 +391,26 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the
-     *         order in
-     *         which they were added
+     * The defaultExistenceChecks element contains a list of reference object names which are required to exist when
+     * maintaining a BO
+     *
+     * <p>
+     * Optionally, the reference objects can be required to be active. The list keeps the order in which they were
+     * added. JSTL: defaultExistenceChecks is a Map of Reference elements, whose entries are keyed by attributeName.
+     * </p>
+     *
+     * @return
      */
     public List<ReferenceDefinition> getDefaultExistenceChecks() {
         return defaultExistenceChecks;
     }
 
-    /*
-           The defaultExistenceChecks element contains a list of
-           reference object names which are required to exist when maintaining a BO.
-           Optionally, the reference objects can be required to be active.
-
-           JSTL: defaultExistenceChecks is a Map of Reference elements,
-           whose entries are keyed by attributeName
-    */
+    /**
+     * Setter for the list of all defaultExistenceCheck {@link ReferenceDefinition} associated with this
+     * {@link MaintenanceDocument}
+     *
+     * @param defaultExistenceChecks
+     */
     public void setDefaultExistenceChecks(List<ReferenceDefinition> defaultExistenceChecks) {
         this.defaultExistenceChecks = defaultExistenceChecks;
     }

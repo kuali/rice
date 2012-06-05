@@ -137,6 +137,7 @@ public class UifConstants {
         public static final String UIF_CONSTANTS = "UifConstants";
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";
+        public static final String PARENT_LINE = "parentLine";
     }
 
     public static class TableToolsKeys {

@@ -17,6 +17,7 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -58,7 +59,7 @@ public class GroupValidationMessages extends ValidationMessages {
     public void generateMessages(boolean reset, View view, Object model, Component parent) {
         super.generateMessages(reset, view, model, parent);
 
-        Object parentContainer = parent.getContext().get("parent");
+        Object parentContainer = parent.getContext().get(UifConstants.ContextVariableNames.PARENT);
 
         List<? extends Component> items = ((Container) parent).getItems();
         boolean skipSections = false;
@@ -82,7 +83,7 @@ public class GroupValidationMessages extends ValidationMessages {
         if (parent instanceof PageGroup) {
             pageLevel = true;
             forceShow = true;
-            parent.addDataAttribute("server-messages",
+            parent.addDataAttribute(UifConstants.DataAttributes.SERVER_MESSAGES,
                     Boolean.toString(GlobalVariables.getMessageMap().hasMessages()));
         } else if (parentContainer instanceof FieldGroup) {
             //note this means container of the parent is a FieldGroup
@@ -93,41 +94,41 @@ public class GroupValidationMessages extends ValidationMessages {
         if(!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()){
             hasMessages = true;
         }
-        parent.addDataAttribute("validationMessages", "{"
-                + "summarize:"
+        parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, "{"
+                + UifConstants.DataAttributes.SUMMARIZE + ":"
                 + true
                 + ","
-                + "displayMessages:"
+                + UifConstants.DataAttributes.DISPLAY_MESSAGES + ":"
                 + this.isDisplayMessages()
                 + ","
-                + "collapseFieldMessages:"
+                + UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES + ":"
                 + collapseAdditionalFieldLinkMessages
                 + ","
-                + "displayLabel:"
+                + UifConstants.DataAttributes.DISPLAY_LABEL + ":"
                 + displayFieldLabelWithMessages
                 + ","
-                + "hasOwnMessages:"
+                + UifConstants.DataAttributes.HAS_OWN_MESSAGES + ":"
                 + hasMessages
                 + ","
-                + "pageLevel:"
+                + UifConstants.DataAttributes.PAGE_LEVEL + ":"
                 + pageLevel
                 + ","
-                + "forceShow:"
+                + UifConstants.DataAttributes.FORCE_SHOW + ":"
                 + forceShow
                 + ","
-                + "sections:"
+                + UifConstants.DataAttributes.SECTIONS + ":"
                 + ScriptUtils.convertStringListToJsArray(sectionIds)
                 + ","
-                + "order:"
+                + UifConstants.DataAttributes.ORDER + ":"
                 + ScriptUtils.convertStringListToJsArray(fieldOrder)
                 + ","
-                + "serverErrors:"
+                + UifConstants.DataAttributes.SERVER_ERRORS + ":"
                 + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getErrors()))
                 + ","
-                + "serverWarnings:"
+                + UifConstants.DataAttributes.SERVER_WARNINGS + ":"
                 + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getWarnings()))
                 + ","
-                + "serverInfo:"
+                + UifConstants.DataAttributes.SERVER_INFO + ":"
                 + ScriptUtils.convertStringListToJsArray(ScriptUtils.escapeHtml(this.getInfos()))
                 + "}");
     }

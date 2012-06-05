@@ -212,4 +212,21 @@ public class UifConstants {
         public static final String MULTI_VALUE_LOOKUP = "MULTI_VALUE_LOOKUP";
         public static final String QUESTION = "QUESTION";
     }
+
+    public static final class DataAttributes {
+        public static final String SERVER_MESSAGES = "server-messages";
+        public static final String VALIDATION_MESSAGES = "validationMessages";
+        public static final String SUMMARIZE = "summarize";
+        public static final String DISPLAY_MESSAGES = "displayMessages";
+        public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
+        public static final String DISPLAY_LABEL = "displayLabel";
+        public static final String HAS_OWN_MESSAGES = "hasOwnMessages";
+        public static final String PAGE_LEVEL = "pageLevel";
+        public static final String FORCE_SHOW = "forceShow";
+        public static final String SECTIONS = "sections";
+        public static final String ORDER = "order";
+        public static final String SERVER_ERRORS = "serverErrors";
+        public static final String SERVER_WARNINGS = "serverWarnings";
+        public static final String SERVER_INFO = "serverInfo";
+    }
 }

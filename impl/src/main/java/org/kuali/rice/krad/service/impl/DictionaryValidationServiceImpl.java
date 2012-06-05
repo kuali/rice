@@ -932,20 +932,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
 
-    private void setFieldError(String entryName, String attributeName, String key, String... args) {
-        if (getDataDictionaryService() == null)
-            return;
-
-        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(entryName, attributeName);
-        // FIXME: There's got to be a cleaner way of doing this.
-        List<String> list = new LinkedList<String>();
-        list.add(errorLabel);
-        list.addAll(Arrays.asList(args));
-        String[] array = new String[list.size()];
-        array = list.toArray(array);
-        GlobalVariables.getMessageMap().putError(attributeName, key, array);
-    }
-
     /**
      * validates an attribute
      *

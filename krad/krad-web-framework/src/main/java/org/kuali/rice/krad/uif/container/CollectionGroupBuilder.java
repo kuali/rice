@@ -66,7 +66,8 @@ import java.util.Map;
 public class CollectionGroupBuilder implements Serializable {
 	private static final long serialVersionUID = -4762031957079895244L;
     private static Log LOG = LogFactory.getLog(CollectionGroupBuilder.class);
-	/**
+
+    /**
 	 * Creates the <code>Field</code> instances that make up the table
 	 * 
 	 * <p>
@@ -354,6 +355,8 @@ public class CollectionGroupBuilder implements Serializable {
 
                 subCollectionFields.add(subCollectionFieldGroup);
             }
+            ComponentUtils.pushObjectToContext(subCollectionFields,
+                    UifConstants.ContextVariableNames.PARENT_LINE, currentLine);
         }
 
 		// invoke layout manager to build the complete line

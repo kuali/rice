@@ -225,7 +225,7 @@
 
    <bean id="subCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
      p:layoutManager.numberOfColumns="4">
-     <property name="headerText" value="SubCollection" />
+     <property name="headerText" value="SubCollection - (@{#parentLine.subList.size()} lines) " />
      <property name="instructionalText"
        value="A table collection within an item of a stacked collection" />
      <property name="collectionObjectClass"

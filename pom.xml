@@ -270,6 +270,7 @@
                 <exclude>**/org.apache.cxf.Logger</exclude>
                 <exclude>**/jquery*.js</exclude>
                 <exclude>**/*.developer</exclude>
+                <exclude>**/authorized_keys</exclude>
               </excludes>
             </configuration>
           </plugin>

@@ -19,21 +19,24 @@ limitations under the License.
 Standard HTML Radio Input
 
 -->
+<@macro uif-radiobuttons control field>
 
-<#assign attributes='id="${control.id}" items="${control.options}" itemValue="key" itemLabel="value"
-cssClass="${control.styleClassesAsString!}" delimiter="${control.delimiter}"
-tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+    <#local attributes='id="${control.id}" items="${control.options}" itemValue="key" itemLabel="value"
+    cssClass="${control.styleClassesAsString!}" delimiter="${control.delimiter}"
+    tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
 
-<#if control.disabled>
-    <#assign attributes='${attributes} disabled="true"'/>
-</#if>
+    <#if control.disabled>
+        <#local attributes='${attributes} disabled="true"'/>
+    </#if>
 
-<#if control.style?has_content>
-    <#assign attributes='${attributes} cssStyle="${control.style}"'/>
-</#if>
+    <#if control.style?has_content>
+        <#local attributes='${attributes} cssStyle="${control.style}"'/>
+    </#if>
 
-<fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
-          data-type="RadioSet" id="${field.id}_fieldset">
-    <legend style="display: none">${field.label}</legend>
-    <@spring.formRadiobuttons path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
-</fieldset>
+    <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
+              data-type="RadioSet" id="${field.id}_fieldset">
+        <legend style="display: none">${field.label}</legend>
+        <@spring.formRadiobuttons path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    </fieldset>
+
+</@macro>

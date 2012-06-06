@@ -20,5 +20,6 @@ limitations under the License.
 Create Standard HTML Text Input then decorates with Spinner plugin
 
 -->
-
-<@krad.script value="createSpinner('${control.id}', ${control.spinner.templateOptionsJSString});" />
+<@macro uif-spinner control field>
+    <@krad.script value="createSpinner('${control.id}', ${control.spinner.templateOptionsJSString});" />
+</@macro>

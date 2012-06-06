@@ -21,12 +21,15 @@ Standard HTML Hidden Input
 
 -->
 
-<#assign attributes='id="${control.id}" cssClass="${control.styleClassesAsString!}"
+<@macro uif-hidden control field>
+
+    <#local attributes='id="${control.id}" cssClass="${control.styleClassesAsString!}"
          ${element.simpleDataAttributes!}'/>
 
-<#if control.style?has_content>
-    <#assign attributes='${attributes} cssStyle="${control.style}"'/>
-</#if>
+    <#if control.style?has_content>
+        <#local attributes='${attributes} cssStyle="${control.style}"'/>
+    </#if>
 
-<@spring.formHidden path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    <@spring.formHidden path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
+</@macro>

@@ -19,21 +19,24 @@
 
  -->
 
-<#assign attributes='id="${control.id}" label="${control.checkboxLabel}" size="${control.size!}"
-cssClass="${control.styleClassesAsString!}"  itemValue="key" itemLabel="value" items="${control.options}"
-delimiter="${control.delimiter!}" tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+<@macro uif-checkboxes control field>
 
-<#if control.disabled>
-    <#assign attributes='${attributes} disabled="true"'/>
-</#if>
+    <#local attributes='id="${control.id}" label="${control.checkboxLabel}" size="${control.size!}"
+    cssClass="${control.styleClassesAsString!}"  itemValue="key" itemLabel="value" items="${control.options}"
+    delimiter="${control.delimiter!}" tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
 
-<#if control.style?has_content>
-    <#assign attributes='${attributes} cssStyle="${control.style}"'/>
-</#if>
+    <#if control.disabled>
+        <#local attributes='${attributes} disabled="true"'/>
+    </#if>
 
-<fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
-          data-type="CheckboxSet" id="${field.id}_fieldset">
-    <legend style="display: none">${field.label}</legend>
-    <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
-</fieldset>
+    <#if control.style?has_content>
+        <#local attributes='${attributes} cssStyle="${control.style}"'/>
+    </#if>
 
+    <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
+              data-type="CheckboxSet" id="${field.id}_fieldset">
+        <legend style="display: none">${field.label}</legend>
+        <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    </fieldset>
+
+</@macro>

@@ -32,11 +32,11 @@
     <property name="headerText" value="Dialog Test View"/>
     <property name="items">
       <list>
-        <bean parent="Uif-Page" p:id="DialogView-Page1" p:headerText="Dialog Test Page 1">
+        <bean parent="UifCompViewPageWithFooter" p:id="DialogView-Page1">
           <property name="items">
             <list>
               <bean parent="DialogTestView-MainGroup"/>
-              <bean id="myDialog" parent="DialogTestView-DialogGroup"/>
+              <bean id="myDialog" parent="EraseHardDrive-DialogGroup"/>
             </list>
           </property>
         </bean>
@@ -72,7 +72,7 @@
     </property>
   </bean>
 
-  <bean id="DialogTestView-DialogGroup" parent="Uif-DialogGroup" >
+  <bean id="EraseHardDrive-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="You are about to erase your hard drive. Continue?"/>
   </bean>
 </beans>

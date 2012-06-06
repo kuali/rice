@@ -16,7 +16,9 @@
 
 package edu.sampleu.demo.kitchensink;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.commons.lang.RandomStringUtils;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,10 +53,23 @@ public class DialogTestViewUifController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        String randomYear = RandomStringUtils.randomNumeric(2);
-        GlobalVariables.getMessageMap().putInfo("growl.testing.apostrophe", "sampleapp.growl.testmsg", "'" + randomYear);
-
         return super.start(form, result, request, response);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
+    public ModelAndView save(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+//      TODO: Put code to exercise asking a question here
+        return getUIFModelAndView(uiTestForm);
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
+    public ModelAndView close(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+//      TODO: Put "Are Your Sure?" dialog here
+        return getUIFModelAndView(uiTestForm, "DialogView-Page1");
     }
 
     /**

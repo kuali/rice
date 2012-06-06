@@ -41,6 +41,8 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
         data.methodToCall = methodToCall;
     }
 
+    // Since we are explicitly setting renderFullView to false, we need to remove any input renderFullViewParam
+    jQuery("input[name='renderFullView']").remove();
     data.renderFullView = false;
 
     // remove this since the methodToCall was passed in or extracted from the page, to avoid issues
@@ -268,9 +270,12 @@ function retrieveComponent(id, baseId, methodToCall){
     if (!methodToCall) {
         methodToCall = "refresh";
     }
-	
+
+        // Since we are always setting skipViewInit to true, remove any existing input skipViewInit param
+    jQuery("input[name='skipViewInit']").remove();
+
 	ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-			{updateComponentId: id, skipViewInit: "true", renderFullView: "false"}, elementToBlock);
+			{updateComponentId: id, skipViewInit: "true"}, elementToBlock);
 }
 
 /**
@@ -297,7 +302,12 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
 			}
 		});
     };
-    
+
+
+    // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
+    jQuery("input[name='skipViewInit']").remove();
+
+
     ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback, 
 			{updateComponentId: collectionGroupId, skipViewInit: "true", showInactiveRecords : showInactive},
 			elementToBlock);
@@ -320,6 +330,8 @@ function performCollectionAction(collectionGroupId){
 	    };
 	    
 	    var methodToCall = jQuery("input[name='methodToCall']").val();
+        // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
+        jQuery("input[name='skipViewInit']").remove();
 		ajaxSubmitForm(methodToCall, updateCollectionCallback, {updateComponentId: collectionGroupId, skipViewInit: "true"},
 				elementToBlock);
 	}

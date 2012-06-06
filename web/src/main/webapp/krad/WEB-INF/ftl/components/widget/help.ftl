@@ -14,16 +14,11 @@
   ~ limitations under the License.
   -->
 
-<#-- renders standard unordered list and calls doNavigation function -->
+<@macro uif-help widget>
 
-<!-- NAVIGATION -->
+    <#-- only render external help if a Url is specified -->
+    <#if widget.externalHelpUrl?has_content>
+        <@krad.template component=widget.helpAction/>
+    </#if>
 
-<ul id="${group.id}" role="navigation">
-    <#list group.items as item>
-        <@krad.template component=item/>
-    </#list>
-</ul>
-
-<@krad.script value="var options = ${group.templateOptionsJSString};
-                     options.currentPage = '${currentPageId!}';
-                     createNavigation('${group.id}', '${group.navigationType!}', options);"/>
+</@macro>

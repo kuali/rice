@@ -28,24 +28,16 @@
         <#if component.selfRendered>
             ${component.renderedHtmlOutput}
         <#else>
-            <#-- since everything executes in one namespace, need to hold previously set value for variable -->
-            <#assign preInvokeSrc="<#assign tmp${component.componentTypeName}=${component.componentTypeName}!/>"/>
-            <#assign preInvokeSrc="${preInvokeSrc}<#assign ${component.componentTypeName}=component/>"/>
-            <#list tmplParms?keys as parm>
-                <#assign preInvokeSrc="${preInvokeSrc}<#assign tmp${parm}=${parm}!/>"/>
-                <#assign preInvokeSrc="${preInvokeSrc}<#assign ${parm}=tmplParms['${parm}']!/>"/>
-            </#list>
-            <#assign preInvoke = preInvokeSrc?interpret>
-
-            <#assign postInvokeSrc="<#assign ${component.componentTypeName}=tmp${component.componentTypeName}/>"/>
-            <#list tmplParms?keys as parm>
-                <#assign postInvokeSrc="${postInvokeSrc}<#assign ${parm}=tmp${parm}/>"/>
-            </#list>
-            <#assign postInvoke = postInvokeSrc?interpret>
-
-            <@preInvoke />
             <#include "${component.template}" parse=true/>
-            <@postInvoke />
+
+            <#local macroInvokeSrc="<@${component.templateName} ${component.componentTypeName}=component "/>
+            <#list tmplParms?keys as parm>
+                <#local macroInvokeSrc="${macroInvokeSrc} ${parm}=tmplParms['${parm}']!"/>
+            </#list>
+            <#local macroInvokeSrc="${macroInvokeSrc}/>"/>
+
+            <#local macroInvoke = macroInvokeSrc?interpret>
+            <@macroInvoke />
         </#if>
 
         <#-- write data attributes -->
@@ -63,7 +55,7 @@
     <#if component.progressRender?has_content>
         <#-- for progressive rendering requiring an ajax call, put in place holder div -->
         <#if !component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)>
-        <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
+            <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
         </#if>
 
         <#-- setup progressive handlers for each control which may satisfy a disclosure condition -->

@@ -19,24 +19,27 @@
 
  -->
 
-<#if manager.styleClassesAsString?has_content>
-    <#assign styleClass="class=\"${manager.styleClassesAsString}\""/>
-</#if>
+<@macro uif-stacked manager>
 
-<#if manager.style?has_content>
-    <#assign style="style=\"${manager.style}\""/>
-</#if>
-
-<div id="${manager.id}" ${style!} ${styleClass!}>
-
-    <#-- use wrapper group layout if defined, else default to vertical box -->
-    <#if manager.wrapperGroup??>
-       <@krad.template component=manager.wrapperGroup/>
-    <#else>
-        <#list manager.stackedGroups as item>
-            <@krad.template component=item/>
-        </#list>
+    <#if manager.styleClassesAsString?has_content>
+        <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
     </#if>
 
-</div>
+    <#if manager.style?has_content>
+        <#local style="style=\"${manager.style}\""/>
+    </#if>
 
+    <div id="${manager.id}" ${style!} ${styleClass!}>
+
+        <#-- use wrapper group layout if defined, else default to vertical box -->
+        <#if manager.wrapperGroup??>
+            <@krad.template component=manager.wrapperGroup/>
+        <#else>
+            <#list manager.stackedGroups as item>
+                <@krad.template component=item/>
+            </#list>
+        </#if>
+
+    </div>
+
+</@macro>

@@ -14,36 +14,39 @@
   ~ limitations under the License.
   -->
 
-<!-- VIEW -->
-<@krad.div component=view>
+<@macro uif-view view>
 
-    <!-- BREADCRUMBS -->
-    <#if view.renderBreadcrumbsInView>
-        <@krad.template component=view.breadcrumbs/>
-    </#if>
+    <!-- VIEW -->
+    <@krad.div component=view>
 
-    <!-- VIEW HEADER -->
-    <@krad.template component=view.header/>
+        <!-- BREADCRUMBS -->
+        <#if view.renderBreadcrumbsInView>
+            <@krad.template component=view.breadcrumbs/>
+        </#if>
 
-    <!-- VIEW CONTENT -->
-    <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper">
+        <!-- VIEW HEADER -->
+        <@krad.template component=view.header/>
 
-        <!-- VIEW NAVIGATION -->
-        <div id="Uif-Navigation">
-           <#-- <@krad.template component=view.navigation currentPageId="${view.currentPageId}"/>   -->
+        <!-- VIEW CONTENT -->
+        <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper">
+
+            <!-- VIEW NAVIGATION -->
+            <div id="Uif-Navigation">
+                 <@krad.template component=view.navigation currentPageId="${view.currentPageId}"/>
+            </div>
+
+            <!-- PAGE CONTENT -->
+            <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
+                <@krad.template component=view.currentPage/>
+            </div>
+
         </div>
 
-        <!-- PAGE CONTENT -->
-        <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
-            <@krad.template component=view.currentPage/>
+        <!-- VIEW FOOTER -->
+        <div id="viewfooter_div">
+            <@krad.template component=view.footer/>
         </div>
 
-    </div>
+    </@krad.div>
 
-    <!-- VIEW FOOTER -->
-    <div id="viewfooter_div">
-        <@krad.template component=view.footer/>
-    </div>
-
-</@krad.div>
-
+</@macro>

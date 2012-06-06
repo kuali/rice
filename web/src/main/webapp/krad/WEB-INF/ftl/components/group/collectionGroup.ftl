@@ -14,23 +14,20 @@
     ~ limitations under the License.
     -->
 
-<@krad.groupWrap group=group>
+<@macro uif-collectionGroup group>
 
-    <#-- render collection quickfinder -->
-    <@krad.template component=group.collectionLookup/>
+    <@krad.groupWrap group=group>
 
-    <#assign tmpItems=items!/>
-    <#assign tmpManager=manager!/>
-    <#assign tmpContainer=container!/>
+        <#-- render collection quickfinder -->
+        <@krad.template component=group.collectionLookup/>
 
-    <#assign items=group.items/>
-    <#assign manager=group.layoutManager/>
-    <#assign container=group/>
+        <#-- invoke layout manager -->
+        <#local macroInvokeSrc="<@${group.layoutManager.templateName} items=group.items"/>
+        <#local macroInvokeSrc="${macroInvokeSrc} manager=group.layoutManager container=group/>"/>
+        <#local macroInvoke = macroInvokeSrc?interpret>
 
-    <#include "${group.layoutManager.template}" parse=true/>
+        <@macroInvoke />
 
-    <#assign items=tmpItems/>
-    <#assign manager=tmpManager/>
-    <#assign container=tmpContainer/>
+    </@krad.groupWrap>
 
-</@krad.groupWrap>
+</@macro>

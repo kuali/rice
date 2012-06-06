@@ -19,10 +19,14 @@
 
  -->
 
-<@krad.div component=field>
+<@macro uif-imageField field>
 
-    <@krad.fieldLbl field=field>
-        <@krad.template component=field.image/>
-    </@krad.fieldLbl>
+    <@krad.div component=field>
 
-</@krad.div>
+        <@krad.fieldLbl field=field>
+            <@krad.template component=field.image/>
+        </@krad.fieldLbl>
+
+    </@krad.div>
+
+</@macro>

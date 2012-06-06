@@ -20,37 +20,41 @@
       Works on a collection group to lay out the items as a table.
  -->
 
-<#if manager.styleClassesAsString?has_content>
-    <#assign styleClass="class=\"${manager.styleClassesAsString}\""/>
-</#if>
+<@macro uif-table manager>
 
-<#if manager.style?has_content>
-    <#assign style="style=\"${manager.style}\""/>
-</#if>
-
-<#if manager.separateAddLine>
-    <@krad.template component=manager.addLineGroup/>
-</#if>
-
-<table id="${manager.id}" ${style!} ${styleClass!}>
-
-    <#if manager.headerLabels?has_content>
-        <thead>
- 		    <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
- 		               renderHeaderRow=true renderAlternatingHeaderColumns=false
- 		               applyDefaultCellWidths=manager.applyDefaultCellWidths/>
- 		</thead>
+    <#if manager.styleClassesAsString?has_content>
+        <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
     </#if>
 
-    <tbody>
-		 <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumn
-		            applyAlternatingRowStyles=manager.applyAlternatingRowStyles
-		            applyDefaultCellWidths=manager.applyDefaultCellWidths
-                    renderAlternatingHeaderColumns=false
-                    rowCssClasses="${manager.rowCssClasses}"/>
-    </tbody>
+    <#if manager.style?has_content>
+        <#local style="style=\"${manager.style}\""/>
+    </#if>
 
-</table>
+    <#if manager.separateAddLine>
+        <@krad.template component=manager.addLineGroup/>
+    </#if>
 
-<#-- invoke table tools widget -->
-<@krad.template component=manager.richTable componentId="${manager.id}"/>
+    <table id="${manager.id}" ${style!} ${styleClass!}>
+
+        <#if manager.headerLabels?has_content>
+            <thead>
+                <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
+                renderHeaderRow=true renderAlternatingHeaderColumns=false
+                applyDefaultCellWidths=manager.applyDefaultCellWidths/>
+            </thead>
+        </#if>
+
+        <tbody>
+            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumn
+                applyAlternatingRowStyles=manager.applyAlternatingRowStyles
+                applyDefaultCellWidths=manager.applyDefaultCellWidths
+                renderAlternatingHeaderColumns=false
+                rowCssClasses="${manager.rowCssClasses}"/>
+        </tbody>
+
+    </table>
+
+    <#-- invoke table tools widget -->
+    <@krad.template component=manager.richTable componentId="${manager.id}"/>
+
+</@macro>

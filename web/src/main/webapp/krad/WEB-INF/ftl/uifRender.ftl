@@ -16,6 +16,8 @@
 
 <#include "libInclude.ftl" parse=true/>
 
+<#compress>
+
 <#assign view=KualiForm.view/>
 
 <#if KualiForm.renderFullView>
@@ -91,3 +93,5 @@
     </html>
 
 </#if>
+
+</#compress>

@@ -14,24 +14,24 @@
   ~ limitations under the License.
   -->
 
-<#--
-    Field that contains a nested Group
+<@macro uif-pageGroup group>
 
- -->
+    <#include "group.ftl" parse=true/>
 
-<@macro uif-fieldGroup field>
+    <!-- PAGE RELATED VARS -->
+    <#if KualiForm.view.renderForm>
 
-    <@krad.div component=field>
+        <@spring.formHiddenInput path="KualiForm.pageId"/>
 
-        <@krad.fieldLbl field=field>
+        <#if pageGroup?has_content>
+            <@spring.formHiddenInput path="KualiForm.view.currentPage.header.headerText" attributes="id=\"currentPageTitle\""/>
+        </#if>
 
-            <fieldset aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
-                <legend style="display: none">${field.label!}</legend>
-                <@krad.template component=field.group/>
-            </fieldset>
+        <@spring.formHiddenInput path="KualiForm.jumpToId"/>
+        <@spring.formHiddenInput path="KualiForm.jumpToName"/>
+        <@spring.formHiddenInput path="KualiForm.focusId"/>
+        <@spring.formHiddenInput path="KualiForm.formHistory.historyParameterString"/>
 
-        </@krad.fieldLbl>
-
-    </@krad.div>
+    </#if>
 
 </@macro>

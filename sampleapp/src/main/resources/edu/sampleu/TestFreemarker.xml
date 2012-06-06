@@ -30,6 +30,19 @@
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="Hello Freemarker World!"/>
+        <bean parent="Uif-InputField" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
+              p:fieldLabel.renderColon="false" p:instructionalText="With watermark text, size=&quot;30&quot;, and maxLength=&quot;40&quot;">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="30" p:maxLength="40" p:watermarkText="It's watermarked"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="field107" p:label="Field Label" p:labelPlacement="TOP"
+              p:fieldLabel.renderColon="false" p:instructionalText="Size=&quot;60&quot;">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="60"/>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="page">

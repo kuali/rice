@@ -97,6 +97,7 @@ public class FieldBase extends ComponentBase implements Field {
             } else {
                 setRequired(new Boolean(false));
                 fieldLabel.getRequiredMessage().setRender(true);
+
                 String prefixStyle = "";
                 if (StringUtils.isNotBlank(fieldLabel.getRequiredMessage().getStyle())) {
                     prefixStyle = fieldLabel.getRequiredMessage().getStyle();

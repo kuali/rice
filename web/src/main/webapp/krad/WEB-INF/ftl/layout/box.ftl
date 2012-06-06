@@ -24,16 +24,20 @@
       span style. For vertical orientation, the span style is set to block.
  -->
 
-<#if manager.styleClassesAsString?has_content>
-    <#assign styleClass="class=\"${manager.styleClassesAsString}\""/>
-</#if>
+<@macro uif-box manager>
 
-<#if manager.style?has_content>
-    <#assign style="style=\"${manager.style}\""/>
-</#if>
+    <#if manager.styleClassesAsString?has_content>
+        <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
+    </#if>
 
-<div id="${manager.id}_boxLayout" ${style!} ${styleClass!}>
-   <#list items as item>
-       <@krad.template component=item/>
-   </#list>
-</div>
+    <#if manager.style?has_content>
+        <#local style="style=\"${manager.style}\""/>
+    </#if>
+
+    <div id="${manager.id}_boxLayout" ${style!} ${styleClass!}>
+        <#list items as item>
+           <@krad.template component=item/>
+       </#list>
+    </div>
+
+</@macro>

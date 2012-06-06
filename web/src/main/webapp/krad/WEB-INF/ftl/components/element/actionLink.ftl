@@ -19,63 +19,67 @@
 
  -->
 
-<#if element.navigateToPageId?has_content>
-    <#assign pound="#"/>
-    <#assign href="href=\"${pound}${element.navigateToPageId}\""/>
-</#if>
+<@macro uif-actionLink element>
 
-<#if element.skipInTabOrder>
-    <#assign tabindex="tabindex=-1"/>
-<#else>
-    <#assign tabindex="tabindex=0"/>
-</#if>
-
-<#if !element.actionLabel??>
-    <#assign imageRole="role='presentation'"/>
-</#if>
-
-<#if element.actionImage??>
-    <#if element.actionImage.height?has_content>
-        <#assign height="height='${element.actionImage.height}'"/>
+    <#if element.navigateToPageId?has_content>
+        <#local pound="#"/>
+        <#local href="href=\"${pound}${element.navigateToPageId}\""/>
     </#if>
 
-    <#if element.actionImage.width?has_content>
-        <#assign width="width='${element.actionImage.width}'"/>
+    <#if element.skipInTabOrder>
+        <#local tabindex="tabindex=-1"/>
+    <#else>
+        <#local tabindex="tabindex=0"/>
     </#if>
-</#if>
 
-<#assign imagePlacement="${element.actionImagePlacement}"/>
+    <#if !element.actionLabel??>
+        <#local imageRole="role='presentation'"/>
+    </#if>
 
-<a id="${element.id}" ${href!} onclick="return false;" ${attrBuild(element)}
-   ${tabindex} ${element.simpleDataAttributes!}>
-
-    <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
-        <#if imagePlacement == 'RIGHT'>
-            <#assign imageStyleClass="rightActionImage"/>
-        <#elseif imagePlacement == 'LEFT'>
-            <#assign imageStyleClass="leftActionImage"/>
+    <#if element.actionImage??>
+        <#if element.actionImage.height?has_content>
+            <#local height="height='${element.actionImage.height}'"/>
         </#if>
 
-        <#assign imageTag>
-            <img ${imageRole!} ${height!} ${width!}
-                 style="${element.actionImage.style!}"
-                 class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
-                 src="${element.actionImage.source!}"
-                 alt="${element.actionImage.altText!}"
-                 title="${element.actionImage.title!}"/>
-        </#assign>
-
-       <#if imagePlacement == 'RIGHT'>
-           ${element.actionLabel!}${imageTag}
-       <#elseif imagePlacement == 'LEFT'>
-           ${imageTag}${element.actionLabel!}
-       <#elseif imagePlacement == 'IMAGE_ONLY'>
-           ${imageTag}
-       <#else>
-           ${element.actionLabel!}
-       </#if>
+        <#if element.actionImage.width?has_content>
+            <#local width="width='${element.actionImage.width}'"/>
+        </#if>
     </#if>
 
-</a>
+    <#local imagePlacement="${element.actionImagePlacement}"/>
 
-<@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
+    <a id="${element.id}" ${href!} onclick="return false;" ${attrBuild(element)}
+       ${tabindex} ${element.simpleDataAttributes!}>
+
+        <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
+            <#if imagePlacement == 'RIGHT'>
+                <#local imageStyleClass="rightActionImage"/>
+            <#elseif imagePlacement == 'LEFT'>
+                <#local imageStyleClass="leftActionImage"/>
+            </#if>
+
+            <#local imageTag>
+                <img ${imageRole!} ${height!} ${width!}
+                        style="${element.actionImage.style!}"
+                        class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
+                        src="${element.actionImage.source!}"
+                        alt="${element.actionImage.altText!}"
+                        title="${element.actionImage.title!}"/>
+            </#local>
+
+            <#if imagePlacement == 'RIGHT'>
+                ${element.actionLabel!}${imageTag}
+            <#elseif imagePlacement == 'LEFT'>
+                ${imageTag}${element.actionLabel!}
+            <#elseif imagePlacement == 'IMAGE_ONLY'>
+                ${imageTag}
+            <#else>
+                ${element.actionLabel!}
+            </#if>
+        </#if>
+
+    </a>
+
+    <@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
+
+</@macro>

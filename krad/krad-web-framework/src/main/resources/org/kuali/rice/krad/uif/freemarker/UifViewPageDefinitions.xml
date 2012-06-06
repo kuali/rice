@@ -173,7 +173,7 @@
 
   <bean id="Uif-Page" parent="Uif-Page-parentBean"/>
   <bean id="Uif-Page-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/page.ftl"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/pageGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-page</value>

@@ -19,7 +19,7 @@ supported and configured on the component -->
 
 <#macro eventScript component>
 
-    <#assign eventHandlers>
+    <#local eventHandlers>
         <#if component.onLoadScript?has_content>
           jQuery('#' + '${component.id}').load(function() {
             ${component.onLoadScript}
@@ -115,9 +115,9 @@ supported and configured on the component -->
             ${component.onMouseMoveScript}
           });
         </#if>
-    </#assign>
+    </#local>
 
-    <#assign eventHandlers="${eventHandlers?trim}"/>
+    <#local eventHandlers="${eventHandlers?trim}"/>
     <#if eventHandlers?has_content>
         <@krad.script component=component value="${eventHandlers}" />
     </#if>

@@ -29,8 +29,6 @@
         </script>
     </#if>
 
-    <scriptingVariables/>
-
     <title>
         <@spring.message "app.title"/>
         :: ${view.headerText}

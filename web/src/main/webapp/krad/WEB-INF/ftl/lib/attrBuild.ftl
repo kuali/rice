@@ -24,15 +24,15 @@ variables -->
 <#function attrBuild component>
 
     <#if component.styleClassesAsString?has_content>
-        <#assign styleClass="class=\"${component.styleClassesAsString}\""/>
+        <#local styleClass="class=\"${component.styleClassesAsString}\""/>
     </#if>
 
     <#if component.style?has_content>
-        <#assign style="style=\"${component.style}\""/>
+        <#local style="style=\"${component.style}\""/>
     </#if>
 
     <#if component.title?has_content>
-        <#assign title="title=\"${component.title}\""/>
+        <#local title="title=\"${component.title}\""/>
     </#if>
 
     <#return "${styleClass!} ${style!} ${title!}">

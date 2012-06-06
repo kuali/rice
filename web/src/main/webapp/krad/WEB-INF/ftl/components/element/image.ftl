@@ -19,24 +19,28 @@
 
  -->
 
-<#if element.height?has_content>
-    <#assign height='height="${element.height}"'/>
-</#if>
+<@marco uif-image element>
 
-<#-- render caption header above -->
-<#if element.captionHeader.headerText?has_content && element.captionHeaderPlacementAboveImage>
-    <@krad.template component=element.captionHeader/>
-</#if>
+    <#if element.height?has_content>
+        <#local height='height="${element.height}"'/>
+    </#if>
 
-<img id="${element.id}" src="${element.source!}" alt="${element.altText!}"
-     ${height!} ${attrBuild(element)} ${element.simpleDataAttributes!}/>
+    <#-- render caption header above -->
+    <#if element.captionHeader.headerText?has_content && element.captionHeaderPlacementAboveImage>
+        <@krad.template component=element.captionHeader/>
+    </#if>
 
-<#-- render caption header above -->
-<#if element.captionHeader.headerText?has_content && !element.captionHeaderPlacementAboveImage>
-    <@krad.template component=element.captionHeader/>
-</#if>
+    <img id="${element.id}" src="${element.source!}" alt="${element.altText!}"
+         ${height!} ${attrBuild(element)} ${element.simpleDataAttributes!}/>
 
-<#-- render cutline text -->
-<#if element.cutlineMessage.messageText?has_content>
-    <@krad.template component=element.cutlineMessage/>
-</#if>
+    <#-- render caption header above -->
+    <#if element.captionHeader.headerText?has_content && !element.captionHeaderPlacementAboveImage>
+        <@krad.template component=element.captionHeader/>
+    </#if>
+
+    <#-- render cutline text -->
+    <#if element.cutlineMessage.messageText?has_content>
+        <@krad.template component=element.cutlineMessage/>
+    </#if>
+
+</@marco>

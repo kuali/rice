@@ -19,15 +19,19 @@
 
  -->
 
-<#if element.skipInTabOrder>
-    <#assign tabindex="tabindex=-1"/>
-</#if>
+<@macro uif-link element>
 
-<#if !body?trim?has_content>
-    <#assign body="${element.linkText!}"/>
-</#if>
+    <#if element.skipInTabOrder>
+        <#assign tabindex="tabindex=-1"/>
+    </#if>
 
-<a id="${element.id}" href="${element.href!}" target="${element.target!}"
-   ${attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}>${body!}</a>
+    <#if !body?trim?has_content>
+        <#assign body="${element.linkText!}"/>
+    </#if>
 
-<@krad.template component=element.lightBox componentId="${element.id}"/>
+    <a id="${element.id}" href="${element.href!}" target="${element.target!}"
+       ${attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}>${body!}</a>
+
+    <@krad.template component=element.lightBox componentId="${element.id}"/>
+
+</@macro>

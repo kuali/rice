@@ -18,22 +18,26 @@
 is omitted by default, but the link to it is still present, it can be shown as a clickable
 link again through jquery as in setPageBreadcrumb when needed -->
 
-<#assign current=KualiForm.formHistory.generatedCurrentBreadcrumb/>
-<#assign crumbs=KualiForm.formHistory.generatedBreadcrumbs/>
+<@macro uif-breadcrumbs widget>
 
-<#if (crumbs?size >= 1) || widget.displayBreadcrumbsWhenOne>
-    <label id="breadcrumb_label" class="offScreen">Breadcrumbs</label>
+    <#local current=KualiForm.formHistory.generatedCurrentBreadcrumb/>
+    <#local crumbs=KualiForm.formHistory.generatedBreadcrumbs/>
 
-    <span class="${widget.styleClassesAsString!}">
-        <ol id="breadcrumbs" role="navigation" aria-labelledby="breadcrumb_label">
+    <#if (crumbs?size >= 1) || widget.displayBreadcrumbsWhenOne>
+        <label id="breadcrumb_label" class="offScreen">Breadcrumbs</label>
 
-            <#list crumbs as crumb>
-                <li><a href="${crumb.url!}">${crumb.title!}</a><span role="presentation"> &raquo; </span></li>
-            </#list>
+        <span class="${widget.styleClassesAsString!}">
+            <ol id="breadcrumbs" role="navigation" aria-labelledby="breadcrumb_label">
 
-            <span class="kr-current" id="current_breadcrumb_span">${current.title}</span>
-            <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url!}"/>${current.title}</a>
-       </ol>
-    </span>
+                <#list crumbs as crumb>
+                    <li><a href="${crumb.url!}">${crumb.title!}</a><span role="presentation"> &raquo; </span></li>
+                </#list>
 
-</#if>
+                <span class="kr-current" id="current_breadcrumb_span">${current.title}</span>
+                <a style="display:none;" id="current_breadcrumb_anchor" href="${current.url!}"/>${current.title}</a>
+            </ol>
+        </span>
+
+    </#if>
+
+</@macro>

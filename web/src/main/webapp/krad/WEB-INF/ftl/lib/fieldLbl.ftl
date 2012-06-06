@@ -19,7 +19,7 @@
 <#macro fieldLbl field>
 
     <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#assign renderLabel=field.label?has_content && !field.labelRendered/>
+    <#local renderLabel=field.label?has_content && !field.labelRendered/>
 
     <#-- render field label left -->
     <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>

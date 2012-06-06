@@ -18,10 +18,10 @@
 
 <#function cleanPath path>
 
-    <#assign path="${path?replace('.','_')}"/>
-    <#assign path="${path?replace('[','-lbrak-')}"/>
-    <#assign path="${path?replace(']','-rbrak-')}"/>
-    <#assign path="${path?replace('\\\'','-quot-')}"/>
+    <#local path="${path?replace('.','_')}"/>
+    <#local path="${path?replace('[','-lbrak-')}"/>
+    <#local path="${path?replace(']','-rbrak-')}"/>
+    <#local path="${path?replace('\\\'','-quot-')}"/>
 
     <#return path/>
 </#function>

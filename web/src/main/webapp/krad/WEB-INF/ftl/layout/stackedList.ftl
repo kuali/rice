@@ -20,10 +20,14 @@
       Used to render the collection line groups in an unordered list
  -->
 
-<ul id="${manager.id}">
-  <#list manager.stackedGroups as item>
-      <li>
-          <@krad.template component=item/>
-      </li>
-  </#list>
-</ul>
+<@macro uif-stackedList manager>
+
+    <ul id="${manager.id}">
+        <#list manager.stackedGroups as item>
+            <li>
+                <@krad.template component=item/>
+            </li>
+        </#list>
+    </ul>
+
+</@macro>

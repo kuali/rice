@@ -29,22 +29,26 @@
       The majority of logic is implemented in grid.tag
  -->
 
-<#if manager.styleClassesAsString?has_content>
-    <#assign styleClass="class=\"${manager.styleClassesAsString}\""/>
-</#if>
+<@macro uif-grid manager>
 
-<#if manager.style?has_content>
-    <#assign style="style=\"${manager.style}\""/>
-</#if>
+    <#if manager.styleClassesAsString?has_content>
+        <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
+    </#if>
 
-<table id="${manager.id}" ${style!} ${styleClass!}>
+    <#if manager.style?has_content>
+        <#local style="style=\"${manager.style}\""/>
+    </#if>
 
-    <@krad.grid items=items numberOfColumns=manager.numberOfColumns
-               applyAlternatingRowStyles=manager.applyAlternatingRowStyles
-               applyDefaultCellWidths=manager.applyDefaultCellWidths
-               renderFirstRowHeader=manager.renderFirstRowHeader
-               renderRowFirstCellHeader=manager.renderRowFirstCellHeader
-               renderAlternatingHeaderColumns=manager.renderAlternatingHeaderColumns
-               rowCssClasses="${manager.rowCssClasses}"/>
+    <table id="${manager.id}" ${style!} ${styleClass!}>
 
-</table>
+        <@krad.grid items=items numberOfColumns=manager.numberOfColumns
+                   applyAlternatingRowStyles=manager.applyAlternatingRowStyles
+                   applyDefaultCellWidths=manager.applyDefaultCellWidths
+                   renderFirstRowHeader=manager.renderFirstRowHeader
+                   renderRowFirstCellHeader=manager.renderRowFirstCellHeader
+                   renderAlternatingHeaderColumns=manager.renderAlternatingHeaderColumns
+                   rowCssClasses="${manager.rowCssClasses}"/>
+
+    </table>
+
+</@macro>

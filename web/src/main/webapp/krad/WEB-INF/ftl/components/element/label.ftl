@@ -14,27 +14,31 @@
     ~ limitations under the License.
     -->
 
-<#assign label="${element.labelText}"/>
+<@macro uif-label element>
 
-<#if element.renderColon>
-    <#assign label="${label}:"/>
-</#if>
+    <#local label="${element.labelText}"/>
 
-<@krad.span component=element>
-
-    <#-- required message left -->
-    <#if element.requiredMessagePlacement == 'LEFT'>
-        <@krad.template component=element.requiredMessage/>
+    <#if element.renderColon>
+        <#local label="${label}:"/>
     </#if>
 
-    <label id="${element.id}" for="${element.labelForComponentId!}" ${element.simpleDataAttributes!}
-           ${attrBuild(element)}>
-           ${label}
-    </label>
+    <@krad.span component=element>
 
-    <#-- required message right -->
-    <#if element.requiredMessagePlacement == 'RIGHT'>
-         <@krad.template component=element.requiredMessage/>
-    </#if>
+        <#-- required message left -->
+        <#if element.requiredMessagePlacement == 'LEFT'>
+            <@krad.template component=element.requiredMessage/>
+        </#if>
 
-</@krad.span>
+        <label id="${element.id}" for="${element.labelForComponentId!}" ${element.simpleDataAttributes!}
+               ${attrBuild(element)}>
+            ${label}
+        </label>
+
+        <#-- required message right -->
+        <#if element.requiredMessagePlacement == 'RIGHT'>
+            <@krad.template component=element.requiredMessage/>
+        </#if>
+
+    </@krad.span>
+
+</@macro>

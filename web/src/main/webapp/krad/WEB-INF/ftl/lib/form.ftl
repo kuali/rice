@@ -19,7 +19,7 @@
 <#macro form postUrl onSubmitScript render=true>
 
     <#if !postUrl?has_content>
-        <#assign render=false>
+        <#local render=false>
     </#if>
 
     <#if render>

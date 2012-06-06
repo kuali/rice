@@ -14,20 +14,20 @@
   ~ limitations under the License.
   -->
 
-<#include "group.ftl" parse=true/>
+<#-- renders standard unordered list and calls doNavigation function -->
 
-<!-- PAGE RELATED VARS -->
-<#if KualiForm.view.renderForm>
+<@macro uif-navigationGroup group>
 
-    <@spring.formHiddenInput path="KualiForm.pageId"/>
+    <!-- NAVIGATION -->
 
-    <#if pageGroup?has_content>
-        <@spring.formHiddenInput path="KualiForm.view.currentPage.header.headerText" attributes="id=\"currentPageTitle\""/>
-    </#if>
+    <ul id="${group.id}" role="navigation">
+        <#list group.items as item>
+            <@krad.template component=item/>
+        </#list>
+    </ul>
 
-    <@spring.formHiddenInput path="KualiForm.jumpToId"/>
-    <@spring.formHiddenInput path="KualiForm.jumpToName"/>
-    <@spring.formHiddenInput path="KualiForm.focusId"/>
-    <@spring.formHiddenInput path="KualiForm.formHistory.historyParameterString"/>
+    <@krad.script value="var options = ${group.templateOptionsJSString};
+                         options.currentPage = '${currentPageId!}';
+                         createNavigation('${group.id}', '${group.navigationType!}', options);"/>
 
-</#if>
+</@macro>

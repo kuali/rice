@@ -18,8 +18,12 @@
     Renders text in a span tag
  -->
 
-<@krad.span component=element>
+<@macro uif-message element>
 
-    ${element.messageText}
+    <@krad.span component=element>
 
-</@krad.span>
+        ${element.messageText}
+
+    </@krad.span>
+
+</@macro>

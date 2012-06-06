@@ -15,4 +15,4 @@
   -->
 
 <#import "lib/krad.ftl" as krad />
-<#import "/spring.ftl" as spring />
+<#import "lib/spring.ftl" as spring />

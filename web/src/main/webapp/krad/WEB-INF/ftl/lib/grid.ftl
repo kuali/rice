@@ -17,23 +17,23 @@
 <#macro grid items firstLineStyle numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
 applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
 
-    <#assign defaultCellWidth="${100/numberOfColumns}"/>
+    <#local defaultCellWidth="${100/numberOfColumns}"/>
 
-    <#assign colCount=0/>
-    <#assign carryOverColCount=0/>
-    <#assign tmpCarryOverColCount=0/>
+    <#local colCount=0/>
+    <#local carryOverColCount=0/>
+    <#local tmpCarryOverColCount=0/>
 
     <#list items as item>
-        <#assign colCount=colCount + 1/>
-        <#assign firstRow=(item_index == 0)/>
+        <#local colCount=colCount + 1/>
+        <#local firstRow=(item_index == 0)/>
 
         <#-- begin table row -->
         <#if (colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)>
             <#if applyAlternatingRowStyles>
                 <#if evenOddClass == "even">
-                    <#assign eventOddClass="odd"/>
+                    <#local eventOddClass="odd"/>
                 <#else>
-                    <#assign eventOddClass="even"/>
+                    <#local eventOddClass="even"/>
                 </#if>
             </#if>
 
@@ -46,12 +46,12 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
 
             <#-- if alternating header columns, force first cell of row to be header -->
             <#if renderAlternatingHeaderColumns>
-                <#assign renderAlternateHeader=true/>
+                <#local renderAlternateHeader=true/>
             </#if>
 
             <#-- if render first cell of each row as header, set cell to be rendered as header -->
             <#if renderRowFirstCellHeader>
-                <#assign renderFirstCellHeader=true/>
+                <#local renderFirstCellHeader=true/>
             </#if>
         </#if>
 
@@ -59,8 +59,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
 
         <#-- skip column positions from previous rowspan -->
         <#list 1..carryOverColCount as i>
-            <#assign colCount=colCount + 1/>
-            <#assign carryOverColCount=carryOverColCount - 1/>
+            <#local colCount=colCount + 1/>
+            <#local carryOverColCount=carryOverColCount - 1/>
 
             <#if colCount % numberOfColumns == 0>
               </tr><tr>
@@ -69,24 +69,24 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
 
         <#-- determine cell width by using default or configured width -->
         <#if item.width?has_content>
-            <#assign cellWidth=item.width/>
+            <#local cellWidth=item.width/>
         <#elseif applyDefaultCellWidths>
-            <#assign cellWidth="${defaultCellWidth * item.colSpan}%"/>
+            <#local cellWidth="${defaultCellWidth * item.colSpan}%"/>
         </#if>
 
         <#if cellWidth?has_content>
-            <#assign cellWidth="width=\"${cellWidth}\""/>
+            <#local cellWidth="width=\"${cellWidth}\""/>
         </#if>
     
-        <#assign singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
-        <#assign renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow)
+        <#local singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
+        <#local renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow)
                  || ((renderFirstCellHeader || renderAlternateHeader) && !singleCellRow)/>
 
         <#if renderHeaderColumn>
             <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
-              <#assign headerScope="col"/>
+              <#local headerScope="col"/>
             <#else>
-              <#assign headerScope="row"/>
+              <#local headerScope="row"/>
             </#if>
 
             <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
@@ -102,24 +102,24 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
 
         <#-- flip alternating flags -->
         <#if renderAlternatingHeaderColumns>
-            <#assign renderAlternateHeader=!renderAlternateHeader/>
+            <#local renderAlternateHeader=!renderAlternateHeader/>
         </#if>
 
         <#if renderRowFirstCellHeader>
-            <#assign renderFirstCellHeader=false/>
+            <#local renderFirstCellHeader=false/>
         </#if>
 
-        <#assign colCount=colCount + item.colSpan - 1/>
+        <#local colCount=colCount + item.colSpan - 1/>
 
         <#-- set carry over count to hold positions for fields that span multiple rows -->
-        <#assign tmpCarryOverColCount=tmpCarryOverColCount + item.rowSpan - 1/>
+        <#local tmpCarryOverColCount=tmpCarryOverColCount + item.rowSpan - 1/>
 
         <#-- end table row -->
         <#if !item_has_next || (colCount % numberOfColumns) == 0>
            </tr>
 
-           <#assign carryOverColCount=carryOverColCount + tmpCarryOverColCount/>
-           <#assign tmpCarryOverColCount=0/>
+           <#local carryOverColCount=carryOverColCount + tmpCarryOverColCount/>
+           <#local tmpCarryOverColCount=0/>
         </#if>
     </#list>
 

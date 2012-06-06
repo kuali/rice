@@ -51,6 +51,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String id;
     private String baseId;
     private String template;
+    private String templateName;
+
     private String title;
 
     private boolean render;
@@ -265,29 +267,26 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             }
         }
 
-        //if this is not rendering and it is not rendering via an ajax call, but still has a
-        //progressive render condition
-        //we still want to render the component, but hide it (in ajax cases, template creates a placeholder)
+        // if this is not rendering and it is not rendering via an ajax call, but still has a progressive render
+        // condition we still want to render the component, but hide it (in ajax cases, template creates a placeholder)
         boolean hide = false;
-        if(!this.render && !this.progressiveRenderViaAJAX && !this.progressiveRenderAndRefresh && StringUtils.isNotBlank(progressiveRender)){
+        if (!this.render && !this.progressiveRenderViaAJAX && !this.progressiveRenderAndRefresh && StringUtils
+                .isNotBlank(progressiveRender)) {
+            hide = true;
+        } else if (this.isHidden()) {
             hide = true;
         }
-        else if(this.isHidden()){
-            hide = true;     
-        }
-        
-        if(hide){
-            if(StringUtils.isNotBlank(this.getStyle())){
-                if(this.getStyle().endsWith(";")){
+
+        if (hide) {
+            if (StringUtils.isNotBlank(this.getStyle())) {
+                if (this.getStyle().endsWith(";")) {
                     this.setStyle(this.getStyle() + " display: none;");
-                }
-                else{
+                } else {
                     this.setStyle(this.getStyle() + "; display: none;");
                 }
-            }
-            else{
+            } else {
                 this.setStyle("display: none;");
-            }       
+            }
         }
     }
 
@@ -369,6 +368,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setTemplate(String template) {
         this.template = template;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     /**

@@ -18,10 +18,14 @@
     Renders label and div, then invokes rendering of the action component
  -->
 
-<@krad.div component=field>
+<@macro uif-actionField field>
 
-    <@krad.fieldLbl field=field>
-        <@krad.template component=field.action/>
-    </@krad.fieldLbl>
+    <@krad.div component=field>
 
-</@krad.div>
+        <@krad.fieldLbl field=field>
+            <@krad.template component=field.action/>
+        </@krad.fieldLbl>
+
+    </@krad.div>
+
+</@macro>

@@ -19,10 +19,14 @@
 
  -->
 
-<@krad.div component=field>
+<@macro uif-linkField field>
 
-    <@krad.fieldLbl field=field>
-        <@krad.template component=field.link/>
-    </@krad.fieldLbl>
+    <@krad.div component=field>
 
-</@krad.div>
+        <@krad.fieldLbl field=field>
+            <@krad.template component=field.link/>
+        </@krad.fieldLbl>
+
+    </@krad.div>
+
+</@macro>

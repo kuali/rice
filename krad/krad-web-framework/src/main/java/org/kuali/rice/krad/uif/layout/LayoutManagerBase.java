@@ -47,6 +47,7 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 
 	private String id;
 	private String template;
+    private String templateName;
 
 	private String style;
 	private List<String> cssClasses;
@@ -161,7 +162,15 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 		this.template = template;
 	}
 
-	/**
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyle()
 	 */
 	public String getStyle() {

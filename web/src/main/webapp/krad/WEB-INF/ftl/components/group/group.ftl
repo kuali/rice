@@ -14,20 +14,17 @@
   ~ limitations under the License.
   -->
 
-<@krad.groupWrap group=group>
+<@macro uif-group group>
 
-    <#assign tmpItems=items!/>
-    <#assign tmpManager=manager!/>
-    <#assign tmpContainer=container!/>
+    <@krad.groupWrap group=group>
 
-    <#assign items=group.items/>
-    <#assign manager=group.layoutManager/>
-    <#assign container=group/>
+        <#-- invoke layout manager -->
+        <#local macroInvokeSrc="<@${group.layoutManager.templateName} items=group.items"/>
+        <#local macroInvokeSrc="${macroInvokeSrc} manager=group.layoutManager container=group/>"/>
+        <#local macroInvoke = macroInvokeSrc?interpret>
 
-    <#include "${group.layoutManager.template}" parse=true/>
+        <@macroInvoke />
 
-    <#assign items=tmpItems/>
-    <#assign manager=tmpManager/>
-    <#assign container=tmpContainer/>
+    </@krad.groupWrap>
 
-</@krad.groupWrap>
+</@macro>

@@ -19,8 +19,12 @@
 
  -->
 
-<@krad.div component=field>
+<@macro uif-spaceField field>
 
-    &nbsp;
+    <@krad.div component=field>
 
-</@krad.div>
+        &nbsp;
+
+    </@krad.div>
+
+</@macro>

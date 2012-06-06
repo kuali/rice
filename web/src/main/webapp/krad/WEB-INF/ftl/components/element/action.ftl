@@ -20,77 +20,81 @@
 
  -->
 
-<#if element.skipInTabOrder>
-    <#assign tabIndex="tabindex=-1"/>
-</#if>
+<@macro uif-action element>
 
-<#if element.actionImage??>
-    <#if element.actionImage.height?has_content>
-        <#assign height="height='${element.actionImage.height}'"/>
+    <#if element.skipInTabOrder>
+        <#local tabIndex="tabindex=-1"/>
     </#if>
 
-    <#if element.actionImage.width?has_content>
-        <#assign width="width='${element.actionImage.width}'"/>
+    <#if element.actionImage??>
+        <#if element.actionImage.height?has_content>
+            <#local height="height='${element.actionImage.height}'"/>
+        </#if>
+
+        <#if element.actionImage.width?has_content>
+            <#local width="width='${element.actionImage.width}'"/>
+        </#if>
     </#if>
-</#if>
 
-<#if element.disabled>
-    <#assign disabled="disabled=\"true\""/>
-</#if>
+    <#if element.disabled>
+        <#local disabled="disabled=\"true\""/>
+    </#if>
 
-<#assign imagePlacement="${element.actionImagePlacement}"/>
+    <#assign imagePlacement="${element.actionImagePlacement}"/>
 
-<#-- determine if input of type image should be rendered -->
-<#if element.actionImage?? && element.actionImage.render && (!imagePlacement?has_content
+    <#-- determine if input of type image should be rendered -->
+    <#if element.actionImage?? && element.actionImage.render && (!imagePlacement?has_content
     || (imagePlacement == 'IMAGE_ONLY'))>
 
     <input type="image" id="${element.id}" ${disabled!}
            src="${element.actionImage.source}"
            alt="${element.actionImage.altText!}"
            title="${element.actionImage.title!}" ${height!} ${width!}
-           ${attrBuild(element)} ${tabindex!}
-           ${element.simpleDataAttributes!}/>
-<#else>
+        ${attrBuild(element)} ${tabindex!}
+        ${element.simpleDataAttributes!}/>
+    <#else>
 
-   <#-- build a button with or without an image -->
-   <button id="${element.id}" ${attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+        <#-- build a button with or without an image -->
+        <button id="${element.id}" ${attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
 
-      <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
-           <#if imagePlacement == 'TOP'>
-               <#assign imageStyleClass="topActionImage"/>
-               <#assign spanBeginTag="<span class=\"topBottomSpan\">"/>
-               <#assign spanEndTag="</span>"/>
-           <#elseif imagePlacement == 'BOTTOM'>
-               <#assign imageStyleClass="bottomActionImage"/>
-               <#assign spanBeginTag="<span class=\"topBottomSpan\">"/>
-               <#assign spanEndTag="</span>"/>
-           <#elseif imagePlacement == 'RIGHT'>
-               <#assign imageStyleClass="rightActionImage"/>
-           <#elseif imagePlacement == 'LEFT'>
-               <#assign imageStyleClass="leftActionImage"/>
-           </#if>
+        <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
+            <#if imagePlacement == 'TOP'>
+                <#local imageStyleClass="topActionImage"/>
+                <#local spanBeginTag="<span class=\"topBottomSpan\">"/>
+                <#local spanEndTag="</span>"/>
+            <#elseif imagePlacement == 'BOTTOM'>
+                <#local imageStyleClass="bottomActionImage"/>
+                <#local spanBeginTag="<span class=\"topBottomSpan\">"/>
+                <#local spanEndTag="</span>"/>
+            <#elseif imagePlacement == 'RIGHT'>
+                <#local imageStyleClass="rightActionImage"/>
+            <#elseif imagePlacement == 'LEFT'>
+                <#local imageStyleClass="leftActionImage"/>
+            </#if>
 
-           <#assign imageTag>
-               <img ${height!} ${width!}
-                    style="${element.actionImage.style!}"
-                    class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
-                    src="${element.actionImage.source}"
-                    alt="${element.actionImage.altText!}"
-                    title="${element.actionImage.title!}"/>
-           </#assign>
-      </#if>
+            <#local imageTag>
+                <img ${height!} ${width!}
+                        style="${element.actionImage.style!}"
+                        class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
+                        src="${element.actionImage.source}"
+                        alt="${element.actionImage.altText!}"
+                        title="${element.actionImage.title!}"/>
+            </#local>
+        </#if>
 
-      <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
-           ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel}
-      <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
-           ${element.actionLabel}${spanBeginTag!}${imageTag!}${spanEndTag!}
-      <#else>
-          <#-- no image, just render label text -->
-          ${element.actionLabel!}
-      </#if>
+        <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
+            ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel}
+        <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
+            ${element.actionLabel}${spanBeginTag!}${imageTag!}${spanEndTag!}
+        <#else>
+            <#-- no image, just render label text -->
+            ${element.actionLabel!}
+        </#if>
 
-   </button>
+       </button>
 
-</#if>
+    </#if>
 
-<@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
+    <@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
+
+</@macro>

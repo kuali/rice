@@ -136,6 +136,10 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             Object currentLine, int lineIndex) {
         boolean isAddLine = lineIndex == -1;
 
+        if (isAddLine && collectionGroup.isRenderAddBlankLineButton()) {
+            return;
+        }
+
         // construct new group
         Group lineGroup = null;
         if (isAddLine) {

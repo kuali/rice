@@ -242,6 +242,35 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Called by the save line action for a new collection line. Does server side validation and provides hook
+     * for client application to persist specific data.
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveLine")
+    public ModelAndView saveLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        if (StringUtils.isBlank(selectedCollectionPath)) {
+            throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
+        }
+
+        int selectedLineIndex = -1;
+        String selectedLine = uifForm.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX);
+        if (StringUtils.isNotBlank(selectedLine)) {
+            selectedLineIndex = Integer.parseInt(selectedLine);
+        }
+
+        if (selectedLineIndex == -1) {
+            throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
+        }
+
+        View view = uifForm.getPostedView();
+        view.getViewHelperService().processCollectionSaveLine(view, uifForm, selectedCollectionPath, selectedLineIndex);
+
+        return getUIFModelAndView(uifForm);
+    }
+
+    /**
      * Called by the delete line action for a model collection. Method
      * determines which collection the action was selected for and the line
      * index that should be removed, then invokes the view helper service to

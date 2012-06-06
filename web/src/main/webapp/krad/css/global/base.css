@@ -420,14 +420,6 @@ table.uif-tableCollectionLayout thead th.sorting_desc label{
     background-color: white;
 }
 
-.uif-stackedCollectionLayout > .uif-collectionDeleteHighlight {
-    background-color: #FFE1E9;
-}
-
-.uif-collectionDeleteHighlight {
-    background-color: #FFE1E9;
-}
-
 .uif-placeholder {
     display: none !important;
     margin: 0px !important;
@@ -449,6 +441,10 @@ div.uif-collectionAddItem {
     padding: 5px;
 }
 
+table.uif-tableCollectionLayout tbody tr.uif-addLine{
+    background-color: #D9D9D9;
+}
+
 .uif-newCollectionItem {
     background-color: #FFFFCC;
 }
@@ -468,8 +464,12 @@ div.uif-newCollectionItem {
     padding: 5px;
 }
 
-table.uif-tableCollectionLayout tbody tr.uif-addLine{
-    background-color: #D9D9D9;
+.uif-stackedCollectionLayout > .uif-collectionDeleteHighlight {
+    background-color: #FFE1E9;
+}
+
+.uif-collectionDeleteHighlight {
+    background-color: #FFE1E9;
 }
 
 /* Document header info *******************************************************************************/

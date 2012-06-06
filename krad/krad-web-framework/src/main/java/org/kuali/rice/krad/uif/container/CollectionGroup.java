@@ -98,16 +98,26 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private String addItemCssClass;
 
+    private boolean renderAddBlankLineButton;
+    private Action addBlankLineAction;
+    private String addLinePlacement;
+
+    private boolean renderNewLineActions;
+    private List<Action> newLineActions;
+
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
+        renderNewLineActions = false;
         showInactiveLines = false;
         renderInactiveToggleButton = true;
         includeLineSelectionField = false;
         highlightNewItems = true;
+        addLinePlacement = "TOP";
 
         filters = new ArrayList<CollectionFilter>();
         lineActions = new ArrayList<Action>();
+        newLineActions = new ArrayList<Action>();
         addLineItems = new ArrayList<Field>();
         addLineActions = new ArrayList<Action>();
         subCollections = new ArrayList<CollectionGroup>();
@@ -219,6 +229,17 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
             view.getViewHelperService().performComponentInitialization(view, model, collectionGroup);
         }
+
+        if (renderAddBlankLineButton) {
+            String clientSideJs = "performCollectionAction('" + getId() + "');";
+            if (StringUtils.isNotBlank(addBlankLineAction.getClientSideJs())) {
+                clientSideJs = addBlankLineAction.getClientSideJs() + clientSideJs;
+            }
+            addBlankLineAction.setClientSideJs(clientSideJs);
+            addBlankLineAction.setJumpToIdAfterSubmit(getId());
+        }
+
+
     }
 
     /**
@@ -301,6 +322,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         components.add(addLineLabel);
         components.add(collectionLookup);
+        components.add(addBlankLineAction);
 
         if (!includeItems) {
             // remove the containers items because we don't want them as children
@@ -324,6 +346,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         components.addAll(lineActions);
         components.addAll(addLineActions);
+        components.addAll(newLineActions);
         components.addAll(getItems());
         components.addAll(getSubCollections());
         components.addAll(addLineItems);
@@ -921,4 +944,109 @@ public class CollectionGroup extends Group implements DataBinding {
     public void setHighlightAddItem(boolean highlightAddItem) {
         this.highlightAddItem = highlightAddItem;
     }
+
+    /**
+     * Indicates that a button will be rendered that allows the user to add blank lines to the collection
+     *
+     * <p>
+     * The button will be added separately from the collection items. The default add line wil not be rendered. The
+     * action of the button will call the controller, add the blank line to the collection and do a component refresh.
+     * </p>
+     *
+     * @return boolean
+     */
+    public boolean isRenderAddBlankLineButton() {
+        return renderAddBlankLineButton;
+    }
+
+    /**
+     * Setter for the flag indicating that the add blank line button must be rendered
+     *
+     * @param renderAddBlankLineButton
+     */
+    public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
+        this.renderAddBlankLineButton = renderAddBlankLineButton;
+    }
+
+    /**
+     * The add blank line {@link Action} field rendered when renderAddBlankLineButton is true
+     *
+     * @return boolean
+     */
+    public Action getAddBlankLineAction() {
+        return addBlankLineAction;
+    }
+
+    /**
+     * Setter for the add blank line {@link Action} field
+     *
+     * @param addBlankLineAction
+     */
+    public void setAddBlankLineAction(Action addBlankLineAction) {
+        this.addBlankLineAction = addBlankLineAction;
+    }
+
+    /**
+     * Indicates the add line placement
+     *
+     * <p>
+     * Valid values are 'TOP' or 'BOTTOM'. The default is 'TOP'. When the value is 'BOTTOM' the blank line will be added
+     * to the end of the collection.
+     * </p>
+     *
+     * @return String - the add blank line action placement
+     */
+    public String getAddLinePlacement() {
+        return addLinePlacement;
+    }
+
+    /**
+     * Setter for the add line placement
+     *
+     * @param addLinePlacement - add line placement string
+     */
+    public void setAddLinePlacement(String addLinePlacement) {
+        this.addLinePlacement = addLinePlacement;
+    }
+
+    /**
+     * Indicates whether the new line actions should be rendered on all the newly added lines
+     *
+     * @return boolean
+     */
+    public boolean isRenderNewLineActions() {
+        return renderNewLineActions;
+    }
+
+    /**
+     * Setter for the flag indicating whether the new line actions should be rendered
+     *
+     * @param renderNewLineActions
+     */
+    public void setRenderNewLineActions(boolean renderNewLineActions) {
+        this.renderNewLineActions = renderNewLineActions;
+    }
+
+    /**
+     * {@link Action} fields that should be rendered for each newly added collection line
+     *
+     * <p>
+     * A check will be done on each line to see if it is a newly added line before rendering the {@code Action}.
+     * </p>
+     *
+     * @return List<Action>
+     */
+    public List<Action> getNewLineActions() {
+        return newLineActions;
+    }
+
+    /**
+     * Setter for the new line {@link Action} fields
+     *
+     * @param newLineActions
+     */
+    public void setNewLineActions(List<Action> newLineActions) {
+        this.newLineActions = newLineActions;
+    }
+
 }

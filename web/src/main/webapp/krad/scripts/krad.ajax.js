@@ -355,6 +355,44 @@ function addLineToCollection(collectionGroupId, collectionBaseId){
 	}
 }
 
+/**
+ * Does client side validation when row save is clicked and if valid calls the performCollectionAction function that
+ * does an ajax call to the controller
+ *
+ * @param collectionGroupId - the collection group id
+ * @param collectionName - the property name of the collection used to get the fields
+ */
+function validateAndPerformCollectionAction(collectionGroupId, collectionName){
+    if(collectionName){
+
+        // Get the fields to validate by combining the collection property name and the selected row
+        var selectedIndex = jQuery("[name='actionParameters[selectedLineIndex]']").val();
+        var fields = jQuery("[name^='" + collectionName + "[" + selectedIndex + "]']");
+
+        jQuery.watermark.hideAll();
+
+        var valid = true;
+        fields.each(function(){
+            jQuery(this).removeClass("ignoreValid");
+            jQuery(this).valid();
+            if(jQuery(this).hasClass("error")){
+                valid = false;
+            }
+            jQuery(this).addClass("ignoreValid");
+        });
+
+        jQuery.watermark.showAll();
+
+        if(valid){
+            performCollectionAction(collectionGroupId);
+        }
+        else{
+            jQuery("#formComplete").html("");
+            alert("This line contains errors.  Please correct these errors and try again.");
+        }
+    }
+}
+
 /** Progressive Disclosure */
 
 /**

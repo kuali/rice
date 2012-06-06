@@ -65,7 +65,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Widget;
-import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -73,7 +72,6 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.util.AutoPopulatingList;
 import org.springframework.util.MethodInvoker;
 
 import java.io.Serializable;
@@ -1350,6 +1348,41 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, java.lang.String)
+     */
+    @Override
+    public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex) {
+        // get the collection group from the view
+        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+        if (collectionGroup == null) {
+            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+        }
+
+        // get the collection instance for adding the new line
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+        if (collection == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+        }
+
+        // TODO: look into other ways of identifying a line so we can deal with
+        // unordered collections
+        if (collection instanceof List) {
+            Object saveLine = ((List<Object>) collection).get(selectedLineIndex);
+
+            processBeforeSaveLine(view, collectionGroup, model, saveLine);
+
+            (((UifFormBase) model).getAddedCollectionItems().get(collectionPath)).remove(saveLine);
+
+            processAfterSaveLine(view, collectionGroup, model, saveLine);
+
+        } else {
+            logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
+        }
+
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddBlankLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, java.lang.String)
      */
@@ -1369,9 +1402,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Object newLine = ObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
         applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
-        boolean insertFirst = collectionGroup.getLayoutManager() instanceof TableLayoutManager
-                && ((TableLayoutManager) collectionGroup.getLayoutManager()).getAddBlankLineActionPlacement().equals("TOP");
-        addLine(collection, newLine, insertFirst);
+        boolean insertFirst = collectionGroup.getAddLinePlacement().equals("TOP");
+        addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
         ((UifFormBase) model).addAddedCollectionItem(collectionPath, newLine);
 
@@ -1731,6 +1763,34 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param addLine - the new line that was added
      */
     protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+
+    }
+
+    /**
+     * Hook for service overrides to process the save collection line before it
+     * is validated
+     *
+     * @param view - view instance that is being presented (the action was taken
+     * on)
+     * @param collectionGroup - collection group component for the collection
+     * @param model - object instance that contain's the views data
+     * @param addLine - the new line instance to be processed
+     */
+    protected void processBeforeSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+
+    }
+
+    /**
+     * Hook for service overrides to process the save collection line after it
+     * has been validated
+     *
+     * @param view - view instance that is being presented (the action was taken
+     * on)
+     * @param collectionGroup - collection group component for the collection
+     * @param model - object instance that contains the views data
+     * @param addLine - the new line that was added
+     */
+    protected void processAfterSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
 
     }
 

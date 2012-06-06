@@ -101,7 +101,6 @@
         <value>uif-tableCollectionLayout</value>
       </list>
     </property>
-    <property name="renderAddBlankLineButton" value="false"/>
     <property name="applyAlternatingRowStyles" value="true"/>
     <property name="applyDefaultCellWidths" value="true"/>
     <property name="renderAlternatingHeaderColumns" value="false"/>
@@ -122,10 +121,6 @@
     </property>
     <property name="addLineGroup">
       <bean parent="Uif-CollectionGridItem" p:cssClasses="uif-collectionItem,uif-tableCollectionItem,uif-collectionAddItem"/>
-    </property>
-    <property name="addBlankLineAction">
-      <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
-            p:actionEvent="addBlankLine"/>
     </property>
     <property name="subCollectionFieldGroupPrototype">
       <bean parent="Uif-VerticalFieldGroup"

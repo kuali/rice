@@ -30,6 +30,7 @@
               <ref bean="CollectionsM2Test-collectionTest"/>
               <ref bean="CollectionsM2Test-collectionTest3"/>
               <ref bean="CollectionsM2Test-collectionTest2"/>
+              <ref bean="CollectionsM2Test-collectionTest4"/>
             </list>
           </property>
         </bean>
@@ -50,13 +51,14 @@
 
   <bean id="CollectionsM2Test-collectionTest" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
     <property name="headerText"
-              value="CollectionGroupTableLayout" />
+              value="Collection With Add Blank Line Button (TOP) and New Line Action(Save)" />
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject" />
     <property name="propertyName" value="list1" />
     <property name="layoutManager.generateAutoSequence" value="true" />
     <property name="layoutManager.richTable.render" value="true" />
-    <property name="layoutManager.renderAddBlankLineButton" value="true"/>
+    <property name="renderAddBlankLineButton" value="true"/>
+    <property name="renderNewLineActions" value="true"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
@@ -73,15 +75,21 @@
   </bean>
 
   <bean id="CollectionsM2Test-collectionTest3" parent="CollectionsM2Test-collectionTest">
-    <property name="propertyName" value="list1" />
-    <property name="layoutManager.addBlankLineActionPlacement" value="BOTTOM"/>
+    <property name="headerText"
+              value="Collection With Add Blank Line Button (BOTTOM)" />
+    <property name="propertyName" value="list2" />
+    <property name="addLinePlacement" value="BOTTOM"/>
+    <property name="renderNewLineActions" value="false"/>
   </bean>
 
   <bean id="CollectionsM2Test-collectionTest2" parent="Uif-Disclosure-StackedCollectionSection">
-    <property name="headerText" value="Stacked" />
+    <property name="headerText"
+              value="Collection With Add Blank Line Button (TOP) and New Line Action(Save)" />
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject" />
     <property name="propertyName" value="list3" />
+    <property name="renderAddBlankLineButton" value="true"/>
+    <property name="renderNewLineActions" value="true"/>
     <property name="layoutManager.summaryTitle" value="Line Summary" />
     <property name="layoutManager.summaryFields" value="field1" />
     <property name="items">
@@ -97,6 +105,14 @@
         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" />
       </list>
     </property>
+  </bean>
+
+  <bean id="CollectionsM2Test-collectionTest4" parent="CollectionsM2Test-collectionTest2">
+    <property name="headerText"
+              value="Collection With Add Blank Line Button (BOTTOM)" />
+    <property name="propertyName" value="list4" />
+    <property name="addLinePlacement" value="BOTTOM"/>
+    <property name="renderNewLineActions" value="false"/>
   </bean>
 
 </beans>

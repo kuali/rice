@@ -85,17 +85,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     private String actionColumnPlacement;
 
-    private boolean renderAddBlankLineButton;
-    private Action addBlankLineAction;
-    private String addBlankLineActionPlacement;
-
     public TableLayoutManager() {
         useShortLabels = false;
         repeatHeader = false;
         renderSequenceField = true;
         generateAutoSequence = false;
         separateAddLine = false;
-        addBlankLineActionPlacement = "TOP";
+
 
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
@@ -143,14 +139,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         CollectionGroup collectionGroup = (CollectionGroup) container;
 
-        if (renderAddBlankLineButton) {
-            String clientSideJs = "performCollectionAction('" + collectionGroup.getId() + "');";
-            if (StringUtils.isNotBlank(addBlankLineAction.getClientSideJs())) {
-                clientSideJs = addBlankLineAction.getClientSideJs() + clientSideJs;
-            }
-            addBlankLineAction.setClientSideJs(clientSideJs);
-        }
-
         int totalColumns = getNumberOfDataColumns();
         if (renderSequenceField) {
             totalColumns++;
@@ -195,7 +183,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         boolean isAddLine = lineIndex == -1;
 
-        if (isAddLine && renderAddBlankLineButton) {
+        if (isAddLine && collectionGroup.isRenderAddBlankLineButton()) {
             return;
         }
 
@@ -530,7 +518,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         components.add(addLineGroup);
         components.addAll(headerLabels);
         components.addAll(dataFields);
-        components.add(addBlankLineAction);
 
         return components;
     }
@@ -946,67 +933,4 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
     }
 
-    /**
-     * Indicates that a button will be rendered that allows the user to add blank lines to the collection
-     *
-     * <p>
-     * The button will be added separately from the collection items. The default add line wil not be rendered. The
-     * action of the button will call the controller, add the blank line to the collection and do a component refresh.
-     * </p>
-     *
-     * @return boolean
-     */
-    public boolean isRenderAddBlankLineButton() {
-        return renderAddBlankLineButton;
-    }
-
-    /**
-     * Setter for the flag indicating that the add blank line button must be rendered
-     *
-     * @param renderAddBlankLineButton
-     */
-    public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
-        this.renderAddBlankLineButton = renderAddBlankLineButton;
-    }
-
-    /**
-     * The add blank line {@link Action} field rendered when renderAddBlankLineButton is true
-     *
-     * @return boolean
-     */
-    public Action getAddBlankLineAction() {
-        return addBlankLineAction;
-    }
-
-    /**
-     * Setter for the add blank line {@link Action} field
-     *
-     * @param addBlankLineAction
-     */
-    public void setAddBlankLineAction(Action addBlankLineAction) {
-        this.addBlankLineAction = addBlankLineAction;
-    }
-
-    /**
-     * Indicates the add blank line action placement
-     *
-     * <p>
-     * Valid values are 'TOP' or 'BOTTOM'. The default is 'TOP'. When the value is 'BOTTOM' the blank line will be added
-     * to the end of the collection.
-     * </p>
-     *
-     * @return String - the add blank line action placement
-     */
-    public String getAddBlankLineActionPlacement() {
-        return addBlankLineActionPlacement;
-    }
-
-    /**
-     * Setter for the add blank line action placement
-     *
-     * @param addBlankLineActionPlacement - add blank line action placement string
-     */
-    public void setAddBlankLineActionPlacement(String addBlankLineActionPlacement) {
-        this.addBlankLineActionPlacement = addBlankLineActionPlacement;
-    }
 }

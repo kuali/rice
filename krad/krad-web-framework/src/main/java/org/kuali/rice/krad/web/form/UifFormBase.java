@@ -792,7 +792,7 @@ public class UifFormBase implements ViewModel {
      * Indicates whether an collection item has been newly added
      *
      * <p>
-     * Tests collection items against the list of newly added items for a spcific collection on the model. This list
+     * Tests collection items against the list of newly added items for a specific collection on the model. This list
      * gets cleared when the view is submitted and the items are persisted.
      * </p>
      *

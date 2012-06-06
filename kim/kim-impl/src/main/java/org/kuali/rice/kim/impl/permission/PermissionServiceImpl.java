@@ -922,7 +922,7 @@ public class PermissionServiceImpl implements PermissionService {
     private DistributedCacheManagerDecorator getKimDistributedCacheManager() {
         try {
             return GlobalResourceLoader.getService(KimApiConstants.Cache.KIM_DISTRIBUTED_CACHE_MANAGER);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             //caching service not found for some reason.  We can go on without caching
             LOG.warn(KimApiConstants.Cache.KIM_DISTRIBUTED_CACHE_MANAGER + " was not able to be loaded.  Method will not be cached.");
             return null;

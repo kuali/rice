@@ -24,7 +24,6 @@ Standard HTML Radio Input
 cssClass="${control.styleClassesAsString!}" delimiter="${control.delimiter}"
 tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
 
-
 <#if control.disabled>
     <#assign attributes='${attributes} disabled="true"'/>
 </#if>
@@ -33,15 +32,8 @@ tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
     <#assign attributes='${attributes} cssStyle="${control.style}"'/>
 </#if>
 
-<@spring.formRadiobuttons path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
-
-<#--
 <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
           data-type="RadioSet" id="${field.id}_fieldset">
     <legend style="display: none">${field.label}</legend>
-    <form:radiobuttons id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
-                       items="${control.options}" itemValue="key" itemLabel="value" cssClass="${control.styleClassesAsString}"
-                       delimiter="${control.delimiter}" tabindex="${control.tabIndex}"
-                       data-role="${control.dataRoleAttribute}" data-type="${control.dataTypeAttribute}" data-meta="${control.dataMetaAttribute}"/>
+    <@spring.formRadiobuttons path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 </fieldset>
--->

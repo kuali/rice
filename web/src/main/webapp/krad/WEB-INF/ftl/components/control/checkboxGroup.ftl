@@ -18,22 +18,10 @@
    Group of HTML Checkbox Inputs
 
  -->
-<fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
-          data-type="CheckboxSet" id="${field.id}_fieldset">
-    <legend style="display: none">${field.label}</legend>
-    <form:checkboxes id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
-                     items="${control.options}" itemValue="key" itemLabel="value"
-                     cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
-                     tabindex="${control.tabIndex}"/>
-</fieldset>
-
-
-<fieldset class="ui-fieldset" id="${args.htmlid}-fieldset-ui">
-
 
 <#assign attributes='id="${control.id}" label="${control.checkboxLabel}" size="${control.size!}"
-cssClass="${control.styleClassesAsString!}" value="${control.value}"
-tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+cssClass="${control.styleClassesAsString!}"  itemValue="key" itemLabel="value" items="${control.options}"
+delimiter="${control.delimiter!}" tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
 
 <#if control.disabled>
     <#assign attributes='${attributes} disabled="true"'/>
@@ -43,4 +31,9 @@ tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
     <#assign attributes='${attributes} cssStyle="${control.style}"'/>
 </#if>
 
-<@spring.formInput path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+<fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
+          data-type="CheckboxSet" id="${field.id}_fieldset">
+    <legend style="display: none">${field.label}</legend>
+    <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+</fieldset>
+

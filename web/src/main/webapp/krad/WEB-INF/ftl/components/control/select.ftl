@@ -28,8 +28,6 @@ Standard HTML Select Input
     <#assign attributes='${attributes} disabled="true"'/>
 </#if>
 
-<@spring.formSelect path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
-
 <#list "${control.options}" as option>
-    <#-- <form:option value="${option.key}">${option.value}</form:option>      -->
+    <@spring.formSelect path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 </#list>

@@ -19,8 +19,8 @@
 
  -->
 
-<#assign attributes='id="${control.id}" label="${control.checkboxLabel}" size="${control.size!}"
-cssClass="${control.styleClassesAsString!}" value="${control.value}"
+<#assign attributes='id="${control.id}" label="${control.checkboxLabel!}" size="${control.size!}"
+cssClass="${control.styleClassesAsString!}" value="${control.value!}"
 tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
 
 <#if control.disabled>
@@ -31,5 +31,5 @@ tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
     <#assign attributes='${attributes} cssStyle="${control.style}"'/>
 </#if>
 
-<@spring.checkbox path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+<@spring.formCheckbox path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 

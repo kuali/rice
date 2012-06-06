@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.cache.CacheKeyUtils;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.delegation.DelegationType;
@@ -27,6 +28,9 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -55,6 +59,7 @@ import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.springframework.cache.Cache;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -464,14 +469,40 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(roleIds, "roleIds");
 
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{getRoleMembers}roleIds=")
+                .append(CacheKeyUtils.key(roleIds)).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        Cache.ValueWrapper cachedValue = distributedKimCache.getCache(RoleMember.Cache.NAME).get(cacheKey);
+        if (cachedValue != null && cachedValue.get() instanceof List) {
+            return (List<RoleMembership>)(cachedValue.get());
+        }
         Set<String> foundRoleTypeMembers = new HashSet<String>();
-        return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
+        List<RoleMembership> roleMembers = getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
+
+        if (!containsDerivedRole(roleIds)) {
+            distributedKimCache.getCache(RoleMember.Cache.NAME).put(cacheKey, Collections.unmodifiableList(roleMembers));
+        }
+
+        return Collections.unmodifiableList(roleMembers);
     }
 
     @Override
     public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
+
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{getRoleMemberPrincipalIds}namespaceCode=")
+                .append(namespaceCode).append("|")
+                .append("roleName=").append(roleName).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        Cache.ValueWrapper cachedValue = distributedKimCache.getCache(RoleMember.Cache.NAME).get(cacheKey);
+        if (cachedValue != null && cachedValue.get() instanceof Collection) {
+            return ((Collection<String>)cachedValue.get());
+        }
 
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
@@ -482,6 +513,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             } else {
                 principalIds.add(roleMembership.getMemberId());
             }
+        }
+
+
+        if (!containsDerivedRole(roleIds)) {
+            distributedKimCache.getCache(RoleMember.Cache.NAME).put(cacheKey, Collections.unmodifiableSet(principalIds));
         }
         return Collections.unmodifiableSet(principalIds);
     }
@@ -494,13 +530,26 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         if ( LOG.isDebugEnabled() ) {
             logPrincipalHasRoleCheck(principalId, roleIds, qualification);
         }
-        
+
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{principalHasRole}principalId=")
+                .append(principalId).append("|")
+                .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        Cache.ValueWrapper cachedValue = distributedKimCache.getCache(RoleMember.Cache.NAME).get(cacheKey);
+        if (cachedValue != null && cachedValue.get() instanceof Boolean) {
+            return ((Boolean)cachedValue.get()).booleanValue();
+        }
         Boolean hasRole = principalHasRole(principalId, roleIds, qualification, true);
         
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + hasRole );
         }
-        
+
+        if (!containsDerivedRole(roleIds)) {
+            distributedKimCache.getCache(RoleMember.Cache.NAME).put(cacheKey, hasRole);
+        }
         return hasRole;
     }
 
@@ -965,9 +1014,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification, boolean checkDelegations) {
+        //want to cache if none of the roles are a derived role.  otherwise abort caching!
+        boolean cacheResults = true;
         if (StringUtils.isBlank(principalId)) {
             return false;
         }
+
+
         Set<String> allRoleIds = new HashSet<String>();
         // remove inactive roles
         for (String roleId : roleIds) {
@@ -1103,6 +1156,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
                 if (isDerivedRoleType(role.getKimTypeId(), roleTypeService)) {
+                    //cache nothing that even has a derived role in roleIds list
+                    cacheResults = false;
                     if (roleTypeService.hasDerivedRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getName(), qualification)) {
                         return true;
                     }
@@ -1128,6 +1183,20 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     protected boolean isDerivedRoleType(String roleTypeId, RoleTypeService service) {
         return service != null && service.isDerivedRoleType();
+    }
+
+    protected boolean isDerivedRoleType(RoleTypeService service) {
+        return service != null && service.isDerivedRoleType();
+    }
+
+    protected boolean containsDerivedRole(List<String> roleIds) {
+        for (String roleId : roleIds) {
+            RoleTypeService service = getRoleTypeService(roleId);
+            if (isDerivedRoleType(service)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -1983,5 +2052,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
+    }
+
+    private DistributedCacheManagerDecorator getKimDistributedCacheManager() {
+        return GlobalResourceLoader.getService(KimApiConstants.Cache.KIM_DISTRIBUTED_CACHE_MANAGER);
     }
 }

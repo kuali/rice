@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.cache.CacheKeyUtils;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
@@ -27,6 +28,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -36,6 +39,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionQueryResults;
 import org.kuali.rice.kim.api.permission.PermissionService;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -47,6 +51,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.springframework.cache.Cache;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -123,7 +128,20 @@ public class PermissionServiceImpl implements PermissionService {
         if ( LOG.isDebugEnabled() ) {
             logAuthorizationCheck("Permission", principalId, namespaceCode, permissionName, qualification);
         }
-        List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName );
+
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{isAuthorized}principalId=").append(principalId).append("|")
+                .append("namespaceCode=").append(namespaceCode).append("|")
+                .append("permissionName=").append(permissionName).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        if (distributedKimCache != null) {
+            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+            if (cachedValue != null && cachedValue.get() instanceof Boolean) {
+                return ((Boolean)cachedValue.get()).booleanValue();
+            }
+        }
+        List<String> roleIds = getRoleIdsForPermission(namespaceCode, permissionName);
     	if ( roleIds.isEmpty() ) {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Result: false");
@@ -131,14 +149,26 @@ public class PermissionServiceImpl implements PermissionService {
     		return false;
     	}
 
-    	Boolean isAuthorized = roleService.principalHasRole( principalId, roleIds, qualification);
+    	Boolean isAuthorized = roleService.principalHasRole(principalId, roleIds, qualification);
         
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + isAuthorized );
         }
-        
-		return isAuthorized;
-		
+
+        //check if anything exists in RoleMember Cache to see if we should cache in Permission Cache as well
+        //if not cached in RoleMember cache, that means we are dealing with derived roles and don't want to mess with it
+        if (distributedKimCache != null) {
+            StringBuffer roleMembercacheKey =  new StringBuffer("{principalHasRole}principalId=")
+                    .append(principalId).append("|")
+                    .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                    .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMembercacheKey) != null) {
+                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, isAuthorized);
+            }
+        }
+
+        return isAuthorized;
+
     }
     @Override
     public boolean hasPermissionByTemplate(String principalId, String namespaceCode, String permissionTemplateName,
@@ -161,7 +191,21 @@ public class PermissionServiceImpl implements PermissionService {
         if ( LOG.isDebugEnabled() ) {
             logAuthorizationCheckByTemplate("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
         }
-        
+
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{isAuthorizedByTemplate}principalId=").append(principalId).append("|")
+                .append("namespaceCode=").append(namespaceCode).append("|")
+                .append("permissionTemplateName=").append(permissionTemplateName).append("|")
+                .append("permissionDetails=").append(CacheKeyUtils.mapKey(permissionDetails)).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        if (distributedKimCache != null) {
+            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+            if (cachedValue != null && cachedValue.get() instanceof Boolean) {
+                return ((Boolean)cachedValue.get()).booleanValue();
+            }
+        }
+
         List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
             if ( LOG.isDebugEnabled() ) {
@@ -175,7 +219,19 @@ public class PermissionServiceImpl implements PermissionService {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + isAuthorized );
         }
-        
+
+        //check if anything exists in RoleMember Cache to see if we should cache in Permission Cache as well
+        //if not cached in RoleMember cache, that means we are dealing with derived roles and don't want to mess with it
+        if (distributedKimCache != null) {
+            StringBuffer roleMembercacheKey =  new StringBuffer("{principalHasRole}principalId=")
+                    .append(principalId).append("|")
+                    .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                    .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMembercacheKey) != null) {
+                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, isAuthorized);
+            }
+        }
+
 		return isAuthorized;
     	
     }
@@ -188,11 +244,41 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(permissionName, "permissionName");
         incomingParamCheck(qualification, "qualification");
 
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{getAuthorizedPermissions}principalId=").append(principalId).append("|")
+                .append("namespaceCode=").append(namespaceCode).append("|")
+                .append("permissionName=").append(permissionName).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        if (distributedKimCache != null) {
+            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+            if (cachedValue != null && cachedValue.get() instanceof List) {
+                return ((List<Permission>)cachedValue.get());
+            }
+        }
         // get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( permissions, null );
-    	return getPermissionsForUser(principalId, applicablePermissions, qualification);
+
+        List<Permission> permissionsForUser = getPermissionsForUser(principalId, applicablePermissions, qualification);
+
+        //check to see if we should cache...  this is messy
+        if (distributedKimCache != null) {
+            List<String> roleIds = getRoleIdsForPermissions(applicablePermissions);
+            // make this call and see if it gets cached...
+            // it is either this, or grabbing and looping through roleTypeServices for
+            boolean hasRole = roleService.principalHasRole(principalId, roleIds, qualification);
+            StringBuffer roleMembercacheKey =  new StringBuffer("{principalHasRole}principalId=")
+                    .append(principalId).append("|")
+                    .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                    .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMembercacheKey) != null) {
+                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, permissionsForUser);
+            }
+        }
+
+    	return permissionsForUser;
     }
     @Override
     public List<Permission> getAuthorizedPermissionsByTemplate(String principalId, String namespaceCode,
@@ -202,11 +288,42 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
         incomingParamCheck(qualification, "qualification");
 
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+
+        StringBuffer cacheKey =  new StringBuffer("{getAuthorizedPermissionsByTemplate}principalId=").append(principalId).append("|")
+                .append("namespaceCode=").append(namespaceCode).append("|")
+                .append("permissionTemplateName=").append(permissionTemplateName).append("|")
+                .append("permissionDetails=").append(CacheKeyUtils.mapKey(permissionDetails)).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        if (distributedKimCache != null) {
+            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+            if (cachedValue != null && cachedValue.get() instanceof List) {
+                return ((List<Permission>)cachedValue.get());
+            }
+        }
         // get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-    	return getPermissionsForUser(principalId, applicablePermissions, qualification);
+
+        List<Permission> permissionsForUser = getPermissionsForUser(principalId, applicablePermissions, qualification);
+
+        //check to see if we should cache...  this is messy
+        if (distributedKimCache != null) {
+            List<String> roleIds = getRoleIdsForPermissions(applicablePermissions);
+            // make this call and see if it gets cached...
+            // it is either this, or grabbing and looping through roleTypeServices for
+            boolean hasRole = roleService.principalHasRole(principalId, roleIds, qualification);
+            StringBuffer roleMembercacheKey =  new StringBuffer("{principalHasRole}principalId=")
+                    .append(principalId).append("|")
+                    .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                    .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMembercacheKey) != null) {
+                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, permissionsForUser);
+            }
+        }
+
+        return permissionsForUser;
     }
     
     /**
@@ -214,12 +331,16 @@ public class PermissionServiceImpl implements PermissionService {
      */
     protected List<Permission> getPermissionsForUser( String principalId, List<Permission> permissions,
             Map<String, String> qualification ) {
+
+
     	ArrayList<Permission> results = new ArrayList<Permission>();
     	List<Permission> tempList = new ArrayList<Permission>(1);
+        List<String> allRoleIds = new ArrayList<String>();
     	for ( Permission perm : permissions ) {
     		tempList.clear();
     		tempList.add( perm );
     		List<String> roleIds = getRoleIdsForPermissions( tempList );
+            allRoleIds.addAll(roleIds);
     		// TODO: This could be made a little better by collecting the role IDs into
     		// a set and then processing the distinct list rather than a check
     		// for every permission
@@ -229,7 +350,6 @@ public class PermissionServiceImpl implements PermissionService {
     			}
     		}
     	}
-    	
     	return Collections.unmodifiableList(results);
     }
 
@@ -282,6 +402,8 @@ public class PermissionServiceImpl implements PermissionService {
     	}
     	return applicablePermissions;
     }
+
+
     @Override
     public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName,
             Map<String, String> qualification ) throws RiceIllegalArgumentException {
@@ -289,7 +411,18 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(permissionName, "permissionName");
         incomingParamCheck(qualification, "qualification");
 
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
 
+        StringBuffer cacheKey =  new StringBuffer("{getPermissionAssignees}")
+                .append("namespaceCode=").append(namespaceCode).append("|")
+                .append("permissionName=").append(permissionName).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        if (distributedKimCache != null) {
+            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+            if (cachedValue != null && cachedValue.get() instanceof List) {
+                return ((List<Assignee>)cachedValue.get());
+            }
+        }
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName);
     	if ( roleIds.isEmpty() ) {
     		return Collections.emptyList();
@@ -309,6 +442,16 @@ public class PermissionServiceImpl implements PermissionService {
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());
     		}
     	}
+
+        //check RoleMember cache.  if cache value exists for the method we just called, no derived roles were used.
+        if (distributedKimCache != null) {
+            StringBuffer roleMemberCacheKey =  new StringBuffer("{getRoleMembers}")
+                    .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                    .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMemberCacheKey) != null) {
+                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, Collections.unmodifiableList(results));
+            }
+        }
     	return Collections.unmodifiableList(results);
     }
 
@@ -318,6 +461,19 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
         incomingParamCheck(qualification, "qualification");
+
+        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+        StringBuffer cacheKey =  new StringBuffer("{getPermissionAssigneesByTemplate}")
+                .append("namespaceCode=").append(namespaceCode).append("|")
+                .append("permissionTemplateName=").append(permissionTemplateName).append("|")
+                .append("permissionDetails=").append(CacheKeyUtils.mapKey(permissionDetails)).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        if (distributedKimCache != null) {
+            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+            if (cachedValue != null && cachedValue.get() instanceof List) {
+                return ((List<Assignee>)cachedValue.get());
+            }
+        }
 
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
@@ -338,6 +494,15 @@ public class PermissionServiceImpl implements PermissionService {
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());
     		}
     	}
+        //check RoleMember cache.  if cache value exists for the method we just called, no derived roles were used.
+        if (distributedKimCache != null) {
+            StringBuffer roleMemberCacheKey =  new StringBuffer("{getRoleMembers}")
+                .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMemberCacheKey) != null) {
+                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, Collections.unmodifiableList(results));
+            }
+        }
     	return Collections.unmodifiableList(results);
     }
 
@@ -751,6 +916,16 @@ public class PermissionServiceImpl implements PermissionService {
         } else if (object instanceof String
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
+        }
+    }
+
+    private DistributedCacheManagerDecorator getKimDistributedCacheManager() {
+        try {
+            return GlobalResourceLoader.getService(KimApiConstants.Cache.KIM_DISTRIBUTED_CACHE_MANAGER);
+        } catch (NullPointerException e) {
+            //caching service not found for some reason.  We can go on without caching
+            LOG.warn(KimApiConstants.Cache.KIM_DISTRIBUTED_CACHE_MANAGER + " was not able to be loaded.  Method will not be cached.");
+            return null;
         }
     }
 }

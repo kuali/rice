@@ -268,7 +268,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p1)")
+    //@Cacheable(value= RoleMember.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p1)")
     List<RoleMembership> getRoleMembers(
                 @WebParam(name="roleIds")
                 List<String> roleIds,
@@ -290,7 +290,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
+    //@Cacheable(value= RoleMember.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
                 @WebParam(name="roleName") String roleName,
                 @WebParam(name="qualification")

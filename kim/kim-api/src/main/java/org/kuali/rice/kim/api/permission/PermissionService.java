@@ -232,7 +232,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
-    @Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssignees}' + 'namespaceCode=' + #p0 + '|' + 'permissionName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
+    //@Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssignees}' + 'namespaceCode=' + #p0 + '|' + 'permissionName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
     List<Assignee> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
     									   @WebParam(name="permissionName") String permissionName,
                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -261,7 +261,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
-    @Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssigneesByTemplate}' + 'namespaceCode=' + #p0 + '|' + 'permissionTemplateName=' + #p1  + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
+    //@Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssigneesByTemplate}' + 'namespaceCode=' + #p0 + '|' + 'permissionTemplateName=' + #p1  + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
     List<Assignee> getPermissionAssigneesByTemplate(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(

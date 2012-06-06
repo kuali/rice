@@ -35,6 +35,9 @@ public final class KimApiConstants {
 	    }
     }
 
+    public static final class Cache {
+        public static final String KIM_DISTRIBUTED_CACHE_MANAGER = "kimDistributedCacheManager";
+    }
     public static final class ServiceNames {
 
         public static final String ROLE_SERVICE_SOAP = "roleService";

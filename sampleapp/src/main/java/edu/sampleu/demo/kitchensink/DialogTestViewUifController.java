@@ -55,4 +55,32 @@ public class DialogTestViewUifController extends UifControllerBase {
 
         return super.start(form, result, request, response);
     }
+
+    /**
+     * Test method for a controller that invokes a dialog lightbox.
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=" + "doSomething")
+    public ModelAndView doSomething(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // TODO: STUB   ***  not yet implemented
+        // note: code below is test junk, just to get a skeleton in place
+        StringBuffer testBucket = new StringBuffer();
+        testBucket.append("blah");
+        boolean okToContinue = false;
+        okToContinue = super.askYesOrNoQuestion("OK_TO_CONTINUE", form, request, response);
+
+        testBucket.append("question answer = ");
+        testBucket.append(Boolean.toString(okToContinue));
+        return super.refresh(form, result, request, response);
+    }
+
+
 }

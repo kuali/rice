@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.UifFormManager;
 import org.kuali.rice.krad.uif.util.UifWebUtils;
+import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.view.View;
@@ -623,6 +624,71 @@ public abstract class UifControllerBase {
                 form.getPostedView(), queryFieldId, queryParameters);
 
         return queryResult;
+    }
+
+    /**
+     * Handles modal dialog interactions for a view controller When a controller method wishes to prompt the user
+     * for additional information before continuing to process the request.
+     *
+     * <p>
+     * If this modal dialog has not yet been presented to the user, a redirect back to the client
+     * is performed to display the modal dialog as a Lightbox. The DialogGroup identified by the
+     * dialogName is used as the Lightbox content.
+     * </p>
+     *
+     * <p>
+     * If the dialog has already been answered by the user.  The boolean value representing the
+     * option chosen by the user is returned back to the calling controller
+     * </p>
+     *
+     * @param form
+     * @param dialogName
+     * @return
+     */
+    protected boolean askYesOrNoQuestion(String dialogName, UifFormBase form,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        DialogManager dm = form.getDialogManager();
+        if (dm.hasDialogBeenAnswered(dialogName)){
+            return dm.wasDialogAnswerAffirmative(dialogName);
+        } else {
+            // redirect back to client to display lightbox
+            dm.addDialog(dialogName);
+            showDialog(dialogName, form, request, response);
+        }
+        // should never get here. TODO: throw exception?
+        //TODO: clear dialogManager entry if exception thrown during redirect?
+
+        return false;
+    }
+
+    protected String askTextResponseQuestion(String dialogName, UifFormBase form,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // TODO: implement me
+        return null;
+    }
+
+    protected ModelAndView showDialog(String dialogName, UifFormBase form,
+            HttpServletRequest request, HttpServletResponse response) throws Exception{
+        // prepare lightbox with dialog group for content
+
+        // redirect back to client
+        // note: in progress junk as a placeholder
+        // TODO: get proper url
+        String url = form.getFormPostUrl();
+        Properties urlParameters = new Properties();
+        urlParameters.put(UifParameters.LIGHTBOX_CALL, "true");
+
+        // respond back to the client directly
+        // without returning back to the controller, but we still want spring mvc to build the view
+        // NOTE: this code below is experimental junk
+        // TODO: proper way to complete request
+        ModelAndView mv = performRedirect(form, url, urlParameters);
+        String newUrl = (String) mv.getModel().get("redirectUrl");
+        mv.getView().render(mv.getModel(),request,response);
+
+        //should never reach this code
+        String myTest="should never get here";
+        return mv;
     }
 
     /**

@@ -20,6 +20,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -95,6 +96,7 @@ public class UifFormBase implements ViewModel {
     // dialog fields
     protected String dialogExplanation;
     protected String dialogResponse;
+    private DialogManager dialogManager;
 
     public UifFormBase() {
         formKey = generateFormKey();
@@ -111,6 +113,7 @@ public class UifFormBase implements ViewModel {
         clientStateForSyncing = new HashMap<String, Object>();
         selectedCollectionLines = new HashMap<String, Set<String>>();
         addedCollectionItems = new HashMap<String, List<Object>>();
+        dialogManager = new DialogManager();
     }
 
     /**
@@ -723,6 +726,28 @@ public class UifFormBase implements ViewModel {
     public void setDialogResponse(String dialogResponse) {
         this.dialogResponse = dialogResponse;
     }
+
+    /**
+     * Gets the DialogManager for this view/form
+     *
+     * <p>
+     * The DialogManager tracks modal dialog interactions with the user
+     * </p>
+     * @return
+     */
+    public DialogManager getDialogManager() {
+        return dialogManager;
+    }
+
+    /**
+     * Sets the DialogManager for this view
+     *
+     * @param dialogManager - DialogManager instance for this view
+     */
+    public void setDialogManager(DialogManager dialogManager) {
+        this.dialogManager = dialogManager;
+    }
+
 
     /**
      * The Map<String, List<Object>> that contains the lists of all newly added items for the collections on the model

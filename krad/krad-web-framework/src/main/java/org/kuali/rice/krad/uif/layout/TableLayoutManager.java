@@ -112,16 +112,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public void performInitialization(View view, Object model, Container container) {
         super.performInitialization(view, model, container);
         getRowCssClasses().clear();
-        if (generateAutoSequence && !(sequenceFieldPrototype instanceof Message)) {
+        if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof Message)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
-            view.assignComponentIds(sequenceFieldPrototype);
+            view.assignComponentIds(getSequenceFieldPrototype());
         }
 
-        view.getViewHelperService().performComponentInitialization(view, model, headerLabelPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, sequenceFieldPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, actionFieldPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, model, selectFieldPrototype);
+        view.getViewHelperService().performComponentInitialization(view, model, getHeaderLabelPrototype());
+        view.getViewHelperService().performComponentInitialization(view, model, getSequenceFieldPrototype());
+        view.getViewHelperService().performComponentInitialization(view, model, getActionFieldPrototype());
+        view.getViewHelperService().performComponentInitialization(view, model, getSubCollectionFieldGroupPrototype());
+        view.getViewHelperService().performComponentInitialization(view, model, getSelectFieldPrototype());
     }
 
     /**
@@ -259,9 +259,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         if (renderSequenceField) {
             Component sequenceField = null;
             if (!isAddLine) {
-                sequenceField = ComponentUtils.copy(sequenceFieldPrototype, idSuffix);
+                sequenceField = ComponentUtils.copy(getSequenceFieldPrototype(), idSuffix);
                 //Ignore in validation processing
-                sequenceField.addDataAttribute("vignore", "yes");
+                sequenceField.addDataAttribute(UifConstants.DataAttributes.VIGNORE, "yes");
                 if (generateAutoSequence && (sequenceField instanceof MessageField)) {
                     ((MessageField) sequenceField).setMessageText(Integer.toString(lineIndex + 1));
                 }
@@ -285,7 +285,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // select field will come after sequence field (if enabled) or be first column
         if (collectionGroup.isIncludeLineSelectionField()) {
-            Field selectField = ComponentUtils.copy(selectFieldPrototype, idSuffix);
+            Field selectField = ComponentUtils.copy(getSelectFieldPrototype(), idSuffix);
             CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
 
             ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex);
@@ -340,7 +340,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     private void addActionColumn(String idSuffix, Object currentLine, int lineIndex, int rowSpan,
             List<Action> actions) {
-        FieldGroup lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
+        FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
         ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex);
         lineActionsField.setRowSpan(rowSpan);
@@ -381,9 +381,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // first column is sequence label (if action column not 1)
         if (renderSequenceField) {
-            sequenceFieldPrototype.setLabelRendered(true);
-            sequenceFieldPrototype.setRowSpan(rowCount);
-            addHeaderField(sequenceFieldPrototype, 1);
+            getSequenceFieldPrototype().setLabelRendered(true);
+            getSequenceFieldPrototype().setRowSpan(rowCount);
+            addHeaderField(getSequenceFieldPrototype(), 1);
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {
@@ -393,9 +393,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // next is select field
         if (collectionGroup.isIncludeLineSelectionField()) {
-            selectFieldPrototype.setLabelRendered(true);
-            selectFieldPrototype.setRowSpan(rowCount);
-            addHeaderField(selectFieldPrototype, 1);
+            getSelectFieldPrototype().setLabelRendered(true);
+            getSelectFieldPrototype().setRowSpan(rowCount);
+            addHeaderField(getSelectFieldPrototype(), 1);
             extraColumns++;
 
             if (actionColumnIndex == 3 && renderActions && renderSequenceField) {
@@ -437,9 +437,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param cellPosition
      */
     private void addActionHeader(int rowCount, int cellPosition) {
-        actionFieldPrototype.setLabelRendered(true);
-        actionFieldPrototype.setRowSpan(rowCount);
-        addHeaderField(actionFieldPrototype, cellPosition);
+        getActionFieldPrototype().setLabelRendered(true);
+        getActionFieldPrototype().setRowSpan(rowCount);
+        addHeaderField(getActionFieldPrototype(), cellPosition);
     }
 
     /**
@@ -452,7 +452,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param column - column number for the header, used for setting the id
      */
     protected void addHeaderField(Field field, int column) {
-        Label headerLabel = ComponentUtils.copy(headerLabelPrototype, "_c" + column);
+        Label headerLabel = ComponentUtils.copy(getHeaderLabelPrototype(), "_c" + column);
         if (useShortLabels) {
             headerLabel.setLabelText(field.getShortLabel());
         } else {
@@ -529,11 +529,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
-        components.add(headerLabelPrototype);
-        components.add(sequenceFieldPrototype);
-        components.add(actionFieldPrototype);
-        components.add(subCollectionFieldGroupPrototype);
-        components.add(selectFieldPrototype);
+        components.add(getHeaderLabelPrototype());
+        components.add(getSequenceFieldPrototype());
+        components.add(getActionFieldPrototype());
+        components.add(getSubCollectionFieldGroupPrototype());
+        components.add(getSelectFieldPrototype());
 
         return components;
     }
@@ -635,8 +635,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @return String sequence property name
      */
     public String getSequencePropertyName() {
-        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof DataField)) {
-            return ((DataField) sequenceFieldPrototype).getPropertyName();
+        if ((getSequenceFieldPrototype() != null) && (getSequenceFieldPrototype() instanceof DataField)) {
+            return ((DataField) getSequenceFieldPrototype()).getPropertyName();
         }
 
         return null;
@@ -648,8 +648,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param sequencePropertyName
      */
     public void setSequencePropertyName(String sequencePropertyName) {
-        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof DataField)) {
-            ((DataField) sequenceFieldPrototype).setPropertyName(sequencePropertyName);
+        if ((getSequenceFieldPrototype() != null) && (getSequenceFieldPrototype() instanceof DataField)) {
+            ((DataField) getSequenceFieldPrototype()).setPropertyName(sequencePropertyName);
         }
     }
 

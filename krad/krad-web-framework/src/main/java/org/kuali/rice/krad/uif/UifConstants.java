@@ -228,5 +228,6 @@ public class UifConstants {
         public static final String SERVER_ERRORS = "serverErrors";
         public static final String SERVER_WARNINGS = "serverWarnings";
         public static final String SERVER_INFO = "serverInfo";
+        public static final String VIGNORE = "vignore";
     }
 }

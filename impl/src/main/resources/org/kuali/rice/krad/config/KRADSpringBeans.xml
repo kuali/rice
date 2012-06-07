@@ -404,6 +404,7 @@
   <bean id="persistenceService" class="org.kuali.rice.krad.service.impl.PersistenceServiceImpl">
     <property name="persistenceServiceJpa" ref="persistenceServiceJpa"/>
     <property name="persistenceServiceOjb" ref="persistenceServiceOjb"/>
+    <property name="kualiModuleService" ref="kualiModuleService"/>
   </bean>
 
   <bean id="persistenceServiceJpa" class="org.kuali.rice.krad.service.impl.PersistenceServiceJpaImpl">

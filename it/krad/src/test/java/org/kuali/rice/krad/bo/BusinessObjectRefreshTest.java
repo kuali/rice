@@ -110,9 +110,15 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 		manager.refreshReferenceObject("accounts");
 		Assert.assertEquals("Manager should have one account", new Integer(2), new Integer(manager.getAccounts().size()));
 	}
-	
+
+    @Test
+    public void testEagerRefreshField() {
+        // TODO: implement -- see testEagerRefreshEboField, but do without using EBOs
+    }
+
 	@Test
-	public void testEagerRefreshField() {
+	public void testEagerRefreshEboField() {
+
         Map<String, String> primaryKeys = new HashMap<String, String>();
         primaryKeys.put("code", "COCONINO");
         primaryKeys.put("countryCode", "US");
@@ -131,6 +137,7 @@ public class BusinessObjectRefreshTest extends KRADTestCase {
 		
 		county.setStateCode("CA");
 		county.setCode("VENTURA");
+        // NOTE: since county is an EBO, whether or not refresh() fetches references is an implementation choice in the LocationModuleService
 		county.refresh();
 		
 		//final StateId californiaStateId = new StateId("US", "CA");

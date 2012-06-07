@@ -29,7 +29,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * Contains common properties and methods for data dictionary entries.
+ * Contains common properties and methods for data dictionary entries
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -340,8 +340,6 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
     }
     
     /**
-     * This overridden method ...
-     * 
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
     public void afterPropertiesSet() throws Exception {
@@ -367,7 +365,13 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
     		}
     	}
    	}
-    
+
+    /**
+     * recursively add complex attributes
+     *
+     * @param complexAttribute - the complex attribute to add recursively
+     * @param attrPath - a string representation of specifically which attribute (at some depth) is being accessed
+     */
     private void addNestedAttributes(ComplexAttributeDefinition complexAttribute, String attrPath){
     	DataDictionaryEntryBase dataDictionaryEntry = (DataDictionaryEntryBase)complexAttribute.getDataObjectEntry();
     	
@@ -391,7 +395,13 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
 	    	}
     	}
     }
-    
+
+    /**
+     *  copy an attribute definition
+     *
+     * @param attrDefToCopy - the attribute to create a copy of
+     * @return a copy of the attribute
+     */
     private AttributeDefinition copyAttributeDefinition(AttributeDefinition attrDefToCopy){
     	AttributeDefinition attrDefCopy = new AttributeDefinition();
     	

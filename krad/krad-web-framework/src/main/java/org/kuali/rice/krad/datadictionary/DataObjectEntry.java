@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Generic dictionary entry for an object that does not have to implement BusinessObject. It provides support
- * for general objects.
+ * for general objects
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -147,7 +147,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      * The objectDescription provides a brief description
      * of the business object for use on help screens.
      *
-     * @param description The description to set.
+     * @param objectDescription The description to set
      */
     public void setObjectDescription(String objectDescription) {
         this.objectDescription = objectDescription;

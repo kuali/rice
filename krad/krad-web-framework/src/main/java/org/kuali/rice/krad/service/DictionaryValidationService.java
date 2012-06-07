@@ -341,24 +341,23 @@ public interface DictionaryValidationService {
     public boolean validateReferenceIsActive(BusinessObject bo, String referenceName);
 
     /**
-     * This method intelligently tests the designated reference on the bo for both existence and active status, where
-     * appropriate.
+     * validateReferenceExistsAndIsActive intelligently tests the designated reference on the bo for both existence and active status, where
+     * appropriate
      *
-     * It will not test anything if the foreign-key fields for the given reference arent filled out with values, and it
-     * will not
-     * test active status if the reference doesnt exist.
+     * <p>It will not test anything if the foreign-key fields for the given reference aren't filled out with values, and it
+     * will not test active status if the reference doesn't exist.</p>
      *
-     * Further, it will only test active status where the correct flag is set.
+     * <p>Further, it will only test active status where the correct flag is set.</p>
      *
-     * On failures of either sort, it will put the relevant errors into the GlobalVariables errorMap, and return a
+     * <p>On failures of either sort, it will put the relevant errors into the GlobalVariables errorMap, and return a
      * false. If there
      * are no failures, or nothing can be tested because the foreign-key fields arent fully filled out, it will return
      * true and add
-     * no errors.
+     * no errors.</p>
      *
-     * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the
+     * <p>This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the
      * errorMap with no
-     * prefix, other than what has already been pushed onto the errorMap.
+     * prefix, other than what has already been pushed onto the errorMap.</p>
      *
      * @param bo - the BusinessObject instance to be tested.
      * @param reference - the ReferenceDefinition to control the nature of the testing.

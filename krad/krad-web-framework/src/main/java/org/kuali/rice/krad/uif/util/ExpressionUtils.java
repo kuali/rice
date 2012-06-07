@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.HashMap;
@@ -111,8 +112,10 @@ public class ExpressionUtils {
                     }
                 }
             }
-
-            configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
+            // do not replace existing property expressions
+            if (!configurableWithExpression.getPropertyExpressions().keySet().contains(adjustedPropertyName)) {
+                configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
+            }
         }
 
         // set the refreshExpressionGraph property on each configurable an expression was found for

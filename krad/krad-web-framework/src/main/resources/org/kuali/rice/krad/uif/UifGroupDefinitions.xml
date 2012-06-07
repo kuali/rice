@@ -513,7 +513,13 @@
     <property name="validatedLineActions">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
-              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"/>
+              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}">
+          <property name="cssClasses">
+            <list merge="true">
+              <value>uif-saveLineAction</value>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="addBlankLineAction">

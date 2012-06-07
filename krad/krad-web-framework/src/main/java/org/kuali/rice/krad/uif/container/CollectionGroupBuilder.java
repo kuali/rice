@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
@@ -303,6 +304,17 @@ public class CollectionGroupBuilder implements Serializable {
             if (!collectionGroup.isReadOnly()) {
                 readOnlyLine = !checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
                         currentLine);
+
+                // Add script to fields to activate save button on any change
+                if (!((UifFormBase) model).isAddedCollectionItem(currentLine) &&
+                        collectionGroup.isRenderSaveLineActions()) {
+                    for (Field f : lineFields) {
+                        if (f instanceof InputField && f.isRender()) {
+                            ((ControlBase)((InputField) f).getControl()).setOnChangeScript(
+                                    "collectionLineChanged(this, 'uif-newCollectionItem');");
+                        }
+                    }
+                }
             }
 
             ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,

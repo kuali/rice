@@ -21,6 +21,7 @@ limitations under the License.
     <@krad.groupWrap group=group>
 
         <div id="${group.id}_tabs">
+
             <#-- render items in list -->
             <ul id="${group.id}_tabList">
                 <#list group.items as item>
@@ -36,8 +37,10 @@ limitations under the License.
                 </div>
             </#list>
         </div>
+
         <#-- render tabs widget -->
         <@krad.template component=group.tabsWidget parent=group/>
+
     </@krad.groupWrap>
 
 </@macro>

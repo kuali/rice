@@ -16,10 +16,6 @@
 
 package edu.sampleu.demo.kitchensink;
 
-import com.sun.xml.internal.bind.v2.TODO;
-import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -58,9 +54,15 @@ public class DialogTestViewUifController extends UifControllerBase {
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
     public ModelAndView save(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-//      TODO: Put code to exercise asking a question here
-        return getUIFModelAndView(uiTestForm);
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView mv;
+        //exercise asking a question here
+        boolean answer = askYesOrNoQuestion("EraseHardDrive-DialogGroup", uiTestForm,  request, response);
+
+        if (answer){
+            return getUIFModelAndView(uiTestForm);
+        }
+        return getUIFModelAndView(uiTestForm, "DialogView-Page1");
     }
 
 

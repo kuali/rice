@@ -192,19 +192,19 @@ public class PermissionServiceImpl implements PermissionService {
             logAuthorizationCheckByTemplate("Perm Templ", principalId, namespaceCode, permissionTemplateName, permissionDetails, qualification);
         }
 
-        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
+        //DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
 
-        StringBuffer cacheKey =  new StringBuffer("{isAuthorizedByTemplate}principalId=").append(principalId).append("|")
-                .append("namespaceCode=").append(namespaceCode).append("|")
-                .append("permissionTemplateName=").append(permissionTemplateName).append("|")
-                .append("permissionDetails=").append(CacheKeyUtils.mapKey(permissionDetails)).append("|")
-                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
-        if (distributedKimCache != null) {
-            Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
-            if (cachedValue != null && cachedValue.get() instanceof Boolean) {
-                return ((Boolean)cachedValue.get()).booleanValue();
-            }
-        }
+        //StringBuffer cacheKey =  new StringBuffer("{isAuthorizedByTemplate}principalId=").append(principalId).append("|")
+        //        .append("namespaceCode=").append(namespaceCode).append("|")
+        //        .append("permissionTemplateName=").append(permissionTemplateName).append("|")
+        //        .append("permissionDetails=").append(CacheKeyUtils.mapKey(permissionDetails)).append("|")
+        //        .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        //if (distributedKimCache != null) {
+        //    Cache.ValueWrapper cachedValue = distributedKimCache.getCache(Permission.Cache.NAME).get(cacheKey);
+        //    if (cachedValue != null && cachedValue.get() instanceof Boolean) {
+        //        return ((Boolean)cachedValue.get()).booleanValue();
+        //    }
+        //}
 
         List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
@@ -222,15 +222,15 @@ public class PermissionServiceImpl implements PermissionService {
 
         //check if anything exists in RoleMember Cache to see if we should cache in Permission Cache as well
         //if not cached in RoleMember cache, that means we are dealing with derived roles and don't want to mess with it
-        if (distributedKimCache != null) {
-            StringBuffer roleMembercacheKey =  new StringBuffer("{principalHasRole}principalId=")
-                    .append(principalId).append("|")
-                    .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
-                    .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
-            if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMembercacheKey) != null) {
-                distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, isAuthorized);
-            }
-        }
+        //if (distributedKimCache != null) {
+        //    StringBuffer roleMembercacheKey =  new StringBuffer("{principalHasRole}principalId=")
+        //            .append(principalId).append("|")
+        //            .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
+        //            .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
+        //    if (distributedKimCache.getCache(RoleMember.Cache.NAME).get(roleMembercacheKey) != null) {
+        //        distributedKimCache.getCache(Permission.Cache.NAME).put(cacheKey, isAuthorized);
+        //    }
+        //}
 
 		return isAuthorized;
     	
@@ -798,7 +798,15 @@ public class PermissionServiceImpl implements PermissionService {
             ids.add(p.getId());
         }
 
-        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", "true"), in("permissionId", ids.toArray(new String[]{})));
+        return getRoleIdsForPermissionIds(ids);
+    }
+
+    private List<String> getRoleIdsForPermissionIds( Collection<String> permissionIds ) {
+        if (CollectionUtils.isEmpty(permissionIds)) {
+            return Collections.emptyList();
+        }
+
+        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", "true"), in("permissionId", permissionIds.toArray(new String[]{})));
 
         GenericQueryResults<RolePermissionBo> results = criteriaLookupService.lookup(RolePermissionBo.class, query);
         List<String> roleIds = new ArrayList<String>();
@@ -928,4 +936,6 @@ public class PermissionServiceImpl implements PermissionService {
             return null;
         }
     }
+
+
 }

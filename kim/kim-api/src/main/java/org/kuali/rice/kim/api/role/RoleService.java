@@ -268,7 +268,9 @@ public interface RoleService {
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
-    //@Cacheable(value= RoleMember.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p1)")
+    @Cacheable(value= RoleMember.Cache.NAME,
+               key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p1)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).containsDerivedRole(#p0)" )
     List<RoleMembership> getRoleMembers(
                 @WebParam(name="roleIds")
                 List<String> roleIds,
@@ -290,7 +292,9 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    //@Cacheable(value= RoleMember.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
+    @Cacheable(value= RoleMember.Cache.NAME,
+               key="'namespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDerivedRoleByNamespaceAndName(#p0, #p1)" )
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
                 @WebParam(name="roleName") String roleName,
                 @WebParam(name="qualification")
@@ -309,7 +313,9 @@ public interface RoleService {
      */
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
-    //@Cacheable(value= RoleMember.Cache.NAME, key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
+    @Cacheable(value= RoleMember.Cache.NAME,
+               key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).containsDerivedRole(#p1)" )
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
             @WebParam(name="roleIds") List<String> roleIds,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
@@ -330,8 +336,10 @@ public interface RoleService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    @Cacheable(value= RoleMember.Cache.NAME, key="'getPrincipalIdSubListWithRole' + 'principalIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'roleNamespaceCode=' + #p1 + '|' + 'roleName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
-    List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
+    @Cacheable(value= RoleMember.Cache.NAME,
+               key="'getPrincipalIdSubListWithRole' + 'principalIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'roleNamespaceCode=' + #p1 + '|' + 'roleName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
+            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDerivedRoleByNamespaceAndName(#p1, #p2)" )
+            List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
             @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
             @WebParam(name="roleName") String roleName,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
@@ -662,14 +670,14 @@ public interface RoleService {
     /**
      * Removes existing DelegateMembers.  Needs to be passed DelegateMember objects.
      *
-     * @param  DelegateMember to remove.
+     * @param  DelegateMembers to remove.
      * @throws RiceIllegalArgumentException if delegateMember is null.
      */
     @WebMethod(operationName = "removeDelegateMembers")
     @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
     void removeDelegateMembers(
             @WebParam(name = "delegateMembers")
-            List<DelegateMember> delegateMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
+            List<DelegateMember> delegateMembers) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Creates a new RoleResponsibilityAction.  Needs to be passed a valid RoleResponsibilityAction
@@ -792,4 +800,17 @@ public interface RoleService {
             @WebParam(name = "permissionId") String permissionId,
             @WebParam(name = "roleId") String roleId)
             throws RiceIllegalArgumentException;
+
+
+    /**
+     * Determines if a role in a list of roleIds contains a derived role
+     *
+     * @since 2.1.1
+     * @param roleId the roleId
+     * @return true if the list contains a derived role
+     */
+    @WebMethod(operationName = "containsDerivedRole")
+    @WebResult(name = "containsDerivedRole")
+    @Cacheable(value= Role.Cache.NAME, key="'{containsDerivedRole}' + 'roleId=' + #p0")
+    boolean isDerivedRole(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 }

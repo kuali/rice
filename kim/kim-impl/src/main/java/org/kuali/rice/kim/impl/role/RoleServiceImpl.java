@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.cache.CacheKeyUtils;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.delegation.DelegationType;
@@ -28,9 +27,6 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
-import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -469,21 +465,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(roleIds, "roleIds");
 
-        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
-
-        StringBuffer cacheKey =  new StringBuffer("{getRoleMembers}roleIds=")
-                .append(CacheKeyUtils.key(roleIds)).append("|")
-                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
-        Cache.ValueWrapper cachedValue = distributedKimCache.getCache(RoleMember.Cache.NAME).get(cacheKey);
-        if (cachedValue != null && cachedValue.get() instanceof List) {
-            return (List<RoleMembership>)(cachedValue.get());
-        }
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         List<RoleMembership> roleMembers = getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
-
-        if (!containsDerivedRole(roleIds)) {
-            distributedKimCache.getCache(RoleMember.Cache.NAME).put(cacheKey, Collections.unmodifiableList(roleMembers));
-        }
 
         return Collections.unmodifiableList(roleMembers);
     }
@@ -492,17 +475,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
-
-        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
-
-        StringBuffer cacheKey =  new StringBuffer("{getRoleMemberPrincipalIds}namespaceCode=")
-                .append(namespaceCode).append("|")
-                .append("roleName=").append(roleName).append("|")
-                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
-        Cache.ValueWrapper cachedValue = distributedKimCache.getCache(RoleMember.Cache.NAME).get(cacheKey);
-        if (cachedValue != null && cachedValue.get() instanceof Collection) {
-            return ((Collection<String>)cachedValue.get());
-        }
 
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
@@ -515,10 +487,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             }
         }
 
-
-        if (!containsDerivedRole(roleIds)) {
-            distributedKimCache.getCache(RoleMember.Cache.NAME).put(cacheKey, Collections.unmodifiableSet(principalIds));
-        }
         return Collections.unmodifiableSet(principalIds);
     }
 
@@ -531,25 +499,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             logPrincipalHasRoleCheck(principalId, roleIds, qualification);
         }
 
-        DistributedCacheManagerDecorator distributedKimCache = getKimDistributedCacheManager();
-
-        StringBuffer cacheKey =  new StringBuffer("{principalHasRole}principalId=")
-                .append(principalId).append("|")
-                .append("roleIds=").append(CacheKeyUtils.key(roleIds)).append("|")
-                .append("qualification=").append(CacheKeyUtils.mapKey(qualification));
-        Cache.ValueWrapper cachedValue = distributedKimCache.getCache(RoleMember.Cache.NAME).get(cacheKey);
-        if (cachedValue != null && cachedValue.get() instanceof Boolean) {
-            return ((Boolean)cachedValue.get()).booleanValue();
-        }
         Boolean hasRole = principalHasRole(principalId, roleIds, qualification, true);
         
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + hasRole );
         }
 
-        if (!containsDerivedRole(roleIds)) {
-            distributedKimCache.getCache(RoleMember.Cache.NAME).put(cacheKey, hasRole);
-        }
         return hasRole;
     }
 
@@ -1185,18 +1140,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return service != null && service.isDerivedRoleType();
     }
 
-    protected boolean isDerivedRoleType(RoleTypeService service) {
+    public boolean isDerivedRoleType(RoleTypeService service) {
         return service != null && service.isDerivedRoleType();
     }
 
-    protected boolean containsDerivedRole(List<String> roleIds) {
-        for (String roleId : roleIds) {
-            RoleTypeService service = getRoleTypeService(roleId);
-            if (isDerivedRoleType(service)) {
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public boolean isDerivedRole(String roleId) {
+        incomingParamCheck(roleId, "roleId");
+        RoleTypeService service = getRoleTypeService(roleId);
+        return isDerivedRoleType(service);
     }
 
     /**
@@ -2054,7 +2006,4 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
     }
 
-    private DistributedCacheManagerDecorator getKimDistributedCacheManager() {
-        return GlobalResourceLoader.getService(KimApiConstants.Cache.KIM_DISTRIBUTED_CACHE_MANAGER);
-    }
 }

@@ -142,7 +142,9 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isAuthorized")
     @WebResult(name = "isAuthorized")
-    //@Cacheable(value= Permission.Cache.NAME, key="'{isAuthorized}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
+    @Cacheable(value= Permission.Cache.NAME,
+               key="'{isAuthorized}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isPermissionAssignedToDerivedRole(#p1, #p2)")
     boolean isAuthorized( @WebParam(name="principalId") String principalId,
     					  @WebParam(name="namespaceCode") String namespaceCode,
     					  @WebParam(name="permissionName") String permissionName,
@@ -201,7 +203,9 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "isAuthorizedByTemplate")
     @WebResult(name = "isAuthorized")
-    //@Cacheable(value= Permission.Cache.NAME, key="'{isAuthorizedByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)")
+    @Cacheable(value= Permission.Cache.NAME,
+               key="'{isAuthorizedByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isPermissionTemplateAssignedToDerivedRole(#p1, #p2)")
     boolean isAuthorizedByTemplate(@WebParam(name = "principalId") String principalId,
                                    @WebParam(name = "namespaceCode") String namespaceCode,
                                    @WebParam(name = "permissionTemplateName") String permissionTemplateName,
@@ -232,7 +236,9 @@ public interface PermissionService {
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
-    //@Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssignees}' + 'namespaceCode=' + #p0 + '|' + 'permissionName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)")
+    @Cacheable(value= Permission.Cache.NAME,
+               key="'{getPermissionAssignees}' + 'namespaceCode=' + #p0 + '|' + 'permissionName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isPermissionAssignedToDerivedRole(#p0, #p1)")
     List<Assignee> getPermissionAssignees( @WebParam(name="namespaceCode") String namespaceCode,
     									   @WebParam(name="permissionName") String permissionName,
                                            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -261,7 +267,9 @@ public interface PermissionService {
     @XmlElementWrapper(name = "assignees", required = true)
     @XmlElement(name = "assignee", required = false)
     @WebResult(name = "assignees")
-    //@Cacheable(value= Permission.Cache.NAME, key="'{getPermissionAssigneesByTemplate}' + 'namespaceCode=' + #p0 + '|' + 'permissionTemplateName=' + #p1  + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
+    @Cacheable(value= Permission.Cache.NAME,
+               key="'{getPermissionAssigneesByTemplate}' + 'namespaceCode=' + #p0 + '|' + 'permissionTemplateName=' + #p1  + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isPermissionTemplateAssignedToDerivedRole(#p0, #p1)")
     List<Assignee> getPermissionAssigneesByTemplate(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
@@ -327,7 +335,9 @@ public interface PermissionService {
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
-    //@Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissions}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)")
+    @Cacheable(value= Permission.Cache.NAME,
+               key="'{getAuthorizedPermissions}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isPermissionAssignedToDerivedRole(#p1, #p2)")
     List<Permission> getAuthorizedPermissions( @WebParam(name="principalId") String principalId,
     										   @WebParam(name="namespaceCode") String namespaceCode,
     										   @WebParam(name="permissionName") String permissionName,
@@ -365,7 +375,9 @@ public interface PermissionService {
     @XmlElementWrapper(name = "permissions", required = true)
     @XmlElement(name = "permission", required = false)
     @WebResult(name = "permissions")
-    //@Cacheable(value= Permission.Cache.NAME, key="'{getAuthorizedPermissionsByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)")
+    @Cacheable(value= Permission.Cache.NAME,
+               key="'{getAuthorizedPermissionsByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'permissionTemplateName=' + #p2 + '|' + 'permissionDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isPermissionTemplateAssignedToDerivedRole(#p1, #p2)")
     List<Permission> getAuthorizedPermissionsByTemplate(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,

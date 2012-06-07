@@ -22,7 +22,6 @@ limitations under the License.
     <@krad.groupWrap group=group>
 
         <@krad.group group=group>
-
         <div id="${group.id}_tree">
             <ul>
                 <#list group.treeGroups.rootElement.children as node>
@@ -32,7 +31,7 @@ limitations under the License.
         </div>
 
         <#-- invoke tree widget -->
-            <@krad.template component=group.tree componentId=group.id/>
+        <@krad.template component=group.tree componentId=group.id/>
 
         </@krad.group>
 

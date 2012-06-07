@@ -407,7 +407,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
 
     /**
      * Setter for the list of all defaultExistenceCheck {@link ReferenceDefinition} associated with this
-     * {@link MaintenanceDocument}
+     * {@link org.kuali.rice.krad.maintenance.MaintenanceDocument}
      *
      * @param defaultExistenceChecks
      */
@@ -416,9 +416,13 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @return List of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument, in the
-     *         order in
-     *         which they were added
+     * The {@code List} of all defaultExistenceCheck reference fieldNames associated with this MaintenanceDocument
+     *
+     * <p>
+     * The List keeps the order the items were added in.
+     * </p>
+     *
+     * @return List
      */
     public List<String> getDefaultExistenceCheckFieldNames() {
         List<String> fieldNames = new ArrayList<String>();
@@ -427,18 +431,26 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
         return fieldNames;
     }
 
+    /**
+     * Indicates that the document data should be encrypted when persisted
+     *
+     * @return boolean
+     */
     public boolean isEncryptDocumentDataInPersistentSessionStorage() {
         return this.encryptDocumentDataInPersistentSessionStorage;
     }
 
+    /**
+     * Setter for flag indicating that the document data should be encrypted when persisted
+     *
+     * @param encryptDocumentDataInPersistentSessionStorage
+     */
     public void setEncryptDocumentDataInPersistentSessionStorage(
             boolean encryptDocumentDataInPersistentSessionStorage) {
         this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
     }
 
     /**
-     * This overridden method ...
-     *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
      */
     @Override

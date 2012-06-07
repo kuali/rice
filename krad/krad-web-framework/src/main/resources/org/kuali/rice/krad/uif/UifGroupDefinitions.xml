@@ -510,9 +510,10 @@
               p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');" />
       </list>
     </property>
-    <property name="newLineActions">
+    <property name="validatedLineActions">
       <list>
-        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save" p:disabled="false"/>
+        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
+              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"/>
       </list>
     </property>
     <property name="addBlankLineAction">

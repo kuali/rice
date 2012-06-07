@@ -128,20 +128,18 @@ public class CollectionGroupBuilder implements Serializable {
 
                     Object currentLine = modelCollection.get(index);
 
+                    // Default line actions - no client side validation
                     String clientSideJs = "performCollectionAction('" + collectionGroup.getId() + "');";
                     List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view,
                             model, collectionGroup, currentLine, index, clientSideJs);
 
-                    if (collectionGroup.isRenderNewLineActions() &&
-                            ((UifFormBase) model).isAddedCollectionItem(collectionGroup.getBindingInfo().getBindingPath(), currentLine)) {
-                        String clientSideJsNewLine = "validateAndPerformCollectionAction('" + collectionGroup.getId() + "', '"
-                                + collectionGroup.getPropertyName() + "');";
+                    // Line actions with client side validation
+                    String clientSideJsValidatedLine = "validateAndPerformCollectionAction('" + collectionGroup.getId() + "', '"
+                            + collectionGroup.getPropertyName() + "');";
+                    List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
+                            view, model, collectionGroup, currentLine, index, clientSideJsValidatedLine);
 
-                        List<Action> newLineActions = initializeLineActions(collectionGroup.getNewLineActions(),
-                                view, model, collectionGroup, currentLine, index, clientSideJsNewLine);
-
-                        lineActions.addAll(newLineActions);
-                    }
+                    lineActions.addAll(validatedLineActions);
 
                     buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine, index);
                 }

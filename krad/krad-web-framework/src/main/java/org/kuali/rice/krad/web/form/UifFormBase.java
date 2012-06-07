@@ -83,7 +83,7 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Object> clientStateForSyncing;
     protected Map<String, Set<String>> selectedCollectionLines;
 
-    private Map<String, List<Object>> addedCollectionItems;
+    private List addedCollectionItems;
 
     protected MultipartFile attachmentFile;
 
@@ -112,7 +112,7 @@ public class UifFormBase implements ViewModel {
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
         selectedCollectionLines = new HashMap<String, Set<String>>();
-        addedCollectionItems = new HashMap<String, List<Object>>();
+        addedCollectionItems = new ArrayList();
         dialogManager = new DialogManager();
     }
 
@@ -750,59 +750,40 @@ public class UifFormBase implements ViewModel {
 
 
     /**
-     * The Map<String, List<Object>> that contains the lists of all newly added items for the collections on the model
+     * The {@code List} that contains all newly added items for the collections on the model
+     * 
+     * <p>
+     * This list contains the new items for all the collections on the model.    
+     * </p>
      *
-     * @return Map<String, List<Object>> map of the newly added item lists
+     * @return List of the newly added item lists
      */
-    public Map<String, List<Object>> getAddedCollectionItems() {
+    public List getAddedCollectionItems() {
         return addedCollectionItems;
     }
 
     /**
-     * Setter for the newly added item lists map
+     * Setter for the newly added item list
      *
      * @param addedCollectionItems
      */
-    public void setAddedCollectionItems(Map<String, List<Object>> addedCollectionItems) {
+    public void setAddedCollectionItems(List addedCollectionItems) {
         this.addedCollectionItems = addedCollectionItems;
-    }
-
-    /**
-     * Adds an item to the list for newly added items on the specified collection
-     *
-     * <p>
-     * This method will create a new List for any collections that does not have an entry in the map.
-     * </p>
-     *
-     * @param collectionPath - the path of the collection to add item to
-     * @param addedItem - the item that has been added
-     */
-    public void addAddedCollectionItem(String collectionPath, Object addedItem) {
-        List collectionAddedItems = addedCollectionItems.get(collectionPath);
-        if (collectionAddedItems == null) {
-            collectionAddedItems = new ArrayList();
-            collectionAddedItems.add(addedItem);
-            addedCollectionItems.put(collectionPath, collectionAddedItems);
-        } else {
-            collectionAddedItems.add(addedItem);
-        }
     }
 
     /**
      * Indicates whether an collection item has been newly added
      *
      * <p>
-     * Tests collection items against the list of newly added items for a specific collection on the model. This list
-     * gets cleared when the view is submitted and the items are persisted.
+     * Tests collection items against the list of newly added items on the model. This list gets cleared when the view 
+     * is submitted and the items are persisted.
      * </p>
      *
-     * @param collectionPath - the path of the specific collection to test against
      * @param item - the item to test against list of newly added items
      * @return boolean true if the item has been newly added
      */
-    public boolean isAddedCollectionItem(String collectionPath, Object item) {
-        List collectionAddedItems = addedCollectionItems.get(collectionPath);
-        return collectionAddedItems != null && collectionAddedItems.contains(item);
+    public boolean isAddedCollectionItem(Object item) {
+        return addedCollectionItems.contains(item);
     }
 
 }

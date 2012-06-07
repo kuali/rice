@@ -58,7 +58,7 @@
     <property name="layoutManager.generateAutoSequence" value="true" />
     <property name="layoutManager.richTable.render" value="true" />
     <property name="renderAddBlankLineButton" value="true"/>
-    <property name="renderNewLineActions" value="true"/>
+    <property name="renderSaveLineActions" value="true"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
@@ -79,7 +79,7 @@
               value="Collection With Add Blank Line Button (BOTTOM)" />
     <property name="propertyName" value="list2" />
     <property name="addLinePlacement" value="BOTTOM"/>
-    <property name="renderNewLineActions" value="false"/>
+    <property name="renderSaveLineActions" value="false"/>
   </bean>
 
   <bean id="CollectionsM2Test-collectionTest2" parent="Uif-Disclosure-StackedCollectionSection">
@@ -89,7 +89,7 @@
               value="edu.sampleu.demo.kitchensink.UITestObject" />
     <property name="propertyName" value="list3" />
     <property name="renderAddBlankLineButton" value="true"/>
-    <property name="renderNewLineActions" value="true"/>
+    <property name="renderSaveLineActions" value="true"/>
     <property name="layoutManager.summaryTitle" value="Line Summary" />
     <property name="layoutManager.summaryFields" value="field1" />
     <property name="items">
@@ -112,7 +112,7 @@
               value="Collection With Add Blank Line Button (BOTTOM)" />
     <property name="propertyName" value="list4" />
     <property name="addLinePlacement" value="BOTTOM"/>
-    <property name="renderNewLineActions" value="false"/>
+    <property name="renderSaveLineActions" value="false"/>
   </bean>
 
 </beans>

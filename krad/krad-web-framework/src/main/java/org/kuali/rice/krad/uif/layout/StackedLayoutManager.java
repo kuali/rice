@@ -155,7 +155,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
         }
 
-        if (((UifFormBase)model).isAddedCollectionItem(collectionGroup.getBindingInfo().getBindingPath(), currentLine)) {
+        if (((UifFormBase)model).isAddedCollectionItem(currentLine)) {
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
         }
         

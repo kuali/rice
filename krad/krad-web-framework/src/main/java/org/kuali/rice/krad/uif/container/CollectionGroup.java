@@ -102,13 +102,13 @@ public class CollectionGroup extends Group implements DataBinding {
     private Action addBlankLineAction;
     private String addLinePlacement;
 
-    private boolean renderNewLineActions;
-    private List<Action> newLineActions;
+    private boolean renderSaveLineActions;
+    private List<Action> validatedLineActions;
 
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
-        renderNewLineActions = false;
+        renderSaveLineActions = false;
         showInactiveLines = false;
         renderInactiveToggleButton = true;
         includeLineSelectionField = false;
@@ -117,7 +117,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         filters = new ArrayList<CollectionFilter>();
         lineActions = new ArrayList<Action>();
-        newLineActions = new ArrayList<Action>();
+        validatedLineActions = new ArrayList<Action>();
         addLineItems = new ArrayList<Field>();
         addLineActions = new ArrayList<Action>();
         subCollections = new ArrayList<CollectionGroup>();
@@ -323,6 +323,7 @@ public class CollectionGroup extends Group implements DataBinding {
         components.add(addLineLabel);
         components.add(collectionLookup);
         components.add(addBlankLineAction);
+        components.addAll(validatedLineActions);
 
         if (!includeItems) {
             // remove the containers items because we don't want them as children
@@ -346,7 +347,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         components.addAll(lineActions);
         components.addAll(addLineActions);
-        components.addAll(newLineActions);
+        components.addAll(validatedLineActions);
         components.addAll(getItems());
         components.addAll(getSubCollections());
         components.addAll(addLineItems);
@@ -1010,43 +1011,44 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * Indicates whether the new line actions should be rendered on all the newly added lines
+     * Indicates whether the save line actions should be rendered
      *
      * @return boolean
      */
-    public boolean isRenderNewLineActions() {
-        return renderNewLineActions;
+    public boolean isRenderSaveLineActions() {
+        return renderSaveLineActions;
     }
 
     /**
-     * Setter for the flag indicating whether the new line actions should be rendered
+     * Setter for the flag indicating whether the save actions should be rendered
      *
-     * @param renderNewLineActions
+     * @param renderSaveLineActions
      */
-    public void setRenderNewLineActions(boolean renderNewLineActions) {
-        this.renderNewLineActions = renderNewLineActions;
+    public void setRenderSaveLineActions(boolean renderSaveLineActions) {
+        this.renderSaveLineActions = renderSaveLineActions;
     }
 
     /**
-     * {@link Action} fields that should be rendered for each newly added collection line
+     * {@link Action} fields that should do client side validation on the line before doing post
      *
      * <p>
-     * A check will be done on each line to see if it is a newly added line before rendering the {@code Action}.
+     * These actions will get an clientSideJs script added that does a call to validateAndPerformCollectionAction in
+     * krad.ajax.js.
      * </p>
      *
      * @return List<Action>
      */
-    public List<Action> getNewLineActions() {
-        return newLineActions;
+    public List<Action> getValidatedLineActions() {
+        return validatedLineActions;
     }
 
     /**
      * Setter for the new line {@link Action} fields
      *
-     * @param newLineActions
+     * @param validatedLineActions
      */
-    public void setNewLineActions(List<Action> newLineActions) {
-        this.newLineActions = newLineActions;
+    public void setValidatedLineActions(List<Action> validatedLineActions) {
+        this.validatedLineActions = validatedLineActions;
     }
 
 }

@@ -1342,7 +1342,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
         }
 
-        ((UifFormBase) model).addAddedCollectionItem(collectionPath, addLine);
+        ((UifFormBase) model).getAddedCollectionItems().add(addLine);
 
         processAfterAddLine(view, collectionGroup, model, addLine);
     }
@@ -1372,7 +1372,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             processBeforeSaveLine(view, collectionGroup, model, saveLine);
 
-            (((UifFormBase) model).getAddedCollectionItems().get(collectionPath)).remove(saveLine);
+            ((UifFormBase) model).getAddedCollectionItems().remove(saveLine);
 
             processAfterSaveLine(view, collectionGroup, model, saveLine);
 
@@ -1405,7 +1405,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         boolean insertFirst = collectionGroup.getAddLinePlacement().equals("TOP");
         addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
-        ((UifFormBase) model).addAddedCollectionItem(collectionPath, newLine);
+        ((UifFormBase) model).getAddedCollectionItems().add(newLine);
 
     }
 

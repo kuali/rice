@@ -190,8 +190,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
         int extraColumns = 0;
 
-        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) model).isAddedCollectionItem(
-                collectionGroup.getBindingInfo().getBindingPath(), currentLine)) {
+        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) model).isAddedCollectionItem(currentLine)) {
             getRowCssClasses().add(collectionGroup.getNewItemsCssClass());
         } else if (isAddLine
                 && collectionGroup.isRenderAddLine()

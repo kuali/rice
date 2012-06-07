@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.PersistenceService;
+import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -69,7 +70,12 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 	 * @see org.kuali.rice.krad.service.PersistenceService#retrieveNonKeyFields(java.lang.Object)
 	 */
 	public void retrieveNonKeyFields(Object persistableObject) {
-		getService(persistableObject.getClass()).retrieveNonKeyFields(persistableObject);
+        if (persistableObject != null &&
+                ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(persistableObject.getClass())) {
+            // we will do nothing, we don't have enough information handy to refresh the EBO
+        } else {
+            getService(persistableObject.getClass()).retrieveNonKeyFields(persistableObject);
+        }
 	}
 
 	/**

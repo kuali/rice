@@ -25,22 +25,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Component defines basic properties and methods that all rendering element implement
+ *
+ * <p>
  * All classes of the UIF that are used as a rendering element implement the
- * component interface. This interface defines basic properties and methods that
- * all such classes much implement. All components within the framework have the
+ * component interface. All components within the framework have the
  * following structure:
  * <ul>
  * <li>Dictionary Configuration/Composition</li>
  * <li>Java Class (the Component implementation</li>
  * <li>>JSP Template Renderer</li>
  * </ul>
- *
+ * </p>
+ * <p>
  * There are three basic types of components:
  * <ul>
  * <li>Container Components: <code>View</code>, <code>Group</code></li>
  * <li>Field Components: <code>Field</code></li>
  * <li>Widget Components: <code>Widget</code></li>
  * </ul>
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.container.Container
@@ -50,7 +54,7 @@ import java.util.Map;
 public interface Component extends Configurable, Serializable, Ordered, ScriptEventSupport {
 
     /**
-     * The unique id (within a given tree) for the component
+     * gets the unique id (within a given tree) for the component
      *
      * <p>
      * The id will be used by renderers to set the HTML element id. This gives a
@@ -87,14 +91,14 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public String getBaseId();
 
     /**
-     * Sets the bae id that backs the component instance
+     * Sets the base id that backs the component instance
      *
      * @param baseId
      */
     public void setBaseId(String baseId);
 
     /**
-     * The name for the component type
+     * gets the name for the component type
      *
      * <p>
      * This is used within the rendering layer to pass the component instance
@@ -133,10 +137,13 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setTemplate(String template);
 
     /**
-     * A title for the component. Depending on the component can be used in
+     * gets the component title
+     *
+     * <p>
+     * Depending on the component can be used in
      * various ways. For example with a Container component the title is used to
      * set the header text. For components like controls other other components
-     * that render an HTML element it is used to set the HTML title attribute
+     * that render an HTML element it is used to set the HTML title attribute</p>
      *
      * @return String title for component
      */
@@ -150,7 +157,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setTitle(String title);
 
     /**
-     * Should be called to initialize the component
+     * initializes the component
      *
      * <p>
      * Where components can set defaults and setup other necessary state. The
@@ -507,7 +514,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * <p>
      * Note this also will push context to property replacers configured on the component.
      * To place multiple objects in the context, you should use #pushAllToContext since that
-     * will call this method for each and update property replacers. Using #getContext().putAll()
+     * will call this method for each and update property replacers. Using {@link #getContext().putAll()}
      * will bypass property replacers.
      * </p>
      *
@@ -530,9 +537,11 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void pushAllToContext(Map<String, Object> objects);
 
     /**
-     * List of <code>PropertyReplacer</code> instances that will be evaluated
+     *  gets a list of <code>PropertyReplacer</code> instances
+     *
+     *  <p>They will be evaluated
      * during the view lifecycle to conditionally set properties on the
-     * <code>Component</code> based on expression evaluations
+     * <code>Component</code> based on expression evaluations</p>
      *
      * @return List<PropertyReplacer> replacers to evaluate
      */
@@ -546,9 +555,11 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers);
 
     /**
-     * Options that are passed through to the Component renderer. The Map key is
+     * gets options that are passed through to the Component renderer
+     *
+     * <p> The Map key is
      * the option name, with the Map value as the option value. See
-     * documentation on the particular widget render for available options.
+     * documentation on the particular widget render for available options.</p>
      *
      * @return Map<String, String> options
      */
@@ -562,8 +573,9 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setTemplateOptions(Map<String, String> templateOptions);
 
     /**
-     * Options that are passed through to the Component renderer. See
-     * documentation on the particular component render for available options.
+     * gets options that are passed through to the Component renderer
+     *
+     * <p>See documentation on the particular component render for available options.</p>
      *
      * @return String options
      */
@@ -577,9 +589,10 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setTemplateOptionsJSString(String templateOptionsJSString);
 
     /**
-     * Can be used to order a component within a List of other components, lower
-     * numbers are placed higher up in the list, while higher numbers are placed
-     * lower in the list
+     * order a component within a List of other components
+     *
+     * <p>Lower numbers are placed higher up in the list, while higher numbers are placed
+     * lower in the list</p>
      *
      * @return int ordering number
      * @see org.springframework.core.Ordered#getOrder()
@@ -594,7 +607,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setOrder(int order);
 
     /**
-     * Tooltip widget that renders a tooltip with additional information about the element on
+     * gets the Tooltip widget that renders a tooltip with additional information about the element on
      * specified trigger event
      *
      * @return Tooltip
@@ -609,7 +622,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setToolTip(Tooltip toolTip);
 
     /**
-     * Name of the method that should be invoked for finalizing the component
+     * gets the name of the method that should be invoked for finalizing the component
      * configuration (full method name, without parameters or return type)
      *
      * <p>
@@ -636,7 +649,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public String getFinalizeMethodToCall();
 
     /**
-     * List of Object instances that should be passed as arguments to the finalize method
+     * gets the List of Object instances that should be passed as arguments to the finalize method
      *
      * <p>
      * These arguments are passed to the finalize method after the standard model and component
@@ -762,62 +775,91 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setComponentSecurity(ComponentSecurity componentSecurity);
 
     /**
-     * @return the progressiveRender
+     * gets a spring EL expression, which when evaluates to true, makes this component visible
+     *
+     * @return the SpEl expression string
      */
     public String getProgressiveRender();
 
     /**
+     * setter for progressiveRender
+     *
      * @param progressiveRender the progressiveRender to set
      */
     public void setProgressiveRender(String progressiveRender);
 
     /**
-     * @return the conditionalRefresh
+     * gets a spring EL expression, which when evaluates to true, causes this component to be refreshed
+     *
+     * @return the SpEl expression string
      */
     public String getConditionalRefresh();
 
     /**
+     * setter for conditionalRefresh
+     *
      * @param conditionalRefresh the conditionalRefresh to set
      */
     public void setConditionalRefresh(String conditionalRefresh);
 
     /**
-     * @return the progressiveDisclosureControlNames
+     * a list of control names (ids) extracted from {@link #getProgressiveRender()}
+     *
+     * @return the list of control names
      */
     public List<String> getProgressiveDisclosureControlNames();
 
     /**
-     * @return the progressiveDisclosureConditionJs
+     * gets a js expression constructed from {@link #getConditionalRefresh()}
+     *
+     * <p>The script can be executed on the client to determine if the original exp was satisfied before
+     * interacting with the server.</p>
+     *
+     * @return the JS script
      */
     public String getProgressiveDisclosureConditionJs();
 
     /**
-     * @return the conditionalRefreshConditionJs
+     * gets a js expression constructed from {@link #getProgressiveRender()}
+     *
+     * <p>The script can be executed on the client to determine if the original exp was satisfied before
+     * interacting with the server.</p>
+     *
+     * @return the JS script
      */
     public String getConditionalRefreshConditionJs();
 
     /**
-     * @return the conditionalRefreshControlNames
+     * a list of control names (ids) extracted from {@link #getConditionalRefresh()}
+     *
+     * @return the list of control names
      */
     public List<String> getConditionalRefreshControlNames();
 
     /**
+     * whether the component will be stored on the client, but hidden, after the first retrieval
+     *
      * @return the progressiveRenderViaAJAX
      */
     public boolean isProgressiveRenderViaAJAX();
 
     /**
+     * sets the value of progressiveRenderViaAJAX
+     *
      * @param progressiveRenderViaAJAX the progressiveRenderViaAJAX to set
      */
     public void setProgressiveRenderViaAJAX(boolean progressiveRenderViaAJAX);
 
     /**
+     * determines whether the component will always be retrieved from the server and shown
+     *
+     * <p>
      * If true, when the progressiveRender condition is satisfied, the component
      * will always be retrieved from the server and shown(as opposed to being
      * stored on the client, but hidden, after the first retrieval as is the
      * case with the progressiveRenderViaAJAX option). <b>By default, this is
      * false, so components with progressive render capabilities will always be
-     * already within the client html and toggled to be hidden or visible.</b>
+     * already within the client html and toggled to be hidden or visible.</b> </p>
      *
      * @return the progressiveRenderAndRefresh
      */
@@ -864,7 +906,7 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public boolean isRefreshedByAction();
 
     /**
-     * Setter for the refresjed by action indicator
+     * Setter for the refreshed by action indicator
      *
      * <p>
      * This is set by the framework for configured ajax action buttons, should not be set in
@@ -901,9 +943,10 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public Map<String, String> getDataAttributes();
 
     /**
-     * DataAttributes that will be written to the html and/or through script to be consumed by jQuery.
+     * sets the DataAttributes that will be written to the html and/or through script to be consumed by jQuery
+     *
      * <p>The attributes that are complex objects (contain {}) they will be written through script.
-     * The attritubes that are simple (contain no objects) will be written directly to the html of the
+     * The attributes that are simple (contain no objects) will be written directly to the html of the
      * component using standard data-.</p>
      * <p>Either way they can be access through .data() call in jQuery.</p>
      *
@@ -912,23 +955,27 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setDataAttributes(Map<String, String> dataAttributes);
 
     /**
-     * Returns js that will add data to this component by the element which matches its id.
-     * This will return script for only the complex data elements (containing {});
+     * gets a js script that will add data to this component by the element which matches its id
+     *
+     * <p>
+     * This will return script for only the complex data elements (containing {})</p>
      *
      * @return jQuery data script for adding complex data attributes
      */
     public String getComplexDataAttributesJs();
 
     /**
-     * Returns a string that can be put into a the tag of a component to add data attributes inline.
-     * This does not include the complex attributes which contain {}
+     * gets a string that can be put into a the tag of a component to add data attributes inline
+     *
+     * <p>
+     * This does not include the complex attributes which contain {}</p>
      *
      * @return html string for data attributes for the simple attributes
      */
     public String getSimpleDataAttributes();
 
     /**
-     * Returns js that will add data to this component by the element which matches its id.
+     * gets a js script that will add data to this component by the element which matches its id
      *
      * <p>This will return script for all the complex data elements.
      * This method is useful for controls that are implemented as spring form tags</p>

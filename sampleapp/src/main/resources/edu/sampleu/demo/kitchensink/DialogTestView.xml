@@ -37,6 +37,7 @@
             <list>
               <bean parent="DialogTestView-MainGroup"/>
               <bean id="myDialog" parent="EraseHardDrive-DialogGroup"/>
+              <bean id="myImage" parent="ImageDialog"/>
             </list>
           </property>
         </bean>
@@ -66,8 +67,10 @@
             <bean parent="Uif-CheckboxControl"/>
           </property>
         </bean>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox" p:clientSideJs="showLightboxComponent('myDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:clientSideJs="showLightboxComponent('myDialog');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:clientSideJs="showLightboxComponent('myImage');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:clientSideJs="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
       </list>
     </property>
   </bean>
@@ -75,4 +78,8 @@
   <bean id="EraseHardDrive-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="You are about to erase your hard drive. Continue?"/>
   </bean>
+
+  <bean id="ImageDialog" parent="Uif-ImageField" p:hidden="true" p:fieldLabel.render="false"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
+
 </beans>

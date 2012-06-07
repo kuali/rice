@@ -753,23 +753,59 @@ function collectionLineChanged(inputField, highlightItemClass) {
  * Display the component of the id in a light box
  *
  * <p>
- * jQuery Fancybox is used to create the lightbox.  The specified component is used as the content of the fancy box.
+ * The specified component is used as the content of the fancy box.
  * The second argument is optional and allows the FancyBox options to be overridden.
  * </p>
  *
  * @param componentId the id of the component that will be used for the lightbox content (usually a group id)
- * @parm overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
+ * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function showLightboxComponent(componentId, overrideOptions) {
+    if (top == self) {
+        _initAndOpenLightbox({type:'inline', href:'#' + componentId}, overrideOptions);
+    } else {
+        // for portal usage (the href anchor from the portal page will not work so the content is explicitly passed to fancybox)
+        showLightboxContent(jQuery('#' + componentId).html(), overrideOptions);
+    }
+}
+
+/**
+ * Display the content inside a light box
+ *
+ * <p>
+ * The specified content is used as the content of the fancy box.
+ * The second argument is optional and allows the FancyBox options to be overridden.
+ * </p>
+ *
+ * @param content the html formatted content that is displayed inside the lightbox.
+ * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
+ */
+function showLightboxContent(content, overrideOptions) {
+    _initAndOpenLightbox({type:'html', content:content}, overrideOptions);
+}
+
+/**
+ * Internal function to initialize and open lightbox
+ *
+ * <p>
+ * jQuery Fancybox is used to create the lightbox. The content type and the contents need to be passed as an option.
+ * The second argument is optional and allows additional FancyBox options to be overridden.
+ * </p>
+ *
+ * @param contentOptions the content type and content as fancybox options (eg. {type: 'iframe', href: '<url>'}).
+ * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
+ */
+function _initAndOpenLightbox(contentOptions, overrideOptions) {
     var options = {fitToView : true,
-                   openEffect : 'fade',
-                   closeEffect : 'fade',
-                   openSpeed : 200,
-                   closeSpeed : 200,
-                   helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}},
-                   type : 'inline',
-                   href : "#" + componentId
-                  };
+        openEffect : 'fade',
+        closeEffect : 'fade',
+        openSpeed : 200,
+        closeSpeed : 200,
+        helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}}
+    };
+
+    // override fancybox content options
+    _mergeOptionsMap(options, contentOptions);
 
     // override fancybox options
     if (overrideOptions !== undefined) {
@@ -780,8 +816,6 @@ function showLightboxComponent(componentId, overrideOptions) {
     if (top == self) {
         jQuery.fancybox(options);
     } else {
-        // for portal usage (the href anchor from the portal page will not work so the content is explicitly passed to fancybox)
-        options.content = jQuery('#' + componentId).html();
         parent.jQuery.fancybox(options);
     }
 }

@@ -110,21 +110,24 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return this.documentSearchCustomizationMediator;
     }
 
+    @Override
 	public void clearNamedSearches(String principalId) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
         for (String clearListName : clearListNames)
         {
             List<UserOptions> records = userOptionsService.findByUserQualified(principalId, clearListName);
             for (UserOptions userOptions : records) {
-                userOptionsService.deleteUserOptions((UserOptions) userOptions);
+                userOptionsService.deleteUserOptions(userOptions);
             }
         }
 	}
 
+    @Override
     public DocumentSearchCriteria getNamedSearchCriteria(String principalId, String searchName) {
         return getSavedSearchCriteria(principalId, NAMED_SEARCH_ORDER_BASE + searchName);
     }
 
+    @Override
     public DocumentSearchCriteria getSavedSearchCriteria(String principalId, String searchName) {
         UserOptions savedSearch = userOptionsService.findByOptionId(searchName, principalId);
         if (savedSearch == null) {
@@ -138,7 +141,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         try {
             return DocumentSearchInternalUtils.unmarshalDocumentSearchCriteria(optionValue);
         } catch (IOException e) {
-            throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
+            //we need to remove the offending records, otherwise the User is stuck until User options are cleared out manually
+            LOG.warn("Failed to load saved search for name '" + savedSearch.getOptionId() + "' removing saved search from database.");
+            userOptionsService.deleteUserOptions(savedSearch);
+            return DocumentSearchCriteria.Builder.create().build();
+
         }
     }
 

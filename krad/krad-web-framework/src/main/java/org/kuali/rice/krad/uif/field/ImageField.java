@@ -114,58 +114,128 @@ public class ImageField extends FieldBase {
         image.setAltText(altText);
     }
 
+    /**
+     * Gets the height of the image
+     *
+     * @return String height
+     */
     public String getHeight() {
         return image.getHeight();
     }
 
+    /**
+     * Sets the height of the image
+     *
+     * @param height
+     */
     public void setHeight(String height) {
         image.setHeight(height);
     }
 
+    /**
+     * Sets the width of the image
+     *
+     * @param width
+     */
     public void setWidth(String width) {
         image.setWidth(width);
     }
 
+    /**
+     * Gets the width of the image
+     *
+     * @return String width
+     */
     public String getWidth() {
         return image.getWidth();
     }
 
+    /**
+     * Gets the caption header text
+     *
+     * @return String captionHeaderText
+     */
     public String getCaptionHeaderText() {
         return image.getCaptionHeaderText();
     }
 
+    /**
+     * Sets the caption header text
+     *
+     * @param captionHeaderText
+     */
     public void setCaptionHeaderText(String captionHeaderText) {
         image.setCaptionHeaderText(captionHeaderText);
     }
 
+    /**
+     * Gets the caption header
+     *
+     * @return Header captionHeader
+     */
     public Header getCaptionHeader() {
         return image.getCaptionHeader();
     }
 
+    /**
+     * Sets the caption header
+     *
+     * @param captionHeader
+     */
     public void setCaptionHeader(Header captionHeader) {
         image.setCaptionHeader(captionHeader);
     }
 
+    /**
+     * Gets the cutline text
+     *
+     * @return String cutlineText
+     */
     public String getCutlineText() {
         return image.getCutlineText();
     }
 
+    /**
+     * Sets the cutline text
+     *
+     * @param cutlineText
+     */
     public void setCutlineText(String cutlineText) {
         image.setCutlineText(cutlineText);
     }
 
+    /**
+     * Gets the cutline
+     *
+     * @return Message cutline
+     */
     public Message getCutline() {
         return image.getCutlineMessage();
     }
 
+    /**
+     * Sets the cutline
+     *
+     * @param cutline
+     */
     public void setCutline(Message cutline) {
         image.setCutlineMessage(cutline);
     }
 
+    /**
+     * Gets boolen of whether the caption header is above the image
+     *
+     * @return boolean captionHeaderAboveImage
+     */
     public boolean isCaptionHeaderAboveImage() {
         return image.isCaptionHeaderPlacementAboveImage();
     }
 
+    /**
+     * Sets boolen of whether the caption header is above the image
+     *
+     * @param boolean captionHeaderAboveImage
+     */
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
         image.setCaptionHeaderPlacementAboveImage(captionHeaderAboveImage);
     }

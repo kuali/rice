@@ -16,18 +16,20 @@
 package org.kuali.rice.coreservice.impl.namespace;
 
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-
+import groovy.transform.EqualsAndHashCode
 import org.hibernate.annotations.Type
 import org.kuali.rice.coreservice.api.namespace.Namespace
 import org.kuali.rice.coreservice.framework.namespace.NamespaceEbo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+
 @Entity
 @Table(name="KRCR_NMSPC_T")
+@EqualsAndHashCode
 class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo {
 
     private static final long serialVersionUID = 1L;
@@ -79,5 +81,16 @@ class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo 
 
         return bo
     }
+
+    // Using class level annotation instead
+//    @Override
+//    boolean equals(Object obj) {
+//        return EqualsBuilder.reflectionEquals(this, obj);
+//    }
+//
+//    @Override
+//    int hashCode() {
+//        return HashCodeBuilder.reflectionHashCode(this);
+//    }
 }
 

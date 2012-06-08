@@ -28,6 +28,10 @@
     <krad:template component="${group.addBlankLineAction}"/>
   </c:if>
 
+  <c:if test="${group.addViaLightBox && group.addLinePlacement eq 'TOP'}">
+    <krad:template component="${group.addViaLightBoxAction}"/>
+  </c:if>
+
   <%-- render items through layout manager --%>
   <tiles:insertTemplate template="${group.layoutManager.template}">
     <tiles:putAttribute name="items" value="${group.items}"/>
@@ -37,6 +41,10 @@
 
   <c:if test="${group.renderAddBlankLineButton && group.addLinePlacement eq 'BOTTOM'}">
     <krad:template component="${group.addBlankLineAction}"/>
+  </c:if>
+
+  <c:if test="${group.addViaLightBox && group.addLinePlacement eq 'BOTTOM'}">
+    <krad:template component="${group.addViaLightBoxAction}"/>
   </c:if>
 
 </krad:group>

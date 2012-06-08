@@ -526,6 +526,9 @@
       <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
             p:actionEvent="addBlankLine"/>
     </property>
+    <property name="addViaLightBoxAction">
+      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
+    </property>
     <property name="collectionLookup">
       <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
         <property name="quickfinderAction">

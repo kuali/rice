@@ -105,6 +105,9 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean renderSaveLineActions;
     private List<Action> validatedLineActions;
 
+    private boolean addViaLightBox;
+    private Action addViaLightBoxAction;
+
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
@@ -324,6 +327,7 @@ public class CollectionGroup extends Group implements DataBinding {
         components.add(collectionLookup);
         components.add(addBlankLineAction);
         components.addAll(validatedLineActions);
+        components.add(addViaLightBoxAction);
 
         if (!includeItems) {
             // remove the containers items because we don't want them as children
@@ -1051,4 +1055,39 @@ public class CollectionGroup extends Group implements DataBinding {
         this.validatedLineActions = validatedLineActions;
     }
 
+    /**
+     * Indicates that a add action should be rendered and that the add group be displayed in a lightbox
+     *
+     * @return boolean
+     */
+    public boolean isAddViaLightBox() {
+        return addViaLightBox;
+    }
+
+    /**
+     * Setter for the flag to indicate that add groups should be displayed in a light box
+     *
+     * @param addViaLightBox
+     */
+    public void setAddViaLightBox(boolean addViaLightBox) {
+        this.addViaLightBox = addViaLightBox;
+    }
+
+    /**
+     * The {@link Action} that will be displayed that will open the add line group in a lightbox
+     *
+     * @return Action
+     */
+    public Action getAddViaLightBoxAction() {
+        return addViaLightBoxAction;
+    }
+
+    /**
+     * Setter for the add line via lightbox {@link Action}
+     *
+     * @param addViaLightBoxAction
+     */
+    public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
+        this.addViaLightBoxAction = addViaLightBoxAction;
+    }
 }

@@ -27,6 +27,7 @@
         <bean parent="Uif-Page" p:id="CollectionsM2Test-PageTest" p:headerText="Collection 2.2M2 Test Page">
           <property name="items">
             <list>
+              <ref bean="CollectionsM2Test-collectionTest5"/>
               <ref bean="CollectionsM2Test-collectionTest"/>
               <ref bean="CollectionsM2Test-collectionTest3"/>
               <ref bean="CollectionsM2Test-collectionTest2"/>
@@ -48,6 +49,32 @@
       <bean parent="Uif-ClassicKnsTheme"/>
     </property>
   </bean>
+
+  <bean id="CollectionsM2Test-collectionTest5" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
+    <property name="headerText"
+              value="Collection With Add Via Lightbox" />
+    <property name="collectionObjectClass"
+              value="edu.sampleu.demo.kitchensink.UITestObject" />
+    <property name="propertyName" value="list5" />
+    <property name="layoutManager.generateAutoSequence" value="true" />
+    <property name="layoutManager.richTable.render" value="true" />
+    <property name="layoutManager.separateAddLine" value="true" />
+    <property name="addViaLightBox" value="true" />
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
+              p:required="true" />
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
+              p:required="true" />
+        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
+              p:required="true" />
+        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
+              p:required="true" >
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 
   <bean id="CollectionsM2Test-collectionTest" parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
     <property name="headerText"
@@ -84,14 +111,15 @@
 
   <bean id="CollectionsM2Test-collectionTest2" parent="Uif-Disclosure-StackedCollectionSection">
     <property name="headerText"
-              value="Collection With Add Blank Line Button (TOP) and New Line Action(Save)" />
+              value="Collection With Add Via Lightbox" />
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject" />
     <property name="propertyName" value="list3" />
-    <property name="renderAddBlankLineButton" value="true"/>
-    <property name="renderSaveLineActions" value="true"/>
+    <!--<property name="renderAddBlankLineButton" value="true"/>-->
+    <!--<property name="renderSaveLineActions" value="true"/>-->
     <property name="layoutManager.summaryTitle" value="Line Summary" />
     <property name="layoutManager.summaryFields" value="field1" />
+    <property name="addViaLightBox" value="true" />
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"

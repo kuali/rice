@@ -151,6 +151,15 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
                 lineGroup = ComponentUtils.copy(getAddLineGroup(), idSuffix);
                 lineGroup.addStyleClass(collectionGroup.getAddItemCssClass());
             }
+
+            if (collectionGroup.isAddViaLightBox()) {
+                String clientSideJs = "showLightboxComponent('" + lineGroup.getId() +  "');";
+                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getClientSideJs())) {
+                    clientSideJs = collectionGroup.getAddViaLightBoxAction().getClientSideJs() + clientSideJs;
+                }
+                collectionGroup.getAddViaLightBoxAction().setClientSideJs(clientSideJs);
+                lineGroup.setStyle("display: none");
+            }
         } else {
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
         }

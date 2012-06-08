@@ -803,14 +803,15 @@ public interface RoleService {
 
 
     /**
-     * Determines if a role in a list of roleIds contains a derived role
+     * Determines if a role with a provided id is a derived role
      *
      * @since 2.1.1
      * @param roleId the roleId
-     * @return true if the list contains a derived role
+     * @return true if role is a derived role
+     * @throws RiceIllegalArgumentException if roleId is null or blank.
      */
-    @WebMethod(operationName = "containsDerivedRole")
-    @WebResult(name = "containsDerivedRole")
-    @Cacheable(value= Role.Cache.NAME, key="'{containsDerivedRole}' + 'roleId=' + #p0")
+    @WebMethod(operationName = "isDerivedRole")
+    @WebResult(name = "isDerivedRole")
+    @Cacheable(value= Role.Cache.NAME, key="'{isDerivedRole}' + 'roleId=' + #p0")
     boolean isDerivedRole(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 }

@@ -743,9 +743,9 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
 function collectionLineChanged(inputField, highlightItemClass) {
     innerLayout = jQuery(inputField).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
     if (innerLayout == 'uif-tableCollectionLayout') {
-        jQuery(inputField).closest('tr').addClass(highlightItemClass).find(".uif-saveLineAction").removeAttr('disabled');
+        jQuery(inputField).closest('tr').find(".uif-saveLineAction").removeAttr('disabled');
     }else{
-        jQuery(inputField).closest('.uif-collectionItem').addClass(highlightItemClass).find(".uif-saveLineAction").removeAttr('disabled');
+        jQuery(inputField).closest('.uif-collectionItem').find(".uif-saveLineAction").removeAttr('disabled');
     }
 }
 

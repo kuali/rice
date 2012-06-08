@@ -32,26 +32,56 @@ public class Iframe extends ContentElementBase {
 		super();
 	}
 
+    /**
+     * The IFrame's source
+     *
+     * @return String source
+     */
 	public String getSource() {
 		return this.source;
 	}
 
+    /**
+     * Setter for the IFrame's source
+     *
+     * @param source
+     */
 	public void setSource(String source) {
 		this.source = source;
 	}
 
+    /**
+     * The IFrame's height
+     *
+     * @return String height
+     */
 	public String getHeight() {
 		return this.height;
 	}
 
+    /**
+     * Setter for the IFrame's height
+     *
+     * @param height
+     */
 	public void setHeight(String height) {
 		this.height = height;
 	}
 
+    /**
+     * The IFrame's frame border
+     *
+     * @return String frameborder
+     */
 	public String getFrameborder() {
 		return this.frameborder;
 	}
 
+    /**
+     * Setter for the IFrame's frame border
+     *
+     * @param frameborder
+     */
 	public void setFrameborder(String frameborder) {
 		this.frameborder = frameborder;
 	}

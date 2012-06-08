@@ -234,7 +234,7 @@ public class ImageField extends FieldBase {
     /**
      * Sets boolen of whether the caption header is above the image
      *
-     * @param boolean captionHeaderAboveImage
+     * @param captionHeaderAboveImage
      */
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
         image.setCaptionHeaderPlacementAboveImage(captionHeaderAboveImage);

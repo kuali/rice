@@ -44,6 +44,10 @@ public class UserControl extends TextControl {
         super();
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
     @Override
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);

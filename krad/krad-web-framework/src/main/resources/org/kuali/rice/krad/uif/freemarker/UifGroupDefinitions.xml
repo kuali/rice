@@ -952,8 +952,8 @@
     <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Cancel"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
       </list>
     </property>
     <property name="displayExplanation" value="false"/>
@@ -985,5 +985,21 @@
         <value>uif-dialogGroup</value>
       </list>
     </property>
+  </bean>
+
+  <bean id="RUSure-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to cancel?"/>
+  </bean>
+  <bean id="RUSure-Delete-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to delete?"/>
+  </bean>
+  <bean id="RUSure-Disapprove-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to disapprove this document?"/>
+  </bean>
+  <bean id="RUSure-Close-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Would you like to save this document before you close it?"/>
+  </bean>
+  <bean id="SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
 </beans>

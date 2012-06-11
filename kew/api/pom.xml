@@ -430,6 +430,16 @@
                   <classifier>${svc.pf.name}</classifier>
                   <type>wsdl</type>
                 </artifact>
+                <artifact>
+                  <file>${svc.ps.wsdl}</file>
+                  <classifier>${svc.ps.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+                <artifact>
+                  <file>${svc.er.wsdl}</file>
+                  <classifier>${svc.er.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
               </artifacts>
             </configuration>
           </execution>

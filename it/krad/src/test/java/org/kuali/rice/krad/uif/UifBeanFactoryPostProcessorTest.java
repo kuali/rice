@@ -172,4 +172,22 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         assertNotNull("Bean should have an inquiry property value", ((DataField)inquiryView.getItems().get(0).getItems().get(0)).getInquiry());
         assertFalse("Bean should have an inquiry render value of false", ((DataField)inquiryView.getItems().get(0).getItems().get(0)).getInquiry().isRender());
     }
+
+    @Test
+    /**
+     * tests that the defined property names are set as expected
+     */
+    public void testDefinedPropertyNames() {
+        DataField dataField = (DataField) getTestDictionaryObject("testNestedExpressionOverride");
+        assertEquals("testNestedExpressionOverride does not contain the expected number of defined property names",
+                3, dataField.getDefinedPropertyNames().size());
+
+        dataField = (DataField) getTestDictionaryObject("testNestedExpressionOverride2");
+        assertEquals("testNestedExpressionOverride2 does not contain the expected number of defined property names",
+                5, dataField.getDefinedPropertyNames().size());
+
+        dataField = (DataField) ((InquiryView) getTestDictionaryObject("testPeopleFlow-InquiryView")).getItems().get(0).getItems().get(0);
+        assertEquals("nested bean does not contain the expected number of defined property names",
+                2, dataField.getDefinedPropertyNames().size());
+    }
 }

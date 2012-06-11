@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -112,9 +113,10 @@ public class ExpressionUtils {
                     }
                 }
             }
-            // do not replace existing property expressions
-            if (!configurableWithExpression.getPropertyExpressions().keySet().contains(adjustedPropertyName)) {
-                configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
+            // do not set a property expression if the property was defined
+            if (!(configurableWithExpression instanceof DataBinding &&
+                    ((DataBinding)configurableWithExpression).getDefinedPropertyNames().contains(adjustedPropertyName))) {
+                    configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
             }
         }
 

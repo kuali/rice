@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Configurable;
+import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -36,6 +39,7 @@ import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.ManagedSet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -120,6 +124,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         }
 
         expressionGraph.setMergeEnabled(false);
+        // add defined property names
+        addDefinedPropertyNames(beanClass, pvs);
         processNestedBeanDefinition(beanName, beanDefinition, "", expressionGraph, beanFactory, processedBeanNames);
 
         // add property for expression graph
@@ -128,7 +134,23 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     }
 
     /**
-     * If the bean class is type Component, LayoutManager, or BindingInfo, iterate through configured property values
+     * adds defined property names to the bean definition it it implements {@code DataBinding}
+     *
+     * @param beanClass - the class type of the bean
+     * @param pvs - the defined property values
+     */
+    protected void addDefinedPropertyNames(Class<?> beanClass, MutablePropertyValues pvs) {
+        if (ClassUtils.getAllInterfaces(beanClass).contains(DataBinding.class)) {
+            List<String> definedPropertyNames = new ArrayList<String>(pvs.getPropertyValueList().size());
+            for (PropertyValue propertyValue: pvs.getPropertyValueList()) {
+                definedPropertyNames.add(propertyValue.getName());
+            }
+            pvs.addPropertyValue(UifPropertyPaths.DEFINED_PROPERTY_NAMES, definedPropertyNames);
+        }
+    }
+
+    /**
+     * If the bean class is type Configurable, iterate through configured property values
      * and check for expressions
      *
      * @param beanName - name of the bean in the factory (only set for top level beans, not nested)
@@ -346,6 +368,9 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
             removeExpressionsByPrefix(propertyName, parentExpressionGraph);
             processNestedBeanDefinition(beanName, beanDefinition, propertyName, expressionGraph, beanFactory,
                     processedBeanNames);
+
+            // add defined property names
+            addDefinedPropertyNames(getBeanClass(beanDefinition, beanFactory), beanDefinition.getPropertyValues());
 
             return propertyValue;
         }

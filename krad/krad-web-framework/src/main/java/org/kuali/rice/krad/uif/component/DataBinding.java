@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.util.List;
 
 /**
  * Components that bind to a model (hold model data) should implement this
@@ -52,5 +53,15 @@ public interface DataBinding {
 	 * @return String property name
 	 */
 	public String getPropertyName();
+
+    /**
+     * gets a list of property names that were defined in the bean configuration
+     *
+     * <p>This allows for properties that have explicitly set values to be determined so that they are not
+     * overwritten by EL expressions defined by parent bean definitions</p>
+     *
+     * @return the list of defined property names
+     */
+    public List<String> getDefinedPropertyNames();
 
 }

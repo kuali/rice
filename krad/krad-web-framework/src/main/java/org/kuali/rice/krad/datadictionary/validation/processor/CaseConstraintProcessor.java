@@ -47,9 +47,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
     private static final String CONSTRAINT_NAME = "case constraint";
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult,
-     *      Object, org.kuali.rice.krad.datadictionary.validation.capability.Constrainable,
-     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
      */
     @Override
     public ProcessorResult process(DictionaryValidationResult result, Object value, CaseConstraint caseConstraint,

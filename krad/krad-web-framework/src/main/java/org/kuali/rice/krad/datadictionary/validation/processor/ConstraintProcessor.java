@@ -36,7 +36,14 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 public interface ConstraintProcessor<T, C extends Constraint> {
 
 	public ProcessorResult process(DictionaryValidationResult result, T value, C constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException;
-	
+
+    /**
+     * gets a descriptive name of this constraint processor
+     *
+     *  <p>e.g. @see CollectionSizeConstraintProcessor.CONSTRAINT_NAME</p>
+     *
+     * @return a descriptive name
+     */
 	public String getName();
 	
 	public Class<? extends Constraint> getConstraintType();

@@ -82,6 +82,7 @@
     <cas-client-core.version>3.2.1</cas-client-core.version>
     <cglib.version>2.2.2</cglib.version>
     <aspectj.version>1.6.8</aspectj.version>
+    <bitronix.version>2.1.2</bitronix.version>
     <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
     <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
@@ -113,7 +114,6 @@
     <joda-time.version>2.0</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10</jotm.version>
-    <bitronix.version>2.1.2</bitronix.version>
     <jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
@@ -127,6 +127,7 @@
     <jta.version>1.1</jta.version>
     <junit.version>4.10</junit.version>
     <log4j.version>1.2.16</log4j.version>
+    <mockito.version>1.9.0</mockito.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
       Quartz 2.0.x is an impacting api and database-level change -->
@@ -1303,6 +1304,13 @@
         <artifactId>${mysql.jdbc.artifactId}</artifactId>
         <version>${mysql.jdbc.version}</version>
         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
       </dependency>
 
       <dependency>

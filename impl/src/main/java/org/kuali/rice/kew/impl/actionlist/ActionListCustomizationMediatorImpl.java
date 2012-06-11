@@ -42,6 +42,8 @@ public class ActionListCustomizationMediatorImpl implements ActionListCustomizat
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListCustomizationMediatorImpl.class);
 
     private DocumentTypeService documentTypeService;
+    private ActionListCustomizationHandlerServiceChooser actionListCustomizationHandlerServiceChooser =
+            new ActionListCustomizationHandlerServiceChooser();
 
     /**
      * <p>partitions ActionItems by application id, and calls the appropriate
@@ -88,12 +90,12 @@ public class ActionListCustomizationMediatorImpl implements ActionListCustomizat
 
         for (String applicationId : itemsByApplicationId.keySet()) {
             ActionListCustomizationHandlerService actionListCustomizationHandler =
-                    KewFrameworkServiceLocator.getActionListCustomizationHandlerService(applicationId);
+                    getActionListCustomizationHandlerServiceChooser().getByApplicationId(applicationId);
 
             if (actionListCustomizationHandler == null) {
                 // get the local ActionListCustomizationHandlerService as a fallback
                 actionListCustomizationHandler =
-                        KewFrameworkServiceLocator.getActionListCustomizationHandlerService(null);
+                        getActionListCustomizationHandlerServiceChooser().getByApplicationId(null);
             }
 
             List<ActionItemCustomization> customizations =
@@ -129,5 +131,23 @@ public class ActionListCustomizationMediatorImpl implements ActionListCustomizat
 
     public void setDocumentTypeService(DocumentTypeService documentTypeService) {
         this.documentTypeService = documentTypeService;
+    }
+
+    /**
+     * Need this to make our class testable without having to wire the universe up through spring.
+     */
+    public static class ActionListCustomizationHandlerServiceChooser {
+        public ActionListCustomizationHandlerService getByApplicationId(String applicationId) {
+            return KewFrameworkServiceLocator.getActionListCustomizationHandlerService(applicationId);
+        }
+    }
+
+    public ActionListCustomizationHandlerServiceChooser getActionListCustomizationHandlerServiceChooser() {
+        return actionListCustomizationHandlerServiceChooser;
+    }
+
+    public void setActionListCustomizationHandlerServiceChooser(
+            ActionListCustomizationHandlerServiceChooser actionListCustomizationHandlerServiceChooser) {
+        this.actionListCustomizationHandlerServiceChooser = actionListCustomizationHandlerServiceChooser;
     }
 }

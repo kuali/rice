@@ -282,7 +282,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.control.ControlDefinition#getKeyValuesFinder()
+     * @see org.kuali.rice.krad.datadictionary.control.ControlDefinition#getValuesFinderClass()
      */
     public Class<? extends KeyValuesFinder> getAttachmentTypesValuesFinderClass() {
         return attachmentTypesValuesFinderClass;
@@ -302,30 +302,40 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
-     * @return the allowsNoteAttachments
+     * Indicates that a document screen allows notes with attachments
+     *
+     * <p>
+     * The add attachments section on notes will not be rendered when this is set to false.
+     * </p>
+     *
+     * @return boolean
      */
     public boolean getAllowsNoteAttachments() {
         return this.allowsNoteAttachments;
     }
 
     /**
-     * The allowsNoteAttachments element contains a true or false value.
-     * If true, then a document screen includes notes with attachments. Otherwise,
-     * only notes is displayed.
+     * Setter for flag indicating that attacments can be added to notes
+     *
+     * @param allowsNoteAttachments
      */
     public void setAllowsNoteAttachments(boolean allowsNoteAttachments) {
         this.allowsNoteAttachments = allowsNoteAttachments;
     }
 
     /**
-     * @return the allowsNoteFYI
+     * Indicates whether to render the AdHoc FYI recipient box and Send FYI button
+     *
+     * @return boolean
      */
     public boolean getAllowsNoteFYI() {
         return allowsNoteFYI;
     }
 
     /**
-     * This is an indicator for determining whether to render the AdHoc FYI recipient box and Send FYI button.
+     * Setter for the flag indicating whether to render the AdHoc FYI recipient box and Send FYI button
+     *
+     * @param allowsNoteFYI
      */
     public void setAllowsNoteFYI(boolean allowsNoteFYI) {
         this.allowsNoteFYI = allowsNoteFYI;

@@ -27,7 +27,8 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 
 /**
- * 
+ *  DataTypeConstraintProcessor processes constraints of type {@link DataTypeConstraint}
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
 public class DataTypeConstraintProcessor extends MandatoryElementConstraintProcessor<DataTypeConstraint> {
@@ -35,7 +36,7 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 	private static final String CONSTRAINT_NAME = "data type constraint";
 	
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.capability.Constrainable, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+	 * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult, Object, org.kuali.rice.krad.datadictionary.validation.constraint.Constraint, org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
 	 */
 	@Override
 	public ProcessorResult process(DictionaryValidationResult result, Object value, DataTypeConstraint constraint, AttributeValueReader attributeValueReader)
@@ -58,7 +59,16 @@ public class DataTypeConstraintProcessor extends MandatoryElementConstraintProce
 	public Class<? extends Constraint> getConstraintType() {
 		return DataTypeConstraint.class;
 	}
-	
+
+    /**
+     *  validates the value provided using {@code DataTypeConstraint}
+     *
+     * @param result - a holder for any already run validation results
+     * @param dataType - the expected data type
+     * @param value - the value to validate
+     * @param attributeValueReader - provides access to the attribute being validated
+     * @return  the passed in result, updated with the results of the processing
+     */
 	protected ConstraintValidationResult processDataTypeConstraint(DictionaryValidationResult result, DataType dataType, Object value, AttributeValueReader attributeValueReader) {
 		if (dataType == null)
 			return result.addNoConstraint(attributeValueReader, CONSTRAINT_NAME);

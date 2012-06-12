@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An object that returns the case constraint as a list for a definition implementing the capability {@link CaseConstrainable}. 
+ * CaseConstraintResolver returns the case constraint as a list for a definition implementing the capability {@link CaseConstrainable}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

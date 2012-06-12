@@ -71,6 +71,7 @@ public class UifFormBase implements ViewModel {
     protected boolean validateDirty;
 
     protected String growlScript;
+    protected String lightboxScript;
 
     protected View view;
     protected View postedView;
@@ -680,6 +681,22 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setGrowlScript(String growlScript) {
         this.growlScript = growlScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getLightboxScript()
+     */
+    @Override
+    public String getLightboxScript() {
+        return lightboxScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setLightboxScript(java.lang.String)
+     */
+    @Override
+    public void setLightboxScript(String lightboxScript) {
+        this.lightboxScript = lightboxScript;
     }
 
     /**

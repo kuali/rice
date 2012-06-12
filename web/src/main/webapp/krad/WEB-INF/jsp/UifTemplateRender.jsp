@@ -33,7 +33,6 @@
 
       <%-- render growl script --%>
       <krad:script value="${KualiForm.growlScript}"/>
-
       <div id="Uif-Application" style="display:none;" class="uif-application">
 
         <!-- APPLICATION HEADER -->
@@ -62,6 +61,7 @@
           <krad:template component="${KualiForm.view}"/>
 
         </krad:form>
+        <krad:script value="${KualiForm.lightboxScript}"/>
       </div>
 
       <!-- APPLICATION FOOTER -->
@@ -92,6 +92,7 @@
       <%-- now render the updated component (or page) wrapped in an update div --%>
       <div id="${Component.id}_update" data-handler="update-component">
         <krad:template componentUpdate="true" component="${Component}"/>
+        <krad:script value="${KualiForm.lightboxScript}"/>
       </div>
 
     </s:nestedPath>

@@ -41,13 +41,24 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.http.HttpRequest;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -75,6 +86,9 @@ import java.util.Properties;
  */
 public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
+
+
+    private UrlBasedViewResolver viewResolver;
 
     /**
      * Create/obtain the model(form) object before it is passed to the Binder/BeanWrapper. This method
@@ -696,28 +710,64 @@ public abstract class UifControllerBase {
         return null;
     }
 
+    /**
+     * Complete the response directly and launch lightbox with dialog content upon returning back to the client.
+     *
+     * <p>
+     * Need to build up the view/component properly as we would if we returned normally back to the DispatcherServlet
+     * from the controller method.
+     * </p>
+     *
+     * @param dialogName - id of the dialog or group to use as content in the lightbox.
+     * @param form - the form associated with the view
+     * @param request - the http request
+     * @param response - the http response
+     * @return will return void.  actually, won't return at all.
+     * @throws Exception
+     */
     protected ModelAndView showDialog(String dialogName, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception{
-        // prepare lightbox with dialog group for content
-
-        // redirect back to client
-        // note: in progress junk as a placeholder
-        // TODO: get proper url
-        String url = form.getFormPostUrl();
-        Properties urlParameters = new Properties();
-        urlParameters.put(UifParameters.LIGHTBOX_CALL, "true");
+        // js script to invoke lightbox: runs onDocumentReady
+        form.setLightboxScript("showLightboxComponent('"+dialogName+"');");
 
         // respond back to the client directly
         // without returning back to the controller, but we still want spring mvc to build the view
-        // NOTE: this code below is experimental junk
-        // TODO: proper way to complete request
-        ModelAndView mv = performRedirect(form, url, urlParameters);
-        String newUrl = (String) mv.getModel().get("redirectUrl");
-        mv.getView().render(mv.getModel(),request,response);
+        ModelAndView mv = getUIFModelAndView(form);
+        UifWebUtils.postControllerHandle(request, response, this, mv);
+        String myViewName = mv.getViewName();
 
-        //should never reach this code
+        // try rendering view manually
+        // NOTE: this code below is experimental, and does not currently work
+//        renderView(mv, request, response, myViewName);
+
+        //should never reach this code, but we do for now until the above is fixed
+        //TODO: fix the above
         String myTest="should never get here";
         return mv;
+    }
+
+    public void renderView(ModelAndView mv,
+			    HttpServletRequest request,
+			    HttpServletResponse response,
+			    String viewName)
+		 throws Exception {
+
+        ServletContext context = request.getSession().getServletContext();
+        WebApplicationContext applicationContext =
+                WebApplicationContextUtils.getWebApplicationContext(context);
+        viewResolver = (UrlBasedViewResolver) applicationContext.getBean("viewResolver");
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request); // this returns null if not called within DispatcherServlet context!
+
+		org.springframework.web.servlet.View view;
+		if (mv.isReference()) {
+			// We need to resolve the view name.
+			view = viewResolver.resolveViewName(viewName, localeResolver.resolveLocale(request));
+		}
+		else {
+			// No need to lookup: the ModelAndView object contains the actual View object.
+			view = mv.getView();
+		}
+        view.render(mv.getModel(), request, response);
     }
 
     /**
@@ -776,6 +826,14 @@ public abstract class UifControllerBase {
 
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
+    }
+
+    public UrlBasedViewResolver getViewResolver() {
+        return viewResolver;
+    }
+
+    public void setViewResolver(UrlBasedViewResolver viewResolver) {
+        this.viewResolver = viewResolver;
     }
 
 }

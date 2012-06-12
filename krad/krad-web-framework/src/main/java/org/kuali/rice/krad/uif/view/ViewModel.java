@@ -306,4 +306,18 @@ public interface ViewModel extends Serializable {
      */
     public void setGrowlScript(String growlScript);
 
+    /**
+     * Script that will run on render (view or component) for a lightbox
+     *
+     * @return String JS lightbox script
+     */
+    public String getLightboxScript();
+
+    /**
+     * Setter for the script that generates a lightbox on render
+     *
+     * @param lightboxScript
+     */
+    public void setLightboxScript(String lightboxScript);
+
 }

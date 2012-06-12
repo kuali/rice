@@ -16,6 +16,7 @@
 
 package edu.sampleu.demo.kitchensink;
 
+import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -57,7 +58,20 @@ public class DialogTestViewUifController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mv;
         //exercise asking a question here
-        boolean answer = askYesOrNoQuestion("EraseHardDrive-DialogGroup", uiTestForm,  request, response);
+
+//        boolean answer = askYesOrNoQuestion("EraseHardDrive-DialogGroup", uiTestForm,  request, response);
+        boolean answer = false;
+        String dialogName = "myDialog";
+        DialogManager dm = uiTestForm.getDialogManager();
+        if (dm.hasDialogBeenAnswered(dialogName)){
+            answer = dm.wasDialogAnswerAffirmative(dialogName);
+        } else {
+            // redirect back to client to display lightbox
+            dm.addDialog(dialogName);
+            mv = showDialog(dialogName, uiTestForm, request, response);
+            return mv;
+        }
+
 
         if (answer){
             return getUIFModelAndView(uiTestForm);

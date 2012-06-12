@@ -19,6 +19,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionService;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -104,6 +106,64 @@ public final class KimCacheUtils {
         for (Permission permission : permissions) {
             roleIds.addAll(permissionService.getRoleIdsForPermission(permission.getNamespaceCode(), permission.getName()));
         }
+        return containsDerivedRole(roleIds);
+    }
+
+    /**
+     * Used for a caching condition to determine if a responsibility is assigned to a derived role.
+     *
+     * @param responsibilityId id of responsibility
+     *
+     * @return true if assigned to a derived role.
+     */
+    public static boolean isResponsibilityIdAssignedToDerivedRole(String responsibilityId ) {
+        if ( StringUtils.isBlank(responsibilityId)) {
+            return false;
+        }
+
+        List<String> roleIds = KimApiServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(responsibilityId);
+        return containsDerivedRole(roleIds);
+    }
+
+    /**
+     * Used for a caching condition to determine if a responsibility is assigned to a derived role.
+     *
+     * @param namespaceCode namespaceCode of responsibility
+     * @param responsibilityName name of responsibility
+     *
+     * @return true if assigned to a derived role.
+     */
+    public static boolean isResponsibilityAssignedToDerivedRole(String namespaceCode, String responsibilityName ) {
+        if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(responsibilityName)) {
+            return false;
+        }
+        Responsibility responsibility = KimApiServiceLocator.getResponsibilityService().findRespByNamespaceCodeAndName(namespaceCode, responsibilityName);
+
+        if (responsibility != null) {
+            return isResponsibilityIdAssignedToDerivedRole(responsibility.getId());
+        }
+        return false;
+    }
+
+    /**
+     * Used for a caching condition to determine if a responsibility template is assigned to a derived role.
+     *
+     * @param namespaceCode namespaceCode of permission
+     * @param responsibilityTemplateName name of responsibility template
+     *
+     * @return true if assigned to a derived role.
+     */
+    public static boolean isResponsibilityTemplateAssignedToDerivedRole(String namespaceCode, String responsibilityTemplateName ) {
+        if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(responsibilityTemplateName)) {
+            return false;
+        }
+        ResponsibilityService respService = KimApiServiceLocator.getResponsibilityService();
+        List<Responsibility> responsibilities = KimApiServiceLocator.getResponsibilityService().findResponsibilitiesByTemplate(namespaceCode, responsibilityTemplateName);
+        List<String> roleIds = new ArrayList<String>();
+        for (Responsibility resp : responsibilities) {
+            roleIds.addAll(respService.getRoleIdsForResponsibility(resp.getId()));
+        }
+
         return containsDerivedRole(roleIds);
     }
 

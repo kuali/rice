@@ -1089,30 +1089,28 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     public Collection<? extends BusinessObject> performLookup(LookupForm lookupForm, Collection<ResultRow> resultTable, boolean bounded) {
         Map lookupFormFields = lookupForm.getFieldsForLookup();
 
-        setBackLocation((String) lookupForm.getFieldsForLookup().get(KRADConstants.BACK_LOCATION));
-        setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
+        setBackLocation((String) lookupFormFields.get(KRADConstants.BACK_LOCATION));
+        setDocFormKey((String) lookupFormFields.get(KRADConstants.DOC_FORM_KEY));
         Collection<? extends BusinessObject> displayList;
 
         LookupUtils.preProcessRangeFields(lookupFormFields);
 
-        Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
         // call search method to get results
         if (bounded) {
-            displayList = getSearchResults(lookupForm.getFieldsForLookup());
+            displayList = getSearchResults(lookupFormFields);
         } else {
-            displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+            displayList = getSearchResultsUnbounded(lookupFormFields);
         }
 
         boolean hasReturnableRow = false;
 
-        List returnKeys = getReturnKeys();
-        List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+        List<String> returnKeys = getReturnKeys();
+        List<String> pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
 
         // iterate through result list and wrap rows with return url and action
         // urls
-        for (Iterator iter = displayList.iterator(); iter.hasNext();) {
-            BusinessObject element = (BusinessObject) iter.next();
+        for (BusinessObject element : displayList) {
             BusinessObject baseElement = element;
             //if ebo, then use base BO to get lookupId and find restrictions
             //we don't need to do this anymore as the BO is required to implement the EBO interface as of this time

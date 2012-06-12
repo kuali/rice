@@ -20,6 +20,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -390,7 +391,26 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 } else {
                     //may be on the root of the criteria object, try looking there:
                     try {
-                        values = new String[] { ObjectUtils.toString(PropertyUtils.getProperty(criteria, field.getPropertyName())) };
+                        if (field.isRanged() && field.isDatePicker()) {
+                            if (field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+                                String lowerBoundName = field.getPropertyName().replace(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, "") + "From";
+                                Object lowerBoundDate = PropertyUtils.getProperty(criteria, lowerBoundName);
+                                if (lowerBoundDate != null) {
+                                    values = new String[] { CoreApiServiceLocator.getDateTimeService().toDateTimeString(((org.joda.time.DateTime)lowerBoundDate).toDate()) };
+                                }
+                            } else {
+                                // the upper bound prefix may or may not be on the propertyName.  Using "replace" just in case.
+                                String upperBoundName = field.getPropertyName().replace(KRADConstants.LOOKUP_RANGE_UPPER_BOUND_PROPERTY_PREFIX, "") + "To";
+                                Object upperBoundDate = PropertyUtils.getProperty(criteria, upperBoundName);
+                                if (upperBoundDate != null) {
+                                    values = new String[] { CoreApiServiceLocator.getDateTimeService().toDateTimeString(
+                                        ((org.joda.time.DateTime)upperBoundDate)
+                                                .toDate()) };
+                                }
+                            }
+                        } else {
+                            values = new String[] { ObjectUtils.toString(PropertyUtils.getProperty(criteria, field.getPropertyName())) };
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {

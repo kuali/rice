@@ -124,7 +124,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
     public DocumentSearchCriteria getNamedSearchCriteria(String principalId, String searchName) {
-        return getSavedSearchCriteria(principalId, NAMED_SEARCH_ORDER_BASE + searchName);
+        //if not prefixed, prefix it.  otherwise, leave as-is
+        searchName = searchName.startsWith(NAMED_SEARCH_ORDER_BASE) ? searchName : (NAMED_SEARCH_ORDER_BASE + searchName);
+        return getSavedSearchCriteria(principalId, searchName);
     }
 
     @Override

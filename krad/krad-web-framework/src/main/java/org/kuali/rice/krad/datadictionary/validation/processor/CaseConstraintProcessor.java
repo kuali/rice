@@ -102,7 +102,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
      * evaluates the provided {@link WhenConstraint}
      *
      * @param fieldValue - the value of the field
-     * @param fieldDataType - the data type field
+     * @param fieldDataType - the data type of the field which caseConstraint's propertyName refers to
      * @param operator - the relationship to check between the fieldValue and the value provided in the whenConstraint
      * @param caseConstraint - the case constraint containing the provided whenConstraint
      * @param wc - the whenConstraint to evaluate

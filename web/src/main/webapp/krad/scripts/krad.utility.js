@@ -735,17 +735,41 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
 }
 
 /**
- * Adds a class to the collection line and enables the save button
+ * Enables and disables the save action
  *
  * @param inputField
  * @param highlightItemClass - the class to add to the collection item
  */
 function collectionLineChanged(inputField, highlightItemClass) {
+    // This is not very good for performance but because dirty_form gets binded after this event so we need to trigger
+    // the dirty_form check before checking for the dirty fields
+    jQuery(inputField).triggerHandler('blur');
+
+    // Get the innerlayout to see if we are dealing with table or stack group
     innerLayout = jQuery(inputField).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+
     if (innerLayout == 'uif-tableCollectionLayout') {
-        jQuery(inputField).closest('tr').find(".uif-saveLineAction").removeAttr('disabled');
-    }else{
-        jQuery(inputField).closest('.uif-collectionItem').find(".uif-saveLineAction").removeAttr('disabled');
+        var row = jQuery(inputField).closest('tr');
+        var enabled = row.find('.dirty').length > 0;
+        var saveButton = row.find('.uif-saveLineAction');
+
+        if (enabled) {
+            saveButton.removeAttr('disabled');
+        } else {
+            saveButton.attr('disabled', 'disabled');
+        }
+
+    } else {
+        var itemGroup = jQuery(inputField).closest('.uif-collectionItem');
+        var enabled = itemGroup.find('.dirty').length > 0;
+        var saveButton = itemGroup.find('.uif-saveLineAction');
+
+        if (enabled) {
+            saveButton.removeAttr('disabled');
+        } else {
+            saveButton.attr('disabled', 'disabled');
+        }
+
     }
 }
 

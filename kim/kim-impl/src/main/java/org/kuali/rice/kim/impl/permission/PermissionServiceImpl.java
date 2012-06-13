@@ -632,7 +632,15 @@ public class PermissionServiceImpl implements PermissionService {
             ids.add(p.getId());
         }
 
-        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", "true"), in("permissionId", ids.toArray(new String[]{})));
+        return getRoleIdsForPermissionIds(ids);
+    }
+
+    private List<String> getRoleIdsForPermissionIds( Collection<String> permissionIds ) {
+        if (CollectionUtils.isEmpty(permissionIds)) {
+            return Collections.emptyList();
+        }
+
+        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", "true"), in("permissionId", permissionIds.toArray(new String[]{})));
 
         GenericQueryResults<RolePermissionBo> results = criteriaLookupService.lookup(RolePermissionBo.class, query);
         List<String> roleIds = new ArrayList<String>();

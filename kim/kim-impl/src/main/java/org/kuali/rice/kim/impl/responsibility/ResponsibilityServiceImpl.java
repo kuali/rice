@@ -194,7 +194,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
 
         // get all the responsibility objects whose name match that requested
-        final List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
+        final List<Responsibility> responsibilities = findResponsibilitiesByTemplate(namespaceCode, respTemplateName);
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
@@ -240,7 +240,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         }
 
         // get all the responsibility objects whose name match that requested
-        List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
+        List<Responsibility> responsibilities = findResponsibilitiesByTemplate(namespaceCode, respTemplateName);
         return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
@@ -464,7 +464,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return Collections.unmodifiableList(roleIds);
     }
 
-    private List<Responsibility> findRespsByTemplate(final String namespaceCode, final String templateName) {
+    @Override
+    public List<Responsibility> findResponsibilitiesByTemplate(String namespaceCode, String templateName) {
         if (namespaceCode == null) {
             throw new RiceIllegalArgumentException("namespaceCode is null");
         }

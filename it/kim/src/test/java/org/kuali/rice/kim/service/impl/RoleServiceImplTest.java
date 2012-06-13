@@ -80,7 +80,8 @@ public class RoleServiceImplTest extends KIMTestCase {
 		// "p3" is in "r2" and "r2 contains "r1"
 		List <String>roleIds = new ArrayList<String>();
 		roleIds.add("r2");
-		assertTrue( "p1 has assigned in higher level role r1", roleService.principalHasRole("p1", roleIds,  Collections.<String, String>emptyMap() ));
+        assertTrue( "p1 has assigned in higher level role r1", roleService.principalHasRole("p1", roleIds,  Collections.<String, String>emptyMap() ));
+        assertTrue( "p1 has assigned in higher level role r1", roleService.principalHasRole("p1", roleIds,  Collections.<String, String>emptyMap() ));
 	}
 
     @Test

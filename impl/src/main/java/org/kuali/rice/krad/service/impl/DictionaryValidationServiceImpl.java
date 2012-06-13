@@ -222,7 +222,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, 
             boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-        validate(document, documentEntryName);
+        validate(document, documentEntryName, validateRequired);
 
         if (maxDepth > 0) {
             validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired,
@@ -367,7 +367,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * iterates through the property discriptors looking for business objects or lists of business objects. calls
+     * iterates through the property descriptors looking for business objects or lists of business objects. calls
      * validate method
      * for each bo found
      *

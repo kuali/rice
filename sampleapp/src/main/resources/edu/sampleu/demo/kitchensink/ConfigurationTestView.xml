@@ -37,6 +37,7 @@
       <list>
         <ref bean="ConfigurationTestView-ProgressiveRender-Page"/>
         <ref bean="ConfigurationTestView-Help-Page"/>
+        <ref bean="ConfigurationTestView-Quickfinder-Page"/>
       </list>
     </property>
     <property name="theme">
@@ -70,6 +71,8 @@
               p:actionLabel="Page 1"/>
         <bean parent="Uif-NavigationActionLink" p:navigateToPageId="ConfigurationTestView-Help-Page"
               p:actionLabel="Help"/>
+        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="ConfigurationTestView-Quickfinder-Page"
+              p:actionLabel="Quickfinders"/>
       </list>
     </property>
   </bean>

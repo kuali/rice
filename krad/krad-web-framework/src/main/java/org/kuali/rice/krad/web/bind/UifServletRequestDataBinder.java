@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -23,7 +24,9 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 import org.springframework.validation.AbstractPropertyBindingResult;
@@ -31,7 +34,11 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Override of ServletRequestDataBinder in order to hook in the UifBeanPropertyBindingResult
@@ -106,12 +113,12 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     @SuppressWarnings("unchecked")
     public void bind(ServletRequest request) {
         super.bind(request);
-
+        bindUifRequest((HttpServletRequest)request);
         UifFormBase form = (UifFormBase) this.getTarget();
 
+        UifRequestVars requestVars =  (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
         // check for request param that indicates to skip view initialize
-        Boolean skipViewInitialization = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);
-        if ((skipViewInitialization == null) || !skipViewInitialization.booleanValue()) {
+        if (requestVars != null && !requestVars.isSkipViewInit()) {
             // initialize new view for request
             View view = null;
 
@@ -169,4 +176,31 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         return KRADServiceLocatorWeb.getViewService();
     }
 
-}
+
+    // Binds UIF request parameters to UIFRequestVars and store them in the request attributes
+    protected void bindUifRequest(HttpServletRequest request) {
+        UifRequestVars requestVars = null;
+        if(request.getAttribute(UifParameters.UIF_REQUEST_VARS) == null){
+            requestVars = new UifRequestVars();
+        } else{
+            requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
+        }
+        PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(requestVars);
+        for(Object param : request.getParameterMap().keySet() ){
+            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+                if(param.equals(propertyDescriptor.getName())){
+                    try {
+                        ObjectUtils.setObjectProperty(requestVars,propertyDescriptor.getName(),request.getParameter(propertyDescriptor.getName())) ;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        request.setAttribute(UifParameters.UIF_REQUEST_VARS,requestVars);
+    }
+
+
+ }
+
+

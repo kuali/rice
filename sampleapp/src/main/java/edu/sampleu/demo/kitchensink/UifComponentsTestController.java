@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -128,7 +129,9 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
         }
         // only refreshing page
-        form.setRenderFullView(false);
+        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
+        requestVars.setRenderFullView(false);
+        request.setAttribute(UifParameters.UIF_REQUEST_VARS,requestVars);
 
         return getUIFModelAndView(form, pageId);
     }

@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,12 +95,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
 
         UifFormBase uifForm = uifFormManager.getCurrentForm();
+        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
         if (uifForm != null) {
             if (uifForm.isRequestRedirect()) {
                 // view wasn't rendered, just set to null and leave previous posted view
                 uifForm.setView(null);
             }
-            else if (KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT) !=null && KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT)) {
+             else if (requestVars!= null && requestVars.isSkipViewInit()) {
                 // partial refresh or query
                 View postedView = uifForm.getPostedView();
                 if (postedView != null) {

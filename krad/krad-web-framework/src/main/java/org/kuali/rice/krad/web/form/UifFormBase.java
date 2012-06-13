@@ -67,7 +67,6 @@ public class UifFormBase implements ViewModel {
     protected boolean defaultsApplied;
     protected boolean requestRedirect;
 
-    protected boolean renderFullView;
     protected boolean validateDirty;
 
     protected String growlScript;
@@ -101,7 +100,6 @@ public class UifFormBase implements ViewModel {
 
     public UifFormBase() {
         formKey = generateFormKey();
-        renderFullView = true;
         defaultsApplied = false;
         requestRedirect = false;
 
@@ -165,11 +163,6 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public void postRender(HttpServletRequest request) {
-        if (request.getParameterMap().containsKey(UifParameters.RENDER_FULL_VIEW)) {
-            renderFullView = Boolean.parseBoolean(request.getParameter(UifParameters.RENDER_FULL_VIEW));
-        } else {
-            renderFullView = true;
-        }
         requestRedirect = false;
 
 
@@ -501,25 +494,6 @@ public class UifFormBase implements ViewModel {
      */
     public void setAttachmentFile(MultipartFile attachmentFile) {
         this.attachmentFile = attachmentFile;
-    }
-
-    /**
-     * Indicates if the full view is to be rendered or if its just a component that
-     * needs to be refreshed
-     *
-     * @return the renderFullView
-     */
-    public boolean isRenderFullView() {
-        return this.renderFullView;
-    }
-
-    /**
-     * Setter for renderFullView
-     *
-     * @param renderFullView
-     */
-    public void setRenderFullView(boolean renderFullView) {
-        this.renderFullView = renderFullView;
     }
 
     /**

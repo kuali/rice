@@ -18,6 +18,7 @@ package org.kuali.rice.krad.web.bind;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -28,6 +29,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.IncidentReportForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -112,7 +114,15 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setFormHistory(history);
 
         // Set render full view to force full render
-        incidentReportForm.setRenderFullView(true);
+
+        UifRequestVars requestVars = (UifRequestVars) request.getAttribute(UifParameters.UIF_REQUEST_VARS);
+        if(requestVars!= null){
+            requestVars.setRenderFullView(true);
+        } else {
+            requestVars = new UifRequestVars();
+            requestVars.setRenderFullView(true);
+        }
+        request.setAttribute(UifParameters.UIF_REQUEST_VARS, requestVars);
 
         ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "");
         try {

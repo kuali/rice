@@ -41,9 +41,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.http.HttpRequest;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -459,8 +457,14 @@ public abstract class UifControllerBase {
         String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
         // only refreshing page
-        form.setRenderFullView(false);
-
+        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
+        if(requestVars != null){
+            requestVars.setRenderFullView(false);
+        } else{
+            requestVars = new UifRequestVars();
+            requestVars.setRenderFullView(false);
+        }
+        request.setAttribute(UifParameters.UIF_REQUEST_VARS,requestVars);
         return getUIFModelAndView(form, pageId);
     }
 
@@ -508,11 +512,6 @@ public abstract class UifControllerBase {
                     form, lookupCollectionName, selectedLineValues);
         }
 
-        if (request.getParameterMap().containsKey(UifParameters.RENDER_FULL_VIEW)) {
-            form.setRenderFullView(Boolean.parseBoolean(request.getParameter(UifParameters.RENDER_FULL_VIEW)));
-        } else {
-            form.setRenderFullView(true);
-        }
 
         return getUIFModelAndView(form);
     }

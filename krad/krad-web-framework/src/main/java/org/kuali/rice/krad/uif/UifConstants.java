@@ -230,4 +230,15 @@ public class UifConstants {
         public static final String SERVER_INFO = "serverInfo";
         public static final String VIGNORE = "vignore";
     }
+
+    public static final class CaseConstraintOperators {
+        public static final String HAS_VALUE = "has_value";
+        public static final String EQUALS = "equals";
+        public static final String GREATER_THAN_EQUAL = "greater_than_equal";
+        public static final String LESS_THAN_EQUAL = "less_than_equal";
+        public static final String NOT_EQUAL = "not_equal";
+        public static final String NOT_EQUALS = "not_equals";
+        public static final String GREATER_THAN = "greater_than";
+        public static final String LESS_THAN = "less_than";
+    }
 }

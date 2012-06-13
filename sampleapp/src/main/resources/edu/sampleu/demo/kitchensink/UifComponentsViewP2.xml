@@ -169,7 +169,11 @@
               value="Action fields perform an action and can be images, links, buttons or combinations of the aforementioned"/>
     <property name="items">
       <list>
-        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');"/>
+        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');" />
+
+        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call true"  p:methodToCall="start" p:preSubmitCall="returnBoolean(true)"/>
+
+        <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField presubmit call false"  p:methodToCall="start" p:preSubmitCall="returnBoolean(false)"/>
 
         <bean parent="Uif-ActionLink" p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
               p:clientSideJs="alert('You clicked a button');">

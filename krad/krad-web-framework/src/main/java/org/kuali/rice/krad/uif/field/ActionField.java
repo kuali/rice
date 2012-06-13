@@ -319,4 +319,18 @@ public class ActionField extends FieldBase {
     public void setActionImagePlacement(String actionImageLocation) {
         action.setActionImagePlacement(actionImageLocation);
     }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#getPreSubmitCall()
+     */
+    public String getPreSubmitCall() {
+           return action.getPreSubmitCall();
+       }
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setPreSubmitCall(java.lang.String)
+     */
+       public void setPreSubmitCall(String preSubmitCall) {
+           action.setPreSubmitCall(preSubmitCall);
+       }
+
 }

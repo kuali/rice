@@ -65,6 +65,8 @@ public class Action extends ContentElementBase {
     private boolean disabled;
     private String disabledReason;
 
+    private String preSubmitCall;
+
     public Action() {
         super();
 
@@ -191,16 +193,26 @@ public class Action extends ContentElementBase {
             if (isPerformClientSideValidation()) {
                 postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
             }
+
             if (StringUtils.isBlank(postScript)) {
-                 postScript = " jQuery('#kualiForm').submit();";
+                //if the preSubmitCall evaluates to true then submit the form else don't
+                 if(StringUtils.isNotBlank(preSubmitCall)) {
+                    postScript = "if ("+ preSubmitCall +"== true ) {jQuery('#kualiForm').submit();}";
+                }  else {
+                    postScript = "jQuery('#kualiForm').submit();";
+                }
             }
 
-            if (includeDirtyCheckScript) {
+             if (includeDirtyCheckScript) {
                 this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { " + prefixScript
                         + writeParamsScript + postScript + " ; } ");
             } else {
                 this.setOnClickScript("e.preventDefault();" + prefixScript + writeParamsScript + postScript);
             }
+
+
+
+
 
         } else {
             // When there is a light box - don't add the on click script as it
@@ -666,4 +678,24 @@ public class Action extends ContentElementBase {
     public void setActionImagePlacement(String actionImagePlacement) {
         this.actionImagePlacement = actionImagePlacement;
     }
+
+    /**
+     *  Gets the script which needs to be invoked before the form is submitted. The script should return a boolean
+     *  indicating if the form should be submitted or not.
+     *
+     * @return  String script text that will be invoked before form submission
+     */
+    public String getPreSubmitCall() {
+             return preSubmitCall;
+         }
+
+    /**
+     * Setter for preSubmitCall
+     *
+     * @param preSubmitCall
+     */
+    public void setPreSubmitCall(String preSubmitCall) {
+     this.preSubmitCall = preSubmitCall;
+    }
+
 }

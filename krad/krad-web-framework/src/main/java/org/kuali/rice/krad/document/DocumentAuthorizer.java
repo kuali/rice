@@ -78,8 +78,20 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
      */
     public boolean canRoute(Document document, Person user);
 
+    /**
+     * Determines if the user has permission to cancel the document
+     *
+     * @param document, user
+     * @return boolean, true if the user has permissions to cancel a document else false
+     */
     public boolean canCancel(Document document, Person user);
 
+    /**
+     * Determines if the user has permission to copy the document
+     *
+     * @param document, user
+     * @return boolean, true if the user has permissions to cancel a document else false
+     */
     public boolean canCopy(Document document, Person user);
 
     public boolean canPerformRouteReport(Document document, Person user);

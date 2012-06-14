@@ -519,6 +519,20 @@ table.uif-gridLayout th .uif-label {
     background-color: #F1F1F1;
 }
 
+.dataTables_paginate {
+    width: 44px;
+    width: 50px;
+    float: right;
+    text-align: right;
+}
+
+.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
+    height: 19px;
+    width: 19px;
+    margin-left: 3px;
+    float: left;
+}
+
 .paginate_disabled_previous {
     background: url(../../plugins/rice/datatables/images/back_disabled.jpg);
 }

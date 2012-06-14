@@ -58,6 +58,7 @@ import org.kuali.rice.krad.workflow.DocumentInitiator;
 import org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.rice.krad.workflow.KualiTransactionalDocumentInformation;
 import org.springframework.util.AutoPopulatingList;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -621,6 +622,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	 */
 	@Override
 	public List<Note> getNotes() {
+        if (CollectionUtils.isEmpty(notes)
+                && getNoteType().equals(NoteType.BUSINESS_OBJECT)
+                && StringUtils.isNotBlank(getNoteTarget().getObjectId()) ) {
+            notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
+        }
+
 		return notes;
 	}
 	

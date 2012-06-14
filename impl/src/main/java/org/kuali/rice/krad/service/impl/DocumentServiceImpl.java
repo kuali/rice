@@ -63,6 +63,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -275,6 +276,11 @@ public class DocumentServiceImpl implements DocumentService {
         checkForNulls(document);
 
         Note note = createNoteFromDocument(document, annotation);
+        //if note type is BO, override and link disapprove notes to Doc Header
+        if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)) {
+            note.setNoteTypeCode(NoteType.DOCUMENT_HEADER.getCode());
+            note.setRemoteObjectIdentifier(document.getDocumentHeader().getObjectId());
+        }
         document.addNote(note);
 
         //SAVE THE NOTE
@@ -707,7 +713,16 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected void loadNotes(Document document) {
         if (isNoteTargetReady(document)) {
-            List<Note> notes = getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId());
+            List<Note> notes = new ArrayList<Note>();
+            if (StringUtils.isNotBlank(document.getNoteTarget().getObjectId())) {
+                notes.addAll(getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId()));
+            }
+            //notes created on 'disapprove' are linked to Doc Header, so this checks that even if notetype = BO
+            if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)
+                 && document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+                notes.addAll(getNoteService().getByRemoteObjectId(document.getDocumentHeader().getObjectId()));
+            }
+
             // KULRNE-5692 - force a refresh of the attachments
             // they are not (non-updateable) references and don't seem to update properly upon load
             for (Note note : notes) {
@@ -967,6 +982,11 @@ public class DocumentServiceImpl implements DocumentService {
      * @return true if the note target is ready, false otherwise
      */
     protected boolean isNoteTargetReady(Document document) {
+
+        //special case for disappoved documents
+        if (document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+            return true;
+        }
         PersistableBusinessObject noteTarget = document.getNoteTarget();
         if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
             return false;

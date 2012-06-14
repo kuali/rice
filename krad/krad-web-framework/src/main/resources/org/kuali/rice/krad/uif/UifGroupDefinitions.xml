@@ -967,7 +967,7 @@
   <!-- Dialog Groups -->
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
-        parent="Uif-VerticalBoxGroup">
+        parent="Uif-VerticalBoxSection">
     <property name="headerText" value="Section 1 Title"/>
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
     <property name="hidden" value="true"/>

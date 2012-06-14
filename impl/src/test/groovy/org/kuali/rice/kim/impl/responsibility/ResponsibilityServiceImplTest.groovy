@@ -68,13 +68,13 @@ class ResponsibilityServiceImplTest {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "respnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo firstResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: true);
         KimTypeBo firstKimTypeBo = new KimTypeBo(id: "kimtypeidone");
-        RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidone");
+        RoleResponsibilityBo firstRoleResponsibilityBo = new RoleResponsibilityBo(roleResponsibilityId: "rolerespidone", roleId: "roleidone");
         RoleResponsibilityActionBo firstRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidone", versionNumber: 1);
 
         ResponsibilityTemplateBo secondResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidtwo", name: "resptemplatetwo", namespaceCode: "respnamespacecodetwo", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo secondResponsibilityBo = new ResponsibilityBo(id: "respidtwo", namespaceCode: "namespacecodetwo", name: "respnametwo", template: secondResponsibilityTemplate, versionNumber: 1, active: true);
         KimTypeBo secondKimTypeBo = new KimTypeBo(id: "kimtypeidtwo");
-        RoleResponsibilityBo secondRoleResponsibilityBo = new RoleResponsibilityBo(roleId: "rolerespidtwo");
+        RoleResponsibilityBo secondRoleResponsibilityBo = new RoleResponsibilityBo(roleResponsibilityId: "rolerespidtwo", roleId: "roleidtwo");
         RoleResponsibilityActionBo secondRoleResponsibilityActionBo = new RoleResponsibilityActionBo(id: "rolerespactionidtwo", versionNumber: 1);
 
         for (bo in [firstResponsibilityBo, secondResponsibilityBo]) {
@@ -90,7 +90,7 @@ class ResponsibilityServiceImplTest {
         }
 
         for (bo in [firstRoleResponsibilityBo, secondRoleResponsibilityBo]) {
-            sampleRoleResponsibilities.put(bo.roleId, bo)
+            sampleRoleResponsibilities.put(bo.roleResponsibilityId, bo)
         }
 
         for (bo in [firstRoleResponsibilityActionBo, secondRoleResponsibilityActionBo]) {
@@ -606,7 +606,7 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockCriteriaLookupService.demand.lookup(1..2) {
             Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
@@ -629,7 +629,7 @@ class ResponsibilityServiceImplTest {
         actionGenericQueryResults.results = roleResponsibilityActions;
         GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockCriteriaLookupService.demand.lookup(1..2) {
             Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
         }
 
@@ -693,7 +693,7 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockCriteriaLookupService.demand.lookup(1..2) {
             Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
@@ -716,7 +716,7 @@ class ResponsibilityServiceImplTest {
         actionGenericQueryResults.results = roleResponsibilityActions;
         GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockCriteriaLookupService.demand.lookup(1..2) {
             Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
         }
 
@@ -761,7 +761,7 @@ class ResponsibilityServiceImplTest {
 
         List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("respidone");
 
-        Assert.assertEquals("rolerespidone", roleIds[0]);
+        Assert.assertEquals("roleidone", roleIds[0]);
     }
 
     @Test(expected = IllegalArgumentException.class)

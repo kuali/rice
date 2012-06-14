@@ -47,6 +47,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.springframework.util.CollectionUtils;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -311,29 +312,67 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     private RoleResponsibilityAction getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId) {
-        final Predicate p =
-                or(
-                        and(
-                                equal("roleResponsibility.responsibilityId", responsibilityId),
-                                equal("roleResponsibility.roleId", roleId),
-                                equal("roleResponsibility.active", "Y"),
-                                or(
-                                        equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId),
-                                        equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*")
-                                )
-                        ),
-                        and(
-                                equal("roleResponsibilityId", "*"),
-                                equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId)
-                        )
+        RoleResponsibilityAction result = null;
+
+        // KULRICE-7459: Requisition, PO and its subtype documents are going to final status where they should not.
+        //
+        // need to do in 2 steps due to "*" wildcard convention in column data for role member id and role
+        // responsibility id.  Well, we could do in 1 step w/ straight SQL, but not w/ Criteria API due to the
+        // INNER JOIN automatically created between RoleResponsibility and RoleResponsibilityAction tables.
+
+        final Predicate roleResponsibilityPredicate =
+                and(
+                        equal("responsibilityId", responsibilityId),
+                        equal("roleId", roleId),
+                        equal("active", "Y")
                 );
 
-        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(p);
-        final GenericQueryResults<RoleResponsibilityActionBo> results = criteriaLookupService.lookup(RoleResponsibilityActionBo.class, builder.build());
-        final List<RoleResponsibilityActionBo> bos = results.getResults();
-        //seems a little dubious that we are just returning the first result...
-        return !bos.isEmpty() ? RoleResponsibilityActionBo.to(bos.get(0)) : null;
+        // First get RoleResponsibilityBos
+        final QueryByCriteria.Builder roleResponsibilityQueryBuilder = QueryByCriteria.Builder.create();
+        roleResponsibilityQueryBuilder.setPredicates(roleResponsibilityPredicate);
+        final GenericQueryResults<RoleResponsibilityBo> roleResponsibilityResults =
+                criteriaLookupService.lookup(RoleResponsibilityBo.class, roleResponsibilityQueryBuilder.build());
+        final List<RoleResponsibilityBo> roleResponsibilityBos = roleResponsibilityResults.getResults();
+
+        if (!CollectionUtils.isEmpty(roleResponsibilityBos)) { // if there are any...
+            // Then query RoleResponsibilityActionBos based on them
+
+            List<String> roleResponsibilityIds = new ArrayList<String>(roleResponsibilityBos.size());
+            for (RoleResponsibilityBo roleResponsibilityBo : roleResponsibilityBos) {
+                roleResponsibilityIds.add(roleResponsibilityBo.getRoleResponsibilityId());
+            }
+
+            final Predicate roleResponsibilityActionPredicate =
+                    or(
+                            and(
+                                    in("roleResponsibilityId", roleResponsibilityIds.toArray()),
+                                    or(
+                                            equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId),
+                                            equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*")
+                                    )
+                            ),
+                            and(
+                                    equal("roleResponsibilityId", "*"),
+                                    equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId)
+                            )
+                    );
+
+            final QueryByCriteria.Builder roleResponsibilityActionQueryBuilder = QueryByCriteria.Builder.create();
+            roleResponsibilityActionQueryBuilder.setPredicates(roleResponsibilityActionPredicate);
+
+            final GenericQueryResults<RoleResponsibilityActionBo> roleResponsibilityActionResults =
+                    criteriaLookupService.lookup(
+                            RoleResponsibilityActionBo.class, roleResponsibilityActionQueryBuilder.build()
+                    );
+
+            final List<RoleResponsibilityActionBo> roleResponsibilityActionBos = roleResponsibilityActionResults.getResults();
+            //seems a little dubious that we are just returning the first result...
+            if (!roleResponsibilityActionBos.isEmpty()) {
+                result = RoleResponsibilityActionBo.to(roleResponsibilityActionBos.get(0));
+            };
+        }
+
+        return result;
     }
 
     @Override

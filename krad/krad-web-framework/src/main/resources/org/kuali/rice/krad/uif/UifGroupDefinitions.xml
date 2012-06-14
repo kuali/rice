@@ -968,6 +968,7 @@
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxGroup">
+    <property name="headerText" value="Section 1 Title"/>
     <property name="template" value="/krad/WEB-INF/jsp/templates/group/dialogGroup.jsp"/>
     <property name="hidden" value="true"/>
     <property name="promptText" value="Would You Like to Continue?"/>
@@ -1014,6 +1015,9 @@
   <bean id="RUSure-Delete-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Are you sure you want to delete?"/>
   </bean>
+  <bean id="RUSure-Modify-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to modify this document?"/>
+  </bean>
   <bean id="RUSure-Disapprove-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Are you sure you want to disapprove this document?"/>
   </bean>
@@ -1023,4 +1027,77 @@
   <bean id="SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
+  <bean id="OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="True-False-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="T" p:value="True"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="False"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="explanation">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+        <property name="control">
+          <bean parent="Uif-VerticalCheckboxesControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="RadioButton-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="explanation">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+        <property name="control">
+          <bean parent="Uif-VerticalRadioControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
+                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
 </beans>
+

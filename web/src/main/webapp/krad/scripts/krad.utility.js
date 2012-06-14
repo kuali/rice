@@ -795,11 +795,23 @@ function collectionLineChanged(inputField, highlightItemClass) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function showLightboxComponent(componentId, overrideOptions) {
+    if (overrideOptions === undefined) {
+        overrideOptions = {};
+    }
+
     if (top == self) {
+        // reattach component to KualiForm after fancybox closes
+        _appendCallbackFunctions(overrideOptions, {afterClose:function() {jQuery('#kualiForm').append(jQuery('#' + componentId).detach());}});
+
         _initAndOpenLightbox({type:'inline', href:'#' + componentId}, overrideOptions);
     } else {
+        // reattach component to KualiForm after fancybox closes
+        _appendCallbackFunctions(overrideOptions, {afterClose:function() {jQuery('#iframeportlet').contents().find('#kualiForm').append(jQuery('#' + componentId).detach());}});
+
         // for portal usage (the href anchor from the portal page will not work so the content is explicitly passed to fancybox)
         showLightboxContent(jQuery('#' + componentId).html(), overrideOptions);
+        // TODO: Could we use detach?  It would be nice so we can reattach it later into the KualiForm.
+//        showLightboxContent(jQuery('#' + componentId).detach(), overrideOptions);
     }
 }
 
@@ -815,6 +827,10 @@ function showLightboxComponent(componentId, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function showLightboxContent(content, overrideOptions) {
+    if (overrideOptions === undefined) {
+        overrideOptions = {};
+    }
+
     _initAndOpenLightbox({type:'html', content:content}, overrideOptions);
 }
 
@@ -850,6 +866,13 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
     if (top == self) {
         jQuery.fancybox(options);
     } else {
+        // Remove portal css and add lightbox css for the duration of the lightbox's life
+        parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
+        parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
+        _appendCallbackFunctions(options, {afterClose:function() {
+            parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
+            parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove(); }});
+
         parent.jQuery.fancybox(options);
     }
 }
@@ -866,10 +889,34 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  */
 function _mergeOptionsMap(options, overrideOptions) {
     for(var overrideOption in overrideOptions) {
-        if (overrideOptions[overrideOption] instanceof Object) {
+        if ((typeof overrideOptions[overrideOption] === "object") && (overrideOption != 'content')) {
             _mergeOptionsMap(options[overrideOption], overrideOptions[overrideOption]);
         } else {
             options[overrideOption] = overrideOptions[overrideOption];
+        }
+    }
+}
+
+/**
+ * Internal function for appending callback function to fancybox options
+ *
+ * <p>
+ * The callback functions are added after the existing callback functions.
+ * </p>
+ *
+ * @param options the existing fancybox options
+ * @param appendCallbackFunctions the callback fancybox options that should be added/appended
+ */
+function _appendCallbackFunctions(options, appendCallbackFunctions) {
+    for(var appendCallbackFunction in appendCallbackFunctions) {
+        if (typeof appendCallbackFunctions[appendCallbackFunction] === "function") {
+            if (options[appendCallbackFunction] === undefined) {
+                options[appendCallbackFunction] = appendCallbackFunctions[appendCallbackFunction];
+            } else {
+                var a = options[appendCallbackFunction];
+                var b = appendCallbackFunctions[appendCallbackFunction];
+                options[appendCallbackFunction] = function() { a(); b();};
+            }
         }
     }
 }

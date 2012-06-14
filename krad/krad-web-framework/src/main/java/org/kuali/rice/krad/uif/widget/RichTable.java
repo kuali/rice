@@ -101,7 +101,8 @@ public class RichTable extends WidgetBase {
             }
 
             // for add events, disable initial sorting
-            if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
+            if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())
+                    || UifConstants.ActionEvents.ADD_BLANK_LINE.equals(formBase.getActionEvent())) {
                 getTemplateOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
             }
 

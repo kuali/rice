@@ -84,6 +84,7 @@ public class UifConstants {
 
     public static class ActionEvents {
         public static final String ADD_LINE = "addLine";
+        public static final String ADD_BLANK_LINE = "addBlankLine";
     }
 
     public static class LayoutComponentOptions {

@@ -1964,8 +1964,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember.setActiveToDate(member.getActiveToDateValue());
 				pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
 				if(pndMember.isActive()){
-					KimCommonUtilsInternal.copyProperties(pndMember, member);
-					pndMember.setRoleMemberId(member.getRoleMemberId());
+					//KimCommonUtilsInternal.copyProperties(pndMember, member);
+                    pndMember.setDelegationId(member.getDelegationId());
+                    pndMember.setDelegationMemberId(member.getDelegationMemberId());
+                    pndMember.setDelegationTypeCode(member.getType().getCode());
+                    pndMember.setRoleMemberId(member.getRoleMemberId());
+                    pndMember.setMemberId(member.getMemberId());
+                    pndMember.setMemberTypeCode(member.getType().getCode());
+
 					roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
 					if(roleMember!=null){
 						pndMember.setRoleMemberName(getMemberName(roleMember.getType(), roleMember.getMemberId()));

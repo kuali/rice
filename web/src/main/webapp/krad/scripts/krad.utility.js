@@ -745,6 +745,26 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
 }
 
 /**
+ * Adds a class to the collection group related to the add action
+ *
+ * @param addButton
+ * @param highlightItemClass - the class to add to the group that should be highlighted
+ */
+function addLineMouseOver(addButton, highlightItemClass) {
+    jQuery(addButton).parent().addClass(highlightItemClass).children().addClass(highlightItemClass).children().addClass(highlightItemClass);
+}
+
+/**
+ * Removes a class from the collection group related to the add action
+ *
+ * @param addButton
+ * @param highlightItemClass - the class remove from the collection group
+ */
+function addLineMouseOut(addButton, highlightItemClass) {
+    jQuery(addButton).parent().removeClass(highlightItemClass).children().removeClass(highlightItemClass).children().removeClass(highlightItemClass);
+}
+
+/**
  * Enables and disables the save action
  *
  * @param inputField

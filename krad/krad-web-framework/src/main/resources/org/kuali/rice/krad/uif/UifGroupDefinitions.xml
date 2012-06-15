@@ -524,10 +524,13 @@
     </property>
     <property name="addBlankLineAction">
       <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
-            p:actionEvent="addBlankLine"/>
+            p:actionEvent="addBlankLine" p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
+            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
     </property>
     <property name="addViaLightBoxAction">
-      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
+      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"
+            p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
+            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
     </property>
     <property name="collectionLookup">
       <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">

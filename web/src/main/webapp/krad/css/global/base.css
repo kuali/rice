@@ -472,6 +472,14 @@ div.uif-newCollectionItem {
     background-color: #FFE1E9;
 }
 
+.uif-stackedCollectionLayout > .uif-collectionAddHighlight {
+    background-color: #CCCC99;
+}
+
+.uif-collectionAddHighlight {
+    background-color: #CCCC99;
+}
+
 /* Document header info *******************************************************************************/
 .uif-viewHeader div.uif-docheader table {
     height: 60px;

@@ -70,6 +70,7 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
+        form.setState("state1");
         //for generated view:
         if(form.getView().getId().equals("UifGeneratedFields")){
             for(int i=0; i<100; i++){
@@ -292,5 +293,42 @@ public class UifComponentsTestController extends UifControllerBase {
 
         return getUIFModelAndView(form);
     }
+    
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState2")
+    public ModelAndView gotoState2(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        
+        KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, "state2");
+        if(!GlobalVariables.getMessageMap().hasErrors()){
+            form.setState("state2");
+        }
+
+        return getUIFModelAndView(form);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState3")
+    public ModelAndView gotoState3(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, "state3");
+        if(!GlobalVariables.getMessageMap().hasErrors()){
+            form.setState("state3");
+        }
+
+        return getUIFModelAndView(form);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState4")
+    public ModelAndView gotoState4(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        KRADServiceLocatorWeb.getViewValidationService().validateView(form.getPostedView(), form, "state4");
+        if(!GlobalVariables.getMessageMap().hasErrors()){
+            form.setState("state4");
+        }
+        
+        return getUIFModelAndView(form);
+    }
+    
 
 }

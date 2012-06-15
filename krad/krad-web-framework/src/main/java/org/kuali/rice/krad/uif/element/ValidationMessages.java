@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.springframework.util.AutoPopulatingList;
 
@@ -169,14 +170,7 @@ public class ValidationMessages extends ContentElementBase {
                 ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
 
                 for (ErrorMessage e : errorList) {
-                    String message = configService.getPropertyValueAsString(e.getErrorKey());
-                    if (message == null) {
-                        message = "Intended message with key: " + e.getErrorKey() + " not found.";
-                    }
-                    if (e.getMessageParameters() != null) {
-                        message = message.replace("'", "''");
-                        message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
-                    }
+                    String message = KRADUtils.getMessage(configService, e, true);
 
                     result.add(message);
                 }

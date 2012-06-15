@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -34,6 +35,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
 import java.security.GeneralSecurityException;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -528,4 +530,61 @@ public final class KRADUtils {
                         KRADConstants.ENVIRONMENT_KEY));
     }
 
+    /**
+     * Gets the message associated with ErrorMessage object passed in, using the configuration service passed in.
+     * The prefix and suffix will be appended to the retrieved message if processPrefixSuffix is true and if those
+     * settings are set on the ErrorMessage passed in.
+     *
+     * @param configService configuration service to use to retrieve the message
+     * @param errorMessage the ErrorMessage object containg the message key(s)
+     * @param processPrefixSuffix if true appends the prefix and suffix to the message if they exist on ErrorMessage
+     * @return the converted/retrieved message
+     */
+    public static String getMessage(ConfigurationService configService, ErrorMessage errorMessage,
+            boolean processPrefixSuffix) {
+        String message = "";
+        if (errorMessage != null && errorMessage.getErrorKey() != null) {
+
+            //find message by key
+            message = configService.getPropertyValueAsString(errorMessage.getErrorKey());
+            if (message == null) {
+                message = "Intended message with key: " + errorMessage.getErrorKey() + " not found.";
+            }
+
+            if (errorMessage.getMessageParameters() != null && StringUtils.isNotBlank(message)) {
+                message = message.replace("'", "''");
+                message = MessageFormat.format(message, (Object[]) errorMessage.getMessageParameters());
+            }
+
+            //add prefix
+            if (StringUtils.isNotBlank(errorMessage.getMessagePrefixKey()) && processPrefixSuffix) {
+                String prefix = configService.getPropertyValueAsString(errorMessage.getMessagePrefixKey());
+
+                if (errorMessage.getMessagePrefixParameters() != null && StringUtils.isNotBlank(prefix)) {
+                    prefix = prefix.replace("'", "''");
+                    prefix = MessageFormat.format(prefix, (Object[]) errorMessage.getMessagePrefixParameters());
+                }
+
+                if (StringUtils.isNotBlank(prefix)) {
+                    message = prefix + " " + message;
+                }
+            }
+
+            //add suffix
+            if (StringUtils.isNotBlank(errorMessage.getMessageSuffixKey()) && processPrefixSuffix) {
+                String suffix = configService.getPropertyValueAsString(errorMessage.getMessageSuffixKey());
+
+                if (errorMessage.getMessageSuffixParameters() != null && StringUtils.isNotBlank(suffix)) {
+                    suffix = suffix.replace("'", "''");
+                    suffix = MessageFormat.format(suffix, (Object[]) errorMessage.getMessageSuffixParameters());
+                }
+
+                if (StringUtils.isNotBlank(suffix)) {
+                    message = message + " " + suffix;
+                }
+            }
+        }
+
+        return message;
+    }
 }

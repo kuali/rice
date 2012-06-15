@@ -63,6 +63,7 @@ public class UifFormBase implements ViewModel {
     protected String jumpToName;
     protected String focusId;
     protected String formPostUrl;
+    protected String state;
 
     protected boolean defaultsApplied;
     protected boolean requestRedirect;
@@ -655,6 +656,20 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setGrowlScript(String growlScript) {
         this.growlScript = growlScript;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getState() 
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * @see ViewModel#setState(String)
+     */
+    public void setState(String state) {
+        this.state = state;
     }
 
     /**

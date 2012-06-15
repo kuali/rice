@@ -178,6 +178,12 @@
     </property>
   </bean>
 
+  <!--StateMapping-->
+  <bean id="StateMapping"
+        abstract="true"
+        p:statePropertyName="state"
+        class="org.kuali.rice.krad.datadictionary.state.StateMappingBase"/>
+
   <!--Constraints-->
   <bean id="ValidCharactersConstraint"
         abstract="true"

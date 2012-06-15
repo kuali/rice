@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstrainable;
@@ -35,18 +36,19 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
-import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.element.ValidationMessages;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
-import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
+import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
@@ -73,8 +75,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable,
-        MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
+public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
     // constraint variables
@@ -211,7 +212,33 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         setupFieldQuery();
 
-        ClientValidationUtils.processAndApplyConstraints(this, view);
+        //special requiredness indicator handling, if this was previously not required reset its required
+        //message to be ** for indicating required in the next state
+        String path = view.getStateObjectBindingPath();
+        Object stateObject;
+
+        if (StringUtils.isNotBlank(path)) {
+            stateObject = ObjectPropertyUtils.getPropertyValue(model, path);
+        } else {
+            stateObject = model;
+        }
+        StateMapping stateMapping = view.getStateMapping();
+
+        if (stateMapping != null) {
+            String validationState = ConstraintStateUtils.getClientViewValidationState(model, view);
+            SimpleConstraint appliedSimpleConstraint = ConstraintStateUtils.getApplicableConstraint(this.getSimpleConstraint(),
+                    validationState, stateMapping);
+            if(appliedSimpleConstraint != null && appliedSimpleConstraint.getRequired() != null && appliedSimpleConstraint.getRequired()){
+                SimpleConstraint prevConstraint = ConstraintStateUtils.getApplicableConstraint(this.getSimpleConstraint(),
+                        stateMapping.getCurrentState(stateObject), stateMapping);
+                if (prevConstraint == null || prevConstraint.getRequired() == null || !prevConstraint.getRequired()) {
+                    this.getFieldLabel().getRequiredMessage().setMessageText("**");
+                }
+            }
+        }
+        //end special requiredness indicator handling
+
+        ClientValidationUtils.processAndApplyConstraints(this, view, model);
     }
 
     /**
@@ -284,16 +311,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         setNestedComponentIdAndSuffix(getQuickfinder(), UifConstants.IdSuffixes.QUICK_FINDER);
         setNestedComponentIdAndSuffix(getSuggest(), UifConstants.IdSuffixes.SUGGEST);
 
-        if(this.getFieldLabel() != null){
+        if (this.getFieldLabel() != null) {
             this.getFieldLabel().setLabelForComponentId(this.getControl().getId());
         }
-        
-        if(this.getControl() != null){
+
+        if (this.getControl() != null) {
             this.getControl().addDataAttribute(UifConstants.DATA_ATTRIBUTE_CONTROL_FOR, this.getId());
         }
     }
-
-
 
     /**
      * Defaults the properties of the {@code InputField} to the
@@ -346,11 +371,13 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                 setRequired(Boolean.FALSE);
             }
         }
-        
+
         if (getDataType() == null) {
             setDataType(attributeDefinition.getDataType());
             //Assume date if dataType is still null and using a DatePicker
-            if(getDataType() == null && control instanceof TextControl && ((TextControl) control).getDatePicker() != null) {
+            if (getDataType() == null
+                    && control instanceof TextControl
+                    && ((TextControl) control).getDatePicker() != null) {
                 setDataType(DataType.DATE);
             }
         }
@@ -915,6 +942,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * Returns the full binding path (the path used in the name attribute of the input).
      * This differs from propertyName in that it uses BindingInfo to determine the path.
+     *
      * @return full binding path name
      */
     @Override
@@ -930,6 +958,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     /**
      * This does not have to be set, represents the DataType constraint of this field.
      * This is only checked during server side validation.
+     *
      * @param dataType the dataType to set
      */
     public void setDataType(DataType dataType) {
@@ -944,6 +973,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * Gets the DataType of this InputField, note that DataType set to be date
      * when this field is using a date picker with a TextControl and hasnt otherwise been
      * explicitly set.
+     *
      * @return
      */
     @Override

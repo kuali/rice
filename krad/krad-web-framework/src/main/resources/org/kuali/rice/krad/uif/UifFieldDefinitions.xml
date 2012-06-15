@@ -349,6 +349,9 @@
       <bean parent="Uif-CheckboxControl"/>
     </property>
   </bean>
+  
+  <bean id="Uif-CheckForm-Button" parent="Uif-SecondaryActionButton" p:methodToCall="checkForm"
+        p:actionLabel="Check Form"/>
 
 
 

@@ -1126,7 +1126,7 @@ public final class ObjectUtils {
 
     /**
      * Helper method for creating a new instance of the given class
-     * 
+     *
      * @param clazz
      *            - class of object to create
      * @return T object of type given by the clazz parameter

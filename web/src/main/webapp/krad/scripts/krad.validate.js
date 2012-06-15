@@ -537,7 +537,7 @@ function writeMessagesForGroup(id, data){
                         var countMessage = generateCountString(data.errorTotal, data.warningTotal,
                                 data.infoTotal);
                         var pageValidationHeader = jQuery("<h3 tabindex='0' class='" + kradVariables.VALIDATION_PAGE_HEADER_CLASS + "' "
-                                + "id='pageValidationHeader'>The Page submission has " + countMessage + "</h3>");
+                                + "id='pageValidationHeader'>This page has " + countMessage + "</h3>");
 
                         pageValidationHeader.find(".uif-validationImage").remove();
                         var pageSummaryClass = "";

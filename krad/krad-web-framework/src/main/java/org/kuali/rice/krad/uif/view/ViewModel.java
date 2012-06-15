@@ -320,4 +320,18 @@ public interface ViewModel extends Serializable {
      */
     public void setLightboxScript(String lightboxScript);
 
+    /**
+     * Gets the state.  This is the default location for state on KRAD forms.
+     *
+     * @return the state
+     */
+    public String getState();
+
+    /**
+     * Set the state
+     *
+     * @param state
+     */
+    public void setState(String state);
+
 }

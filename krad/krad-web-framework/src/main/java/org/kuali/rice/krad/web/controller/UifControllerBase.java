@@ -586,6 +586,23 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Checks the form/view against all current and future validations and returns warnings for any validations
+     * that fail
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=checkForm")
+    public ModelAndView checkForm(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        KRADServiceLocatorWeb.getViewValidationService().validateViewSimulation(form.getPostedView(), form);
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Invoked to provide the options for a suggest widget. The valid options are retrieved by the associated
      * <code>AttributeQuery</code> for the field containing the suggest widget. The controller method picks
      * out the query parameters from the request and calls <code>AttributeQueryService</code> to perform the

@@ -36,7 +36,8 @@ import java.util.Set;
  * <p>Keys of map represent property paths, and value is a AutoPopulatingList that contains resource string
  * keys (to retrieve the error message).</p>
  *
- * <p>Note, prior to rice 0.9.4, this class implemented {@link java.util.Map}.  The implements has been removed as of rice 0.9.4</p>
+ * <p>Note, prior to rice 0.9.4, this class implemented {@link java.util.Map}.  The implements has been removed as of
+ * rice 0.9.4</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -90,7 +91,7 @@ public class MessageMap implements Serializable {
      * @param messagesFrom
      * @param messagesTo
      */
-    protected void merge(Map<String, AutoPopulatingList<ErrorMessage>> messagesFrom,
+    public void merge(Map<String, AutoPopulatingList<ErrorMessage>> messagesFrom,
             Map<String, AutoPopulatingList<ErrorMessage>> messagesTo) {
         for (String key : messagesFrom.keySet()) {
 
@@ -118,7 +119,8 @@ public class MessageMap implements Serializable {
      * Adds an error to the map under the given propertyName and adds an array of message parameters
      *
      * <p>This will fully prepend the
-     * error key with any value in the errorPath list. This should be used when you do not want to add the error with the prepend
+     * error key with any value in the errorPath list. This should be used when you do not want to add the error with
+     * the prepend
      * pre-built error path.</p>
      *
      * @param propertyName name of the property to add error under
@@ -127,21 +129,37 @@ public class MessageMap implements Serializable {
      * @return AutoPopulatingList
      */
     public AutoPopulatingList<ErrorMessage> putError(String propertyName, String errorKey, String... errorParameters) {
-        return putMessageInMap(errorMessages, propertyName, errorKey, true, true, errorParameters);
+        ErrorMessage message = new ErrorMessage(errorKey, errorParameters);
+        return putMessageInMap(errorMessages, propertyName, message, true, true);
     }
 
     public AutoPopulatingList<ErrorMessage> putWarning(String propertyName, String messageKey,
             String... messageParameters) {
-        return putMessageInMap(warningMessages, propertyName, messageKey, true, true, messageParameters);
+        ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
+        return putMessageInMap(warningMessages, propertyName, message, true, true);
     }
 
     public AutoPopulatingList<ErrorMessage> putInfo(String propertyName, String messageKey,
             String... messageParameters) {
-        return putMessageInMap(infoMessages, propertyName, messageKey, true, true, messageParameters);
+        ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
+        return putMessageInMap(infoMessages, propertyName, message, true, true);
+    }
+
+    public AutoPopulatingList<ErrorMessage> putError(String propertyName, ErrorMessage message) {
+        return putMessageInMap(errorMessages, propertyName, message, true, true);
+    }
+
+    public AutoPopulatingList<ErrorMessage> putWarning(String propertyName, ErrorMessage message) {
+        return putMessageInMap(warningMessages, propertyName, message, true, true);
+    }
+
+    public AutoPopulatingList<ErrorMessage> putInfo(String propertyName, ErrorMessage message) {
+        return putMessageInMap(infoMessages, propertyName, message, true, true);
     }
 
     /**
-     * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully prepend the
+     * Adds an error to the map under the given propertyName and adds an array of message parameters. This will fully
+     * prepend the
      * error key with any value in the errorPath list.
      *
      * @param propertyName name of the property to add error under
@@ -151,17 +169,20 @@ public class MessageMap implements Serializable {
      */
     public AutoPopulatingList<ErrorMessage> putErrorWithoutFullErrorPath(String propertyName, String errorKey,
             String... errorParameters) {
-        return putMessageInMap(errorMessages, propertyName, errorKey, false, true, errorParameters);
+        ErrorMessage message = new ErrorMessage(errorKey, errorParameters);
+        return putMessageInMap(errorMessages, propertyName, message, false, true);
     }
 
     public AutoPopulatingList<ErrorMessage> putWarningWithoutFullErrorPath(String propertyName, String messageKey,
             String... messageParameters) {
-        return putMessageInMap(warningMessages, propertyName, messageKey, false, true, messageParameters);
+        ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
+        return putMessageInMap(warningMessages, propertyName, message, false, true);
     }
 
     public AutoPopulatingList<ErrorMessage> putInfoWithoutFullErrorPath(String propertyName, String messageKey,
             String... messageParameters) {
-        return putMessageInMap(infoMessages, propertyName, messageKey, false, true, messageParameters);
+        ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
+        return putMessageInMap(infoMessages, propertyName, message, false, true);
     }
 
     /**
@@ -257,7 +278,7 @@ public class MessageMap implements Serializable {
         }
 
         GrowlMessage growl = new GrowlMessage();
-        
+
         growl.setTitle(growlTitle);
         growl.setTheme(growlTheme);
         growl.setMessageKey(messageKey);
@@ -266,23 +287,13 @@ public class MessageMap implements Serializable {
         return growl;
     }
 
-    /**
-     * adds an error to the map under the given propertyName and adds an array of message parameters.
-     *
-     * @param propertyName name of the property to add error under
-     * @param messageKey resource key used to retrieve the error text from the error message resource bundle
-     * @param withFullErrorPath true if you want the whole parent error path appended, false otherwise
-     * @param escapeHtmlMessageParameters whether to escape HTML characters in the message parameters, provides protection against XSS attacks
-     * @param messageParameters zero or more string parameters for the displayed error message
-     * @return TypeArrayList
-     */
     private AutoPopulatingList<ErrorMessage> putMessageInMap(Map<String, AutoPopulatingList<ErrorMessage>> messagesMap,
-            String propertyName, String messageKey, boolean withFullErrorPath, boolean escapeHtmlMessageParameters,
-            String... messageParameters) {
+            String propertyName, ErrorMessage errorMessage, boolean withFullErrorPath,
+            boolean escapeHtmlMessageParameters) {
         if (StringUtils.isBlank(propertyName)) {
             throw new IllegalArgumentException("invalid (blank) propertyName");
         }
-        if (StringUtils.isBlank(messageKey)) {
+        if (StringUtils.isBlank(errorMessage.getErrorKey())) {
             throw new IllegalArgumentException("invalid (blank) errorKey");
         }
 
@@ -295,18 +306,43 @@ public class MessageMap implements Serializable {
             errorList = new AutoPopulatingList<ErrorMessage>(ErrorMessage.class);
         }
 
-        if (escapeHtmlMessageParameters && messageParameters != null) {
-            String[] filteredMessageParameters = new String[messageParameters.length];
-            for (int i = 0; i < messageParameters.length; i++) {
-                filteredMessageParameters[i] = StringEscapeUtils.escapeHtml(messageParameters[i]);
+        if (escapeHtmlMessageParameters) {
+            if (errorMessage.getMessageParameters() != null) {
+                String[] filteredMessageParameters = new String[errorMessage.getMessageParameters().length];
+                for (int i = 0; i < errorMessage.getMessageParameters().length; i++) {
+                    filteredMessageParameters[i] = StringEscapeUtils.escapeHtml(errorMessage.getMessageParameters()[i]);
+                }
+                errorMessage.setMessageParameters(filteredMessageParameters);
             }
-            messageParameters = filteredMessageParameters;
+
+            if (errorMessage.getMessagePrefixParameters() != null) {
+                String[] filteredMessageParameters = new String[errorMessage.getMessagePrefixParameters().length];
+                for (int i = 0; i < errorMessage.getMessagePrefixParameters().length; i++) {
+                    filteredMessageParameters[i] = StringEscapeUtils.escapeHtml(
+                            errorMessage.getMessagePrefixParameters()[i]);
+                }
+                errorMessage.setMessagePrefixParameters(filteredMessageParameters);
+            }
+
+            if (errorMessage.getMessageSuffixParameters() != null) {
+                String[] filteredMessageParameters = new String[errorMessage.getMessageSuffixParameters().length];
+                for (int i = 0; i < errorMessage.getMessageSuffixParameters().length; i++) {
+                    filteredMessageParameters[i] = StringEscapeUtils.escapeHtml(
+                            errorMessage.getMessageSuffixParameters()[i]);
+                }
+                errorMessage.setMessageSuffixParameters(filteredMessageParameters);
+            }
         }
 
-        // add error to list
-        ErrorMessage errorMessage = new ErrorMessage(messageKey, messageParameters);
         // check if this error has already been added to the list
-        if (!errorList.contains(errorMessage)) {
+        boolean alreadyAdded = false;
+        for(ErrorMessage e: errorList){
+            if(e.getErrorKey().equals(errorMessage.getErrorKey())){
+                alreadyAdded = true;
+                break;
+            }
+        }
+        if (!alreadyAdded) {
             errorList.add(errorMessage);
         }
 
@@ -314,30 +350,32 @@ public class MessageMap implements Serializable {
     }
 
     /**
-     * If any error messages with the key targetKey exist in this ErrorMap for the named property, those ErrorMessages will be
+     * If any error messages with the key targetKey exist in this ErrorMap for the named property, those ErrorMessages
+     * will be
      * replaced with a new ErrorMessage with the given replaceKey and replaceParameters.
      *
      * @param propertyName name of the property where existing error will be replaced
      * @param targetKey error key of message to be replaced
-     * @paran replaceKey error key which will replace targetKey
      * @param replaceParameters zero or more string parameters for the replacement error message
      * @return true if the replacement occurred
+     * @paran replaceKey error key which will replace targetKey
      */
     public boolean replaceError(String propertyName, String targetKey, String replaceKey, String... replaceParameters) {
         return replaceError(propertyName, targetKey, true, replaceKey, replaceParameters);
     }
 
     /**
-     * If any error messages with the key targetKey exist in this ErrorMap for the named property, those ErrorMessages will be
-     * replaced with a new ErrorMessage with the given replaceKey and replaceParameters. The targetKey and replaceKey will be
+     * If any error messages with the key targetKey exist in this ErrorMap for the named property, those ErrorMessages
+     * will be
+     * replaced with a new ErrorMessage with the given replaceKey and replaceParameters. The targetKey and replaceKey
+     * will be
      * prepended with the current errorPath, if any.
-     *
      *
      * @param propertyName name of the property where existing error will be replaced
      * @param targetKey error key of message to be replaced
-     * @paran replaceKey error key which will replace targetKey
      * @param replaceParameters zero or more string parameters for the replacement error message
      * @return true if the replacement occurred
+     * @paran replaceKey error key which will replace targetKey
      */
     public boolean replaceErrorWithoutFullErrorPath(String propertyName, String targetKey, String replaceKey,
             String... replaceParameters) {
@@ -345,7 +383,8 @@ public class MessageMap implements Serializable {
     }
 
     /**
-     * If any error messages with the key targetKey exist in this ErrorMap for the named property, those ErrorMessages will be
+     * If any error messages with the key targetKey exist in this ErrorMap for the named property, those ErrorMessages
+     * will be
      * replaced with a new ErrorMessage with the given replaceKey and replaceParameters.
      *
      * @param propertyName name of the property to add error under
@@ -533,12 +572,13 @@ public class MessageMap implements Serializable {
     }
 
     /**
-     * This is what's prepended to the beginning of the key. This is built by iterating over all of the entries in the errorPath
+     * This is what's prepended to the beginning of the key. This is built by iterating over all of the entries in the
+     * errorPath
      * list and concatenating them together witha "."
      *
-     * @return String Returns the keyPath.
      * @param propertyName
      * @param prependFullErrorPath
+     * @return String Returns the keyPath.
      */
     public String getKeyPath(String propertyName, boolean prependFullErrorPath) {
         String keyPath = "";
@@ -767,7 +807,7 @@ public class MessageMap implements Serializable {
     public boolean hasInfo() {
         return !infoMessages.isEmpty();
     }
-    
+
     public boolean hasNoInfo() {
         return infoMessages.isEmpty();
     }
@@ -829,7 +869,7 @@ public class MessageMap implements Serializable {
     /**
      * Returns the list of growl messages (@{link GrowlMessage}) that have been added to
      * the message map
-     * 
+     *
      * @return List<GrowlMessage>
      */
     public List<GrowlMessage> getGrowlMessages() {

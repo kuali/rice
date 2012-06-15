@@ -197,6 +197,7 @@ public class UifConstants {
 
     public static class Messages {
         public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
+        public static final String STATE_PREFIX = "validation.statePrefix";
     }
 
     public static class MessageKeys {

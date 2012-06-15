@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -29,7 +30,6 @@ import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
-import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -80,6 +80,9 @@ public class View extends ContainerBase {
     private ViewTheme theme;
 
     private int idSequence;
+
+    private String stateObjectBindingPath;
+    private StateMapping stateMapping;
 
     // application
     private Header applicationHeader;
@@ -1486,4 +1489,49 @@ public class View extends ContainerBase {
         this.theme = theme;
     }
 
+    /**
+     * The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
+     * determine what field in the model state information is stored in for this view.  Used during View validation.
+     *
+     * @return stateObjectBindingPath path to the object storing state information
+     */
+    public String getStateObjectBindingPath() {
+        return stateObjectBindingPath;
+    }
+
+    /**
+     *  The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
+     * determine what field in the model state information is stored in for this view.  Used during View validation.
+     *
+     * @param stateObjectBindingPath
+     */
+    public void setStateObjectBindingPath(String stateObjectBindingPath) {
+        this.stateObjectBindingPath = stateObjectBindingPath;
+    }
+
+    /**
+     * Gets the stateMapping.
+     *
+     * <p>The state mapping object is used to determine the state information for a view,
+     * it must include an ordered list of states, and where to find the state information for the view.
+     * A stateMapping must be set for state based validation to occur.  When stateMapping information is
+     * not included, the view's model is considered stateless and all constraints will apply regardless of their
+     * state information or replacements (ie, they will function as they did in version 2.1).</p>
+     *
+     * @since 2.2
+     * @return StateMapping information needed for state based validation, if null no state based validation functionality
+     * will exist and configured constraints will apply regardless of state
+     */
+    public StateMapping getStateMapping() {
+        return stateMapping;
+    }
+
+    /**
+     * Set the stateMapping
+     *
+     * @param stateMapping
+     */
+    public void setStateMapping(StateMapping stateMapping) {
+        this.stateMapping = stateMapping;
+    }
 }

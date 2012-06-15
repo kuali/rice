@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -30,11 +31,13 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
+import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
 import org.kuali.rice.krad.datadictionary.validation.SingleAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider;
 import org.kuali.rice.krad.datadictionary.validation.processor.CollectionConstraintProcessor;
@@ -49,17 +52,24 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
@@ -80,8 +90,8 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DictionaryValidationServiceImpl implements DictionaryValidationService {
-    private static org.apache.log4j.Logger LOG =
-            org.apache.log4j.Logger.getLogger(DictionaryValidationServiceImpl.class);
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            DictionaryValidationServiceImpl.class);
 
     /**
      * Constant defines a validation method for an attribute value.
@@ -116,37 +126,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object)
      */
     public DictionaryValidationResult validate(Object object) {
-        return validate(object, object.getClass().getName(), true);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object, boolean)
-     */
-    public DictionaryValidationResult validate(Object object, boolean doOptionalProcessing) {
-        return validate(object, object.getClass().getName(), doOptionalProcessing);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String)
-     */
-    public DictionaryValidationResult validate(Object object, String entryName) {
-        return validate(object, entryName, true);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String,
-     *      boolean)
-     */
-    public DictionaryValidationResult validate(Object object, String entryName, boolean doOptionalProcessing) {
-        return validate(object, entryName, (String) null, doOptionalProcessing);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String,
-     *      java.lang.String)
-     */
-    public DictionaryValidationResult validate(Object object, String entryName, String attributeName) {
-        return validate(object, entryName, attributeName, true);
+        return validate(object, object.getClass().getName(), (String) null, true);
     }
 
     /**
@@ -155,54 +135,42 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     public DictionaryValidationResult validate(Object object, String entryName, String attributeName,
             boolean doOptionalProcessing) {
+        StateMapping stateMapping = null;
+        String validationState = null;
+        if (object instanceof DataDictionaryEntry) {
+            stateMapping = ((DataDictionaryEntry) object).getStateMapping();
+            if (stateMapping != null) {
+                validationState = stateMapping.getCurrentState(object);
+            }
+        }
         DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
         AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
         attributeValueReader.setAttributeName(attributeName);
-        return validate(attributeValueReader, doOptionalProcessing);
+        return validate(attributeValueReader, doOptionalProcessing, validationState, stateMapping);
     }
 
-    /**
-     * @see DictionaryValidationService#validate(Object, String, org.kuali.rice.krad.datadictionary.DataDictionaryEntry, boolean)
-     */
     public DictionaryValidationResult validate(Object object, String entryName, DataDictionaryEntry entry,
             boolean doOptionalProcessing) {
-        AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
-        return validate(attributeValueReader, doOptionalProcessing);
-    }
-
-    /**
-     * @see DictionaryValidationService#validate(String, String, Object)
-     */
-    public void validate(String entryName, String attributeName, Object attributeValue) {
-        validate(entryName, attributeName, attributeValue, true);
-    }
-
-    /**
-    @see DictionaryValidationService#validate(String, String, Object, boolean)
-     */
-    public void validate(String entryName, String attributeName, Object attributeValue, boolean doOptionalProcessing) {
-        AttributeDefinition attributeDefinition =
-                getDataDictionaryService().getAttributeDefinition(entryName, attributeName);
-
-        if (attributeDefinition == null) {
-            // FIXME: JLR - this is what the code was doing effectively already, but seems weird not to throw an exception here if you try to validate
-            // something that doesn't have an attribute definition
-            return;
+        StateMapping stateMapping = null;
+        String validationState = null;
+        if (object instanceof DataDictionaryEntry) {
+            stateMapping = ((DataDictionaryEntry) object).getStateMapping();
+            if (stateMapping != null) {
+                validationState = stateMapping.getCurrentState(object);
+            }
         }
-
-        SingleAttributeValueReader attributeValueReader =
-                new SingleAttributeValueReader(attributeValue, entryName, attributeName, attributeDefinition);
-        validate(attributeValueReader, doOptionalProcessing);
+        AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
+        return validate(attributeValueReader, doOptionalProcessing, validationState, stateMapping);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocument(org.kuali.rice.krad.document.Document)
      */
     @Override
-	public void validateDocument(Document document) {
+    public void validateDocument(Document document) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
-        validate(document, documentEntryName);
+        validate(document, documentEntryName, (String) null, true);
     }
 
     /**
@@ -210,51 +178,47 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *      java.lang.String, java.lang.String)
      */
     @Override
-	public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
+    public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
 
         validate(document, documentEntryName, attributeName, true);
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document,
+     *      int, boolean)
      */
     @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
             boolean validateRequired) {
         validateDocumentAndUpdatableReferencesRecursively(document, maxDepth, validateRequired, false);
     }
+
     /**
-     * @see DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean, boolean)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document,
+     *      int, boolean, boolean)
      */
     @Override
-    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, 
+    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
             boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
-        validate(document, documentEntryName);
+        validate(document, documentEntryName, (String) null, true);
 
         if (maxDepth > 0) {
-            validateUpdatableReferencesRecursively(document, maxDepth - 1, validateRequired,
+            validateUpdatabableReferencesRecursively(document, maxDepth - 1, validateRequired,
                     chompLastLetterSFromCollectionName, newIdentitySet());
         }
     }
 
-    /**
-     * validates updatable references recursively for a business object
-     *
-     * @param businessObject - the business object to process
-     * @param processedBOs -  a list to prevent excessive looping by keeping track of processed business objects
-     * @see DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document, int, boolean, boolean) for other params
-     */
-    protected void validateUpdatableReferencesRecursively(BusinessObject businessObject, int maxDepth,
+    private void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth,
             boolean validateRequired, boolean chompLastLetterSFromCollectionName, Set<BusinessObject> processedBOs) {
         // if null or already processed, return
         if (ObjectUtils.isNull(businessObject) || processedBOs.contains(businessObject)) {
             return;
         }
         processedBOs.add(businessObject);  // add bo to list to prevent excessive looping
-        Map<String, Class> references =
-                persistenceStructureService.listReferenceObjectFields(businessObject.getClass());
+        Map<String, Class> references = persistenceStructureService.listReferenceObjectFields(
+                businessObject.getClass());
         for (String referenceName : references.keySet()) {
             if (persistenceStructureService.isReferenceUpdatable(businessObject.getClass(), referenceName)) {
                 Object referenceObj = ObjectUtils.getPropertyValue(businessObject, referenceName);
@@ -267,14 +231,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 GlobalVariables.getMessageMap().addToErrorPath(referenceName);
                 validateBusinessObject(referenceBusinessObject, validateRequired);
                 if (maxDepth > 0) {
-                    validateUpdatableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired,
+                    validateUpdatabableReferencesRecursively(referenceBusinessObject, maxDepth - 1, validateRequired,
                             chompLastLetterSFromCollectionName, processedBOs);
                 }
                 GlobalVariables.getMessageMap().removeFromErrorPath(referenceName);
             }
         }
-        Map<String, Class> collections =
-                persistenceStructureService.listCollectionObjectTypes(businessObject.getClass());
+        Map<String, Class> collections = persistenceStructureService.listCollectionObjectTypes(
+                businessObject.getClass());
         for (String collectionName : collections.keySet()) {
             if (persistenceStructureService.isCollectionUpdatable(businessObject.getClass(), collectionName)) {
                 Object listObj = ObjectUtils.getPropertyValue(businessObject, collectionName);
@@ -304,8 +268,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
                         final String errorPathAddition;
                         if (chompLastLetterSFromCollectionName) {
-                            errorPathAddition =
-                                    StringUtils.chomp(collectionName, "s") + "[" + Integer.toString(i) + "]";
+                            errorPathAddition = StringUtils.chomp(collectionName, "s")
+                                    + "["
+                                    + Integer.toString(i)
+                                    + "]";
                         } else {
                             errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
                         }
@@ -313,7 +279,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         GlobalVariables.getMessageMap().addToErrorPath(errorPathAddition);
                         validateBusinessObject(element, validateRequired);
                         if (maxDepth > 0) {
-                            validateUpdatableReferencesRecursively(element, maxDepth - 1, validateRequired,
+                            validateUpdatabableReferencesRecursively(element, maxDepth - 1, validateRequired,
                                     chompLastLetterSFromCollectionName, processedBOs);
                         }
                         GlobalVariables.getMessageMap().removeFromErrorPath(errorPathAddition);
@@ -357,8 +323,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         validateBusinessObject(businessObject);
 
         // call method to recursively find business objects and validate
-        validateBusinessObjectsFromDescriptors(businessObject,
-                PropertyUtils.getPropertyDescriptors(businessObject.getClass()), depth);
+        validateBusinessObjectsFromDescriptors(businessObject, PropertyUtils.getPropertyDescriptors(
+                businessObject.getClass()), depth);
     }
 
     /**
@@ -379,7 +345,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             return;
         }
 
-        validate(businessObject, businessObject.getClass().getName(), validateRequired);
+        validate(businessObject, businessObject.getClass().getName(), (String) null, validateRequired);
     }
 
     /**
@@ -418,13 +384,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 for (int j = 0; j < propertyList.size(); j++) {
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
                         if (depth == 0) {
-                            GlobalVariables.getMessageMap().addToErrorPath(
-                                    StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" +
-                                            (new Integer(j)).toString() + "]");
+                            GlobalVariables.getMessageMap().addToErrorPath(StringUtils.chomp(
+                                    propertyDescriptor.getName(), "s") + "[" +
+                                    (new Integer(j)).toString() + "]");
                             validateBusinessObject((BusinessObject) propertyList.get(j));
-                            GlobalVariables.getMessageMap().removeFromErrorPath(
-                                    StringUtils.chomp(propertyDescriptor.getName(), "s") + "[" +
-                                            (new Integer(j)).toString() + "]");
+                            GlobalVariables.getMessageMap().removeFromErrorPath(StringUtils.chomp(
+                                    propertyDescriptor.getName(), "s") + "[" +
+                                    (new Integer(j)).toString() + "]");
                         } else {
                             validateBusinessObjectsRecursively((BusinessObject) propertyList.get(j), depth - 1);
                         }
@@ -488,7 +454,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject, String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject,
+     *      String)
      */
     public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
 
@@ -518,13 +485,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         } else {
             Class<?> boClass =
                     reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : bo.getClass();
-            displayFieldName =
-                    dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
+            displayFieldName = dataDictionaryService.getAttributeLabel(boClass,
+                    reference.getAttributeToHighlightOnFail());
         }
 
         if (reference.isCollectionReference()) {
-            success = validateCollectionReferenceExistsAndIsActive(bo, reference, displayFieldName,
-                    StringUtils.split(reference.getCollection(), "."), null);
+            success = validateCollectionReferenceExistsAndIsActive(bo, reference, displayFieldName, StringUtils.split(
+                    reference.getCollection(), "."), null);
         } else {
             success = validateReferenceExistsAndIsActive(bo, reference.getAttributeName(),
                     reference.getAttributeToHighlightOnFail(), displayFieldName);
@@ -533,18 +500,17 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * implements {@link DictionaryValidationService#validateReferenceExistsAndIsActive(BusinessObject, ReferenceDefinition)} for a collection
-     *
      * @param bo the object to get the collection from
      * @param reference the <code>ReferenceDefinition</code> of the collection to validate
      * @param displayFieldName the name of the field
      * @param intermediateCollections array containing the path to the collection as tokens
-     * @param pathToAttributeI the rebuilt path to the ReferenceDefinition.attributeToHighlightOnFail which includes the
-     * index of each subcollection
-     *
-     * @return true if successful, false otherwise
+     * @param pathToAttributeI the rebuilt path to the ReferenceDefinition.attributeToHighlightOnFail which includes
+     * the
+     * index of
+     * each subcollection
+     * @return
      */
-    protected boolean validateCollectionReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference,
+    private boolean validateCollectionReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference,
             String displayFieldName, String[] intermediateCollections, String pathToAttributeI) {
         boolean success = true;
         Collection<PersistableBusinessObject> referenceCollection;
@@ -559,8 +525,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         int pos = 0;
         Iterator<PersistableBusinessObject> iterator = referenceCollection.iterator();
         while (iterator.hasNext()) {
-            String pathToAttribute =
-                    StringUtils.defaultString(pathToAttributeI) + collectionName + "[" + (pos++) + "].";
+            String pathToAttribute = StringUtils.defaultString(pathToAttributeI)
+                    + collectionName
+                    + "["
+                    + (pos++)
+                    + "].";
             // keep drilling down until we reach the nested collection we want
             if (intermediateCollections.length > 0) {
                 success &= validateCollectionReferenceExistsAndIsActive(iterator.next(), reference, displayFieldName,
@@ -576,7 +545,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject, String, String, String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject,
+     *      String, String, String)
      */
 
     public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName,
@@ -605,8 +575,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
         boolean fkFieldsPopulated = true;
         // need to check for DD relationship FKs
-        List<String> fkFields =
-                getDataDictionaryService().getRelationshipSourceAttributes(bo.getClass().getName(), referenceName);
+        List<String> fkFields = getDataDictionaryService().getRelationshipSourceAttributes(bo.getClass().getName(),
+                referenceName);
         if (fkFields != null) {
             for (String fkFieldName : fkFields) {
                 Object fkFieldValue = null;
@@ -633,8 +603,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 }
             }
         } else if (bo instanceof PersistableBusinessObject) { // if no DD relationship exists, check the persistence service
-            fkFieldsPopulated = persistenceService
-                    .allForeignKeyValuesPopulatedForReference((PersistableBusinessObject) bo, referenceName);
+            fkFieldsPopulated = persistenceService.allForeignKeyValuesPopulatedForReference(
+                    (PersistableBusinessObject) bo, referenceName);
         }
 
         // only bother if all the fk fields have values
@@ -648,15 +618,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 if (!(bo instanceof MutableInactivatable) || ((MutableInactivatable) bo).isActive()) {
                     active = validateReferenceIsActive(bo, referenceName);
                     if (!active) {
-                        GlobalVariables.getMessageMap()
-                                .putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE,
-                                        displayFieldName);
+                        GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail,
+                                RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
                         success &= false;
                     }
                 }
             } else {
-                GlobalVariables.getMessageMap()
-                        .putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE, displayFieldName);
+                GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE,
+                        displayFieldName);
                 success &= false;
             }
         }
@@ -705,8 +674,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         Class boClass =
                                 reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() :
                                         bo.getClass();
-                        displayFieldName = dataDictionaryService
-                                .getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
+                        displayFieldName = dataDictionaryService.getAttributeLabel(boClass,
+                                reference.getAttributeToHighlightOnFail());
                     }
 
                     success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(),
@@ -738,7 +707,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument, org.kuali.rice.krad.bo.BusinessObject, String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument,
+     *      org.kuali.rice.krad.bo.BusinessObject, String)
      */
     public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
             BusinessObject newCollectionItem, String collectionName) {
@@ -758,8 +728,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         Class boClass =
                                 reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() :
                                         document.getClass();
-                        displayFieldName = dataDictionaryService
-                                .getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
+                        displayFieldName = dataDictionaryService.getAttributeLabel(boClass,
+                                reference.getAttributeToHighlightOnFail());
                     }
 
                     success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(),
@@ -774,37 +744,51 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     * 1.1 validation methods
     */
 
-    /**
-     * This is the top-level validation method for all attribute value readers
-     *
-     * @see DictionaryValidationService#validate(org.kuali.rice.krad.datadictionary.validation.AttributeValueReader, boolean)
-    */
-    public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing) {
+    /*
+      * This is the top-level validation method for all attribute value readers
+      */
+    public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing,
+            String validationState, StateMapping stateMapping) {
         DictionaryValidationResult result = new DictionaryValidationResult();
 
         if (valueReader.getAttributeName() == null) {
-            validateObject(result, valueReader, doOptionalProcessing, true);
+            validateObject(result, valueReader, doOptionalProcessing, true, validationState, stateMapping);
         } else {
-            validateAttribute(result, valueReader, doOptionalProcessing);
+            validateAttribute(result, valueReader, doOptionalProcessing, validationState, stateMapping);
         }
 
         if (result.getNumberOfErrors() > 0) {
+            
+            String[] prefixParams = new String[1];
+            String prefixMessageKey = UifConstants.Messages.STATE_PREFIX;
+            if(stateMapping != null){
+                prefixParams[0] = stateMapping.getStateNameMessage(validationState);
+            }
+            
+            if(StringUtils.isBlank(prefixParams[0])){
+                prefixMessageKey = null;
+            }
+
             for (Iterator<ConstraintValidationResult> iterator = result.iterator(); iterator.hasNext(); ) {
                 ConstraintValidationResult constraintValidationResult = iterator.next();
-                if (constraintValidationResult.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()){                    
+                if (constraintValidationResult.getStatus().getLevel() >= ErrorLevel.WARN.getLevel()) {
                     String attributePath = constraintValidationResult.getAttributePath();
-                    if (attributePath == null || attributePath.isEmpty()){
+                    if (attributePath == null || attributePath.isEmpty()) {
                         attributePath = constraintValidationResult.getAttributeName();
                     }
-                    if(constraintValidationResult.getConstraintLabelKey() != null){
-                        GlobalVariables.getMessageMap().putError(attributePath,
-                                constraintValidationResult.getConstraintLabelKey(),
+                    
+                    if (constraintValidationResult.getConstraintLabelKey() != null) {
+                        ErrorMessage errorMessage = new ErrorMessage(constraintValidationResult.getConstraintLabelKey(),
                                 constraintValidationResult.getErrorParameters());
-                    }
-                    else{
-                        GlobalVariables.getMessageMap().putError(attributePath,
-                                constraintValidationResult.getErrorKey(),
+                        errorMessage.setMessagePrefixKey(prefixMessageKey);
+                        errorMessage.setMessagePrefixParameters(prefixParams);
+                        GlobalVariables.getMessageMap().putError(attributePath, errorMessage);
+                    } else {
+                        ErrorMessage errorMessage = new ErrorMessage(constraintValidationResult.getErrorKey(),
                                 constraintValidationResult.getErrorParameters());
+                        errorMessage.setMessagePrefixKey(prefixMessageKey);
+                        errorMessage.setMessagePrefixParameters(prefixParams);
+                        GlobalVariables.getMessageMap().putError(attributePath, errorMessage);
                     }
                 }
             }
@@ -813,49 +797,25 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         return result;
     }
 
-    /**
-     *  process constraints for the provided value using the element constraint processors
-     *
-     * @param result  - used to store the validation results
-     * @param value - the object on which constraints are to be processed - the value of a complex attribute
-     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition}
-     * @param attributeValueReader  - a class that encapsulate access to both dictionary metadata and object field values
-     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
-     */
-    protected void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition,
-            AttributeValueReader attributeValueReader, boolean doOptionalProcessing) {
-        processConstraints(result, getElementConstraintProcessors(), value, definition, attributeValueReader,
-                doOptionalProcessing);
+    private void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition,
+            AttributeValueReader attributeValueReader, boolean doOptionalProcessing, String validationState,
+            StateMapping stateMapping) {
+        processConstraints(result, elementConstraintProcessors, value, definition, attributeValueReader,
+                doOptionalProcessing, validationState, stateMapping);
     }
 
-    /**
-     *  process constraints for the provided collection using the collection constraint processors
-     *
-     * @param result  - used to store the validation results
-     * @param collection - the object on which constraints are to be processed - a collection
-     * @param definition - a Data Dictionary definition e.g. {@code CollectionDefinition}
-     * @param attributeValueReader  - a class that encapsulate access to both dictionary metadata and object field values
-     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
-     */
-    protected void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection,
-            Constrainable definition, AttributeValueReader attributeValueReader, boolean doOptionalProcessing) {
-        processConstraints(result, getCollectionConstraintProcessors(), collection, definition, attributeValueReader,
-                doOptionalProcessing);
+    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection,
+            Constrainable definition, AttributeValueReader attributeValueReader, boolean doOptionalProcessing,
+            String validationState, StateMapping stateMapping) {
+        processConstraints(result, collectionConstraintProcessors, collection, definition, attributeValueReader,
+                doOptionalProcessing, validationState, stateMapping);
     }
 
-    /**
-     *  process constraints for the provided value using the provided constraint processors
-     *
-     * @param result  - used to store the validation results
-     * @param value - the object on which constraints are to be processed - a collection or the value of an attribute
-     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code CollectionDefinition}
-     * @param attributeValueReader  - a class that encapsulate access to both dictionary metadata and object field values
-     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
-     */
     @SuppressWarnings("unchecked")
-    protected void processConstraints(DictionaryValidationResult result,
+    private void processConstraints(DictionaryValidationResult result,
             List<? extends ConstraintProcessor> constraintProcessors, Object value, Constrainable definition,
-            AttributeValueReader attributeValueReader, boolean doOptionalProcessing) {
+            AttributeValueReader attributeValueReader, boolean doOptionalProcessing, String validationState,
+            StateMapping stateMapping) {
         //TODO: Implement custom validators
 
         if (constraintProcessors != null) {
@@ -880,10 +840,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 // Add all of the constraints for this constraint type for all providers to the queue
                 for (ConstraintProvider constraintProvider : constraintProviders) {
                     if (constraintProvider.isSupported(selectedDefinition)) {
-                        Collection<Constraint> constraintList =
-                                constraintProvider.getConstraints(selectedDefinition, constraintType);
-                        if (constraintList != null)
+                        Collection<Constraint> constraintList = constraintProvider.getConstraints(selectedDefinition,
+                                constraintType);
+                        if (constraintList != null) {
                             constraintQueue.addAll(constraintList);
+                        }
                     }
                 }
 
@@ -910,20 +871,26 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         continue;
                     }
 
-                    ProcessorResult processorResult =
-                            processor.process(result, value, constraint, selectedAttributeValueReader);
+                    constraint = ConstraintStateUtils.getApplicableConstraint(constraint, validationState, stateMapping);
 
-                    Collection<Constraint> processorResultContraints = processorResult.getConstraints();
-                    if (processorResultContraints != null && processorResultContraints.size() > 0)
-                        constraintQueue.addAll(processorResultContraints);
+                    if (constraint != null) {
+                        ProcessorResult processorResult = processor.process(result, value, constraint,
+                                selectedAttributeValueReader);
 
-                    // Change the selected definition to whatever was returned from the processor
-                    if (processorResult.isDefinitionProvided())
-                        selectedDefinition = processorResult.getDefinition();
-                    // Change the selected attribute value reader to whatever was returned from the processor
-                    if (processorResult.isAttributeValueReaderProvided())
-                        selectedAttributeValueReader = processorResult.getAttributeValueReader();
+                        Collection<Constraint> processorResultContraints = processorResult.getConstraints();
+                        if (processorResultContraints != null && processorResultContraints.size() > 0) {
+                            constraintQueue.addAll(processorResultContraints);
+                        }
 
+                        // Change the selected definition to whatever was returned from the processor
+                        if (processorResult.isDefinitionProvided()) {
+                            selectedDefinition = processorResult.getDefinition();
+                        }
+                        // Change the selected attribute value reader to whatever was returned from the processor
+                        if (processorResult.isAttributeValueReaderProvided()) {
+                            selectedAttributeValueReader = processorResult.getAttributeValueReader();
+                        }
+                    }
                 }
 
                 // After iterating through all the constraints for this processor, add the ones that werent consumed by this processor to the queue
@@ -932,64 +899,48 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
 
-    /**
-     * validates an attribute
-     *
-     * @param result - used to store the validation results
-     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field values
-     * @param checkIfRequired - check if empty values are required or not
-     * @throws AttributeValidationException
-     */
-    protected void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
-            boolean checkIfRequired) throws AttributeValidationException {
+    private void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
+            boolean checkIfRequired, String validationState,
+            StateMapping stateMapping) throws AttributeValidationException {
         Constrainable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
-        validateAttribute(result, definition, attributeValueReader, checkIfRequired);
+        validateAttribute(result, definition, attributeValueReader, checkIfRequired, validationState, stateMapping);
     }
 
-    /**
-     * @param definition -   the constrainable attribute definition of a specific attribute name
-     * @see #validateAttribute(DictionaryValidationResult, AttributeValueReader, boolean) for the other parameters
-     * @throws AttributeValidationException
-     */
-    protected void validateAttribute(DictionaryValidationResult result, Constrainable definition,
-            AttributeValueReader attributeValueReader, boolean checkIfRequired) throws AttributeValidationException {
+    private void validateAttribute(DictionaryValidationResult result, Constrainable definition,
+            AttributeValueReader attributeValueReader, boolean checkIfRequired, String validationState,
+            StateMapping stateMapping) throws AttributeValidationException {
 
-        if (definition == null)
+        if (definition == null) {
             throw new AttributeValidationException(
                     "Unable to validate constraints for attribute \"" + attributeValueReader.getAttributeName() +
                             "\" on entry \"" + attributeValueReader.getEntryName() +
                             "\" because no attribute definition can be found.");
-        
+        }
+
         Object value = attributeValueReader.getValue();
 
-        processElementConstraints(result, value, definition, attributeValueReader, checkIfRequired);
+        processElementConstraints(result, value, definition, attributeValueReader, checkIfRequired, validationState,
+                stateMapping);
     }
 
-    /**
-     * validates an object and its attributes recursively
-     *
-     * @param result - used to store the validation results
-     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field values
-     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
-     * @param processAttributes - if true process all attribute definitions, skip if false
-     * @throws AttributeValidationException
-     */
-    protected void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
-            boolean doOptionalProcessing, boolean processAttributes) throws AttributeValidationException {
+    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
+            boolean doOptionalProcessing, boolean processAttributes, String validationState,
+            StateMapping stateMapping) throws AttributeValidationException {
 
         // If the entry itself is constrainable then the attribute value reader will return it here and we'll need to check if it has any constraints
         Constrainable objectEntry = attributeValueReader.getEntry();
         processElementConstraints(result, attributeValueReader.getObject(), objectEntry, attributeValueReader,
-                doOptionalProcessing);
+                doOptionalProcessing, validationState, stateMapping);
 
         List<Constrainable> definitions = attributeValueReader.getDefinitions();
 
         // Exit if the attribute value reader has no child definitions
-        if (null == definitions)
+        if (null == definitions) {
             return;
+        }
 
         //Process all attribute definitions (unless being skipped)
-        if (processAttributes){
+        if (processAttributes) {
             for (Constrainable definition : definitions) {
                 String attributeName = definition.getName();
                 attributeValueReader.setAttributeName(attributeName);
@@ -997,7 +948,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 if (attributeValueReader.isReadable()) {
                     Object value = attributeValueReader.getValue(attributeName);
 
-                    processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing);
+                    processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing,
+                            validationState, stateMapping);
                 }
             }
         }
@@ -1022,11 +974,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                             nestedAttributeValueReader.setAttributeName(attributeValueReader.getAttributeName());
                             //Validate nested object, however skip attribute definition porcessing on
                             //nested object entry, since they have already been processed above.
-                            validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false);
+                            validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false,
+                                    validationState, stateMapping);
                         }
 
                         processElementConstraints(result, value, complexAttrDefinition, attributeValueReader,
-                                doOptionalProcessing);
+                                doOptionalProcessing, validationState, stateMapping);
                     }
                 }
             }
@@ -1057,71 +1010,55 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                             //FIXME: It's inefficient to be creating new attribute reader for each item in collection
                             AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(
                                     value, childEntryName, childEntry, objectAttributePath);
-                            validateObject(result, nestedAttributeValueReader, doOptionalProcessing, true);
+                            validateObject(result, nestedAttributeValueReader, doOptionalProcessing, true,
+                                    validationState, stateMapping);
                             index++;
                         }
                     }
 
                     processCollectionConstraints(result, collectionObject, collectionDefinition, attributeValueReader,
-                            doOptionalProcessing);
+                            doOptionalProcessing, validationState, stateMapping);
                 }
             }
         }
     }
 
     /**
-     * gets the {@link DataDictionaryService}
-     *
-     * @return Returns the dataDictionaryService
+     * @return Returns the dataDictionaryService.
      */
     public DataDictionaryService getDataDictionaryService() {
         return dataDictionaryService;
     }
 
     /**
-     * sets the {@link DataDictionaryService}
-     *
-     * @param dataDictionaryService The dataDictionaryService to set
+     * @param dataDictionaryService The dataDictionaryService to set.
      */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
 
     /**
-     * Sets the {@link BusinessObjectService} attribute value
+     * Sets the businessObjectService attribute value.
      *
-     * @param businessObjectService - the businessObjectService to set
+     * @param businessObjectService The businessObjectService to set.
      */
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
 
     /**
-     * Sets the {@link PersistenceService} attribute value
+     * Sets the persistenceService attribute value.
      *
-     * @param persistenceService The persistenceService to set
+     * @param persistenceService The persistenceService to set.
      */
     public void setPersistenceService(PersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
-    /**
-     * sets the @{PersistenceStructureService}
-     *
-     * @param persistenceStructureService - the {@code PersistenceStructureService} to set
-     */
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
 
-    /**
-     * gets the locally saved instance of @{link WorkflowAttributePropertyResolutionService}
-     *
-     * <p>If the instance in this class has not been initialized, retrieve it using
-     * {@link KRADServiceLocatorInternal#getWorkflowAttributePropertyResolutionService()} and save locally</p>
-     *
-     * @return the locally saved instance of {@code WorkflowAttributePropertyResolutionService}
-     */
     protected WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
         if (workflowAttributePropertyResolutionService == null) {
             workflowAttributePropertyResolutionService =
@@ -1131,11 +1068,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * gets the list of {@link CollectionConstraintProcessor}
-     *
-     * <p>Collection constraint processors are classes that determine if a feature of a collection of objects
-     * satisfies some constraint</p>
-     *
      * @return the collectionConstraintProcessors
      */
     @SuppressWarnings("unchecked")
@@ -1144,8 +1076,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * sets the list of {@link CollectionConstraintProcessor}
-     *
      * @param collectionConstraintProcessors the collectionConstraintProcessors to set
      */
     @SuppressWarnings("unchecked")
@@ -1154,11 +1084,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * gets the list of {@link ConstraintProvider}s
-     *
-     * <p>Constraint providers are classes that map specific constraint types to a constraint resolver,
-     * which takes a constrainable definition</p>
-     *
      * @return the constraintProviders
      */
     @SuppressWarnings("unchecked")
@@ -1167,8 +1092,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * sets a list of {@link ConstraintProvider}
-     *
      * @param constraintProviders the constraintProviders to set
      */
     @SuppressWarnings("unchecked")
@@ -1177,11 +1100,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * gets the list of element {@link ConstraintProcessor}
-     *
-     * <p>Element constraint processors are classes that determine if a passed value is valid
-     * for a specific constraint at the individual object or object attribute level</p>
-     *
      * @return the elementConstraintProcessors
      */
     @SuppressWarnings("unchecked")
@@ -1190,8 +1108,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * sets the list of {@link ConstraintProcessor}
-     *
      * @param elementConstraintProcessors the elementConstraintProcessors to set
      */
     @SuppressWarnings("unchecked")
@@ -1199,14 +1115,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         this.elementConstraintProcessors = elementConstraintProcessors;
     }
 
-    /**
-     * gets the locally saved instance of @{link DocumentDictionaryService}
-     *
-     * <p>If the instance in this class has not be set, retrieve it using
-     * {@link KRADServiceLocatorWeb#getDocumentDictionaryService()} and save locally</p>
-     *
-     * @return the locally saved instance of {@code DocumentDictionaryService}
-     */
     public DocumentDictionaryService getDocumentDictionaryService() {
         if (documentDictionaryService == null) {
             this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
@@ -1214,11 +1122,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         return documentDictionaryService;
     }
 
-    /**
-     * sets the {@link DocumentDictionaryService}
-     *
-     * @param documentDictionaryService - the {@code DocumentDictionaryService} to set
-     */
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
     }

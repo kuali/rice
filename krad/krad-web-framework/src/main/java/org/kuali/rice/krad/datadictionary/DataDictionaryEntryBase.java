@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
+import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -42,6 +43,8 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
     protected Map<String, ComplexAttributeDefinition> complexAttributeMap;
     protected Map<String, CollectionDefinition> collectionMap;
     protected Map<String, RelationshipDefinition> relationshipMap;
+
+    protected StateMapping stateMapping;
     
     public DataDictionaryEntryBase() {
         this.attributes = new ArrayList<AttributeDefinition>();
@@ -416,5 +419,19 @@ abstract public class DataDictionaryEntryBase implements DataDictionaryEntry, Se
 		}
 		
 		return attrDefCopy;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getStateMapping() 
+     */
+    public StateMapping getStateMapping() {
+        return stateMapping;
+    }
+
+    /**
+     * @see DataDictionaryEntry#setStateMapping(org.kuali.rice.krad.datadictionary.state.StateMapping)
+     */
+    public void setStateMapping(StateMapping stateMapping) {
+        this.stateMapping = stateMapping;
     }
 }

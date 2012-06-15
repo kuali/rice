@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -29,7 +29,6 @@ import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
@@ -578,8 +577,10 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                     throw new KimTypeAttributeException(e);
                 }
 
-                final RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(
-                        DataDictionaryTypeServiceHelper.getKimBasePath(), lookupClass.getName());
+                final RemotableQuickFinder.Builder builder =
+                        RemotableQuickFinder.Builder.create(
+                                ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/lookup.do?methodToCall=start&",
+                                lookupClass.getName());
                 builder.setLookupParameters(toMap(field.getLookupParameters()));
                 builder.setFieldConversions(toMap(field.getFieldConversions()));
                 return builder;

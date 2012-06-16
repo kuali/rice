@@ -659,6 +659,12 @@ public class ComponentFactory {
         return inputFields;
     }
 
+    /**
+     * For each option in the given list, create a new {@link org.kuali.rice.core.api.util.KeyValue} instance
+     *
+     * @param optionsMap - list of options
+     * @return List<KeyValue> list of key values built from the list of options
+     */
     protected static List<KeyValue> buildKeyValuePairs(Map<String, String> optionsMap) {
         List<KeyValue> options = new ArrayList<KeyValue>();
 
@@ -670,6 +676,12 @@ public class ComponentFactory {
         return options;
     }
 
+    /**
+     * Gets the control
+     *
+     * @param controlType
+     * @return Control the control based on the control type
+     */
     protected static Control getControl(UifConstants.ControlType controlType) {
         Control control = null;
         switch (controlType) {
@@ -698,114 +710,254 @@ public class ComponentFactory {
         return control;
     }
 
+    /**
+     * Gets the errors field
+     *
+     * @return ValidationMessages errors field
+     */
     public static ValidationMessages getErrorsField() {
         return (ValidationMessages) getNewComponentInstance(ERRORS_FIELD);
     }
 
+    /**
+     * Gets the action
+     *
+     * @return Action action
+     */
     public static Action getAction() {
         return (Action) getNewComponentInstance(ACTION);
     }
 
+    /**
+     * Gets the action link
+     *
+     * @return Action action link
+     */
     public static Action getActionLink() {
         return (Action) getNewComponentInstance(ACTION_LINK);
     }
 
+    /**
+     * Gets the link field
+     *
+     * @return LinkField link field
+     */
     public static LinkField getLinkField() {
         return (LinkField) getNewComponentInstance(LINK_FIELD);
     }
 
+    /**
+     * Gets the iframe
+     *
+     * @return Iframe iframe
+     */
     public static Iframe getIframe() {
         return (Iframe) getNewComponentInstance(IFRAME);
     }
 
+    /**
+     * Gets the image field
+     *
+     * @return ImageField image field
+     */
     public static ImageField getImageField() {
         return (ImageField) getNewComponentInstance(IMAGE_FIELD);
     }
 
+    /**
+     * Gets the space field
+     *
+     * @return SpaceField space field
+     */
     public static SpaceField getSpaceField() {
         return (SpaceField) getNewComponentInstance(SPACE_FIELD);
     }
 
+    /**
+     * Gets the generic field
+     *
+     * @return GenericField generic field
+     */
     public static GenericField getGenericField() {
         return (GenericField) getNewComponentInstance(GENERIC_FIELD);
     }
 
+    /**
+     * Gets the label
+     *
+     * @return Label label
+     */
     public static Label getLabel() {
         return (Label) getNewComponentInstance(LABEL);
     }
 
+    /**
+     * Gets the message
+     *
+     * @return Message message
+     */
     public static Message getMessage() {
         return (Message) getNewComponentInstance(MESSAGE);
     }
 
+    /**
+     * Gets the message field
+     *
+     * @return MessageField message field
+     */
     public static MessageField getMessageField() {
         return (MessageField) getNewComponentInstance(MESSAGE_FIELD);
     }
 
+    /**
+     * Gets the field group
+     *
+     * @return FieldGroup field group
+     */
     public static FieldGroup getFieldGroup() {
         return (FieldGroup) getNewComponentInstance(FIELD_GROUP);
     }
 
+    /**
+     * Gets the horizontal field group
+     *
+     * @return FieldGroup horizontal field group
+     */
     public static FieldGroup getHorizontalFieldGroup() {
         return (FieldGroup) getNewComponentInstance(HORIZONTAL_FIELD_GROUP);
     }
 
+    /**
+     * Gets the group
+     *
+     * @return Group group
+     */
     public static Group getGroup() {
         return (Group) getNewComponentInstance(GROUP);
     }
 
+    /**
+     * Gets the page group
+     *
+     * @return PageGroup page group
+     */
     public static PageGroup getPageGroup() {
         return (PageGroup) getNewComponentInstance(PAGE_GROUP);
     }
 
+    /**
+     * Gets the group grid layout
+     *
+     * @return Group group grid layout
+     */
     public static Group getGroupGridLayout() {
         return (Group) getNewComponentInstance(GROUP_GRID_LAYOUT);
     }
 
+    /**
+     * Gets the group body only
+     *
+     * @return Group group body only
+     */
     public static Group getGroupBodyOnly() {
         return (Group) getNewComponentInstance(GROUP_BODY_ONLY);
     }
 
+    /**
+     * Gets the group grid body only
+     *
+     * @return Group group grid body only
+     */
     public static Group getGroupGridBodyOnly() {
         return (Group) getNewComponentInstance(GROUP_GRID_BODY_ONLY);
     }
 
+    /**
+     * Gets the tab group
+     *
+     * @return TabGroup tab group
+     */
     public static TabGroup getTabGroup() {
         return (TabGroup) getNewComponentInstance(TAB_GROUP);
     }
 
+    /**
+     * Gets the navigation group
+     *
+     * @return NavigationGroup navigation group
+     */
     public static NavigationGroup getNavigationGroup() {
         return (NavigationGroup) getNewComponentInstance(NAVIGATION_GROUP);
     }
 
+    /**
+     * Gets the tree group
+     *
+     * @return TreeGroup tree group
+     */
     public static TreeGroup getTreeGroup() {
         return (TreeGroup) getNewComponentInstance(TREE_GROUP);
     }
 
+    /**
+     * Gets the link group
+     *
+     * @return LinkGroup link group
+     */
     public static LinkGroup getLinkGroup() {
         return (LinkGroup) getNewComponentInstance(LINK_GROUP);
     }
 
+    /**
+     * Gets the collection group
+     *
+     * @return CollectionGroup collection group
+     */
     public static CollectionGroup getCollectionGroup() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_GROUP);
     }
 
+    /**
+     * Gets the collection group table layout
+     *
+     * @return CollectionGroup collection group table layout
+     */
     public static CollectionGroup getCollectionGroupTableLayout() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_GROUP_TABLE_LAYOUT);
     }
 
+    /**
+     * Gets the list group
+     *
+     * @return CollectionGroup list group
+     */
     public static CollectionGroup getListGroup() {
         return (CollectionGroup) getNewComponentInstance(LIST_GROUP);
     }
 
+    /**
+     * Gets the header
+     *
+     * @return Header header
+     */
     public static Header getHeader() {
         return (Header) getNewComponentInstance(HEADER);
     }
 
+    /**
+     * Gets the footer
+     *
+     * @return Group footer
+     */
     public static Group getFooter() {
         return (Group) getNewComponentInstance(FOOTER);
     }
 
+    /**
+     * Gets the footer save/close/cancel
+     *
+     * @return Group footer save/close/cancel
+     */
     public static Group getFooterSaveCloseCancel() {
         return (Group) getNewComponentInstance(FOOTER_SAVECLOSECANCEL);
     }

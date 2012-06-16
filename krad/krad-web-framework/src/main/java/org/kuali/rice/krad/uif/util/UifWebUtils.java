@@ -188,6 +188,11 @@ public class UifWebUtils {
         }
     }
 
+    /**
+     * Gets the view service
+     *
+     * @return ViewService view service
+     */
     protected static ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }

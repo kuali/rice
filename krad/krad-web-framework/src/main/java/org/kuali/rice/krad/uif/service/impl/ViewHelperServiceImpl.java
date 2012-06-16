@@ -1807,11 +1807,21 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     }
 
+    /**
+     * Log the error and throw a new runtime exception
+     *
+     * @param message - the error message (both to log and throw as a new exception)
+     */
     protected void logAndThrowRuntime(String message) {
         LOG.error(message);
         throw new RuntimeException(message);
     }
 
+    /**
+     * Gets the data dictionary service
+     *
+     * @return DataDictionaryService data dictionary service
+     */
     protected DataDictionaryService getDataDictionaryService() {
         if (this.dataDictionaryService == null) {
             this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
@@ -1820,10 +1830,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.dataDictionaryService;
     }
 
+    /**
+     * Sets the data dictionary service
+     *
+     * @param dataDictionaryService
+     */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
 
+    /**
+     * Gets the expression evaluator service
+     *
+     * @return ExpressionEvaluatorService expression evaluator service
+     */
     protected ExpressionEvaluatorService getExpressionEvaluatorService() {
         if (this.expressionEvaluatorService == null) {
             this.expressionEvaluatorService = KRADServiceLocatorWeb.getExpressionEvaluatorService();
@@ -1832,10 +1852,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.expressionEvaluatorService;
     }
 
+    /**
+     * Sets the expression evaluator service
+     *
+     * @param expressionEvaluatorService
+     */
     public void setExpressionEvaluatorService(ExpressionEvaluatorService expressionEvaluatorService) {
         this.expressionEvaluatorService = expressionEvaluatorService;
     }
 
+    /**
+     * Gets the view dictionary service
+     *
+     * @return ViewDictionaryService view dictionary service
+     */
     public ViewDictionaryService getViewDictionaryService() {
         if (this.viewDictionaryService == null) {
             this.viewDictionaryService = KRADServiceLocatorWeb.getViewDictionaryService();
@@ -1843,10 +1873,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.viewDictionaryService;
     }
 
+    /**
+     * Sets the view dictionary service
+     *
+     * @param viewDictionaryService
+     */
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
         this.viewDictionaryService = viewDictionaryService;
     }
 
+    /**
+     * Gets the configuration service
+     *
+     * @return ConfigurationService configuration service
+     */
     public ConfigurationService getConfigurationService() {
         if (this.configurationService == null) {
             this.configurationService = KRADServiceLocator.getKualiConfigurationService();
@@ -1854,6 +1894,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return this.configurationService;
     }
 
+    /**
+     * Sets the configuration service
+     *
+     * @param configurationService
+     */
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

@@ -303,6 +303,11 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         return results;
     }
 
+    /**
+     * Gets the lookup service
+     *
+     * @return LookupService lookup service
+     */
     protected LookupService getLookupService() {
         if (lookupService == null) {
             lookupService = KRADServiceLocatorWeb.getLookupService();
@@ -311,10 +316,20 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         return lookupService;
     }
 
+    /**
+     * Sets the lookup service
+     *
+     * @param lookupService
+     */
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
     }
 
+    /**
+     * Gets the configuration service
+     *
+     * @return ConfigurationService configuration service
+     */
     protected ConfigurationService getConfigurationService() {
         if (configurationService == null) {
             configurationService = KRADServiceLocator.getKualiConfigurationService();
@@ -323,6 +338,11 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         return configurationService;
     }
 
+    /**
+     * Sets the configuration service
+     *
+     * @param configurationService
+     */
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

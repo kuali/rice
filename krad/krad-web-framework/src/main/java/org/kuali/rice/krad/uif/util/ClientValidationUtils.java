@@ -100,6 +100,13 @@ public class ClientValidationUtils {
         }
     }
 
+    /**
+     * Returns a message using the label key to format the list of parameters
+     *
+     * @param params
+     * @param labelKey
+     * @return String message
+     */
     public static String generateMessageFromLabelKey(List<String> params, String labelKey) {
         String message = "NO MESSAGE";
         if (StringUtils.isNotEmpty(labelKey)) {

@@ -18,12 +18,10 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
 import org.kuali.rice.krad.datadictionary.ComplexAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
@@ -35,9 +33,7 @@ import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.DictionaryObjectAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
-import org.kuali.rice.krad.datadictionary.validation.SingleAttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider;
 import org.kuali.rice.krad.datadictionary.validation.processor.CollectionConstraintProcessor;
@@ -52,25 +48,20 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -137,24 +128,67 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             boolean doOptionalProcessing) {
         StateMapping stateMapping = null;
         String validationState = null;
-        if (object instanceof DataDictionaryEntry) {
-            stateMapping = ((DataDictionaryEntry) object).getStateMapping();
+        DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
+        if (entry != null) {
+            stateMapping = entry.getStateMapping();
             if (stateMapping != null) {
                 validationState = stateMapping.getCurrentState(object);
             }
         }
-        DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
+
         AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
         attributeValueReader.setAttributeName(attributeName);
         return validate(attributeValueReader, doOptionalProcessing, validationState, stateMapping);
     }
 
+    /**
+     * @see DictionaryValidationService#validateAgainstNextState(Object)
+     */
+    @Override
+    public DictionaryValidationResult validateAgainstNextState(Object object) {
+        String entryName = object.getClass().getName();
+        StateMapping stateMapping = null;
+        String validationState = null;
+        DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
+        if (entry != null) {
+            stateMapping = entry.getStateMapping();
+            if (stateMapping != null) {
+                validationState = stateMapping.getNextState(object);
+            }
+        }
+        AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
+        return validate(attributeValueReader, true, validationState, stateMapping);
+    }
+
+    /**
+     * @see DictionaryValidationService#validateAgainstState(Object, String)
+     */
+    @Override
+    public DictionaryValidationResult validateAgainstState(Object object, String validationState) {
+        String entryName = object.getClass().getName();
+        StateMapping stateMapping = null;
+        DataDictionaryEntry entry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(entryName);
+        if (entry != null) {
+            stateMapping = entry.getStateMapping();
+            if (stateMapping != null && StringUtils.isBlank(validationState)) {
+                validationState = stateMapping.getCurrentState(object);
+            }
+        }
+
+        AttributeValueReader attributeValueReader = new DictionaryObjectAttributeValueReader(object, entryName, entry);
+        return validate(attributeValueReader, true, validationState, stateMapping);
+    }
+
+    /**
+     * @see DictionaryValidationService#validate(Object, String, DataDictionaryEntry, boolean)
+     */
+    @Override
     public DictionaryValidationResult validate(Object object, String entryName, DataDictionaryEntry entry,
             boolean doOptionalProcessing) {
         StateMapping stateMapping = null;
         String validationState = null;
-        if (object instanceof DataDictionaryEntry) {
-            stateMapping = ((DataDictionaryEntry) object).getStateMapping();
+        if (entry != null) {
+            stateMapping = entry.getStateMapping();
             if (stateMapping != null) {
                 validationState = stateMapping.getCurrentState(object);
             }
@@ -548,7 +582,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject,
      *      String, String, String)
      */
-
     public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName,
             String attributeToHighlightOnFail, String displayFieldName) {
 
@@ -744,9 +777,18 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     * 1.1 validation methods
     */
 
-    /*
-      * This is the top-level validation method for all attribute value readers
-      */
+    /**
+     * Validates using the defined AttributeValueReader (which allows access the object being validated) against
+     * the validationState and stateMapping (if specified).  If state information is null,
+     * validates the constraints as stateless (ie all constraints apply regardless of their states attribute).
+     *
+     * @param valueReader - an object to validate
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
+     * are required or not), false otherwise
+     * @param validationState
+     * @param stateMapping
+     * @return
+     */
     public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing,
             String validationState, StateMapping stateMapping) {
         DictionaryValidationResult result = new DictionaryValidationResult();
@@ -758,14 +800,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
 
         if (result.getNumberOfErrors() > 0) {
-            
+
             String[] prefixParams = new String[1];
             String prefixMessageKey = UifConstants.Messages.STATE_PREFIX;
-            if(stateMapping != null){
+            if (stateMapping != null) {
                 prefixParams[0] = stateMapping.getStateNameMessage(validationState);
             }
-            
-            if(StringUtils.isBlank(prefixParams[0])){
+
+            if (StringUtils.isBlank(prefixParams[0])) {
                 prefixMessageKey = null;
             }
 
@@ -776,7 +818,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     if (attributePath == null || attributePath.isEmpty()) {
                         attributePath = constraintValidationResult.getAttributeName();
                     }
-                    
+
                     if (constraintValidationResult.getConstraintLabelKey() != null) {
                         ErrorMessage errorMessage = new ErrorMessage(constraintValidationResult.getConstraintLabelKey(),
                                 constraintValidationResult.getErrorParameters());
@@ -797,20 +839,51 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         return result;
     }
 
-    private void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition,
+    /**
+     * process constraints for the provided value using the element constraint processors
+     *
+     * @param result - used to store the validation results
+     * @param value - the object on which constraints are to be processed - the value of a complex attribute
+     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition}
+     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field
+     * values
+     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
+     */
+    protected void processElementConstraints(DictionaryValidationResult result, Object value, Constrainable definition,
             AttributeValueReader attributeValueReader, boolean doOptionalProcessing, String validationState,
             StateMapping stateMapping) {
         processConstraints(result, elementConstraintProcessors, value, definition, attributeValueReader,
                 doOptionalProcessing, validationState, stateMapping);
     }
 
-    private void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection,
+    /**
+     * process constraints for the provided collection using the collection constraint processors
+     *
+     * @param result - used to store the validation results
+     * @param collection - the object on which constraints are to be processed - a collection
+     * @param definition - a Data Dictionary definition e.g. {@code CollectionDefinition}
+     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field
+     * values
+     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
+     */
+    protected void processCollectionConstraints(DictionaryValidationResult result, Collection<?> collection,
             Constrainable definition, AttributeValueReader attributeValueReader, boolean doOptionalProcessing,
             String validationState, StateMapping stateMapping) {
         processConstraints(result, collectionConstraintProcessors, collection, definition, attributeValueReader,
                 doOptionalProcessing, validationState, stateMapping);
     }
 
+    /**
+     * process constraints for the provided value using the provided constraint processors
+     *
+     * @param result - used to store the validation results
+     * @param value - the object on which constraints are to be processed - a collection or the value of an attribute
+     * @param definition - a Data Dictionary definition e.g. {@code ComplexAttributeDefinition} or {@code
+     * CollectionDefinition}
+     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field
+     * values
+     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
+     */
     @SuppressWarnings("unchecked")
     private void processConstraints(DictionaryValidationResult result,
             List<? extends ConstraintProcessor> constraintProcessors, Object value, Constrainable definition,
@@ -871,7 +944,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         continue;
                     }
 
-                    constraint = ConstraintStateUtils.getApplicableConstraint(constraint, validationState, stateMapping);
+                    constraint = ConstraintStateUtils.getApplicableConstraint(constraint, validationState,
+                            stateMapping);
 
                     if (constraint != null) {
                         ProcessorResult processorResult = processor.process(result, value, constraint,
@@ -899,14 +973,28 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
 
-    private void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
+    /**
+     * validates an attribute
+     *
+     * @param result - used to store the validation results
+     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field
+     * values
+     * @param checkIfRequired - check if empty values are required or not
+     * @throws AttributeValidationException
+     */
+    protected void validateAttribute(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
             boolean checkIfRequired, String validationState,
             StateMapping stateMapping) throws AttributeValidationException {
         Constrainable definition = attributeValueReader.getDefinition(attributeValueReader.getAttributeName());
         validateAttribute(result, definition, attributeValueReader, checkIfRequired, validationState, stateMapping);
     }
 
-    private void validateAttribute(DictionaryValidationResult result, Constrainable definition,
+    /**
+     * @param definition -   the constrainable attribute definition of a specific attribute name
+     * @throws AttributeValidationException
+     * @see #validateAttribute(DictionaryValidationResult, AttributeValueReader, boolean) for the other parameters
+     */
+    protected void validateAttribute(DictionaryValidationResult result, Constrainable definition,
             AttributeValueReader attributeValueReader, boolean checkIfRequired, String validationState,
             StateMapping stateMapping) throws AttributeValidationException {
 
@@ -923,7 +1011,17 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 stateMapping);
     }
 
-    private void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
+    /**
+     * validates an object and its attributes recursively
+     *
+     * @param result - used to store the validation results
+     * @param attributeValueReader - a class that encapsulate access to both dictionary metadata and object field
+     * values
+     * @param doOptionalProcessing - true if the validation should do optional validation, false otherwise
+     * @param processAttributes - if true process all attribute definitions, skip if false
+     * @throws AttributeValidationException
+     */
+    protected void validateObject(DictionaryValidationResult result, AttributeValueReader attributeValueReader,
             boolean doOptionalProcessing, boolean processAttributes, String validationState,
             StateMapping stateMapping) throws AttributeValidationException {
 
@@ -1024,41 +1122,58 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @return Returns the dataDictionaryService.
+     * gets the {@link DataDictionaryService}
+     *
+     * @return Returns the dataDictionaryService
      */
     public DataDictionaryService getDataDictionaryService() {
         return dataDictionaryService;
     }
 
     /**
-     * @param dataDictionaryService The dataDictionaryService to set.
+     * sets the {@link DataDictionaryService}
+     *
+     * @param dataDictionaryService The dataDictionaryService to set
      */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
 
     /**
-     * Sets the businessObjectService attribute value.
+     * Sets the {@link BusinessObjectService} attribute value
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param businessObjectService - the businessObjectService to set
      */
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }
 
     /**
-     * Sets the persistenceService attribute value.
+     * Sets the {@link PersistenceService} attribute value
      *
-     * @param persistenceService The persistenceService to set.
+     * @param persistenceService The persistenceService to set
      */
     public void setPersistenceService(PersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
+    /**
+     * sets the @{PersistenceStructureService}
+     *
+     * @param persistenceStructureService - the {@code PersistenceStructureService} to set
+     */
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
 
+    /**
+     * gets the locally saved instance of @{link WorkflowAttributePropertyResolutionService}
+     *
+     * <p>If the instance in this class has not been initialized, retrieve it using
+     * {@link KRADServiceLocatorInternal#getWorkflowAttributePropertyResolutionService()} and save locally</p>
+     *
+     * @return the locally saved instance of {@code WorkflowAttributePropertyResolutionService}
+     */
     protected WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
         if (workflowAttributePropertyResolutionService == null) {
             workflowAttributePropertyResolutionService =
@@ -1068,6 +1183,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * gets the list of {@link CollectionConstraintProcessor}
+     *
+     * <p>Collection constraint processors are classes that determine if a feature of a collection of objects
+     * satisfies some constraint</p>
+     *
      * @return the collectionConstraintProcessors
      */
     @SuppressWarnings("unchecked")
@@ -1076,6 +1196,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * sets the list of {@link CollectionConstraintProcessor}
+     *
      * @param collectionConstraintProcessors the collectionConstraintProcessors to set
      */
     @SuppressWarnings("unchecked")
@@ -1084,6 +1206,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * gets the list of {@link ConstraintProvider}s
+     *
+     * <p>Constraint providers are classes that map specific constraint types to a constraint resolver,
+     * which takes a constrainable definition</p>
+     *
      * @return the constraintProviders
      */
     @SuppressWarnings("unchecked")
@@ -1092,6 +1219,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * sets a list of {@link ConstraintProvider}
+     *
      * @param constraintProviders the constraintProviders to set
      */
     @SuppressWarnings("unchecked")
@@ -1100,6 +1229,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * gets the list of element {@link ConstraintProcessor}
+     *
+     * <p>Element constraint processors are classes that determine if a passed value is valid
+     * for a specific constraint at the individual object or object attribute level</p>
+     *
      * @return the elementConstraintProcessors
      */
     @SuppressWarnings("unchecked")
@@ -1108,6 +1242,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
+     * sets the list of {@link ConstraintProcessor}
+     *
      * @param elementConstraintProcessors the elementConstraintProcessors to set
      */
     @SuppressWarnings("unchecked")
@@ -1115,6 +1251,14 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         this.elementConstraintProcessors = elementConstraintProcessors;
     }
 
+    /**
+     * gets the locally saved instance of @{link DocumentDictionaryService}
+     *
+     * <p>If the instance in this class has not be set, retrieve it using
+     * {@link KRADServiceLocatorWeb#getDocumentDictionaryService()} and save locally</p>
+     *
+     * @return the locally saved instance of {@code DocumentDictionaryService}
+     */
     public DocumentDictionaryService getDocumentDictionaryService() {
         if (documentDictionaryService == null) {
             this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
@@ -1122,6 +1266,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         return documentDictionaryService;
     }
 
+    /**
+     * sets the {@link DocumentDictionaryService}
+     *
+     * @param documentDictionaryService - the {@code DocumentDictionaryService} to set
+     */
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
     }

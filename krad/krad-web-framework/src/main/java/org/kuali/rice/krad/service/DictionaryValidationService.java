@@ -25,7 +25,6 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.TransactionalDocument;
 
 import java.beans.PropertyDescriptor;
-import java.util.List;
 
 /**
  * Defines the API for the validating against the data dictionary.
@@ -97,7 +96,8 @@ public interface DictionaryValidationService {
             boolean doOptionalProcessing);
 
     /**
-     * Same as {@link DictionaryValidationService#validate(Object, String, String, boolean) except that it provides an explicit
+     * Same as {@link DictionaryValidationService#validate(Object, String, String, boolean) except that it provides an
+     * explicit
      * data dictionary
      * entry to use for the purpose of validation.
      *
@@ -111,6 +111,31 @@ public interface DictionaryValidationService {
      */
     public DictionaryValidationResult validate(Object object, String entryName, DataDictionaryEntry entry,
             boolean doOptionalProcessing);
+
+    /**
+     * Validates the object agains the next state (or current state if there is no next state).  When
+     * no stateMapping exists on the DataDictionaryEntry that applies for this object, validation is considered
+     * stateless and all constraints are processed regardless of their states attribute.
+     *
+     * @param object
+     * @return the dictionary validation result object associated with this validation
+     * @since 2.2
+     */
+    public DictionaryValidationResult validateAgainstNextState(Object object);
+
+    /**
+     * Validates the object against the state specified.
+     *
+     * <p>Important note: Alternatively the state can be changed on the
+     * object itself and another validation method can be used instead of this one (in practice, you'd revert the
+     * state on the object if validation returns errors).</p>
+     *
+     * @param object
+     * @param validationState
+     * @return the dictionary validation result object associated with this validation
+     * @since 2.2
+     */
+    public DictionaryValidationResult validateAgainstState(Object object, String validationState);
 
     /**
      * Same as other validate methods, except allows you to provide the attributeValueReader directly for evaluation
@@ -265,10 +290,13 @@ public interface DictionaryValidationService {
     public boolean validateReferenceIsActive(BusinessObject bo, String referenceName);
 
     /**
-     * validateReferenceExistsAndIsActive intelligently tests the designated reference on the bo for both existence and active status, where
+     * validateReferenceExistsAndIsActive intelligently tests the designated reference on the bo for both existence and
+     * active status, where
      * appropriate
      *
-     * <p>It will not test anything if the foreign-key fields for the given reference aren't filled out with values, and it
+     * <p>It will not test anything if the foreign-key fields for the given reference aren't filled out with values,
+     * and
+     * it
      * will not test active status if the reference doesn't exist.</p>
      *
      * <p>Further, it will only test active status where the correct flag is set.</p>

@@ -61,11 +61,6 @@
 	</bean>   	
 
 	<bean id="dictionaryValidationService" class="org.kuali.rice.krad.service.impl.DictionaryValidationServiceImpl">
-		<property name="stateMappings">
-      <list>
-        <bean class="edu.sampleu.state.SampleStateMapping"/>
-      </list>
-		</property>
     <!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint -->
 		<property name="collectionConstraintProcessors">
 			<list>

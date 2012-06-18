@@ -1144,11 +1144,22 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         return service != null && service.isDerivedRoleType();
     }
 
+    private boolean dynamicRoleMembership(RoleTypeService service, Role role) {
+        return service != null && service.dynamicRoleMembership(role.getNamespaceCode(), role.getName());
+    }
+
     @Override
     public boolean isDerivedRole(String roleId) {
         incomingParamCheck(roleId, "roleId");
         RoleTypeService service = getRoleTypeService(roleId);
         return isDerivedRoleType(service);
+    }
+
+    @Override
+    public boolean isDynamicRoleMembership(String roleId) {
+        incomingParamCheck(roleId, "roleId");
+        RoleTypeService service = getRoleTypeService(roleId);
+        return dynamicRoleMembership(service, getRole(roleId));
     }
 
     /**

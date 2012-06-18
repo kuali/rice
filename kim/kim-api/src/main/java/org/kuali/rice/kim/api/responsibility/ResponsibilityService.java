@@ -163,7 +163,7 @@ public interface ResponsibilityService {
     @WebResult(name = "result")
     @Cacheable(value= Responsibility.Cache.NAME,
             key="'{hasResponsibility}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'respName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
-            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isResponsibilityAssignedToDerivedRole(#p1, #p2)")
+            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isResponsibilityAssignedToDynamicRole(#p1, #p2)")
     boolean hasResponsibility(@WebParam(name = "principalId") String principalId,
                               @WebParam(name = "namespaceCode") String namespaceCode,
                               @WebParam(name = "respName") String respName,
@@ -186,7 +186,7 @@ public interface ResponsibilityService {
     @WebResult(name = "result")
     @Cacheable(value= Responsibility.Cache.NAME,
             key="'{hasResponsibilityByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'respTemplateName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'respDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)",
-            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isResponsibilityTemplateAssignedToDerivedRole(#p1, #p2)")
+            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isResponsibilityTemplateAssignedToDynamicRole(#p1, #p2)")
     boolean hasResponsibilityByTemplate(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "respTemplateName") String respTemplateName,

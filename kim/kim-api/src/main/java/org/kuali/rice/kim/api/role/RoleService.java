@@ -271,7 +271,7 @@ public interface RoleService {
     @WebResult(name = "roleMemberships")
     @Cacheable(value= RoleMember.Cache.NAME,
                key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p1)",
-               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).containsDerivedRole(#p0)" )
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDynamicRoleMembership(#p0)" )
     List<RoleMembership> getRoleMembers(
                 @WebParam(name="roleIds")
                 List<String> roleIds,
@@ -295,7 +295,7 @@ public interface RoleService {
     @WebResult(name = "principalIds")
     @Cacheable(value= RoleMember.Cache.NAME,
                key="'namespaceCode=' + #p0 + '|' + 'roleName=' + #p1 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)",
-               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDerivedRoleByNamespaceAndName(#p0, #p1)" )
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDynamicMembshipRoleByNamespaceAndName(#p0, #p1)" )
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
                 @WebParam(name="roleName") String roleName,
                 @WebParam(name="qualification")
@@ -316,7 +316,7 @@ public interface RoleService {
     @WebResult(name = "principalHasRole")
     @Cacheable(value= RoleMember.Cache.NAME,
                key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)",
-               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).containsDerivedRole(#p1)" )
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDynamicRoleMembership(#p1)" )
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
             @WebParam(name="roleIds") List<String> roleIds,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
@@ -339,7 +339,7 @@ public interface RoleService {
     @WebResult(name = "principalIds")
     @Cacheable(value= RoleMember.Cache.NAME,
                key="'getPrincipalIdSubListWithRole' + 'principalIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0) + '|' + 'roleNamespaceCode=' + #p1 + '|' + 'roleName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
-            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDerivedRoleByNamespaceAndName(#p1, #p2)" )
+            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDynamicMembshipRoleByNamespaceAndName(#p1, #p2)" )
             List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
             @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
             @WebParam(name="roleName") String roleName,
@@ -815,4 +815,17 @@ public interface RoleService {
     @WebResult(name = "isDerivedRole")
     @Cacheable(value= Role.Cache.NAME, key="'{isDerivedRole}' + 'roleId=' + #p0")
     boolean isDerivedRole(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
+
+    /**
+     * Determines if a role with a provided id is a uses dynamic role memberships
+     *
+     * @since 2.1.1
+     * @param roleId the roleId
+     * @return true if role uses dynamic memberships
+     * @throws RiceIllegalArgumentException if roleId is null or blank.
+     */
+    @WebMethod(operationName = "isDynamicRoleMembership")
+    @WebResult(name = "isDynamicRoleMembership")
+    @Cacheable(value= Role.Cache.NAME, key="'{isDynamicRoleMembership}' + 'roleId=' + #p0")
+    boolean isDynamicRoleMembership(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 }

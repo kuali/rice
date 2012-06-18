@@ -42,13 +42,13 @@ public final class KimCacheUtils {
      *
      * @return true if list contains a derived role.
      */
-    public static boolean containsDerivedRole(List<String> roleIds) {
+    public static boolean isDynamicRoleMembership(List<String> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return false;
         }
         RoleService roleService = KimApiServiceLocator.getRoleService();
         for (String roleId : roleIds) {
-             if (roleService.isDerivedRole(roleId)) {
+             if (roleService.isDynamicRoleMembership(roleId)) {
                  return true;
              }
         }
@@ -63,10 +63,10 @@ public final class KimCacheUtils {
      *
      * @return true if list contains role.
      */
-    public static boolean isDerivedRoleByNamespaceAndName(String namespaceCode, String roleName) {
+    public static boolean isDynamicMembshipRoleByNamespaceAndName(String namespaceCode, String roleName) {
         List<String> roleIds = Collections.singletonList(
                 KimApiServiceLocator.getRoleService().getRoleIdByNamespaceCodeAndName(namespaceCode, roleName));
-        return containsDerivedRole(roleIds);
+        return isDynamicRoleMembership(roleIds);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class KimCacheUtils {
 
         List<String> roleIds = KimApiServiceLocator.getPermissionService().getRoleIdsForPermission(namespaceCode,
                 permissionName);
-        return containsDerivedRole(roleIds);
+        return isDynamicRoleMembership(roleIds);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class KimCacheUtils {
      *
      * @return true if assigned to a derived role.
      */
-    public static boolean isPermissionTemplateAssignedToDerivedRole(String namespaceCode, String permissionTemplateName ) {
+    public static boolean isPermissionTemplateAssignedToDynamicRole(String namespaceCode, String permissionTemplateName) {
         if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(permissionTemplateName)) {
             return false;
         }
@@ -106,7 +106,7 @@ public final class KimCacheUtils {
         for (Permission permission : permissions) {
             roleIds.addAll(permissionService.getRoleIdsForPermission(permission.getNamespaceCode(), permission.getName()));
         }
-        return containsDerivedRole(roleIds);
+        return isDynamicRoleMembership(roleIds);
     }
 
     /**
@@ -116,13 +116,13 @@ public final class KimCacheUtils {
      *
      * @return true if assigned to a derived role.
      */
-    public static boolean isResponsibilityIdAssignedToDerivedRole(String responsibilityId ) {
+    public static boolean isResponsibilityIdAssignedToDynamicRole(String responsibilityId) {
         if ( StringUtils.isBlank(responsibilityId)) {
             return false;
         }
 
         List<String> roleIds = KimApiServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(responsibilityId);
-        return containsDerivedRole(roleIds);
+        return isDynamicRoleMembership(roleIds);
     }
 
     /**
@@ -133,14 +133,14 @@ public final class KimCacheUtils {
      *
      * @return true if assigned to a derived role.
      */
-    public static boolean isResponsibilityAssignedToDerivedRole(String namespaceCode, String responsibilityName ) {
+    public static boolean isResponsibilityAssignedToDynamicRole(String namespaceCode, String responsibilityName) {
         if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(responsibilityName)) {
             return false;
         }
         Responsibility responsibility = KimApiServiceLocator.getResponsibilityService().findRespByNamespaceCodeAndName(namespaceCode, responsibilityName);
 
         if (responsibility != null) {
-            return isResponsibilityIdAssignedToDerivedRole(responsibility.getId());
+            return isResponsibilityIdAssignedToDynamicRole(responsibility.getId());
         }
         return false;
     }
@@ -153,7 +153,8 @@ public final class KimCacheUtils {
      *
      * @return true if assigned to a derived role.
      */
-    public static boolean isResponsibilityTemplateAssignedToDerivedRole(String namespaceCode, String responsibilityTemplateName ) {
+    public static boolean isResponsibilityTemplateAssignedToDynamicRole(String namespaceCode,
+            String responsibilityTemplateName) {
         if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(responsibilityTemplateName)) {
             return false;
         }
@@ -164,7 +165,7 @@ public final class KimCacheUtils {
             roleIds.addAll(respService.getRoleIdsForResponsibility(resp.getId()));
         }
 
-        return containsDerivedRole(roleIds);
+        return isDynamicRoleMembership(roleIds);
     }
 
 }

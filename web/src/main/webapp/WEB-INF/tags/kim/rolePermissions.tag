@@ -78,7 +78,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	              	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.detailObjectsValues}" readOnly="true"  />
+	              	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permissionDetailValues"  attributeEntry="${permissionAttributes.detailObjectsValues}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

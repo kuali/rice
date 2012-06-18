@@ -41,6 +41,8 @@ import org.kuali.rice.krad.service.DataDictionaryService
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 import org.springframework.util.AutoPopulatingList
 import org.kuali.rice.kim.api.common.template.TemplateContract
+import org.kuali.rice.kim.api.KimConstants
+import javax.persistence.Transient
 
 @Entity
 @Table(name = "KRIM_RSP_T")
@@ -130,7 +132,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     //FIXME: temporary methods
     String getDetailObjectsValues(){
-		return attributeDetails.collect {it.attributeValue}.join(",")
+		return attributeDetails.collect {it.attributeValue}.join(KimConstants.KimUIConstants.COMMA_SEPARATOR)
 	}
 
     String getDetailObjectsToDisplay() {
@@ -138,26 +140,18 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
         return attributeDetails.collect {
             getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(it.kimAttributeId)) + ":" + it.attributeValue
-        }.join(",")
+        }.join(KimConstants.KimUIConstants.COMMA_SEPARATOR)
 	}
 
     private String getKimAttributeLabelFromDD( KimTypeAttribute attribute ){
     	return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName() );
     }
 
-	private DataDictionaryService dataDictionaryService;
 	private DataDictionaryService getDataDictionaryService() {
-		if(dataDictionaryService == null){
-			dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-		}
-		return dataDictionaryService;
+		return KRADServiceLocatorWeb.getDataDictionaryService();
 	}
 
-	private KimTypeInfoService kimTypeInfoService;
 	private KimTypeInfoService getTypeInfoService() {
-		if(kimTypeInfoService == null){
-			kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
-		}
-		return kimTypeInfoService;
+	    return KimApiServiceLocator.getKimTypeInfoService();
 	}
   }

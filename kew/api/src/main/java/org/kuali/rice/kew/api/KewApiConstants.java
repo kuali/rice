@@ -801,6 +801,7 @@ public final class KewApiConstants {
     public static final String WEEKLY_EMAIL_ACTIVE = "weeklyEmail.active";
 
     public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
+    public static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";
 
 
     // receive future action request contants

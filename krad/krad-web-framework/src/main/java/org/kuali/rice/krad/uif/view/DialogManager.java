@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.springframework.util.StringUtils;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,15 +47,20 @@ public class DialogManager implements Serializable {
         private boolean asked;
         private boolean answered;
         private String answer;
+        private String explanation;
+        private String returnMethod;
 
-        public DialogInfo(String dialogName){
+        public DialogInfo(String dialogName, String returnMethod){
             this.dialogName = dialogName;
             this.asked = false;
             this.asked = answered;
             this.answer = null;
+            this.explanation = null;
+            this.returnMethod = returnMethod;
         }
     }
 
+    private String currentDialogName;
     private Map<String, DialogInfo> dialogs;
 
     /**
@@ -110,6 +117,19 @@ public class DialogManager implements Serializable {
     }
 
     /**
+     * Sets the answer chosen by the user when responding to the dialog
+     *
+     * @param dialogName - id of the dialog
+     * @param answer - value chosen by the user
+     */
+    public void setDialogAnswer(String dialogName, String answer){
+        DialogInfo dialogInfo = dialogs.get(dialogName);
+        dialogInfo.answer = answer;
+        dialogInfo.answered = true;
+        dialogs.put(dialogName,dialogInfo);
+    }
+
+    /**
      * Indicates whethe the user answered affirmatively to the question
      *
      * <p>
@@ -141,6 +161,30 @@ public class DialogManager implements Serializable {
     }
 
     /**
+     * Retrieves the target method to redirect to when returning from a lightbox
+     *
+     * @param dialogName - identifies the dialog currently being handled
+     * @return String - controller method to call
+     */
+    public String getDialogReturnMethod(String dialogName){
+        if (hasDialogBeenAnswered(dialogName)){
+            return dialogs.get(dialogName).returnMethod;
+        }
+        return null;
+    }
+
+    /**
+     * sets the return method to call after returning from dialog
+     * @param dialogName
+     * @param returnMethod
+     */
+    public void setDialogReturnMethod(String dialogName, String returnMethod){
+        DialogInfo dialogInfo = dialogs.get(dialogName);
+        dialogInfo.returnMethod = returnMethod;
+        dialogs.put(dialogName, dialogInfo);
+    }
+
+    /**
      * Creates a new DialogInfo record and adds it to the list of dialogs
      * used in the view
      *
@@ -151,15 +195,14 @@ public class DialogManager implements Serializable {
      *
      * @param dialogName - String name identifying the dialog
      */
-    public void addDialog(String dialogName){
-        if (!dialogs.containsKey(dialogName)){
-            DialogInfo dialogInfo = new DialogInfo(dialogName);
-            dialogs.put(dialogName, dialogInfo);
-        }
+    public void addDialog(String dialogName, String returnMethod){
+        DialogInfo dialogInfo = new DialogInfo(dialogName, returnMethod);
+        dialogs.put(dialogName, dialogInfo);
+        setCurrentDialogName(dialogName);
     }
 
     /**
-     * Removes a dialog from the list of dialogs used in this view.
+     * Removes a dialog from the list of dialogs used in this vew.
      *
      * <p>
      * If the dialog is in the list, it is removed.
@@ -181,7 +224,8 @@ public class DialogManager implements Serializable {
      * @param dialogName - String identifier for the dialog
      */
     public void resetDialogStatus(String dialogName){
-        dialogs.put(dialogName, new DialogInfo(dialogName));
+        String returnMethod = getDialogReturnMethod(dialogName);
+        dialogs.put(dialogName, new DialogInfo(dialogName, returnMethod));
     }
 
     /**
@@ -201,6 +245,24 @@ public class DialogManager implements Serializable {
      */
     public void setDialogs(Map<String, DialogInfo> dialogs) {
         this.dialogs = dialogs;
+    }
+
+    /**
+     * Gets the name of the currently active dialog
+     *
+     * @return - the name of the current dialog
+     */
+    public String getCurrentDialogName() {
+        return currentDialogName;
+    }
+
+    /**
+     * Sets the name of the currently active dialog
+     *
+     * @param currentDialogName - the name of the dialog
+     */
+    public void setCurrentDialogName(String currentDialogName) {
+        this.currentDialogName = currentDialogName;
     }
 
 }

@@ -74,16 +74,24 @@
           </property>
         </bean>
 
+        <bean id='statusMsg' parent="Uif-InputField" p:propertyName="field1" p:defaultValue="This is a test" p:style="border:1px; background-color:yellow"/>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:clientSideJs="showLightboxComponent('mySensitiveDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:clientSideJs="showLightboxComponent('myImage');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:clientSideJs="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined Yes/No" p:clientSideJs="showLightboxComponent('preDefinedDialogYesNo');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined OK/Cancel" p:clientSideJs="showLightboxComponent('preDefinedDialogOkCancel');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined True/False" p:clientSideJs="showLightboxComponent('preDefinedDialogTrueFalse');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:clientSideJs="showLightboxComponent('checkboxDialog');"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:clientSideJs="showLightboxComponent('radioButtonDialog');"/>
+        <bean id="UifDialogView-ExampleDialogs" parent="Uif-HorizontalBoxSection" p:title="Dialog Examples">
+          <property name="items">
+            <list>
+
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:clientSideJs="showLightboxComponent('mySensitiveDialog');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:clientSideJs="showLightboxComponent('myImage');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:clientSideJs="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined Yes/No" p:clientSideJs="showLightboxComponent('preDefinedDialogYesNo');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined OK/Cancel" p:clientSideJs="showLightboxComponent('preDefinedDialogOkCancel');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined True/False" p:clientSideJs="showLightboxComponent('preDefinedDialogTrueFalse');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:clientSideJs="showLightboxComponent('checkboxDialog');"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:clientSideJs="showLightboxComponent('radioButtonDialog');"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -92,11 +100,12 @@
     <property name="promptText" value="You are about to erase your hard drive. Continue??"/>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Cancel"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Sure, Go Ahead"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Nooooo!"/>
       </list>
     </property>
   </bean>
+
   <bean id="ImageDialog" parent="Uif-ImageField" p:hidden="true" p:fieldLabel.render="false"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
   <bean id="CheckboxDialog" parent="Checkbox-DialogGroup" >

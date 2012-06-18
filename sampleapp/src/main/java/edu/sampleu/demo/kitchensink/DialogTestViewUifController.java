@@ -53,34 +53,61 @@ public class DialogTestViewUifController extends UifControllerBase {
         return super.start(form, result, request, response);
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
+    /**
+     * Exercises the Dialog framework.
+     *
+     * <p>
+     * Asks a question of the user while processing a client request. Demonstrates the ability to go back
+     * to the client bring up a Lightbox modal dialog.
+     * </p>
+     *
+     * @param uiTestForm - test form
+     * @param result - Spring form binding result
+     * @param request - http request
+     * @param response - http response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=save")
     public ModelAndView save(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mv;
-        //exercise asking a question here
-
-//        boolean answer = askYesOrNoQuestion("EraseHardDrive-DialogGroup", uiTestForm,  request, response);
         boolean answer = false;
         String dialogName = "myDialog";
+
+        //exercise asking a question here
+//        boolean answer = askYesOrNoQuestion("myDialog", uiTestForm,  request, response);
+
+        //TODO: Hack by Dan
         DialogManager dm = uiTestForm.getDialogManager();
         if (dm.hasDialogBeenAnswered(dialogName)){
             answer = dm.wasDialogAnswerAffirmative(dialogName);
         } else {
             // redirect back to client to display lightbox
-            dm.addDialog(dialogName);
+            dm.addDialog(dialogName, uiTestForm.getMethodToCall());
             mv = showDialog(dialogName, uiTestForm, request, response);
             return mv;
         }
 
-
+        // continue on here if they answered the question
         if (answer){
+            uiTestForm.setField1("The answer was Yes.");
             return getUIFModelAndView(uiTestForm);
         }
+        uiTestForm.setField1("Whew, that was close");
         return getUIFModelAndView(uiTestForm, "DialogView-Page1");
     }
 
-
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
+    /**
+     * not used at this time
+     *
+     * @param uiTestForm
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(params = "methodToCall=close")
     public ModelAndView close(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 

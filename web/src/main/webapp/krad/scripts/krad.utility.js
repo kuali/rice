@@ -871,7 +871,12 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         closeEffect : 'fade',
         openSpeed : 200,
         closeSpeed : 200,
-        helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}}
+        helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}},
+        afterShow : function(){
+            jQuery("input[script='first_run']").each(function(){
+            eval(jQuery(this).val());
+            jQuery(this).removeAttr("script");});
+        }
     };
 
     // override fancybox content options
@@ -895,6 +900,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
 
         parent.jQuery.fancybox(options);
     }
+
 }
 
 /**

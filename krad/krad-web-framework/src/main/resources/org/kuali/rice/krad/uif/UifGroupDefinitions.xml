@@ -998,6 +998,12 @@
         <property name="control">
           <bean parent="Uif-HorizontalCheckboxesControl"/>
         </property>
+        <property name="onChangeScript" value="
+          writeHiddenToForm('methodToCall','returnFromLightbox');
+          writeHiddenToForm('dialogResponse',jQuery('.uif-dialogButtons').find(':checked').val());
+          writeHiddenToForm('dialogExplanation','myDialog');
+          jQuery.fancybox.close();
+          jQuery('#kualiForm').submit();"/>
         <property name="cssClasses">
           <list merge="true">
             <value>uif-dialogButtons</value>

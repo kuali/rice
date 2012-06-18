@@ -711,7 +711,7 @@ public abstract class UifControllerBase {
             return dm.wasDialogAnswerAffirmative(dialogName);
         } else {
             // redirect back to client to display lightbox
-            dm.addDialog(dialogName);
+            dm.addDialog(dialogName, form.getMethodToCall());
             showDialog(dialogName, form, request, response);
         }
         // should never get here. TODO: throw exception?
@@ -720,9 +720,22 @@ public abstract class UifControllerBase {
         return false;
     }
 
+    /**
+     * Handles a modal dialog interaction with the client user when the response back is a string.
+     *
+     * <p>
+     * Similar to askYesOrNoQuestion() but returns a string instead of a boolean
+     * </p>
+     * @param dialogName
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     protected String askTextResponseQuestion(String dialogName, UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // TODO: implement me
+        // TODO: implement me     - same as above give the answer back as a string instead of a boolean
         return null;
     }
 
@@ -762,6 +775,15 @@ public abstract class UifControllerBase {
         return mv;
     }
 
+    /**
+     * Renders the view manually from the controller level instead of returning back to the Spring Dispatcher servlet
+     *
+     * @param mv
+     * @param request
+     * @param response
+     * @param viewName
+     * @throws Exception
+     */
     public void renderView(ModelAndView mv,
 			    HttpServletRequest request,
 			    HttpServletResponse response,
@@ -785,6 +807,47 @@ public abstract class UifControllerBase {
 		}
         view.render(mv.getModel(), request, response);
     }
+
+    /**
+     * Common return point for dialogs.
+     *
+     * <p>
+     *     Determines the user responses to the dialog. Performs dialog management and then redirects to the
+     *     original contoller method.
+     * </p>
+     *
+     * @param form - current form
+     * @param result - binding result
+     * @param request - http request
+     * @param response - http response
+     * @return ModelAndView setup for redirect to original controller methodToCall
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=returnFromLightbox")
+    public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String responseValue = form.getDialogResponse();
+        String explanationValue = form.getDialogExplanation();
+        DialogManager dm = form.getDialogManager();
+        String dialogName = dm.getCurrentDialogName();
+
+        // TODO: what if dialog is not found in dm??
+        dm.setDialogAnswer(dialogName, responseValue);
+        // TODO: also set explanation value
+
+        form.setLightboxScript("");
+
+        // call intended controller method
+        String actualMethodToCall = dm.getDialogReturnMethod(dialogName);
+        String redirectUrl = form.getFormPostUrl();
+        Properties props = new Properties();
+        props.put(UifParameters.METHOD_TO_CALL, actualMethodToCall);
+        props.put(UifParameters.VIEW_ID, form.getViewId());
+        props.put(UifParameters.FORM_KEY, form.getFormKey());
+        return performRedirect(form, redirectUrl, props);
+    }
+
 
     /**
      * Builds a <code>ModelAndView</code> instance configured to redirect to the

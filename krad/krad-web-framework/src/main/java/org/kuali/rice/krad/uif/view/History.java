@@ -221,6 +221,7 @@ public class History implements Serializable {
                 }
 
                 String url = "";
+                if (StringUtils.isEmpty(breadcrumb.getUrl()))continue;
                 if (breadcrumb.getUrl().contains("?")) {
                     url = breadcrumb.getUrl() + "&" + UifConstants.UrlParams.HISTORY + "=" + historyParam
                             + "&" + UifConstants.UrlParams.LAST_FORM_KEY + "=" + current.getFormKey();

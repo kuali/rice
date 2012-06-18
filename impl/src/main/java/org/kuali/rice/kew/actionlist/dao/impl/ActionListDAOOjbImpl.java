@@ -39,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -56,27 +57,15 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListDAOOjbImpl.class);
 
-    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter) {
+    public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter) {
         return getActionItemsInActionList(ActionItemActionListExtension.class, principalId, filter);
-//        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        Criteria crit = null;
-//        if (filter == null) {
-//            crit = new Criteria();
-//            crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
-//        } else {
-//            crit = setUpActionListCriteria(workflowUser, filter);
-//        }
-//        LOG.debug("running query to get action list for criteria " + crit);
-//        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
-//        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        return createActionListForUser(collection);
     }
 
-    public Collection<ActionItem> getActionListForSingleDocument(String documentId) {
+    public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId) {
         LOG.debug("getting action list for document id " + documentId);
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
-        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
+        Collection<ActionItemActionListExtension> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionItemActionListExtension.class, crit));
         LOG.debug("found " + collection.size() + " action items for document id " + documentId);
         return createActionListForRouteHeader(collection);
     }
@@ -148,16 +137,16 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             if (filter.isExcludeDocumentType()) {
                 crit.addNotLike("docName", "%" + filter.getDocumentType() + "%");
             } else {
-            	String documentTypeName = filter.getDocumentType();
-            	DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-            	if (documentType == null) {
-            	    crit.addLike("docName", "%" + filter.getDocumentType() + "%");
-            	} else {
-            	    // search this document type plus it's children
-            	    Criteria docTypeCrit = new Criteria();
-            	    constructDocumentTypeCriteria(docTypeCrit, documentType);
-            	    crit.addAndCriteria(docTypeCrit);
-            	}
+                String documentTypeName = filter.getDocumentType();
+                DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+                if (documentType == null) {
+                    crit.addLike("docName", "%" + filter.getDocumentType() + "%");
+                } else {
+                    // search this document type plus it's children
+                    Criteria docTypeCrit = new Criteria();
+                    constructDocumentTypeCriteria(docTypeCrit, documentType);
+                    crit.addAndCriteria(docTypeCrit);
+                }
             }
             filteredByItems += filteredByItems.length() > 0 ? ", " : "";
             filteredByItems += "Document Type";
@@ -189,7 +178,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         if (filter.getGroupIdString() != null && !"".equals(filter.getGroupIdString().trim()) && !filter.getGroupIdString().trim().equals(KewApiConstants.NO_FILTERING)) {
 
             filter.setGroupId(filter.getGroupIdString().trim());
-          
+
             if (filter.isExcludeGroupId()) {
                 Criteria critNotEqual = new Criteria();
                 critNotEqual.addNotEqualTo("groupId", filter.getGroupId());
@@ -224,7 +213,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(
                         principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
-                	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
+                    groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
@@ -245,7 +234,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 List<String> delegatorGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(
                         principalId);
                 if (delegatorGroupIds != null && !delegatorGroupIds.isEmpty()) {
-                	groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
+                    groupCrit.addIn("delegatorGroupId", delegatorGroupIds);
                 }
                 orCrit.addOrCriteria(userCrit);
                 orCrit.addOrCriteria(groupCrit);
@@ -309,43 +298,6 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 addedDelegationCriteria = true;
                 filterOn = true;
             }
-//            } else if ( (StringUtils.isNotBlank(filter.getDelegationType()) && KewApiConstants.DELEGATION_DEFAULT.equals(filter.getDelegationType())) ||
-//                    StringUtils.isNotBlank(filter.getDelegatorId()) ) {
-//            // not using a primary delegation so we can assume the action item will be assigned to the given user
-//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KewApiConstants.DELEGATION_DEFAULT)
-//                    && !filter.getDelegatorId().trim().equals(KewApiConstants.ALL_CODE)) {
-//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//                filter.setExcludeDelegationType(false);
-//                Criteria userCrit = new Criteria();
-//                Criteria groupCrit = new Criteria();
-//                if (filter.isExcludeDelegatorId()) {
-//                    Criteria userNull = new Criteria();
-//                    userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
-//                    userNull.addIsNull("delegatorPrincipalId");
-//                    userCrit.addOrCriteria(userNull);
-//                    Criteria groupNull = new Criteria();
-//                    groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
-//                    groupNull.addIsNull("delegatorGroupId");
-//                    groupCrit.addOrCriteria(groupNull);
-//                    crit.addAndCriteria(userCrit);
-//                    crit.addAndCriteria(groupCrit);
-//                } else {
-//                    Criteria orCrit = new Criteria();
-//                    userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
-//                    groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
-//                    orCrit.addOrCriteria(userCrit);
-//                    orCrit.addOrCriteria(groupCrit);
-//                    crit.addAndCriteria(orCrit);
-//                }
-//                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
-//                addedDelegationCriteria = true;
-//            } else if (filter.getDelegatorId().trim().equals(KewApiConstants.ALL_CODE)) {
-//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//                filter.setExcludeDelegationType(false);
-//                addToFilterDescription(filteredByItems, "Secondary Delegator Id");
-//                addedDelegationCriteria = true;
-//            }
         }
 
         // if we haven't added delegation criteria then use the default criteria below
@@ -361,168 +313,6 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             crit.addAndCriteria(critNotEqual);
         }
 
-
-//        if (filter.getPrimaryDelegateId().equals(KewApiConstants.PRIMARY_DELEGATION_DEFAULT) && filter.getDelegatorId().equals(KewApiConstants.DELEGATION_DEFAULT)) {
-//            // no secondary or primary delegation displayed
-//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//            Criteria critNotEqual = new Criteria();
-//            Criteria critNull = new Criteria();
-//            critNotEqual.addNotEqualTo("delegationType", DelegationType.SECONDARY.getCode());
-//            critNull.addIsNull("delegationType");
-//            critNotEqual.addOrCriteria(critNull);
-//            crit.addAndCriteria(critNotEqual);
-//            filter.setExcludeDelegationType(true);
-//        } else if (filter.getPrimaryDelegateId().trim().equals(KewApiConstants.ALL_CODE)) {
-//            // user wishes to see all primary delegations
-//            Criteria userCrit = new Criteria();
-//            Criteria groupCrit = new Criteria();
-//            Criteria orCrit = new Criteria();
-//            userCrit.addEqualTo("delegatorPrincipalId", user.getWorkflowUserId().getWorkflowId());
-//            groupCrit.addEqualTo("delegatorGroupId", filter.getPrimaryDelegateId()); // TODO delyea: add all workgroups here?
-//            orCrit.addOrCriteria(userCrit);
-//            orCrit.addOrCriteria(groupCrit);
-//            crit.addAndCriteria(orCrit);
-//            crit.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
-//            filter.setDelegationType(DelegationType.PRIMARY.getCode());
-//            filter.setExcludeDelegationType(false);
-//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-//            filteredByItems += "Primary Delegator Id";
-//            filterOn = true;
-//        } else if (filter.getDelegatorId().trim().equals(KewApiConstants.ALL_CODE)) {
-//            // user wishes to see all secondary delegations
-//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            crit.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
-//            filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//            filter.setExcludeDelegationType(false);
-//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-//            filteredByItems += "Secondary Delegator Id";
-//            filterOn = true;
-//        } else if (filter.getPrimaryDelegateId() != null && !"".equals(filter.getPrimaryDelegateId().trim())) {
-//            // user wishes to see primary delegation for a single user
-//            Criteria userCrit = new Criteria();
-//            Criteria groupCrit = new Criteria();
-//            Criteria orCrit = new Criteria();
-//            userCrit.addEqualTo("delegatorPrincipalId", user.getWorkflowUserId().getWorkflowId());
-//            groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId()); // TODO delyea: add all workgroups here?
-//            orCrit.addOrCriteria(userCrit);
-//            orCrit.addOrCriteria(groupCrit);
-//            crit.addAndCriteria(orCrit);
-//            crit.addEqualTo("delegationType", DelegationType.PRIMARY.getCode());
-//            filter.setDelegationType(DelegationType.PRIMARY.getCode());
-//            filter.setExcludeDelegationType(false);
-//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-//            filteredByItems += "Primary Delegator Id";
-//            filterOn = true;
-//        } else if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim())) {
-//            // user wishes to see secondary delegation for a single user
-//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            crit.addEqualTo("delegationType", DelegationType.SECONDARY.getCode());
-//            filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//            filter.setExcludeDelegationType(false);
-//            Criteria userCrit = new Criteria();
-//            Criteria groupCrit = new Criteria();
-//            if (filter.isExcludeDelegatorId()) {
-//                Criteria userNull = new Criteria();
-//                userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
-//                userNull.addIsNull("delegatorPrincipalId");
-//                userCrit.addOrCriteria(userNull);
-//                Criteria groupNull = new Criteria();
-//                groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
-//                groupNull.addIsNull("delegatorGroupId");
-//                groupCrit.addOrCriteria(groupNull);
-//                crit.addAndCriteria(userCrit);
-//                crit.addAndCriteria(groupCrit);
-//            } else {
-//                Criteria orCrit = new Criteria();
-//                userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
-//                groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
-//                orCrit.addOrCriteria(userCrit);
-//                orCrit.addOrCriteria(groupCrit);
-//                crit.addAndCriteria(orCrit);
-//            }
-//            filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-//            filteredByItems += "SeDelegator Id";
-//            filterOn = true;
-//        } else if (StringUtils.isBlank(filter.getPrimaryDelegateId()) && StringUtils.isBlank(filter.getDelegatorId())) {
-//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            if (filter.getDelegationType() != null && !"".equals(filter.getDelegationType().trim())) {
-//                if (filter.isExcludeDelegationType()) {
-//                    Criteria critNotEqual = new Criteria();
-//                    Criteria critNull = new Criteria();
-//                    critNotEqual.addNotEqualTo("delegationType", filter.getDelegationType());
-//                    critNull.addIsNull("delegationType");
-//                    critNotEqual.addOrCriteria(critNull);
-//                    crit.addAndCriteria(critNotEqual);
-//                } else {
-//                    crit.addEqualTo("delegationType", filter.getDelegationType());
-//                }
-//            }
-//        }
-
-
-//        if (primary delegation) {
-//            filter.setDelegationType(DelegationType.PRIMARY.getCode());
-//            crit.addEqualTo("delegatorPrincipalId", user.getWorkflowUserId().getWorkflowId());
-//
-//        } else {
-//            crit.addEqualTo("workflowId", user.getWorkflowUserId().getWorkflowId());
-//            if (filter.getDelegatorId() != null && !"".equals(filter.getDelegatorId().trim()) && !filter.getDelegatorId().trim().equals(KewApiConstants.DELEGATION_DEFAULT)
-//                    && !filter.getDelegatorId().trim().equals(KewApiConstants.ALL_CODE)) {
-//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//                filter.setExcludeDelegationType(false);
-//                Criteria userCrit = new Criteria();
-//                Criteria groupCrit = new Criteria();
-//                if (filter.isExcludeDelegatorId()) {
-//                    Criteria userNull = new Criteria();
-//                    userCrit.addNotEqualTo("delegatorPrincipalId", filter.getDelegatorId());
-//                    userNull.addIsNull("delegatorPrincipalId");
-//                    userCrit.addOrCriteria(userNull);
-//                    Criteria groupNull = new Criteria();
-//                    groupCrit.addNotEqualTo("delegatorGroupId", filter.getDelegatorId());
-//                    groupNull.addIsNull("delegatorGroupId");
-//                    groupCrit.addOrCriteria(groupNull);
-//                    crit.addAndCriteria(userCrit);
-//                    crit.addAndCriteria(groupCrit);
-//                } else {
-//                    Criteria orCrit = new Criteria();
-//                    userCrit.addEqualTo("delegatorPrincipalId", filter.getDelegatorId());
-//                    groupCrit.addEqualTo("delegatorGroupId", filter.getDelegatorId());
-//                    orCrit.addOrCriteria(userCrit);
-//                    orCrit.addOrCriteria(groupCrit);
-//                    crit.addAndCriteria(orCrit);
-//                }
-//                filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-//                filteredByItems += "Delegator Id";
-//                filterOn = true;
-//            } else if (filter.getDelegatorId().trim().equals(KewApiConstants.DELEGATION_DEFAULT)) {
-//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//                filter.setExcludeDelegationType(true);
-//            } else if (filter.getDelegatorId().trim().equals(KewApiConstants.ALL_CODE)) {
-//                filter.setDelegationType(DelegationType.SECONDARY.getCode());
-//                filter.setExcludeDelegationType(false);
-//                filteredByItems += filteredByItems.length() > 0 ? ", " : "";
-//                filteredByItems += "Delegator Id";
-//                filterOn = true;
-//            }
-//
-//        }
-//
-//
-//        //must come after delegation id since the delegation choices are all secondary delegations
-//        if (filter.getDelegationType() != null && !"".equals(filter.getDelegationType().trim())) {
-//            if (filter.isExcludeDelegationType()) {
-//                Criteria critNotEqual = new Criteria();
-//                Criteria critNull = new Criteria();
-//                critNotEqual.addNotEqualTo("delegationType", filter.getDelegationType());
-//                critNull.addIsNull("delegationType");
-//                critNotEqual.addOrCriteria(critNull);
-//                crit.addAndCriteria(critNotEqual);
-//            } else {
-//                crit.addEqualTo("delegationType", filter.getDelegationType());
-//            }
-//        }
-
         if (! "".equals(filteredByItems)) {
             filteredByItems = "Filtered by " + filteredByItems;
         }
@@ -534,19 +324,19 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     private void constructDocumentTypeCriteria(Criteria criteria, DocumentType documentType) {
-    	// search this document type plus it's children
-    	Criteria docTypeBaseCrit = new Criteria();
-    	docTypeBaseCrit.addEqualTo("docName", documentType.getName());
-    	criteria.addOrCriteria(docTypeBaseCrit);
-    	Collection children = documentType.getChildrenDocTypes();
-    	if (children != null) {
-    	    for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-    	    	DocumentType childDocumentType = (DocumentType) iterator.next();
-    	    	constructDocumentTypeCriteria(criteria, childDocumentType);
-    	    }
-    	}
+        // search this document type plus it's children
+        Criteria docTypeBaseCrit = new Criteria();
+        docTypeBaseCrit.addEqualTo("docName", documentType.getName());
+        criteria.addOrCriteria(docTypeBaseCrit);
+        Collection children = documentType.getChildrenDocTypes();
+        if (children != null) {
+            for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+                DocumentType childDocumentType = (DocumentType) iterator.next();
+                constructDocumentTypeCriteria(criteria, childDocumentType);
+            }
+        }
     }
-    
+
     private void addToFilterDescription(String filterDescription, String labelToAdd) {
         filterDescription += filterDescription.length() > 0 ? ", " : "";
         filterDescription += labelToAdd;
@@ -555,7 +345,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     private static final String ACTION_LIST_COUNT_QUERY = "select count(distinct(ai.doc_hdr_id)) from krew_actn_itm_t ai where ai.PRNCPL_ID = ? and (ai.dlgn_typ is null or ai.dlgn_typ = 'P')";
 
     public int getCount(final String workflowId) {
-    	return (Integer)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+        return (Integer)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
             public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement statement = null;
                 ResultSet resultSet = null;
@@ -588,6 +378,58 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
+    private static final String ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY = "select cast((max(actn_itm_id))as decimal) as max_id, count(distinct(doc_hdr_id)) as total_records"
+            + "  from ("
+            + "       select actn_itm_id,doc_hdr_id  "
+            + "         from KREW_ACTN_ITM_T   where prncpl_id=? "
+            + "         group by  actn_itm_id,doc_hdr_id "
+            + "       ) T";
+
+
+    /**
+     * Gets the max action item id and count doe a given user.
+     *
+     * @return A List with the first value being the maxActionItemId and the second value being the count
+     */
+    public List<Integer> getMaxActionItemIdAndCountForUser(final String principalId){
+        return (List<Integer>)getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+            public Object doInPersistenceBroker(PersistenceBroker broker) {
+                PreparedStatement statement = null;
+                ResultSet resultSet = null;
+                List<Integer> result = new ArrayList<Integer>();
+                try {
+                    Connection connection = broker.serviceConnectionManager().getConnection();
+                    statement = connection.prepareStatement(ACTION_LIST_COUNT_AND_MAX_ACTION_ITEM_ID_QUERY);
+                    statement.setString(1, principalId);
+                    resultSet = statement.executeQuery();
+                    if (!resultSet.next()) {
+                        throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.");
+                    }
+                    else{
+                        result.add(resultSet.getInt(1));
+                        result.add(resultSet.getInt(2));
+                    }
+                    return result;
+                } catch (SQLException e) {
+                    throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.", e);
+                } catch (LookupException e) {
+                    throw new WorkflowRuntimeException("Error determining Action List Count and Max Action Item Id.", e);
+                } finally {
+                    if (statement != null) {
+                        try {
+                            statement.close();
+                        } catch (SQLException e) {}
+                    }
+                    if (resultSet != null) {
+                        try {
+                            resultSet.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * Creates an Action List from the given collection of Action Items.  The Action List should
      * contain only one action item per document.  The action item chosen should be the most "critical"
@@ -595,11 +437,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @return the Action List as a Collection of ActionItems
      */
-    private Collection<ActionItem> createActionListForUser(Collection<ActionItem> actionItems) {
-        Map<String, ActionItem> actionItemMap = new HashMap<String, ActionItem>();
+    private <T extends ActionItemActionListExtension> Collection<T> createActionListForUser(Collection<T> actionItems) {
+        Map<String, T> actionItemMap = new HashMap<String, T>();
         ActionListPriorityComparator comparator = new ActionListPriorityComparator();
-        for (ActionItem potentialActionItem: actionItems) {
-            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getDocumentId());
+        for (T potentialActionItem: actionItems) {
+            T existingActionItem = actionItemMap.get(potentialActionItem.getDocumentId());
             if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
                 actionItemMap.put(potentialActionItem.getDocumentId(), potentialActionItem);
             }
@@ -614,11 +456,11 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
      *
      * @return the Action List as a Collection of ActionItems
      */
-    private Collection<ActionItem> createActionListForRouteHeader(Collection<ActionItem> actionItems) {
-        Map<String, ActionItem> actionItemMap = new HashMap<String, ActionItem>();
+    private Collection<ActionItemActionListExtension> createActionListForRouteHeader(Collection<ActionItemActionListExtension> actionItems) {
+        Map<String, ActionItemActionListExtension> actionItemMap = new HashMap<String, ActionItemActionListExtension>();
         ActionListPriorityComparator comparator = new ActionListPriorityComparator();
-        for (ActionItem potentialActionItem: actionItems) {
-            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getPrincipalId());
+        for (ActionItemActionListExtension potentialActionItem: actionItems) {
+            ActionItemActionListExtension existingActionItem = actionItemMap.get(potentialActionItem.getPrincipalId());
             if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
                 actionItemMap.put(potentialActionItem.getPrincipalId(), potentialActionItem);
             }
@@ -626,7 +468,7 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return actionItemMap.values();
     }
 
-    private Collection<ActionItem> getActionItemsInActionList(Class objectsToRetrieve, String principalId, ActionListFilter filter) {
+    private <T extends ActionItemActionListExtension> Collection<T> getActionItemsInActionList(Class<T> objectsToRetrieve, String principalId, ActionListFilter filter) {
         LOG.debug("getting action list for user " + principalId);
         Criteria crit = null;
         if (filter == null) {
@@ -636,23 +478,13 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
             crit = setUpActionListCriteria(principalId, filter);
         }
         LOG.debug("running query to get action list for criteria " + crit);
-        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectsToRetrieve, crit));
+        Collection<T> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectsToRetrieve, crit));
         LOG.debug("found " + collection.size() + " action items for user " + principalId);
         return createActionListForUser(collection);
     }
 
-    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter) {
+    public Collection<OutboxItemActionListExtension> getOutbox(String principalId, ActionListFilter filter) {
         return getActionItemsInActionList(OutboxItemActionListExtension.class, principalId, filter);
-//        LOG.debug("getting action list for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        Criteria crit = new Criteria();
-//        crit.addEqualTo("workflowId", workflowUser.getWorkflowUserId().getWorkflowId());
-//        if (filter != null) {
-//            setUpActionListCriteria(workflowUser, filter);
-//        }
-//        LOG.debug("running query to get action list for criteria " + crit);
-//        Collection<ActionItem> collection = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
-//        LOG.debug("found " + collection.size() + " action items for user " + workflowUser.getWorkflowUserId().getWorkflowId());
-//        return createActionListForUser(collection);
     }
 
     /**
@@ -687,11 +519,6 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return (OutboxItemActionListExtension)getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(OutboxItemActionListExtension.class, crit));
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.String)
-     */
     public OutboxItemActionListExtension getOutboxByDocumentIdUserId(String documentId, String userId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);

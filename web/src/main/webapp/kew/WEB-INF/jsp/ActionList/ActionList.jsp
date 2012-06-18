@@ -263,15 +263,15 @@
 						<c:choose>
 						   <c:when test="${result.displayParameters != null}">
                              <br>
-                             <a id='A<c:out value="${result.actionItemIndex}"/>'
+                             <a id='A<c:out value="${result.actionListIndex}"/>'
                               href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                              <c:param name="docId" value="${result.documentId}"/>
                              <c:param name="command" value="displayActionListInlineView" />
                              </c:url>"
-                             target='iframeAL_<c:out value="${result.actionItemIndex}"/>'
+                             target='iframeAL_<c:out value="${result.actionListIndex}"/>'
                              onclick="rend(this, false)"><img
                              src="images/tinybutton-show.gif" alt="show" width="45" height="15"
-                             border="0" id='F<c:out value="${result.actionItemIndex}"/>'></a>
+                             border="0" id='F<c:out value="${result.actionListIndex}"/>'></a>
                              <br>
                            </c:when>
                            <c:otherwise>&nbsp;</c:otherwise>
@@ -323,7 +323,7 @@
 						<display:column sortable="true" title="${initiatorLabel}"
 							sortProperty="routeHeader.initiatorName" class="infocell">
                             <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
-                                keyValues="principalId=${result.routeHeader.actionListInitiatorPrincipal.principalId}"
+                                keyValues="principalId=${result.routeHeader.initiatorPrincipalId}"
                                 render="true">
                                   <c:out value="${result.routeHeader.initiatorName}" />
                             </kul:inquiry>
@@ -334,16 +334,16 @@
 						<display:column sortable="true" title="${delegatorLabel}"
 							sortProperty="delegatorName" class="infocell">
 							<c:choose>
-								<c:when test="${result.delegatorPerson != null}">
+								<c:when test="${result.delegatorPrincipalId != null}">
                                     <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
-                                        keyValues="principalId=${result.delegatorPerson.principalId}"
+                                        keyValues="principalId=${result.delegatorPrincipalId}"
                                         render="true">
-                                          <c:out value="${result.delegatorPerson.name}" />
+                                          <c:out value="${result.delegatorName}" />
                                     </kul:inquiry>
 								</c:when>
-								<c:when test="${result.delegatorGroup != null}">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.delegatorGroup.id}" render="true">
-                                        <c:out value="${result.delegatorGroup.name}" />
+								<c:when test="${result.delegatorGroupId != null}">
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.delegatorGroupId}" render="true">
+                                        <c:out value="${result.delegatorName}" />
                                     </kul:inquiry>
 								</c:when>
 								<c:otherwise>
@@ -372,12 +372,12 @@
 					<c:if
 						test="${preferences.showWorkgroupRequest == Constants.PREFERENCES_YES_VAL}">
 						<display:column sortable="true"
-							title="${workgroupRequestLabel}" sortProperty="group.groupName"
+							title="${workgroupRequestLabel}" sortProperty="groupName"
 							class="infocell">
 							<c:choose>
 								<c:when test="${!empty result.groupId}">
-                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.group.id}" render="true">
-                                        <c:out value="${result.group.name}" />
+                                    <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.groupId}" render="true">
+                                        <c:out value="${result.groupName}" />
                                     </kul:inquiry>
 								</c:when>
 								<c:otherwise>
@@ -403,10 +403,10 @@
 								<c:set var="customActions" value="${result.customActions}"
 									scope="request" />
 								<html-el:hidden
-									property="actions[${result.actionItemIndex}].actionItemId"
+									property="actions[${result.actionListIndex}].actionItemId"
 									value="${result.id}" />
 								<html-el:select
-									property="actions[${result.actionItemIndex}].actionTakenCd">
+									property="actions[${result.actionListIndex}].actionTakenCd">
 									<html-el:options collection="customActions"
 										labelProperty="value" property="key" filter="false" />
 								</html-el:select>

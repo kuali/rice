@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionlist;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -182,7 +183,7 @@ public class ActionListTest extends KEWTestCase {
     	excludeSecondaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
     	secondaryFilter.setDelegationType(DelegationType.SECONDARY.getCode());
-    	Collection<ActionItem> actionItems = null;
+    	Collection<ActionItemActionListExtension> actionItems = null;
     	ActionItem actionItem = null;
 
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
@@ -311,7 +312,7 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
     	showPrimaryFilter.setDelegationType(DelegationType.PRIMARY.getCode());
-    	Collection<ActionItem> actionItems = null;
+    	Collection<ActionItemActionListExtension> actionItems = null;
     	ActionItem actionItem = null;
 
     	// make sure showing primary delegations show primary delegated action items

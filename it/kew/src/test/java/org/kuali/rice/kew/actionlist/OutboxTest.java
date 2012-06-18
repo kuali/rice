@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionlist;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -79,7 +80,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.saveDocument("");
 
-        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should not be any outbox items", 0, outbox.size());
     }
 
@@ -101,7 +102,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
     }
 
@@ -126,7 +127,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionitem.dao;
 import java.util.Collection;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionrequest.Recipient;
 
 /**
@@ -55,5 +56,5 @@ public interface ActionItemDAO {
 
 	public Collection<Recipient> findPrimaryDelegationRecipients(String principalId);
 
-    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName);
+    public Collection<OutboxItemActionListExtension> getOutboxItemsByDocumentType(String documentTypeName);
 }

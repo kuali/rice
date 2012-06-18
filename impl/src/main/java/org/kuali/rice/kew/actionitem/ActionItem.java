@@ -15,26 +15,6 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -49,9 +29,27 @@ import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
@@ -72,7 +70,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
     @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
         "AND (delegationType IS null OR delegationType != :delegationType) GROUP BY docName")
 })
-public class ActionItem implements ActionItemContract, RowStyleable, Serializable {
+public class ActionItem implements ActionItemContract, Serializable {
 
     private static final long serialVersionUID = -1079562205125660151L;
 
@@ -120,27 +118,39 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
     @Column(name="RQST_LBL")
     private String requestLabel;
 
-    //@ManyToOne(fetch=FetchType.EAGER)
-    //@JoinColumn(name="DOC_HDR_ID")
-	//private DocumentRouteHeaderValue routeHeader;
-	
+    // used by Document Operations screen
     @Transient
-    private Timestamp lastApprovedDate;
-    @Transient
-    private Integer actionItemIndex;
-    @Transient
-    private Map customActions = new HashMap();
-    @Transient
-    private String dateAssignedString;
-    @Transient
-    private String actionToTake;
-    @Transient
-    private String rowStyleClass;
+    private String dateAssignedStringValue;
 
 
     //@PrePersist
     public void beforeInsert(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
+    }
+
+    @Deprecated
+    @Override
+    public String getActionToTake() {
+        // deprecated, always return null (see the contract javadoc for more details)
+        return null;
+    }
+
+    @Deprecated
+    @Override
+    public String getDateAssignedString() {
+        // deprecated, always return null (see the contract javadoc for more details)
+        return null;
+    }
+
+    public String getDateAssignedStringValue() {
+        if (StringUtils.isBlank(dateAssignedStringValue)) {
+            return RiceConstants.getDefaultDateFormat().format(getDateAssigned());
+        }
+        return dateAssignedStringValue;
+    }
+
+    public void setDateAssignedStringValue(String dateAssignedStringValue) {
+        this.dateAssignedStringValue = dateAssignedStringValue;
     }
     
     public String getId() {
@@ -218,34 +228,6 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
     public String getRequestLabel() {
         return this.requestLabel;
     }
-    
-    public Timestamp getLastApprovedDate() {
-        return this.lastApprovedDate;
-    }
-
-    public Integer getActionItemIndex() {
-        return actionItemIndex;
-    }
-    
-    public Map getCustomActions() {
-        return customActions;
-    }
-
-    public String getDateAssignedString() {
-        if (dateAssignedString == null || dateAssignedString.trim().equals("")){
-            return RiceConstants.getDefaultDateFormat().format(getDateAssigned());
-        } else {
-            return dateAssignedString;
-        }
-    }
-
-    public String getActionToTake() {
-        return actionToTake;
-    }
-
-    public String getRowStyleClass() {
-        return rowStyleClass;
-    }
 
     private Group getGroup(String groupId) {
     	if (StringUtils.isBlank(groupId)) {
@@ -256,21 +238,6 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
 
     public Group getGroup(){
     	return getGroup(groupId);
-    }
-
-    private Person getPerson(String workflowId) {
-    	if (StringUtils.isBlank(workflowId)) {
-    		return null;
-    	}
-    	return KimApiServiceLocator.getPersonService().getPerson(workflowId);
-    }
-
-    public Person getPerson() {
-        return getPerson(principalId);
-    }
-
-    public Person getDelegatorPerson() {
-        return getPerson(delegatorPrincipalId);
     }
 
     public String getRecipientTypeCode() {
@@ -299,10 +266,6 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
         return KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
     }
 
-    public void setRowStyleClass(String rowStyleClass) {
-        this.rowStyleClass = rowStyleClass;
-    }
-    
     public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
@@ -367,35 +330,21 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
         this.delegatorGroupId = delegatorGroupId;
     }
 
-    public void setDateAssignedString(String dateAssignedString) {
-        this.dateAssignedString = dateAssignedString;
-    }
-
-    public void setActionToTake(String actionToTake) {
-        this.actionToTake = actionToTake;
-    }
-
-    public void setActionItemIndex(Integer actionItemIndex) {
-        this.actionItemIndex = actionItemIndex;
-    }
-
-    public void setCustomActions(Map customActions) {
-        this.customActions = customActions;
-    }
-    
     public void setDelegationType(DelegationType delegationType) {
         this.delegationType = delegationType == null ? null : delegationType.getCode();
-    }
-
-
-    public void setLastApprovedDate(Timestamp lastApprovedDate) {
-        this.lastApprovedDate = lastApprovedDate;
     }
     
     public void setRequestLabel(String requestLabel) {
         this.requestLabel = requestLabel;
     }
-    
+
+    @Deprecated
+    @Override
+    public Integer getActionItemIndex() {
+        // deprecated, always return null (see the contract javadoc for more details)
+        return null;
+    }
+
     public String toString() {
         return new ToStringBuilder(this).append("id", id)
                                         .append("principalId", principalId)
@@ -410,16 +359,10 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
                                         .append("lockVerNbr", lockVerNbr)
                                         .append("docName", docName)
                                         .append("responsibilityId", responsibilityId)
-                                        .append("rowStyleClass", rowStyleClass)
                                         .append("roleName", roleName)
                                         .append("delegatorPrincipalId", delegatorPrincipalId)
                                         .append("delegatorGroupId", delegatorGroupId)
-                                        .append("dateAssignedString", dateAssignedString)
-                                        .append("actionToTake", actionToTake)
                                         .append("delegationType", delegationType)
-                                        .append("actionItemIndex", actionItemIndex)
-                                        .append("customActions", customActions)
-                                        .append("lastApprovedDate", lastApprovedDate)
                                         .toString();
     }
 

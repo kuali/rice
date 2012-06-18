@@ -48,10 +48,7 @@ import org.w3c.dom.Element;
     ActionItem.Elements.DOC_NAME,
     ActionItem.Elements.RESPONSIBILITY_ID,
     ActionItem.Elements.ROLE_NAME,
-    ActionItem.Elements.DATE_ASSIGNED_STRING,
-    ActionItem.Elements.ACTION_TO_TAKE,
     ActionItem.Elements.DELEGATION_TYPE,
-    ActionItem.Elements.ACTION_ITEM_INDEX,
     ActionItem.Elements.GROUP_ID,
     ActionItem.Elements.PRINCIPAL_ID,
     ActionItem.Elements.DELEGATOR_GROUP_ID,
@@ -87,14 +84,8 @@ public final class ActionItem
     private final String responsibilityId;
     @XmlElement(name = Elements.ROLE_NAME, required = false)
     private final String roleName;
-    @XmlElement(name = Elements.DATE_ASSIGNED_STRING, required = false)
-    private final String dateAssignedString;
-    @XmlElement(name = Elements.ACTION_TO_TAKE, required = false)
-    private final String actionToTake;
     @XmlElement(name = Elements.DELEGATION_TYPE, required = false)
     private final String delegationType;
-    @XmlElement(name = Elements.ACTION_ITEM_INDEX, required = false)
-    private final Integer actionItemIndex;
     @XmlElement(name = Elements.GROUP_ID, required = false)
     private final String groupId;
     @XmlElement(name = Elements.PRINCIPAL_ID, required = true)
@@ -127,10 +118,7 @@ public final class ActionItem
         this.docName = null;
         this.responsibilityId = null;
         this.roleName = null;
-        this.dateAssignedString = null;
-        this.actionToTake = null;
         this.delegationType = null;
-        this.actionItemIndex = null;
         this.groupId = null;
         this.principalId = null;
         this.delegatorGroupId = null;
@@ -150,10 +138,7 @@ public final class ActionItem
         this.docName = builder.getDocName();
         this.responsibilityId = builder.getResponsibilityId();
         this.roleName = builder.getRoleName();
-        this.dateAssignedString = builder.getDateAssignedString();
-        this.actionToTake = builder.getActionToTake();
         this.delegationType = builder.getDelegationType() != null ? builder.getDelegationType().getCode() : null;
-        this.actionItemIndex = builder.getActionItemIndex();
         this.groupId = builder.getGroupId();
         this.principalId = builder.getPrincipalId();
         this.delegatorGroupId = builder.getDelegatorGroupId();
@@ -215,14 +200,25 @@ public final class ActionItem
         return this.roleName;
     }
 
+    @Deprecated
     @Override
     public String getDateAssignedString() {
-        return this.dateAssignedString;
+        // deprecated, always return null (see the contract javadoc for more details)
+        return null;
     }
 
+    @Deprecated
     @Override
     public String getActionToTake() {
-        return this.actionToTake;
+        // deprecated, always return null (see the contract javadoc for more details)
+        return null;
+    }
+
+    @Deprecated
+    @Override
+    public Integer getActionItemIndex() {
+        // deprecated, always return null (see the contract javadoc for more details)
+        return null;
     }
 
     @Override
@@ -230,10 +226,7 @@ public final class ActionItem
         return DelegationType.fromCode(this.delegationType);
     }
 
-    @Override
-    public Integer getActionItemIndex() {
-        return this.actionItemIndex;
-    }
+
 
     @Override
     public String getGroupId() {
@@ -275,10 +268,7 @@ public final class ActionItem
         private String docName;
         private String responsibilityId;
         private String roleName;
-        private String dateAssignedString;
-        private String actionToTake;
         private DelegationType delegationType;
-        private Integer actionItemIndex;
         private String groupId;
         private String principalId;
         private String delegatorGroupId;
@@ -315,10 +305,7 @@ public final class ActionItem
             builder.setId(contract.getId());
             builder.setRoleName(contract.getRoleName());
             builder.setDocTitle(contract.getDocTitle());
-            builder.setDateAssignedString(contract.getDateAssignedString());
-            builder.setActionToTake(contract.getActionToTake());
             builder.setDelegationType(contract.getDelegationType());
-            builder.setActionItemIndex(contract.getActionItemIndex());
             builder.setGroupId(contract.getGroupId());
             builder.setPrincipalId(contract.getPrincipalId());
             builder.setDelegatorGroupId(contract.getDelegatorGroupId());
@@ -385,24 +372,30 @@ public final class ActionItem
             return this.roleName;
         }
 
+        @Deprecated
         @Override
         public String getDateAssignedString() {
-            return this.dateAssignedString;
+            // deprecated, always return null (see the contract javadoc for more details)
+            return null;
         }
 
+        @Deprecated
         @Override
         public String getActionToTake() {
-            return this.actionToTake;
+            // deprecated, always return null (see the contract javadoc for more details)
+            return null;
+        }
+
+        @Deprecated
+        @Override
+        public Integer getActionItemIndex() {
+            // deprecated, always return null (see the contract javadoc for more details)
+            return null;
         }
 
         @Override
         public DelegationType getDelegationType() {
             return this.delegationType;
-        }
-
-        @Override
-        public Integer getActionItemIndex() {
-            return this.actionItemIndex;
         }
 
         @Override
@@ -497,20 +490,44 @@ public final class ActionItem
             this.roleName = roleName;
         }
 
+        /**
+         * This method has been deprecated and should not be called. If it is, then it will have no effect.
+         * It was mistakenly added to this interface when it was created and has been left here for compatibility
+         * purposes.
+         *
+         * @deprecated dateAssignedString is never used
+         */
+        @Deprecated
         public void setDateAssignedString(String dateAssignedString) {
-            this.dateAssignedString = dateAssignedString;
+            // deprecated, does nothing
         }
 
+        /**
+         * This method has been deprecated and should not be called. If it is, then it will have no effect.
+         * It was mistakenly added to this interface when it was created and has been left here for compatibility
+         * purposes.
+         *
+         * @deprecated actionToTake is never used
+         */
+        @Deprecated
         public void setActionToTake(String actionToTake) {
-            this.actionToTake = actionToTake;
+            // deprecated, does nothing
         }
 
         public void setDelegationType(DelegationType delegationType) {
             this.delegationType = delegationType;
         }
 
+        /**
+         * This method has been deprecated and should not be called. If it is, then it will have no effect.
+         * It was mistakenly added to this interface when it was created and has been left here for compatibility
+         * purposes.
+         *
+         * @deprecated actionItemIndex is never used
+         */
+        @Deprecated
         public void setActionItemIndex(Integer actionItemIndex) {
-            this.actionItemIndex = actionItemIndex;
+            // deprecated, does nothing
         }
 
         public void setGroupId(String groupId) {
@@ -565,10 +582,7 @@ public final class ActionItem
         final static String DOC_NAME = "docName";
         final static String RESPONSIBILITY_ID = "responsibilityId";
         final static String ROLE_NAME = "roleName";
-        final static String DATE_ASSIGNED_STRING = "dateAssignedString";
-        final static String ACTION_TO_TAKE = "actionToTake";
         final static String DELEGATION_TYPE = "delegationType";
-        final static String ACTION_ITEM_INDEX = "actionItemIndex";
         final static String GROUP_ID = "groupId";
         final static String PRINCIPAL_ID = "principalId";
         final static String DELEGATOR_GROUP_ID = "delegatorGroupId";

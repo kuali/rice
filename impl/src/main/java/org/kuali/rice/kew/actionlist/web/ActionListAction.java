@@ -89,7 +89,7 @@ public class ActionListAction extends KualiAction {
     private static final String ACTION_LIST_KEY = "actionList";
     private static final String ACTION_LIST_PAGE_KEY = "actionListPage";
     private static final String ACTION_LIST_USER_KEY = "actionList.user";
-    private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";
+    /*private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";*/
     //KULRICE-6849
     private static final String ACTION_ITEM_COUNT_FOR_USER_KEY = "actionList.count";
     private static final String MAX_ACTION_ITEM_ID_FOR_USER_KEY = "actionList.maxActionItemId";
@@ -210,7 +210,7 @@ public class ActionListAction extends KualiAction {
              * list items... only exception is if action list has not loaded previous and fetching of the list has not
              * occurred yet
              */
-            boolean forceListRefresh = request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null;
+            boolean forceListRefresh = request.getSession().getAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY) != null;
             if (uSession.retrieveObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME) != null) {
             	principalId = ((PrincipalContract) uSession.retrieveObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME)).getPrincipalId();
             } else {
@@ -304,7 +304,7 @@ public class ActionListAction extends KualiAction {
                 request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
             }
             // reset the requery action list key
-            request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
+            request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, null);
 
             // build the drop-down of delegators
             if (KewApiConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
@@ -719,7 +719,7 @@ public class ActionListAction extends KualiAction {
         saveMessages(request, messages);
         ActionListForm cleanForm = new ActionListForm();
         request.setAttribute(mapping.getName(), cleanForm);
-        request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
+        request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, cleanForm, request, response);
     }
 
@@ -758,7 +758,7 @@ public class ActionListAction extends KualiAction {
         	GlobalVariables.getMessageMap().putError("null", HELPDESK_LOGIN_EMPTY_ERRKEY, name);
         }
     	actionListForm.setDelegator(null);
-        request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
+        request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
     }
 
@@ -766,7 +766,7 @@ public class ActionListAction extends KualiAction {
         LOG.debug("clearFilter ActionListAction");
         final org.kuali.rice.krad.UserSession commonUserSession = getUserSession();
         commonUserSession.removeObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
-        request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
+        request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }

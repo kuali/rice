@@ -102,8 +102,9 @@ public class ActionListFilterAction extends KualiAction {
         }
         uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
+            request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
             return mapping.findForward("viewActionList");
-        } 
+        }
         return mapping.findForward("viewFilter");    
     }
 

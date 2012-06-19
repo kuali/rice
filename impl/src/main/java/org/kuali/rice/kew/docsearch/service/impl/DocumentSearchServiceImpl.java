@@ -267,15 +267,22 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         DocumentSearchCriteria.Builder comparisonCriteria = createEmptyComparisonCriteria(criteria);
         boolean isCriteriaEmpty = criteria.equals(comparisonCriteria.build());
         boolean isTitleOnly = false;
+        boolean isDocTypeOnly = false;
         if (!isCriteriaEmpty) {
             comparisonCriteria.setTitle(criteria.getTitle());
             isTitleOnly = criteria.equals(comparisonCriteria.build());
         }
 
-        if (isCriteriaEmpty || isTitleOnly) {
+        if (!isCriteriaEmpty && !isTitleOnly) {
+            comparisonCriteria = createEmptyComparisonCriteria(criteria);
+            comparisonCriteria.setDocumentTypeName(criteria.getDocumentTypeName());
+            isDocTypeOnly = criteria.equals(comparisonCriteria.build());
+        }
+
+        if (isCriteriaEmpty || isTitleOnly || isDocTypeOnly) {
             DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
             Integer defaultCreateDateDaysAgoValue = null;
-            if (isCriteriaEmpty) {
+            if (isCriteriaEmpty || isDocTypeOnly) {
                 // if they haven't set any criteria, default the from created date to today minus days from constant variable
                 defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
             } else if (isTitleOnly) {
@@ -283,6 +290,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 // days ago.  This will allow for a more efficient query.
                 defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
             }
+
             if (defaultCreateDateDaysAgoValue != null) {
                 // add a default create date
                 MutableDateTime mutableDateTime = new MutableDateTime();

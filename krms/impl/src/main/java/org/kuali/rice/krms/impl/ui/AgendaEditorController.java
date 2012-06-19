@@ -43,7 +43,6 @@ import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
-import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
@@ -451,7 +450,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         } else {
             //validate normal term
-            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTermById(termId);
+            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTerm(termId);
             if (termDefinition == null) {
                 GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                         "error.rule.proposition.simple.invalidTerm", proposition.getDescription());
@@ -474,7 +473,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             String termSpecificationId = key.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
             termSpec = KrmsRepositoryServiceLocator.getTermBoService().getTermSpecificationById(termSpecificationId);
         } else {
-            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTermById(key);
+            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTerm(key);
             if (term != null) {
                 termSpec = term.getSpecification();
             }

@@ -138,9 +138,10 @@ public class ViewValidationServiceImpl implements ViewValidationService {
             //use forced selected state if passed in
             validationState = forcedValidationState;
         }
-        else{
+        else if(stateMapping != null){
             //default is current state
             validationState = stateMapping.getCurrentState(object);
+
         }
 
         return getDictionaryValidationService().validate(new ViewAttributeValueReader(view, model), true,
@@ -166,9 +167,10 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
         StateMapping stateMapping = view.getStateMapping();
 
-        //validation state is the next state for this call
-        validationState = stateMapping.getNextState(object);
-
+        if(stateMapping != null){
+            //validation state is the next state for this call
+            validationState = stateMapping.getNextState(object);
+        }
         return getDictionaryValidationService().validate(new ViewAttributeValueReader(view, model), true,
                 validationState, stateMapping);
     }

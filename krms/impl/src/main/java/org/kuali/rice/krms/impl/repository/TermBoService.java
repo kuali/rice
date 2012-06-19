@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.repository;
 import java.util.List;
 
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,7 +30,7 @@ import org.springframework.cache.annotation.Cacheable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermBoService {
+public interface TermBoService extends TermRepositoryService {
 	
 	// TODO: javadocs
     @Cacheable(value= TermSpecificationDefinition.Cache.NAME, key="'id=' + #p0")

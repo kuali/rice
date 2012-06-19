@@ -40,6 +40,7 @@
         <property name="service">
           <ref bean="functionRepositoryService" />
         </property>
+        <property name="serviceInterface" value="org.kuali.rice.krms.api.repository.function.FunctionRepositoryService" />
         <property name="localServiceName" value="functionRepositoryService" />
         <property name="busSecurity" value="${rice.krms.functionRepositoryService.secure}" />
       </bean>
@@ -47,12 +48,13 @@
   </bean>
 
 
-  <bean id="rice.krms.termRepositoryService.exporter" parent="krmsServiceExporter">
+  <bean id="rice.krms.termRepositoryService.exporter" parent="krmsServiceExporter" >
     <property name="serviceDefinition">
       <bean parent="krmsService">
         <property name="service">
           <ref bean="termRepositoryService" />
         </property>
+        <property name="serviceInterface" value="org.kuali.rice.krms.api.repository.term.TermRepositoryService" />
         <property name="localServiceName" value="termRepositoryService" />
         <property name="busSecurity" value="${rice.krms.termRepositoryService.secure}" />
       </bean>

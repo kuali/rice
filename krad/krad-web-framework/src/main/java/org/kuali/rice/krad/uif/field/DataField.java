@@ -59,6 +59,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     // value props
     private String defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
+    private Object[] defaultValues;
 
     private PropertyEditor propertyEditor;
 
@@ -511,6 +512,30 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
         this.defaultValueFinderClass = defaultValueFinderClass;
+    }
+
+    /**
+     * Array of default values for the model property the field points to
+     *
+     * <p>
+     * When a new <code>View</code> instance is requested, the corresponding
+     * model will be newly created. During this initialization process the value
+     * for the model property will be set to the given default values (if set)
+     * </p>
+     *
+     * @return String default value
+     */
+    public Object[] getDefaultValues() {
+        return this.defaultValues;
+    }
+
+    /**
+     * Setter for the fields default values
+     *
+     * @param defaultValues
+     */
+    public void setDefaultValues(Object[] defaultValues) {
+        this.defaultValues = defaultValues;
     }
 
     /**

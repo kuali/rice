@@ -1662,20 +1662,27 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
         // check for configured default value
         String defaultValue = dataField.getDefaultValue();
-        if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
-            ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
-            defaultValue = defaultValueFinder.getValue();
-        }
+        Object[] defaultValues = dataField.getDefaultValues();
 
-        // populate default value if given and path is valid
-        if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
-            if (getExpressionEvaluatorService().containsElPlaceholder(defaultValue)) {
-                Map<String, Object> context = getPreModelContext(view);
-                defaultValue = getExpressionEvaluatorService().evaluateExpressionTemplate(null, context, defaultValue);
+        if (StringUtils.isBlank(defaultValue) && defaultValues != null && defaultValues.length > 0)     {
+            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
+        }
+        else {
+            if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
+                ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
+                defaultValue = defaultValueFinder.getValue();
             }
 
-            // TODO: this should go through our formatters
-            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+            // populate default value if given and path is valid
+            if (StringUtils.isNotBlank(defaultValue) && ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+                if (getExpressionEvaluatorService().containsElPlaceholder(defaultValue)) {
+                    Map<String, Object> context = getPreModelContext(view);
+                    defaultValue = getExpressionEvaluatorService().evaluateExpressionTemplate(null, context, defaultValue);
+                }
+
+                // TODO: this should go through our formatters
+                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+            }
         }
     }
 

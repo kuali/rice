@@ -101,7 +101,7 @@
 
                         <!-- https://wiki.kuali.org/display/KULRICE/Schema+Spy+Publish+to+site.kuali.org -->
                         <listitem>
-                            <para><link xlink:show="new" xlink:href="../schema-spy/index.html">Schema Spy</link></para>
+                            <para><link xlink:show="new" xlink:href="../html/schema-spy/index.html">Schema Spy</link></para>
                         </listitem>
 
 <!-- TODO: regenerate and add back in

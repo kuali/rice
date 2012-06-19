@@ -35,16 +35,28 @@
         <bean parent="UifCompViewPageWithFooter" p:id="DialogView-Page1">
           <property name="items">
             <list>
+              <bean parent="DialogTestView-SampleDialogs"/>
               <bean parent="DialogTestView-MainGroup"/>
-              <bean id="myDialog" parent="EraseHardDrive-DialogGroup"/>
+              <bean id="myDialog" parent="PickAStory-DialogGroup"/>
               <bean id="mySensitiveDialog" parent="SensitiveData-DialogGroup"/>
               <bean id="myImage" parent="ImageDialog"/>
               <bean id="preDefinedDialogOkCancel" parent="OK-Cancel-DialogGroup" p:promptText="Would you like to continue?" />
-              <bean id="preDefinedDialogYesNo" parent="Yes-No-DialogGroup" p:promptText="Would you like to save this document?" />
+              <bean id="myRestart" parent="RestartYesNo" />
               <bean id="preDefinedDialogTrueFalse" parent="True-False-DialogGroup" p:promptText="Is this a correct statement?" />
-              <bean id="checkboxDialog" parent="CheckboxDialog" p:promptText="Select Applicable" />
-              <bean id="radioButtonDialog" parent="RadioButtonDialog" p:promptText="Select" />
+              <bean id="myCheckboxDialog" parent="CheckboxDialog" p:promptText="Select Applicable" />
+              <bean id="myRadioButtonDialog" parent="RadioButtonDialog"/>
             </list>
+          </property>
+          <property name="footer">
+            <bean id="DialogTestView-FormFooter" parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean id="myPrimaryButton" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Tell Me A Story" p:performClientSideValidation="true"/>
+                  <bean id="mySecondaryButton" parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
+                  <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
       </list>
@@ -61,11 +73,9 @@
     </property>
   </bean>
 
-  <bean id="DialogTestView-MainGroup" parent="Uif-VerticalBoxSection">
-    <property name="headerText" value="Main Section"/>
+  <bean id="DialogTestView-SampleDialogs" parent="Uif-Disclosure-HorizontalBoxSection" p:title="Sample Dialogs">
     <property name="items">
       <list>
-        <bean parent="Uif-Message" p:messageText="This is the main page of the view. Regular content goes here..."/>
         <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See dialog" p:defaultValue="false"
               p:instructionalText="show/hide dialog content">
           <property name="onChangeScript" value="jQuery('#myDialog').toggle();" />
@@ -73,73 +83,65 @@
             <bean parent="Uif-CheckboxControl"/>
           </property>
         </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:clientSideJs="showLightboxComponent('mySensitiveDialog');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:clientSideJs="showLightboxComponent('myImage');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:clientSideJs="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined Yes/No" p:clientSideJs="showLightboxComponent('myRestartYesNo');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined OK/Cancel" p:clientSideJs="showLightboxComponent('preDefinedDialogOkCancel');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined True/False" p:clientSideJs="showLightboxComponent('preDefinedDialogTrueFalse');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:clientSideJs="showLightboxComponent('checkboxDialog');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:clientSideJs="showLightboxComponent('radioButtonDialog');"/>
+      </list>
+    </property>
+  </bean>
 
-        <bean id='statusMsg' parent="Uif-InputField" p:propertyName="field1" p:defaultValue="This is a test" p:style="border:1px; background-color:yellow"/>
-
-        <bean id="UifDialogView-ExampleDialogs" parent="Uif-HorizontalBoxSection" p:title="Dialog Examples">
-          <property name="items">
-            <list>
-
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group" p:clientSideJs="showLightboxComponent('mySensitiveDialog');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden image" p:clientSideJs="showLightboxComponent('myImage');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from hidden group with overrides" p:clientSideJs="showLightboxComponent('myDialog', {openEffect : 'elastic', helpers:{overlay:{css:{cursor:'pointer', 'background-color':'green'}}}, closeEffect : 'elastic'});"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Lightbox from HTML" p:clientSideJs="showLightboxContent('Hello, I am a lightbox with &lt;b&gt;HTML&lt;/b&gt; content.');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined Yes/No" p:clientSideJs="showLightboxComponent('preDefinedDialogYesNo');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined OK/Cancel" p:clientSideJs="showLightboxComponent('preDefinedDialogOkCancel');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Predefined True/False" p:clientSideJs="showLightboxComponent('preDefinedDialogTrueFalse');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Checkboxes" p:clientSideJs="showLightboxComponent('checkboxDialog');"/>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Radiobuttons" p:clientSideJs="showLightboxComponent('radioButtonDialog');"/>
-            </list>
+  <bean id="DialogTestView-MainGroup" parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Storybook Corner"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Message" p:messageText="This is a storytelling section. Pick you story as you go!"/>
+        <bean id='statusMsg' parent="Uif-InputField" p:propertyName="field1" p:defaultValue="This is a test" p:style="border:1px; font-size:2em">
+          <property name="control">
+            <bean parent="Uif-TextAreaControl"  p:readOnly="true"/>
           </property>
         </bean>
       </list>
     </property>
   </bean>
 
-  <bean id="EraseHardDrive-DialogGroup" parent="Uif-DialogGroup" >
-    <property name="promptText" value="You are about to erase your hard drive. Continue??"/>
+  <bean id="PickAStory-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Which Story Would You Like To Read?"/>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Sure, Go Ahead"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Nooooo!"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Go Dog, Go!"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Green Eggs and Ham"/>
       </list>
     </property>
   </bean>
 
   <bean id="ImageDialog" parent="Uif-ImageField" p:hidden="true" p:fieldLabel.render="false"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"/>
+
   <bean id="CheckboxDialog" parent="Checkbox-DialogGroup" >
-    <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
-        <property name="control">
-          <bean parent="Uif-VerticalCheckboxesControl">
-            <property name="options">
-              <list>
-                <bean parent="Uif-KeyLabelPair" p:key="A" p:value="Option A"/>
-                <bean parent="Uif-KeyLabelPair" p:key="B" p:value="Option B"/>
-                <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Option C"/>
-              </list>
-            </property>
-          </bean>
-        </property>
-      </bean>
-    </property>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>
       </list>
     </property>
   </bean>
+
   <bean id="RadioButtonDialog" parent="RadioButton-DialogGroup">
-    <property name="promptText" value="Select"/>
+    <property name="promptText" value="Which Version of Story Would You Like To Read?"/>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+      <bean parent="Uif-DialogExplanation" p:render="true">
         <property name="control">
           <bean parent="Uif-VerticalRadioControl">
             <property name="options">
               <list>
-                <bean parent="Uif-KeyLabelPair" p:key="A" p:value="Radio A"/>
-                <bean parent="Uif-KeyLabelPair" p:key="B" p:value="Radio B"/>
+                <bean parent="Uif-KeyLabelPair" p:key="A" p:value="G Rated"/>
+                <bean parent="Uif-KeyLabelPair" p:key="B" p:value="PG Rated"/>
+                <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Explicit"/>
               </list>
             </property>
           </bean>
@@ -152,4 +154,6 @@
       </list>
     </property>
   </bean>
+
+  <bean id="RestartYesNo" parent="Yes-No-DialogGroup" p:promptText="Would you like to start over?" />
 </beans>

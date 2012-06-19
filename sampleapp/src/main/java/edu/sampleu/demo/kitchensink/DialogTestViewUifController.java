@@ -72,29 +72,104 @@ public class DialogTestViewUifController extends UifControllerBase {
     public ModelAndView save(@ModelAttribute("KualiForm") UifDialogTestForm uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mv;
-        boolean answer = false;
-        String dialogName = "myDialog";
+
+        // dialog names
+        String dialog1Name = "myDialog";
+        String dialog2Name = "myRadioButtonDialog";
+        String dialog3Name = "myRestart";
+
+        // local copies of dialog answers
+        boolean whichStory = false;
+        String whichVersion;
+        boolean doRestart = false;
 
         //exercise asking a question here
 //        boolean answer = askYesOrNoQuestion("myDialog", uiTestForm,  request, response);
 
         //TODO: Hack by Dan
         DialogManager dm = uiTestForm.getDialogManager();
-        if (dm.hasDialogBeenAnswered(dialogName)){
-            answer = dm.wasDialogAnswerAffirmative(dialogName);
+        if (dm.hasDialogBeenAnswered(dialog1Name)){
+            whichStory = dm.wasDialogAnswerAffirmative(dialog1Name);
         } else {
             // redirect back to client to display lightbox
-            dm.addDialog(dialogName, uiTestForm.getMethodToCall());
-            mv = showDialog(dialogName, uiTestForm, request, response);
+            dm.addDialog(dialog1Name, uiTestForm.getMethodToCall());
+            mv = showDialog(dialog1Name, uiTestForm, request, response);
             return mv;
         }
 
         // continue on here if they answered the question
-        if (answer){
-            uiTestForm.setField1("The answer was Yes.");
-            return getUIFModelAndView(uiTestForm);
+        if (whichStory){
+            uiTestForm.setField1("You Selected: Go Dog, Go!");
+            if (!dm.hasDialogBeenDisplayed(dialog2Name)){
+                dm.addDialog(dialog2Name,uiTestForm.getMethodToCall());
+                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+            }
+            if (dm.hasDialogBeenAnswered(dialog2Name)){
+                whichVersion = dm.getDialogExplanation(dialog2Name);
+            } else {
+                // redirect back to client to display lightbox
+                dm.addDialog(dialog2Name, uiTestForm.getMethodToCall());
+                mv = showDialog(dialog2Name, uiTestForm, request, response);
+                return mv;
+            }
+
+            if(whichVersion.contains("A")){
+                uiTestForm.setField1("You selected the G rated version, by P.D. Eastman. Here we go...");
+            } else if(whichVersion.contains("B")){
+                uiTestForm.setField1("You selected the the PG rated version, Go Snoop Dogg, Go!  by Dr. Dre.....");
+            } else if (whichVersion.contains("C")){
+                uiTestForm.setField1("For the X Rated version, your credit card will be charged $29.99");
+            } else {
+                uiTestForm.setField1("You need to select a version");
+                dm.resetDialogStatus(dialog2Name);
+                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+            }
+        } else {
+            uiTestForm.setField1("You Selected: Green Eggs And Ham");
+            if (!dm.hasDialogBeenDisplayed(dialog2Name)){
+                dm.addDialog(dialog2Name,uiTestForm.getMethodToCall());
+                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+            }
+            if (dm.hasDialogBeenAnswered(dialog2Name)){
+                whichVersion = dm.getDialogAnswer(dialog2Name);
+            } else {
+                // redirect back to client to display lightbox
+                dm.addDialog(dialog2Name, uiTestForm.getMethodToCall());
+                mv = showDialog(dialog2Name, uiTestForm, request, response);
+                return mv;
+            }
+            if(whichVersion.contains("A")){
+                uiTestForm.setField1("You selected the G rated version, by Dr. Seuss. Here we go...");
+            } else if(whichVersion.contains("B")){
+                uiTestForm.setField1("You selected the the PG rated version, read by Sarah Silverman.....");
+            } else if (whichVersion.contains("C")){
+                uiTestForm.setField1("For the X Rated version, your credit card will be charged $29.99");
+            } else {
+                uiTestForm.setField1("You need to select a version");
+                dm.resetDialogStatus(dialog2Name);
+                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+            }
+
         }
-        uiTestForm.setField1("Whew, that was close");
+        if (!dm.hasDialogBeenDisplayed(dialog3Name)) {
+                dm.addDialog(dialog3Name,uiTestForm.getMethodToCall());
+                return getUIFModelAndView(uiTestForm, "DialogView-Page1");
+        };
+        if (dm.hasDialogBeenAnswered(dialog3Name)){
+            doRestart = dm.wasDialogAnswerAffirmative(dialog3Name);
+        } else {
+            // redirect back to client to display lightbox
+            dm.addDialog(dialog3Name, uiTestForm.getMethodToCall());
+            mv = showDialog(dialog3Name, uiTestForm, request, response);
+            return mv;
+        }
+        if (doRestart){
+            dm.removeDialog(dialog1Name);
+            dm.removeDialog(dialog2Name);
+            dm.removeDialog(dialog3Name);
+        }
+
+
         return getUIFModelAndView(uiTestForm, "DialogView-Page1");
     }
 

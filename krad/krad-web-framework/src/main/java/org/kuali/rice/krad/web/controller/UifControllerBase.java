@@ -42,6 +42,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifRequestVars;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -834,6 +835,8 @@ public abstract class UifControllerBase {
 
         // TODO: what if dialog is not found in dm??
         dm.setDialogAnswer(dialogName, responseValue);
+        dm.setDialogExplanation(dialogName, explanationValue);
+        form.setDialogExplanation("");
         // TODO: also set explanation value
 
         form.setLightboxScript("");
@@ -909,7 +912,7 @@ public abstract class UifControllerBase {
 
     public UrlBasedViewResolver getViewResolver() {
         return viewResolver;
-    }
+}
 
     public void setViewResolver(UrlBasedViewResolver viewResolver) {
         this.viewResolver = viewResolver;

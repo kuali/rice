@@ -987,11 +987,7 @@
       <bean parent="Uif-Message"/>
     </property>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
-        <property name="control">
-          <bean parent="Uif-TextAreaControl" />
-        </property>
-      </bean>
+      <bean parent="Uif-DialogExplanation"/>
     </property>
     <property name="responseInputField">
       <bean parent="Uif-InputField" p:propertyName="dialogResponse">
@@ -1001,7 +997,7 @@
         <property name="onChangeScript" value="
           writeHiddenToForm('methodToCall','returnFromLightbox');
           writeHiddenToForm('dialogResponse',jQuery('.uif-dialogButtons').find(':checked').val());
-          writeHiddenToForm('dialogExplanation','myDialog');
+          writeHiddenToForm('dialogExplanation', coerceValue('dialogExplanation'));
           jQuery.fancybox.close();
           jQuery('#kualiForm').submit();"/>
         <property name="cssClasses">
@@ -1014,6 +1010,17 @@
     <property name="cssClasses">
       <list merge="true">
         <value>uif-dialogGroup</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+    <property name="control">
+      <bean parent="Uif-TextAreaControl" />
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogExplanation</value>
       </list>
     </property>
   </bean>

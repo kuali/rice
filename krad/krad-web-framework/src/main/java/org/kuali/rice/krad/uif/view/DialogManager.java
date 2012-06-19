@@ -129,6 +129,16 @@ public class DialogManager implements Serializable {
         dialogs.put(dialogName,dialogInfo);
     }
 
+    public String getDialogExplanation(String dialogName){
+        return dialogs.get(dialogName).explanation;
+    }
+
+    public void setDialogExplanation(String dialogName, String explanation){
+        DialogInfo dialogInfo = dialogs.get(dialogName);
+        dialogInfo.explanation = explanation;
+        dialogs.put(dialogName,dialogInfo);
+    }
+
     /**
      * Indicates whethe the user answered affirmatively to the question
      *
@@ -197,6 +207,7 @@ public class DialogManager implements Serializable {
      */
     public void addDialog(String dialogName, String returnMethod){
         DialogInfo dialogInfo = new DialogInfo(dialogName, returnMethod);
+        dialogInfo.asked = true;
         dialogs.put(dialogName, dialogInfo);
         setCurrentDialogName(dialogName);
     }

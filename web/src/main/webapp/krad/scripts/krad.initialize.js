@@ -339,7 +339,8 @@ function initBubblePopups() {
     jQuery("input, select, textarea, "
             + " label, .uif-tooltip").CreateBubblePopup(
             {   manageMouseEvents:false,
-                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"});
+                themePath:"../krad/plugins/tooltip/jquerybubblepopup-theme/"
+            } );
 }
 
 function hideBubblePopups() {
@@ -348,8 +349,7 @@ function hideBubblePopups() {
 }
 
 /**
- * Sets up the validator with the necessary default settings and methods
- * also sets up the dirty check and other page scripts
+ * Sets up the validator and the dirty check and other page scripts
  */
 function setupPage(validate, focusFirstField) {
     jQuery('#kualiForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
@@ -399,7 +399,28 @@ function setupPage(validate, focusFirstField) {
         }
     });
 
-    jQuery('#kualiForm').validate(
+    setupValidator(jQuery('#kualiForm'));
+
+    jQuery(".required").each(function () {
+        jQuery(this).attr("aria-required", "true");
+    });
+
+    jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
+    pageValidatorReady = true;
+
+    jQuery.watermark.showAll();
+    if(focusFirstField){
+        performFocus();
+    }
+}
+
+/**
+ * Sets up the validator with the necessary default settings and methods on a form
+ *
+ * @param form
+ */
+function setupValidator(form) {
+    jQuery(form).validate(
             {
                 onsubmit:false,
                 ignore:".ignoreValid",
@@ -428,10 +449,9 @@ function setupPage(validate, focusFirstField) {
                     var id = getAttributeId(jQuery(element).attr("id"));
                     var data = jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES);
 
-                    if(data){
+                    if (data) {
                         data.errors = [];
                         jQuery("#" + id).data(kradVariables.VALIDATION_MESSAGES, data);
-
 
                         if (messageSummariesShown) {
                             handleMessagesAtField(id);
@@ -441,8 +461,8 @@ function setupPage(validate, focusFirstField) {
                         }
 
                         //force hide of tooltip if no messages present
-                        if(!(data.warnings.length || data.info.length || data.serverErrors.length
-                                || data.serverWarnings.length || data.serverInfo.length)){
+                        if (!(data.warnings.length || data.info.length || data.serverErrors.length
+                                || data.serverWarnings.length || data.serverInfo.length)) {
                             hideMessageTooltip(id);
                         }
                     }
@@ -512,18 +532,6 @@ function setupPage(validate, focusFirstField) {
                     }
                 }
             });
-
-    jQuery(".required").each(function () {
-        jQuery(this).attr("aria-required", "true");
-    });
-
-    jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
-    pageValidatorReady = true;
-
-    jQuery.watermark.showAll();
-    if(focusFirstField){
-        performFocus();
-    }
 }
 
 /**

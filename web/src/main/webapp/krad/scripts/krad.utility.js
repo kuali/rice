@@ -890,6 +890,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
     // Open the light box
     if (top == self) {
         jQuery.fancybox(options);
+        setupLightboxForm();
     } else {
         // Remove portal css and add lightbox css for the duration of the lightbox's life
         parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
@@ -899,7 +900,34 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
             parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove(); }});
 
         parent.jQuery.fancybox(options);
+        setupLightboxFormOutsidePortal();
     }
+
+}
+
+/**
+ *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
+ */
+function setupLightboxForm() {
+
+    jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm'>");
+
+    setupValidator(jQuery('#kualiLightboxForm'));
+
+    jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
+
+}
+
+/**
+ *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
+ */
+function setupLightboxFormOutsidePortal() {
+
+    parent.jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm'>");
+
+    setupValidator(parent.jQuery('#kualiLightboxForm'));
+
+//    parent.jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
 }
 

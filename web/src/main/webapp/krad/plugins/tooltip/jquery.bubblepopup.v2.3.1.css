@@ -1,6 +1,6 @@
 
 	/* Layout Settings */
-	.jquerybubblepopup{width:auto;height:auto;margin:0px;padding:0px;position:absolute;border:0px;z-index:100;text-align:center;background-color:transparent;}
+	.jquerybubblepopup{width:auto;height:auto;margin:0px;padding:0px;position:absolute;border:0px;z-index:9000;text-align:center;background-color:transparent;}
 	.jquerybubblepopup-ie{filter:progid:DXImageTransform.Microsoft.Shadow(color="#666666", Direction=135, Strength=3);} /* the plugin adds this class only if browser is IE; if IE9, it's added to main <DIV> else to <TABLE> */
 	.jquerybubblepopup table{width:auto;height:auto;margin:0px;padding:0px;display:table;border-collapse:collapse;border-spacing:0px;border:0px;empty-cells:show;background-color:transparent;}
 	.jquerybubblepopup tbody{display:table-row-group;vertical-align:middle;border:0px;background-color:transparent;}

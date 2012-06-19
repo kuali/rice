@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 
@@ -31,10 +32,9 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionListDAO {
-    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
-    public Collection<ActionItem> getActionListForSingleDocument(String documentId);
-   public int getCount(String workflowId);
-    //KULRICE-6849
+    public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter);
+    public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId);
+    public int getCount(String workflowId);
     public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);
 
     /**
@@ -45,7 +45,7 @@ public interface ActionListDAO {
      * @param filter
      * @return
      */
-    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
+    public Collection<OutboxItemActionListExtension> getOutbox(String principalId, ActionListFilter filter);
     public void removeOutboxItems(String principalId, List<String> outboxItems);
     public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
     public OutboxItemActionListExtension getOutboxByDocumentId(String documentId);

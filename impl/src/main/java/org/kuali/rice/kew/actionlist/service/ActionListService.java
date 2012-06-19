@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -36,9 +37,9 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 public interface ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
-    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
+    public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter);
 
-    public Collection<ActionItem> getActionListForSingleDocument(String documentId);
+    public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId);
 
     public Collection<Recipient> findUserSecondaryDelegators(String principalId);
 
@@ -47,7 +48,7 @@ public interface ActionListService {
     public void saveActionItem(ActionItem actionItem);
 
     public void deleteActionItem(ActionItem actionItem);
-    
+
     public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox);
 
     public void deleteByDocumentId(String documentId);
@@ -73,13 +74,13 @@ public interface ActionListService {
 
     /**
      * Retrieves the max action item Id  and the total number of action items for the given user's primary Action List
-     * (Including secondary and primary delegations)
+     * (does not include secondary delegations)
      * @param principalId
      */
     public List<Integer> getMaxActionItemIdAndCountForUser(String principalId);
 
     public Collection<ActionItem> findByActionRequestId(String actionRequestId);
-    
+
     /**
      *
      * Retrieves {@link OutboxItemActionListExtension} items for the given user
@@ -88,8 +89,8 @@ public interface ActionListService {
      * @param filter
      * @return
      */
-    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter);
-    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName);
+    public Collection<OutboxItemActionListExtension> getOutbox(String principalId, ActionListFilter filter);
+    public Collection<OutboxItemActionListExtension> getOutboxItemsByDocumentType(String documentTypeName);
     public void removeOutboxItems(String principalId, List<String> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);

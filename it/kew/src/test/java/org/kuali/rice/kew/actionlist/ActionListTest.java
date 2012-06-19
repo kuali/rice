@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionlist;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -239,7 +240,7 @@ public class ActionListTest extends KEWTestCase {
     	excludeSecondaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
     	secondaryFilter.setDelegationType(DelegationType.SECONDARY.getCode());
-    	Collection<ActionItem> actionItems = null;
+    	Collection<ActionItemActionListExtension> actionItems = null;
     	ActionItem actionItem = null;
 
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
@@ -368,7 +369,7 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
     	showPrimaryFilter.setDelegationType(DelegationType.PRIMARY.getCode());
-    	Collection<ActionItem> actionItems = null;
+    	Collection<ActionItemActionListExtension> actionItems = null;
     	ActionItem actionItem = null;
 
     	// make sure showing primary delegations show primary delegated action items
@@ -499,12 +500,12 @@ public class ActionListTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
                 "ActionListDocumentType");
         document.route("");
-        Collection<ActionItem> actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"),
+        Collection<ActionItemActionListExtension> actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"),
                 new ActionListFilter());
         assertEquals("bmcgough should have 1 item in his action list.", 1, actionItems.size());
         //delete one of the action items
         ActionItem itm = null;
-        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+        for (Iterator<ActionItemActionListExtension> iterator = actionItems.iterator(); iterator.hasNext(); ) {
             ActionItem actionItem = iterator.next();
             itm = getActionListService().findByActionItemId(actionItem.getId());
             getActionListService().deleteActionItem(itm);

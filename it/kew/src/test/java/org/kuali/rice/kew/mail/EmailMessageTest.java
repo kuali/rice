@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionItem;
@@ -29,6 +30,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.junit.Assert.*;
@@ -92,7 +94,7 @@ public class EmailMessageTest extends KEWTestCase {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, user);
 
-        Collection<ActionItem> actionItems = org.kuali.rice.kew.actionitem.ActionItem.to(KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null));
+        Collection<ActionItem> actionItems = org.kuali.rice.kew.actionitem.ActionItem.to(new ArrayList<org.kuali.rice.kew.actionitem.ActionItem>(KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null)));
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
 
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));
@@ -126,7 +128,7 @@ public class EmailMessageTest extends KEWTestCase {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocumentCustomStyle" }, user);
 
-        Collection<ActionItem> actionItems = org.kuali.rice.kew.actionitem.ActionItem.to(KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null));
+        Collection<ActionItem> actionItems = org.kuali.rice.kew.actionitem.ActionItem.to(new ArrayList<org.kuali.rice.kew.actionitem.ActionItem>(KEWServiceLocator.getActionListService().getActionList(user.getPrincipalId(), null)));
         assertEquals("user should have " + count + " items in his action list.", count, actionItems.size());
 
         EmailContent content = styleableContentService.generateImmediateReminder(user, actionItems.iterator().next(), KEWServiceLocator.getDocumentTypeService().findByName(actionItems.iterator().next().getDocName()));

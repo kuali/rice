@@ -18,6 +18,7 @@ package org.kuali.rice.kew.actionlist;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -81,7 +82,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.saveDocument("");
 
-        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should not be any outbox items", 0, outbox.size());
     }
 
@@ -104,8 +105,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId,
-                new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         outbox = KEWServiceLocator.getActionListService().getOutboxItemsByDocumentType(document.getDocumentTypeName());
@@ -113,7 +113,7 @@ public class OutboxTest extends KEWTestCase {
 
         List<String> outBoxItemIds = new ArrayList();
         ActionItem actionItem = null;
-        for (Iterator<ActionItem> iterator = outbox.iterator(); iterator.hasNext(); ) {
+        for (Iterator<OutboxItemActionListExtension> iterator = outbox.iterator(); iterator.hasNext(); ) {
             actionItem = iterator.next();
             outBoxItemIds.add(actionItem.getId());
         }
@@ -148,7 +148,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());

@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -68,12 +69,12 @@ public class ActionListServiceImpl implements ActionListService {
         return getActionItemDAO().findPrimaryDelegationRecipients(principalId);
     }
 
-    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter) {
-         return getActionListDAO().getActionList(principalId, filter);
+    public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter) {
+        return getActionListDAO().getActionList(principalId, filter);
     }
 
-    public Collection<ActionItem> getActionListForSingleDocument(String documentId) {
-         return getActionListDAO().getActionListForSingleDocument(documentId);
+    public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId) {
+        return getActionListDAO().getActionListForSingleDocument(documentId);
     }
 
     public void setActionListDAO(ActionListDAO actionListDAO) {
@@ -85,9 +86,9 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void deleteActionItem(ActionItem actionItem) {
-    	deleteActionItem(actionItem, false);
+        deleteActionItem(actionItem, false);
     }
-    
+
     public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox) {
         getActionItemDAO().deleteActionItem(actionItem);
         // remove notification from KCB
@@ -168,7 +169,7 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public GroupService getGroupService(){
-    	return KimApiServiceLocator.getGroupService();
+        return KimApiServiceLocator.getGroupService();
     }
 
     public void setActionItemDAO(ActionItemDAO actionItemDAO) {
@@ -183,8 +184,8 @@ public class ActionListServiceImpl implements ActionListService {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
                     .getId().toString()));
         } else {
-        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
-        	if (principal == null) {
+            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+            if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
                         actionItem.getId().toString()));
             }
@@ -250,7 +251,7 @@ public class ActionListServiceImpl implements ActionListService {
         } else {
             // if the doc type doc handler url is blank, verify that the action item doc handler url is also blank
             if (StringUtils.isNotBlank(actionItem.getDocHandlerURL())) {
-                errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url not empty.", "actionitem.dochdrurl.not.empty", 
+                errors.add(new WorkflowServiceErrorImpl("ActionItem doc handler url not empty.", "actionitem.dochdrurl.not.empty",
                         actionItem.getId().toString()));
             }
         }
@@ -278,11 +279,11 @@ public class ActionListServiceImpl implements ActionListService {
      *
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#getOutbox(java.lang.String, org.kuali.rice.kew.actionlist.ActionListFilter)
      */
-    public Collection<ActionItem> getOutbox(String principalId, ActionListFilter filter) {
+    public Collection<OutboxItemActionListExtension> getOutbox(String principalId, ActionListFilter filter) {
         return this.getActionListDAO().getOutbox(principalId, filter);
     }
 
-    public Collection<ActionItem> getOutboxItemsByDocumentType(String documentTypeName) {
+    public Collection<OutboxItemActionListExtension> getOutboxItemsByDocumentType(String documentTypeName) {
         return this.getActionItemDAO().getOutboxItemsByDocumentType(documentTypeName);
     }
 
@@ -296,9 +297,9 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     public void saveOutboxItem(ActionItem actionItem) {
-    	saveOutboxItem(actionItem, false);
+        saveOutboxItem(actionItem, false);
     }
-    
+
     /**
      *
      * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
@@ -306,40 +307,40 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.ActionItem, boolean)
      */
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
-    	UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
-    	Boolean isUsingOutBox = true;
-    	List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KewApiConstants.USE_OUT_BOX);
-    	if (options == null || options.isEmpty()){
-    		isUsingOutBox = true;
-    	} else {
-			for (Iterator iter = options.iterator(); iter.hasNext();) {
-				UserOptions u = (UserOptions) iter.next();
-				if (u.getOptionVal() == null || !(u.getOptionVal().equals("yes"))){
-					isUsingOutBox = false;
-				}
-			}
-    	}
-    	
-    	if (isUsingOutBox
-            && ConfigContext.getCurrentContextConfig().getOutBoxOn()
-            && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getDocumentId(), actionItem.getPrincipalId()) == null
-            && !KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()).getDocRouteStatus().equals(
-                    		KewApiConstants.ROUTE_HEADER_SAVED_CD)) {
+        UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
+        Boolean isUsingOutBox = true;
+        List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KewApiConstants.USE_OUT_BOX);
+        if (options == null || options.isEmpty()){
+            isUsingOutBox = true;
+        } else {
+            for (Iterator iter = options.iterator(); iter.hasNext();) {
+                UserOptions u = (UserOptions) iter.next();
+                if (u.getOptionVal() == null || !(u.getOptionVal().equals("yes"))){
+                    isUsingOutBox = false;
+                }
+            }
+        }
 
-    		// only create an outbox item if this user has taken action on the document
-    		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
-    				actionItem.getActionRequestId());
-    		ActionTakenValue actionTaken = actionRequest.getActionTaken();
-    		// if an action was taken...
-    		if (forceIntoOutbox || (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId()))) {
-    			this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
-    		}
-       
-    	}
+        if (isUsingOutBox
+                && ConfigContext.getCurrentContextConfig().getOutBoxOn()
+                && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getDocumentId(), actionItem.getPrincipalId()) == null
+                && !KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()).getDocRouteStatus().equals(
+                KewApiConstants.ROUTE_HEADER_SAVED_CD)) {
+
+            // only create an outbox item if this user has taken action on the document
+            ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
+                    actionItem.getActionRequestId());
+            ActionTakenValue actionTaken = actionRequest.getActionTaken();
+            // if an action was taken...
+            if (forceIntoOutbox || (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId()))) {
+                this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
+            }
+
+        }
     }
-    
-	public Collection<ActionItem> findByPrincipalId(String principalId) {
-		return getActionItemDAO().findByPrincipalId(principalId);
-	}
+
+    public Collection<ActionItem> findByPrincipalId(String principalId) {
+        return getActionItemDAO().findByPrincipalId(principalId);
+    }
 
 }

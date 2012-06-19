@@ -49,37 +49,37 @@ import java.util.List;
 public class ActionListFilterAction extends KualiAction {
 
     @Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
-    	request.setAttribute("preferences", this.getUserSession().retrieveObject(KewApiConstants.PREFERENCES));
-		initForm(request, form);
-		return super.execute(mapping, form, request, response);
-	}
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+                                 HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
+        request.setAttribute("preferences", this.getUserSession().retrieveObject(KewApiConstants.PREFERENCES));
+        initForm(request, form);
+        return super.execute(mapping, form, request, response);
+    }
 
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.krad.web.struts.action.KualiAction#getReturnLocation(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping)
-	 */
-	@Override
-	protected String getReturnLocation(HttpServletRequest request,
-			ActionMapping mapping)
-	{
-    	String mappingPath = mapping.getPath();
-    	String basePath = getApplicationBaseUrl();
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.web.struts.action.KualiAction#getReturnLocation(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping)
+     */
+    @Override
+    protected String getReturnLocation(HttpServletRequest request,
+                                       ActionMapping mapping)
+    {
+        String mappingPath = mapping.getPath();
+        String basePath = getApplicationBaseUrl();
         return basePath + KewApiConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
-	}
+    }
 
-	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         final UserSession uSession = getUserSession();
         final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
         if (filter != null) {
             if (filterForm.getDocTypeFullName() != null && ! "".equals(filterForm.getDocTypeFullName())) {
-            	filter.setDocumentType(filterForm.getDocTypeFullName());
-            	uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
+                filter.setDocumentType(filterForm.getDocTypeFullName());
+                uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
                 filterForm.setFilter(filter);
             } else {
                 filterForm.setFilter(filter);
@@ -95,10 +95,10 @@ public class ActionListFilterAction extends KualiAction {
         final UserSession uSession = getUserSession();
         ActionListFilter alFilter = filterForm.getLoadedFilter();
         if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KewApiConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
-        		StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
-        	// If the primary and secondary delegation drop-downs are both visible and are both set to non-default values,
-        	// then reset the secondary delegation drop-down to its default value.
-        	alFilter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
+                StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
+            // If the primary and secondary delegation drop-downs are both visible and are both set to non-default values,
+            // then reset the secondary delegation drop-down to its default value.
+            alFilter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
         }
         uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
@@ -136,33 +136,33 @@ public class ActionListFilterAction extends KualiAction {
     }
 
     private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {
-    	List<String> userWorkgroups =
-            KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
+        List<String> userWorkgroups =
+                KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
 
         //note that userWorkgroups is unmodifiable so we need to create a new list that we can sort
         List<String> userGroupsToSort = new ArrayList<String>(userWorkgroups);
 
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
-    	KeyValue keyValue = null;
-    	keyValue = new ConcreteKeyValue(KewApiConstants.NO_FILTERING, KewApiConstants.NO_FILTERING);
-    	sortedUserWorkgroups.add(keyValue);
-    	if (userGroupsToSort != null && userGroupsToSort.size() > 0) {
-    		Collections.sort(userGroupsToSort);
+        KeyValue keyValue = null;
+        keyValue = new ConcreteKeyValue(KewApiConstants.NO_FILTERING, KewApiConstants.NO_FILTERING);
+        sortedUserWorkgroups.add(keyValue);
+        if (userGroupsToSort != null && userGroupsToSort.size() > 0) {
+            Collections.sort(userGroupsToSort);
 
-    		Group group;
+            Group group;
             for (String groupId : userGroupsToSort)
             {
                 group = KimApiServiceLocator.getGroupService().getGroup(groupId);
                 keyValue = new ConcreteKeyValue(groupId, group.getName());
                 sortedUserWorkgroups.add(keyValue);
             }
-    	}
-    	return sortedUserWorkgroups;
+        }
+        return sortedUserWorkgroups;
     }
 
-	private UserSession getUserSession(){
-		return GlobalVariables.getUserSession();
-	}
-	
+    private UserSession getUserSession(){
+        return GlobalVariables.getUserSession();
+    }
+
 }
 

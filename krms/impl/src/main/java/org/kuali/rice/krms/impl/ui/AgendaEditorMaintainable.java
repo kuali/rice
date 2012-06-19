@@ -161,8 +161,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             String namespace) {// Get the term resolver for the term spec
 
         List<TermResolverDefinition> resolvers =
-                KrmsRepositoryServiceLocator.getTermBoService().getTermResolversByOutputId(
-                        termSpecId, namespace);
+                KrmsRepositoryServiceLocator.getTermBoService().findTermResolversByOutputId(termSpecId, namespace);
 
         TermResolverDefinition simplestResolver = null;
 

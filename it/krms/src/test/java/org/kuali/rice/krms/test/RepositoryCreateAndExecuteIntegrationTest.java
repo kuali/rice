@@ -190,7 +190,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         assertTrue("rule 0 should have evaluated to true", ruleEvaluationResults1.get(0).getResult());
 
-        // ONLY agenda 1 should have been selected
+        // ONLY agenda 5 should have been selected
         assertTrue(TestActionTypeService.actionFired("Agenda5::Rule5::TestAction"));
 
         assertAgendaDidNotExecute(AGENDA1);
@@ -545,7 +545,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         // Term 1
         TermDefinition termDefinition =
             TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(termSpec), null).build();
-        termDefinition = termBoService.createTermDefinition(termDefinition);
+        termDefinition = termBoService.createTerm(termDefinition);
 
         return termDefinition;
     }
@@ -653,7 +653,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         // Term
         TermDefinition termDefinition2 =
             TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singletonList(termParamBuilder2)).build();
-        termDefinition2 = termBoService.createTermDefinition(termDefinition2);
+        termDefinition2 = termBoService.createTerm(termDefinition2);
 
 		// KrmsType for TermResolver
 		KrmsTypeDefinition.Builder krmsTermResolverTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestResolverType", nameSpace);

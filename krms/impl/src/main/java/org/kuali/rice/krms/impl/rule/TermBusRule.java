@@ -61,7 +61,7 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
 
     private boolean validateId(TermBo term) {
         if (StringUtils.isNotBlank(term.getId())) {
-            TermDefinition termInDatabase = getTermBoService().getTermById(term.getId());
+            TermDefinition termInDatabase = getTermBoService().getTerm(term.getId());
             if ((termInDatabase  != null) && (!StringUtils.equals(termInDatabase.getId(), term.getId()))) {
                 this.putFieldError(KRMSPropertyConstants.Term.TERM_ID, "error.term.duplicateId");
                 return false;

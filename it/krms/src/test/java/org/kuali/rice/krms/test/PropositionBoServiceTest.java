@@ -96,7 +96,7 @@ public class PropositionBoServiceTest extends AbstractBoTest {
 //		// Term
 //		TermDefinition termDefinition = 
 //			TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singleton(termParamBuilder)).build();
-//		propositionBoService.createTermDefinition(termDefinition);
+//		propositionBoService.createTerm(termDefinition);
 	}
 
 }

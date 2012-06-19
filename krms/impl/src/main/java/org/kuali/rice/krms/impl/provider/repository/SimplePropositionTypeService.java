@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.api.engine.Term;
@@ -34,6 +28,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
+import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.framework.engine.Function;
 import org.kuali.rice.krms.framework.engine.Proposition;
@@ -47,8 +42,13 @@ import org.kuali.rice.krms.framework.engine.expression.FunctionExpression;
 import org.kuali.rice.krms.framework.engine.expression.TermExpression;
 import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
-import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A default implementation of {@link PropositionTypeService} for propositions
@@ -61,9 +61,9 @@ import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
  */
 public class SimplePropositionTypeService implements PropositionTypeService {
 
-	private TermBoService termBoService;
-	private FunctionRepositoryService functionRepositoryService;
-	private KrmsTypeResolver typeResolver;
+    private FunctionRepositoryService functionRepositoryService;
+    private TermRepositoryService termRepositoryService;
+    private KrmsTypeResolver typeResolver;
     private ComparisonOperatorService comparisonOperatorService;
 	
 	@Override
@@ -128,7 +128,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 			} else if (parameterType == PropositionParameterType.TERM) {
 				String termId = parameter.getValue();
 
-				TermDefinition termDefinition = termBoService.getTermById(termId);
+				TermDefinition termDefinition = getTermRepositoryService().getTerm(termId);
 				if (termDefinition == null) { throw new RepositoryDataException("unable to load term with id " + termId);}
 				Term term = translateTermDefinition(termDefinition);
 				
@@ -175,14 +175,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 		return new Term(termSpecificationDefinition.getName(), paramsMap);
 	}
 
-	/**
-	 * @param termBoService the termBoService to set
-	 */
-	public void setTermBoService(TermBoService termBoService) {
-		this.termBoService = termBoService;
-	}
-
-	public void setFunctionRepositoryService(FunctionRepositoryService functionRepositoryService) {
+    public void setFunctionRepositoryService(FunctionRepositoryService functionRepositoryService) {
 		this.functionRepositoryService = functionRepositoryService;
 	}
 	
@@ -196,5 +189,13 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 
     public void setComparisonOperatorService(ComparisonOperatorService comparisonOperatorService) {
         this.comparisonOperatorService = comparisonOperatorService;
+    }
+
+    public TermRepositoryService getTermRepositoryService() {
+        return termRepositoryService;
+    }
+
+    public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
+        this.termRepositoryService = termRepositoryService;
     }
 }

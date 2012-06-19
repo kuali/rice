@@ -81,4 +81,110 @@
     <property name="servicePath" value="#{ T(org.kuali.rice.krms.api.KrmsConstants).SERVICE_PATH_SOAP }"/>
   </bean>
 
+
+  <!--                                                                             -->
+  <!--                                                                             -->
+  <!-- All the services that need to be local to execute rules from the repository -->
+  <!--                                                                             -->
+  <!--                                                                             -->
+
+
+  <bean id="rice.krms.engine" class="org.kuali.rice.krms.framework.engine.ProviderBasedEngine">
+    <property name="contextProvider" ref="contextProvider"/>
+  </bean>
+
+  <bean id="contextProvider" class="org.kuali.rice.krms.impl.provider.repository.RuleRepositoryContextProvider">
+    <property name="ruleRepositoryService" ref="ruleRepositoryService"/>
+    <property name="repositoryToEngineTranslator" ref="repositoryToEngineTranslator"/>
+  </bean>
+
+  <bean id="repositoryToEngineTranslator" class="org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl">
+    <property name="ruleRepositoryService" ref="ruleRepositoryService"/>
+    <property name="termRepositoryService" ref="termRepositoryService"/>
+    <property name="typeResolver" ref="krmsTypeResolver"/>
+  </bean>
+
+  <bean id="krmsTypeResolver" class="org.kuali.rice.krms.impl.type.KrmsTypeResolverImpl">
+    <property name="typeRepositoryService" ref="krmsTypeRepositoryService"/>
+    <property name="defaultCompoundPropositionTypeService" ref="compoundPropositionTypeService"/>
+    <property name="defaultSimplePropositionTypeService" ref="simplePropositionTypeService"/>
+  </bean>
+
+  <bean id="compoundPropositionTypeService" class="org.kuali.rice.krms.impl.provider.repository.CompoundPropositionTypeService">
+    <property name="translator" ref="repositoryToEngineTranslator"/>
+  </bean>
+
+  <bean id="simplePropositionTypeService" class="org.kuali.rice.krms.impl.provider.repository.SimplePropositionTypeService">
+    <property name="typeResolver" ref="krmsTypeResolver"/>
+    <property name="functionRepositoryService" ref="functionRepositoryService"/>
+    <property name="termRepositoryService" ref="termRepositoryService"/>
+    <property name="comparisonOperatorService" ref="comparisonOperatorService"/>
+  </bean>
+
+  <bean id="comparisonOperatorService"
+        class="org.kuali.rice.krms.framework.engine.expression.ComparisonOperatorServiceImpl"
+        factory-method="getInstance">
+    <property name="stringCoercionExtensions">
+      <list><!-- your beans here --></list>
+    </property>
+  </bean>
+
+  <!-- default type services -->
+
+  <bean id="configurationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiConfigurationService"/>
+  </bean>
+
+  <bean id="notificationPeopleFlowActionTypeService"
+        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService" factory-method="getInstance">
+    <constructor-arg>
+      <value>NOTIFICATION</value>
+    </constructor-arg>
+    <property name="configurationService" ref="configurationService"/>
+  </bean>
+
+  <bean id="approvalPeopleFlowActionTypeService"
+        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService" factory-method="getInstance">
+    <constructor-arg>
+      <value>APPROVAL</value>
+    </constructor-arg>
+    <property name="configurationService" ref="configurationService"/>
+  </bean>
+
+  <bean id="defaultRuleTypeService" class="org.kuali.rice.krms.impl.type.RuleTypeServiceBase"/>
+
+  <bean id="validationRuleTypeService" class="org.kuali.rice.krms.impl.validation.ValidationRuleTypeServiceImpl">
+    <property name="repositoryToEngineTranslator">
+      <ref bean="repositoryToEngineTranslator" />
+    </property>
+  </bean>
+
+  <bean id="validationActionTypeService" class="org.kuali.rice.krms.impl.validation.ValidationActionTypeServiceImpl"/>
+
+  <!-- result logger -->
+
+  <bean id="resultLogger" class="org.kuali.rice.krms.framework.engine.ResultLogger" factory-method="getInstance"/>
+
+  <!-- register result loggers -->
+
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"><ref local="resultLogger"/></property>
+    <property name="targetMethod"><value>addListener</value></property>
+    <property name="arguments">
+      <list>
+        <bean class="org.kuali.rice.krms.framework.engine.result.EngineResultListener"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject"><ref local="resultLogger"/></property>
+    <property name="targetMethod"><value>addListener</value></property>
+    <property name="arguments">
+      <list>
+        <bean class="org.kuali.rice.krms.framework.engine.result.Log4jResultListener"/>
+      </list>
+    </property>
+  </bean>
+
 </beans>

@@ -43,10 +43,14 @@ import java.util.List;
 public interface RuleRepositoryService {
 
 	/**
-	 * Locates a ContextDefinition based on the given map of context qualifiers.
+	 * Locates a ContextDefinition based on the given map of context qualifiers. The requirements for valid selection
+     * criteria are implementation dependent.  An IllegalArgumentException may be thrown if the implementation can't
+     * operate with the given criteria.
 	 * 
 	 * @param contextSelectionCriteria
 	 * @return
+     * @see ContextSelectionCriteria
+     * @throws IllegalArgumentException if the implementation can't handle the given ContextSelectionCriteria
 	 */
 	@WebMethod(operationName = "selectContext")
 	@WebResult(name = "contextDefinition")

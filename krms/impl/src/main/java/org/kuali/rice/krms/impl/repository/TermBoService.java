@@ -34,13 +34,15 @@ public interface TermBoService {
 	// TODO: javadocs
     @Cacheable(value= TermSpecificationDefinition.Cache.NAME, key="'id=' + #p0")
 	TermSpecificationDefinition getTermSpecificationById(String id);
+
     @CacheEvict(value={TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
 	TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec);
 
     @Cacheable(value= TermDefinition.Cache.NAME, key="'id=' + #p0")
-    TermDefinition getTermById(String id);
+    TermDefinition getTerm(String id);
+
     @CacheEvict(value={TermDefinition.Cache.NAME}, allEntries = true)
-	TermDefinition createTermDefinition(TermDefinition termDef);
+	TermDefinition createTerm(TermDefinition termDef);
 
     @Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0")
 	TermResolverDefinition getTermResolverById(String id);
@@ -54,10 +56,11 @@ public interface TermBoService {
      * @return the List of term resolvers found.  If none are found, an empty list will be returned.
      */
     @Cacheable(value= TermResolverDefinition.Cache.NAME, key="'id=' + #p0 + '|' + 'namespace=' + #p1")
-    List<TermResolverDefinition> getTermResolversByOutputId(String id, String namespace);
+    List<TermResolverDefinition> findTermResolversByOutputId(String id, String namespace);
 
     @Cacheable(value= TermResolverDefinition.Cache.NAME, key="'namespace=' + #p0")
-    List<TermResolverDefinition> getTermResolversByNamespace(String namespace);
+    List<TermResolverDefinition> findTermResolversByNamespace(String namespace);
+
     @CacheEvict(value={TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
 	TermResolverDefinition createTermResolver(TermResolverDefinition termResolver);
 }

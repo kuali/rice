@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -34,13 +28,12 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
 import org.kuali.rice.krms.framework.engine.AgendaTreeEntry;
-import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicContext;
@@ -50,10 +43,14 @@ import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
-import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO... 
@@ -64,10 +61,9 @@ import org.springframework.util.CollectionUtils;
 public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTranslator {
 
 	private RuleRepositoryService ruleRepositoryService;
-	private KrmsTypeRepositoryService typeRepositoryService;
+    private TermRepositoryService termRepositoryService;
 	private KrmsTypeResolver typeResolver;
-	private TermBoService termBoService;
-	
+
 	@Override
 	public Context translateContextDefinition(ContextDefinition contextDefinition) {
 		if (contextDefinition == null) {
@@ -80,7 +76,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		}
 		
 		List<TermResolverDefinition> termResolverDefs = 
-			termBoService.getTermResolversByNamespace(contextDefinition.getNamespace());
+			termRepositoryService.findTermResolversByNamespace(contextDefinition.getNamespace());
 		
 		List<TermResolver<?>> termResolvers = new ArrayList<TermResolver<?>>();
 
@@ -297,22 +293,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 			RuleRepositoryService ruleRepositoryService) {
 		this.ruleRepositoryService = ruleRepositoryService;
 	}
-	
-	/**
-	 * @param termBoService the termBoService to set
-	 */
-	public void setTermBoService(TermBoService termBoService) {
-		this.termBoService = termBoService;
-	}
-	
-	/**
-	 * @param typeRepositoryService the typeRepositoryService to set
-	 */
-	public void setTypeRepositoryService(
-			KrmsTypeRepositoryService typeRepositoryService) {
-		this.typeRepositoryService = typeRepositoryService;
-	}
-	
+
 	/**
 	 * @param typeResolver the typeResolver to set
 	 */
@@ -320,4 +301,11 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		this.typeResolver = typeResolver;
 	}
 
+    public TermRepositoryService getTermRepositoryService() {
+        return termRepositoryService;
+    }
+
+    public void setTermRepositoryService(TermRepositoryService termRepositoryService) {
+        this.termRepositoryService = termRepositoryService;
+    }
 }

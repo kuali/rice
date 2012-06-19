@@ -559,7 +559,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         // Term 1
         TermDefinition termDefinition1 =
             TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(campusCodeTermSpec), null).build();
-        termDefinition1 = termBoService.createTermDefinition(termDefinition1);
+        termDefinition1 = termBoService.createTerm(termDefinition1);
 
         return termDefinition1;
     }
@@ -574,7 +574,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         // Term 1
         TermDefinition termDefinition1 =
             TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(termSpec), null).build();
-        termDefinition1 = termBoService.createTermDefinition(termDefinition1);
+        termDefinition1 = termBoService.createTerm(termDefinition1);
 
         return termDefinition1;
     }

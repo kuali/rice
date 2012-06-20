@@ -820,10 +820,22 @@ function showLightboxComponent(componentId, overrideOptions) {
     }
 
     if (top == self) {
-        // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {afterClose:function() {jQuery('#kualiForm').append(jQuery('#' + componentId).detach());}});
+        var component = jQuery('#' + componentId);
 
-        _initAndOpenLightbox({type:'inline', href:'#' + componentId}, overrideOptions);
+        // ensure that component of KualiForm gets updated after fancybox closes
+        var cssDisplay = component.css('display');
+        _appendCallbackFunctions(overrideOptions, {afterClose:function() {
+            // for some reason fancybox retains the tmpLightbox_ prefix somehow when an ajax call is executed
+            removeIdPrefix(jQuery('#tmpLightbox_' + componentId), 'tmpLightbox_');
+
+            jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
+            jQuery('#' + componentId).css('display', cssDisplay);}});
+
+        // clone the content for the lightbox and make the element id unique
+        var comp = component.clone(true,true);
+        runHiddenScriptsOnLightbox(comp);
+        showLightboxContent(comp, overrideOptions);
+        addIdPrefix(component, 'tmpForm_');
     } else {
         // reattach component to KualiForm after fancybox closes
         _appendCallbackFunctions(overrideOptions, {afterClose:function() {jQuery('#iframeportlet').contents().find('#kualiForm').append(jQuery('#' + componentId).detach());}});
@@ -871,12 +883,12 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         closeEffect : 'fade',
         openSpeed : 200,
         closeSpeed : 200,
-        helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}},
-        afterShow : function(){
-            jQuery("input[script='first_run']").each(function(){
-            eval(jQuery(this).val());
-            jQuery(this).removeAttr("script");});
-        }
+        helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}}
+//        afterShow : function(){
+//            jQuery("input[script='first_run']").each(function(){
+//            eval(jQuery(this).val());
+//            jQuery(this).removeAttr("script");});
+//        }
     };
 
     // override fancybox content options
@@ -886,6 +898,8 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
     if (overrideOptions !== undefined) {
         _mergeOptionsMap(options, overrideOptions);
     }
+
+//    _appendCallbackFunctions(options, {afterShow:runHiddenScriptsOnLightbox()});
 
     // Open the light box
     if (top == self) {
@@ -932,6 +946,31 @@ function setupLightboxFormOutsidePortal() {
 }
 
 /**
+ * Run hidden scripts on lightbox content
+ *
+ * <p>
+ * Under certain circumstances the event handlers don't exist.  This method removes any existing event handlers and
+ * reloads them.
+ * </p>
+ */
+function runHiddenScriptsOnLightbox(component){
+    // ensure no old script bindings linger around
+//    jQuery("#kualiLightboxForm").find("*").off();
+    component.find("*").off();
+
+//    jQuery("#kualiLightboxForm input[data-role='dataScript']").each(function(){
+    component.find("input[data-role='dataScript']").each(function(){
+            eval(jQuery(this).val());
+        jQuery(this).removeAttr("script");
+    });
+//    jQuery("#kualiLightboxForm input[script='first_run']").each(function(){
+    component.find("input[script='first_run']").each(function(){
+            eval(jQuery(this).val());
+        jQuery(this).removeAttr("script");
+    });
+}
+
+/**
  * Internal function for merging fancybox options
  *
  * <p>
@@ -973,4 +1012,43 @@ function _appendCallbackFunctions(options, appendCallbackFunctions) {
             }
         }
     }
+}
+
+/**
+ * Add a prefix to the component id and all the ids of its children
+ *
+ * @param component
+ * @param prefix to be added
+ * @return updated component
+ */
+function addIdPrefix(component, prefix) {
+    if (component.attr("id") != undefined) {
+        component.attr("id", prefix + component.attr("id"));
+    }
+    component.find('*').each(function(){
+        if (jQuery(this).attr("id") != undefined) {
+            jQuery(this).attr("id", prefix + jQuery(this).attr("id"))
+        }});
+    return component;
+}
+
+/**
+ * Remove a prefix from the component id and all the ids of its children
+ *
+ * @param component
+ * @param prefix to be removed
+ * @return updated component
+ */
+function removeIdPrefix(component, prefix) {
+    if (component.length > 0) {
+        var regexp = new RegExp("^" + prefix);
+        if (component.attr("id") != undefined) {
+            component.attr("id", component.attr("id").replace(regexp, ""));
+        }
+        component.find('*').each(function() {
+            if (jQuery(this).attr("id") != undefined) {
+                jQuery(this).attr("id", jQuery(this).attr("id").replace(regexp, ""));
+            }});
+    }
+    return component;
 }

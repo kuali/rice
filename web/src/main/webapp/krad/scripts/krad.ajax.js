@@ -60,6 +60,13 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
         jsonViewState = jsonViewState.replace(/"/g, "'");
         jQuery.extend(data, {clientViewState: jsonViewState});
     }
+
+    // check if called from a lightbox.  if it is set the componentId
+    var componentId = undefined;
+    if (jQuery('#kualiLightboxForm').children(':first').length == 1) {
+        componentId = jQuery('#kualiLightboxForm').children(':first').attr('id');
+    }
+
 	
 	var submitOptions = {
 			data: data, 
@@ -72,7 +79,16 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				}
 
                 jQuery("#formComplete").html("");
-			},
+
+                //for lightbox copy data back into lightbox
+                if (componentId !== undefined) {
+                    var component = jQuery('#' + componentId).clone(true, true);
+                    addIdPrefix( jQuery('#' + componentId), 'tmpForm_');
+                    jQuery('#tmpLightbox_' + componentId).replaceWith(component);
+                    jQuery('#' + componentId).css('display', '');
+                }
+
+            },
             error: function(jqXHR, textStatus) {
                 alert( "Request failed: " + textStatus );
             }
@@ -111,6 +127,13 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 	}
     //hide any tooltips that may be showing
     hideBubblePopups();
+
+    //for lightbox copy data back into form
+    if (componentId !== undefined) {
+        var component = jQuery('#' + componentId).clone(true, true);
+        addIdPrefix( jQuery('#' + componentId), 'tmpLightbox_');
+        jQuery('#tmpForm_' + componentId).replaceWith(component);
+    }
 
     jQuery.extend(submitOptions, elementBlockingOptions);
 	var form = jQuery("#kualiForm");

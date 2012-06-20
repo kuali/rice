@@ -832,9 +832,7 @@ function showLightboxComponent(componentId, overrideOptions) {
             jQuery('#' + componentId).css('display', cssDisplay);}});
 
         // clone the content for the lightbox and make the element id unique
-        var comp = component.clone(true,true);
-        runHiddenScriptsOnLightbox(comp);
-        showLightboxContent(comp, overrideOptions);
+        showLightboxContent(component.clone(true,true), overrideOptions);
         addIdPrefix(component, 'tmpForm_');
     } else {
         // reattach component to KualiForm after fancybox closes
@@ -884,11 +882,6 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         openSpeed : 200,
         closeSpeed : 200,
         helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}}
-//        afterShow : function(){
-//            jQuery("input[script='first_run']").each(function(){
-//            eval(jQuery(this).val());
-//            jQuery(this).removeAttr("script");});
-//        }
     };
 
     // override fancybox content options
@@ -898,8 +891,6 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
     if (overrideOptions !== undefined) {
         _mergeOptionsMap(options, overrideOptions);
     }
-
-//    _appendCallbackFunctions(options, {afterShow:runHiddenScriptsOnLightbox()});
 
     // Open the light box
     if (top == self) {
@@ -916,7 +907,6 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         parent.jQuery.fancybox(options);
         setupLightboxFormOutsidePortal();
     }
-
 }
 
 /**
@@ -943,31 +933,6 @@ function setupLightboxFormOutsidePortal() {
 
 //    parent.jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
-}
-
-/**
- * Run hidden scripts on lightbox content
- *
- * <p>
- * Under certain circumstances the event handlers don't exist.  This method removes any existing event handlers and
- * reloads them.
- * </p>
- */
-function runHiddenScriptsOnLightbox(component){
-    // ensure no old script bindings linger around
-//    jQuery("#kualiLightboxForm").find("*").off();
-    component.find("*").off();
-
-//    jQuery("#kualiLightboxForm input[data-role='dataScript']").each(function(){
-    component.find("input[data-role='dataScript']").each(function(){
-            eval(jQuery(this).val());
-        jQuery(this).removeAttr("script");
-    });
-//    jQuery("#kualiLightboxForm input[script='first_run']").each(function(){
-    component.find("input[script='first_run']").each(function(){
-            eval(jQuery(this).val());
-        jQuery(this).removeAttr("script");
-    });
 }
 
 /**

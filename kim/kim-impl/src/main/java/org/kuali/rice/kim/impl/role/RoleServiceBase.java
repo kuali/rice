@@ -15,12 +15,22 @@
  */
 package org.kuali.rice.kim.impl.role;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -33,10 +43,9 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -45,15 +54,6 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 abstract class RoleServiceBase {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
@@ -322,6 +322,13 @@ abstract class RoleServiceBase {
         }
         return getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, roleId);
     }
+    
+    protected RoleBoLite getRoleBoLite(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            return null;
+        }
+        return getBusinessObjectService().findBySinglePrimaryKey(RoleBoLite.class, roleId);
+    }
 
     protected DelegateTypeBo getDelegationOfType(String roleId, DelegationType delegationType) {
         List<DelegateTypeBo> roleDelegates = getRoleDelegations(roleId);
@@ -334,7 +341,7 @@ abstract class RoleServiceBase {
 
     private DelegateTypeBo getSecondaryDelegation(String roleId, List<DelegateTypeBo> roleDelegates) {
         DelegateTypeBo secondaryDelegate = null;
-        RoleBo roleBo = getRoleBo(roleId);
+        RoleBoLite roleBo = getRoleBoLite(roleId);
         for (DelegateTypeBo delegate : roleDelegates) {
             if (isDelegationSecondary(delegate.getDelegationType())) {
                 secondaryDelegate = delegate;
@@ -351,7 +358,7 @@ abstract class RoleServiceBase {
 
     protected DelegateTypeBo getPrimaryDelegation(String roleId, List<DelegateTypeBo> roleDelegates) {
         DelegateTypeBo primaryDelegate = null;
-        RoleBo roleBo = getRoleBo(roleId);
+        RoleBoLite roleBo = getRoleBoLite(roleId);
         for (DelegateTypeBo delegate : roleDelegates) {
             if (isDelegationPrimary(delegate.getDelegationType())) {
                 primaryDelegate = delegate;
@@ -481,7 +488,7 @@ abstract class RoleServiceBase {
      * @return the Role Type Service
      */
     protected RoleTypeService getRoleTypeService(String roleId) {
-        RoleBo roleBo = getRoleBo(roleId);
+        RoleBoLite roleBo = getRoleBoLite(roleId);
         KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
         if (roleType != null) {
             return getRoleTypeService(roleType);

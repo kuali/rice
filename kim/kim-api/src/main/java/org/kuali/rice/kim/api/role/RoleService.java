@@ -315,11 +315,32 @@ public interface RoleService {
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
     @Cacheable(value= RoleMember.Cache.NAME,
-               key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2)",
+               key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2) + '|' + 'checkDelegations=true'",
                condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDynamicRoleMembership(#p1)" )
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
             @WebParam(name="roleIds") List<String> roleIds,
             @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
+            throws RiceIllegalArgumentException;
+    
+    /**
+     * Returns whether the given principal has any of the passed role IDs with the given qualification.
+     *
+     * @param principalId the principal Id to check.
+     * @param roleIds the list of role ids.
+     * @param qualification the qualifications for the roleIds.
+     * @param checkDelegations whether delegations should be checked or not
+     * @return true if the principal is assigned the one of the given roleIds with the passed in qualifications.
+     * @throws RiceIllegalArgumentException if roleIds is null or principalId is null or blank.
+     * @since 2.1.1
+     */
+    @WebMethod(operationName = "principalHasRoleCheckDelegation")
+    @WebResult(name = "principalHasRoleCheckDelegation")
+    @Cacheable(value= RoleMember.Cache.NAME,
+               key="'{principalHasRole}' + 'principalId=' + #p0 + '|' + 'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p1) + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p2) + '|' + 'checkDelegations=' + #p3",
+               condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isDynamicRoleMembership(#p1)" )
+    boolean principalHasRole( @WebParam(name="principalId") String principalId,
+            @WebParam(name="roleIds") List<String> roleIds,
+            @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification, boolean checkDelegations)
             throws RiceIllegalArgumentException;
 
     /**

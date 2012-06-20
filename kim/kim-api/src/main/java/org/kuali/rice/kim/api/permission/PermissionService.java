@@ -501,6 +501,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "roleIds", required = true)
     @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
+	@Cacheable(value=Permission.Cache.NAME, key="'{RoleIds}namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     List<String> getRoleIdsForPermission( @WebParam(name="namespaceCode") String namespaceCode,
     									  @WebParam(name="permissionName") String permissionName) throws RiceIllegalArgumentException;
 

@@ -824,9 +824,9 @@ function showLightboxComponent(componentId, overrideOptions) {
 
         // ensure that component of KualiForm gets updated after fancybox closes
         var cssDisplay = component.css('display');
-        _appendCallbackFunctions(overrideOptions, {afterClose:function() {
-            // for some reason fancybox retains the tmpLightbox_ prefix somehow when an ajax call is executed
-            removeIdPrefix(jQuery('#tmpLightbox_' + componentId), 'tmpLightbox_');
+        _appendCallbackFunctions(overrideOptions, {beforeClose:function() {
+            // hack fancybox to prevent it from moving the original lightbox content into the body
+            jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
             jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
             jQuery('#' + componentId).css('display', cssDisplay);}});

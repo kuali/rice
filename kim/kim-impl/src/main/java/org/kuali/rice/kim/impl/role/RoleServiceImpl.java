@@ -288,9 +288,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
 
-        RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
+        RoleBoLite roleBo = getRoleBoLiteByName(namespaceCode, roleName);
         if (roleBo != null) {
-            return RoleBo.to(roleBo);
+            return RoleBoLite.to(roleBo);
         }
         return null;
     }
@@ -534,7 +534,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(roleName, "roleName");
 
         List<String> subList = new ArrayList<String>();
-        RoleBo role = getRoleBoByName(roleNamespaceCode, roleName);
+        RoleBoLite role = getRoleBoLiteByName(roleNamespaceCode, roleName);
         for (String principalId : principalIds) {
             if (this.getProxiedRoleService().principalHasRole(principalId, Collections.singletonList(role.getId()), qualification)) {
                 subList.add(principalId);

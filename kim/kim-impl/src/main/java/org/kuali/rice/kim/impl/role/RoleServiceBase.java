@@ -411,6 +411,19 @@ abstract class RoleServiceBase {
         // while this is not actually the primary key - there will be at most one row with these criteria
         return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
     }
+    
+    protected RoleBoLite getRoleBoLiteByName(String namespaceCode, String roleName) {
+        if (StringUtils.isBlank(namespaceCode)
+                || StringUtils.isBlank(roleName)) {
+            return null;
+        }
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+        criteria.put(KimConstants.UniqueKeyConstants.NAME, roleName);
+        criteria.put(KRADPropertyConstants.ACTIVE, "Y");
+        // while this is not actually the primary key - there will be at most one row with these criteria
+        return getBusinessObjectService().findByPrimaryKey(RoleBoLite.class, criteria);
+    }
 
 	protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
 		List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);

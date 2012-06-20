@@ -16,7 +16,7 @@ limitations under the License.
 
 -->
 
-<@macro uif-agendaTree widget componentId>
+<#macro uif_agendaTree widget componentId>
 
     <#-- KRAD doesn't support hidden input fields at present.  This is a workaround for it. -->
     <#if KualiForm.viewTypeName != 'MAINTENANCE'>
@@ -29,7 +29,7 @@ limitations under the License.
     -->
     <@krad.script value="initAgendaTree('${componentId}');"/>
 
-</@macro>
+</#macro>
 
 
 

@@ -20,7 +20,7 @@
 
  -->
 
-<@macro uif-action element>
+<#macro uif_action element>
 
     <#if element.skipInTabOrder>
         <#local tabIndex="tabindex=-1"/>
@@ -97,4 +97,4 @@
 
     <@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
 
-</@macro>
+</#macro>

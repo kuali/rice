@@ -14,9 +14,9 @@
   ~ limitations under the License.
   -->
 
-<@macro uif-validationMessages element>
+<#macro uif_validationMessages element>
 
     <@krad.div component=element>
     </@krad.div>
 
-</@macro>
+</#macro>

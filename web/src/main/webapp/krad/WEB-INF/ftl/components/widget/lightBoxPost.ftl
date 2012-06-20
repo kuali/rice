@@ -16,16 +16,16 @@ limitations under the License.
 
 -->
 
-<@macro uif-lightBoxPost widget componentId>
+<#macro uif_lightBoxPost widget componentId>
 
     <#--
     Invokes JS method to implement a script linking the lightbox (fancybox) for lookups
     -->
     <@krad.script value="
-       createLightBoxPost('${componentId}', ${widget.templateOptionsJSString}, ${widget.actionParameterMapString} , ${widget.lookupReturnByScript});
+       createLightBoxPost('${componentId}', ${widget.templateOptionsJSString}, ${widget.actionParameterMapString} , ${widget.lookupReturnByScript?string});
     "/>
 
-</@macro>
+</#macro>
 
 
 

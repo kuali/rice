@@ -16,7 +16,7 @@ limitations under the License.
 
 -->
 
-<@macro uif-linkGroup group>
+<#macro uif_linkGroup group>
 
     <@krad.groupWrap group=group>
 
@@ -43,6 +43,6 @@ limitations under the License.
 
     </@krad.groupWrap>
 
-</@macro>
+</#macro>
 
 

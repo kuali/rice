@@ -28,6 +28,7 @@
   <bean id="Uif-BoxLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/box.ftl"/>
+    <property name="templateName" value="uif_box"/>
     <property name="cssClasses">
       <list>
         <value>uif-boxLayout</value>
@@ -61,6 +62,7 @@
   <bean id="Uif-GridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/grid.ftl"/>
+    <property name="templateName" value="uif_grid"/>
     <property name="cssClasses">
       <list>
         <value>uif-gridLayout</value>
@@ -96,6 +98,7 @@
   <bean id="Uif-TableCollectionLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/table.ftl"/>
+    <property name="templateName" value="uif_table"/>
     <property name="cssClasses">
       <list>
         <value>uif-tableCollectionLayout</value>
@@ -142,6 +145,7 @@
   <bean id="Uif-StackedCollectionLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/stacked.ftl"/>
+    <property name="templateName" value="uif_stacked"/>
     <property name="cssClasses">
       <list>
         <value>uif-stackedCollectionLayout</value>

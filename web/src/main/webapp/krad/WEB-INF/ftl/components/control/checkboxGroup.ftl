@@ -19,24 +19,24 @@
 
  -->
 
-<@macro uif-checkboxes control field>
+<#macro uif_checkboxes control field>
 
-    <#local attributes='id="${control.id}" label="${control.checkboxLabel}" size="${control.size!}"
-    cssClass="${control.styleClassesAsString!}"  itemValue="key" itemLabel="value" items="${control.options}"
-    delimiter="${control.delimiter!}" tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+    <#local attributes='id="${control.id}" class="${control.styleClassesAsString!}"
+            tabindex="${control.tabIndex!}" ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="true"'/>
     </#if>
 
     <#if control.style?has_content>
-        <#local attributes='${attributes} cssStyle="${control.style}"'/>
+        <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
     <fieldset aria-labelledby="${field.id}_label" class="${control.fieldsetClassesAsString}"
               data-type="CheckboxSet" id="${field.id}_fieldset">
         <legend style="display: none">${field.label}</legend>
-        <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+        <@spring.formCheckboxes path="KualiForm.${field.bindingInfo.bindingPath}" options=control.optionsMap
+                                separator="${control.delimiter!}" attributes="${attributes}"/>
     </fieldset>
 
-</@macro>
+</#macro>

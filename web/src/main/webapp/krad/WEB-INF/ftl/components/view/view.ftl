@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<@macro uif-view view>
+<#macro uif_view view>
 
     <!-- VIEW -->
     <@krad.div component=view>
@@ -49,4 +49,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

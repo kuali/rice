@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-messageField field>
+<#macro uif_messageField field>
 
     <@krad.div component=field>
 
@@ -29,4 +29,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

@@ -16,11 +16,11 @@ limitations under the License.
 
 -->
 
-<@macro uif-tabs widget parent>
+<#macro uif_tabs widget parent>
 
     <@krad.script component="${parent}" value="createTabs('${parent.id}', ${widget.templateOptionsJSString});"/>
 
-</@macro>
+</#macro>
 
 
 

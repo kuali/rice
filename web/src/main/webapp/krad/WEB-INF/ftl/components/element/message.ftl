@@ -18,7 +18,7 @@
     Renders text in a span tag
  -->
 
-<@macro uif-message element>
+<#macro uif_message element>
 
     <@krad.span component=element>
 
@@ -26,4 +26,4 @@
 
     </@krad.span>
 
-</@macro>
+</#macro>

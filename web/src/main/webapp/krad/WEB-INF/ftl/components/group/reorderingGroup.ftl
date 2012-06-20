@@ -16,11 +16,13 @@ limitations under the License.
 
 -->
 
-<@macro uif-reorderingGroup group>
+<#macro uif_reorderingGroup group>
 
     <#include "group.ftl" parse=true/>
+    <@uif_group group=group/>
+
     <@krad.template component=group.reorderer parent=group/>
 
-</@macro>
+</#macro>
 
 

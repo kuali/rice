@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-imageField field>
+<#macro uif_imageField field>
 
     <@krad.div component=field>
 
@@ -29,4 +29,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

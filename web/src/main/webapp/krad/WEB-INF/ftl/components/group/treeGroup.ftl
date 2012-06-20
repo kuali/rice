@@ -17,7 +17,7 @@ limitations under the License.
 -->
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<@macro uif-treeGroup group>
+<#macro uif_treeGroup group>
 
     <@krad.groupWrap group=group>
 
@@ -37,6 +37,6 @@ limitations under the License.
 
     </@krad.groupWrap>
 
-</@macro>
+</#macro>
 
 

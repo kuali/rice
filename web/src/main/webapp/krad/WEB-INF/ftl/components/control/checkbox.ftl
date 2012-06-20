@@ -19,20 +19,20 @@
 
  -->
 
-<@macro uif-checkbox control field>
+<#macro uif_checkbox control field>
 
     <#local attributes='id="${control.id}" label="${control.checkboxLabel!}" size="${control.size!}"
-    cssClass="${control.styleClassesAsString!}" value="${control.value!}"
-    tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+            class="${control.styleClassesAsString!}" value="${control.value!}"
+            tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="true"'/>
     </#if>
 
     <#if control.style?has_content>
-        <#local attributes='${attributes} cssStyle="${control.style}"'/>
+        <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
     <@spring.formCheckbox path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
-</@macro>
+</#macro>

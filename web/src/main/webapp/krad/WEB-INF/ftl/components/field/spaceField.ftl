@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-spaceField field>
+<#macro uif_spaceField field>
 
     <@krad.div component=field>
 
@@ -27,4 +27,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

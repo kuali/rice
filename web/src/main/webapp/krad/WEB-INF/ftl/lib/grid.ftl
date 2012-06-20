@@ -14,14 +14,15 @@
   ~ limitations under the License.
   -->
 
-<#macro grid items firstLineStyle numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
+<#macro grid items rowCssClasses=[] numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
 applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
 
-    <#local defaultCellWidth="${100/numberOfColumns}"/>
+    <#local defaultCellWidth=100/numberOfColumns/>
 
     <#local colCount=0/>
     <#local carryOverColCount=0/>
     <#local tmpCarryOverColCount=0/>
+    <#local rowCount=0/>
 
     <#list items as item>
         <#local colCount=colCount + 1/>
@@ -30,42 +31,43 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#-- begin table row -->
         <#if (colCount == 1) || (numberOfColumns == 1) || (colCount % numberOfColumns == 1)>
             <#if applyAlternatingRowStyles>
-                <#if evenOddClass == "even">
+                <#if !evenOddClass?? || evenOddClass == "even">
                     <#local eventOddClass="odd"/>
                 <#else>
                     <#local eventOddClass="even"/>
                 </#if>
             </#if>
 
-
-            <#if firstRow && firstLineStyle?has_content>
-              <tr class="${firstLineStyle}">
+            <#local trClasses="${evenOddClass!} ${rowCssClasses[rowCount]!}"/>
+            <#if trClasses?trim?has_content>
+                <tr class="${trClasses?trim}">
             <#else>
-              <tr class="${evenOddClass}">
+                <tr>
             </#if>
 
             <#-- if alternating header columns, force first cell of row to be header -->
-            <#if renderAlternatingHeaderColumns>
-                <#local renderAlternateHeader=true/>
-            </#if>
+            <#local renderAlternateHeader=renderAlternatingHeaderColumns/>
 
             <#-- if render first cell of each row as header, set cell to be rendered as header -->
-            <#if renderRowFirstCellHeader>
-                <#local renderFirstCellHeader=true/>
-            </#if>
+            <#local renderFirstCellHeader=renderRowFirstCellHeader/>
+
+            <#local rowCount=rowCount + 1/>
         </#if>
 
         <#-- build cells for row -->
 
         <#-- skip column positions from previous rowspan -->
-        <#list 1..carryOverColCount as i>
-            <#local colCount=colCount + 1/>
-            <#local carryOverColCount=carryOverColCount - 1/>
+        <#local skipColCount=carryOverColCount/>
+        <#if skipColCount gt 0>
+            <#list 1..skipColCount as i>
+                <#local colCount=colCount + 1/>
+                <#local carryOverColCount=carryOverColCount - 1/>
 
-            <#if colCount % numberOfColumns == 0>
-              </tr><tr>
-            </#if>
-        </#list>
+                <#if (colCount % numberOfColumns) == 0>
+                  </tr><tr>
+                </#if>
+            </#list>
+        </#if>
 
         <#-- determine cell width by using default or configured width -->
         <#if item.width?has_content>
@@ -89,13 +91,13 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
               <#local headerScope="row"/>
             </#if>
 
-            <th scope="${headerScope}" ${cellWidth} colspan="${item.colSpan}"
-                rowspan="${item.rowSpan}" ${attrBuild(component)}>
+            <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
+                rowspan="${item.rowSpan}" ${attrBuild(item)}>
                 <@template component=item/>
             </th>
         <#else>
-            <td role="presentation" ${cellWidth} colspan="${item.colSpan}"
-                rowspan="${item.rowSpan}" ${attrBuild(component)}>
+            <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
+                rowspan="${item.rowSpan}" ${attrBuild(item)}>
                 <@template component=item/>
             </td>
         </#if>

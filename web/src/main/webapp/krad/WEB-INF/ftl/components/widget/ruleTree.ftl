@@ -16,14 +16,14 @@ limitations under the License.
 
 -->
 
-<@macro uif-ruleTree widget componentId>
+<#macro uif_ruleTree widget componentId>
 
     <#-- keep track of the agenda item that is selected:
     <input type="hidden" name="selected_prop" value=""/>
     -->
     <@krad.script value="initRuleTree('${componentId}');"/>
 
-</@macro>
+</#macro>
 
 
 

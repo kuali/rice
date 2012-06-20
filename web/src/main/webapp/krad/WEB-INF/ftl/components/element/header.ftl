@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<@macro uif-header element>
+<#macro uif_header element>
 
     <#if element.headerStyleClassesAsString?has_content>
         <#local styleClass="class=\"${element.headerStyleClassesAsString}\""/>
@@ -36,7 +36,7 @@
         <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
             <#local group=element.context['parent']/>
             ${headerOpenTag}<span class="uif-headerText-span">${element.headerText}</span>
-            <#--@krad.template component=group.help/-->${headerCloseTag}
+            <@krad.template component=group.help/>${headerCloseTag}
 
             <#-- right group -->
             <@krad.template component=element.rightGroup/>
@@ -47,4 +47,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

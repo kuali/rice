@@ -28,6 +28,7 @@
   <bean id="Uif-GroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype"
         parent="Uif-ComponentBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/group.ftl"/>
+    <property name="templateName" value="uif_group"/>
     <property name="cssClasses">
       <list>
         <value>uif-group</value>
@@ -274,6 +275,7 @@
   <bean id="Uif-TabGroup-parentBean" abstract="true" parent="Uif-GroupBase"
         class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/tabGroup.ftl"/>
+    <property name="templateName" value="uif_tabGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-tabGroup</value>
@@ -321,6 +323,7 @@
         class="org.kuali.rice.krad.uif.container.NavigationGroup"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/navigationGroup.ftl"/>
+    <property name="templateName" value="uif_navigationGroup"/>
     <property name="cssClasses">
       <list>
         <value>uif-navigationGroup</value>
@@ -354,6 +357,7 @@
   <bean id="Uif-TreeGroup-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Uif-GroupBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/treeGroup.ftl"/>
+    <property name="templateName" value="uif_treeGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-treeGroup</value>
@@ -418,6 +422,7 @@
   <bean id="Uif-ReorderGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
         scope="prototype" parent="Uif-VerticalBoxGroup">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/reorderingGroup.ftl"/>
+    <property name="templateName" value="uif_reorderingGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderGroup</value>
@@ -430,7 +435,6 @@
 
   <bean id="Uif-ReorderSection" parent="Uif-ReorderSection-parentBean"/>
   <bean id="Uif-ReorderSection-parentBean" abstract="true" scope="prototype" parent="Uif-ReorderGroup">
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/reorderingGroup.ftl"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-reorderSection</value>
@@ -449,12 +453,13 @@
   <bean id="Uif-LinkGroup" parent="Uif-LinkGroup-parentBean"/>
   <bean id="Uif-LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup"
         parent="Uif-HorizontalBoxGroup">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/group/linkGroup.jsp"/>
+    <property name="templateName" value="uif_linkGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-linkGroup</value>
       </list>
     </property>
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/linkGroup.jsp"/>
     <property name="linkSeparator" value="&amp;nbsp;&amp;nbsp;"/>
     <property name="emptyLinkGroupString" value="&amp;nbsp;"/>
   </bean>
@@ -477,12 +482,13 @@
   <bean id="Uif-CollectionGroupBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Uif-GroupBase">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/collectionGroup.ftl"/>
+    <property name="templateName" value="uif_collectionGroup"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-collectionGroup</value>
       </list>
     </property>
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/collectionGroup.ftl"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
@@ -945,6 +951,7 @@
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-VerticalBoxGroup">
     <property name="template" value="/krad/WEB-INF/ftl/components/group/dialogGroup.ftl"/>
+    <property name="templateName" value="uif_dialogGroup"/>
     <property name="layoutManager">
       <bean parent="Uif-VerticalBoxLayout"/>
     </property>

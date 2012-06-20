@@ -14,9 +14,10 @@
   ~ limitations under the License.
   -->
 
-<@macro uif-pageGroup group>
+<#macro uif_pageGroup group>
 
     <#include "group.ftl" parse=true/>
+    <@uif_group group=group/>
 
     <!-- PAGE RELATED VARS -->
     <#if KualiForm.view.renderForm>
@@ -34,4 +35,4 @@
 
     </#if>
 
-</@macro>
+</#macro>

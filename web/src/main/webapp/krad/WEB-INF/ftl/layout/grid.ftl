@@ -29,7 +29,7 @@
       The majority of logic is implemented in grid.tag
  -->
 
-<@macro uif-grid manager>
+<#macro uif_grid items manager container>
 
     <#if manager.styleClassesAsString?has_content>
         <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
@@ -47,8 +47,8 @@
                    renderFirstRowHeader=manager.renderFirstRowHeader
                    renderRowFirstCellHeader=manager.renderRowFirstCellHeader
                    renderAlternatingHeaderColumns=manager.renderAlternatingHeaderColumns
-                   rowCssClasses="${manager.rowCssClasses}"/>
+                   rowCssClasses=manager.rowCssClasses/>
 
     </table>
 
-</@macro>
+</#macro>

@@ -16,7 +16,7 @@
 
 <#-- renders standard unordered list and calls doNavigation function -->
 
-<@macro uif-navigationGroup group>
+<#macro uif_navigationGroup group currentPageId>
 
     <!-- NAVIGATION -->
 
@@ -30,4 +30,4 @@
                          options.currentPage = '${currentPageId!}';
                          createNavigation('${group.id}', '${group.navigationType!}', options);"/>
 
-</@macro>
+</#macro>

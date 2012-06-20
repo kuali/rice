@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-fieldGroup field>
+<#macro uif_fieldGroup field>
 
     <@krad.div component=field>
 
@@ -34,4 +34,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

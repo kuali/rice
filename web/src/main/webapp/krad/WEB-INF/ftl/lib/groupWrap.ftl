@@ -24,8 +24,8 @@
             <div id="${group.id}_disclosureContent" class="uif-disclosureContent">
         </#if>
 
-        <#--@template component=group.validationMessages/>
-        <@template component=group.instructionalMessage/-->
+        <@template component=group.validationMessages/>
+        <@template component=group.instructionalMessage/>
 
         <#nested/>
 

@@ -14,9 +14,9 @@
   ~ limitations under the License.
   -->
 
-<#macro template component='' body='' componentUpdate=false tmplParms...>
+<#macro template component=[] body='' componentUpdate=false tmplParms...>
 
-    <#if !component?has_content>
+    <#if !(component!?size > 0)>
         <#return>
     </#if>
 
@@ -30,10 +30,15 @@
         <#else>
             <#include "${component.template}" parse=true/>
 
-            <#local macroInvokeSrc="<@${component.templateName} ${component.componentTypeName}=component "/>
+            <#local macroInvokeSrc="<" + "@${component.templateName} ${component.componentTypeName}=component "/>
             <#list tmplParms?keys as parm>
                 <#local macroInvokeSrc="${macroInvokeSrc} ${parm}=tmplParms['${parm}']!"/>
             </#list>
+
+            <#if body?trim?has_content>
+                <#local macroInvokeSrc="${macroInvokeSrc} body='${body}'"/>
+            </#if>
+
             <#local macroInvokeSrc="${macroInvokeSrc}/>"/>
 
             <#local macroInvoke = macroInvokeSrc?interpret>

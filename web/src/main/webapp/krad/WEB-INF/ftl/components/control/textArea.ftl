@@ -19,10 +19,10 @@ Standard HTML TextArea Input
 
 -->
 
-<@macro uif-textarea control field>
+<#macro uif_textarea control field>
 
     <#local attributes='id="${control.id}" rows="${control.rows!}" cols="${control.cols!}"
-    cssClass="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}" ${element.simpleDataAttributes!}'/>
+            class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}" ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="true"'/>
@@ -33,7 +33,7 @@ Standard HTML TextArea Input
     </#if>
 
     <#if control.style?has_content>
-        <#local attributes='${attributes} cssStyle="${control.style}"'/>
+        <#local attributes='${attributes} style="${control.style}"'/>
     </#if>
 
     <#if control.maxLength??>
@@ -44,18 +44,14 @@ Standard HTML TextArea Input
         <#local attributes='${attributes} minLength="${control.minLength}"'/>
     </#if>
 
-    <@spring.textarea path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    <@spring.formTextarea path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
 
-    <#--
-    Use double quotes around watermark text to avoid apostrophe trouble
-    credit - http://rayaspnet.blogspot.com/2011/03/how-to-handle-apostrophe-in-javascript.html
-     -->
     <#if control.watermarkText?has_content>
-        <@krad.script value="createWatermark('${control.id}', \"${control.watermarkText}\");"/>
+        <@krad.script value="createWatermark('${control.id}', '${control.watermarkText?js_string}');"/>
     </#if>
 
     <#if control.textExpand>
-        <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${field.instructionalMessage.messageText!}', '${field.constraintMessage.messageText!}', '${ConfigProperties['krad.externalizable.images.url']}');" />
+        <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}', '${ConfigProperties[\"krad.externalizable.images.url\"]}');" />
     </#if>
 
-</@macro>
+</#macro>

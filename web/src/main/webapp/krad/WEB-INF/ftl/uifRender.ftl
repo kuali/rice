@@ -20,7 +20,7 @@
 
 <#assign view=KualiForm.view/>
 
-<#if KualiForm.renderFullView>
+<#if UifRequestVars.renderFullView>
 
     <@krad.html view=view>
 
@@ -81,7 +81,7 @@
 
         <#-- if full page is not being refreshed need to render the pages
         errors so they can be updated by the client -->
-        <#if KualiForm.updateComponentId?has_content>
+        <#if UifRequestVars.updateComponentId?has_content>
             <@krad.template component=KualiForm.postedView.currentPage.validationMessages/>
         </#if>
 

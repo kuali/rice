@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<@macro uif-dataInputField field>
+<#macro uif_dataInputField field>
 
     <#local readOnly=field.readOnly || !field.inputAllowed/>
 
@@ -31,11 +31,11 @@
                         ${field.readOnlyDisplayReplacement}
                     <#else>
                         <#-- display actual field value -->
-                        <@spring.bindEscaped path="${field.bindingInfo.bindingPath}"
+                        <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
                         htmlEscape=field.escapeHtmlInPropertyValue/>
                         ${spring.status.value?default("")}
 
-                        <%-- add display suffix value if set --%>
+                        <#-- add display suffix value if set -->
                         <#if field.readOnlyDisplaySuffix?has_content>
                             *-* ${field.readOnlyDisplaySuffix}
                         </#if>
@@ -117,6 +117,6 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>
 
 

@@ -20,7 +20,7 @@
       Used to render the collection line groups in an unordered list
  -->
 
-<@macro uif-stackedList manager>
+<#macro uif_stackedList items manager container>
 
     <ul id="${manager.id}">
         <#list manager.stackedGroups as item>
@@ -30,4 +30,4 @@
         </#list>
     </ul>
 
-</@macro>
+</#macro>

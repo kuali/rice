@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-actionLink element>
+<#macro uif_actionLink element>
 
     <#if element.navigateToPageId?has_content>
         <#local pound="#"/>
@@ -82,4 +82,4 @@
 
     <@krad.template component=element.lightBoxLookup componentId="${element.id}"/>
 
-</@macro>
+</#macro>

@@ -14,15 +14,17 @@
     ~ limitations under the License.
     -->
 
-<@macro uif-collectionGroup group>
+<#macro uif_collectionGroup group>
 
     <@krad.groupWrap group=group>
 
         <#-- render collection quickfinder -->
-        <@krad.template component=group.collectionLookup/>
+        <@krad.template component=group.collectionLookup componentId="${group.id}"/>
 
         <#-- invoke layout manager -->
-        <#local macroInvokeSrc="<@${group.layoutManager.templateName} items=group.items"/>
+        <#include "${group.layoutManager.template}" parse=true/>
+
+        <#local macroInvokeSrc="<" + "@${group.layoutManager.templateName} items=group.items"/>
         <#local macroInvokeSrc="${macroInvokeSrc} manager=group.layoutManager container=group/>"/>
         <#local macroInvoke = macroInvokeSrc?interpret>
 
@@ -30,4 +32,4 @@
 
     </@krad.groupWrap>
 
-</@macro>
+</#macro>

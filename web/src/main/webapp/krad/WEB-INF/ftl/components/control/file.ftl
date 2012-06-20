@@ -14,15 +14,19 @@
     ~ limitations under the License.
     -->
 
-<@macro uif-input control field>
+<#macro uif_file control field>
 
-    <#local attributes='id="${control.id}" type="file" size="${control.size!}" cssClass="${control.styleClassesAsString!}"
-         tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+    <#local attributes='id="${control.id}" class="${control.styleClassesAsString!}"
+         tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="true"'/>
     </#if>
 
-    <@spring.formInput path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+    <#if control.style?has_content>
+        <#local attributes='${attributes} style="${control.style}"'/>
+    </#if>
 
-</@macro>
+    <@spring.formInput fieldType="file" path="KualiForm.${field.bindingInfo.bindingPath}" attributes="${attributes}"/>
+
+</#macro>

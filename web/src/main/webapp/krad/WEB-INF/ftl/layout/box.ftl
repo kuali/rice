@@ -24,7 +24,7 @@
       span style. For vertical orientation, the span style is set to block.
  -->
 
-<@macro uif-box manager>
+<#macro uif_box items manager container>
 
     <#if manager.styleClassesAsString?has_content>
         <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
@@ -40,4 +40,4 @@
        </#list>
     </div>
 
-</@macro>
+</#macro>

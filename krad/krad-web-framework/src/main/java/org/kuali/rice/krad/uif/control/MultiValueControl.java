@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.control;
 import org.kuali.rice.core.api.util.KeyValue;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Indicates <code>Control</code> types that can hold more than one value for selection
@@ -47,4 +48,11 @@ public interface MultiValueControl {
      * @param options
      */
     public void setOptions(List<KeyValue> options);
+
+    /**
+     * Returns the control options as a Map
+     *
+     * @return Map<String, String> where map key is option value and map value is option label
+     */
+    public Map<String, String> getOptionsMap();
 }

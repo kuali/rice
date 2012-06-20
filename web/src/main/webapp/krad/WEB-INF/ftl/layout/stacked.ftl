@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-stacked manager>
+<#macro uif_stacked items manager container>
 
     <#if manager.styleClassesAsString?has_content>
         <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
@@ -42,4 +42,4 @@
 
     </div>
 
-</@macro>
+</#macro>

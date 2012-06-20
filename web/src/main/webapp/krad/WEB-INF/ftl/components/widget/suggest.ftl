@@ -16,7 +16,7 @@ limitations under the License.
 
 -->
 
-<@macro uif-suggest widget parent>
+<#macro uif_suggest widget parent>
 
     <#--
     Invokes JS method to implement suggest (autocomplete) functionality
@@ -27,6 +27,6 @@ limitations under the License.
        ${widget.suggestQuery.queryFieldMappingJsString});
     "/>
 
-</@macro>
+</#macro>
 
 

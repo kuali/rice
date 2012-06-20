@@ -16,11 +16,11 @@ limitations under the License.
 
 -->
 
-<@macro uif-reorderer widget parent>
+<#macro uif_reorderer widget parent>
 
     <@krad.script value="createReorderer('${parent.id}', ${widget.templateOptionsJSString});"/>
 
-</@macro>
+</#macro>
 
 
 

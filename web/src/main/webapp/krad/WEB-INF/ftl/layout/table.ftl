@@ -20,7 +20,7 @@
       Works on a collection group to lay out the items as a table.
  -->
 
-<@macro uif-table manager>
+<#macro uif_table items manager container>
 
     <#if manager.styleClassesAsString?has_content>
         <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
@@ -45,11 +45,11 @@
         </#if>
 
         <tbody>
-            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumn
+            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
                 applyAlternatingRowStyles=manager.applyAlternatingRowStyles
                 applyDefaultCellWidths=manager.applyDefaultCellWidths
                 renderAlternatingHeaderColumns=false
-                rowCssClasses="${manager.rowCssClasses}"/>
+                rowCssClasses=manager.rowCssClasses/>
         </tbody>
 
     </table>
@@ -57,4 +57,4 @@
     <#-- invoke table tools widget -->
     <@krad.template component=manager.richTable componentId="${manager.id}"/>
 
-</@macro>
+</#macro>

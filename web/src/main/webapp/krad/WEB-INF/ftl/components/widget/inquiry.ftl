@@ -16,7 +16,7 @@ limitations under the License.
 
 -->
 
-<@macro uif-inquiry widget body readOnly>
+<#macro uif_inquiry widget componentId body='' readOnly=false>
 
     <#--
     Renders an inquiry link for a field value
@@ -29,4 +29,4 @@ limitations under the License.
         <@krad.template component=widget.directInquiryAction/>
     </#if>
 
-</@macro>
+</#macro>

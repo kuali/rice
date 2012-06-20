@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 -->
-<@macro uif-richTable widget componentId>
+<#macro uif_richTable widget componentId>
 
     <#--
     Invokes JS method to implement a table plug-in
@@ -25,6 +25,6 @@ limitations under the License.
       createTable('${componentId}', ${widget.templateOptionsJSString});
     "/>
 
-</@macro>
+</#macro>
 
 

@@ -15,12 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 -->
-<@macro uif-quickFinder widget>
+<#macro uif_quickFinder widget componentId>
 
     <#--
     Renders the lookup icon for a field
     -->
     <@krad.template component=widget.quickfinderAction/>
 
-</@macro>
+</#macro>
 

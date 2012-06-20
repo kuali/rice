@@ -14,7 +14,7 @@
     ~ limitations under the License.
     -->
 
-<@macro uif-label element>
+<#macro uif_label element>
 
     <#local label="${element.labelText}"/>
 
@@ -41,4 +41,4 @@
 
     </@krad.span>
 
-</@macro>
+</#macro>

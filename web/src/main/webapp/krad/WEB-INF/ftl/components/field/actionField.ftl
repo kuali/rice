@@ -18,7 +18,7 @@
     Renders label and div, then invokes rendering of the action component
  -->
 
-<@macro uif-actionField field>
+<#macro uif_actionField field>
 
     <@krad.div component=field>
 
@@ -28,4 +28,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

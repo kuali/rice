@@ -19,7 +19,7 @@
 
  -->
 
-<@macro uif-linkField field>
+<#macro uif_linkField field>
 
     <@krad.div component=field>
 
@@ -29,4 +29,4 @@
 
     </@krad.div>
 
-</@macro>
+</#macro>

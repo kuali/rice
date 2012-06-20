@@ -14,11 +14,11 @@
   ~ limitations under the License.
   -->
 
-<@macro uif-disclosure widget parent>
+<#macro uif_disclosure widget parent>
 
     <#local isOpen=widget.defaultOpen/>
 
-    <@krad.script value="createDisclosure('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen},
-          '${widget.collapseImageSrc}', '${widget.expandImageSrc}', ${widget.animationSpeed}, ${widget.renderImage});"/>
+    <@krad.script value="createDisclosure('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen?string},
+          '${widget.collapseImageSrc}', '${widget.expandImageSrc}', ${widget.animationSpeed}, ${widget.renderImage?string});"/>
 
-</@macro>
+</#macro>

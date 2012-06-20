@@ -15,23 +15,31 @@
   -->
 
 <#--
-    Standard HTML Link
+    Standard HTML Iframe element
 
  -->
 
-<#macro uif_link element body=''>
+<#macro uif_iframe element>
 
-    <#if element.skipInTabOrder>
-        <#assign tabindex="tabindex=-1"/>
+    <#local attributes=""/>
+
+    <#if element.width?has_content>
+        <#local attributes='${attributes} width="${element.width}"'/>
     </#if>
 
-    <#if !body?trim?has_content>
-        <#assign body="${element.linkText!}"/>
+    <#if element.height?has_content>
+        <#local attributes='${attributes} height="${element.height}"'/>
     </#if>
 
-    <a id="${element.id}" href="${element.href!}" target="${element.target!}"
-       ${attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}>${body!}</a>
+    <#if element.frameborder?has_content>
+        <#local attributes='${attributes} frameborder="${element.frameborder}"'/>
+    </#if>
 
-    <@krad.template component=element.lightBox componentId="${element.id}"/>
+    <#if element.title?has_content>
+        <#local attributes='${attributes} title="${element.title}"'/>
+    </#if>
+
+    <iframe id="${element.id}" src="${element.source}" ${attributes} ${element.simpleDataAttributes}>
+    </iframe>
 
 </#macro>

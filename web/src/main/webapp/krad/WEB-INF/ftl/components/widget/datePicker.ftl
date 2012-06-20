@@ -16,14 +16,14 @@ limitations under the License.
 
 -->
 
-<@macro uif-datePicker widget componentId>
+<#macro uif_datePicker widget componentId>
 
     <#--
     Invokes JS method to implement a script based calendar date picker
     -->
     <@krad.script value="createDatePicker('${componentId}', ${widget.templateOptionsJSString});" />
 
-</@macro>
+</#macro>
 
 
 

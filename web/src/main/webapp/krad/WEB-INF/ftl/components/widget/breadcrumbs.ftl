@@ -18,7 +18,7 @@
 is omitted by default, but the link to it is still present, it can be shown as a clickable
 link again through jquery as in setPageBreadcrumb when needed -->
 
-<@macro uif-breadcrumbs widget>
+<#macro uif_breadcrumbs widget>
 
     <#local current=KualiForm.formHistory.generatedCurrentBreadcrumb/>
     <#local crumbs=KualiForm.formHistory.generatedBreadcrumbs/>
@@ -40,4 +40,4 @@ link again through jquery as in setPageBreadcrumb when needed -->
 
     </#if>
 
-</@macro>
+</#macro>

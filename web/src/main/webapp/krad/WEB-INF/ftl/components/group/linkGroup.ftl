@@ -15,7 +15,7 @@
   -->
 
 
-<@macro uif-linkGroup group>
+<#macro uif_linkGroup group>
 
     <@krad.groupWrap group=group>
         <#if !group.items??>
@@ -38,5 +38,5 @@
         </#if>
     </@krad.groupWrap>
 
-</@macro>
+</#macro>
 

@@ -20,15 +20,25 @@ limitations under the License.
 Standard HTML Select Input
 
 -->
-<@macro uif-select control field>
+<#macro uif_select control field>
 
-    <#local attributes='id="${control.id}" size="${control.size!}" cssClass="${control.styleClassesAsString!}"
-          multiple="${control.multiple!}" tabindex="${control.tabIndex!}"  ${element.simpleDataAttributes!}'/>
+    <#local attributes='id="${control.id}" size="${control.size!}" class="${control.styleClassesAsString!}"
+            tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="true"'/>
     </#if>
 
-    <@spring.formSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options attributes="${attributes}"/>
+    <#if control.style?has_content>
+        <#local attributes='${attributes} style="${control.style}"'/>
+    </#if>
 
-</@macro>
+    <#if control.multiple>
+        <@spring.formMultiSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.optionsMap
+                                 attributes="${attributes}"/>
+    <#else>
+        <@spring.formSingleSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.optionsMap
+                                  attributes="${attributes}"/>
+    </#if>
+
+</#macro>

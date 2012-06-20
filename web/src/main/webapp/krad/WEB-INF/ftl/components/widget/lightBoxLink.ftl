@@ -16,7 +16,7 @@ limitations under the License.
 
 -->
 
-<@macro uif-lightBoxLink widget componentId>
+<#macro uif_lightBoxLink widget componentId>
 
     <#--
     Invokes JS method to implement a script linking the lightbox (fancybox)
@@ -25,6 +25,6 @@ limitations under the License.
        createLightBoxLink('${componentId}', ${widget.templateOptionsJSString});
     "/>
 
-</@macro>
+</#macro>
 
 

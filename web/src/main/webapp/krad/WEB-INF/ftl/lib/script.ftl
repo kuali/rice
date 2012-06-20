@@ -21,7 +21,7 @@
     </#if>
 
     <#if value?has_content>
-        <input name="script" type="hidden" data-role="${role}" ${dataFor!} value="${value}"/>
+        <input name="script" type="hidden" data-role="${role}" ${dataFor!} value="${value?html}"/>
     </#if>
 
 </#macro>

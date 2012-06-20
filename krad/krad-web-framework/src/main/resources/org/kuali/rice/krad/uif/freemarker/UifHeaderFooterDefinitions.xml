@@ -28,6 +28,7 @@
   <bean id="Uif-HeaderBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Header"
         scope="prototype" parent="Uif-ComponentBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/header.ftl"/>
+    <property name="templateName" value="uif_header"/>
     <property name="cssClasses">
       <list merge="true">
         <value>uif-header</value>

@@ -234,7 +234,7 @@ public class CollectionGroup extends Group implements DataBinding {
             view.getViewHelperService().performComponentInitialization(view, model, collectionGroup);
         }
 
-        if (renderAddBlankLineButton) {
+        if (renderAddBlankLineButton && (addBlankLineAction != null)) {
             String clientSideJs = "performCollectionAction('" + getId() + "');";
             if (StringUtils.isNotBlank(addBlankLineAction.getClientSideJs())) {
                 clientSideJs = addBlankLineAction.getClientSideJs() + clientSideJs;
@@ -242,8 +242,6 @@ public class CollectionGroup extends Group implements DataBinding {
             addBlankLineAction.setClientSideJs(clientSideJs);
             addBlankLineAction.setJumpToIdAfterSubmit(getId());
         }
-
-
     }
 
     /**

@@ -832,8 +832,8 @@ function showLightboxComponent(componentId, overrideOptions) {
     if (top == self) {
         var component = jQuery('#' + componentId);
 
-        // ensure that component of KualiForm gets updated after fancybox closes
         var cssDisplay = component.css('display');
+        // ensure that component of KualiForm gets updated after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose:function() {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
@@ -895,11 +895,11 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
     };
 
     // override fancybox content options
-    _mergeOptionsMap(options, contentOptions);
+    jQuery.extend(true, options, contentOptions);
 
     // override fancybox options
     if (overrideOptions !== undefined) {
-        _mergeOptionsMap(options, overrideOptions);
+        jQuery.extend(true, options, overrideOptions);
     }
 
     // Open the light box
@@ -929,26 +929,6 @@ function setupLightboxForm() {
 
     jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
-}
-
-/**
- * Internal function for merging fancybox options
- *
- * <p>
- * Existing options will not be deleted but overridden.
- * </p>
- *
- * @param options the existing fancybox options
- * @param overrideOptions the fancybox options that should be added/overwritten
- */
-function _mergeOptionsMap(options, overrideOptions) {
-    for(var overrideOption in overrideOptions) {
-        if ((typeof overrideOptions[overrideOption] === "object") && (overrideOption != 'content')) {
-            _mergeOptionsMap(options[overrideOption], overrideOptions[overrideOption]);
-        } else {
-            options[overrideOption] = overrideOptions[overrideOption];
-        }
-    }
 }
 
 /**

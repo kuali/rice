@@ -23,7 +23,7 @@ import junit.framework.Assert
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinitionContract
+import org.kuali.rice.krms.api.repository.type.KrmsTypeContract
 
 /**
  * Exercises the immutable Country class, including XML (un)marshalling
@@ -118,7 +118,7 @@ class KrmsTypeTest {
 	@Test
 	public void testTypeBuilderPassedInContract() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
-		KrmsTypeDefinition type = KrmsTypeDefinition.Builder.create(new KrmsTypeDefinitionContract() {
+		KrmsTypeDefinition type = KrmsTypeDefinition.Builder.create(new KrmsTypeContract() {
 					String getId() { KrmsTypeTest.TYPE_ID }
 					String getName() { KrmsTypeTest.NAME }
 					String getNamespace() { KrmsTypeTest.NAMESPACE }

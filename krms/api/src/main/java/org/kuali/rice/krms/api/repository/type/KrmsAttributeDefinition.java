@@ -36,7 +36,7 @@ import org.kuali.rice.krms.api.KrmsConstants;
  * <p>immutable. To construct an instance of a KrmsTypeAttribute, use the {@link KrmsTypeAttribute.Builder} class.
  * Instances of KrmsAttributeDefinition can be (un)marshalled to and from XML. </p>
  *
- * @see KrmsAttributeDefinitionContract
+ * @see KrmsAttributeContract
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -53,7 +53,7 @@ import org.kuali.rice.krms.api.KrmsConstants;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class KrmsAttributeDefinition extends AbstractDataTransferObject implements KrmsAttributeDefinitionContract {
+public final class KrmsAttributeDefinition extends AbstractDataTransferObject implements KrmsAttributeContract {
 	private static final long serialVersionUID = -6356968810972165031L;
 	
 	@XmlElement(name = Elements.ID, required=true)
@@ -149,9 +149,9 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
     }
         
 	/**
-     * This builder is used to construct instances of KrmsAttributeDefinition.  It enforces the constraints of the {@link KrmsAttributeDefinitionContract}.
+     * This builder is used to construct instances of KrmsAttributeDefinition.  It enforces the constraints of the {@link KrmsAttributeContract}.
      */
-    public static class Builder implements KrmsAttributeDefinitionContract, ModelBuilder, Serializable {		
+    public static class Builder implements KrmsAttributeContract, ModelBuilder, Serializable {
 		private static final long serialVersionUID = -2110564370088779631L;
 		
 		private String id;
@@ -208,13 +208,13 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link KrmsAttributeDefinitionContract}.
+         * Creates a builder by populating it with data from the given {@link KrmsAttributeContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          * @throws IllegalArgumentException if the contract is null or blank
          */
-        public static Builder create(KrmsAttributeDefinitionContract contract) {
+        public static Builder create(KrmsAttributeContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }

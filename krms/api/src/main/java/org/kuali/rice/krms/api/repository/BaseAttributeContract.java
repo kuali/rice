@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.api.repository;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeContract;
 
 /**
  * Base interface intended for extension by other AttributeContract interfaces 
@@ -46,13 +46,13 @@ public interface BaseAttributeContract extends Identifiable {
 	public String getValue();
 
 	/**
-	 * Returns a {@link KrmsAttributeDefinitionContract.}
+	 * Returns a {@link KrmsAttributeContract.}
      * <p>This is the object referred to by the attributeDefinitionId.
      * The full object is also kept here for performance purposes. This is because the name of the attribute
      * is referenced often for resolving name / value attribute pairs.</p>
      *
      * @return the attribute definition
 	 */
-	public KrmsAttributeDefinitionContract getAttributeDefinition();
+	public KrmsAttributeContract getAttributeDefinition();
 
 }

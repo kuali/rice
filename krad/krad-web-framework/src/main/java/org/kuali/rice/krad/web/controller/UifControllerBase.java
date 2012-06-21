@@ -235,13 +235,18 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Called by the add blank line action for a new collection line. Method
-     * determines which collection the add action was selected for and invokes
-     * the view helper service to add the blank line
+     * Called by the add blank line action for a new collection line
+     *
+     * <p>
+     * Method determines which collection the add action was selected for and invokes the view helper service to
+     * add the blank line.
+     * </p>
+     *
+     * @param uifForm - form instance containing the request data
+     * @return  the  ModelAndView object
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
-    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") UifFormBase uifForm) {
 
         String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {

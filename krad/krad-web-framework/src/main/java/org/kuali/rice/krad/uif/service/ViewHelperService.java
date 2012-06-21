@@ -196,14 +196,9 @@ public interface ViewHelperService {
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by
      * default but creates hook for client applications to add additional logic like persisting data.
      *
-     * @param view
-     *            - view instance that is being presented (the action was taken
-     *            on)
-     * @param model
-     *            - Top level object containing the view data including the
-     *            collection and new line
-     * @param collectionPath
-     *            - full path to the collection on the model
+     * @param view - view instance that is being presented (the action was taken on)
+     * @param model - Top level object containing the view data including the collection and new line
+     * @param collectionPath - full path to the collection on the model
      */
     void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
 

@@ -1348,8 +1348,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String)
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionSaveLine(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, java.lang.String, int)
      */
     @Override
     public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex) {

@@ -997,7 +997,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         Set<String> allRoleIds = new HashSet<String>();
         // remove inactive roles
         for (String roleId : roleIds) {
-            if (isRoleActive(roleId)) {
+            if (this.getProxiedRoleService().isRoleActive(roleId)) {
                 allRoleIds.add(roleId);
             }
         }

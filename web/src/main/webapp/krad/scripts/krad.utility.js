@@ -829,30 +829,32 @@ function showLightboxComponent(componentId, overrideOptions) {
         overrideOptions = {};
     }
 
-    if (top == self) {
-        var component = jQuery('#' + componentId);
+    var component = jQuery('#' + componentId);
+    var cssDisplay = component.css('display');
 
-        var cssDisplay = component.css('display');
+    if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose:function() {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
             jQuery('#tmpForm_' + componentId).replaceWith(jQuery('#' + componentId).detach());
-            jQuery('#' + componentId).css('display', cssDisplay);}});
-
-        // clone the content for the lightbox and make the element id unique
-        showLightboxContent(component.clone(true,true), overrideOptions);
-        addIdPrefix(component, 'tmpForm_');
+            jQuery('#' + componentId).css('display', cssDisplay);
+        }});
     } else {
         // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {afterClose:function() {jQuery('#iframeportlet').contents().find('#kualiForm').append(jQuery('#' + componentId).detach());}});
+        _appendCallbackFunctions(overrideOptions, {beforeClose:function() {
+            // hack fancybox to prevent it from moving the original lightbox content into the body
+            parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
-        // for portal usage (the href anchor from the portal page will not work so the content is explicitly passed to fancybox)
-        showLightboxContent(jQuery('#' + componentId).html(), overrideOptions);
-        // TODO: Could we use detach?  It would be nice so we can reattach it later into the KualiForm.
-//        showLightboxContent(jQuery('#' + componentId).detach(), overrideOptions);
+            jQuery('#tmpForm_' + componentId).replaceWith(parent.jQuery('#' + componentId).detach());
+            jQuery('#' + componentId).css('display', cssDisplay);
+        }});
     }
+
+    // clone the content for the lightbox and make the element id unique
+    showLightboxContent(component.clone(true,true).css('display',''), overrideOptions);
+    addIdPrefix(component, 'tmpForm_');
 }
 
 /**
@@ -912,7 +914,8 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
         _appendCallbackFunctions(options, {afterClose:function() {
             parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
-            parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove(); }});
+            parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove();
+        }});
 
         parent.jQuery.fancybox(options);
     }

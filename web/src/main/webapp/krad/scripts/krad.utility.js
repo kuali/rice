@@ -751,7 +751,12 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
  * @param highlightItemClass - the class to add to the group that should be highlighted
  */
 function addLineMouseOver(addButton, highlightItemClass) {
-    jQuery(addButton).parent().addClass(highlightItemClass).children().addClass(highlightItemClass).children().addClass(highlightItemClass);
+    var innerLayout = jQuery(addButton).parent().find('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
+        jQuery(addButton).parent().find('table').addClass(highlightItemClass);
+    }else{
+        jQuery(addButton).parent().find('.uif-stackedCollectionLayout').addClass(highlightItemClass).children().addClass(highlightItemClass);
+    }
 }
 
 /**
@@ -761,7 +766,12 @@ function addLineMouseOver(addButton, highlightItemClass) {
  * @param highlightItemClass - the class remove from the collection group
  */
 function addLineMouseOut(addButton, highlightItemClass) {
-    jQuery(addButton).parent().removeClass(highlightItemClass).children().removeClass(highlightItemClass).children().removeClass(highlightItemClass);
+    var innerLayout = jQuery(addButton).parent().find('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
+    if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
+        jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
+    }else{
+        jQuery(addButton).parent().find('.uif-stackedCollectionLayout').removeClass(highlightItemClass).children().removeClass(highlightItemClass);
+    }
 }
 
 /**

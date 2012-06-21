@@ -92,7 +92,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         generateAutoSequence = false;
         separateAddLine = false;
 
-
         headerLabels = new ArrayList<Label>();
         dataFields = new ArrayList<Component>();
     }
@@ -215,7 +214,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             addLineGroup.getFooter().setItems(footerItems);
 
             if (collectionGroup.isAddViaLightBox()) {
-                String clientSideJs = "showLightboxComponent('" + addLineGroup.getId() +  "');";
+                String clientSideJs = "showLightboxComponent('" + addLineGroup.getId() + "');";
                 if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getClientSideJs())) {
                     clientSideJs = collectionGroup.getAddViaLightBoxAction().getClientSideJs() + clientSideJs;
                 }

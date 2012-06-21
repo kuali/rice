@@ -125,8 +125,6 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				}
 		};
 	}
-    //hide any tooltips that may be showing
-    hideBubblePopups();
 
     //for lightbox copy data back into form
     if (componentId !== undefined) {

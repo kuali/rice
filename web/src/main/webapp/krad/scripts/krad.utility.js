@@ -905,7 +905,6 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
             parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove(); }});
 
         parent.jQuery.fancybox(options);
-        setupLightboxFormOutsidePortal();
     }
 }
 
@@ -919,19 +918,6 @@ function setupLightboxForm() {
     setupValidator(jQuery('#kualiLightboxForm'));
 
     jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
-
-}
-
-/**
- *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
- */
-function setupLightboxFormOutsidePortal() {
-
-    parent.jQuery(".fancybox-inner").children().wrap("<form id='kualiLightboxForm'>");
-
-    setupValidator(parent.jQuery('#kualiLightboxForm'));
-
-//    parent.jQuery('#kualiLightboxForm').dirty_form({changedClass:kradVariables.DIRTY_CLASS, includeHidden:true});
 
 }
 

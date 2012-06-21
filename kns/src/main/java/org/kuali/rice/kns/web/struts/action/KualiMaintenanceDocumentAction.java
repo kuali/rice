@@ -199,7 +199,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		}
 
 		// retrieve business object from request parameters
-		if (!(KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction)) && !(KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
+		if (!(KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction))
+                && !(KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction))) {
 			Map requestParameters = buildKeyMapFromRequest(document.getNewMaintainableObject(), request);
             PersistableBusinessObject oldBusinessObject = null;
             try {
@@ -263,7 +264,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 
 			// on a COPY, clear any fields that this user isnt authorized for, and also
-			// clear the primary key fields
+			// clear the primary key fields and the version number and objectId
 			if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
 				if (!document.isFieldsClearedOnCopy()) {
 					//for issue KULRice 3072
@@ -1102,6 +1103,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				throw new RuntimeException("Unable to clear primary key field: " + e.getMessage());
 			}
 		}
+        bo.setObjectId(null);
+        bo.setVersionNumber(new Long(1));
 	}
 
 	/**

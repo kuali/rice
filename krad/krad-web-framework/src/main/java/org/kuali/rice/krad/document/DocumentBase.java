@@ -289,6 +289,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
                 
         getDocumentHeader().setDocumentTemplateNumber(sourceDocumentHeaderId);
 
+        //clear out notes from previous bo
+        this.notes.clear();
         addCopyErrorDocumentNote("copied from document " + sourceDocumentHeaderId);
     }
 

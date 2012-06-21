@@ -119,7 +119,7 @@
         PERM_TMPL_ID="5" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Authorizes users to take the Approve action on documents routed to them."
-        NM="Take Requested Apprive Action" NMSPC_CD="KUALI"
+        NM="Take Requested Approve Action" NMSPC_CD="KUALI"
         OBJ_ID="5B4F09744962EF33E0404F8189D84F24" PERM_ID="170"
         PERM_TMPL_ID="8" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"

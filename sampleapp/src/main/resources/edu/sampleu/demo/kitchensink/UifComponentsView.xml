@@ -71,6 +71,7 @@
               <ref bean="UifCompView-ActionFields"/>
               <ref bean="UifCompView-LinkFields"/>
               <ref bean="UifCompView-OtherFields"/>
+              <ref bean="UifCompView-ScrollableGroups"/>
             </list>
           </property>
         </bean>

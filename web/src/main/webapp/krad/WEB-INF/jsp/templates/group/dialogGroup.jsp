@@ -26,7 +26,7 @@
   </c:if>
 
   <c:if test="${!empty group.layoutManager.style}">
-    <c:set var="style" value="${group.layoutManager.style}"/>
+    <c:set var="style" value="style=\"${group.layoutManager.style}\""/>
   </c:if>
 
   <%-- render items via layout manager --%>

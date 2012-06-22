@@ -2335,4 +2335,44 @@ public class Test2Object {
                 </itemizedlist>
         </section>
     </section>
+  <section>
+    <title>Scrollable</title>
+    <para>Adding Scrollable to a group, section or sub-section enables a scroll bar to appear when the content exceeds
+    height that is specified with Scrollable.</para>
+    <figure>
+      <title>Scrollable Section</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/KRAD_Guide/scrollableSection.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <programlisting>
+&lt;bean id=”MyScrollableGroup” parent=”Uif-Disclosure-VerticalBoxSection” p:headerText=”Scrollable Groupt” p:width="30%"&gt;
+    &lt;property name="scrollpane"&gt;
+        &lt;bean parent="Uif-Scrollpane"&gt;
+            &lt;property name="height" value="100px"/&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+... </programlisting>
+    <para>For section and sub-section only the content is scrolled, not the title or instructional text.</para>
+    <section>
+      <title>Recap</title>
+      <itemizedlist>
+        <listitem>
+          <para>The <emphasis role="underline">Scrollable</emphasis> component can be used
+            to enable scrolling in groups and sections.</para>
+        </listitem>
+        <listitem>
+          <para>The height property on Scrollable needs to be specified. </para>
+        </listitem>
+        <listitem>
+          <para>The height property is given in pixels or percentages (e.g. 100px or 30%). </para>
+        </listitem>
+        <listitem>
+          <para>Only the content of the section and subsection will be scrolled, not the title or instructional text.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
 </chapter>

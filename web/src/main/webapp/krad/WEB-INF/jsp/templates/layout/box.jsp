@@ -36,7 +36,7 @@
 </c:if>
 
 <c:if test="${!empty manager.style}">
-  <c:set var="style" value="${manager.style}"/>
+  <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
 <%-- render items --%>

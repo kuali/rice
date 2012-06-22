@@ -369,6 +369,68 @@
         </bean>
 
         <bean parent="Uif-Iframe" p:width="800px" p:height="550px" p:source="http://www.kuali.org"/>
+
+      </list>
+    </property>
+  </bean>
+
+  <bean id="UifCompView-ScrollableGroups" parent="Uif-Disclosure-HorizontalBoxSection">
+    <property name="headerText" value="Scrollable Groups"/>
+    <property name="instructionalText"
+              value="By adding scrollable to a group or section a scrollbar appears if the content exceeds the specified size."/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Disclosure-VerticalBoxSubSection">
+          <property name="headerText" value="This is a scrollable sub section."/>
+          <property name="instructionalText"
+                    value="This also works on sections."/>
+          <property name="width" value="30%"/>
+          <property name="scrollpane">
+            <bean parent="Uif-Scrollpane">
+              <property name="height" value="100px"/>
+            </bean>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Message" p:messageText="A group or section can be made scrollable by adding the Uif-Scrollpane bean.
+                With the Uif-Scrollpane bean the height and/or width can be specified.  If the content size exceeds the specified size then
+                scrollbars are rendered for the group/section."/>
+
+              <bean parent="Uif-InputField" p:propertyName="field80" p:label="Field 1">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="5"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-Message" p:messageText="Only the content of the section/sub section is made scrollable.  Title and the
+               instructional text are not scrolled."/>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-VerticalBoxGroup">
+          <property name="width" value="30%"/>
+          <property name="scrollpane">
+            <bean parent="Uif-Scrollpane">
+              <property name="height" value="100px"/>
+            </bean>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Message" p:messageText="This is a scrollable group."/>
+
+              <bean parent="Uif-InputField" p:propertyName="field80" p:label="Field 1">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="5"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-Message" p:messageText="A group or section can be made scrollable by adding the Uif-Scrollpane bean.
+                With the Uif-Scrollpane bean the height and/or width can be specified.  If the content size exceeds the specified size then
+                scrollbars are rendered for the group/section."/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

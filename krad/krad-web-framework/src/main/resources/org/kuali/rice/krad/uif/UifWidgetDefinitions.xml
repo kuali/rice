@@ -197,6 +197,10 @@
     <property name="defaultOpen" value="true"/>
   </bean>
 
+  <bean id="Uif-Scrollpane" parent="Uif-Scrollpane-parentBean"/>
+  <bean id="Uif-Scrollpane-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Scrollpane"
+        scope="prototype" parent="Uif-WidgetBase"/>
+
   <!-- Breadcrumbs and History -->
   <bean id="Uif-Breadcrumbs" parent="Uif-Breadcrumbs-parentBean"/>
   <bean id="Uif-Breadcrumbs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.BreadCrumbs"

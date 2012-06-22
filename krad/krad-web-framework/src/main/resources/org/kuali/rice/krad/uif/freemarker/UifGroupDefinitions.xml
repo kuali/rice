@@ -453,7 +453,7 @@
   <bean id="Uif-LinkGroup" parent="Uif-LinkGroup-parentBean"/>
   <bean id="Uif-LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup"
         parent="Uif-HorizontalBoxGroup">
-    <property name="template" value="/krad/WEB-INF/jsp/templates/group/linkGroup.jsp"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/linkGroup.ftl"/>
     <property name="templateName" value="uif_linkGroup"/>
     <property name="cssClasses">
       <list merge="true">

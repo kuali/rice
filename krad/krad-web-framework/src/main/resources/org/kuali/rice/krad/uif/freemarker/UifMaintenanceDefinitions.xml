@@ -35,6 +35,7 @@
               value="org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.MaintenanceForm"/>
+    <property name="preloadPoolSize" value="0"/>
     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
     <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
     <property name="page">

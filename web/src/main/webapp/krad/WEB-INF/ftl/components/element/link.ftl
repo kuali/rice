@@ -22,11 +22,11 @@
 <#macro uif_link element body=''>
 
     <#if element.skipInTabOrder>
-        <#assign tabindex="tabindex=-1"/>
+        <#local tabindex="tabindex=-1"/>
     </#if>
 
     <#if !body?trim?has_content>
-        <#assign body="${element.linkText!}"/>
+        <#local body="${element.linkText!}"/>
     </#if>
 
     <a id="${element.id}" href="${element.href!}" target="${element.target!}"

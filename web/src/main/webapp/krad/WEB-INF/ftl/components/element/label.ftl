@@ -22,6 +22,10 @@
         <#local label="${label}:"/>
     </#if>
 
+    <#if element.title?has_content>
+        <#local title="title=\"${element.title}\""/>
+    </#if>
+
     <@krad.span component=element>
 
         <#-- required message left -->
@@ -29,8 +33,7 @@
             <@krad.template component=element.requiredMessage/>
         </#if>
 
-        <label id="${element.id}" for="${element.labelForComponentId!}" ${element.simpleDataAttributes!}
-               ${attrBuild(element)}>
+        <label id="${element.id}" for="${element.labelForComponentId!}" ${title!} ${element.simpleDataAttributes!}>
             ${label}
         </label>
 

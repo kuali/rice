@@ -19,7 +19,7 @@
 
  -->
 
-<#marco uif_image element>
+<#macro uif_image element>
 
     <#if element.height?has_content>
         <#local height='height="${element.height}"'/>
@@ -43,4 +43,4 @@
         <@krad.template component=element.cutlineMessage/>
     </#if>
 
-</#marco>
+</#macro>

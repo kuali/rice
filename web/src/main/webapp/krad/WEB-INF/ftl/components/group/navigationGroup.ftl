@@ -22,7 +22,9 @@
 
     <ul id="${group.id}" role="navigation">
         <#list group.items as item>
-            <@krad.template component=item/>
+            <li>
+                <@krad.template component=item/>
+            </li>
         </#list>
     </ul>
 

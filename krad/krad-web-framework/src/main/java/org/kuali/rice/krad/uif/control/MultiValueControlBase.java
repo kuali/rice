@@ -17,9 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.core.api.util.KeyValue;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Base class for controls that accept/display multiple values
@@ -47,20 +45,5 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      */
     public void setOptions(List<KeyValue> options) {
         this.options = options;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.control.MultiValueControl#getOptionsMap()
-     */
-    public Map<String, String> getOptionsMap() {
-        Map<String, String> optionsMap = new HashMap<String, String>();
-
-        if (options != null) {
-            for (KeyValue option : options) {
-                optionsMap.put(option.getKey(), option.getValue());
-            }
-        }
-
-        return optionsMap;
     }
 }

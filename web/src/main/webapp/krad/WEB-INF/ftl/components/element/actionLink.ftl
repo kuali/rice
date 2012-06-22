@@ -24,6 +24,7 @@
     <#if element.navigateToPageId?has_content>
         <#local pound="#"/>
         <#local href="href=\"${pound}${element.navigateToPageId}\""/>
+        <#local name="name=\"${element.navigateToPageId}\""/>
     </#if>
 
     <#if element.skipInTabOrder>
@@ -48,7 +49,7 @@
 
     <#local imagePlacement="${element.actionImagePlacement}"/>
 
-    <a id="${element.id}" ${href!} onclick="return false;" ${attrBuild(element)}
+    <a id="${element.id}" ${href!} ${name!} onclick="return false;" ${attrBuild(element)}
        ${tabindex} ${element.simpleDataAttributes!}>
 
         <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
@@ -76,6 +77,8 @@
             <#else>
                 ${element.actionLabel!}
             </#if>
+        <#else>
+            ${element.actionLabel!}
         </#if>
 
     </a>

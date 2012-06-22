@@ -17,6 +17,10 @@
 <#macro grid items rowCssClasses=[] numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
 applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
 
+    <#if numberOfColumns == 0>
+        <#return/>
+    </#if>
+
     <#local defaultCellWidth=100/numberOfColumns/>
 
     <#local colCount=0/>

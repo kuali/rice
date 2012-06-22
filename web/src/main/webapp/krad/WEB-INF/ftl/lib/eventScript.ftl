@@ -21,97 +21,97 @@ supported and configured on the component -->
 
     <#local eventHandlers>
         <#if component.onLoadScript?has_content>
-          jQuery('#' + '${component.id}').load(function() {
+          jQuery('#' + '${component.id}').load(function(e) {
             ${component.onLoadScript}
           });
         </#if>
 
         <#if component.onDocumentReadyScript?has_content>
-          jQuery(document).ready(function() {
+          jQuery(document).ready(function(e) {
             ${component.onDocumentReadyScript}
           });
         </#if>
 
         <#if component.onUnloadScript?has_content>
-          jQuery('#' + '${component.id}').unload(function() {
+          jQuery('#' + '${component.id}').unload(function(e) {
             ${component.onUnloadScript}
           });
         </#if>
 
         <#if component.onBlurScript?has_content>
-          jQuery('#' + '${component.id}').blur(function() {
+          jQuery('#' + '${component.id}').blur(function(e) {
             ${component.onBlurScript}
           });
         </#if>
 
         <#if component.onChangeScript?has_content>
-          jQuery('#' + '${component.id}').change(function() {
+          jQuery('#' + '${component.id}').change(function(e) {
             ${component.onChangeScript}
           });
         </#if>
 
         <#if component.onClickScript?has_content>
-          jQuery('#' + '${component.id}').click(function() {
+          jQuery('#' + '${component.id}').click(function(e) {
             ${component.onClickScript}
           });
         </#if>
 
         <#if component.onDblClickScript?has_content>
-          jQuery('#' + '${component.id}').dblclick(function() {
+          jQuery('#' + '${component.id}').dblclick(function(e) {
             ${component.onDblClickScript}
           });
         </#if>
 
         <#if component.onFocusScript?has_content>
-          jQuery('#' + '${component.id}').focus(function() {
+          jQuery('#' + '${component.id}').focus(function(e) {
             ${component.onFocusScript}
           });
         </#if>
 
         <#if component.onKeyPressScript?has_content>
-          jQuery('#' + '${component.id}').keypress(function() {
+          jQuery('#' + '${component.id}').keypress(function(e) {
             ${component.onKeyPressScript}
           });
         </#if>
 
         <#if component.onKeyUpScript?has_content>
-          jQuery('#' + '${component.id}').keyup(function() {
+          jQuery('#' + '${component.id}').keyup(function(e) {
             ${component.onKeyUpScript}
           });
         </#if>
 
         <#if component.onKeyDownScript?has_content>
-          jQuery('#' + '${component.id}').keydown(function() {
+          jQuery('#' + '${component.id}').keydown(function(e) {
             ${component.onKeyDownScript}
           });
         </#if>
 
         <#if component.onMouseOverScript?has_content>
-          jQuery('#' + '${component.id}').mouseover(function() {
+          jQuery('#' + '${component.id}').mouseover(function(e) {
             ${component.onMouseOverScript}
           });
         </#if>
 
         <#if component.onMouseOutScript?has_content>
-          jQuery('#' + '${component.id}').mouseout(function() {
+          jQuery('#' + '${component.id}').mouseout(function(e) {
             ${component.onMouseOutScript}
           });
         </#if>
 
         <#if component.onMouseUpScript?has_content>
-          jQuery('#' + '${component.id}').mouseup(function() {
+          jQuery('#' + '${component.id}').mouseup(function(e) {
             ${component.onMouseUpScript}
           });
         </#if>
 
         <#if component.onMouseDownScript?has_content>
-          jQuery('#' + '${component.id}').mousedown(function() {
+          jQuery('#' + '${component.id}').mousedown(function(e) {
             ${component.onMouseDownScript}
           });
         </#if>
 
         <#if component.onMouseMoveScript?has_content>
-          jQuery('#' + '${component.id}').mousemove(function() {
+          jQuery('#' + '${component.id}').mousemove(function(e) {
             ${component.onMouseMoveScript}
           });
         </#if>

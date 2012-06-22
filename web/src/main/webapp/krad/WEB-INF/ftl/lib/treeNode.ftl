@@ -14,10 +14,22 @@
   ~ limitations under the License.
   -->
 
-<#macro div component>
+<#macro treeNode node>
 
-  <div id="${component.id!}" ${attrBuild(component)} ${component.simpleDataAttributes}>
-    <#nested/>
-  </div>
+    <li id="${node.data.id}" class="${node.nodeType!}">
+        <a href="#" class="${node.nodeType!}">
+            <@krad.template component=node.nodeLabel/>
+        </a>
+
+        <@krad.template component=node.data/>
+
+        <#if node.children?? && (node.children?size gt 0)>
+            <ul>
+                <#list node.children as childNode>
+                    <@krad.treeNode node=childNode/>
+                </#list>
+            </ul>
+        </#if>
+    </li>
 
 </#macro>

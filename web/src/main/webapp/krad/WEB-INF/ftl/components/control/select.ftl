@@ -34,10 +34,10 @@ Standard HTML Select Input
     </#if>
 
     <#if control.multiple>
-        <@spring.formMultiSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.optionsMap
+        <@spring.formMultiSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                  attributes="${attributes}"/>
     <#else>
-        <@spring.formSingleSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.optionsMap
+        <@spring.formSingleSelect path="KualiForm.${field.bindingInfo.bindingPath}" options=control.options
                                   attributes="${attributes}"/>
     </#if>
 

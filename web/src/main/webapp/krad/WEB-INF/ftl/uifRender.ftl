@@ -18,9 +18,9 @@
 
 <#compress>
 
-<#assign view=KualiForm.view/>
-
 <#if KualiForm.renderFullView>
+
+    <#assign view=KualiForm.view/>
 
     <@krad.html view=view>
 
@@ -71,17 +71,19 @@
     <#-- render component only -->
     <html>
 
-        <#-- rerun view pre-load script to get new state variables for page -->
-        <@krad.script value="${view.preLoadScript}"/>
+        <#assign isPageRefresh=!KualiForm.updateComponentId?has_content/>
 
-        <@krad.script value="${KualiForm.growlScript}"/>
+        <#if isPageRefresh>
+            <#-- rerun view pre-load script to get new state variables for page -->
+            <@krad.script value="${KualiForm.view.preLoadScript}"/>
 
-        <#-- update for breadcrumbs -->
-        <@krad.template component=view.breadcrumbs/>
+            <#-- update for breadcrumbs -->
+            <@krad.template component=KualiForm.view.breadcrumbs/>
+        <#else>
+            <#-- rerun view pre-load script to get new state variables for component -->
+            <@krad.script value="${KualiForm.postedView.preLoadScript}"/>
 
-        <#-- if full page is not being refreshed need to render the pages
-        errors so they can be updated by the client -->
-        <#if KualiForm.updateComponentId?has_content>
+            <#-- need to render the pages errors since the component could have added errors for the page -->
             <@krad.template component=KualiForm.postedView.currentPage.validationMessages/>
         </#if>
 
@@ -90,6 +92,8 @@
             <@krad.template componentUpdate=true component=Component/>
         </div>
 
+        <#-- show added growls -->
+        <@krad.script value="${KualiForm.growlScript}"/>
     </html>
 
 </#if>

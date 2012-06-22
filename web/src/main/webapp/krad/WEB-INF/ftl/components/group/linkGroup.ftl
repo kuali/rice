@@ -14,28 +14,29 @@
   ~ limitations under the License.
   -->
 
-
 <#macro uif_linkGroup group>
 
     <@krad.groupWrap group=group>
-        <#if !group.items??>
-        ${group.emptyLinkGroupString}
+
+        <#if !group.items?? || (group.items?size lt 1)>
+            ${group.emptyLinkGroupString}
         <#else>
             <#if group.groupBeginDelimiter?has_content>
-            ${group.groupBeginDelimiter}
+                ${group.groupBeginDelimiter}
             </#if>
 
             <#list group.items as item>
                 <@krad.template component=item/>
-                <#if group.linkSeparator?has_content && !item_has_next>
-                ${group.linkSeparator}
+                <#if group.linkSeparator?has_content && item_has_next>
+                    ${group.linkSeparator}
                 </#if>
             </#list>
 
             <#if group.groupEndDelimiter?has_content>
-            ${group.groupEndDelimiter}
+                ${group.groupEndDelimiter}
             </#if>
         </#if>
+
     </@krad.groupWrap>
 
 </#macro>

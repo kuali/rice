@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 -->
-<@macro uif_tree widget componentId>
+<#macro uif_tree widget componentId>
 
     <#--
     Invokes JS method to implement a tree plug-in
@@ -25,5 +25,5 @@ limitations under the License.
       createTree('${componentId}', ${widget.templateOptionsJSString});
     "/>
 
-</@macro>
+</#macro>
 

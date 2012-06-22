@@ -27,11 +27,12 @@
             onsubmit="${onSubmitScript}" cssStyle="uif-form">
           <a name="topOfForm"></a>
 
-          <#nested>
+          <#nested/>
+
           <span id="formComplete"></span>
       </form>
     <#else>
-        <#nested>
+        <#nested/>
     </#if>
 
 </#macro>

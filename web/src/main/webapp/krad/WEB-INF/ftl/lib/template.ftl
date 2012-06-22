@@ -57,7 +57,7 @@
     </#if>
 
     <#-- setup progressive render -->
-    <#if component.progressRender?has_content>
+    <#if component.progressiveRender?has_content>
         <#-- for progressive rendering requiring an ajax call, put in place holder div -->
         <#if !component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)>
             <span id="${component.id}" data-role="placeholder" class="uif-placeholder"></span>
@@ -66,8 +66,8 @@
         <#-- setup progressive handlers for each control which may satisfy a disclosure condition -->
         <#list component.progressiveDisclosureControlNames as cName>
             <@krad.script value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-                  setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition,
-                  ${component.progressiveRenderAndRefresh}, '${component.methodToCallOnRefresh}');"/>
+                  setupProgressiveCheck('${cName?js_string}', '${component.id}', '${component.baseId}', condition,
+                  ${component.progressiveRenderAndRefresh?string}, '${component.methodToCallOnRefresh!}');"/>
         </#list>
         <@script value="hiddenInputValidationToggle('${component.id}');"/>
     </#if>
@@ -76,15 +76,15 @@
     <#if component.conditionalRefresh?has_content>
         <#list component.conditionalRefreshControlNames as cName>
             <@krad.script value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
-                 setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.baseId}', condition,
-                 '${component.methodToCallOnRefresh}');"/>
+                 setupRefreshCheck('${cName?js_string}', '${component.id}', '${component.baseId}', condition,
+                 '${component.methodToCallOnRefresh!}');"/>
         </#list>
     </#if>
 
     <#-- refresh when changed setup -->
     <#list component.refreshWhenChangedPropertyNames as cName>
-        <@krad.script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.baseId}',
-        '${component.methodToCallOnRefresh}');"/>
+        <@krad.script value="setupOnChangeRefresh('${cName?js_string}', '${component.id}', '${component.baseId}',
+        '${component.methodToCallOnRefresh!}');"/>
     </#list>
 
     <#-- generate tooltip for component -->

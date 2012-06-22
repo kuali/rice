@@ -21,6 +21,22 @@
  -->
 
 <#--
+    ~ Copyright 2006-2012 The Kuali Foundation
+    ~
+    ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+    ~ you may not use this file except in compliance with the License.
+    ~ You may obtain a copy of the License at
+    ~
+    ~ http://www.opensource.org/licenses/ecl2.php
+    ~
+    ~ Unless required by applicable law or agreed to in writing, software
+    ~ distributed under the License is distributed on an "AS IS" BASIS,
+    ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    ~ See the License for the specific language governing permissions and
+    ~ limitations under the License.
+    -->
+
+<#--
  * message
  *
  * Macro to translate a message code into a message.
@@ -212,22 +228,16 @@
  * from a list of options.
  *
  * @param path the name of the field to bind to
- * @param options a map (value=label) of all the available options
+ * @param options a list of key value pairs of all the available options
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
 <#macro formSingleSelect path options attributes="">
     <@bind path/>
     <select name="${status.expression}" ${attributes}>
-        <#if options?is_hash>
-            <#list options?keys as value>
-            <option value="${value?html}"<@checkSelected value/>>${options[value]?html}</option>
-            </#list>
-        <#else>
-            <#list options as value>
-            <option value="${value?html}"<@checkSelected value/>>${value?html}</option>
-            </#list>
-        </#if>
+       <#list options as option>
+          <option value="${option.key?html}"<@checkSelected option.key/>>${option.value?html}</option>
+       </#list>
     </select>
 </#macro>
 
@@ -238,16 +248,16 @@
  * the list of options.
  *
  * @param path the name of the field to bind to
- * @param options a map (value=label) of all the available options
+ * @param options a list of key value pairs of all the available options
  * @param attributes any additional attributes for the element (such as class
  *    or CSS styles or size
 -->
 <#macro formMultiSelect path options attributes="">
     <@bind path/>
     <select multiple="multiple" name="${status.expression}" ${attributes}>
-        <#list options?keys as value>
-        <#assign isSelected = contains(status.actualValue?default([""]), value)>
-        <option value="${value?html}"<#if isSelected> selected="selected"</#if>>${options[value]?html}</option>
+        <#list options as option>
+        <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
+        <option value="${option.key?html}"<#if isSelected> selected="selected"</#if>>${option.value?html}</option>
         </#list>
     </select>
 </#macro>
@@ -258,7 +268,7 @@
  * Show radio buttons.
  *
  * @param path the name of the field to bind to
- * @param options a map (value=label) of all the available options
+ * @param options a list of key value pairs of all the available options
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '&nbsp;' or '<br>'
  * @param attributes any additional attributes for the element (such as class
@@ -266,10 +276,13 @@
 -->
 <#macro formRadioButtons path options separator attributes="">
     <@bind path/>
-    <#list options?keys as value>
-    <#assign id="${status.expression}${value_index}">
-    <input type="radio" id="${id}" name="${status.expression}" value="${value?html}"<#if stringStatusValue == value> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${id}">${options[value]?html}</label>${separator}
+    <#list options as option>
+    <#assign id="${status.expression}${option_index}">
+    <span>
+    <input type="radio" id="${id}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
+    <label for="${id}">${option.value?html}</label>
+    </span>
+    ${separator}
     </#list>
 </#macro>
 
@@ -279,7 +292,7 @@
  * Show checkboxes.
  *
  * @param path the name of the field to bind to
- * @param options a map (value=label) of all the available options
+ * @param options a list of KeyValue pairs of all the available options
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '&nbsp;' or '<br>'
  * @param attributes any additional attributes for the element (such as class
@@ -287,11 +300,14 @@
 -->
 <#macro formCheckboxes path options separator attributes="">
     <@bind path/>
-    <#list options?keys as value>
-    <#assign id="${status.expression}${value_index}">
-    <#assign isSelected = contains(status.actualValue?default([""]), value)>
-    <input type="checkbox" id="${id}" name="${status.expression}" value="${value?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${id}">${options[value]?html}</label>${separator}
+    <#list options as option>
+    <#assign id="${status.expression}${option_index}">
+    <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
+    <span>
+    <input type="checkbox" id="${id}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
+    <label for="${id}">${option.value?html}</label>
+    </span>
+    ${separator}
     </#list>
     <input type="hidden" name="_${status.expression}" value="on"/>
 </#macro>

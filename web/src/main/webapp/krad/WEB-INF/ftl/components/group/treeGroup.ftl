@@ -15,25 +15,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 -->
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <#macro uif_treeGroup group>
 
     <@krad.groupWrap group=group>
 
-        <@krad.group group=group>
         <div id="${group.id}_tree">
             <ul>
                 <#list group.treeGroups.rootElement.children as node>
                        <@krad.treeNode node=node />
-                   </#list>
+                </#list>
             </ul>
         </div>
 
         <#-- invoke tree widget -->
-        <@krad.template component=group.tree componentId=group.id/>
-
-        </@krad.group>
+        <@krad.template component=group.tree componentId="${group.id}"/>
 
     </@krad.groupWrap>
 

@@ -34,27 +34,30 @@
         <@krad.template component=manager.addLineGroup/>
     </#if>
 
-    <table id="${manager.id}" ${style!} ${styleClass!}>
+    <#if manager.dataFields?? && (manager.dataFields?size gt 0)>
 
-        <#if manager.headerLabels?has_content>
-            <thead>
-                <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
-                renderHeaderRow=true renderAlternatingHeaderColumns=false
-                applyDefaultCellWidths=manager.applyDefaultCellWidths/>
-            </thead>
-        </#if>
+        <table id="${manager.id}" ${style!} ${styleClass!}>
 
-        <tbody>
-            <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
-                applyAlternatingRowStyles=manager.applyAlternatingRowStyles
-                applyDefaultCellWidths=manager.applyDefaultCellWidths
-                renderAlternatingHeaderColumns=false
-                rowCssClasses=manager.rowCssClasses/>
-        </tbody>
+            <#if manager.headerLabels?? && (manager.headerLabels?size gt 0)>
+                <thead>
+                    <@krad.grid items=manager.headerLabels numberOfColumns=manager.numberOfColumns
+                    renderHeaderRow=true renderAlternatingHeaderColumns=false
+                    applyDefaultCellWidths=manager.applyDefaultCellWidths/>
+                </thead>
+            </#if>
 
-    </table>
+            <tbody>
+                <@krad.grid items=manager.dataFields numberOfColumns=manager.numberOfColumns
+                    applyAlternatingRowStyles=manager.applyAlternatingRowStyles
+                    applyDefaultCellWidths=manager.applyDefaultCellWidths
+                    renderAlternatingHeaderColumns=false
+                    rowCssClasses=manager.rowCssClasses/>
+            </tbody>
+        </table>
 
-    <#-- invoke table tools widget -->
-    <@krad.template component=manager.richTable componentId="${manager.id}"/>
+        <#-- invoke table tools widget -->
+        <@krad.template component=manager.richTable componentId="${manager.id}"/>
+
+    </#if>
 
 </#macro>

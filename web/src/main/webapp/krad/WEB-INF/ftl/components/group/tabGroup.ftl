@@ -16,7 +16,7 @@ limitations under the License.
 
 -->
 
-<#macro uif_linkGroup group>
+<#macro uif_tabGroup group>
 
     <@krad.groupWrap group=group>
 

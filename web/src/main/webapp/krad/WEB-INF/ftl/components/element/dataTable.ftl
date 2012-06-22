@@ -14,10 +14,24 @@
   ~ limitations under the License.
   -->
 
-<#macro div component>
+<#--
+    Element that creates a table element and then invokes datatables to complete
+    the table based on configured source data
+ -->
 
-  <div id="${component.id!}" ${attrBuild(component)} ${component.simpleDataAttributes}>
-    <#nested/>
-  </div>
+<#macro uif_dataTable element>
+
+    <#if element.styleClassesAsString?has_content>
+        <#local styleClass="class=\"${element.styleClassesAsString}\""/>
+    </#if>
+
+    <#if element.style?has_content>
+        <#local style="style=\"${element.style}\""/>
+    </#if>
+
+    <table id="${element.id}" ${style!} ${styleClass!}>
+    </table>
+
+    <@krad.script value="createTable('${element.id}', ${element.richTable.templateOptionsJSString}); "/>
 
 </#macro>

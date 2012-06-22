@@ -83,9 +83,9 @@
         </#if>
 
         <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
-            ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel}
+            ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel!}
         <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
-            ${element.actionLabel}${spanBeginTag!}${imageTag!}${spanEndTag!}
+            ${element.actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
         <#else>
             <#-- no image, just render label text -->
             ${element.actionLabel!}

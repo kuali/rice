@@ -29,9 +29,10 @@ import java.util.List;
  */
 public class CheckboxGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
-    private List<String> fieldsetClasses;
 
     private String delimiter;
+
+    private List<String> fieldsetClasses;
 
     public CheckboxGroupControl() {
         super();

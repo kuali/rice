@@ -308,11 +308,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public List<String> getCurrentNodeNames() {
-    	List<String> currentNodeNames = KEWServiceLocator.getRouteNodeService().getActiveRouteNodeNames(getDocumentId());
-    	if(currentNodeNames.isEmpty()) {
-    		currentNodeNames = KEWServiceLocator.getRouteNodeService().getTerminalRouteNodeNames(getDocumentId());
-    	}
-        return currentNodeNames;
+        return KEWServiceLocator.getRouteNodeService().getCurrentRouteNodeNames(getDocumentId());
     }
 
     public String getRouteStatusLabel() {

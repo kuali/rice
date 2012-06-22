@@ -68,7 +68,19 @@ public interface RouteNodeService {
      * @return list of route node instances
      */
     public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
-    
+
+    /**
+     * Retrieves the names of the route node instances where the document is currently located
+     * for the document with the given id. This could be active nodes in the document if it is
+     * in the middle of the routing process or it could be the names of the terminal nodes if
+     * the document has completed routing.
+     *
+     * @param documentId of the document
+     * @return list of names of the current route node instances
+     * @since 2.1
+     */
+    public List<String> getCurrentRouteNodeNames(String documentId);
+
     /**
      * Retrieves the names of active node instances for the document with the
      * given id.  The active node instances represent where in the route path

@@ -110,7 +110,12 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         }
         return activeNodeInstances;
     }
-    
+
+    @Override
+    public List<String> getCurrentRouteNodeNames(String documentId) {
+       	return routeNodeDAO.getCurrentRouteNodeNames(documentId);
+    }
+
     @Override
 	public List<String> getActiveRouteNodeNames(String documentId) {
     	return routeNodeDAO.getActiveRouteNodeNames(documentId);
@@ -124,7 +129,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 	public List<String> getTerminalRouteNodeNames(String documentId) {
     	return routeNodeDAO.getTerminalRouteNodeNames(documentId);
     }
-    
+
     public List getInitialNodeInstances(String documentId) {
     	return routeNodeDAO.getInitialNodeInstances(documentId);
     }

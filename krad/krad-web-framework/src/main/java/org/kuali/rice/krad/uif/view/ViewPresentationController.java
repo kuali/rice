@@ -25,7 +25,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.util.Set;
 
 /**
- * Configured for a <code>View</code> instance to provide conditional logic
+ * Configured for a <code>View</code> instance to provide conditional authorization logic
  * based on any variable (view configuration, system parameters, ...) that does
  * not depend on the current user
  *
@@ -46,10 +46,38 @@ public interface ViewPresentationController {
      */
     public boolean canEditView(View view, ViewModel model);
 
+    /**
+     * Determines if the given field within the view is allowed to be edited
+     *
+     * @param view - view instance the field belongs to
+     * @param model - object containing the view data
+     * @param field - field instance to determine edit authorization for
+     * @param propertyName - name of the property that field corresponds with (if field is data binding)
+     * @return boolean true if editing on the field is allowed, false otherwise
+     */
     public boolean canEditField(View view, ViewModel model, Field field, String propertyName);
 
+    /**
+     * Determines if the given field within the view is allowed to be viewed
+     *
+     * @param view - view instance the field belongs to
+     * @param model - object containing the view data
+     * @param field - field instance to determine view authorization for
+     * @param propertyName - name of the property that field corresponds with (if field is data binding)
+     * @return boolean true if viewing of the field is allowed, false otherwise
+     */
     public boolean canViewField(View view, ViewModel model, Field field, String propertyName);
 
+    /**
+     * Determines if a value is required to be present for the given field (used to indicate in the client the
+     * field must be completed)
+     *
+     * @param view - view instance the field belongs to
+     * @param model - object containing the view data
+     * @param field - field instance to determine required state for
+     * @param propertyName - name of the property that field corresponds with (if field is data binding)
+     * @return boolean true if field is required, false otherwise
+     */
     public boolean fieldIsRequired(View view, ViewModel model, Field field, String propertyName);
 
     public boolean canEditGroup(View view, ViewModel model, Group group, String groupId);

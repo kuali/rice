@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.List;
+
 /**
  * Content element that renders a HTML <code>&lt;IMG&gt;</code> tag
  *
@@ -55,6 +57,19 @@ public class Image extends ContentElementBase {
         if (StringUtils.isNotBlank(cutlineText)) {
             cutlineMessage.setMessageText(cutlineText);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        components.add(captionHeader);
+        components.add(cutlineMessage);
+
+        return components;
     }
 
     /**

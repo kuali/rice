@@ -20,7 +20,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -51,7 +50,10 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.util.ErrorMessage;
+import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -65,6 +67,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -577,10 +580,19 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                     throw new KimTypeAttributeException(e);
                 }
 
+                String baseLookupUrl = LookupUtils.getBaseLookupUrl(false) + "?methodToCall=start&";
+
+                if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(lookupClass)) {
+                    ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(lookupClass);
+                    if (moduleService.isExternalizableBusinessObjectLookupable(lookupClass)) {
+                        baseLookupUrl = moduleService.getExternalizableDataObjectLookupUrl(lookupClass, new Properties());
+                        // XXX: I'm not proud of this:
+                        baseLookupUrl = baseLookupUrl.substring(0,baseLookupUrl.indexOf("?")) + "?methodToCall=start&";
+                    }
+                }
+
                 final RemotableQuickFinder.Builder builder =
-                        RemotableQuickFinder.Builder.create(
-                                ConfigContext.getCurrentContextConfig().getKRBaseURL()+"/lookup.do?methodToCall=start&",
-                                lookupClass.getName());
+                        RemotableQuickFinder.Builder.create(baseLookupUrl, lookupClass.getName());
                 builder.setLookupParameters(toMap(field.getLookupParameters()));
                 builder.setFieldConversions(toMap(field.getFieldConversions()));
                 return builder;

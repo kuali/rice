@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.api.repository;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -50,11 +51,12 @@ public interface RuleRepositoryService {
 	 * @param contextSelectionCriteria
 	 * @return
      * @see ContextSelectionCriteria
-     * @throws IllegalArgumentException if the implementation can't handle the given ContextSelectionCriteria
+     * @throws RiceIllegalArgumentException if the implementation can't handle the given ContextSelectionCriteria
 	 */
 	@WebMethod(operationName = "selectContext")
 	@WebResult(name = "contextDefinition")
-	public ContextDefinition selectContext(@WebParam(name = "contextSelectionCriteria") ContextSelectionCriteria contextSelectionCriteria);
+	public ContextDefinition selectContext(@WebParam(name = "contextSelectionCriteria") ContextSelectionCriteria contextSelectionCriteria)
+            throws RiceIllegalArgumentException;
 	
 	/**
 	 * Retrieves the agenda tree for the given agendaId.  The agenda tree includes
@@ -64,14 +66,15 @@ public interface RuleRepositoryService {
 	 * @param agendaId the id of the agenda for which to retrieve the agenda tree
 	 * @return the agenda tree, or null if no agenda could be located for the given agendaId
 	 * 
-	 * @throws IllegalArgumentException if the given agendaId is null
+	 * @throws RiceIllegalArgumentException if the given agendaId is null
 	 */
 	@WebMethod(operationName = "getAgendaTree")
 	@WebResult(name = "agendaTree")
     @Cacheable(value= AgendaTreeDefinition.Cache.NAME, key="'agendaId=' + #p0")
-	public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId);
-	
-	/**
+	public AgendaTreeDefinition getAgendaTree(@WebParam(name = "agendaId") String agendaId)
+            throws RiceIllegalArgumentException;
+
+    /**
 	 * Retrieves all of the agendas trees for the given list of agendaIds.  The agenda tree includes
 	 * the entire agenda definition in the appropriate order and with the
 	 * defined agenda branching.
@@ -86,15 +89,16 @@ public interface RuleRepositoryService {
 	 * that were resolved successfully, it will never return null but could return an empty list if no agenda
 	 * trees could be loaded for the given set of ids
 	 * 
-	 * @throws IllegalArgumentException if the given list of agendaIds is null
+	 * @throws RiceIllegalArgumentException if the given list of agendaIds is null
 	 */
 	@WebMethod(operationName = "getAgendaTrees")
     @XmlElementWrapper(name = "agendaTrees", required = true)
     @XmlElement(name = "agendaTree", required = false)
 	@WebResult(name = "agendaTrees")
-	public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds);
-	
-	/**
+	public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds)
+            throws RiceIllegalArgumentException;
+
+    /**
 	 * Retrieves the rule for the given ruleId.  The rule includes the propositions
 	 * which define the condition that is to be evaluated on the rule.  It also
 	 * defines a collection of actions which will be invoked if the rule succeeds.
@@ -102,12 +106,12 @@ public interface RuleRepositoryService {
 	 * @param ruleId the id of the rule to retrieve
 	 * @return the rule definition, or null if no rule could be located for the given ruleId
 	 * 
-	 * @throws IllegalArgumentException if the given ruleId is null
+	 * @throws RiceIllegalArgumentException if the given ruleId is null
 	 */
 	@WebMethod(operationName = "getRule")
 	@WebResult(name = "rule")
     @Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleId=' + #p0")
-	public RuleDefinition getRule(@WebParam(name = "ruleId") String ruleId);
+	public RuleDefinition getRule(@WebParam(name = "ruleId") String ruleId) throws RiceIllegalArgumentException;
 	
 	/**
 	 * Retrieves all of the rules for the given list of ruleIds.  The rule includes the propositions
@@ -124,12 +128,13 @@ public interface RuleRepositoryService {
 	 * that were resolved successfully, it will never return null but could return an empty list if no
 	 * rules could be loaded for the given set of ids
 	 * 
-	 * @throws IllegalArgumentException if the given list of ruleIds is null
+	 * @throws RiceIllegalArgumentException if the given list of ruleIds is null
 	 */
 	@WebMethod(operationName = "getRules")
     @XmlElementWrapper(name = "rules", required = true)
     @XmlElement(name = "rule", required = false)
 	@WebResult(name = "rules")
-	public List<RuleDefinition> getRules(@WebParam(name = "ruleIds") List<String> ruleIds);
+	public List<RuleDefinition> getRules(@WebParam(name = "ruleIds") List<String> ruleIds)
+            throws RiceIllegalArgumentException;
 
 }

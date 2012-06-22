@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -55,10 +56,10 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     public ContextDefinition selectContext(
     		ContextSelectionCriteria contextSelectionCriteria) {
     	if (contextSelectionCriteria == null){
-    		throw new IllegalArgumentException("selection criteria is null");
+    		throw new RiceIllegalArgumentException("selection criteria is null");
     	}
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
-    		throw new IllegalArgumentException("selection criteria namespaceCode is null or blank");
+    		throw new RiceIllegalArgumentException("selection criteria namespaceCode is null or blank");
     	}
     	QueryByCriteria queryCriteria = buildQuery(contextSelectionCriteria);
         GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryCriteria);
@@ -72,7 +73,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     			ContextBo bo = resultBos.iterator().next();
     			return ContextBo.to(bo);
     		}
-    		else throw new IllegalArgumentException("Ambiguous context qualifiers, can not select more than one context.");
+    		else throw new RiceIllegalArgumentException("Ambiguous context qualifiers, can not select more than one context.");
     	}
     	return result;
     }
@@ -80,7 +81,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	@Override
 	public AgendaTreeDefinition getAgendaTree(String agendaId) {
 		if (StringUtils.isBlank(agendaId)){
-    		throw new IllegalArgumentException("agenda id is null or blank");
+    		throw new RiceIllegalArgumentException("agenda id is null or blank");
     	}
 		// Get agenda items from db, then build up agenda tree structure
 		AgendaBo agendaBo = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
@@ -117,7 +118,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
 	
 	@Override
 	public List<RuleDefinition> getRules(List<String> ruleIds) {
-        if (ruleIds == null) throw new IllegalArgumentException("ruleIds must not be null");
+        if (ruleIds == null) throw new RiceIllegalArgumentException("ruleIds must not be null");
 
         // Fetch BOs
         List<RuleBo> bos = null;

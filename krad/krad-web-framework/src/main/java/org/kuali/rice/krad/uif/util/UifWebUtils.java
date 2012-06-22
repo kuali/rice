@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -27,7 +26,6 @@ import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +72,6 @@ public class UifWebUtils {
      */
     public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
         if (handler instanceof UifControllerBase && (modelAndView != null)) {
             UifControllerBase controller = (UifControllerBase) handler;
 
@@ -88,16 +85,14 @@ public class UifWebUtils {
                     prepareViewForRendering(request, form);
 
                     // for component refresh need to export the component as a model
-
-                    if (requestVars!= null && !requestVars.isRenderFullView()) {
+                    if (!form.isRenderFullView()) {
                         Component component = null;
-
-                        if (StringUtils.isBlank(requestVars.getUpdateComponentId())){
+                        if (StringUtils.isBlank(form.getUpdateComponentId())) {
                             // refresh component is page
                             component = form.getView().getCurrentPage();
                         } else {
                             component = form.getPostedView().getViewIndex().getComponentById(
-                                    requestVars.getUpdateComponentId());
+                                    form.getUpdateComponentId());
                         }
                         modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
                     }
@@ -152,11 +147,9 @@ public class UifWebUtils {
      */
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
-        UifRequestVars requestVars =    (UifRequestVars) request.getAttribute(UifParameters.UIF_REQUEST_VARS);
+        if (!form.isRenderFullView() && StringUtils.isNotBlank(form.getUpdateComponentId())) {
+            String refreshComponentId = form.getUpdateComponentId();
 
-        if (requestVars!= null && !requestVars.isRenderFullView() && StringUtils.isNotBlank(requestVars.getUpdateComponentId())) {
-
-            String refreshComponentId = requestVars.getUpdateComponentId();
             // get a new instance of the component
             Component comp = ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 

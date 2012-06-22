@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.kuali.rice.krad.uif.view.HistoryEntry;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,34 +36,13 @@ import java.util.Map;
  */
 public class UifFormManager implements Serializable {
     private static final long serialVersionUID = -6323378881342207080L;
-
-    private UifFormBase currentForm;
-    private Map<String, UifFormBase> uifForms;
+    private Map<String, UifFormBase> sessionForms;
 
     /**
      * Create a new form manager with an empty list of forms for the session.
      */
     public UifFormManager() {
-        this.uifForms = new HashMap<String, UifFormBase>();
-    }
-
-    /**
-     * Get the current form of the session.
-     *
-     * @return UifFormBase
-     */
-    public UifFormBase getCurrentForm() {
-        return currentForm;
-    }
-
-    /**
-     * Sets the current form of the session.
-     *
-     * @param currentForm
-     */
-    public void setCurrentForm(UifFormBase currentForm) {
-        this.currentForm = currentForm;
-        addForm(currentForm);
+        this.sessionForms = new HashMap<String, UifFormBase>();
     }
 
     /**
@@ -65,12 +50,12 @@ public class UifFormManager implements Serializable {
      *
      * @param form to be added to the session
      */
-    public void addForm(UifFormBase form) {
+    public void addSessionForm(UifFormBase form) {
         if (form == null) {
             return;
         }
 
-        uifForms.put(form.getFormKey(), form);
+        sessionForms.put(form.getFormKey(), form);
     }
 
     /**
@@ -79,9 +64,9 @@ public class UifFormManager implements Serializable {
      * @param formKey of the form to retrieve from the session
      * @return UifFormBase
      */
-    public UifFormBase getForm(String formKey) {
-        if (uifForms.containsKey(formKey)) {
-            return uifForms.get(formKey);
+    public UifFormBase getSessionForm(String formKey) {
+        if (sessionForms.containsKey(formKey)) {
+            return sessionForms.get(formKey);
         }
 
         return null;
@@ -92,7 +77,7 @@ public class UifFormManager implements Serializable {
      *
      * @param form to be removed
      */
-    public void removeForm(UifFormBase form) {
+    public void removeSessionForm(UifFormBase form) {
         if (form == null) {
             return;
         }
@@ -105,13 +90,9 @@ public class UifFormManager implements Serializable {
      *
      * @param formKey of the form to be removed
      */
-    public void removeFormByKey(String formKey) {
-        if (uifForms.containsKey(formKey)) {
-            uifForms.remove(formKey);
-        }
-
-        if ((currentForm != null) && StringUtils.equals(currentForm.getFormKey(), formKey)) {
-            currentForm = null;
+    public void removeSessionFormByKey(String formKey) {
+        if (sessionForms.containsKey(formKey)) {
+            sessionForms.remove(formKey);
         }
     }
 
@@ -121,13 +102,90 @@ public class UifFormManager implements Serializable {
      * @param formKey of the form to be removed
      */
     public void removeFormWithHistoryFormsByKey(String formKey) {
-        if (uifForms.containsKey(formKey)) {
+        if (sessionForms.containsKey(formKey)) {
             // Remove forms from breadcrumb history as well
-            for (HistoryEntry historyEntry : uifForms.get(formKey).getFormHistory().getHistoryEntries()) {
-                uifForms.remove(historyEntry.getFormKey());
+            for (HistoryEntry historyEntry : sessionForms.get(formKey).getFormHistory().getHistoryEntries()) {
+                sessionForms.remove(historyEntry.getFormKey());
             }
 
-            removeFormByKey(formKey);
+            removeSessionFormByKey(formKey);
         }
     }
+
+    /**
+     * Retrieves the session form based on the formkey and updates the non session transient
+     * variables on the request form from the session form.
+     *
+     * @param requestForm
+     * @param formKey
+     * @return UifFormBase the updated form
+     */
+    public UifFormBase updateFormWithSession(UifFormBase requestForm, String formKey) {
+        UifFormBase updatedForm = null;
+        Object fieldValue = null;
+        UifFormBase sessionForm = sessionForms.get(formKey);
+        if (sessionForm == null) {
+            updatedForm = requestForm;
+        } else {
+
+            List<Field> fields = new ArrayList<Field>();
+            for (Field field : ObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class)) {
+                boolean copyValue = true;
+                for (Annotation an : field.getAnnotations()) {
+                    if (an instanceof SessionTransient) {
+                        copyValue = false;
+                    }
+                }
+
+                if (copyValue) {
+                    try {
+                        fieldValue = PropertyUtils.getProperty(sessionForm, field.getName());
+                        PropertyUtils.setProperty(requestForm, field.getName(), fieldValue);
+                    } catch (NoSuchMethodException e1) {
+                        // Eat it
+                    } catch (Exception e) {
+                        throw new RuntimeException(
+                                "Error copying values from the session form to request form for " + field.getName());
+                    }
+                }
+
+            }
+
+            updatedForm = requestForm;
+        }
+
+        return updatedForm;
+    }
+
+    /**
+     * Removes the values that are marked @SessionTransient from the form.
+     *
+     * @param form
+     * @return UifFormBase the form from which the session transient values have been purged
+     */
+    public UifFormBase purgeForm(UifFormBase form) {
+
+        List<Field> fields = new ArrayList<Field>();
+        for (Field field : ObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class)) {
+            boolean purgeValue = false;
+
+            if (!field.getType().isPrimitive()) {
+                for (Annotation an : field.getAnnotations()) {
+                    if (an instanceof SessionTransient) {
+                        purgeValue = true;
+                    }
+                }
+            }
+            try {
+                if (purgeValue) {
+                    PropertyUtils.setProperty(form, field.getName(), null);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to purge the field " + field.getName());
+            }
+
+        }
+        return form;
+    }
+
 }

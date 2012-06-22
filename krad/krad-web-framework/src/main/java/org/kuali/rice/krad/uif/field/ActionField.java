@@ -329,8 +329,57 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#setPreSubmitCall(java.lang.String)
      */
-       public void setPreSubmitCall(String preSubmitCall) {
+     public void setPreSubmitCall(String preSubmitCall) {
            action.setPreSubmitCall(preSubmitCall);
-       }
+     }
 
+     /**
+     * @see org.kuali.rice.krad.uif.element.Action#isAjaxSubmit()
+     */
+    public boolean isAjaxSubmit() {
+        return action.isAjaxSubmit();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setAjaxSubmit(boolean)
+     */
+    public void setAjaxSubmit(boolean ajaxSubmit) {
+        action.setAjaxSubmit(ajaxSubmit);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
+     *
+     * @return
+     */
+    public String getSuccessCallback() {
+        return action.getSuccessCallback();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setSuccessCallback(java.lang.String)
+     *
+     * @param successCallback
+     */
+    public void setSuccessCallback(String successCallback) {
+        action.setSuccessCallback(successCallback);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
+     *
+     * @return
+     */
+    public String getErrorCallback() {
+        return action.getErrorCallback();
+    }
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#setErrorCallback(java.lang.String)
+     *
+     * @param errorCallback
+     */
+
+    public void setErrorCallback(String errorCallback) {
+        action.setErrorCallback(errorCallback);
+    }
 }

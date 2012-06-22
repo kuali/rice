@@ -20,6 +20,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
@@ -53,35 +54,51 @@ public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
     // current view
+
     protected String viewId;
+
     protected String viewName;
+
     protected ViewType viewTypeName;
+
     protected String pageId;
+
     protected String methodToCall;
+
     protected String formKey;
+
     protected String jumpToId;
+
     protected String jumpToName;
+
     protected String focusId;
+
     protected String formPostUrl;
+
     protected String state;
 
     protected boolean defaultsApplied;
-    protected boolean requestRedirect;
 
     protected boolean validateDirty;
 
     protected String growlScript;
+
     protected String lightboxScript;
 
     protected View view;
+
     protected View postedView;
 
     protected Map<String, String> viewRequestParameters;
+
     protected List<String> readOnlyFieldsList;
 
     protected Map<String, Object> newCollectionLines;
+
     protected Map<String, String> actionParameters;
+
     protected Map<String, Object> clientStateForSyncing;
+
     protected Map<String, Set<String>> selectedCollectionLines;
 
     private List addedCollectionItems;
@@ -89,19 +106,38 @@ public class UifFormBase implements ViewModel {
     protected MultipartFile attachmentFile;
 
     // navigation
+
     protected String returnLocation;
+
     protected String returnFormKey;
 
     protected History formHistory;
 
     // dialog fields
+
     protected String dialogExplanation;
+
     protected String dialogResponse;
+
     private DialogManager dialogManager;
+
+    @SessionTransient
+    protected boolean skipViewInit;
+
+    @SessionTransient
+    protected boolean requestRedirect;
+
+    @SessionTransient
+    protected String updateComponentId;
+
+    @SessionTransient
+    protected boolean renderFullView;
 
     public UifFormBase() {
         formKey = generateFormKey();
+        renderFullView = true;
         defaultsApplied = false;
+        skipViewInit = false;
         requestRedirect = false;
 
         formHistory = new History();
@@ -156,7 +192,10 @@ public class UifFormBase implements ViewModel {
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
         }
 
-
+        // reset skip view init parameter if not passed
+        if (!request.getParameterMap().containsKey(UifParameters.SKIP_VIEW_INIT)) {
+            skipViewInit = false;
+        }
     }
 
     /**
@@ -164,9 +203,11 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public void postRender(HttpServletRequest request) {
+        renderFullView = true;
+        skipViewInit = false;
         requestRedirect = false;
 
-
+        updateComponentId = null;
 
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
@@ -176,6 +217,7 @@ public class UifFormBase implements ViewModel {
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewId()
      */
+
     @Override
     public String getViewId() {
         return this.viewId;
@@ -462,6 +504,24 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Indicates whether a new view is being initialized or the call is refresh (or query) call
+     *
+     * @return boolean true if view initialization was skipped, false if new view is being created
+     */
+    public boolean isSkipViewInit() {
+        return skipViewInit;
+    }
+
+    /**
+     * Setter for the skip view initialization flag
+     *
+     * @param skipViewInit
+     */
+    public void setSkipViewInit(boolean skipViewInit) {
+        this.skipViewInit = skipViewInit;
+    }
+
+    /**
      * Indicates whether a redirect has been requested for the view
      *
      * @return boolean true if redirect was requested, false if not
@@ -495,6 +555,43 @@ public class UifFormBase implements ViewModel {
      */
     public void setAttachmentFile(MultipartFile attachmentFile) {
         this.attachmentFile = attachmentFile;
+    }
+
+    /**
+     * Id for the component that should be updated for a component refresh process
+     *
+     * @return String component id
+     */
+    public String getUpdateComponentId() {
+        return updateComponentId;
+    }
+
+    /**
+     * Setter for the component id that should be refreshed
+     *
+     * @param updateComponentId
+     */
+    public void setUpdateComponentId(String updateComponentId) {
+        this.updateComponentId = updateComponentId;
+    }
+
+    /**
+     * Indicates if the full view is to be rendered or if its just a component that
+     * needs to be refreshed
+     *
+     * @return the renderFullView
+     */
+    public boolean isRenderFullView() {
+        return this.renderFullView;
+    }
+
+    /**
+     * Setter for renderFullView
+     *
+     * @param renderFullView
+     */
+    public void setRenderFullView(boolean renderFullView) {
+        this.renderFullView = renderFullView;
     }
 
     /**

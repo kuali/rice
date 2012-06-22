@@ -47,7 +47,7 @@ function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
 
         ajaxSubmitForm(controllerMethod, updateCollectionCallback,
                 {updateComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-                elementToBlock);
+                elementToBlock, null);
     } else {
         // TODO: refactor to disabled buttons, or externalize
         alert('Please select an agenda item first.');

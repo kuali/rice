@@ -15,6 +15,7 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,7 +35,6 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -130,9 +130,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
         }
         // only refreshing page
-        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
-        requestVars.setRenderFullView(false);
-        request.setAttribute(UifParameters.UIF_REQUEST_VARS,requestVars);
+        form.setRenderFullView(false);
 
         return getUIFModelAndView(form, pageId);
     }
@@ -329,6 +327,26 @@ public class UifComponentsTestController extends UifControllerBase {
         
         return getUIFModelAndView(form);
     }
-    
+
+
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=successCheck")
+    public ModelAndView successCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        return getUIFModelAndView(form);
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=errorCheck")
+    public ModelAndView errorCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        if(true) {
+            throw new RuntimeException("Generate fake incident report");
+        }
+
+        return getUIFModelAndView(form);
+    }
 
 }

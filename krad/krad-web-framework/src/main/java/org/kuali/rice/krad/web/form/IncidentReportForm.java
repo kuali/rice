@@ -49,7 +49,7 @@ public class IncidentReportForm extends UifFormBase {
 
     public IncidentReportForm() {
         super();
-        //this.setRenderFullView(true);
+        this.setRenderFullView(true);
         setViewTypeName(ViewType.INCIDENT);
     }
 

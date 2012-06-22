@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Field that presents an action that can be taken on the UI such as submitting
  * the form or invoking a script
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Action extends ContentElementBase {
@@ -66,6 +66,10 @@ public class Action extends ContentElementBase {
     private String disabledReason;
 
     private String preSubmitCall;
+    private boolean ajaxSubmit;
+
+    private String successCallback;
+    private String errorCallback;
 
     public Action() {
         super();
@@ -83,7 +87,7 @@ public class Action extends ContentElementBase {
      * <li>Add methodToCall action parameter if set and setup event code for
      * setting action parameters</li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
@@ -91,7 +95,8 @@ public class Action extends ContentElementBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
         //clear alt text to avoid screen reader confusion when using image in button with text
-        if(actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(actionLabel)){
+        if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
+                actionLabel)) {
             actionImage.setAltText("");
         }
 
@@ -110,8 +115,8 @@ public class Action extends ContentElementBase {
             }
         }
 
-        if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)
-                && StringUtils.isNotBlank(methodToCall)) {
+        if (!actionParameters.containsKey(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME) && StringUtils
+                .isNotBlank(methodToCall)) {
             actionParameters.put(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, methodToCall);
         }
 
@@ -136,18 +141,19 @@ public class Action extends ContentElementBase {
                         parameterPath = UifPropertyPaths.ACTION_PARAMETERS + "[" + key + "]";
                     }
 
-                    writeParamsScript = writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '"
-                            + actionParameters.get(key) + "'); ";
+                    writeParamsScript =
+                            writeParamsScript + "writeHiddenToForm('" + parameterPath + "' , '" + actionParameters.get(
+                                    key) + "'); ";
 
                     // Include dirtycheck js function call if the method to call
                     // is refresh, navigate, cancel or close
-                    if (validateFormDirty && !includeDirtyCheckScript
-                            && key.equals(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
+                    if (validateFormDirty && !includeDirtyCheckScript && key.equals(
+                            UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME)) {
                         String keyValue = (String) actionParameters.get(key);
-                        if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH)
-                                || StringUtils.equals(keyValue, UifConstants.MethodToCallNames.NAVIGATE)
-                                || StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CANCEL)
-                                || StringUtils.equals(keyValue, UifConstants.MethodToCallNames.CLOSE)) {
+                        if (StringUtils.equals(keyValue, UifConstants.MethodToCallNames.REFRESH) || StringUtils.equals(
+                                keyValue, UifConstants.MethodToCallNames.NAVIGATE) || StringUtils.equals(keyValue,
+                                UifConstants.MethodToCallNames.CANCEL) || StringUtils.equals(keyValue,
+                                UifConstants.MethodToCallNames.CLOSE)) {
                             includeDirtyCheckScript = true;
                         }
                     }
@@ -157,10 +163,18 @@ public class Action extends ContentElementBase {
             // TODO possibly fix some other way - this is a workaround, prevents
             // showing history and showing home again on actions which submit
             // the form
-            writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HISTORY
-                    + "', '" + "false" + "'); ";
-            writeParamsScript = writeParamsScript + "writeHiddenToForm('" + UifConstants.UrlParams.SHOW_HOME + "' , '"
-                    + "false" + "'); ";
+            writeParamsScript = writeParamsScript
+                    + "writeHiddenToForm('"
+                    + UifConstants.UrlParams.SHOW_HISTORY
+                    + "', '"
+                    + "false"
+                    + "'); ";
+            writeParamsScript = writeParamsScript
+                    + "writeHiddenToForm('"
+                    + UifConstants.UrlParams.SHOW_HOME
+                    + "' , '"
+                    + "false"
+                    + "'); ";
 
             if (StringUtils.isBlank(focusOnIdAfterSubmit)) {
                 // if this is blank focus this actionField by default
@@ -168,7 +182,8 @@ public class Action extends ContentElementBase {
                 writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + this.getId() + "'); ";
             } else if (!focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
                 // Use the id passed in
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnIdAfterSubmit + "'); ";
+                writeParamsScript =
+                        writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnIdAfterSubmit + "'); ";
             } else {
                 // First input will be focused, must be first field set to empty
                 // string
@@ -179,13 +194,13 @@ public class Action extends ContentElementBase {
                 jumpToIdAfterSubmit = this.getId();
                 writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '" + this.getId() + "'); ";
             } else if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToId' , '" + jumpToIdAfterSubmit
-                        + "'); ";
+                writeParamsScript =
+                        writeParamsScript + "writeHiddenToForm('jumpToId' , '" + jumpToIdAfterSubmit + "'); ";
             } else {
-                writeParamsScript = writeParamsScript + "writeHiddenToForm('jumpToName' , '" + jumpToNameAfterSubmit
-                        + "'); ";
+                writeParamsScript =
+                        writeParamsScript + "writeHiddenToForm('jumpToName' , '" + jumpToNameAfterSubmit + "'); ";
             }
-            
+
             String postScript = "";
             if (StringUtils.isNotBlank(clientSideJs)) {
                 postScript = clientSideJs;
@@ -193,26 +208,36 @@ public class Action extends ContentElementBase {
             if (isPerformClientSideValidation()) {
                 postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
             }
-
+            String submitScript = "";
+            if (ajaxSubmit) {
+                submitScript = "ajaxSubmitForm( '"
+                        + getMethodToCall()
+                        + "',"
+                        + successCallback
+                        + ", null, null,"
+                        + errorCallback
+                        + ");";
+            } else {
+                submitScript = "jQuery('#kualiForm').submit();";
+            }
             if (StringUtils.isBlank(postScript)) {
                 //if the preSubmitCall evaluates to true then submit the form else don't
-                 if(StringUtils.isNotBlank(preSubmitCall)) {
-                    postScript = "if ("+ preSubmitCall +"== true ) {jQuery('#kualiForm').submit();}";
-                }  else {
-                    postScript = "jQuery('#kualiForm').submit();";
+                if (StringUtils.isNotBlank(preSubmitCall)) {
+                    postScript = "if (" + preSubmitCall + "== true ) {" + submitScript + "}";
+                } else {
+                    postScript = submitScript;
                 }
             }
 
-             if (includeDirtyCheckScript) {
-                this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { " + prefixScript
-                        + writeParamsScript + postScript + " ; } ");
+            if (includeDirtyCheckScript) {
+                this.setOnClickScript("e.preventDefault(); if (checkDirty(e) == false) { "
+                        + prefixScript
+                        + writeParamsScript
+                        + postScript
+                        + " ; } ");
             } else {
                 this.setOnClickScript("e.preventDefault();" + prefixScript + writeParamsScript + postScript);
             }
-
-
-
-
 
         } else {
             // When there is a light box - don't add the on click script as it
@@ -261,7 +286,7 @@ public class Action extends ContentElementBase {
      * selected. For client side calls gives the name of the script function
      * that should be invoked when the action is selected
      * </p>
-     * 
+     *
      * @return String name of method to call
      */
     public String getMethodToCall() {
@@ -270,7 +295,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the actions method to call
-     * 
+     *
      * @param methodToCall
      */
     public void setMethodToCall(String methodToCall) {
@@ -284,7 +309,7 @@ public class Action extends ContentElementBase {
      * label for the action. For buttons this generally is the button text,
      * while for an action link it would be the links displayed text
      * </p>
-     * 
+     *
      * @return String label for action
      */
     public String getActionLabel() {
@@ -293,7 +318,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the actions label
-     * 
+     *
      * @param actionLabel
      */
     public void setActionLabel(String actionLabel) {
@@ -309,7 +334,7 @@ public class Action extends ContentElementBase {
      * action link templates the image is used for the link instead of the
      * action link text
      * </p>
-     * 
+     *
      * @return Image action image
      */
     public Image getActionImage() {
@@ -318,7 +343,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the action image field
-     * 
+     *
      * @param actionImage
      */
     public void setActionImage(Image actionImage) {
@@ -334,7 +359,7 @@ public class Action extends ContentElementBase {
      * Support exists in the <code>UifControllerBase</code> for handling
      * navigation between pages
      * </p>
-     * 
+     *
      * @return String id of page that should be rendered when the action item is
      *         selected
      */
@@ -344,7 +369,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the navigate to page id
-     * 
+     *
      * @param navigateToPageId
      */
     public void setNavigateToPageId(String navigateToPageId) {
@@ -388,7 +413,7 @@ public class Action extends ContentElementBase {
      * to provide the context the action is in (such as the collection name and
      * line the action applies to)
      * </p>
-     * 
+     *
      * @return Map<String, String> action parameters
      */
     public Map<String, String> getActionParameters() {
@@ -397,7 +422,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the action parameters
-     * 
+     *
      * @param actionParameters
      */
     public void setActionParameters(Map<String, String> actionParameters) {
@@ -406,11 +431,9 @@ public class Action extends ContentElementBase {
 
     /**
      * Convenience method to add a parameter to the action parameters Map
-     * 
-     * @param parameterName
-     *            - name of parameter to add
-     * @param parameterValue
-     *            - value of parameter to add
+     *
+     * @param parameterName - name of parameter to add
+     * @param parameterValue - value of parameter to add
      */
     public void addActionParameter(String parameterName, String parameterValue) {
         if (actionParameters == null) {
@@ -445,8 +468,7 @@ public class Action extends ContentElementBase {
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
         if (!(componentSecurity instanceof ActionSecurity)) {
-            throw new RiceRuntimeException(
-                    "Component security for Action should be instance of ActionSecurity");
+            throw new RiceRuntimeException("Component security for Action should be instance of ActionSecurity");
         }
 
         super.setComponentSecurity(componentSecurity);
@@ -459,9 +481,8 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the light box lookup widget
-     * 
-     * @param lightBoxLookup
-     *            <code>LightBoxLookup</code> widget to set
+     *
+     * @param lightBoxLookup <code>LightBoxLookup</code> widget to set
      */
     public void setLightBoxLookup(LightBox lightBoxLookup) {
         this.lightBoxLookup = lightBoxLookup;
@@ -473,7 +494,7 @@ public class Action extends ContentElementBase {
      * The light box lookup widget will change the lookup behaviour to open the
      * lookup in a light box.
      * </p>
-     * 
+     *
      * @return the <code>DirectInquiry</code> field DirectInquiry
      */
     public LightBox getLightBoxLookup() {
@@ -495,9 +516,8 @@ public class Action extends ContentElementBase {
      * jumpToNameAfterSubmit will result in this Action being jumped to by
      * default if it is present on the new page. WARNING: jumpToIdAfterSubmit
      * always takes precedence over jumpToNameAfterSubmit, if set.
-     * 
-     * @param jumpToIdAfterSubmit
-     *            the jumpToIdAfterSubmit to set
+     *
+     * @param jumpToIdAfterSubmit the jumpToIdAfterSubmit to set
      */
     public void setJumpToIdAfterSubmit(String jumpToIdAfterSubmit) {
         this.jumpToIdAfterSubmit = jumpToIdAfterSubmit;
@@ -510,7 +530,7 @@ public class Action extends ContentElementBase {
      * will result in this Action being jumped to by default if it is
      * present on the new page. WARNING: jumpToIdAfterSubmit always takes
      * precedence over jumpToNameAfterSubmit, if set.
-     * 
+     *
      * @return the jumpToNameAfterSubmit
      */
     public String getJumpToNameAfterSubmit() {
@@ -518,8 +538,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @param jumpToNameAfterSubmit
-     *            the jumpToNameAfterSubmit to set
+     * @param jumpToNameAfterSubmit the jumpToNameAfterSubmit to set
      */
     public void setJumpToNameAfterSubmit(String jumpToNameAfterSubmit) {
         this.jumpToNameAfterSubmit = jumpToNameAfterSubmit;
@@ -530,7 +549,7 @@ public class Action extends ContentElementBase {
      * is retrieved. Passing in "FIRST" will focus on the first visible input
      * element on the form. Passing in the empty string will result in this
      * Action being focused.
-     * 
+     *
      * @return the focusOnAfterSubmit
      */
     public String getFocusOnIdAfterSubmit() {
@@ -538,8 +557,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @param focusOnIdAfterSubmit
-     *            the focusOnAfterSubmit to set
+     * @param focusOnIdAfterSubmit the focusOnAfterSubmit to set
      */
     public void setFocusOnIdAfterSubmit(String focusOnIdAfterSubmit) {
         this.focusOnIdAfterSubmit = focusOnIdAfterSubmit;
@@ -556,6 +574,7 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the client side validation flag
+     *
      * @param performClientSideValidation
      */
     public void setPerformClientSideValidation(boolean performClientSideValidation) {
@@ -570,7 +589,7 @@ public class Action extends ContentElementBase {
      * will be the last script executed by the click event. Sidenote: This js is
      * always called after hidden actionParameters and methodToCall methods are
      * written by the js to the html form.
-     * 
+     *
      * @return the clientSideJs
      */
     public String getClientSideJs() {
@@ -578,8 +597,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @param clientSideJs
-     *            the clientSideJs to set
+     * @param clientSideJs the clientSideJs to set
      */
     public void setClientSideJs(String clientSideJs) {
         if (!StringUtils.endsWith(clientSideJs, ";")) {
@@ -590,9 +608,8 @@ public class Action extends ContentElementBase {
 
     /**
      * Setter for the light box direct inquiry widget
-     * 
-     * @param lightBoxDirectInquiry
-     *            <code>LightBox</code> widget to set
+     *
+     * @param lightBoxDirectInquiry <code>LightBox</code> widget to set
      */
     public void setLightBoxDirectInquiry(LightBox lightBoxDirectInquiry) {
         this.lightBoxDirectInquiry = lightBoxDirectInquiry;
@@ -604,7 +621,7 @@ public class Action extends ContentElementBase {
      * The light box widget will change the direct inquiry behaviour to open up
      * in a light box.
      * </p>
-     * 
+     *
      * @return the <code>LightBox</code> field LightBox
      */
     public LightBox getLightBoxDirectInquiry() {
@@ -612,8 +629,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * @param performDirtyValidation
-     *            the blockValidateDirty to set
+     * @param performDirtyValidation the blockValidateDirty to set
      */
     public void setPerformDirtyValidation(boolean performDirtyValidation) {
         this.performDirtyValidation = performDirtyValidation;
@@ -673,6 +689,7 @@ public class Action extends ContentElementBase {
      * For the subclass ActionLinkField only LEFT and RIGHT are allowed.  When set to blank/null/IMAGE_ONLY, the image
      * itself will be the Action, if no value is set the default is ALWAYS LEFT, you must explicitly set
      * blank/null/IMAGE_ONLY to use ONLY the image as the Action.
+     *
      * @return
      */
     public void setActionImagePlacement(String actionImagePlacement) {
@@ -680,14 +697,14 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     *  Gets the script which needs to be invoked before the form is submitted. The script should return a boolean
-     *  indicating if the form should be submitted or not.
+     * Gets the script which needs to be invoked before the form is submitted. The script should return a boolean
+     * indicating if the form should be submitted or not.
      *
-     * @return  String script text that will be invoked before form submission
+     * @return String script text that will be invoked before form submission
      */
     public String getPreSubmitCall() {
-             return preSubmitCall;
-         }
+        return preSubmitCall;
+    }
 
     /**
      * Setter for preSubmitCall
@@ -695,7 +712,62 @@ public class Action extends ContentElementBase {
      * @param preSubmitCall
      */
     public void setPreSubmitCall(String preSubmitCall) {
-     this.preSubmitCall = preSubmitCall;
+        this.preSubmitCall = preSubmitCall;
     }
 
+    /**
+     * When this property is set to true it will submit the form using Ajax instead of the browser submit. Will default
+     * to updating the page contents
+     *
+     * @return boolean
+     */
+    public boolean isAjaxSubmit() {
+        return ajaxSubmit;
+    }
+
+    /**
+     * Setter for ajaxSubmit
+     *
+     * @param ajaxSubmit
+     */
+    public void setAjaxSubmit(boolean ajaxSubmit) {
+        this.ajaxSubmit = ajaxSubmit;
+    }
+
+    /**
+     * Getter for successCallback property. This will be invoked for successful ajax calls
+     *
+     * @return String
+     */
+
+    public String getSuccessCallback() {
+        return successCallback;
+    }
+
+    /**
+     * Setter for successCallback
+     *
+     * @param successCallback
+     */
+    public void setSuccessCallback(String successCallback) {
+        this.successCallback = successCallback;
+    }
+
+    /**
+     * Getter for errorCallback. This will be invoked for failed ajax calls
+     *
+     * @return
+     */
+    public String getErrorCallback() {
+        return errorCallback;
+    }
+
+    /**
+     * Setter for errorCallback
+     *
+     * @param errorCallback
+     */
+    public void setErrorCallback(String errorCallback) {
+        this.errorCallback = errorCallback;
+    }
 }

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.UifFormManager;
 import org.kuali.rice.krad.uif.util.UifWebUtils;
@@ -24,7 +25,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.web.form.UifRequestVars;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,14 +94,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             Exception ex) throws Exception {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
 
-        UifFormBase uifForm = uifFormManager.getCurrentForm();
-        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
+        UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
+
         if (uifForm != null) {
             if (uifForm.isRequestRedirect()) {
                 // view wasn't rendered, just set to null and leave previous posted view
                 uifForm.setView(null);
-            }
-             else if (requestVars!= null && requestVars.isSkipViewInit()) {
+            } else if (uifForm.isSkipViewInit()) {
                 // partial refresh or query
                 View postedView = uifForm.getPostedView();
                 if (postedView != null) {
@@ -114,8 +113,11 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                     view.getViewHelperService().cleanViewAfterRender(view);
 
                     // check whether form should be keep in session or not
-                    if (!view.isPersistFormToSession()) {
-                        uifFormManager.removeForm(uifForm);
+                    if (view.isPersistFormToSession()) {
+                        // Remove the session transient variables from the request form before adding it to the list of
+                        // Uifsession forms
+                        uifFormManager.purgeForm(uifForm);
+                        uifFormManager.addSessionForm(uifForm);
                     }
                 }
 

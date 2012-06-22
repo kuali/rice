@@ -39,6 +39,7 @@ public class UifConstants {
     public static final String NODE_PATH_BIND_ADJUST_PREFIX = "#np.";
 
     public static final String DATA_ATTRIBUTE_CONTROL_FOR = "controlFor";
+    public static final String REQUEST_FORM = "requestForm";
 
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP

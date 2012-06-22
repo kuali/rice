@@ -25,7 +25,7 @@
  * For the above reason, the renderFullView below is set to false so that the script content between <head></head> is left out
  */
 
-function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock){
+function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementToBlock, errorCallback){
 	var data = {};
 
     // methodToCall checks
@@ -76,7 +76,9 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				var hasError = handleIncidentReport(response);
 				if(!hasError){
 					successCallback(tempDiv);
-				}
+				} else if(errorCallback != null) {
+                    errorCallback(tempDiv);
+                }
 
                 jQuery("#formComplete").html("");
 
@@ -153,7 +155,7 @@ function validateAndSubmit(methodToCall, successCallback){
 
 	if(validForm){
         jQuery.watermark.showAll();
-		ajaxSubmitForm(methodToCall, successCallback, null, null);
+		ajaxSubmitForm(methodToCall, successCallback, null, null, null);
 	}
 	else{
         jQuery.watermark.showAll();
@@ -178,8 +180,26 @@ function validateAndSubmitUsingFormMethodToCall(){
  */
 function submitForm(){
 	var methodToCall = jQuery("input[name='methodToCall']").val();
-	ajaxSubmitForm(methodToCall, updatePageCallback, null, null);
+	ajaxSubmitForm(methodToCall, updatePageCallback, null, null, null);
 }
+
+/**
+ * Translates all data variable to hidden form element and submits the form
+ */
+function submitKualiForm() {
+  var data = jQuery(this).data();
+  for(var key in data){
+    writeHiddenToForm(key, data[key]);
+  }
+
+  jQuery('#kualiForm').submit();
+}
+
+
+
+
+
+
 
 /**
  * Invoked on success of an ajax call that refreshes the page
@@ -217,7 +237,7 @@ function updatePageCallback(content) {
  *          the id for the page that the link should navigate to
  */
 function handleActionLink(methodToCall, navigateToPageId) {
-    ajaxSubmitForm(methodToCall, updatePageCallback, {navigateToPageId:navigateToPageId}, null);
+    ajaxSubmitForm(methodToCall, updatePageCallback, {navigateToPageId:navigateToPageId}, null, null);
 }
 
 /**
@@ -296,7 +316,7 @@ function retrieveComponent(id, baseId, methodToCall){
     jQuery("input[name='skipViewInit']").remove();
 
 	ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
-			{updateComponentId: id, skipViewInit: "true"}, elementToBlock);
+			{updateComponentId: id, skipViewInit: "true"}, elementToBlock, null);
 }
 
 /**
@@ -331,7 +351,7 @@ function toggleInactiveRecordDisplay(collectionGroupId, showInactive) {
 
     ajaxSubmitForm("toggleInactiveRecordDisplay", updateCollectionCallback, 
 			{updateComponentId: collectionGroupId, skipViewInit: "true", showInactiveRecords : showInactive},
-			elementToBlock);
+			elementToBlock, null);
 }
 
 function performCollectionAction(collectionGroupId){
@@ -354,7 +374,7 @@ function performCollectionAction(collectionGroupId){
         // Since we are always setting skipViewInit to true, remove any existing skipViewInit input param
         jQuery("input[name='skipViewInit']").remove();
 		ajaxSubmitForm(methodToCall, updateCollectionCallback, {updateComponentId: collectionGroupId, skipViewInit: "true"},
-				elementToBlock);
+				elementToBlock, null);
 	}
 }
 

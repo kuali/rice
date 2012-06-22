@@ -16,9 +16,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<c:set var="requestVars" value="<%=request.getAttribute(UifParameters.UIF_REQUEST_VARS)%>"></c:set>
 <c:choose>
-  <c:when test="${ !empty requestVars && requestVars.renderFullView}">
+  <c:when test="${KualiForm.renderFullView}">
 
     <krad:html view="${KualiForm.view}">
 
@@ -84,7 +83,7 @@
     <s:nestedPath path="KualiForm">
       <krad:template component="${KualiForm.view.breadcrumbs}"/>
 
-      <c:if test="${!empty requestVars && !empty requestVars.updateComponentId}">
+      <c:if test="${!empty KualiForm.updateComponentId}">
         <%-- render errors field for page so they can be pulled and updated on the view --%>
         <krad:template component="${KualiForm.postedView.currentPage.validationMessages}"/>
       </c:if>

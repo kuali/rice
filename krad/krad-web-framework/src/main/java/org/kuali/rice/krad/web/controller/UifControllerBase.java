@@ -41,8 +41,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.web.form.UifRequestVars;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,11 +99,10 @@ public abstract class UifControllerBase {
      */
     @ModelAttribute(value = "KualiForm")
     public final UifFormBase initForm(HttpServletRequest request) {
-        UifFormBase form = null;
+        UifFormBase requestForm = null;
 
         // get Uif form manager from session if exists or setup a new one for the session
-        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(
-                UifParameters.FORM_MANAGER);
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         if (uifFormManager == null) {
             uifFormManager = new UifFormManager();
             request.getSession().setAttribute(UifParameters.FORM_MANAGER, uifFormManager);
@@ -112,23 +112,23 @@ public abstract class UifControllerBase {
         GlobalVariables.setUifFormManager(uifFormManager);
 
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
+        //Create a new form for every request
+        requestForm = createInitialForm(request);
+
         if (StringUtils.isNotBlank(formKeyParam)) {
-            form = uifFormManager.getForm(formKeyParam);
+            //Retrieves the session form and updates the request from with the session transient attributes
+            requestForm = uifFormManager.updateFormWithSession(requestForm, formKeyParam);
         }
 
         // if form exist, remove unused forms from breadcrumb history
-        if (form != null) {
-            removeUnusedBreadcrumbs(uifFormManager, form.getFormKey(), request.getParameter(UifConstants.UrlParams.LAST_FORM_KEY));
+        if (requestForm != null) {
+            removeUnusedBreadcrumbs(uifFormManager, requestForm.getFormKey(), request.getParameter(
+                    UifConstants.UrlParams.LAST_FORM_KEY));
         }
 
-        // if form not in manager, create a new form
-        if (form == null) {
-            form = createInitialForm(request);
-        }
-
-        uifFormManager.setCurrentForm(form);
-
-        return form;
+        //Sets the request form in the request for later retrieval
+        request.setAttribute(UifConstants.REQUEST_FORM, requestForm);
+        return requestForm;
     }
 
     /**
@@ -157,12 +157,12 @@ public abstract class UifControllerBase {
             return;
         }
 
-        UifFormBase previousForm = uifFormManager.getForm(lastFormKey);
+        UifFormBase previousForm = uifFormManager.getSessionForm(lastFormKey);
 
         boolean cleanUpRemainingForms = false;
         for (HistoryEntry historyEntry : previousForm.getFormHistory().getHistoryEntries()) {
             if (cleanUpRemainingForms) {
-                uifFormManager.removeFormByKey(historyEntry.getFormKey());
+                uifFormManager.removeSessionFormByKey(historyEntry.getFormKey());
             } else {
                 if (StringUtils.equals(formKey, historyEntry.getFormKey())) {
                     cleanUpRemainingForms = true;
@@ -170,7 +170,7 @@ public abstract class UifControllerBase {
             }
         }
 
-        uifFormManager.removeFormByKey(lastFormKey);
+        uifFormManager.removeSessionFormByKey(lastFormKey);
     }
 
     /**
@@ -387,7 +387,7 @@ public abstract class UifControllerBase {
         }
 
         // clear current form from session
-        GlobalVariables.getUifFormManager().removeForm(form);
+        GlobalVariables.getUifFormManager().removeSessionForm(form);
 
         return performRedirect(form, returnUrl, props);
     }
@@ -449,7 +449,7 @@ public abstract class UifControllerBase {
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
 
         // clear current form from session
-        GlobalVariables.getUifFormManager().removeForm(form);
+        GlobalVariables.getUifFormManager().removeSessionForm(form);
 
         return performRedirect(form, histUrl, props);
     }
@@ -463,14 +463,7 @@ public abstract class UifControllerBase {
         String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
         // only refreshing page
-        UifRequestVars requestVars = (UifRequestVars)request.getAttribute(UifParameters.UIF_REQUEST_VARS);
-        if(requestVars != null){
-            requestVars.setRenderFullView(false);
-        } else{
-            requestVars = new UifRequestVars();
-            requestVars.setRenderFullView(false);
-        }
-        request.setAttribute(UifParameters.UIF_REQUEST_VARS,requestVars);
+       form.setRenderFullView(false);
         return getUIFModelAndView(form, pageId);
     }
 

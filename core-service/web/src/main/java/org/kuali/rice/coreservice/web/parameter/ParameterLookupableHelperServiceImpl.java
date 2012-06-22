@@ -29,8 +29,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -70,8 +72,28 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             fieldValues.put(COMPONENT_CODE,"");
         }
 
+        String componentNameFieldValue = fieldValues.get(COMPONENT_NAME);
+        fieldValues.remove(COMPONENT_NAME);
+
         List<ParameterBo> results = (List<ParameterBo>)super.getSearchResultsUnbounded(fieldValues);
         normalizeParameterComponents(results);
+
+        if (!StringUtils.isBlank(componentNameFieldValue)) {
+            componentNameFieldValue = componentNameFieldValue.trim();
+            componentNameFieldValue = componentNameFieldValue.replace("*", ".*");
+            componentNameFieldValue = ".*" + componentNameFieldValue + ".*";
+
+            Pattern pattern = Pattern.compile(componentNameFieldValue, Pattern.CASE_INSENSITIVE);
+
+            Iterator<ParameterBo> resultsIter = results.iterator();
+            while (resultsIter.hasNext()) {
+                ParameterBo result = resultsIter.next();
+                if (!pattern.matcher(result.getComponent().getName()).matches()) {
+                    resultsIter.remove();
+                }
+            }
+        }
+
         return results;
     }
 

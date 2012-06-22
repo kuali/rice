@@ -51,7 +51,6 @@ import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.GlobalVariables;

@@ -24,9 +24,9 @@ import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
+import org.kuali.rice.krms.api.repository.proposition.PropositionContract;
 
 
 /**
@@ -239,7 +239,7 @@ class PropositionTest {
 
 	@Test
 	void test_Builder_create_compound_proposition_sucess() {
-		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
+		PropositionDefinition.Builder.create(new PropositionContract () {
 			def String id = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
@@ -254,7 +254,7 @@ class PropositionTest {
 	
 	@Test
 	void test_Builder_create_and_build_compound_proposition_success() {
-		PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
+		PropositionDefinition.Builder.create(new PropositionContract () {
 			def String id = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
@@ -305,7 +305,7 @@ class PropositionTest {
 
 	@Test
 	public void testXmlMarshaling_compound_proposition() {
-		PropositionDefinition myProp = PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
+		PropositionDefinition myProp = PropositionDefinition.Builder.create(new PropositionContract () {
 			def String id = "111"
 			def String description = "Compound: Campus is Muir or Thurgood Marshall"
             def String ruleId = "1"
@@ -453,7 +453,7 @@ class PropositionTest {
 	  return propParms;
   }
   private static createPropositionABuilder() {
-	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
+	  return PropositionDefinition.Builder.create(new PropositionContract () {
 		  def String id = "100"
 		  def String description = "Is campus type = Muir"
           def String ruleId = "1"
@@ -467,7 +467,7 @@ class PropositionTest {
   }
 	  
   private static createPropositionBBuilder() {
-	  return PropositionDefinition.Builder.create(new PropositionDefinitionContract () {
+	  return PropositionDefinition.Builder.create(new PropositionContract () {
 		  def String id = "101"
 		  def String description = "Is campus type = Thurgood Marshall"
           def String ruleId = "1"

@@ -19,9 +19,7 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinition
 import org.kuali.rice.krms.api.test.JAXBAssert
 import org.junit.Test
 import org.junit.Assert
-import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract
-import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract
+import org.kuali.rice.krms.api.repository.category.CategoryContract
 
 
 class CategoryDefinitionTest {
@@ -93,7 +91,7 @@ class CategoryDefinitionTest {
     }
 
     private CategoryDefinition.Builder createBuilder() {
-        return CategoryDefinition.Builder.create(new CategoryDefinitionContract() {
+        return CategoryDefinition.Builder.create(new CategoryContract() {
             String id = CategoryDefinitionTest.CTGRY_ID
             String name = CategoryDefinitionTest.CTGRY_NAME
             String namespace = CategoryDefinitionTest.CTGRY_NAMESPACE

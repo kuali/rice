@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
+import org.kuali.rice.krms.api.repository.action.ActionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,7 +47,7 @@ import java.util.Map;
  * immutable. 
  * Instances of Rule can be (un)marshalled to and from XML.
  *
- * @see RuleDefinitionContract
+ * @see RuleContract
  * @see org.kuali.rice.krms.framework.engine.Rule
  */
 @XmlRootElement(name = RuleDefinition.Constants.ROOT_ELEMENT_NAME)
@@ -65,7 +65,7 @@ import java.util.Map;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class RuleDefinition extends AbstractDataTransferObject implements RuleDefinitionContract {
+public final class RuleDefinition extends AbstractDataTransferObject implements RuleContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -219,9 +219,9 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
     }
         
 	/**
-     * This builder is used to construct instances of KRMS Repository Rule.  It enforces the constraints of the {@link RuleDefinitionContract}.
+     * This builder is used to construct instances of KRMS Repository Rule.  It enforces the constraints of the {@link RuleContract}.
      */
-    public static class Builder implements RuleDefinitionContract, ModelBuilder, Serializable {		
+    public static class Builder implements RuleContract, ModelBuilder, Serializable {
         private static final long serialVersionUID = -7850514191699945347L;
         
 		private String id;
@@ -270,19 +270,19 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         }
         
         /**
-         * Creates a builder by populating it with data from the given {@link RuleDefinitionContract}.
+         * Creates a builder by populating it with data from the given {@link RuleContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(RuleDefinitionContract contract) {
+        public static Builder create(RuleContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
 
         	List <ActionDefinition.Builder> actionList = new ArrayList<ActionDefinition.Builder>();
         	if (contract.getActions() != null){
-        		for (ActionDefinitionContract actionContract : contract.getActions()){
+        		for (ActionContract actionContract : contract.getActions()){
         			ActionDefinition.Builder actBuilder = ActionDefinition.Builder.create(actionContract);
         			actionList.add(actBuilder);
         		}

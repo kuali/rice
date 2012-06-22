@@ -71,7 +71,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class PropositionDefinition extends AbstractDataTransferObject implements PropositionDefinitionContract {
+public final class PropositionDefinition extends AbstractDataTransferObject implements PropositionContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	// TODO: change this to field name to id
@@ -204,9 +204,9 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
     }
         
 	/**
-     * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionDefinitionContract}.
+     * This builder is used to construct instances of KRMS Proposition.  It enforces the constraints of the {@link PropositionContract}.
      */
-    public static class Builder implements PropositionDefinitionContract, ModelBuilder, Serializable {
+    public static class Builder implements PropositionContract, ModelBuilder, Serializable {
     	private static final long serialVersionUID = -6889320709850568900L;
 		
         private String id;
@@ -270,12 +270,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         }
         
         /**
-         * Creates a builder by populating it with data from the given {@link PropositionDefinitionContract}.
+         * Creates a builder by populating it with data from the given {@link PropositionContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
-        public static Builder create(PropositionDefinitionContract contract) {
+        public static Builder create(PropositionContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
@@ -290,7 +290,7 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
             
         	List <PropositionDefinition.Builder> componentBuilderList = new ArrayList<PropositionDefinition.Builder>();
         	if (contract.getCompoundComponents() != null) {
-        		for (PropositionDefinitionContract cContract : contract.getCompoundComponents()){
+        		for (PropositionContract cContract : contract.getCompoundComponents()){
         			PropositionDefinition.Builder pBuilder = PropositionDefinition.Builder.create(cContract);
         			componentBuilderList.add(pBuilder);
         		}

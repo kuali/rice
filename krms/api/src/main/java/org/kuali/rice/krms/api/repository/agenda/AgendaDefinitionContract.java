@@ -15,53 +15,9 @@
  */
 package org.kuali.rice.krms.api.repository.agenda;
 
-import java.util.Map;
-
-import org.kuali.rice.core.api.mo.common.Identifiable;
-import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-
 /**
- * Agenda Definition Contract
- *
- * @see AgendaDefinition
+ * @deprecated
+ * @see AgendaContract
  */
-public interface AgendaDefinitionContract extends Identifiable, Inactivatable, Versioned {
-	/**
-	 * Returns the name of the Agenda.
-	 *
-	 * @return the name of the Agenda
-	 */
-	public String getName();
-
-	/**
-	 * Returns the KRMS type id of the Agenda.
-	 *
-	 * @return id for KRMS type related of the agenda
-	 */
-	public String getTypeId();
-	
-	/**
-	 * Returns the context id of the Agenda.
-	 *
-	 * @return id for context relative to the agenda
-	 */	
-	public String getContextId();
-	
-	/**
-	 * Returns the fist agenda item id to be executed in the Agenda.
-     * (Also known as the root of the agenda item / rules tree.)
-	 *
-	 * @return id of the first agenda item id of the agenda.
-	 */	
-	public String getFirstItemId();
-	
-	/**
-	 * This method returns a list of custom/remote attributes associated with the
-	 * agenda.
-	 * 
-	 * @return a list of custom/remote attribute of the agenda.
-	 */
-	public Map<String, String> getAttributes();
-	
-}
+@Deprecated
+public interface AgendaDefinitionContract extends AgendaContract {}

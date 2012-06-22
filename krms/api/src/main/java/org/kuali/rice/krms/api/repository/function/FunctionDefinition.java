@@ -34,14 +34,14 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
-import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
+import org.kuali.rice.krms.api.repository.category.CategoryContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.w3c.dom.Element;
 
 /**
  * An immutable representation of a function definition.
  * 
- * @see FunctionDefinitionContract
+ * @see FunctionContract
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -61,7 +61,7 @@ import org.w3c.dom.Element;
         FunctionDefinition.Elements.CATEGORIES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class FunctionDefinition extends AbstractDataTransferObject implements FunctionDefinitionContract {
+public class FunctionDefinition extends AbstractDataTransferObject implements FunctionContract {
 
 	private static final long serialVersionUID = 1391030685309770560L;
 
@@ -194,12 +194,12 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
 
 	/**
 	 * A builder which can be used to construct {@link FunctionDefinition}
-	 * instances.  Enforces the constraints of the {@link FunctionDefinitionContract}.
+	 * instances.  Enforces the constraints of the {@link FunctionContract}.
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	public static final class Builder implements FunctionDefinitionContract, ModelBuilder, Serializable  {
+	public static final class Builder implements FunctionContract, ModelBuilder, Serializable  {
     	    	
     	private static final long serialVersionUID = -4470376239998290245L;
     	
@@ -251,17 +251,17 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
         }
         
         /**
-         * Creates and populates a builder with the data on the given {@link FunctionDefinitionContract}.
+         * Creates and populates a builder with the data on the given {@link FunctionContract}.
          * This is similar in nature to a "copy constructor" for {@link FunctionDefinition}.
          * 
-         * @param contract an object implementing the {@link FunctionDefinitionContract} from which
+         * @param contract an object implementing the {@link FunctionContract} from which
          * to copy property values
          *  
          * @return a builder with the values from the contract already initialized
          * 
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(FunctionDefinitionContract contract) {
+        public static Builder create(FunctionContract contract) {
         	if (contract == null) {
         		throw new IllegalArgumentException("contract was null");
         	}
@@ -270,10 +270,10 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
         	builder.setDescription(contract.getDescription());
         	builder.setActive(contract.isActive());
         	builder.setVersionNumber(contract.getVersionNumber());
-        	for (FunctionParameterDefinitionContract parameter : contract.getParameters()) {
+        	for (FunctionParameterContract parameter : contract.getParameters()) {
         		builder.getParameters().add(FunctionParameterDefinition.Builder.create(parameter));
         	}
-            for (CategoryDefinitionContract category : contract.getCategories()) {
+            for (CategoryContract category : contract.getCategories()) {
                 builder.getCategories().add(CategoryDefinition.Builder.create(category));
             }
         	return builder;
@@ -420,8 +420,8 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
          * returned by this builder.
          * 
          * <p>In general, this value should not be manually set on the builder,
-         * but rather copied from an existing {@link FunctionDefinitionContract} when
-         * invoking {@link Builder#create(FunctionDefinitionContract)}.
+         * but rather copied from an existing {@link FunctionContract} when
+         * invoking {@link Builder#create(FunctionContract)}.
          * 
          * @param versionNumber the version number to set
          */

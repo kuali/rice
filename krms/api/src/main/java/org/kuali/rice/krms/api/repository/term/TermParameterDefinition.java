@@ -47,7 +47,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermParameterDefinition extends AbstractDataTransferObject implements TermParameterDefinitionContract {
+public final class TermParameterDefinition extends AbstractDataTransferObject implements TermParameterContract {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -86,7 +86,7 @@ public final class TermParameterDefinition extends AbstractDataTransferObject im
 		versionNumber = builder.getVersionNumber();
 	}
 	
-	public static class Builder implements TermParameterDefinitionContract, ModelBuilder, Serializable {
+	public static class Builder implements TermParameterContract, ModelBuilder, Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
@@ -99,9 +99,9 @@ public final class TermParameterDefinition extends AbstractDataTransferObject im
 		private static final String NON_NULL_NON_EMPTY_ERROR =  
 			" must be non-null and must contain non-whitespace chars";
 		
-		public static final Transformer<TermParameterDefinitionContract, TermParameterDefinition.Builder> toBuilder = 
-			new Transformer<TermParameterDefinitionContract, TermParameterDefinition.Builder>() {
-			public Builder transform(TermParameterDefinitionContract input) {
+		public static final Transformer<TermParameterContract, TermParameterDefinition.Builder> toBuilder =
+			new Transformer<TermParameterContract, TermParameterDefinition.Builder>() {
+			public Builder transform(TermParameterContract input) {
 				return Builder.create(input);
 			};
 		};
@@ -126,11 +126,11 @@ public final class TermParameterDefinition extends AbstractDataTransferObject im
 		}
 		
 		/**
-		 * static factory to create a {@link Builder} from a {@link TermParameterDefinitionContract} 
+		 * static factory to create a {@link Builder} from a {@link TermParameterContract}
 		 * 
 		 * @param termParameterDefinition
 		 */
-		public static Builder create(TermParameterDefinitionContract termParameterDefinition) {
+		public static Builder create(TermParameterContract termParameterDefinition) {
 			Builder builder = new Builder(termParameterDefinition.getId(), 
 					termParameterDefinition.getTermId(),
 					termParameterDefinition.getName(), 

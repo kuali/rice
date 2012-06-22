@@ -13,12 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krms.api.repository.term;
+package org.kuali.rice.krms.api.repository.agenda;
+
+import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 /**
- * @deprecated
+ * TODO ...
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @see TermParameterContract
+ *
  */
-@Deprecated
-public interface TermParameterDefinitionContract extends TermParameterContract {}
+public interface AgendaTreeEntryContract extends ModelObjectComplete {
+
+    /**
+     * Returns the agendaItemId
+     * @return the agendaItemId
+     */
+    String getAgendaItemId();
+
+}

@@ -37,7 +37,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
  * immutable. 
  * Instances of AgendaItemDefinition can be (un)marshalled to and from XML.
  *
- * @see AgendaItemDefinitionContract
+ * @see AgendaItemContract
  */
 @XmlRootElement(name = AgendaItemDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -57,7 +57,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaItemDefinition extends AbstractDataTransferObject implements AgendaItemDefinitionContract {
+public final class AgendaItemDefinition extends AbstractDataTransferObject implements AgendaItemContract {
 	private static final long serialVersionUID = 2783959459503209577L;
 
 	@XmlElement(name = Elements.ID, required=true)
@@ -206,9 +206,9 @@ public final class AgendaItemDefinition extends AbstractDataTransferObject imple
     }
         
 	/**
-     * This builder is used to construct instances of KRMS Repository AgendaItemDefinition.  It enforces the constraints of the {@link AgendaItemDefinitionContract}.
+     * This builder is used to construct instances of KRMS Repository AgendaItemDefinition.  It enforces the constraints of the {@link AgendaItemContract}.
      */
-    public static class Builder implements AgendaItemDefinitionContract, ModelBuilder, Serializable {
+    public static class Builder implements AgendaItemContract, ModelBuilder, Serializable {
 		
         private String id;
         private String agendaId;
@@ -247,13 +247,13 @@ public final class AgendaItemDefinition extends AbstractDataTransferObject imple
         }
 
         /**
-         * Creates a builder by populating it with data from the given {@link AgendaItemDefinitionContract}.
+         * Creates a builder by populating it with data from the given {@link AgendaItemContract}.
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          * @throws IllegalArgumentException if the contract is null
          */
-        public static Builder create(AgendaItemDefinitionContract contract) {
+        public static Builder create(AgendaItemContract contract) {
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
         	}

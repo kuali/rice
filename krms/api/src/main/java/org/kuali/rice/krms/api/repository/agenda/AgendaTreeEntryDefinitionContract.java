@@ -15,20 +15,10 @@
  */
 package org.kuali.rice.krms.api.repository.agenda;
 
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
-
 /**
- * TODO ...
- * 
+ * @deprecated
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * @see AgendaTreeEntryContract
  */
-public interface AgendaTreeEntryDefinitionContract extends ModelObjectComplete {
-
-    /**
-     * Returns the agendaItemId
-     * @return the agendaItemId
-     */
-	String getAgendaItemId();
-
-}
+@Deprecated
+public interface AgendaTreeEntryDefinitionContract extends AgendaTreeEntryContract {}

@@ -37,7 +37,7 @@ import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 import org.kuali.rice.krms.api.repository.BuilderUtils.Transformer;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
-import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
+import org.kuali.rice.krms.api.repository.category.CategoryContract;
 
 /**
  * Immutable DTO for TermSpecifications.  Construction must be done via the {@link Builder} inner class.
@@ -58,7 +58,7 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
         TermSpecificationDefinition.Elements.CATEGORIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermSpecificationDefinition extends AbstractDataTransferObject implements TermSpecificationDefinitionContract {
+public final class TermSpecificationDefinition extends AbstractDataTransferObject implements TermSpecificationContract {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -131,7 +131,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
-	public static class Builder implements TermSpecificationDefinitionContract, ModelBuilder, Serializable {
+	public static class Builder implements TermSpecificationContract, ModelBuilder, Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
@@ -149,9 +149,9 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		/**
 		 * {@link Transformer} to ease converting lists to Builder types
 		 */
-		public static final Transformer<TermSpecificationDefinitionContract, TermSpecificationDefinition.Builder>
-		toBuilder = new BuilderUtils.Transformer<TermSpecificationDefinitionContract, TermSpecificationDefinition.Builder>() {
-			public TermSpecificationDefinition.Builder transform(TermSpecificationDefinitionContract input) {
+		public static final Transformer<TermSpecificationContract, TermSpecificationDefinition.Builder>
+		toBuilder = new BuilderUtils.Transformer<TermSpecificationContract, TermSpecificationDefinition.Builder>() {
+			public TermSpecificationDefinition.Builder transform(TermSpecificationContract input) {
 				return TermSpecificationDefinition.Builder.create(input);
 			}
 		};
@@ -171,7 +171,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		 * 
 		 *
          * @param termSpecificationId the primary key field.  Must be null for service methods that
-         * create {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract}s, and must be non-null & contain non-whitespace
+         * create {@link org.kuali.rice.krms.api.repository.term.TermSpecificationContract}s, and must be non-null & contain non-whitespace
          * chars otherwise.
          * @param name the name for the {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition}.  Must be non-null;.
          * @param namespace the namespace for the {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition}.  Must be non-null & contain non-whitespace.
@@ -183,19 +183,19 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		}
 		
 		/**
-		 * static factory for a {@link Builder} from a {@link TermSpecificationDefinitionContract}.
+		 * static factory for a {@link Builder} from a {@link TermSpecificationContract}.
 		 * 
 		 * @param termSpecification may not be null;
 		 * @throws IllegalArgumentException if termSpecification is null, or violates the field invariants of the {@link Builder}.
 		 */
-		public static Builder create(TermSpecificationDefinitionContract termSpecification) {
+		public static Builder create(TermSpecificationContract termSpecification) {
 			if (termSpecification == null) throw new IllegalArgumentException("termSpecification must be non-null");
 			Builder builder =new Builder(termSpecification.getId(), termSpecification.getName(), termSpecification.getNamespace(),
                     termSpecification.getType());
             builder.setDescription(termSpecification.getDescription());
             builder.setActive(termSpecification.isActive());
 			builder.setVersionNumber(termSpecification.getVersionNumber());
-            for (CategoryDefinitionContract category : termSpecification.getCategories()) {
+            for (CategoryContract category : termSpecification.getCategories()) {
                 builder.getCategories().add(CategoryDefinition.Builder.create(category));
             }
 
@@ -210,7 +210,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 		
 		/**
 		 * @param termSpecificationId the key for this {@link TermSpecificationDefinition}.  Must be null for
-		 * service methods that create {@link TermSpecificationDefinitionContract}s, and otherwise must be non-null & contain 
+		 * service methods that create {@link TermSpecificationContract}s, and otherwise must be non-null & contain
 		 * non-whitespace chars.
 		 */
 		public void setId(String termSpecificationId) {
@@ -342,7 +342,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 
 	/**
 	 * This value will be non-null for persisted  
-	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract#getId()
+	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationContract#getId()
 	 */
 	@Override
 	public String getId() {
@@ -350,7 +350,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	}
 
 	/**
-	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract#getName()
+	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationContract#getName()
 	 */
 	@Override
 	public String getName() {
@@ -363,7 +363,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
     }
 
 	/**
-	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract#getType()
+	 * @see org.kuali.rice.krms.api.repository.term.TermSpecificationContract#getType()
 	 */
 	@Override
 	public String getType() {
@@ -389,7 +389,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
     }
 
     /**
-     * @see TermSpecificationDefinitionContract#getCategories()
+     * @see TermSpecificationContract#getCategories()
      */
     @Override
     public List<CategoryDefinition> getCategories() {

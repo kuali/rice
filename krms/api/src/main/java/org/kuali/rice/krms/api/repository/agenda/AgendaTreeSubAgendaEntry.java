@@ -44,7 +44,7 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		AgendaTreeSubAgendaEntry.Elements.SUB_AGENDA_ID,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class AgendaTreeSubAgendaEntry extends AbstractDataTransferObject implements AgendaTreeEntryDefinitionContract {
+public final class AgendaTreeSubAgendaEntry extends AbstractDataTransferObject implements AgendaTreeEntryContract {
 
 	private static final long serialVersionUID = 8594116503548506936L;
 

@@ -51,7 +51,7 @@ import org.kuali.rice.krms.api.repository.BuilderUtils;
         CoreConstants.CommonElements.VERSION_NUMBER,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class TermDefinition extends AbstractDataTransferObject implements TermDefinitionContract {
+public final class TermDefinition extends AbstractDataTransferObject implements TermContract {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -96,7 +96,7 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	public static class Builder implements TermDefinitionContract, ModelBuilder, Serializable {
+	public static class Builder implements TermContract, ModelBuilder, Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
@@ -126,11 +126,11 @@ public final class TermDefinition extends AbstractDataTransferObject implements 
 		}
 		
 		/**
-		 * static factory for creating a {@link Builder} from a {@link TermDefinitionContract}.
+		 * static factory for creating a {@link Builder} from a {@link TermContract}.
 		 * 
 		 * @param term must be non-null.
 		 */
-		public static Builder create(TermDefinitionContract term) {
+		public static Builder create(TermContract term) {
 			if (term == null) throw new IllegalAddException("term may not be null");
 			
 			// Convert TermParameterDefinitionContract to TermParameterDefinition:

@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
 /**
  * An immutable representation of a function parameter definition.
  * 
- * @see FunctionParameterDefinitionContract
+ * @see FunctionParameterContract
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -51,7 +51,7 @@ import org.w3c.dom.Element;
         CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public class FunctionParameterDefinition extends AbstractDataTransferObject implements FunctionParameterDefinitionContract {
+public class FunctionParameterDefinition extends AbstractDataTransferObject implements FunctionParameterContract {
 
 	private static final long serialVersionUID = 1391030685309770560L;
 
@@ -146,12 +146,12 @@ public class FunctionParameterDefinition extends AbstractDataTransferObject impl
 
 	/**
 	 * A builder which can be used to construct {@link FunctionParameterDefinition}
-	 * instances.  Enforces the constraints of the {@link FunctionParameterDefinitionContract}.
+	 * instances.  Enforces the constraints of the {@link FunctionParameterContract}.
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	public static final class Builder implements FunctionParameterDefinitionContract, ModelBuilder, Serializable  {
+	public static final class Builder implements FunctionParameterContract, ModelBuilder, Serializable  {
     	    	
     	private static final long serialVersionUID = -4470376239998290245L;
     	
@@ -191,17 +191,17 @@ public class FunctionParameterDefinition extends AbstractDataTransferObject impl
         }
         
         /**
-         * Creates and populates a builder with the data on the given {@link FunctionParameterDefinitionContract}.
+         * Creates and populates a builder with the data on the given {@link FunctionParameterContract}.
          * This is similar in nature to a "copy constructor" for {@link FunctionParameterDefinition}.
          * 
-         * @param contract an object implementing the {@link FunctionParameterDefinitionContract} from which
+         * @param contract an object implementing the {@link FunctionParameterContract} from which
          * to copy property values
          *  
          * @return a builder with the values from the contract already initialized
          * 
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(FunctionParameterDefinitionContract contract) {
+        public static Builder create(FunctionParameterContract contract) {
         	if (contract == null) {
         		throw new IllegalArgumentException("contract was null");
         	}
@@ -330,8 +330,8 @@ public class FunctionParameterDefinition extends AbstractDataTransferObject impl
          * will be returned by this builder.
          * 
          * <p>In general, this value should not be manually set on the builder,
-         * but rather copied from an existing {@link FunctionParameterDefinitionContract} when
-         * invoking {@link Builder#create(FunctionParameterDefinitionContract)}.
+         * but rather copied from an existing {@link FunctionParameterContract} when
+         * invoking {@link Builder#create(FunctionParameterContract)}.
          * 
          * @param versionNumber the version number to set
          */

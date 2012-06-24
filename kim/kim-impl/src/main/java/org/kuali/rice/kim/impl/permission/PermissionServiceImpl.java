@@ -356,7 +356,9 @@ public class PermissionServiceImpl implements PermissionService {
     protected Map<String,PermissionTypeService> getPermissionTypeServicesByTemplateId( Collection<PermissionBo> permissions ) {
     	Map<String,PermissionTypeService> permissionTypeServices = new HashMap<String, PermissionTypeService>( permissions.size() );
     	for ( PermissionBo perm : permissions ) {
-    		permissionTypeServices.put(perm.getTemplateId(), getPermissionTypeService( perm.getTemplate() ) );    				
+            if(!permissionTypeServices.containsKey(perm.getTemplateId())) {
+                permissionTypeServices.put(perm.getTemplateId(), getPermissionTypeService( perm.getTemplate() ) );    				
+            }
     	}
     	return permissionTypeServices;
     }

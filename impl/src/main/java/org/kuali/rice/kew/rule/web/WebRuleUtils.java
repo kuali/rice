@@ -67,7 +67,7 @@ public final class WebRuleUtils {
 	public static final String DOCUMENT_TYPE_NAME_PARAM = "ruleCreationValues.docTypeName";
 	public static final String RESPONSIBILITY_ID_PARAM = "ruleCreationValues.responsibilityId";
 	
-	private static final String ID_SEPARATOR = ":";
+	private static final String ID_SEPARATOR = "~";
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String RULE_ATTRIBUTES_SECTION_TITLE = "Rule Attributes";
 	private static final String ROLES_MAINTENANCE_SECTION_ID = "RolesMaintenance";

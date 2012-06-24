@@ -48,13 +48,13 @@ public final class XMLAttributeUtils {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
 		String businessObjectClass = quickfinderAttributes.getNamedItem("businessObjectClass").getNodeValue();
 		field.setQuickFinderClassNameImpl(businessObjectClass);
+        Map<String, String> fieldConversionsMap = new HashMap<String, String>();
 		for (int lcIndex = 0; lcIndex < lookupNode.getChildNodes().getLength(); lcIndex++) {
-			Map<String, String> fieldConversionsMap = new HashMap<String, String>();
 			Node fieldConversionsChildNode = lookupNode.getChildNodes().item(lcIndex);
-			if ("fieldConversions".equals(fieldConversionsChildNode)) {
+			if ("fieldConversions".equals(fieldConversionsChildNode.getNodeName())) {
 				for (int fcIndex = 0; fcIndex < fieldConversionsChildNode.getChildNodes().getLength(); fcIndex++) {
 					Node fieldConversionChildNode = fieldConversionsChildNode.getChildNodes().item(fcIndex);
-					if ("fieldConversion".equals(fieldConversionChildNode)) {
+					if ("fieldConversion".equals(fieldConversionChildNode.getNodeName())) {
 						NamedNodeMap fieldConversionAttributes = fieldConversionChildNode.getAttributes();
 						String lookupFieldName = fieldConversionAttributes.getNamedItem("lookupFieldName").getNodeValue();
 						String localFieldName = fieldConversionAttributes.getNamedItem("localFieldName").getNodeValue();
@@ -62,8 +62,8 @@ public final class XMLAttributeUtils {
 					}
 				}
 			}
-			field.setFieldConversions(fieldConversionsMap);
 		}
+        field.setFieldConversions(fieldConversionsMap);
 	}
 
     public static void establishFieldLookup(RemotableAttributeField.Builder fieldBuilder, Node lookupNode) {

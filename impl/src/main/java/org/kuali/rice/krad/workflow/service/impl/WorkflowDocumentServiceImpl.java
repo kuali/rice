@@ -32,7 +32,9 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
+import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -315,6 +317,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             // for now just pick a node and go with it...
             currentNode = currentNodes.iterator().next();
             
+            List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
+            List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
+            
             for (AdHocRouteRecipient recipient : adHocRecipients) {
                 if (StringUtils.isNotEmpty(recipient.getId())) {
                 	String newAnnotation = annotation;
@@ -334,6 +339,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
                 		}
                         workflowDocument.adHocToPrincipal(ActionRequestType.fromCode(recipient.getActionRequested()), currentNode, newAnnotation, principal.getPrincipalId(), "", true, notificationLabel);
+                        AdHocRoutePerson personRecipient  = (AdHocRoutePerson)recipient;
+                        adHocRoutePersons.add(personRecipient);
                     }
                     else {
                     	Group group = KimApiServiceLocator.getGroupService().getGroup(recipient.getId());
@@ -341,9 +348,13 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}
                     	workflowDocument.adHocToGroup(ActionRequestType.fromCode(recipient.getActionRequested()), currentNode, newAnnotation, group.getId() , "", true, notificationLabel);
+                        AdHocRouteWorkgroup groupRecipient  = (AdHocRouteWorkgroup)recipient;
+                        adHocRouteWorkgroups.add(groupRecipient);
                     }
                 }
             }
+            KRADServiceLocator.getBusinessObjectService().delete(adHocRoutePersons);
+            KRADServiceLocator.getBusinessObjectService().delete(adHocRouteWorkgroups);  
         }
     }
 

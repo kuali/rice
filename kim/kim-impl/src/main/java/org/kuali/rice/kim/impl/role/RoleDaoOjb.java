@@ -82,7 +82,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         Criteria c = new Criteria();
 
-        if (roleIds != null) {
+        if (CollectionUtils.isNotEmpty(roleIds)) {
             c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
         }
         if (principalId != null) {

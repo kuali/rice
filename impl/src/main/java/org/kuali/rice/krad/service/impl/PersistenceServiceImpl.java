@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceService;
@@ -83,13 +84,13 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
             //
             // special handling for EBOs
             //
-            Map<String, Object> criteria = getPrimaryKeyFieldValues(persistableObject);
+            Map<String, ?> criteria = KRADServiceLocatorWeb.getDataObjectMetaDataService().getPrimaryKeyFieldValues(persistableObject);
             if (!CollectionUtils.isEmpty(criteria)) {
                 ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(persistableObject.getClass());
                 if (moduleService != null) {
                     Class<? extends ExternalizableBusinessObject> clazz =
                             ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(persistableObject.getClass());
-                    ExternalizableBusinessObject freshEbo = moduleService.getExternalizableBusinessObject(clazz, criteria);
+                    ExternalizableBusinessObject freshEbo = moduleService.getExternalizableBusinessObject(clazz, (Map<String, Object>)criteria);
                     if (freshEbo != null) {
                         BeanUtils.copyProperties(freshEbo, persistableObject);
                     }

@@ -327,7 +327,8 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     }
 
 	public PersistableBusinessObjectExtension getExtension() {
-		if ( extension == null ) {
+		if ( extension == null
+                && getPersistenceStructureService().isPersistable(this.getClass())) {
 			try {
 				Class<? extends PersistableBusinessObjectExtension> extensionClass = getPersistenceStructureService().getBusinessObjectAttributeClass( getClass(), "extension" );
 				if ( extensionClass != null ) {

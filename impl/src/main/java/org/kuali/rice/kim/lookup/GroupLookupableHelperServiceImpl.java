@@ -458,25 +458,11 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 						String attrDefnId = d.getId();
 						typeField.setFieldLabel(definition.getLabel());
-						typeField.setPropertyName(definition.getName()+"."+attrDefnId);
+						typeField.setPropertyName("attributes[" + definition.getName()+"]");
 						typeField.setPropertyValue(fieldValues.get(typeField.getPropertyName()));
 						if (definition.getControl().isSelect()) {
-					        try {
-					            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
-					            // need to initialize KIM Values Finder before retrieving values
-					            if (finder instanceof KimAttributeValuesFinder) {
-					            	((KimAttributeValuesFinder) finder).setKimTypeId(field.getPropertyValue());
-					            	((KimAttributeValuesFinder) finder).setKimAttributeName(definition.getName());
-					            }
-						        typeField.setFieldValidValues(finder.getKeyValues());
-						        typeField.setFieldType(Field.DROPDOWN);
-					        }
-					        catch (InstantiationException e) {
-					            throw new RuntimeException(e.getMessage());
-					        }
-					        catch (IllegalAccessException e) {
-					            throw new RuntimeException(e.getMessage());
-					        }
+                            typeField.setFieldValidValues(definition.getOptionsFinder().getKeyValues());
+                            typeField.setFieldType(Field.DROPDOWN);
 						} else if (definition.getControl().isText()){
 							typeField.setMaxLength(definition.getMaxLength());
 							if (definition.getControl().getSize() != null) {
@@ -484,17 +470,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 							}
 						    typeField.setFieldType(Field.TEXT);
 						} else if (definition.getControl().isRadio()) {
-						    try {
-                                KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
-                                typeField.setFieldValidValues(finder.getKeyValues());
-                                typeField.setFieldType(Field.RADIO);
-                            }
-                            catch (InstantiationException e) {
-                                throw new RuntimeException(e.getMessage());
-                            }
-                            catch (IllegalAccessException e) {
-                                throw new RuntimeException(e.getMessage());
-                            }
+                            typeField.setFieldValidValues(definition.getOptionsFinder().getKeyValues());
+                            typeField.setFieldType(Field.RADIO);
 						} else if (definition.getControl().isCheckbox()) {
 						    KeyValuesFinder finder = new IndicatorValuesFinder();
                             typeField.setFieldValidValues(finder.getKeyValues());

@@ -72,7 +72,8 @@
   -->
 
   <bean id="kimRoleService" class="org.kuali.rice.kim.impl.role.RoleServiceImpl"
-        p:roleDao-ref="kimRoleDao" p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"/>
+        p:roleDao-ref="kimRoleDao" p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
+        p:cacheManager-ref="kimLocalCacheManager"/>
 
   <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
         p:roleDao-ref="kimRoleDao"/>
@@ -93,7 +94,8 @@
         p:businessObjectService-ref="rice.kim.import.businessObjectService"
         p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
         p:kimTypeInfoService-ref="kimTypeInfoService"
-        p:roleService-ref="kimRoleService"/>
+        p:roleService-ref="kimRoleService"
+        p:cacheManager-ref="kimLocalCacheManager"/>
 
   <!--
         Responsibility Service

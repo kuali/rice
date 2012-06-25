@@ -70,46 +70,6 @@ public final class KimCacheUtils {
     }
 
     /**
-     * Used for a caching condition to determine if a permission is assigned to a derived role.
-     *
-     * @param namespaceCode namespaceCode of permission
-     * @param permissionName name of permission
-     *
-     * @return true if assigned to a derived role.
-     */
-    public static boolean isPermissionAssignedToDerivedRole(String namespaceCode, String permissionName ) {
-        if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(permissionName)) {
-            return false;
-        }
-
-        List<String> roleIds = KimApiServiceLocator.getPermissionService().getRoleIdsForPermission(namespaceCode,
-                permissionName);
-        return isDynamicRoleMembership(roleIds);
-    }
-
-    /**
-     * Used for a caching condition to determine if a permission by permission template is assigned to a derived role.
-     *
-     * @param namespaceCode namespaceCode of permission template
-     * @param permissionTemplateName name of permission template
-     *
-     * @return true if assigned to a derived role.
-     */
-    public static boolean isPermissionTemplateAssignedToDynamicRole(String namespaceCode, String permissionTemplateName) {
-        if (StringUtils.isBlank(namespaceCode) || StringUtils.isBlank(permissionTemplateName)) {
-            return false;
-        }
-
-        PermissionService permissionService = KimApiServiceLocator.getPermissionService();
-        List<Permission> permissions = permissionService.findPermissionsByTemplate(namespaceCode, permissionTemplateName);
-        List<String> roleIds = new ArrayList<String>();
-        for (Permission permission : permissions) {
-            roleIds.addAll(permissionService.getRoleIdsForPermission(permission.getNamespaceCode(), permission.getName()));
-        }
-        return isDynamicRoleMembership(roleIds);
-    }
-
-    /**
      * Used for a caching condition to determine if a responsibility is assigned to a derived role.
      *
      * @param responsibilityId id of responsibility

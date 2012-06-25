@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jws.WebParam;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -68,8 +53,24 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import javax.jws.WebParam;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger(RoleServiceImpl.class);
@@ -85,6 +86,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     private RoleService proxiedRoleService;
+    private CacheManager cacheManager;
+
+    public RoleServiceImpl() {
+        this.cacheManager = new NoOpCacheManager();
+    }
 
     @Override
     public Role createRole(final Role role) throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -517,7 +523,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             logPrincipalHasRoleCheck(principalId, roleIds, qualification);
         }
 
-        Boolean hasRole = this.getProxiedRoleService().principalHasRole(principalId, roleIds, qualification, true);
+        boolean hasRole = this.getProxiedRoleService().principalHasRole(principalId, roleIds, qualification, true);
         
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "Result: " + hasRole );
@@ -2047,5 +2053,19 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             this.proxiedRoleService = KimApiServiceLocator.getRoleService();
         }
         return this.proxiedRoleService;
+    }
+
+    /**
+     * Sets the cache manager which this service implementation can for internal caching.
+     * Calling this setter is optional, though the value passed to it must not be null.
+     *
+     * @param cacheManager the cache manager to use for internal caching, must not be null
+     * @throws IllegalArgumentException if a null cache manager is passed
+     */
+    public void setCacheManager(CacheManager cacheManager) {
+        if (cacheManager == null) {
+            throw new IllegalArgumentException("cacheManager must not be null");
+        }
+        this.cacheManager = cacheManager;
     }
 }

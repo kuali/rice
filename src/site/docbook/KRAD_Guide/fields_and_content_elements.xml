@@ -3142,14 +3142,14 @@ public class QueryUtils {
             application and included in the view. The script may then perform some client side
             operation and finish, or perform some operation and then in turn make a server call.
             When making the server call, the script would be responsible for setting the sever side
-            method to call. Invoking client side script is done by setting the clientSideJs
+            method to call. Invoking client side script is done by setting the actionScript
             property. Note the value given for this property is assumed to be script code, and is
             bound with the onclick event for the corresponding HTML element.</para>
     <para>For
-            example, we could give a value like p:clientSideJs=”alert(‘Hello World!’);” which would
+            example, we could give a value like p:actionScript=”alert(‘Hello World!’);” which would
             simply show the alert dialog and finish. We could also invoke a method that is defined
             in one of our included script files (through the view components additionalScriptFiles
-            property): p:clientSideJs=”doCalculateAndPost();”. This would invoke a script method
+            property): p:actionScript=”doCalculateAndPost();”. This would invoke a script method
             named ‘doCalculateAndPost’. Note multiple script statements can be given within the
             string: “var i=0;var j=1;doMethod(i,j);”.</para>
     <para>Now let we know how to configure
@@ -3294,7 +3294,7 @@ public class QueryUtils {
       </mediaobject>
     </figure>
     <para>Finally, an action link is configured like:</para>
-    <programlisting>&lt;bean parent=”Uif-ActionLink” p:actionLabel=”Do Script” p:clientSideJs=”doYourAjax();”/&gt;</programlisting>
+    <programlisting>&lt;bean parent=”Uif-ActionLink” p:actionLabel=”Do Script” p:actionScript=”doYourAjax();”/&gt;</programlisting>
     <para> Which is shown below. </para>
     <figure>
       <title>Action Link</title>
@@ -3481,7 +3481,7 @@ p:methodToCall=”save” p:focusOnAfterSubmit=”FIRST”/&gt;
                 <para>Client Side Requests – These are requests that execute a piece
                                     of JavaScript code (either a code block or function call). The
                                     script to execute is configured using the action property
-                                    clientSideJs. After the script is finished it can simply return
+                                    actionScript. After the script is finished it can simply return
                                     or make a server request on behalf of the user</para>
               </listitem>
             </itemizedlist>

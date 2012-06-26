@@ -237,17 +237,17 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getClientSideJs()
+     * @see org.kuali.rice.krad.uif.element.Action#getActionScript()
      */
-    public String getClientSideJs() {
-        return action.getClientSideJs();
+    public String getActionScript() {
+        return action.getActionScript();
     }
 
     /**
-     * @seeorg.kuali.rice.krad.uif.element.Action#setClientSideJs(java.lang.String)
+     * @seeorg.kuali.rice.krad.uif.element.Action#setactionScript(java.lang.String)
      */
-    public void setClientSideJs(String clientSideJs) {
-        action.setClientSideJs(clientSideJs);
+    public void setActionScript(String actionScript) {
+        action.setActionScript(actionScript);
     }
 
     /**

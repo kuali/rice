@@ -206,14 +206,14 @@
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPages" p:actionLabel="select all from all pages"
-              p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
+              p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPages" p:actionLabel="deselect all from all pages"
-              p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
+              p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPage" p:actionLabel="select all from this page"
-              p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
+              p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPage" p:actionLabel="deselect all from this page"
-              p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
-        <bean parent="Uif-PrimaryActionButton" p:clientSideJs="setMultiValueReturnTarget();jQuery('#kualiForm').submit();closeLightbox();"
+              p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="setMultiValueReturnTarget();jQuery('#kualiForm').submit();closeLightbox();"
               p:methodToCall="returnSelected" p:actionLabel="return selected"/>
       </list>
     </property>

@@ -235,11 +235,11 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         if (renderAddBlankLineButton && (addBlankLineAction != null)) {
-            String clientSideJs = "performCollectionAction('" + getId() + "');";
-            if (StringUtils.isNotBlank(addBlankLineAction.getClientSideJs())) {
-                clientSideJs = addBlankLineAction.getClientSideJs() + clientSideJs;
+            String actionScript = "performCollectionAction('" + getId() + "');";
+            if (StringUtils.isNotBlank(addBlankLineAction.getActionScript())) {
+                actionScript = addBlankLineAction.getActionScript() + actionScript;
             }
-            addBlankLineAction.setClientSideJs(clientSideJs);
+            addBlankLineAction.setActionScript(actionScript);
             addBlankLineAction.setJumpToIdAfterSubmit(getId());
         }
     }
@@ -1035,7 +1035,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * {@link Action} fields that should do client side validation on the line before doing post
      *
      * <p>
-     * These actions will get an clientSideJs script added that does a call to validateAndPerformCollectionAction in
+     * These actions will get an actionScript script added that does a call to validateAndPerformCollectionAction in
      * krad.ajax.js.
      * </p>
      *

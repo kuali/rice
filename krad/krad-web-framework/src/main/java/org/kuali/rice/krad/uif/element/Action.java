@@ -44,7 +44,7 @@ public class Action extends ContentElementBase {
     private String navigateToPageId;
 
     private boolean performClientSideValidation;
-    private String clientSideJs;
+    private String actionScript;
 
     private String jumpToIdAfterSubmit;
     private String jumpToNameAfterSubmit;
@@ -202,8 +202,8 @@ public class Action extends ContentElementBase {
             }
 
             String postScript = "";
-            if (StringUtils.isNotBlank(clientSideJs)) {
-                postScript = clientSideJs;
+            if (StringUtils.isNotBlank(actionScript)) {
+                postScript = actionScript;
             }
             if (isPerformClientSideValidation()) {
                 postScript = postScript + "validateAndSubmitUsingFormMethodToCall();";
@@ -590,20 +590,20 @@ public class Action extends ContentElementBase {
      * always called after hidden actionParameters and methodToCall methods are
      * written by the js to the html form.
      *
-     * @return the clientSideJs
+     * @return the actionScript
      */
-    public String getClientSideJs() {
-        return this.clientSideJs;
+    public String getActionScript() {
+        return this.actionScript;
     }
 
     /**
-     * @param clientSideJs the clientSideJs to set
+     * @param actionScript the actionScript to set
      */
-    public void setClientSideJs(String clientSideJs) {
-        if (!StringUtils.endsWith(clientSideJs, ";")) {
-            clientSideJs = clientSideJs + ";";
+    public void setActionScript(String actionScript) {
+        if (!StringUtils.endsWith(actionScript, ";")) {
+            actionScript = actionScript + ";";
         }
-        this.clientSideJs = clientSideJs;
+        this.actionScript = actionScript;
     }
 
     /**

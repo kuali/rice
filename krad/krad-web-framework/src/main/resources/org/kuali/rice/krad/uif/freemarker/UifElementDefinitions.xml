@@ -262,7 +262,7 @@
     </property>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
     <property name="focusOnIdAfterSubmit" value="FIRST"/>
-    <property name="clientSideJs" value="submitForm();"/>
+    <property name="actionScript" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-NavigationActionButton" parent="Uif-NavigationActionButton-parentBean"/>
@@ -274,7 +274,7 @@
     </property>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
     <property name="focusOnIdAfterSubmit" value="FIRST"/>
-    <property name="clientSideJs" value="submitForm();"/>
+    <property name="actionScript" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-SecondaryNavigationActionButton" parent="Uif-SecondaryNavigationActionButton-parentBean"/>
@@ -287,7 +287,7 @@
     </property>
     <property name="jumpToIdAfterSubmit" value="TOP"/>
     <property name="focusOnIdAfterSubmit" value="FIRST"/>
-    <property name="clientSideJs" value="submitForm();"/>
+    <property name="actionScript" value="submitForm();"/>
   </bean>
 
   <bean id="Uif-Message" parent="Uif-Message-parentBean"/>

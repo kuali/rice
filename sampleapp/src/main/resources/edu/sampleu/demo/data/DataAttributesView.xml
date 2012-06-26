@@ -393,11 +393,11 @@
   </bean>
 
   <!-- action link no image -->
-  <bean id="actionLink-noImage_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField" p:clientSideJs="alert('You clicked the link');"/>
+  <bean id="actionLink-noImage_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField" p:actionScript="alert('You clicked the link');"/>
   
   <!-- action link with image right -->
   <bean id="actionLink-imageRight_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image right" p:actionImagePlacement="RIGHT"
-        p:clientSideJs="alert('You clicked a button');">
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
             p:altText="Search"/>
@@ -406,7 +406,7 @@
 
   <!-- action link with image left -->
   <bean id="actionLink-imageLeft_attrs" parent="Uif-ActionLink-with-data-attributes" p:actionLabel="ActionLinkField image left (default)"
-        p:clientSideJs="alert('You clicked a button');">
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
             p:altText="Search"/>
@@ -429,7 +429,7 @@
    </bean>
 
   <!-- action button - rendered as an image -->
-  <bean id="imageAction_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:clientSideJs="alert('You clicked a button');">
+  <bean id="imageAction_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png"
             p:altText="ActionImageField demonstration"/>
@@ -438,11 +438,11 @@
   </bean>
 
   <!-- action button - no image - text only -->
-  <bean id="buttonTextOnly_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField" p:clientSideJs="alert('You clicked a button');"/>
+  <bean id="buttonTextOnly_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="ActionField" p:actionScript="alert('You clicked a button');"/>
 
   <!-- action button - image bottom -->
   <bean id="buttonImageBottom_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image BOTTOM" p:actionImagePlacement="BOTTOM"
-        p:clientSideJs="alert('You clicked a button');">
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
     </property>
@@ -450,7 +450,7 @@
 
   <!-- action button - image top -->
   <bean id="buttonImageTop_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image TOP" p:actionImagePlacement="TOP"
-        p:clientSideJs="alert('You clicked a button');">
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
     </property>
@@ -458,7 +458,7 @@
 
   <!-- button image left -->
   <bean id="buttonImageLeft_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image LEFT" p:actionImagePlacement="LEFT"
-        p:clientSideJs="alert('You clicked a button');">
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
     </property>
@@ -466,7 +466,7 @@
 
   <!-- button image right -->
   <bean id="buttonImageRight_attrs" parent="Uif-PrimaryActionButton-with-data-attributes" p:actionLabel="Image RIGHT" p:actionImagePlacement="RIGHT"
-        p:clientSideJs="alert('You clicked a button');">
+        p:actionScript="alert('You clicked a button');">
     <property name="actionImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
     </property>

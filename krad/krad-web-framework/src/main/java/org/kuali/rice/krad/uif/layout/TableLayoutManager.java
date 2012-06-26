@@ -214,11 +214,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             addLineGroup.getFooter().setItems(footerItems);
 
             if (collectionGroup.isAddViaLightBox()) {
-                String clientSideJs = "showLightboxComponent('" + addLineGroup.getId() + "');";
-                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getClientSideJs())) {
-                    clientSideJs = collectionGroup.getAddViaLightBoxAction().getClientSideJs() + clientSideJs;
+                String actionScript = "showLightboxComponent('" + addLineGroup.getId() + "');";
+                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
+                    actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
                 }
-                collectionGroup.getAddViaLightBoxAction().setClientSideJs(clientSideJs);
+                collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
                 addLineGroup.setStyle("display: none");
             }
 

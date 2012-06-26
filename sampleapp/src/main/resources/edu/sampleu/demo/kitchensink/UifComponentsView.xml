@@ -257,15 +257,15 @@
         <bean parent="Uif-JumpToBottomLink" p:actionLabel="Jump To Bottom Demo"/>
 
         <bean id="ActionLinkField_JumpToField3" parent="Uif-ActionLink"
-              p:clientSideJs="jumpToElementByName('field80');"
+              p:actionScript="jumpToElementByName('field80');"
               p:actionLabel="Jump to field with property name Field80 (first field of FieldGroup1)"/>
 
         <bean id="ActionLinkField_FocusOnField79" parent="Uif-ActionLink"
-              p:clientSideJs="focusOnElementByName('field79');"
+              p:actionScript="focusOnElementByName('field79');"
               p:actionLabel="Focus on field with property name Field79 (size 60 text field)"/>
 
         <bean id="ActionLinkField_FocusOnIdTest123" parent="Uif-ActionLink"
-              p:clientSideJs="focusOnElementById('Test123');"
+              p:actionScript="focusOnElementById('Test123');"
               p:actionLabel="Focus on field with id Test123 (Date1 field)"/>
       </list>
     </property>

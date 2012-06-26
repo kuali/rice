@@ -360,7 +360,7 @@
         <bean parent="Uif-HorizontalBoxSection" p:style="background-color:grey; height:40px; width:900px">
           <property name="items">
             <list>
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Click Me!" p:style="margin-top:10px" p:clientSideJs="alert('You clicked a button');">
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Click Me!" p:style="margin-top:10px" p:actionScript="alert('You clicked a button');">
                 <property name="onMouseOverScript" value="
                 var n = parseInt(jq(this).css('margin-left'),10);
                 jq(this).animate({marginLeft: (n+300)&amp;800}, 'fast');"/>

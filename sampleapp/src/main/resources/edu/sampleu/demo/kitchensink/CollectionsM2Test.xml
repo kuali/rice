@@ -157,8 +157,8 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Test Lightbox" p:clientSideJs = "showLightboxContent(jQuery('#toolTipTest').detach());"/>
-        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Test Lightbox2" p:clientSideJs = "showLightboxComponent('toolTipTest');"/>
+        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Test Lightbox" p:actionScript = "showLightboxContent(jQuery('#toolTipTest').detach());"/>
+        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Test Lightbox2" p:actionScript = "showLightboxComponent('toolTipTest');"/>
         <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field1" p:readOnly="false"
               p:exclusiveMin="2" p:instructionalText="Hover mouse over label or select control to display tooltip. Default tooltip should not display when field contains a message.">
           <property name="fieldLabel">

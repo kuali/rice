@@ -369,9 +369,9 @@
                 <property name="items">
                   <list>
                     <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Select All"
-                          p:clientSideJs="alert('You clicked a button');"/>
+                          p:actionScript="alert('You clicked a button');"/>
                     <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Select None"
-                          p:clientSideJs="alert('You clicked a button');"/>
+                          p:actionScript="alert('You clicked a button');"/>
                   </list>
                 </property>
               </bean>
@@ -391,7 +391,7 @@
                         <bean parent="Uif-TextControl" p:size="15"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="Action" p:clientSideJs="alert('You clicked a button');"/>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="Action" p:actionScript="alert('You clicked a button');"/>
                   </list>
                 </property>
               </bean>

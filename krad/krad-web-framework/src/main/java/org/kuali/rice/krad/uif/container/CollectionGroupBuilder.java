@@ -130,15 +130,15 @@ public class CollectionGroupBuilder implements Serializable {
                     Object currentLine = modelCollection.get(index);
 
                     // Default line actions - no client side validation
-                    String clientSideJs = "performCollectionAction('" + collectionGroup.getId() + "');";
+                    String actionScript = "performCollectionAction('" + collectionGroup.getId() + "');";
                     List<Action> lineActions = initializeLineActions(collectionGroup.getLineActions(), view,
-                            model, collectionGroup, currentLine, index, clientSideJs);
+                            model, collectionGroup, currentLine, index, actionScript);
 
                     // Line actions with client side validation
-                    String clientSideJsValidatedLine = "validateAndPerformCollectionAction('" + collectionGroup.getId() + "', '"
+                    String actionScriptValidatedLine = "validateAndPerformCollectionAction('" + collectionGroup.getId() + "', '"
                             + collectionGroup.getPropertyName() + "');";
                     List<Action> validatedLineActions = initializeLineActions(collectionGroup.getValidatedLineActions(),
-                            view, model, collectionGroup, currentLine, index, clientSideJsValidatedLine);
+                            view, model, collectionGroup, currentLine, index, actionScriptValidatedLine);
 
                     lineActions.addAll(validatedLineActions);
 
@@ -658,7 +658,7 @@ public class CollectionGroupBuilder implements Serializable {
      * @param lineIndex - index of the line the actions should apply to
      */
     protected List<Action> initializeLineActions(List<Action> lineActions, View view, Object model,
-            CollectionGroup collectionGroup, Object collectionLine, int lineIndex, String clientSideJs) {
+            CollectionGroup collectionGroup, Object collectionLine, int lineIndex, String actionScript) {
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
@@ -672,10 +672,10 @@ public class CollectionGroupBuilder implements Serializable {
             action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
 
-            if (StringUtils.isNotBlank(action.getClientSideJs())) {
-                clientSideJs = action.getClientSideJs() + clientSideJs;
+            if (StringUtils.isNotBlank(action.getActionScript())) {
+                actionScript = action.getActionScript() + actionScript;
             }
-            action.setClientSideJs(clientSideJs);
+            action.setActionScript(actionScript);
         }
 
         ComponentUtils.updateContextsForLine(actions, collectionLine, lineIndex);
@@ -713,11 +713,11 @@ public class CollectionGroupBuilder implements Serializable {
                 baseId += collectionGroup.getSubCollectionSuffix();
             }
 
-            String actionClientSideJs = "addLineToCollection('" + collectionGroup.getId() + "', '" + baseId + "');";
+            String actionScript = "addLineToCollection('" + collectionGroup.getId() + "', '" + baseId + "');";
             if (collectionGroup.isAddViaLightBox()) {
-                actionClientSideJs = "closeLightbox();" + actionClientSideJs;
+                actionScript = "closeLightbox();" + actionScript;
             }
-            action.setClientSideJs(actionClientSideJs);
+            action.setActionScript(actionScript);
             
         }
 

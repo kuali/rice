@@ -94,10 +94,10 @@ public class AjaxAction extends Action {
         }
 
         // add action script to client JS
-        if (StringUtils.isNotBlank(getClientSideJs())) {
-            actionScript = getClientSideJs() + actionScript;
+        if (StringUtils.isNotBlank(getActionScript())) {
+            actionScript = getActionScript() + actionScript;
         }
-        setClientSideJs(actionScript);
+        setActionScript(actionScript);
 
         super.performFinalize(view, model, parent);
     }

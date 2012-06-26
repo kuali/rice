@@ -287,7 +287,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:clientSideJs="jumpToTop();"
+  <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:actionScript="jumpToTop();"
         p:actionLabel="Top">
     <property name="cssClasses">
       <list merge="true">
@@ -296,7 +296,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:clientSideJs="jumpToBottom();"
+  <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:actionScript="jumpToBottom();"
         p:actionLabel="Bottom">
     <property name="cssClasses">
       <list merge="true">
@@ -305,7 +305,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:clientSideJs="expandDisclosures();"
+  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:actionScript="expandDisclosures();"
         p:actionLabel="Expand All">
     <property name="cssClasses">
       <list merge="true">
@@ -315,7 +315,7 @@
   </bean>
 
   <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
-        p:clientSideJs="collapseDisclosures();"
+        p:actionScript="collapseDisclosures();"
         p:actionLabel="Collapse All">
     <property name="cssClasses">
       <list merge="true">
@@ -327,7 +327,7 @@
   <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="show inactive"
-        p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
+        p:actionScript="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-showInactiveCollectionItemsButton</value>
@@ -338,7 +338,7 @@
   <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
         p:methodToCall="toggleInactiveRecordDisplay"
         p:actionLabel="hide inactive"
-        p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
+        p:actionScript="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-hideInactiveCollectionItemsButton</value>

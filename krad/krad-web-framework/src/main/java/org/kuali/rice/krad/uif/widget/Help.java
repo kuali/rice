@@ -101,7 +101,7 @@ public class Help extends WidgetBase {
         }
 
         // set the javascript action for the external help
-        getHelpAction().setClientSideJs("openHelpWindow('" + externalHelpUrl + "')");
+        getHelpAction().setActionScript("openHelpWindow('" + externalHelpUrl + "')");
 
         // set the alt and title attribute of the image
         String helpTitle;

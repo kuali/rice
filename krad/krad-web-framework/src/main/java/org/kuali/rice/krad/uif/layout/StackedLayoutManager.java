@@ -153,11 +153,11 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
             }
 
             if (collectionGroup.isAddViaLightBox()) {
-                String clientSideJs = "showLightboxComponent('" + lineGroup.getId() +  "');";
-                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getClientSideJs())) {
-                    clientSideJs = collectionGroup.getAddViaLightBoxAction().getClientSideJs() + clientSideJs;
+                String actionScript = "showLightboxComponent('" + lineGroup.getId() +  "');";
+                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
+                    actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
                 }
-                collectionGroup.getAddViaLightBoxAction().setClientSideJs(clientSideJs);
+                collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
                 lineGroup.setStyle("display: none");
             }
         } else {

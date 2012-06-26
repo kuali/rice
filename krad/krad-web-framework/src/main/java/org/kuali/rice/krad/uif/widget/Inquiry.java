@@ -305,7 +305,7 @@ public class Inquiry extends WidgetBase {
             onClickScript.append(");");
 
             directInquiryAction.setPerformDirtyValidation(false);
-            directInquiryAction.setClientSideJs(onClickScript.toString());
+            directInquiryAction.setActionScript(onClickScript.toString());
 
             setRender(true);
 

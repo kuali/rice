@@ -321,11 +321,11 @@
     <property name="render" value="@{!#empty(#dp.agenda.firstItemId)}" />
     <property name="items">
       <list>                            
-        <bean parent="Uif-ActionLink" p:clientSideJs="jq('.jstree').jstree('open_all');" 
+        <bean parent="Uif-ActionLink" p:actionScript="jq('.jstree').jstree('open_all');" 
           p:actionLabel="[+] expand all" p:style="margin-left: 2em;">
           <property name="actionImage"><null/></property>
         </bean>
-        <bean parent="Uif-ActionLink" p:clientSideJs="jq('.jstree').jstree('close_all');" 
+        <bean parent="Uif-ActionLink" p:actionScript="jq('.jstree').jstree('close_all');" 
           p:actionLabel="[-] collapse all" p:style="margin-right: 15pt;">
           <property name="actionImage"><null/></property>
         </bean>
@@ -378,7 +378,7 @@
       <list>
         <!-- javascript to work around required issue -->
         <bean parent="Uif-NavigationActionButton" p:methodToCall="viewRule" p:actionLabel="View Rule"
-              p:clientSideJs="var requiredMessage = '';
+              p:actionScript="var requiredMessage = '';
               if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
                 requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
                 requiredMessage = '';
@@ -423,7 +423,7 @@
 
         <!-- javascript to work around required issue -->
         <bean parent="Uif-NavigationActionButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
-              p:clientSideJs="var requiredMessage = requiredsSet();
+              p:actionScript="var requiredMessage = requiredsSet();
               if (requiredMessage.length > 0) {
                 alert(requiredMessage);
                 return false;
@@ -448,7 +448,7 @@
 -->
         <!-- javascript to work around required issue -->
         <bean parent="Uif-NavigationActionButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-              p:clientSideJs="var requiredMessage = requiredsSet();
+              p:actionScript="var requiredMessage = requiredsSet();
               if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
                 requiredMessage = requiredMessage + 'Please select the rule to edit (or add a rule), then click edit rule.';
               }
@@ -489,7 +489,7 @@
 
         <bean parent="Uif-Message" p:messageText="Move: [" p:style="display: inline;"/>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Left">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
@@ -497,7 +497,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveRight', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxMoveRight', 'AgendaEditorView-TreeGroup');"
           p:actionLabel="Right" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
@@ -505,7 +505,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveUp', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxMoveUp', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Up">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
@@ -513,7 +513,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveDown', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxMoveDown', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Down">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
@@ -523,7 +523,7 @@
 
         <bean parent="Uif-Message" p:messageText="]" p:style="display: inline;"/>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxCut', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
@@ -533,7 +533,7 @@
 
         <!-- Add a conditional disable once KRAD supports this.  Disable if cut buffer is empty, something like this:
             p:conditionalDisable="document.newMaintainableObject.dataObject.agendaItemCutPaste == null -->
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxPaste', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxPaste', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Paste">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
@@ -541,7 +541,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxDelete', 'AgendaEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:actionScript="ajaxCall('ajaxDelete', 'AgendaEditorView-TreeGroup');"
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"

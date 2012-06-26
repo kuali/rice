@@ -248,11 +248,11 @@
   <bean id="RuleEditorView-TreeExpandCollapse" parent="Uif-HorizontalFieldGroup"  p:showLabel="false">
     <property name="items">
       <list>                            
-        <bean parent="Uif-ActionLink" p:clientSideJs="jq('.jstree').jstree('open_all');" 
+        <bean parent="Uif-ActionLink" p:actionScript="jq('.jstree').jstree('open_all');" 
           p:actionLabel="[+] expand all" p:style="margin-left: 2em;">
           <property name="actionImage"><null/></property>
         </bean>
-        <bean parent="Uif-ActionLink" p:clientSideJs="jq('.jstree').jstree('close_all');" 
+        <bean parent="Uif-ActionLink" p:actionScript="jq('.jstree').jstree('close_all');" 
           p:actionLabel="[-] collapse all" p:style="margin-right: 15pt;">
           <property name="actionImage"><null/></property>
         </bean>
@@ -296,7 +296,7 @@
       
     <property name="items">
       <list>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('add');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('add');
           if (enabled) {
               ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');
           }
@@ -313,7 +313,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('385');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('385');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -325,7 +325,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('356');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('356');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -338,7 +338,7 @@
         </bean>
 
         <bean parent="Uif-Message" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('391');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('391');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');
           }
@@ -349,7 +349,7 @@
                   p:altText="Left"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('397');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('397');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');
           }
@@ -360,7 +360,7 @@
                   p:altText="Right"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('403');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('403');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');
           }
@@ -371,7 +371,7 @@
                   p:altText="Up"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('409');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('409');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');
           }
@@ -384,7 +384,7 @@
         </bean>
         <bean parent="Uif-Message" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('418');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('418');
           if (enabled) {
               ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');
           }
@@ -395,7 +395,7 @@
                   p:altText="Cut"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('424');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('424');
           if (enabled) {
               ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');
           }
@@ -406,7 +406,7 @@
                   p:altText="Paste"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('430');
+        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('430');
           if (enabled) {
               ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');
           }
@@ -418,7 +418,7 @@
           </property>
         </bean>
         <!-- refresh is always allowed, but enabledCheck will disable others if they are not -->
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="refresh" p:clientSideJs="var enabled = enabledCheck('refresh');
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="refresh" p:actionScript="var enabled = enabledCheck('refresh');
             submitForm();
             "
           >
@@ -486,7 +486,7 @@
         <property name="items">
           <list>
             <bean parent="Uif-ActionImage"
-                  p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
+                  p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
               <property name="actionImage">
                 <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                       p:altText="Edit" p:cssClasses="actionReveal"/>
@@ -670,7 +670,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-ActionImage"
-              p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
+              p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                   p:altText="Edit"/>
@@ -678,7 +678,7 @@
         </bean>
 
         <bean parent="Uif-ActionImage"
-              p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-TreeGroup');">
+              p:actionScript="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-TreeGroup');">
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="../krms/images/node-parent-and-child.png"
                   p:altText="Add Parent"/>
@@ -735,7 +735,7 @@
             </bean>
 
             <bean parent="Uif-ActionImage"
-                  p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
+                  p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
               <property name="actionImage">
                 <bean parent="Uif-Image" p:source="../krms/images/edit.png"
                       p:altText="Edit" p:cssClasses="actionReveal"/>

@@ -43,12 +43,6 @@ public interface ViewModel extends Serializable {
      */
     public void postBind(HttpServletRequest request);
 
-    /**
-     * Called after the view has been rendered to perform resetting or clearing of the data
-     *
-     * @param request - request object containing the query parameters
-     */
-    public void postRender(HttpServletRequest request);
 
     /**
      * Unique Id for the <code>View</code> instance. This is specified for a

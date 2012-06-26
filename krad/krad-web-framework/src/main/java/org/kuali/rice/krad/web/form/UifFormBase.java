@@ -67,10 +67,13 @@ public class UifFormBase implements ViewModel {
 
     protected String formKey;
 
+    @SessionTransient
     protected String jumpToId;
 
+    @SessionTransient
     protected String jumpToName;
 
+    @SessionTransient
     protected String focusId;
 
     protected String formPostUrl;
@@ -81,8 +84,10 @@ public class UifFormBase implements ViewModel {
 
     protected boolean validateDirty;
 
+    @SessionTransient
     protected String growlScript;
 
+    @SessionTransient
     protected String lightboxScript;
 
     protected View view;
@@ -95,10 +100,13 @@ public class UifFormBase implements ViewModel {
 
     protected Map<String, Object> newCollectionLines;
 
+    @SessionTransient
     protected Map<String, String> actionParameters;
 
+    @SessionTransient
     protected Map<String, Object> clientStateForSyncing;
 
+    @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
 
     private List addedCollectionItems;
@@ -111,14 +119,17 @@ public class UifFormBase implements ViewModel {
 
     protected String returnFormKey;
 
+    @SessionTransient
     protected History formHistory;
 
     // dialog fields
-
+    @SessionTransient
     protected String dialogExplanation;
 
+    @SessionTransient
     protected String dialogResponse;
 
+    @SessionTransient
     private DialogManager dialogManager;
 
     @SessionTransient
@@ -198,21 +209,6 @@ public class UifFormBase implements ViewModel {
         }
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#postRender(javax.servlet.http.HttpServletRequest)
-     */
-    @Override
-    public void postRender(HttpServletRequest request) {
-        renderFullView = true;
-        skipViewInit = false;
-        requestRedirect = false;
-
-        updateComponentId = null;
-
-        actionParameters = new HashMap<String, String>();
-        clientStateForSyncing = new HashMap<String, Object>();
-        selectedCollectionLines = new HashMap<String, Set<String>>();
-    }
 
     /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getViewId()

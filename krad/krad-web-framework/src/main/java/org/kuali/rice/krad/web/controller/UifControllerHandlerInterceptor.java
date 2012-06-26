@@ -125,8 +125,6 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 uifForm.setView(null);
             }
 
-            // invoke post render callback on form for cleanup
-            uifForm.postRender(request);
         }
     }
 

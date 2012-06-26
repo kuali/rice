@@ -20,8 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.Configurable;
-import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.HashMap;
@@ -112,11 +110,6 @@ public class ExpressionUtils {
                         graphExpressions.put(configurablePropertyName, expression);
                     }
                 }
-            }
-            // do not set a property expression if the property was defined
-            if (!(configurableWithExpression instanceof DataBinding &&
-                    ((DataBinding)configurableWithExpression).getDefinedPropertyNames().contains(adjustedPropertyName))) {
-                    configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
             }
         }
 

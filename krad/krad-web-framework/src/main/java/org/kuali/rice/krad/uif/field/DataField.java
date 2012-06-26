@@ -83,7 +83,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     // widgets
     private Inquiry inquiry;
     private Help help;
-    private List<String> definedPropertyNames;
 
     public DataField() {
         super();
@@ -326,23 +325,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      */
     public String getPropertyName() {
         return this.propertyName;
-    }
-
-    @Override
-    /**
-     * @see org.kuali.rice.krad.uif.component.DataBinding#getDefinedPropertyNames()
-     */
-    public List<String> getDefinedPropertyNames() {
-        return definedPropertyNames;
-    }
-
-    /**
-     * setter for defined property names
-     *
-     * @param definedPropertyNames - the list of names to set
-     */
-    public void setDefinedPropertyNames(List<String> definedPropertyNames) {
-        this.definedPropertyNames = definedPropertyNames;
     }
 
     /**

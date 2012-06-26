@@ -104,7 +104,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private boolean renderSaveLineActions;
     private List<Action> validatedLineActions;
-    private List<String> definedPropertyNames;
 
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
@@ -1052,22 +1051,6 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setValidatedLineActions(List<Action> validatedLineActions) {
         this.validatedLineActions = validatedLineActions;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.DataBinding#getDefinedPropertyNames()
-     */
-    public List<String> getDefinedPropertyNames() {
-        return definedPropertyNames;
-    }
-
-    /**
-     * setter for defined property names
-     *
-     * @param definedPropertyNames - the list of names to set
-     */
-    public void setDefinedPropertyNames(List<String> definedPropertyNames) {
-        this.definedPropertyNames = definedPropertyNames;
     }
 
     /**

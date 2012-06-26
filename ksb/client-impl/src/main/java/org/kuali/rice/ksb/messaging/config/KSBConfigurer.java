@@ -235,7 +235,10 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 			throw new RiceRuntimeException("Failed to initialize KSB on context startup");
 		}
 
-		requeueMessages();
+        // Don't requeue messages if we are in thin client mode
+        if (getRunMode() != RunMode.THIN) {
+		    requeueMessages();
+        }
 	}
 
     protected void doAdditionalContextStoppedLogic() {

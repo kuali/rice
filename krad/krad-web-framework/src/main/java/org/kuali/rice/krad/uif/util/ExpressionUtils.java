@@ -111,6 +111,8 @@ public class ExpressionUtils {
                     }
                 }
             }
+
+            configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
         }
 
         // set the refreshExpressionGraph property on each configurable an expression was found for

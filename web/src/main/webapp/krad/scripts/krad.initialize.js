@@ -31,6 +31,8 @@ var errorImage;
 var errorGreyImage;
 var warningImage;
 var infoImage;
+var detailsOpenImage;
+var detailsCloseImage;
 
 // common event registering done here through JQuery ready event
 jQuery(document).ready(function () {
@@ -542,6 +544,8 @@ function setupImages() {
     errorGreyImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/error-grey.png' alt='Error - but field was modified)' /> ";
     warningImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/warning.png' alt='Warning' /> ";
     infoImage = "<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "validation/info.png' alt='Information' /> ";
+    detailsOpenImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_open.png' alt='Details' /> ");
+    detailsCloseImage = jQuery("<img class='" + kradVariables.VALIDATION_IMAGE_CLASS + "' src='" + getConfigParam(kradVariables.IMAGE_LOCATION) + "details_close.png' alt='Close Details' /> ");
 }
 
 /**

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -27,12 +24,20 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
+import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -108,6 +113,10 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean addViaLightBox;
     private Action addViaLightBoxAction;
 
+    private Group rowDetailsGroup;
+    private String rowDetailsLinkName = "Details";
+    private boolean rowDetailsUseImage;
+
     public CollectionGroup() {
         renderAddLine = true;
         renderLineActions = true;
@@ -145,6 +154,48 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public void performInitialization(View view, Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
+        
+        //If this collection is using a layoutManager of type TableLayoutManager and is rendering
+        //its richTable widget, then check to see if a rowDetailsGroup is setup for this table
+        //and configure
+        if(this.getRowDetailsGroup() != null && this.getLayoutManager() instanceof TableLayoutManager
+                && ((TableLayoutManager)this.getLayoutManager()).getRichTable() != null 
+                && ((TableLayoutManager)this.getLayoutManager()).getRichTable().isRender()){
+            this.getRowDetailsGroup().setHidden(true);
+            FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
+            detailsFieldGroup.setDataRoleAttribute("detailsFieldGroup");
+            Action rowDetailsAction = ComponentFactory.getActionLink();
+            rowDetailsAction.addStyleClass("uif-detailsAction");
+            view.assignComponentIds(rowDetailsAction);
+
+            if(rowDetailsUseImage){
+                Image rowDetailsImage = ComponentFactory.getImage();
+                view.assignComponentIds(rowDetailsImage);
+                rowDetailsImage.setAltText(rowDetailsLinkName);
+                rowDetailsImage.getPropertyExpressions().put("source", KRADConstants.IMAGE_URL_EXPRESSION +
+                        KRADConstants.DETAILS_IMAGE);
+                rowDetailsAction.setActionImage(rowDetailsImage);
+            }
+            else if(StringUtils.isNotBlank(rowDetailsLinkName)){
+                rowDetailsAction.setActionLabel(rowDetailsLinkName);
+            }
+
+            //build js for link
+            rowDetailsAction.setActionScript("expandDataTableDetail(this,'"+ this.getId() +"',"+ rowDetailsUseImage + ")");
+
+            List<Component> detailsItems = new ArrayList<Component>();
+            
+            detailsItems.add(rowDetailsAction);
+            this.getRowDetailsGroup().setDataRoleAttribute("details");
+            detailsItems.add(getRowDetailsGroup());
+            detailsFieldGroup.setItems(detailsItems);
+            view.assignComponentIds(detailsFieldGroup);
+            
+            List<Component> theItems = new ArrayList<Component>();
+            theItems.add(detailsFieldGroup);
+            theItems.addAll(this.getItems());
+            this.setItems(theItems);
+        }
 
         super.performInitialization(view, model);
 
@@ -312,10 +363,10 @@ public class CollectionGroup extends Group implements DataBinding {
      * the lifecycle
      *
      * <p>The items need to be included when an object is being copied to all the groups nested components
-     * @see #pushCollectionGroupToReference()
-     * The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
      *
      * @param includeItems - whether the components items should be included.
+     * @see #pushCollectionGroupToReference()
+     *      The items are left out when the components are being retrieved for the <code>ViewHelperService</code></p>
      * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
      */
     public List<Component> getComponentsForLifecycle(boolean includeItems) {
@@ -570,9 +621,9 @@ public class CollectionGroup extends Group implements DataBinding {
      * List of <code>Component</code> instances that should be rendered for the
      * collection add line (if enabled). If not set, the default group's items
      * list will be used
-     * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      *
      * @return List<? extends Component> add line field list
+     * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;
@@ -993,7 +1044,8 @@ public class CollectionGroup extends Group implements DataBinding {
      * Indicates the add line placement
      *
      * <p>
-     * Valid values are 'TOP' or 'BOTTOM'. The default is 'TOP'. When the value is 'BOTTOM' the blank line will be added
+     * Valid values are 'TOP' or 'BOTTOM'. The default is 'TOP'. When the value is 'BOTTOM' the blank line will be
+     * added
      * to the end of the collection.
      * </p>
      *
@@ -1087,5 +1139,65 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
         this.addViaLightBoxAction = addViaLightBoxAction;
+    }
+
+    /**
+     * The row details info group to use when using a TableLayoutManager with the a richTable.  This group will be
+     * displayed when the user clicks the "Details" link/image on a row.  This allows extra/long data to be
+     * hidden in table rows and then revealed during interaction with the table without the need to
+     * leave the page.  Allows for any group content.
+     *
+     * Does not currently work with javascript required content.
+     *
+     * @return rowDetailsGroup component
+     */
+    public Group getRowDetailsGroup() {
+        return rowDetailsGroup;
+    }
+
+    /**
+     * Set the row details info group
+     *
+     * @param rowDetailsGroup
+     */
+    public void setRowDetailsGroup(Group rowDetailsGroup) {
+        this.rowDetailsGroup = rowDetailsGroup;
+    }
+
+    /**
+     * Name of the link for displaying row details in a TableLayoutManager CollectionGroup
+     *
+     * @return name of the link
+     */
+    public String getRowDetailsLinkName() {
+        return rowDetailsLinkName;
+    }
+
+    /**
+     * Row details link name
+     *
+     * @param rowDetailsLinkName
+     */
+    public void setRowDetailsLinkName(String rowDetailsLinkName) {
+        this.rowDetailsLinkName = rowDetailsLinkName;
+    }
+
+    /**
+     * If true, the row details link will use an image instead of a link to display row details in
+     * a TableLayoutManager CollectionGroup
+     *
+     * @return true if displaying an image instead of a link for row details
+     */
+    public boolean isRowDetailsUseImage() {
+        return rowDetailsUseImage;
+    }
+
+    /**
+     * Sets row details link use image flag
+     *
+     * @param rowDetailsUseImage
+     */
+    public void setRowDetailsUseImage(boolean rowDetailsUseImage) {
+        this.rowDetailsUseImage = rowDetailsUseImage;
     }
 }

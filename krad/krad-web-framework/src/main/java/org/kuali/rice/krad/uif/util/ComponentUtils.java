@@ -256,7 +256,7 @@ public class ComponentUtils {
                 prefixBindingPath((DataBinding) field, addBindingPrefix);
             }
             else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null) ) {
-                List<Field> groupFields = getComponentsOfType(((FieldGroup) field).getItems(), Field.class);
+                List<Field> groupFields = getComponentsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
         }

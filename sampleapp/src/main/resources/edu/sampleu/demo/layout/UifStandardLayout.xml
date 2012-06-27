@@ -281,6 +281,16 @@
     <property name="layoutManager.sequencePropertyName" value="field1"/>
     <property name="layoutManager.numberOfColumns" value="4"/>
     <property name="propertyName" value="subList"/>
+    <property name="rowDetailsGroup">
+          <bean parent="Uif-VerticalBoxGroup">
+            <property name="items">
+              <list>
+                <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+                              p:required="true"/>
+              </list>
+            </property>
+          </bean>
+        </property>
     <property name="items">
       <list>
         <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group">
@@ -294,17 +304,8 @@
             </list>
           </property>
         </bean>
-
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
-              p:required="true">
-          <property name="control">
-            <bean parent="Uif-CheckboxControl">
-              <property name="onChangeScript" value="alert('checkbox clicked')"/>
-            </bean>
-          </property>
-        </bean>
       </list>
     </property>
   </bean>
@@ -363,6 +364,7 @@
     <property name="layoutManager.summaryTitle" value="SubCollection Item Title" />
     <property name="layoutManager.summaryFields" value="field1" />
     <property name="propertyName" value="subList"/>
+
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
@@ -371,8 +373,7 @@
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
-        <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
-              p:required="true"/>
+
       </list>
     </property>
   </bean>

@@ -60,6 +60,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Iframe;
+import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
@@ -110,6 +111,7 @@ public class ComponentFactory {
     protected static final String IMAGE_FIELD = "Uif-ImageField";
     protected static final String SPACE_FIELD = "Uif-SpaceField";
     protected static final String GENERIC_FIELD = "Uif-CustomTemplateField";
+    protected static final String IMAGE = "Uif-Image";
     protected static final String LABEL = "Uif-Label";
     protected static final String MESSAGE = "Uif-Message";
     protected static final String MESSAGE_FIELD = "Uif-MessageField";
@@ -762,6 +764,15 @@ public class ComponentFactory {
      */
     public static ImageField getImageField() {
         return (ImageField) getNewComponentInstance(IMAGE_FIELD);
+    }
+
+    /**
+     * Gets the image component
+     *
+     * @return ImageField image field
+     */
+    public static Image getImage() {
+        return (Image) getNewComponentInstance(IMAGE);
     }
 
     /**

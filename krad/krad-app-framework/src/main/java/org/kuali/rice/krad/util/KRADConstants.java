@@ -171,6 +171,9 @@ public final class KRADConstants {
     public static final String SCRIPT_CONFIGURATION_FILES_LIST_NAME = "scriptConfigurationFilePaths";
 //    public static final String JOB_NAMES_LIST_NAME = "jobNames";
 //    public static final String TRIGGER_NAMES_LIST_NAME = "triggerNames";
+    
+    public static final String IMAGE_URL_EXPRESSION = "@{#ConfigProperties['krad.externalizable.images.url']}";
+    public static final String DETAILS_IMAGE = "details_open.png";
 
     public static final String ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER = "~";
     public static final String ADD_LINE_METHOD = "addLine";

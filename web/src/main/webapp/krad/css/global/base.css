@@ -1021,6 +1021,20 @@ li.uif-infoMessageItem:before {
     margin-left: .2em;
 }
 
+/** Row details *************************************************************************************/
+
+.uif-rowDetails{
+    background-color: #fafad2;
+}
+
+.uif-detailsAction{
+    margin-bottom: 0px !important;
+}
+
+.uif-rowDetails .uif-boxLayoutVerticalItem{
+    margin-bottom: 5px;
+}
+
 /* Toooltip styles for validation messages **************************************************************/
 
 .jquerybubblepopup-kr-error-cs  .jquerybubblepopup-innerHtml {

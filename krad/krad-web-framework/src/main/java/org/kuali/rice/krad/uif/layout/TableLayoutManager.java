@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -84,6 +85,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     private int actionColumnIndex = -1;
 
     private String actionColumnPlacement;
+    
+    private Group rowDetailsGroup;
+    private String rowDetailsLinkName = "Details";
+    private Image rowDetailsOpenImage;
+    private Image rowDetailsCloseImage;
 
     public TableLayoutManager() {
         useShortLabels = false;
@@ -206,7 +212,21 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     addLineGroup.getHeader().getHeaderText())) {
                 addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLabel());
             }
-
+            //Special handling for rowDetailsGroup case - get rid of the link and make the row
+            //details visible in the separate add line
+            if(collectionGroup.getRowDetailsGroup() != null){
+                for(Field f: lineFields){
+                    String role = f.getDataAttributes().get("role");
+                    if(f instanceof FieldGroup && role != null && role.equals("detailsFieldGroup")){
+                        //details group will always be the second item
+                        Component detailsGroup = ((FieldGroup)f).getItems().get(1);
+                        if(detailsGroup != null && detailsGroup instanceof Group){
+                            detailsGroup.setHidden(false);
+                            ((FieldGroup)f).setGroup((Group)detailsGroup);    
+                        }
+                    }
+                }
+            }
             addLineGroup.setItems(lineFields);
 
             List<Component> footerItems = new ArrayList<Component>(actions);
@@ -306,6 +326,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             }
         }
+        
+        
 
         // now add the fields in the correct position
         int cellPosition = 0;
@@ -940,4 +962,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
     }
 
+    public Group getRowDetailsGroup() {
+        return rowDetailsGroup;
+    }
+
+    public void setRowDetailsGroup(Group rowDetailsGroup) {
+        this.rowDetailsGroup = rowDetailsGroup;
+    }
 }

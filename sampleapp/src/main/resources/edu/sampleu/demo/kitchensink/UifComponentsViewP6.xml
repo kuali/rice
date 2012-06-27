@@ -93,14 +93,13 @@
           <bean parent="GenericTextField" p:label="Suggest"
             p:instructionalText="for example, type ea or ca to see a suggestion"
             p:propertyName="field61">
-            <property name="suggest.render" value="true" />
-            <property name="suggest.sourcePropertyName" value="accountTypeCode" />
-            <property name="suggest.suggestQuery.dataObjectClassName"
-              value="edu.sampleu.travel.bo.TravelAccountType" />
+            <property name="suggest">
+                <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
+                      p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
+            </property>
           </bean>
         </list>
       </property>
     </bean>
-
 
 </beans>

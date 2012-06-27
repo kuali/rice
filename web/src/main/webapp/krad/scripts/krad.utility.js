@@ -23,7 +23,7 @@ var profilingOn = false;
  *
  * @returns a string that has been escaped for use in jQuery selectors
  */
-function escapeName(name){
+function escapeName(name) {
     name = name.replace(/\\'/g, "'");
     name = name.replace(/'/g, "\\'");
     name = name.replace(/\\"/g, "\"");
@@ -34,18 +34,18 @@ function escapeName(name){
     return name;
 }
 
-function publishHeight(){
+function publishHeight() {
     var parentUrl = "";
-    if(navigator.cookieEnabled){
+    if (navigator.cookieEnabled) {
         parentUrl = jQuery.cookie('parentUrl');
-        var passedUrl = decodeURIComponent( document.location.hash.replace( /^#/, '' ) );
-        if(passedUrl && passedUrl.substring(0, 4) === "http"){
-            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
+        var passedUrl = decodeURIComponent(document.location.hash.replace(/^#/, ''));
+        if (passedUrl && passedUrl.substring(0, 4) === "http") {
+            jQuery.cookie('parentUrl', passedUrl, {path:'/'});
             parentUrl = passedUrl;
         }
     }
 
-    if(parentUrl === ""){
+    if (parentUrl === "") {
         //make the assumption for not cross-domain, will have no effect if cross domain (message wont be
         //received)
         parentUrl = window.location;
@@ -55,7 +55,7 @@ function publishHeight(){
     var height = jQuery("body").outerHeight();
     jQuery("body").attr("style", "overflow-x: auto; padding-right: 20px;");
     if (parentUrl && !isNaN(height) && height > 0) {
-        jQuery.postMessage({ if_height: height}, parentUrl, parent);
+        jQuery.postMessage({ if_height:height}, parentUrl, parent);
         bodyHeight = height;
     }
 }
@@ -66,16 +66,16 @@ function publishHeight(){
  * @returns the jQuery context that can be used to perform actions that must be global to the entire page
  * ie, showing lightBoxes and growls etc
  */
-function getContext(){
-	var context;
-	if(top == self){
-		context = jq;
-	}
-	else{
-		context = parent.jQuery;
-	}
+function getContext() {
+    var context;
+    if (top == self) {
+        context = jq;
+    }
+    else {
+        context = parent.jQuery;
+    }
 
-	return context;
+    return context;
 }
 
 /**
@@ -97,8 +97,6 @@ function setConfigParam(paramName, paramValue) {
     }
     configParams[paramName] = paramValue;
 }
-
-
 
 /**
  * Called when a view is rendered to initialize the state of components
@@ -191,14 +189,14 @@ function getComponentState(componentId, key) {
 }
 
 // gets the the label for field with the corresponding id
-function getLabel(id){
-	var label =  jQuery("#" + id + "_label");
-	if(label){
-		return label.text();
-	}
-	else{
-		return "";
-	}
+function getLabel(id) {
+    var label = jQuery("#" + id + "_label");
+    if (label) {
+        return label.text();
+    }
+    else {
+        return "";
+    }
 }
 /**
  * runs hidden scripts. The hidden scripts are contained in hidden input elements
@@ -208,10 +206,10 @@ function getLabel(id){
  * @param skipValidationBubbling - set to true to skip processing each field - ONLY is ever true for pages since
  * they handle this during the setupPage call
  */
-function runHiddenScripts(id, isSelector, skipValidationBubbling){
-	if(id){
+function runHiddenScripts(id, isSelector, skipValidationBubbling) {
+    if (id) {
         //run dataScript first always
-        jQuery("#" + id).find("input[data-role='dataScript']").each(function(){
+        jQuery("#" + id).find("input[data-role='dataScript']").each(function () {
             evalHiddenScript(jQuery(this));
         });
 
@@ -220,9 +218,9 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling){
             selector = id;
         }
 
-		jQuery(selector).find("input[name='script']").each(function(){
+        jQuery(selector).find("input[name='script']").each(function () {
             evalHiddenScript(jQuery(this));
-		});
+        });
 
         runScriptsForId(id);
 
@@ -233,29 +231,29 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling){
         initBubblePopups();
 
         //Interpret new server message state for refreshed InputFields and write them out
-        if(!skipValidationBubbling){
-            jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function(){
+        if (!skipValidationBubbling) {
+            jQuery(selector).find("[data-role='InputField']").andSelf().filter("[data-role='InputField']").each(function () {
                 var data = jQuery(this).data(kradVariables.VALIDATION_MESSAGES);
                 handleMessagesAtField(jQuery(this).attr('id'));
             });
         }
-	}
-	else{
+    }
+    else {
         //run dataScript first always
-        jQuery("input[data-role='dataScript']").each(function(){
+        jQuery("input[data-role='dataScript']").each(function () {
             evalHiddenScript(jQuery(this));
         });
 
-		jQuery("input[name='script']").each(function(){
+        jQuery("input[name='script']").each(function () {
             evalHiddenScript(jQuery(this));
-		});
+        });
 
         //reinitialize BubblePopup
         initBubblePopups();
-	}
+    }
 }
 
-function runHiddenScriptsTemp(id, isSelector){
+function runHiddenScriptsTemp(id, isSelector) {
     runHiddenScripts(id, isSelector);
 }
 
@@ -300,12 +298,12 @@ function evalHiddenScript(jqueryObj) {
  * <p>This is needed in situations where due to some bugs in page refreshes or progressive rendering,
  * the hidden scripts may have run but not accomplished the desired results</p>
  */
-function runHiddenScriptsAgain(){
-    jQuery("input[data-role='dataScript']").each(function(){
+function runHiddenScriptsAgain() {
+    jQuery("input[data-role='dataScript']").each(function () {
         eval(jQuery(this).val());
         jQuery(this).removeAttr("script");
     });
-    jQuery("input[script='first_run']").each(function(){
+    jQuery("input[script='first_run']").each(function () {
         eval(jQuery(this).val());
         jQuery(this).removeAttr("script");
     });
@@ -348,31 +346,31 @@ function writeHiddenToForm(propertyName, propertyValue) {
 /**
  * Retrieves the actual value from the input widget specified by name
  */
-function coerceValue(name){
-	var value = "";
-	var nameSelect = "[name='" + escapeName(name) + "']";
-	if(jQuery(nameSelect + ":checkbox").length){
-		value = jQuery(nameSelect + ":checked").val();
-	}
-	else if(jQuery(nameSelect + ":radio").length){
-		value = jQuery(nameSelect + ":checked").val();
-	}
-	else if(jQuery(nameSelect).length){
-		if (jQuery(nameSelect).hasClass("watermark")) {
+function coerceValue(name) {
+    var value = "";
+    var nameSelect = "[name='" + escapeName(name) + "']";
+    if (jQuery(nameSelect + ":checkbox").length) {
+        value = jQuery(nameSelect + ":checked").val();
+    }
+    else if (jQuery(nameSelect + ":radio").length) {
+        value = jQuery(nameSelect + ":checked").val();
+    }
+    else if (jQuery(nameSelect).length) {
+        if (jQuery(nameSelect).hasClass("watermark")) {
             jQuery.watermark.hide(nameSelect);
-			value = jQuery(nameSelect).val();
+            value = jQuery(nameSelect).val();
             jQuery.watermark.show(nameSelect);
-		}
-		else{
-			value = jQuery(nameSelect).val();
-		}
-	}
+        }
+        else {
+            value = jQuery(nameSelect).val();
+        }
+    }
 
-	if(value == null){
-		value = "";
-	}
+    if (value == null) {
+        value = "";
+    }
 
-	return value;
+    return value;
 }
 
 /**
@@ -386,34 +384,34 @@ function setValue(name, value) {
     jQuery(nameSelect).val(value);
 }
 
-function isValueEmpty(value){
-	if(value != undefined && value != null && value != ""){
-		return false;
-	}
-	else{
-		return true;
-	}
+function isValueEmpty(value) {
+    if (value != undefined && value != null && value != "") {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 //returns true if the field with name of name1 occurs before field with name2
-function occursBefore(name1, name2){
-	var field1 = jQuery("[name='" + escapeName(name1) + "']");
-	var field2 = jQuery("[name='" + escapeName(name2) + "']");
+function occursBefore(name1, name2) {
+    var field1 = jQuery("[name='" + escapeName(name1) + "']");
+    var field2 = jQuery("[name='" + escapeName(name2) + "']");
 
-	field1.addClass("prereqcheck");
-	field2.addClass("prereqcheck");
+    field1.addClass("prereqcheck");
+    field2.addClass("prereqcheck");
 
-	var fields = jQuery(".prereqcheck");
+    var fields = jQuery(".prereqcheck");
 
-	field1.removeClass("prereqcheck");
-	field2.removeClass("prereqcheck");
+    field1.removeClass("prereqcheck");
+    field2.removeClass("prereqcheck");
 
-	if(fields.index(field1) < fields.index(field2) ){
-		return true;
-	}
-	else{
-		return false;
-	}
+    if (fields.index(field1) < fields.index(field2)) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 /**
@@ -426,43 +424,40 @@ function occursBefore(name1, name2){
  * @param event
  * @returns true if the form has dirty fields
  */
-function checkDirty(event){
-	var validateDirty = jQuery("[name='validateDirty']").val()
-	var dirty = jQuery(".uif-field").find("input.dirty")
+function checkDirty(event) {
+    var validateDirty = jQuery("[name='validateDirty']").val()
+    var dirty = jQuery(".uif-field").find("input.dirty")
 
-	if (validateDirty == "true" && dirty.length > 0)
-	{
-		var answer = confirm ("Form has unsaved data. Do you want to leave anyway?")
-		if (answer == false){
-			event.preventDefault();
-			event.stopImmediatePropagation();
+    if (validateDirty == "true" && dirty.length > 0) {
+        var answer = confirm("Form has unsaved data. Do you want to leave anyway?")
+        if (answer == false) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
 
-			//Change the current nav button class to 'current' if user doesn't wants to leave the page
-			var ul = jQuery("#" + event.target.id).closest("ul");
-			if (ul.length > 0)
-			{
-				var pageId = jQuery("[name='pageId']").val();
-				if(ul.hasClass(kradVariables.TAB_MENU_CLASS)){
-					jQuery("#" + ul.attr("id")).selectTab({selectPage : pageId});
-				}
-				else{
-					jQuery("#" + ul.attr("id")).selectMenuItem({selectPage : pageId});
-				}
-			}
-			return true;
-		}
-	}
-	return false;
+            //Change the current nav button class to 'current' if user doesn't wants to leave the page
+            var ul = jQuery("#" + event.target.id).closest("ul");
+            if (ul.length > 0) {
+                var pageId = jQuery("[name='pageId']").val();
+                if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
+                    jQuery("#" + ul.attr("id")).selectTab({selectPage:pageId});
+                }
+                else {
+                    jQuery("#" + ul.attr("id")).selectMenuItem({selectPage:pageId});
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
 /**
  * Test utility function. Returns a true or a false depending on the passed in parameter
  * @param var1
  */
 
-function returnBoolean(var1)
-{
-    var x=var1;
-    alert('Value:'+x) ;
+function returnBoolean(var1) {
+    var x = var1;
+    alert('Value:' + x);
     return x;
 }
 /**
@@ -471,109 +466,109 @@ function returnBoolean(var1)
  * @param elementId
  * @param elementType
  */
-function getAttributeId(elementId){
-	var id = elementId;
-	id = elementId.replace(/_control\S*/, "");
-	return id;
+function getAttributeId(elementId) {
+    var id = elementId;
+    id = elementId.replace(/_control\S*/, "");
+    return id;
 }
 
 //performs a 'jump' - a scroll to the necessary html element
 //The element that is used is based on the hidden value of jumpToId or jumpToName on the form
 //if these hidden attributes do not contain a value it jumps to the top of the page by default
-function performJumpTo(){
-	var jumpToId = jQuery("[name='jumpToId']").val();
-	var jumpToName = jQuery("[name='jumpToName']").val();
-	if(jumpToId){
-		if(jumpToId.toUpperCase() === "TOP"){
-			jumpToTop();
-		}
-		else if(jumpToId.toUpperCase() === "BOTTOM"){
-			jumpToBottom();
-		}
-		else{
-			jumpToElementById(jumpToId);
-		}
-	}
-	else if(jumpToName){
-		jumpToElementByName(jumpToName);
-	}
-	else{
-		jumpToTop();
-	}
+function performJumpTo() {
+    var jumpToId = jQuery("[name='jumpToId']").val();
+    var jumpToName = jQuery("[name='jumpToName']").val();
+    if (jumpToId) {
+        if (jumpToId.toUpperCase() === "TOP") {
+            jumpToTop();
+        }
+        else if (jumpToId.toUpperCase() === "BOTTOM") {
+            jumpToBottom();
+        }
+        else {
+            jumpToElementById(jumpToId);
+        }
+    }
+    else if (jumpToName) {
+        jumpToElementByName(jumpToName);
+    }
+    else {
+        jumpToTop();
+    }
 }
 
 //performs a focus on an the element with the id preset
-function performFocus(){
-	var focusId = jQuery("[name='focusId']").val();
-	if(focusId){
-		jQuery("#" + focusId).focus();
-	}
-	else{
-		jQuery("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
-	}
+function performFocus() {
+    var focusId = jQuery("[name='focusId']").val();
+    if (focusId) {
+        jQuery("#" + focusId).focus();
+    }
+    else {
+        jQuery("[data-role='InputField'] .uif-control:visible:first", "#kualiForm").focus();
+    }
 }
 
 //performs a focus on an the element with the name specified
-function focusOnElementByName(name){
-	var theElement =  jQuery("[name='" + escapeName(name) + "']");
-	if(theElement.length != 0){
-		theElement.focus();
-	}
+function focusOnElementByName(name) {
+    var theElement = jQuery("[name='" + escapeName(name) + "']");
+    if (theElement.length != 0) {
+        theElement.focus();
+    }
 }
 
 //performs a focus on an the element with the id specified
-function focusOnElementById(focusId){
-	if(focusId){
-		jQuery("#" + focusId).focus();
-	}
+function focusOnElementById(focusId) {
+    if (focusId) {
+        jQuery("#" + focusId).focus();
+    }
 }
 
 //Jump(scroll) to an element by name
-function jumpToElementByName(name){
-	var theElement =  jQuery("[name='" + escapeName(name) + "']");
-	if(theElement.length != 0){
-		if(top == self || jQuery(".fancybox-iframe", parent.document).length){
+function jumpToElementByName(name) {
+    var theElement = jQuery("[name='" + escapeName(name) + "']");
+    if (theElement.length != 0) {
+        if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
             jQuery.scrollTo(theElement, 0);
-		}
-		else{
-			var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
-		}
-	}
+        }
+        else {
+            var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
+            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+        }
+    }
 }
 
 //Jump(scroll) to an element by Id
-function jumpToElementById(id){
-	var theElement =  jQuery("#" + id);
-	if(theElement.length != 0){
-		if(top == self || jQuery(".fancybox-iframe", parent.document).length){
+function jumpToElementById(id) {
+    var theElement = jQuery("#" + id);
+    if (theElement.length != 0) {
+        if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
             jQuery.scrollTo(theElement, 0);
-		}
-		else{
-			var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
-			top.jQuery.scrollTo(theElement, 0, {offset: {top:headerOffset}});
-		}
-	}
+        }
+        else {
+            var headerOffset = top.jQuery("#header").outerHeight(true) + top.jQuery(".header2").outerHeight(true);
+            top.jQuery.scrollTo(theElement, 0, {offset:{top:headerOffset}});
+        }
+    }
 }
 
 //Jump(scroll) to the top of the current screen
-function jumpToTop(){
-	if(top == self || jQuery(".fancybox-iframe", parent.document).length){
+function jumpToTop() {
+    if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
         jQuery.scrollTo(jQuery("html"), 0);
-	}
-	else{
-		top.jQuery.scrollTo(top.jQuery("html"), 0);
-	}
+    }
+    else {
+        top.jQuery.scrollTo(top.jQuery("html"), 0);
+    }
 }
 
 //Jump(scroll) to the bottom of the current screen
-function jumpToBottom(){
-	if(top == self || jQuery(".fancybox-iframe", parent.document).length){
+function jumpToBottom() {
+    if (top == self || jQuery(".fancybox-iframe", parent.document).length) {
         jQuery.scrollTo("max", 0);
-	}
-	else{
-		top.jQuery.scrollTo("max", 0);
-	}
+    }
+    else {
+        top.jQuery.scrollTo("max", 0);
+    }
 }
 
 // The following javascript is intended to resize the route log iframe
@@ -635,7 +630,7 @@ function addAttribute(id, attributeName, attributeValue, concatFlag) {
     hasAttribute = jQuery("#" + id).is('[' + attributeName + ']');
     if (concatFlag && hasAttribute) {
         jQuery("#" + id).attr(attributeName, jQuery("#" + id).attr(attributeName) + " " + attributeValue);
-    }else{
+    } else {
         jQuery("#" + id).attr(attributeName, attributeValue);
     }
 }
@@ -654,10 +649,10 @@ function addAttribute(id, attributeName, attributeValue, concatFlag) {
  * @param url - url of the help window content
  */
 function openHelpWindow(url) {
-    var windowWidth =  screen.availWidth/2;
-    var windowHeight = screen.availHeight/2;
-    var windowPositionY = parseInt((screen.availWidth/2) - (windowWidth/2));
-    var windowPositionX = parseInt((screen.availHeight/2) - (windowHeight/2));
+    var windowWidth = screen.availWidth / 2;
+    var windowHeight = screen.availHeight / 2;
+    var windowPositionY = parseInt((screen.availWidth / 2) - (windowWidth / 2));
+    var windowPositionX = parseInt((screen.availHeight / 2) - (windowHeight / 2));
 
     var windowUrl = url;
     var windowName = 'HelpWindow';
@@ -683,13 +678,13 @@ function uppercaseValue(controlId) {
  * @param start true to start profiling, false to stop profiling
  * @param testingText text to be printed with this profile
  */
-function profile(start, testingText){
-    if(profilingOn){
-        if(start){
+function profile(start, testingText) {
+    if (profilingOn) {
+        if (start) {
             console.time(testingText);
             console.profile(testingText);
         }
-        else{
+        else {
             console.profileEnd();
             console.timeEnd(testingText);
         }
@@ -703,12 +698,12 @@ function profile(start, testingText){
  * @param start true to start timing, false to stop timing
  * @param testingText text to be printed out with time results
  */
-function time(start, testingText){
-    if(profilingOn){
-        if(start){
+function time(start, testingText) {
+    if (profilingOn) {
+        if (start) {
             console.time(testingText);
         }
-        else{
+        else {
             console.timeEnd(testingText);
         }
     }
@@ -724,7 +719,7 @@ function deleteLineMouseOver(deleteButton, highlightItemClass) {
     innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
     if (innerLayout == 'uif-tableCollectionLayout') {
         jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
-    }else{
+    } else {
         jQuery(deleteButton).closest('.uif-collectionItem').addClass(highlightItemClass);
     }
 }
@@ -739,7 +734,7 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
     innerLayout = jQuery(deleteButton).parents('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
     if (innerLayout == 'uif-tableCollectionLayout') {
         jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
-    }else{
+    } else {
         jQuery(deleteButton).closest('.uif-collectionItem').removeClass(highlightItemClass);
     }
 }
@@ -754,7 +749,7 @@ function addLineMouseOver(addButton, highlightItemClass) {
     var innerLayout = jQuery(addButton).parent().find('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
     if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
         jQuery(addButton).parent().find('table').addClass(highlightItemClass);
-    }else{
+    } else {
         jQuery(addButton).parent().find('.uif-stackedCollectionLayout').addClass(highlightItemClass).children().addClass(highlightItemClass);
     }
 }
@@ -769,7 +764,7 @@ function addLineMouseOut(addButton, highlightItemClass) {
     var innerLayout = jQuery(addButton).parent().find('.uif-tableCollectionLayout, .uif-stackedCollectionLayout').first().attr('class');
     if (innerLayout.indexOf('uif-tableCollectionLayout') >= 0) {
         jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
-    }else{
+    } else {
         jQuery(addButton).parent().find('.uif-stackedCollectionLayout').removeClass(highlightItemClass).children().removeClass(highlightItemClass);
     }
 }
@@ -834,7 +829,7 @@ function showLightboxComponent(componentId, overrideOptions) {
 
     if (top == self) {
         // ensure that component of KualiForm gets updated after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function() {
+        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -843,7 +838,7 @@ function showLightboxComponent(componentId, overrideOptions) {
         }});
     } else {
         // reattach component to KualiForm after fancybox closes
-        _appendCallbackFunctions(overrideOptions, {beforeClose:function() {
+        _appendCallbackFunctions(overrideOptions, {beforeClose:function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
             parent.jQuery('#' + componentId).parents('.fancybox-wrap').unbind('onReset');
 
@@ -853,7 +848,7 @@ function showLightboxComponent(componentId, overrideOptions) {
     }
 
     // clone the content for the lightbox and make the element id unique
-    showLightboxContent(component.clone(true,true).css('display',''), overrideOptions);
+    showLightboxContent(component.clone(true, true).css('display', ''), overrideOptions);
     addIdPrefix(component, 'tmpForm_');
 }
 
@@ -888,12 +883,12 @@ function showLightboxContent(content, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = {fitToView : true,
-        openEffect : 'fade',
-        closeEffect : 'fade',
-        openSpeed : 200,
-        closeSpeed : 200,
-        helpers : {overlay:{css:{cursor:'arrow'},closeClick:false}}
+    var options = {fitToView:true,
+        openEffect:'fade',
+        closeEffect:'fade',
+        openSpeed:200,
+        closeSpeed:200,
+        helpers:{overlay:{css:{cursor:'arrow'}, closeClick:false}}
     };
 
     // override fancybox content options
@@ -912,7 +907,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         // Remove portal css and add lightbox css for the duration of the lightbox's life
         parent.jQuery('link[href="/kr-dev/rice-portal/css/portal.css"]').remove();
         parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/lightbox.css" rel="stylesheet" type="text/css">');
-        _appendCallbackFunctions(options, {afterClose:function() {
+        _appendCallbackFunctions(options, {afterClose:function () {
             parent.jQuery('head').append('<link href="/kr-dev/rice-portal/css/portal.css" rel="stylesheet" type="text/css">');
             parent.jQuery('link[href="/kr-dev/rice-portal/css/lightbox.css"]').remove();
         }});
@@ -945,14 +940,17 @@ function setupLightboxForm() {
  * @param appendCallbackFunctions the callback fancybox options that should be added/appended
  */
 function _appendCallbackFunctions(options, appendCallbackFunctions) {
-    for(var appendCallbackFunction in appendCallbackFunctions) {
+    for (var appendCallbackFunction in appendCallbackFunctions) {
         if (typeof appendCallbackFunctions[appendCallbackFunction] === "function") {
             if (options[appendCallbackFunction] === undefined) {
                 options[appendCallbackFunction] = appendCallbackFunctions[appendCallbackFunction];
             } else {
                 var a = options[appendCallbackFunction];
                 var b = appendCallbackFunctions[appendCallbackFunction];
-                options[appendCallbackFunction] = function() { a(); b();};
+                options[appendCallbackFunction] = function () {
+                    a();
+                    b();
+                };
             }
         }
     }
@@ -969,10 +967,11 @@ function addIdPrefix(component, prefix) {
     if (component.attr("id") != undefined) {
         component.attr("id", prefix + component.attr("id"));
     }
-    component.find('*').each(function(){
+    component.find('*').each(function () {
         if (jQuery(this).attr("id") != undefined) {
             jQuery(this).attr("id", prefix + jQuery(this).attr("id"))
-        }});
+        }
+    });
     return component;
 }
 
@@ -989,10 +988,11 @@ function removeIdPrefix(component, prefix) {
         if (component.attr("id") != undefined) {
             component.attr("id", component.attr("id").replace(regexp, ""));
         }
-        component.find('*').each(function() {
+        component.find('*').each(function () {
             if (jQuery(this).attr("id") != undefined) {
                 jQuery(this).attr("id", jQuery(this).attr("id").replace(regexp, ""));
-            }});
+            }
+        });
     }
     return component;
 }

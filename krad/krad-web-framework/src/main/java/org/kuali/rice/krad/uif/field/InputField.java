@@ -45,6 +45,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -75,7 +76,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
+public class InputField extends DataField implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable,
+                                                     MustOccurConstrainable, LengthConstrainable, RangeConstrainable,
+                                                     ValidCharactersConstrainable {
     private static final long serialVersionUID = -3703656713706343840L;
 
     // constraint variables
@@ -99,8 +102,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private String constraintText;
     private String instructionalText;
 
-    private Message instructionalMessage;
     private Message constraintMessage;
+    private Message instructionalMessage;
 
     private AttributeQuery attributeQuery;
 
@@ -112,6 +115,31 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         super();
 
         simpleConstraint = new SimpleConstraint();
+    }
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Initializes instructional and constraint message fields if necessary</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if (StringUtils.isNotBlank(constraintText) && (constraintMessage == null)) {
+            constraintMessage = ComponentFactory.getConstraintMessage();
+            view.assignComponentIds(constraintMessage);
+        }
+
+        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+            instructionalMessage = ComponentFactory.getInstructionalMessage();
+            view.assignComponentIds(instructionalMessage);
+        }
     }
 
     /**
@@ -393,6 +421,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // constraint
         if (StringUtils.isEmpty(getConstraintText())) {
             setConstraintText(attributeDefinition.getConstraintText());
+
+            if (constraintMessage == null) {
+                constraintMessage = ComponentFactory.getConstraintMessage();
+                view.assignComponentIds(constraintMessage);
+            }
             getConstraintMessage().setMessageText(attributeDefinition.getConstraintText());
         }
 

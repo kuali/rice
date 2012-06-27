@@ -26,8 +26,11 @@ public class UifConstants {
     public static final String COMPONENT_MODEL_NAME = "Component";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
-    public static final String SPRING_VIEW_ID = "UifTemplateRender";
-    public static final String SPRING_REDIRECT_ID = "redirectURL";
+
+    // uncomment for freemarker testing
+    public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
+    //public static final String SPRING_VIEW_ID = "UifTemplateRender";
+    public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
     public static final String REDIRECT_PREFIX = "redirect:";
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
@@ -244,4 +247,5 @@ public class UifConstants {
         public static final String GREATER_THAN = "greater_than";
         public static final String LESS_THAN = "less_than";
     }
+
 }

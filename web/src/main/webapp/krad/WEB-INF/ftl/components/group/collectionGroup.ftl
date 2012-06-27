@@ -21,6 +21,14 @@
         <#-- render collection quickfinder -->
         <@krad.template component=group.collectionLookup componentId="${group.id}"/>
 
+        <#if group.renderAddBlankLineButton && (group.addLinePlacement == 'TOP')>
+            <@krad.template component=group.addBlankLineAction/>
+        </#if>
+
+        <#if group.addViaLightBox && (group.addLinePlacement == 'TOP')>
+            <@krad.template component=group.addViaLightBoxAction/>
+        </#if>
+
         <#-- invoke layout manager -->
         <#include "${group.layoutManager.template}" parse=true/>
 
@@ -29,6 +37,14 @@
         <#local macroInvoke = macroInvokeSrc?interpret>
 
         <@macroInvoke />
+
+        <#if group.renderAddBlankLineButton && (group.addLinePlacement == 'BOTTOM')>
+            <@krad.template component=group.addBlankLineAction/>
+        </#if>
+
+        <#if group.addViaLightBox && (group.addLinePlacement == 'BOTTOM')>
+            <@krad.template component=group.addViaLightBoxAction/>
+        </#if>
 
     </@krad.groupWrap>
 

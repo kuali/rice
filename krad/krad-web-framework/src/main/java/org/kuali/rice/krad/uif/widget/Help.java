@@ -23,6 +23,8 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -44,6 +46,32 @@ public class Help extends WidgetBase {
     private String externalHelpUrl;
 
     private String tooltipHelpContent;
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>If help action not initialized and external help is configured, get the default
+     * help action component</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        if (helpAction == null) {
+            if (StringUtils.isNotBlank(externalHelpUrl) || ((helpDefinition != null) && StringUtils.isNotBlank(
+                    helpDefinition.getParameterName())) && StringUtils.isNotBlank(
+                    helpDefinition.getParameterDetailType())) {
+                helpAction = ComponentFactory.getHelpAction();
+
+                view.assignComponentIds(helpAction);
+            }
+        }
+    }
 
     /**
      * Finalize the help widget for usage
@@ -100,21 +128,26 @@ public class Help extends WidgetBase {
             }
         }
 
-        // set the javascript action for the external help
-        getHelpAction().setActionScript("openHelpWindow('" + externalHelpUrl + "')");
+        if (StringUtils.isNotBlank(externalHelpUrl)) {
+            // set the javascript action for the external help
+            getHelpAction().setActionScript("openHelpWindow('" + externalHelpUrl + "')");
 
-        // set the alt and title attribute of the image
-        String helpTitle;
-        // make sure that we are the component's native help and not a misconfigured standalone help bean.
-        if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
-            helpTitle = MessageFormat.format(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                    "help.icon.title.tag.with.field.label"), ((Helpable) parent).getHelpTitle());
-        } else {
-            helpTitle = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                    "help.icon.title.tag");
+            // set the alt and title attribute of the image
+            String helpTitle;
+
+            // make sure that we are the component's native help and not a misconfigured standalone help bean.
+            if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
+                helpTitle = MessageFormat.format(
+                        KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                                "help.icon.title.tag.with.field.label"), ((Helpable) parent).getHelpTitle());
+            } else {
+                helpTitle = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                        "help.icon.title.tag");
+            }
+
+            getHelpAction().getActionImage().setAltText(helpTitle);
+            getHelpAction().getActionImage().setTitle(helpTitle);
         }
-        getHelpAction().getActionImage().setAltText(helpTitle);
-        getHelpAction().getActionImage().setTitle(helpTitle);
     }
 
     /**

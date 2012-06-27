@@ -128,8 +128,11 @@
   ********************************************************************************************************************
   -->
   <bean id="Registration-CourseListing" parent="Uif-ListCollectionSection" p:readOnly="true"
-        p:instructionalMessage.cssClasses="instructionalText-bold" p:disclosure.render="false">
+        p:disclosure.render="false">
     <property name="instructionalText" value="Click a class to view details"/>
+    <property name="instructionalMessage">
+       <bean parent="Uif-InstructionalMessage" p:cssClasses="instructionalText-bold"/>
+    </property>
     <property name="collectionObjectClass" value="edu.sampleu.demo.course.Course"/>
     <property name="propertyName" value="courseListing"/>
     <property name="layoutManager.summaryTitle"

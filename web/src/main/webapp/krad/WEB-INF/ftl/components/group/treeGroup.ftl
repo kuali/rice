@@ -29,7 +29,7 @@ limitations under the License.
         </div>
 
         <#-- invoke tree widget -->
-        <@krad.template component=group.tree componentId="${group.id}"/>
+        <@krad.template component=group.tree componentId="${group.id}_tree"/>
 
     </@krad.groupWrap>
 

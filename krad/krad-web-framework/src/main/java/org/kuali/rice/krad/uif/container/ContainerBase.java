@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
@@ -69,6 +70,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * 
 	 * <ul>
 	 * <li>Sorts the containers list of components</li>
+     * <li>Initializes the instructional field if necessary</li>
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
 	 * 
@@ -83,6 +85,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
                 defaultItemPosition);
 		setItems(sortedItems);
+
+        if (StringUtils.isNotBlank(instructionalText) && (instructionalMessage == null)) {
+            instructionalMessage = ComponentFactory.getInstructionalMessage();
+            view.assignComponentIds(instructionalMessage);
+        }
 
 		if (layoutManager != null) {
 			layoutManager.performInitialization(view, model, this);

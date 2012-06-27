@@ -263,8 +263,15 @@
         </bean>
 
         <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
-        <bean p:helpAction.id="standalone-external-help" parent="Uif-Help">
+        <bean parent="Uif-Help">
           <property name="externalHelpUrl" value="http://www.kuali.org/?widget_only"/>
+          <property name="helpAction">
+             <bean id="standalone-external-help" parent="Uif-ActionImage">
+                <property name="actionImage">
+                  <bean parent="Uif-HelpImage"/>
+                </property>
+             </bean>
+          </property>
         </bean>
 
         <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
@@ -342,9 +349,16 @@
         </bean>
 
         <bean parent="Uif-Label" p:labelText="Help widget not attached to any component" />
-        <bean p:helpAction.id="standalone-external-help-missing" parent="Uif-Help">
+        <bean parent="Uif-Help">
           <property name="helpDefinition">
             <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM_NOT_EXISTS" p:parameterDetailType="TEST_COMPONENT"/>
+          </property>
+          <property name="helpAction">
+             <bean id="standalone-external-help-missing" parent="Uif-ActionImage">
+                <property name="actionImage">
+                  <bean parent="Uif-HelpImage"/>
+                </property>
+             </bean>
           </property>
         </bean>
 

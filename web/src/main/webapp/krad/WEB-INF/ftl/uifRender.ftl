@@ -34,7 +34,7 @@
              "/>
          </#if>
 
-         <@krad.script value="${KualiForm.growlScript}"/>
+         <@krad.script value="${KualiForm.growlScript!}"/>
 
          <div id="Uif-Application" style="display:none;" class="uif-application">
 
@@ -47,17 +47,19 @@
 
                  <#if view.renderForm>
                      <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
-                     <@spring.formHiddenInput path="KualiForm.viewId"/>
+                     <@spring.formHiddenInput path="KualiForm.viewId" attributes="id=\"viewId\""/>
 
                      <#-- all forms will be stored in session, this is the conversation key -->
-                     <@spring.formHiddenInput path="KualiForm.formKey"/>
+                     <@spring.formHiddenInput path="KualiForm.formKey" attributes="id=\"formKey\""/>
 
                      <#-- Based on its value, form elements will be checked for dirtyness -->
-                     <@spring.formHiddenInput path="KualiForm.validateDirty"/>
+                     <@spring.formHiddenInput path="KualiForm.validateDirty" attributes="id=\"validateDirty\""/>
                  </#if>
 
                  <@krad.template component=view/>
              </@krad.form>
+
+             <@krad.script value="${KualiForm.lightboxScript!}"/>
 
          </div>
 
@@ -75,13 +77,13 @@
 
         <#if isPageRefresh>
             <#-- rerun view pre-load script to get new state variables for page -->
-            <@krad.script value="${KualiForm.view.preLoadScript}"/>
+            <@krad.script value="${KualiForm.view.preLoadScript!}"/>
 
             <#-- update for breadcrumbs -->
             <@krad.template component=KualiForm.view.breadcrumbs/>
         <#else>
             <#-- rerun view pre-load script to get new state variables for component -->
-            <@krad.script value="${KualiForm.postedView.preLoadScript}"/>
+            <@krad.script value="${KualiForm.postedView.preLoadScript!}"/>
 
             <#-- need to render the pages errors since the component could have added errors for the page -->
             <@krad.template component=KualiForm.postedView.currentPage.validationMessages/>
@@ -93,7 +95,8 @@
         </div>
 
         <#-- show added growls -->
-        <@krad.script value="${KualiForm.growlScript}"/>
+        <@krad.script value="${KualiForm.growlScript!}"/>
+        <@krad.script value="${KualiForm.lightboxScript!}"/>
     </html>
 
 </#if>

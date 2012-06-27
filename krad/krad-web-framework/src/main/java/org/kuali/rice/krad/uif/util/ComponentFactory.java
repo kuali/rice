@@ -135,6 +135,10 @@ public class ComponentFactory {
     protected static final String FOOTER = "Uif-FooterBase";
     protected static final String FOOTER_SAVECLOSECANCEL = "Uif-FormPageFooter";
 
+    protected static final String CONSTRAINT_MESSAGE = "Uif-ConstraintMessage";
+    protected static final String INSTRUCTIONAL_MESSAGE = "Uif-InstructionalMessage";
+    protected static final String HELP_ACTION = "Uif-HelpAction";
+
     private static Log LOG = LogFactory.getLog(ComponentFactory.class);
 
     /**
@@ -971,6 +975,33 @@ public class ComponentFactory {
      */
     public static Group getFooterSaveCloseCancel() {
         return (Group) getNewComponentInstance(FOOTER_SAVECLOSECANCEL);
+    }
+
+    /**
+     * Gets the default action component configured for help
+     *
+     * @return Action for help display
+     */
+    public static Action getHelpAction() {
+        return (Action) getNewComponentInstance(HELP_ACTION);
+    }
+
+    /**
+     * Gets the default constraint message configuration
+     *
+     * @return Message component for constraint messages
+     */
+    public static Message getConstraintMessage() {
+        return (Message) getNewComponentInstance(CONSTRAINT_MESSAGE);
+    }
+
+    /**
+     * Gets the default instructional message configuration
+     *
+     * @return Message component for instructional messages
+     */
+    public static Message getInstructionalMessage() {
+        return (Message) getNewComponentInstance(INSTRUCTIONAL_MESSAGE);
     }
 
 }

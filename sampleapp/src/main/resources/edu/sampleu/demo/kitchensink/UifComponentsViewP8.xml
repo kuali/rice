@@ -134,7 +134,7 @@
 
   <bean id="Demo-HeaderGroups" parent="Uif-VerticalBoxSection" p:headerText="Header Groups Demo">
     <property name="header.upperGroup">
-      <bean parent="Uif-HorizontalBoxGroup">
+      <bean parent="Uif-HeaderUpperGroup">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="Upper Group"/>
@@ -143,7 +143,7 @@
       </bean>
     </property>
     <property name="header.rightGroup">
-      <bean parent="Uif-HorizontalBoxGroup">
+      <bean parent="Uif-HeaderRightGroup">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="Right Group"/>
@@ -152,7 +152,7 @@
       </bean>
     </property>
     <property name="header.lowerGroup">
-      <bean parent="Uif-HorizontalBoxGroup">
+      <bean parent="Uif-HeaderLowerGroup">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="Lower Group"/>

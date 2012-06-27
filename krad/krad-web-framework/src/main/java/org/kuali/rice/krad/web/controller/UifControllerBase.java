@@ -41,9 +41,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.http.HttpRequest;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,10 +50,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -87,13 +82,12 @@ import java.util.Properties;
 public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
 
-
     private UrlBasedViewResolver viewResolver;
 
     /**
      * Create/obtain the model(form) object before it is passed to the Binder/BeanWrapper. This method
      * is not intended to be overridden by client applications as it handles framework setup and session
-     * maintenance. Clients should override createIntialForm() instead when they need custom form initialization.
+     * maintenance. Clients should override createInitialForm() instead when they need custom form initialization.
      *
      * @param request - the http request that was made
      */
@@ -111,12 +105,12 @@ public abstract class UifControllerBase {
         // add form manager to GlobalVariables for easy reference by other controller methods
         GlobalVariables.setUifFormManager(uifFormManager);
 
-        String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-        //Create a new form for every request
+        // create a new form for every request
         requestForm = createInitialForm(request);
 
+        String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isNotBlank(formKeyParam)) {
-            //Retrieves the session form and updates the request from with the session transient attributes
+            // retrieves the session form and updates the request from with the session transient attributes
             requestForm = uifFormManager.updateFormWithSession(requestForm, formKeyParam);
         }
 
@@ -126,8 +120,9 @@ public abstract class UifControllerBase {
                     UifConstants.UrlParams.LAST_FORM_KEY));
         }
 
-        //Sets the request form in the request for later retrieval
+        // sets the request form in the request for later retrieval
         request.setAttribute(UifConstants.REQUEST_FORM, requestForm);
+
         return requestForm;
     }
 
@@ -463,7 +458,8 @@ public abstract class UifControllerBase {
         String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
         // only refreshing page
-       form.setRenderFullView(false);
+        form.setRenderFullView(false);
+
         return getUIFModelAndView(form, pageId);
     }
 

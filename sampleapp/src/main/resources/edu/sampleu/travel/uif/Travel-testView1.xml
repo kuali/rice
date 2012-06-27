@@ -170,10 +170,10 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:size="10"/>
           </property>
-          <property name="suggest.render" value="true"/>
-          <property name="suggest.sourcePropertyName" value="accountTypeCode"/>
-          <property name="suggest.suggestQuery.dataObjectClassName"
-                    value="edu.sampleu.travel.bo.TravelAccountType"/>
+          <property name="suggest">
+              <bean parent="Uif-Suggest" p:render="true" p:sourcePropertyName="accountTypeCode"
+                    p:suggestQuery.dataObjectClassName="edu.sampleu.travel.bo.TravelAccountType"/>
+          </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field34" p:label="Field 34" p:width="auto">
           <property name="bindingInfo.bindToForm" value="true"/>

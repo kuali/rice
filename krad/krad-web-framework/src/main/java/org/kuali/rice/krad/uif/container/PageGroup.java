@@ -72,12 +72,4 @@ public class PageGroup extends Group {
         this.autoFocus = autoFocus;
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
-     */
-    @Override
-    public final String getComponentTypeName() {
-        return "pageGroup";
-    }
-
 }

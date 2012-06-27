@@ -167,7 +167,8 @@ public class ViewIndex implements Serializable {
                 // if component is input field and has a query we need to keep the final state
                 else if ((component instanceof InputField) && !component.isDisableSessionPersistence()) {
                     InputField inputField = (InputField) component;
-                    if ((inputField.getAttributeQuery() != null) || inputField.getSuggest().isRender()) {
+                    if ((inputField.getAttributeQuery() != null) || ((inputField.getSuggest() != null) && inputField
+                            .getSuggest().isRender())) {
                         holdIds.add(component.getId());
                     }
                 }

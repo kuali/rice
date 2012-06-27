@@ -519,42 +519,32 @@ table.uif-gridLayout th .uif-label {
     text-align: right;
 }
 
-.datatable tr.even:hover {
-    background-color: #F1F1F1;
+table.dataTable tr.even {
+    background-color: white;
 }
 
-.datatable tr.odd:hover {
-    background-color: #F1F1F1;
+table.dataTable tr.odd {
+    background-color: white;
 }
 
-.dataTables_paginate {
-    width: 44px;
-    width: 50px;
-    float: right;
-    text-align: right;
+table.dataTable tr.odd td.sorting_1{
+    background-color: #FAFAFA;
 }
 
-.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
-    height: 19px;
-    width: 19px;
-    margin-left: 3px;
-    float: left;
+table.dataTable tr.even td.sorting_1{
+    background-color: #FAFAFA;
 }
 
-.paginate_disabled_previous {
-    background: url(../../plugins/rice/datatables/images/back_disabled.jpg);
+.paging_full_numbers a.paginate_button_disabled{
+    cursor: auto;
+    color: #888888 !important;
+    background-color: #DDDDDD !important;
 }
 
-.paginate_enabled_previous {
-    background-image: url(../../plugins/rice/datatables/images/back_enabled.jpg);
-}
-
-.paginate_disabled_next {
-    background-image: url(../../plugins/rice/datatables/images/forward_disabled.jpg);
-}
-
-.paginate_enabled_next {
-    background-image: url(../../plugins/rice/datatables/images/forward_enabled.jpg);
+.paging_full_numbers a.paginate_button_disabled:hover, .paging_full_numbers a.paginate_button_disabled:focus{
+    cursor: auto;
+    color: #888888 !important;
+    background-color: #DDDDDD !important;
 }
 
 /** Miscellaneous styles **********************************************************************************/

@@ -32,9 +32,9 @@
         <value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>
         <value>krad/css/global/fss-text.css</value>
-        <value>krad/css/global/base.css</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.css</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
+        <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
         <value>krad/plugins/rice/datatables/TableTools.css</value>
         <value>krad/plugins/fancybox/jquery.fancybox.css</value>
         <value>krad/plugins/rice/textpopout/popoutTextarea.css</value>
@@ -42,6 +42,7 @@
         <value>krad/plugins/rice/spinner/smartspinner.css</value>
         <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
+        <value>krad/css/global/base.css</value>
       </list>
     </property>
     <property name="scriptFiles">

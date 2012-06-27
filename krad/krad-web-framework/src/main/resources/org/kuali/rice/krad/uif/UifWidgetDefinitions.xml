@@ -88,6 +88,7 @@
       <map>
         <entry key="sDom" value="fTrtip"/>
         <entry key="bRetrieve" value="true"/>
+        <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"
                value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
       </map>
@@ -100,7 +101,6 @@
   <bean id="Uif-PagedRichTable-parentBean" parent="Uif-RichTable-parentBean" scope="prototype">
     <property name="templateOptions">
       <map merge="true">
-        <entry key="sScrollX" value="100%"/>
         <entry key="bScrollCollapse" value="true"/>
       </map>
     </property>

@@ -248,6 +248,20 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
+     * Completes the document instance contained on the form
+     *
+     * @param form - document form base containing the document instance that will be completed
+     * @return ModelAndView
+     */
+    @RequestMapping(params = "methodToCall=complete")
+    public ModelAndView complete(@ModelAttribute("KualiForm")
+    DocumentFormBase form, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        performWorkflowAction(form, WorkflowAction.COMPLETE, true);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Routes the document instance contained on the form
      *
      * @param form - document form base containing the document instance that will be routed
@@ -255,7 +269,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=route")
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         performWorkflowAction(form, WorkflowAction.ROUTE, true);
 
         return getUIFModelAndView(form);
@@ -395,6 +409,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                         successMessageKey = RiceKeyConstants.MESSAGE_CANCELLED;
                     }
                     break;
+                case COMPLETE:
+                    if (getDocumentService().documentExists(document.getDocumentNumber())) {
+                        getDocumentService().completeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
+                        successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
+                    }
+                    break;
             }
 
             if (successMessageKey != null) {
@@ -447,7 +467,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         // Get the note add line
         String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
-        CollectionGroup collectionGroup = uifForm.getPreviousView().getViewIndex().getCollectionGroupByPath(
+        CollectionGroup collectionGroup = uifForm.getPostedView().getViewIndex().getCollectionGroupByPath(
                 selectedCollectionPath);
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(uifForm, addLinePath);
@@ -787,4 +807,5 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     public ConfigurationService getConfigurationService() {
         return KRADServiceLocator.getKualiConfigurationService();
     }
+
 }

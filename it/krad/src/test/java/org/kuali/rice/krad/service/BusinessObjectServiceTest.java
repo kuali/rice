@@ -97,6 +97,13 @@ public class BusinessObjectServiceTest extends KRADTestCase {
     	manager3.setAmId(-99L);
     	manager2 = (AccountManager)businessObjectService.retrieve(manager3);
     	assertNull("manager2 should be null", manager2);
+        
+        AccountManager manager4 = new AccountManager();
+        manager4.setAmId(manager.getAmId());
+        manager2 = (AccountManager)businessObjectService.findBySinglePrimaryKey(AccountManager.class, manager4.getAmId());
+        assertNotNull("manager2 should not be null", manager2);
+        assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
+
     }
 
     /*
@@ -108,7 +115,7 @@ public class BusinessObjectServiceTest extends KRADTestCase {
     	
     	org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
     	criteria.eq("code", "US");
-    	Collection<State> states = boService.findMatching(criteria);
+    	Collection<State> states = boService.findMatching(cr fiteria);
     	Assert.assertEquals("There should be "+allStates.size()+" states with country code US", allStates.size(), states.size());
     	
     	criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());

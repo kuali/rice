@@ -15,23 +15,13 @@
  */
 package org.kuali.rice.core.web.cache;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.kuali.rice.core.api.cache.CacheManagerRegistry;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -43,6 +33,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/core/admin/cache")
@@ -83,7 +81,8 @@ public class CacheAdminController extends UifControllerBase {
             Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
 
             for (final String cn : names) {
-                final Node<String, String> cNode = new Node<String, String>(cn, cn);
+                String cacheSize = getCacheSize(name, cn);
+                final Node<String, String> cNode = new Node<String, String>(cn, cn + (cacheSize != null ? " - " + cacheSize : ""));
                 //no way to get a keySet from the cache w/o calling the nativeCache
                 //method which is a bad idea b/c it will tie the rice codebase to
                 //a caching implementation
@@ -170,6 +169,32 @@ public class CacheAdminController extends UifControllerBase {
             pathIdx.add(Integer.valueOf(path[i].substring(5)));
         }
         return Collections.unmodifiableList(pathIdx);
+    }
+
+    /**
+     * If the cache manager implementation is ehcache, it will return the current size of the cache. Did this in such
+     * a way that it will fallback gracefully just in case the cache implementation being used is not ehcache.
+     */
+    private String getCacheSize(String cacheManagerName, String cacheName) {
+        Object nativeCache = getRegistry().getCacheManager(cacheManagerName).getCache(cacheName).getNativeCache();
+        try {
+            Class<?> ehcache = Class.forName("net.sf.ehcache.Cache");
+            if (ehcache.isInstance(nativeCache)) {
+                Object intSize = ehcache.getDeclaredMethod("getSize").invoke(nativeCache);
+                if (intSize != null) {
+                    return intSize.toString();
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            // ignore
+        } catch (NoSuchMethodException e) {
+            // ignore
+        } catch (InvocationTargetException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        }
+        return null;
     }
 
     private final class ByName implements Comparator<CacheManager> {

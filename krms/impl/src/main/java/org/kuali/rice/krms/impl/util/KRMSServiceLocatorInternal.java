@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.krms.impl.util;
 
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
+
+import javax.xml.namespace.QName;
 
 /**
  * Like {@link org.kuali.rice.krms.api.KrmsApiServiceLocator} only for non-remotable.
@@ -28,7 +29,9 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
  *
  */
 public class KRMSServiceLocatorInternal {
-	
+
+    public static final String REPOSITORY_TO_ENGINE_TRANSLATOR = "repositoryToEngineTranslator";
+
 	public static final String KRMS_RUN_MODE_PROPERTY = "krms.mode";
 	public static final String KRMS_MODULE_NAMESPACE = "KRMS";
 
@@ -37,20 +40,29 @@ public class KRMSServiceLocatorInternal {
 	
 	@SuppressWarnings("unchecked")
 	public static <A> A getService(String serviceName) {
-		return (A)getBean(serviceName);
+		return (A)getBean(serviceName, false);
 	}
 	
-	public static Object getBean(String serviceName) {
+	public static <A> A getBean(String serviceName, boolean forceLocal) {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(
-				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KRMS_RUN_MODE_PROPERTY)))) ?
-						new QName(KRMS_MODULE_NAMESPACE, serviceName) : new QName(serviceName) );
+        QName name = new QName(serviceName);
+        RunMode krmsRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KRMS_RUN_MODE_PROPERTY));
+        if (!forceLocal) {
+            if (krmsRunMode == RunMode.REMOTE || krmsRunMode == RunMode.THIN) {
+                name = new QName(KRMS_MODULE_NAMESPACE, serviceName);
+            }
+        }
+		return GlobalResourceLoader.getResourceLoader().getService(name);
 	}
 	
 //    public static BusinessObjectService getBusinessObjectService() {
 //    	return getService(KRMS_BO_SERVICE);
 //    }
+
+    public static RepositoryToEngineTranslator getRepositoryToEngineTranslator() {
+        return getBean(REPOSITORY_TO_ENGINE_TRANSLATOR, true);
+    }
 	
 }

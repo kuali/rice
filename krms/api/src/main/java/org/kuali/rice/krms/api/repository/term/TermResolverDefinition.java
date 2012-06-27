@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.BuilderUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -449,4 +450,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		public static final String PARAMETER_NAMES = "parameterNames";
         public static final String ACTIVE = "active";
 	}
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + TermResolverDefinition.Constants.TYPE_NAME;
+    }
 }

@@ -226,7 +226,7 @@ public final class KimTypeAttribute extends AbstractDataTransferObject implement
         }
 
         public void setVersionNumber(final Long versionNumber) {
-            if (versionNumber == null || versionNumber <= 0) {
+            if (versionNumber != null && versionNumber <= 0) {
                 throw new IllegalArgumentException("versionNumber is invalid");
             }
 

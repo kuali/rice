@@ -25,6 +25,13 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 
+/**
+ * Implementation of the interface for accessing KRMS repository Proposition related
+ * business objects.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public final class PropositionBoServiceImpl implements PropositionBoService {
 
     private BusinessObjectService businessObjectService;
@@ -189,7 +196,12 @@ public final class PropositionBoServiceImpl implements PropositionBoService {
 		PropositionParameterBo bo = businessObjectService.findByPrimaryKey(PropositionParameterBo.class, map);
 		return PropositionParameterBo.to(bo);
 	}
-	
+
+    /**
+     * Sets the businessObjectService attribute value.
+     *
+     * @param businessObjectService The businessObjectService to set.
+     */
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
     }

@@ -42,7 +42,14 @@ class ReviewResponsibilityBo extends ResponsibilityBo {
     public void loadFromKimResponsibility(ResponsibilityBo resp) {
         resp.metaClass.properties.each {
             if (this.metaClass.respondsTo(this, MetaProperty.getSetterName(it.name))) {
-                this.setProperty(it.name, resp.getProperty(it.name))
+                try {
+                    if (resp.getProperty(it.name) != null) { // if it.name is null then the object is of type org.codehaus.groovy.runtime.NullObject
+                        // which is not an expected class type and throws an IllegalArgumentException see KULRICE-6880
+                        this.setProperty(it.name, resp.getProperty(it.name))
+                    }
+                } catch (IllegalArgumentException iae) {
+                    throw new IllegalArgumentException("setProperty exception. type=" + it.type + " name=" + it.name + " resp.getProperty(it.name)=" + resp.getProperty(it.name) + " resp.getProperty(it.name) Class=" + resp.getProperty(it.name).getClass() + " : " + iae.getMessage(), iae);
+                }
             }
         }
 

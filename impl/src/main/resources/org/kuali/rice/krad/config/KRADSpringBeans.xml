@@ -274,8 +274,6 @@
 
   <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"></bean>
 
-  <bean id="documentHelperService" class="org.kuali.rice.krad.service.impl.DocumentHelperServiceImpl"/>
-
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">
     <property name="documentDao">
       <ref bean="documentDao"/>
@@ -406,6 +404,7 @@
   <bean id="persistenceService" class="org.kuali.rice.krad.service.impl.PersistenceServiceImpl">
     <property name="persistenceServiceJpa" ref="persistenceServiceJpa"/>
     <property name="persistenceServiceOjb" ref="persistenceServiceOjb"/>
+    <property name="kualiModuleService" ref="kualiModuleService"/>
   </bean>
 
   <bean id="persistenceServiceJpa" class="org.kuali.rice.krad.service.impl.PersistenceServiceJpaImpl">
@@ -657,6 +656,8 @@
   </bean>
 
   <bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
+
+  <bean id="recallQuestion" class="org.kuali.rice.kns.question.RecallQuestion" scope="prototype"/>
 
   <bean id="documentAdHocService" class="org.kuali.rice.krad.service.impl.DocumentAdHocServiceImpl"/>
 

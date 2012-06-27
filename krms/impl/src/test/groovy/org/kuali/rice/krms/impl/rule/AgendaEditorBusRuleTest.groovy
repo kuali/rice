@@ -29,6 +29,8 @@ import org.kuali.rice.krms.impl.repository.ActionBo
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition
 import org.kuali.rice.krms.impl.type.ActionTypeServiceBase
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator
+import java.lang.reflect.Field
 
 class AgendaEditorBusRuleTest {
 
@@ -44,6 +46,11 @@ class AgendaEditorBusRuleTest {
         agendaEditorBusRule = [getRuleBoService: { mockRuleBoServiceInstance },
                                getKrmsTypeRepositoryService: { mockKrmsTypeRepositoryServiceInstance },
                                getActionTypeService: { new ActionTypeServiceBase() }] as AgendaEditorBusRule
+
+        // Nasty hack to set mock service in service locator
+        Field field = KrmsRepositoryServiceLocator.class.getDeclaredField("krmsTypeRepositoryService");
+        field.setAccessible(true);
+        field.set(null, mockKrmsTypeRepositoryServiceInstance);
     }
 
     /**

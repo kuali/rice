@@ -89,7 +89,36 @@ public class WorkFlowDocTypeIT {
         selenium.click("methodToCall.processAnswer.button0");
         selenium.waitForPageToLoad("30000");
     }
-
+    
+    //Test to validate the requirement of Document Type Label field while submitting a document.
+    @Test
+    public void testCreateDocType() throws Exception {
+        
+        
+        selenium.open(System.getProperty("remote.public.url"));
+        selenium.type("__login_user", "admin");
+        selenium.click("css=input[type=\"submit\"]");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("link=Administration");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("link=Document Type");
+        selenium.waitForPageToLoad("30000");
+        selenium.selectFrame("iframeportlet");
+        selenium.click("css=img[alt=\"create new\"]");
+        selenium.waitForPageToLoad("30000");
+        selenium.type("id=document.documentHeader.documentDescription", "Document Type description");
+        selenium.type("id=document.newMaintainableObject.name", "DocType Name");
+        selenium.click("name=methodToCall.route");
+        selenium.waitForPageToLoad("30000");
+        assertTrue(selenium.isTextPresent("Document Type Label is required."));
+        selenium.click("name=methodToCall.cancel");
+        selenium.waitForPageToLoad("30000");
+        selenium.click("name=methodToCall.processAnswer.button0");
+        selenium.waitForPageToLoad("30000");
+        selenium.selectWindow("null");
+        selenium.click("xpath=(//input[@name='imageField'])[2]");
+        selenium.waitForPageToLoad("30000");
+    }
 
     @After
     public void tearDown() throws Exception {

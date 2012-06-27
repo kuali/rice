@@ -17,7 +17,7 @@ package org.kuali.rice.ken.service;
 
 import java.util.Collection;
 
-import org.kuali.rice.ken.bo.UserChannelSubscription;
+import org.kuali.rice.ken.bo.UserChannelSubscriptionBo;
 
 /**
  * Service for accessing user preferences in the KEN system.{@link UserPreference}
@@ -29,7 +29,7 @@ public interface UserPreferenceService {
      * @param userid
      * @return Collection
      */
-    public Collection<UserChannelSubscription> getCurrentSubscriptions(String userid);
+    public Collection<UserChannelSubscriptionBo> getCurrentSubscriptions(String userid);
     
     /**
      * This method retrieves the UserChannelSubscription instance given the two unique keys that are 
@@ -38,17 +38,17 @@ public interface UserPreferenceService {
      * @param userid
      * @return UserChannelSubscription
      */
-    public UserChannelSubscription getSubscription(String channelid, String userid);
+    public UserChannelSubscriptionBo getSubscription(String channelid, String userid);
 
     /**
      * This method will add a channel subscription into the system.
      * @param userChannelSubscription
      */
-    public void subscribeToChannel(UserChannelSubscription userChannelSubscription);
+    public void subscribeToChannel(UserChannelSubscriptionBo userChannelSubscription);
 
     /**
      * This method will remove a channel subscription from the system.
      * @param userChannelSubscription
      */
-    public void unsubscribeFromChannel(UserChannelSubscription userChannelSubscription);
+    public void unsubscribeFromChannel(UserChannelSubscriptionBo userChannelSubscription);
 }

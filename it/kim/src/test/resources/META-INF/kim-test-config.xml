@@ -34,6 +34,13 @@
 	<param name="kim.test.port">9912</param>
 	<param name="kim.test.host">localhost</param>
 
-  <param name="rice.kim.additionalSpringFiles">classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml</param>
+  <param name="rice.kim.additionalSpringFiles">classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml,classpath:KIMLdapSpringBeans-test.xml</param>
 
-</config>
+  <!-- LDAP Server Configurations -->
+  <param name="rice.ldap.username">uid=admin,ou=system</param>
+  <param name="rice.ldap.password">secret</param>
+  <param name="rice.ldap.url">ldap://127.0.0.1:10389</param>
+  <param name="rice.ldap.base">ou=Doctors,o=Whoniverse</param>
+
+
+ </config>

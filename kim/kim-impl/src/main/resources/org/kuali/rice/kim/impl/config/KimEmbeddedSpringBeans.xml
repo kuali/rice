@@ -59,7 +59,8 @@
 
   <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
         p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:kualiConfigurationService-ref="rice.kim.import.kualiConfigurationService"/>
+        p:kualiConfigurationService-ref="rice.kim.import.kualiConfigurationService"
+        p:transactionManager-ref="transactionManager"/>
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.impl.identity.IdentityCurrentAndArchivedServiceImpl">
     <constructor-arg ref="kimIdentityArchiveService"/>
@@ -71,7 +72,8 @@
   -->
 
   <bean id="kimRoleService" class="org.kuali.rice.kim.impl.role.RoleServiceImpl"
-        p:roleDao-ref="kimRoleDao" p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"/>
+        p:roleDao-ref="kimRoleDao" p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
+        p:cacheManager-ref="kimLocalCacheManager"/>
 
   <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
         p:roleDao-ref="kimRoleDao"/>
@@ -92,7 +94,8 @@
         p:businessObjectService-ref="rice.kim.import.businessObjectService"
         p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
         p:kimTypeInfoService-ref="kimTypeInfoService"
-        p:roleService-ref="kimRoleService"/>
+        p:roleService-ref="kimRoleService"
+        p:cacheManager-ref="kimLocalCacheManager"/>
 
   <!--
         Responsibility Service
@@ -129,6 +132,11 @@
         class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl"
         p:permissionTemplateNamespace="KR-NS"
         p:permissionTemplateName="Open Document"/>
+
+  <bean id="documentRouterRoleTypeService"
+        class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl"
+        p:permissionTemplateNamespace="KR-WKFLW"
+        p:permissionTemplateName="Route Document"/>
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService"
         class="org.kuali.rice.krad.kim.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl"/>
@@ -285,10 +293,6 @@
       </map>
     </property>
   </bean>
-
-  <bean id="rice.kim.import.kualiModuleService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kualiModuleService"/>
 
   <bean id="kimModule" class="org.kuali.rice.kim.service.impl.KimModuleService"
         p:moduleConfiguration-ref="kimModuleConfiguration"

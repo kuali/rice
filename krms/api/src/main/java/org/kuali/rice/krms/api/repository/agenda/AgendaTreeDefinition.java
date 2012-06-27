@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.krms.api.KrmsConstants;
 
 /**
  * Concrete model object implementation of KRMS Repository AgendaTreeDefinition
@@ -209,5 +210,9 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
 		final static String RULE = "rule";
 		final static String SUB_AGENDA = "subAgenda";
 	}
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + AgendaTreeDefinition.Constants.TYPE_NAME;
+    }
 
 }

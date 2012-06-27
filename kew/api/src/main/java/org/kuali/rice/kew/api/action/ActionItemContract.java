@@ -30,12 +30,40 @@ public interface ActionItemContract {
     String getDocName();
     String getResponsibilityId();
     String getRoleName();
-    String getDateAssignedString();
-    String getActionToTake();
     DelegationType getDelegationType();
-    Integer getActionItemIndex();
     String getGroupId();
     String getPrincipalId();
     String getDelegatorGroupId();
     String getDelegatorPrincipalId();
+
+    /**
+     * This method should never be called, has been deprecated, and will always return null. It was mistakenly added to
+     * this interface when it was created and has been left here for compatibility purposes.
+     *
+     * @return always returns null
+     * @deprecated dateAssignedString is never used
+     */
+    @Deprecated
+    String getDateAssignedString();
+
+    /**
+     * This method should never be called, has been deprecated, and will always return null. It was mistakenly added to
+     * this interface when it was created and has been left here for compatibility purposes.
+     *
+     * @return always returns null
+     * @deprecated actionToTake is never used
+     */
+    @Deprecated
+    String getActionToTake();
+
+    /**
+     * This method should never be called, has been deprecated, and will always return null. It was mistakenly added to
+     * this interface when it was created and has been left here for compatibility purposes.
+     *
+     * @return always returns null
+     * @deprecated actionItemIndex is never used
+     */
+    Integer getActionItemIndex();
+
+
 }

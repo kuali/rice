@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.persistence.MappedSuperclass;
@@ -37,26 +38,32 @@ public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHe
 	private static final long serialVersionUID = 8458532812557846684L;
 
     @Transient
-	private PrincipalContract actionListInitiatorPrincipal = null;
+	private String initiatorName = "";
+    @Transient
+    private boolean isInitiatorNameInitialized = false;
 
-    public PrincipalContract getActionListInitiatorPrincipal() {
-        return actionListInitiatorPrincipal;
+    public void initialize(Preferences preferences) {
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowInitiator())) {
+            initializeInitiatorName();
+        }
     }
 
-    public void setActionListInitiatorPrincipal(PrincipalContract actionListInitiatorPrincipal) {
-        this.actionListInitiatorPrincipal = actionListInitiatorPrincipal;
+    public String getInitiatorName() {
+        initializeInitiatorName();
+        return initiatorName;
     }
 
     /**
-     * Gets the initiator name, masked appropriately if restricted.
+     * Fetches the initiator name, masked appropriately if restricted.
      */
-    public String getInitiatorName() {
-        String initiatorName = null;
-        Person initiator = KimApiServiceLocator.getPersonService().getPerson(getActionListInitiatorPrincipal().getPrincipalId());
-    	if (initiator != null) {
-    	    initiatorName = initiator.getName();
-    	}
-    	return initiatorName;
+    private void initializeInitiatorName() {
+        if (!isInitiatorNameInitialized) {
+            EntityNamePrincipalName name = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(getInitiatorPrincipalId());
+            if (name != null) {
+                this.initiatorName = name.getDefaultName().getCompositeName();
+            }
+            isInitiatorNameInitialized = true;
+        }
     }
 
 }

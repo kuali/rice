@@ -62,8 +62,6 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
                     component.setId(beanName);
                     component.setFactoryId(beanName);
                 }
-            } else {
-                component.setFactoryId(component.getId());
             }
         }
 

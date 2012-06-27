@@ -64,6 +64,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		new SQLDataLoader("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.sql", "/").runSql();
 		new SQLDataLoader("classpath:org/kuali/rice/kim/test/CircularRolesTestData.sql", "/").runSql();
 		new SQLDataLoader("classpath:org/kuali/rice/kim/test/CircularGroupsTestData.sql", "/").runSql();
+        new SQLDataLoader("classpath:org/kuali/rice/kim/test/DefaultSuiteLDAPTestData.sql", "/").runSql();
 	}
 	
 	@Override

@@ -136,22 +136,7 @@
     </property>
   </bean>
 
-  <!--  Routing Report Service -->
-  <bean id="enRoutingReportService" class="org.kuali.rice.kew.routemodule.service.impl.RoutingReportServiceImpl"
-        lazy-init="true"/>
-
-  <!--  DocumentSearchService -->
-  <bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl">
-    <property name="documentSearchDAO" ref="enDocumentSearchDAO"/>
-    <property name="userOptionsService" ref="enUserOptionsService"/>
-    <property name="documentSearchCustomizationMediator" ref="rice.kew.documentSearchCustomizationMediator"/>
-  </bean>
-  <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl"
-        lazy-init="true">
-    <property name="dataSource" ref="kewDataSource"/>
-  </bean>
-
-  <!--  StatsService -->
+    <!--  StatsService -->
   <bean id="enStatsService" class="org.kuali.rice.kew.stats.service.impl.StatsServiceImpl">
     <property name="statsDAO">
       <ref bean="enStatsDAO"/>
@@ -193,9 +178,6 @@
   <bean id="rice.kew.ruleService" class="org.kuali.rice.kew.impl.rule.RuleServiceImpl"
         p:businessObjectService-ref="rice.kew.import.businessObjectService"
         p:criteriaLookupService-ref="rice.kew.import.criteriaLookupService"/>
-
-  <bean id="rice.kew.documentSearchCustomizationMediator"
-        class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl"/>
 
   <bean id="rice.kew.extensionRepositoryService"
         class="org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl">
@@ -273,11 +255,8 @@
         <idref local="enRuleAttributeService"/>
         <idref local="enRuleTemplateService"/>
         <idref local="enRuleServiceInternal"/>
-        <idref local="enDocumentSearchService"/>
-        <idref local="enDocumentTypeService"/>
         <idref local="enResponsibilityIdService"/>
         <idref local="enRuleDelegationService"/>
-        <idref local="enRoutingReportService"/>
         <idref local="enStatsService"/>
         <idref local="enNoteService"/>
         <idref local="rice.kew.groupMembershipChangeQueue"/>

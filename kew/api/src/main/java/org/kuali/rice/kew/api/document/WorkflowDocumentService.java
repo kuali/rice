@@ -110,6 +110,20 @@ public interface WorkflowDocumentService {
     @WebResult(name = "rootActionRequests")
 	List<ActionRequest> getRootActionRequests(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
+    
+    /**
+     * Gets a list of ActionRequests which are pending for a given documentId
+     * 
+     * @since 2.1
+     * @param documentId the unique id of a document
+     * @return the list of pending ActionRequests for a given documentId
+     * @throws RiceIllegalArgumentException if {@code documentId} is null
+     */
+    @WebMethod(operationName = "getPendingActionRequests")
+    @XmlElementWrapper(name = "pendingActionRequests", required = true)
+    @XmlElement(name = "pendingActionRequest", required = false)
+    @WebResult(name = "pendingActionRequests")
+    List<ActionRequest> getPendingActionRequests(String documentId);
 
     /**
      * Gets a list of ActionRequests for a given documentId, nodeName and principalId
@@ -145,6 +159,24 @@ public interface WorkflowDocumentService {
     @WebResult(name = "actionsTaken")
 	List<ActionTaken> getActionsTaken(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
+
+    /**
+    * Gets a list of all {@link ActionTaken} of a {@link Document} with the given documentId
+    *
+    * @since 2.0.2
+    *
+    * @param documentId the unique id of a document
+    *
+    * @return the list of ActionTakens (both current and not) for a given documentId
+    *
+    * @throws RiceIllegalArgumentException if {@code documentId} is null
+    */
+      @WebMethod(operationName = "getAllActionRequests")
+      @XmlElementWrapper(name = "actionsTaken", required = true)
+      @XmlElement(name = "actionTaken", required = false)
+      @WebResult(name = "actionsTaken")
+      List<ActionTaken> getAllActionsTaken(@WebParam(name = "documentId") String documentId)
+              throws RiceIllegalArgumentException;
 
 
     /**

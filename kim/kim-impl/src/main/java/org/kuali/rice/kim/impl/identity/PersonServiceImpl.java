@@ -385,7 +385,7 @@ public class PersonServiceImpl implements PersonService {
 			for ( String key : criteria.keySet() ) {
 			    //check active radio button
 	            if(key.equals(KIMPropertyConstants.Person.ACTIVE)) {
-	                newCriteria.put(KIMPropertyConstants.Person.ACTIVE, criteria.get(KIMPropertyConstants.Person.ACTIVE));
+	                newCriteria.put(criteriaConversion.get(KIMPropertyConstants.Person.ACTIVE), criteria.get(KIMPropertyConstants.Person.ACTIVE));
 	            } else {
 	                // The following if statement enables the "both" button to work correctly.
 	                if (!(criteria.containsKey(KIMPropertyConstants.Person.ACTIVE))) {

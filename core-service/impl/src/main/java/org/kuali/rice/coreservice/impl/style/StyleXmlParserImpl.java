@@ -48,26 +48,20 @@ public class StyleXmlParserImpl implements StyleXmlParser {
 
 	private StyleService styleService;
 	
-    private static ThreadLocal<DocumentBuilder> DOCUMENT_BUILDER = new ThreadLocal<DocumentBuilder>() {
-        protected DocumentBuilder initialValue() {
-            try {
-                return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            } catch (ParserConfigurationException pce) {
-                // well folks, there is not much we can do if we get a ParserConfigurationException
-                // so might as well isolate the evilness here, and just balk if this occurs
-                String message = "Error obtaining document builder";
-                LOG.error(message, pce);
-                throw new RuntimeException(message, pce);
-            }
-        }
-    };
-
     /**
      * Returns a valid DocumentBuilder
      * @return a valid DocumentBuilder
      */
     private static DocumentBuilder getDocumentBuilder() {
-        return (DocumentBuilder) DOCUMENT_BUILDER.get();
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException pce) {
+            // well folks, there is not much we can do if we get a ParserConfigurationException
+            // so might as well isolate the evilness here, and just balk if this occurs
+            String message = "Error obtaining document builder";
+            LOG.error(message, pce);
+            throw new RuntimeException(message, pce);
+        }
     }
 
     public void loadXml(InputStream inputStream, String principalId) {

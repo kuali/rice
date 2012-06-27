@@ -31,7 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.concurrent.Callable;
 
 /**
  * Abstract base PluginLoader implementation.
@@ -100,14 +100,13 @@ public abstract class BasePluginLoader implements PluginLoader {
      * Loads and creates the Plugin.
      */
     public Plugin load() throws Exception {
-        PluginClassLoader classLoader = createPluginClassLoader();
+        final PluginClassLoader classLoader = createPluginClassLoader();
         LOG.info("Created plugin ClassLoader: " + classLoader);
-        ContextClassLoaderBinder.bind(classLoader);
-        try {
-            return loadWithinContextClassLoader(classLoader);
-        } finally {
-            ContextClassLoaderBinder.unbind();
-        }
+        return ContextClassLoaderBinder.doInContextClassLoader(classLoader, new Callable<Plugin>() {
+            public Plugin call() throws IOException {
+                return loadWithinContextClassLoader(classLoader);
+            }
+        });
     }
 
     public boolean isRemoved() {

@@ -1,4 +1,5 @@
 <%@ tag import="org.kuali.rice.krad.util.KRADConstants" %>
+<%@ tag import="java.util.Enumeration" %>
 <%--
 ~ Copyright 2006-2011 The Kuali Foundation
 ~
@@ -27,11 +28,13 @@
      </div>
   </div>
 </div>
-<div id="login-info"> <c:choose> <c:when test="${empty UserSession.loggedInUserPrincipalName}" > <strong>You are not logged in.</strong> </c:when> <c:otherwise> <strong>Logged in User:&nbsp;${UserSession.loggedInUserPrincipalName}</strong> <c:if test="${UserSession.backdoorInUse}" > <strong>&nbsp;&nbsp;Impersonating User:&nbsp;${UserSession.principalName}</strong> </c:if> </c:otherwise> </c:choose></div>
+<div id="login-info">
+  <c:set var="invalidUserMsg" value="Invalid username"/>
+  <c:choose> <c:when test="${empty UserSession.loggedInUserPrincipalName}" > <strong>You are not logged in.</strong> </c:when><c:otherwise> <strong>Logged in User:&nbsp;${UserSession.loggedInUserPrincipalName}</strong> <c:if test="${UserSession.backdoorInUse}" > <strong>&nbsp;&nbsp;Impersonating User:&nbsp;${UserSession.principalName}</strong> </c:if>  <c:if test="${param.invalidUser}" >  <strong>&nbsp;&nbsp;Impersonating User:&nbsp;${invalidUserMsg}</strong></c:if></c:otherwise> </c:choose></div>
 
 <div id="search">
   <c:choose> 
-    <c:when test="${empty UserSession.loggedInUserPrincipalName}" > 
+    <c:when test="${empty UserSession.loggedInUserPrincipalName}" >
     </c:when> 
     <c:when test="${fn:trim(ConfigProperties.environment) == fn:trim(ConfigProperties.production.environment.code)}" >
       <html:form action="/logout.do" method="post" style="margin:0; display:inline">
@@ -47,12 +50,10 @@
           <input name="methodToCall" type="hidden" value="login" />
         </html:form>
       </c:if>
-      
       <html:form action="/backdoorlogin.do" method="post" style="margin:0; display:inline">
         <input name="imageField" type="submit" value="Logout" class="go" title="Click to logout.">
         <input name="methodToCall" type="hidden" value="logout" />
       </html:form>
     </c:otherwise> 
   </c:choose>
-          
-</div>
+  </div>

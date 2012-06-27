@@ -20,6 +20,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -184,18 +185,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     public Timestamp getLastApprovedDate(String documentId)
     {
-    	Timestamp dateLastApproved = null;
-    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(documentId, KewApiConstants.ACTION_TAKEN_APPROVED_CD);
-        for (ActionTakenValue actionTaken : actionsTaken)
-        {
-            // search for the most recent approval action
-            if (dateLastApproved == null || dateLastApproved.compareTo(actionTaken.getActionDate()) <= -1)
-            {
-                dateLastApproved = actionTaken.getActionDate();
-            }
-        }
-    	LOG.info("Exit getLastApprovedDate("+documentId+") "+dateLastApproved);
-    	return dateLastApproved;
+        return getActionTakenDAO().getLastActionTakenDate(documentId, ActionType.APPROVE);
     }
 
 }

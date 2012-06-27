@@ -26,6 +26,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -120,6 +121,7 @@ public class RouteDocumentAction extends ActionTakenEvent {
                 getRouteHeader().markDocumentEnroute();
                 
                 if (((ProcessDefinitionBo)getRouteHeader().getDocumentType().getProcesses().get(0)).getInitialRouteNode() == null) {
+                    getRouteHeader().setApprovedDate(new Timestamp(System.currentTimeMillis()));
                     getRouteHeader().markDocumentProcessed();
                     getRouteHeader().markDocumentFinalized();
                 }

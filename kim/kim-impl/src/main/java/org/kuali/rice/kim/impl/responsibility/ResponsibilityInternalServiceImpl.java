@@ -21,6 +21,7 @@ import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -56,6 +57,14 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
         return member;
 	}
 
+    @Override
+    public DelegateMemberBo saveDelegateMember(DelegateMemberBo delegateMember) {
+
+        // add row to member table
+        DelegateMemberBo member = getBusinessObjectService().save(delegateMember);
+
+        return member;
+    }
 
     @Override
 	public void removeRoleMember(RoleMemberBo roleMember){

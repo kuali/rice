@@ -21,6 +21,14 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.Map;
+/**
+ * This is the contract for a Group.  A group is a collection of principals.  It's membership consists of direct principal
+ * assignment and/or nested group membership.  All groups are uniquely identified by a namespace
+ * code plus a name.
+ *
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 
 public interface GroupContract extends Versioned, GloballyUnique, Inactivatable, Identifiable {
 

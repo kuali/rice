@@ -35,8 +35,8 @@
                         <c:set var="fieldName" value="${qualifier.kimAttribute.attributeName}" />
                         <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                         <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
-                        <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>
-	        			<c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.attributeField.unique && KualiForm.document.editing))}"/>
+                        <c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
+	        			<c:set var="attrReadOnly" value="${(readOnly || (attrDefinition.unique && KualiForm.document.editing))}"/>
 			            <td align="left" valign="middle">
 			               	<div align="center"> <kul:htmlControlAttribute property="document.qualifiers[${statusQualifier.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 			               	   <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >

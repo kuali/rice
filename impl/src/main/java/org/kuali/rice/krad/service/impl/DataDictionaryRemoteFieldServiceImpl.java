@@ -151,7 +151,7 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 return b;
             }
         }
-
+        
         return null;
     }
 
@@ -169,11 +169,11 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 && (((MultiValueControl) control).getOptions() != null)
                 && !((MultiValueControl) control).getOptions().isEmpty()) {
             List<KeyValue> keyValues = ((MultiValueControl) control).getOptions();
-            Map<String, String> options = new HashMap<String, String>();
-            for (KeyValue keyValue : keyValues) {
-                options.put(keyValue.getKey(), keyValue.getValue());
-            }
-            return options;
+                    Map<String, String> options = new HashMap<String, String> ();
+                    for (KeyValue keyValue : keyValues) {
+                        options.put(keyValue.getKey(), keyValue.getValue());
+                    }
+                    return options;
         } else if (attr.getOptionsFinder() != null) {
             return attr.getOptionsFinder().getKeyLabelMap();
         }
@@ -244,7 +244,7 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 }
             }
         }
-
+        
         if (StringUtils.isNotBlank(lookupClassName)) {
             String baseUrl = getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
             RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(baseUrl, lookupClassName);

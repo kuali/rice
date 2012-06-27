@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
@@ -88,7 +91,7 @@ public interface WorkflowRuleAttribute extends Serializable {
      * attribute. The Value is determined when a rule is created and data is entered for the particular key. If a match is found, this method returns true and the eDoc will
      * be routed based on this rule. If no match is found, the method returns false and the eDoc will not be routed based on this rule.
      */
-    boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions);
+    boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions);
 
     /**
      * Each Row contains Fields describing the UI-level presentation of a single RuleExtensionValue.
@@ -179,7 +182,7 @@ public interface WorkflowRuleAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the routing data for this Attribute
      */
-    List<WorkflowServiceError> validateRoutingData(Map<String, String> paramMap);
+    List<RemotableAttributeError> validateRoutingData(Map<String, String> paramMap);
     
     /**
      * Validates ruleExtension values in the incoming map.  Called by the UI during rule creation.
@@ -190,7 +193,7 @@ public interface WorkflowRuleAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the rule extensions for this Attribute
      */
-    List<WorkflowServiceError> validateRuleData(Map<String, String> paramMap);
+    List<RemotableAttributeError> validateRuleData(Map<String, String> paramMap);
     
     /**
      * Sets the required flag for this Attribute to true.  If required is true, the extensionValues for

@@ -146,7 +146,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isRadio()) {
             controlMap.set("radio", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass());
+            if (control.getValuesFinderClass() != null) {
+                controlMap.set("valuesFinder", control.getValuesFinderClass());
+            }
             if (control.getBusinessObjectClass() != null) {
                 controlMap.set("businessObject", control.getBusinessObjectClass());
             }
@@ -183,7 +185,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isMultiselect()) {
             controlMap.set("multiselect", "true");
-            controlMap.set("valuesFinder", control.getValuesFinderClass());
+            if (control.getValuesFinderClass() != null) {
+                controlMap.set("valuesFinder", control.getValuesFinderClass());
+            }
             if (control.getBusinessObjectClass() != null) {
                 controlMap.set("businessObject", control.getBusinessObjectClass());
             }
@@ -202,7 +206,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isText()) {
             controlMap.set("text", "true");
-            controlMap.set("size", control.getSize().toString());
+            if (control.getSize() != null) {
+                controlMap.set("size", control.getSize().toString());
+            }
             controlMap.set("datePicker", Boolean.valueOf(control.isDatePicker()).toString());
             controlMap.set("ranged", Boolean.valueOf(control.isRanged()).toString());
         }
@@ -214,7 +220,9 @@ public class AttributesMapBuilder {
         }
         else if (control.isCurrency()) {
             controlMap.set("currency", "true");
-            controlMap.set("size", control.getSize().toString());
+            if (control.getSize() != null) {
+                controlMap.set("size", control.getSize().toString());
+            }
             controlMap.set("formattedMaxLength", ((CurrencyControlDefinition) control).getFormattedMaxLength().toString());
         }
         else if (control.isLookupHidden()) {

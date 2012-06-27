@@ -100,12 +100,12 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     }
 
     private void logFlushCache(Collection<CacheTarget> cacheTargets) {
-        if (LOG.isInfoEnabled()) {
+        if (LOG.isDebugEnabled()) {
             Set<String> cacheNames = new HashSet<String>();
             for (CacheTarget cacheTarget : cacheTargets) {
                 cacheNames.add(cacheTarget.getCache());
             }
-            LOG.info("Performing distributed flush of information in the following caches: " + StringUtils.join(cacheNames, ", "));
+            LOG.debug("Performing distributed flush of information in the following caches: " + StringUtils.join(cacheNames, ", "));
         }
     }
 

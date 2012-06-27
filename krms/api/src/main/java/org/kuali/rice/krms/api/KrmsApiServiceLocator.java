@@ -42,7 +42,7 @@ public class KrmsApiServiceLocator {
      * @return  <T> T
      */
     static <T> T getService(String serviceName) {
-        return GlobalResourceLoader.<T>getService(serviceName);
+        return GlobalResourceLoader.<T>getService(QName.valueOf(serviceName));
     }
 
     /**

@@ -129,16 +129,16 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
             // enhancement to indicate fields to/not to copy
             Object newDataObject = ObjectUtils.deepCopy((Serializable) oldDataObject);
 
+            // set object instance for editing
+            document.getOldMaintainableObject().setDataObject(oldDataObject);
+            document.getNewMaintainableObject().setDataObject(newDataObject);
+
             // process further object preparations for copy action
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
                 processMaintenanceObjectForCopy(document, newDataObject, requestParameters);
             } else {
                 checkMaintenanceActionAuthorization(document, oldDataObject, maintenanceAction, requestParameters);
             }
-
-            // set object instance for editing
-            document.getOldMaintainableObject().setDataObject(oldDataObject);
-            document.getNewMaintainableObject().setDataObject(newDataObject);
         }
 
         // if new with existing we need to populate with passed in parameters

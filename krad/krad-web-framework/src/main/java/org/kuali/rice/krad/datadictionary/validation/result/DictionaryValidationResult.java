@@ -27,7 +27,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  */
-public class DictionaryValidationResult {
+public class DictionaryValidationResult implements Iterable<ConstraintValidationResult> {
 	
 	private Map<String, EntryValidationResult> entryValidationResultMap;
 	private ErrorLevel errorLevel;
@@ -137,62 +137,60 @@ public class DictionaryValidationResult {
 	}
 	
 	public Iterator<ConstraintValidationResult> iterator() {
-		
-//		if (iterator == null || iterator.hasNext() == false) {
-			iterator = new Iterator<ConstraintValidationResult>() {
-	
-				private Iterator<EntryValidationResult> entryIterator;
-				private Iterator<AttributeValidationResult> attributeIterator;
-				private Iterator<ConstraintValidationResult> constraintIterator;
-				
-				@Override
-				public boolean hasNext() {	
-					Iterator<ConstraintValidationResult> currentConstraintIterator = getCurrentConstraintIterator();
-					return currentConstraintIterator != null && currentConstraintIterator.hasNext();
-				}
-	
-				@Override
-				public ConstraintValidationResult next() {
-					Iterator<ConstraintValidationResult> currentConstraintIterator = getCurrentConstraintIterator();
-					return currentConstraintIterator != null ? currentConstraintIterator.next() : null;
-				}
-	
-				@Override
-				public void remove() {
-					throw new RuntimeException("Can't remove from this iterator!");
-				}
-				
-				private Iterator<ConstraintValidationResult> getCurrentConstraintIterator() {
-					if (constraintIterator == null || constraintIterator.hasNext() == false) {
-						Iterator<AttributeValidationResult> currentAttributeIterator = getCurrentAttributeIterator();
-						if (currentAttributeIterator != null && currentAttributeIterator.hasNext()) {
-							AttributeValidationResult currentAttributeValidationResult = currentAttributeIterator.next();
-							constraintIterator = currentAttributeValidationResult.iterator();
-						}
-					}
-					return constraintIterator;
-				}
-				
-				private Iterator<AttributeValidationResult> getCurrentAttributeIterator() {
-					if (attributeIterator == null || attributeIterator.hasNext() == false) {
-						Iterator<EntryValidationResult> currentEntryIterator = getCurrentEntryIterator();
-						if (currentEntryIterator != null && currentEntryIterator.hasNext()) {
-							EntryValidationResult currentEntryValidationResult = currentEntryIterator.next();
-							attributeIterator = currentEntryValidationResult.iterator();
-						}
-					}
-					return attributeIterator;
-				}
-	
-				private Iterator<EntryValidationResult> getCurrentEntryIterator() {
-					if (entryIterator == null) // || entryIterator.hasNext() == false)
-						entryIterator = entryValidationResultMap.values().iterator();
-					return entryIterator;
-				}
-				
-			};
-//		}
-		
+
+        iterator = new Iterator<ConstraintValidationResult>() {
+
+            private Iterator<EntryValidationResult> entryIterator;
+            private Iterator<AttributeValidationResult> attributeIterator;
+            private Iterator<ConstraintValidationResult> constraintIterator;
+
+            @Override
+            public boolean hasNext() {
+                Iterator<ConstraintValidationResult> currentConstraintIterator = getCurrentConstraintIterator();
+                return currentConstraintIterator != null && currentConstraintIterator.hasNext();
+            }
+
+            @Override
+            public ConstraintValidationResult next() {
+                Iterator<ConstraintValidationResult> currentConstraintIterator = getCurrentConstraintIterator();
+                return currentConstraintIterator != null ? currentConstraintIterator.next() : null;
+            }
+
+            @Override
+            public void remove() {
+                throw new RuntimeException("Can't remove from this iterator!");
+            }
+
+            private Iterator<ConstraintValidationResult> getCurrentConstraintIterator() {
+                if (constraintIterator == null || constraintIterator.hasNext() == false) {
+                    Iterator<AttributeValidationResult> currentAttributeIterator = getCurrentAttributeIterator();
+                    if (currentAttributeIterator != null && currentAttributeIterator.hasNext()) {
+                        AttributeValidationResult currentAttributeValidationResult = currentAttributeIterator.next();
+                        constraintIterator = currentAttributeValidationResult.iterator();
+                    }
+                }
+                return constraintIterator;
+            }
+
+            private Iterator<AttributeValidationResult> getCurrentAttributeIterator() {
+                if (attributeIterator == null || attributeIterator.hasNext() == false) {
+                    Iterator<EntryValidationResult> currentEntryIterator = getCurrentEntryIterator();
+                    if (currentEntryIterator != null && currentEntryIterator.hasNext()) {
+                        EntryValidationResult currentEntryValidationResult = currentEntryIterator.next();
+                        attributeIterator = currentEntryValidationResult.iterator();
+                    }
+                }
+                return attributeIterator;
+            }
+
+            private Iterator<EntryValidationResult> getCurrentEntryIterator() {
+                if (entryIterator == null) // || entryIterator.hasNext() == false)
+                    entryIterator = entryValidationResultMap.values().iterator();
+                return entryIterator;
+            }
+
+        };
+
 		return iterator;
 	}
 	

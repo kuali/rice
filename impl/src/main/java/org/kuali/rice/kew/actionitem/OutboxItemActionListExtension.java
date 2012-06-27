@@ -59,7 +59,6 @@ public class OutboxItemActionListExtension extends ActionItemActionListExtension
 	public OutboxItemActionListExtension(ActionItem actionItem) {
 		this.setActionRequestCd(actionItem.getActionRequestCd());
 		this.setActionRequestId(actionItem.getActionRequestId());
-		this.setActionToTake(actionItem.getActionToTake());
 		this.setDateAssigned(actionItem.getDateAssigned());
 		this.setDelegationType(actionItem.getDelegationType());
 		this.setDelegatorPrincipalId(actionItem.getDelegatorPrincipalId());

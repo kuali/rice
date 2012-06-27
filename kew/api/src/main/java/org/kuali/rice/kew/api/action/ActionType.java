@@ -104,7 +104,13 @@ public enum ActionType implements Coded {
      * The document is being returned to a previous routelevel
      */
     @XmlEnumValue("Z") RETURN_TO_PREVIOUS("Z", "RETURN TO PREVIOUS"),
-    
+
+    /**
+     * The document is being recalled.
+     * @since 2.1
+     */
+    @XmlEnumValue("L") RECALL("L", "RECALL"),
+
     /**
      * The document has non-routed activity against it that is recorded in the route log
      */

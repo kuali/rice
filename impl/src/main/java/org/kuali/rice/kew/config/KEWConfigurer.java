@@ -22,21 +22,15 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
+import org.kuali.rice.kew.lifecycle.StandaloneLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
-import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
-import org.kuali.rice.kew.api.KewApiConstants.ClientProtocol;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,13 +59,15 @@ public class KEWConfigurer extends ModuleConfigurer {
 
     public KEWConfigurer() {
         super(KewApiConstants.Namespaces.MODULE_NAME);
-        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
+        setValidRunModes(Arrays.asList(RunMode.THIN, RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
     }
 
 	@Override
 	public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
-        if (RunMode.REMOTE == getRunMode()) {
+        if (RunMode.THIN == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KewThinSpringBeans.xml");
+        } else if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewRemoteSpringBeans.xml");
         } else if (RunMode.EMBEDDED == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewEmbeddedSpringBeans.xml");
@@ -85,8 +81,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public List<Lifecycle> loadLifecycles() throws Exception {
 		
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        if ( !getRunMode().equals( RunMode.REMOTE ) ) { // local or embedded
-			lifecycles.add(createEmbeddedLifeCycle());
+        if ( getRunMode().equals( RunMode.LOCAL ) ) { // local or embedded
+			lifecycles.add(createStandaloneLifeCycle());
 		}
 		return lifecycles;
 	}
@@ -97,8 +93,8 @@ public class KEWConfigurer extends ModuleConfigurer {
      * @return Life Cycle
      * @throws Exception if life cycle not created
      */
-	private Lifecycle createEmbeddedLifeCycle() throws Exception {
-		return new EmbeddedLifeCycle();
+	private Lifecycle createStandaloneLifeCycle() throws Exception {
+		return new StandaloneLifeCycle();
 	}
 
 	@Override

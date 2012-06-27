@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.impl.extension;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -30,7 +31,10 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Reference implementation of the {@code ExtensionRepositoryService}.  This implementation
@@ -57,11 +61,7 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
     @XmlElement(name = Elements.RULE_ATTRIBUTE_SERVICE, required = true)
     private RuleAttributeService ruleAttributeService;
 
-    /**
-	 * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given id.
-	 * @param id the id to search by.
-     * @return the extension definition found for the matching rule attribute service
-	 */
+
     @Override
     public ExtensionDefinition getExtensionById(String id) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(id)) {
@@ -71,11 +71,7 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
         return translateFromRuleAttribute(ruleAttribute);
     }
 
-    /**
-	 * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given name.
-	 * @param name the name to search by.
-     * @return the extension definition found for the matching rule attribute service
-	 */
+
     @Override
     public ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(name)) {
@@ -83,6 +79,24 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
         }
         RuleAttribute ruleAttribute = ruleAttributeService.findByName(name);
         return translateFromRuleAttribute(ruleAttribute);
+    }
+
+    @Override
+    public List<ExtensionDefinition> getExtensionsByResourceDescriptor(
+            String resourceDescriptor) throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(resourceDescriptor)) {
+            throw new RiceIllegalArgumentException("resourceDescriptor was null or blank");
+        }
+        List<RuleAttribute> ruleAttributes = ruleAttributeService.findByClassName(resourceDescriptor);
+        if (CollectionUtils.isNotEmpty(ruleAttributes)) {
+            List<ExtensionDefinition> definitions = new ArrayList<ExtensionDefinition>();
+            for (RuleAttribute ruleAttribute : ruleAttributes) {
+                definitions.add(translateFromRuleAttribute(ruleAttribute));
+            }
+            return Collections.unmodifiableList(definitions);
+        }
+        
+        return Collections.emptyList();
     }
 
     private ExtensionDefinition translateFromRuleAttribute(RuleAttribute ruleAttribute) {

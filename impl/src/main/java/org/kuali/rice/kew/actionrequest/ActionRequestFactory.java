@@ -184,6 +184,18 @@ public class ActionRequestFactory {
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 
+    /**
+     * Generates a notification request for each action request specified, filtering out the specified principal
+     * and delegator, and exclusion workgroup members from notification list
+     * @param parentRequest if non-null, attaches generated notification requests to this parent action request
+     * @param requests list of ActionRequestValues for which to generate corresponding notification requests
+     * @param principal principal to exclude from notifications
+     * @param delegator delegator to exclude from notifications
+     * @param notificationRequestCode the actionrequest code of generated notifications
+     * @param actionTakenCode the actiontaken code to display as the cause of the notification generation
+     * @param notifyExclusionWorkgroup workgroup whose members should not be sent notifications
+     * @return a list of generated notification requests
+     */
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
             List requests, PrincipalContract principal, Recipient delegator, String notificationRequestCode,
             String actionTakenCode, Group notifyExclusionWorkgroup)

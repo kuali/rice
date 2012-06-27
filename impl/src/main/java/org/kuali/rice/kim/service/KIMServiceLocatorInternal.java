@@ -47,9 +47,12 @@ public final class KIMServiceLocatorInternal {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(
-                (RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY)))) ?
-                        new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
+        QName name = new QName(serviceName);
+        RunMode kimRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY));
+        if (kimRunMode == RunMode.REMOTE || kimRunMode == RunMode.THIN) {
+            name = new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName);
+        }
+        return GlobalResourceLoader.getResourceLoader().getService(name);
 	}
 
     public static UiDocumentService getUiDocumentService() {

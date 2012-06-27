@@ -72,7 +72,7 @@ public abstract class IdentityManagementBaseInquiryAction extends KualiAction {
     }
  
     /**
-     * @see org.kuali.rice.krad.web.struts.action.KualiTableAction#switchToPage(org.apache.struts.action.ActionMapping,
+     * @see org.kuali.rice.kns.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

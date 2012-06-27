@@ -18,6 +18,7 @@ package org.kuali.rice.kew.routemanager;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 
@@ -49,11 +50,11 @@ public class ExplodingRuleAttribute implements WorkflowRuleAttribute {
         return null;
     }
 
-    public List validateRoutingData(Map paramMap) {
+    public List<RemotableAttributeError> validateRoutingData(Map paramMap) {
         return null;
     }
 
-    public List validateRuleData(Map paramMap) {
+    public List<RemotableAttributeError> validateRuleData(Map paramMap) {
         return null;
     }
 

@@ -48,13 +48,11 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     private String nodeName;
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal);
-        this.superUserAction = KewApiConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, KewApiConstants.SUPER_USER_ROUTE_LEVEL_APPROVE, routeHeader, principal);
     }
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor, String nodeName) {
-        super(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KewApiConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, KewApiConstants.SUPER_USER_ROUTE_LEVEL_APPROVE, routeHeader, principal, annotation, runPostProcessor);
         this.nodeName = nodeName;
     }
 

@@ -23,4 +23,5 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <%@ taglib uri="http://displaytag.sf.net/el" prefix="display-el"%>
+<%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda" %>
 <%@ taglib tagdir="/WEB-INF/tags/krad" prefix="krad"%>

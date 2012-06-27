@@ -50,7 +50,9 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.ErrorMessage;
+import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -64,13 +66,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * @deprecated A krad integrated type service base class will be provided in the future.
+ * A base class for {@code KimTypeService} implementations which read attribute-related information from the Data
+ * Dictionary. This implementation is currently written against the KNS apis for Data Dictionary. Additionally, it
+ * supports the ability to read non-Data Dictionary attribute information from the {@link KimTypeInfoService}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Deprecated
 public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryTypeServiceBase.class);
@@ -216,20 +222,6 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 		return qualification;
 	}
 
-	private Object getAttributeValue(PropertyDescriptor propertyDescriptor, String attributeValue){
-		Object attributeValueObject = null;
-		if(propertyDescriptor!=null && attributeValue!=null){
-			Class<?> propertyType = propertyDescriptor.getPropertyType();
-			if (String.class.equals(propertyType)){
-				attributeValueObject = KRADUtils
-                        .createObject(propertyType, new Class[]{String.class}, new Object[]{attributeValue});
-			} else {
-				attributeValueObject = attributeValue;
-			}
-		}
-		return attributeValueObject;
-	}
-	
 	protected List<RemotableAttributeError> validateReferencesExistAndActive( KimType kimType, Map<String, String> attributes, List<RemotableAttributeError> previousValidationErrors) {
 		Map<String, BusinessObject> componentClassInstances = new HashMap<String, BusinessObject>();
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
@@ -499,7 +491,10 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                 PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(componentObject, attr.getKimAttribute().getAttributeName());
                 if ( propertyDescriptor != null ) {
                     // set the value on the object so that it can be checked
-                    Object attributeValue = getAttributeValue(propertyDescriptor, value);
+                    Object attributeValue = KRADUtils.hydrateAttributeValue(propertyDescriptor.getPropertyType(), value);
+                    if (attributeValue == null) {
+                        attributeValue = value; // not a super-awesome fallback strategy, but...
+                    }
                     propertyDescriptor.getWriteMethod().invoke( componentObject, attributeValue);
                     return validateDataDictionaryAttribute(attr.getKimTypeId(), attr.getKimAttribute().getComponentName(), componentObject, propertyDescriptor);
                 }
@@ -521,16 +516,25 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 		final String componentClassName = typeAttribute.getKimAttribute().getComponentName();
 		final String attributeName = typeAttribute.getKimAttribute().getAttributeName();
-		final AttributeDefinition baseDefinition;
-		final Class<? extends BusinessObject> componentClass;
+        final Class<? extends BusinessObject> componentClass;
+        final AttributeDefinition baseDefinition;
+
 		// try to resolve the component name - if not possible - try to pull the definition from the app mediation service
 		try {
-			componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
-            baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
-		} catch (ClassNotFoundException ex) {
+            if (StringUtils.isNotBlank(componentClassName)) {
+                componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
+                baseDefinition = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentClassName).getAttributeDefinition(attributeName);
+            } else {
+                baseDefinition = null;
+                componentClass = null;
+            }
+        } catch (ClassNotFoundException ex) {
             throw new KimTypeAttributeException(ex);
 		}
 
+        if (baseDefinition == null) {
+            return null;
+        }
         final RemotableAttributeField.Builder definition = RemotableAttributeField.Builder.create(baseDefinition.getName());
 
         definition.setLongLabel(baseDefinition.getLabel());
@@ -575,8 +579,19 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
                     throw new KimTypeAttributeException(e);
                 }
 
-                final RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(
-                        DataDictionaryTypeServiceHelper.getKimBasePath(), lookupClass.getName());
+                String baseLookupUrl = LookupUtils.getBaseLookupUrl(false) + "?methodToCall=start&";
+
+                if (ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(lookupClass)) {
+                    ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(lookupClass);
+                    if (moduleService.isExternalizableBusinessObjectLookupable(lookupClass)) {
+                        baseLookupUrl = moduleService.getExternalizableDataObjectLookupUrl(lookupClass, new Properties());
+                        // XXX: I'm not proud of this:
+                        baseLookupUrl = baseLookupUrl.substring(0,baseLookupUrl.indexOf("?")) + "?methodToCall=start&";
+                    }
+                }
+
+                final RemotableQuickFinder.Builder builder =
+                        RemotableQuickFinder.Builder.create(baseLookupUrl, lookupClass.getName());
                 builder.setLookupParameters(toMap(field.getLookupParameters()));
                 builder.setFieldConversions(toMap(field.getFieldConversions()));
                 return builder;

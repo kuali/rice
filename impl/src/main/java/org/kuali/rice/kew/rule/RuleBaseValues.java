@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.api.rule.RuleContract;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
@@ -496,10 +497,10 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
                 ((GenericXMLRuleAttribute) routingAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
             }
             String className = ruleAttribute.getResourceDescriptor();
-            List<RuleExtensionBo> editedRuleExtensions = new ArrayList<RuleExtensionBo>();
+            List<RuleExtension> editedRuleExtensions = new ArrayList<RuleExtension>();
             for (RuleExtensionBo extension : getRuleExtensions()) {
                 if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(className)) {
-                    editedRuleExtensions.add(extension);
+                    editedRuleExtensions.add(RuleExtensionBo.to(extension));
                 }
             }
             if (!routingAttribute.isMatch(docContent, editedRuleExtensions)) {

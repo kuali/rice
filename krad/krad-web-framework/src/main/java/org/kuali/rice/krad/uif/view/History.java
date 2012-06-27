@@ -107,7 +107,12 @@ public class History implements Serializable {
     }
 
     /**
-     * @param current the current to set
+     * Sets the current HistoryEntry to the current view
+     * @param viewId
+     * @param pageId
+     * @param title
+     * @param url
+     * @param formKey
      */
     private void setCurrent(String viewId, String pageId, String title, String url, String formKey) {
         HistoryEntry entry = new HistoryEntry(viewId, pageId, title, url, formKey);
@@ -235,6 +240,10 @@ public class History implements Serializable {
      * @return
      */
     public HistoryEntry getGeneratedCurrentBreadcrumb() {
+        if (current == null){
+            return new HistoryEntry();
+        }
+
         HistoryEntry breadcrumb = copyEntry(current);
         String historyParam = "";
         for (int j = 0; j < historyEntries.size(); j++) {

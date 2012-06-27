@@ -110,11 +110,26 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         }
         return activeNodeInstances;
     }
+
+    @Override
+    public List<String> getCurrentRouteNodeNames(String documentId) {
+       	return routeNodeDAO.getCurrentRouteNodeNames(documentId);
+    }
+
+    @Override
+	public List<String> getActiveRouteNodeNames(String documentId) {
+    	return routeNodeDAO.getActiveRouteNodeNames(documentId);
+    }
     
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
         return routeNodeDAO.getTerminalNodeInstances(documentId);
     }
     
+    @Override
+	public List<String> getTerminalRouteNodeNames(String documentId) {
+    	return routeNodeDAO.getTerminalRouteNodeNames(documentId);
+    }
+
     public List getInitialNodeInstances(String documentId) {
     	return routeNodeDAO.getInitialNodeInstances(documentId);
     }
@@ -154,7 +169,9 @@ public class RouteNodeServiceImpl implements RouteNodeService {
             if (helper.isSubProcessNode(node)) {
                 ProcessDefinitionBo subProcess = node.getDocumentType().getNamedProcess(node.getRouteNodeName());
                 RouteNode subNode = subProcess.getInitialRouteNode();
-                nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, subNode, inspected));
+                if (subNode != null) {
+                    nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, subNode, inspected));
+                }
             }
             for (Iterator<RouteNode> iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
                 RouteNode nextNode = iterator.next();

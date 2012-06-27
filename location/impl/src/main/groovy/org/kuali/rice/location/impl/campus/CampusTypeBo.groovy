@@ -19,15 +19,15 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+
 import org.hibernate.annotations.Type
-import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.campus.CampusType
-import org.kuali.rice.location.api.campus.CampusTypeContract
+import org.kuali.rice.location.framework.campus.CampusTypeEbo
 
 @Entity
 @Table(name="KRLC_CMP_TYP_T")
-public class CampusTypeBo extends PersistableBusinessObjectBase implements MutableInactivatable, CampusTypeContract {
+public class CampusTypeBo extends PersistableBusinessObjectBase implements CampusTypeEbo {
 	@Id
 	@Column(name="CAMPUS_TYP_CD")
 	def String code;

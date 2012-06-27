@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -85,6 +86,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
         docType.setDocumentTypeId(null);
         docType.setName("");
         docType.setPreviousVersionId(null);
+        docType.setObjectId(null);
     }
 
     @Override
@@ -152,7 +154,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                 }
                 // save all former/current outbox action items matching document type name
                 // fields: docLabel
-                Collection<ActionItem> outboxItems = actionListService.getOutboxItemsByDocumentType(documentTypeName);
+                Collection<OutboxItemActionListExtension> outboxItems = actionListService.getOutboxItemsByDocumentType(documentTypeName);
                 for (ActionItem outboxItem : outboxItems) {
                     outboxItem.setDocLabel(newDocumentType.getLabel());
                     actionListService.saveActionItem(outboxItem);

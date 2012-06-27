@@ -39,7 +39,9 @@ import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
@@ -449,7 +451,27 @@ public class SectionBridge {
                             }
 
                             String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, collectionField.getName());
-                            collField.setPropertyValue(propertyValue);
+                            // For files the FormFile is not being persisted instead the file data is stored in
+                            // individual fields as defined by PersistableAttachment.  However, newly added rows contain all data
+                            // in the FormFile, so check if it's empty.
+                            if (StringUtils.isBlank(propertyValue) && Field.FILE.equals(collField.getFieldType())) {
+                                Object fileName = ObjectUtils.getNestedValue(lineBusinessObject, KRADConstants.BO_ATTACHMENT_FILE_NAME);
+                                collField.setPropertyValue(fileName);
+                            } else {
+                                collField.setPropertyValue(propertyValue);
+
+                            }
+
+                            if (Field.FILE.equals(collField.getFieldType())) {
+                                Object fileType = ObjectUtils.getNestedValue(lineBusinessObject, KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
+                                if (fileType == null
+                                        && collField.getPropertyName().contains(".")) {
+                                    // fileType not found on bo, so check in the attachment field on bo
+                                    String tempName = collField.getPropertyName().substring(collField.getPropertyName().lastIndexOf('.')+1);
+                                    fileType =  ObjectUtils.getNestedValue(lineBusinessObject, (tempName + "." + KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE));
+                                }
+                                collField.setImageSrc(WebUtils.getAttachmentImageForUrl((String) fileType));
+                            }
                             
 							if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
 								String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,

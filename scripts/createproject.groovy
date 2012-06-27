@@ -23,13 +23,15 @@
  * Additionally, the generated project can be imported into Eclipse.
  */
 
-if (args.length < 2 || args.length > 9) {
+
+if (args.length < 2 || args.length > 10) {
 	println 'usage: groovy createproject.groovy -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR] [-mdir MAVEN_HOME] [-sampleapp] [-standalone]'
 	System.exit(1)
 }
 
 PROJECT_DIR = '/java/projects'
 RICE_DIR = '/java/projects/rice'
+TESTMODE = false
 MAVEN_HOME = ''
 SAMPLEAPP = false
 STANDALONE = false
@@ -42,6 +44,7 @@ for (arg in args) {
 	if (arg == '-mdir') MAVEN_HOME = args[count + 1]
 	if (arg == '-sampleapp') SAMPLEAPP = true
 	if (arg == '-standalone') STANDALONE = true
+    if (arg == '-testmode') TESTMODE = true
 	count++
 }
 
@@ -49,6 +52,7 @@ PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 
 //get rice version from rice projects pom file
 def pom=new XmlSlurper().parse(new File("${RICE_DIR}/pom.xml"))
+
 riceVersion = pom.version.text()
 projectNameUpper = PROJECT_NAME.toUpperCase()
 
@@ -60,25 +64,25 @@ TEMPLATE_BINDING = [
 			"\${APP_NAMESPACE}":projectNameUpper,
 			"\${RICE_VERSION}":riceVersion,
 			"\${USER_HOME}":System.getProperty('user.home'),
-			"\${bootstrap.spring.file}":"classpath:SpringBeans.xml", 
-			"\${monitoring.spring.import}":"", 			
+			"\${bootstrap.spring.file}":"classpath:SpringBeans.xml",
+			"\${monitoring.spring.import}":"",
 			"\${monitoring.filter}":"",
 			"\${monitoring.listener}":"",
 			"\${monitoring.mapping}":"",
 			"sample-app":PROJECT_NAME
 		]
-
-println warningtext()
-
-input = new BufferedReader(new InputStreamReader(System.in))
-answer = input.readLine()
-if (!"yes".equals(answer.trim().toLowerCase())) {
-	System.exit(2)
+if(!TESTMODE) {
+    println warningtext()
+    input = new BufferedReader(new InputStreamReader(System.in))
+    answer = input.readLine()
+    if (!"yes".equals(answer.trim().toLowerCase())) {
+	    System.exit(2)
+    }
 }
 
 def maven = detectMaven(MAVEN_HOME)
 
-if (!maven) {
+if (!maven && !TESTMODE) {
 	println mavenwarningtext()
 	input = new BufferedReader(new InputStreamReader(System.in))
 	answer = input.readLine()
@@ -86,6 +90,7 @@ if (!maven) {
 		System.exit(2)
 	}
 }
+
 
 removeFile("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml")
 removeFile("${System.getProperty('user.home')}/kuali/main/dev/rice.keystore")
@@ -111,18 +116,18 @@ if (SAMPLEAPP) {
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources', includes:'META-INF/*,edu/sampleu/**/*,OJB-repository-sampleapp.xml')
 	}
-	
+
 	// Remove if Sample app not required on Homepage
 	ant.copy(todir:PROJECT_PATH + '/src/main/webapp/WEB-INF/jsp') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/webapp/WEB-INF/jsp')
 	}
-	
-	
+
+
 	// copy main channels from sampleapp to new project
 	ant.copy(todir:PROJECT_PATH + '/src/main/webapp/WEB-INF/tags/rice-portal/channel/main') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/channel/main')
 	}
-	
+
 	//Copy tag to new project to enable sample-app channel
 	ant.copy(todir:PROJECT_PATH + '/src/main/webapp/WEB-INF/tags/rice-portal/') {
 		fileset(file:RICE_DIR + '/sampleapp/src/main/webapp/WEB-INF/tags/rice-portal/mainTab.tag')
@@ -154,29 +159,42 @@ if (SAMPLEAPP) {
 	/*ant.copy(todir:PROJECT_PATH + '/src/main/resources') { 
 	 fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'KR-ApplicationResources.properties')
 	 }*/
-	
+
 	//copies meta-inf folder to empty rice project skeleton
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources/META-INF') {
 		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources/META-INF')
 	}
-	
-	
+
+
 	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SpringBeans.template.xml')
 }
 
 // copy standard Rice Spring configuration files to project and rename
 
 ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml",
-		tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceJTASpringBeans.xml")
+	tofile:PROJECT_PATH + "/src/main/resources/RiceJTASpringBeans.xml")
+
+// Adding log4j.proprties file
+ant.copy(file:RICE_DIR + "/sampleapp/src/main/resources/log4j.properties",
+	tofile:PROJECT_PATH + "/src/main/resources/log4j.properties")
+
+
+
 if (STANDALONE) {
-	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceStandaloneClientSpringBeans.xml.template'))
-	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/web/src/main/resources/org/kuali/rice/config/RiceStandaloneClientSpringBeans.xml.template'))
+	//	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceStandaloneClientSpringBeans.xml.template'))
+	//	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/web/src/main/resources/org/kuali/rice/config/RiceStandaloneClientSpringBeans.xml.template'))
+		new File(PROJECT_PATH + "/src/main/resources/RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.RiceDataSourceSpringBeans.template.xml'))
+		new File(PROJECT_PATH + "/src/main/resources/RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.RiceSpringBeans.template.xml'))
+	
 } else {
-	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml'))
-	/*ant.copy(file:RICE_DIR + "/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
-	 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml")*/
+	//new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml'))
+	new File(PROJECT_PATH + "/src/main/resources/RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml'))
+	/*
 	ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
 			tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml")
+	*/
+	ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
+			tofile:PROJECT_PATH + "/src/main/resources/RiceSpringBeans.xml")
 }
 
 if (SAMPLEAPP) {
@@ -184,7 +202,7 @@ if (SAMPLEAPP) {
 	// need to be copied in addition, as they no longer seem to be bundled in
 	// any of the Maven artifacts.
 	ant.copy(file:RICE_DIR + "/sampleapp/src/main/resources/SampleAppModuleBeans.xml",
-			tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-SampleAppModuleBeans.xml")
+		tofile:PROJECT_PATH + "/src/main/resources/SampleAppModuleBeans.xml")
 }
 
 // create SpringBeans.xml based on the defined springTemplateFile
@@ -235,6 +253,23 @@ webXml << newWebXmlText
 pom = new File(PROJECT_PATH + '/pom.xml')
 pom << pomtext()
 
+// copy tomcat 6 launcher file to project and rename
+
+//ant.copy(file:RICE_DIR + "/config/templates/createproject.tomcat.launcher.template.xml",
+//		tofile:PROJECT_PATH + "${PROJECT_NAME}-RiceJTASpringBeans.xml")
+
+/*
+if(SAMPLEAPP){
+def	launcher = new File(PROJECT_PATH + '/Tomcat 6[sampleapp].launch')
+}else if (STANDALONE) {
+def	launcher = new File(PROJECT_PATH + '/Tomcat 6[standalone].launch')
+} else {
+def	launcher = new File(PROJECT_PATH + '/Tomcat 6.launch')
+}
+
+launcher << launchtext()
+*/
+
 // create the Launch script
 
 // TODO this doesn't seem to exist right now...
@@ -255,8 +290,14 @@ if (SAMPLEAPP) {
 	config = new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml")
 	config << configtext
 } else {
-	//Rename config file and replace module name from config file  
-	new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml") << templateReplace(new File(RICE_DIR + '/sampleapp/src/main/resources/META-INF/sample-app-config.xml'))
+
+	if(STANDALONE){
+		//Rename config file and replace config location
+		new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml") << templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.meta-inf.config.template.xml'))
+	} else {
+		//Rename config file and replace module name from config file
+		new File(PROJECT_PATH + "/src/main/resources/META-INF/${PROJECT_NAME}-config.xml") << templateReplace(new File(RICE_DIR + '/sampleapp/src/main/resources/META-INF/sample-app-config.xml'))
+	}
 }
 
 // fix the links in index.jsp
@@ -313,7 +354,9 @@ new File(PROJECT_PATH + '/instructions.txt') << instructionstext()
 
 println instructionstext()
 
-System.exit(0)
+if(!TESTMODE) {
+    System.exit(0)
+}
 
 def removeFile(path) {
 	if (new File(path).exists()) {
@@ -390,7 +433,7 @@ def pomtext() {
 
 def launchtext() {
 	// TODO this doesn't seem to exist
-	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.launch.template.xml'))
+	//return templateReplace(new File(RICE_DIR + '/config/templates/createproject.tomcat.launcher.template.xml'))
 }
 
 def userhomeconfigtext() {
@@ -413,32 +456,17 @@ def templateReplace(file) {
 }
 
 def instructionstext() {
-	def datasetDirectory = (SAMPLEAPP)? "/database/demo-server-dataset" : "database/bootstrap-server-dataset"
-	"""
-==================================================================
-        Instructions to complete Rice Template Install
-==================================================================
-1. Import ${PROJECT_PATH} as an 'existing' eclipse project.
-2. Configure an M2_REPO classpath variable in Eclipse
-3. Update ${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_NAME}-config.xml 
-   with application runtime database information.
-4. Configure an impex-build.properties file in your home directory
-   with application runtime database information, being sure to set
-   the torque.schema.dir property to the location of the rice
-   ${datasetDirectory} directory. A template for impex-build.properties 
-   can be found in database/database-impex/impex-build.properties.sample.
-5. Run the impex tool under /database/impex-database.  If you require
-   a schema to be created for you, type: 'ant create-schema'.
-   To import the demonstration dataset, type: 'ant import'
-6. Start the application using the eclipse launch configuration.
-   In the eclipse Run menu, choose 'Run...' and select the
-   configuration named 'Launch Web App'
-7. Open a brower to http://localhost:8080/${PROJECT_NAME}-dev/index.jsp
-
-   
-   These instructions can also be found in the instructions.txt file
-   in your generated project.
 """
+==================================================================
+	Instructions to complete Rice Template Install
+==================================================================
+
+ 1. Client Installation Guide : http://site.kuali.org/rice/2.0.0/reference/html/IG.html#client_application
+ 2. Building the Rice Database : http://site.kuali.org/rice/2.0.0/reference/html/IG.html#d7148e746
+
+
+==================================================================
+""" 
 }
 
 def warningtext() {

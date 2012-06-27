@@ -105,10 +105,9 @@ public final class CompoundProposition implements Proposition {
 			for (Proposition proposition : propositions) {
 				
 			    PropositionResult singleResult = proposition.evaluate(environment);
-				
 				logPropositionResult(proposition, singleResult, environment);
 				
-				if (!singleResult.getResult()) {
+				if (singleResult.getResult()) {
 					collatedResult = true;
 					if(!evaluateAll) break;
 				}
@@ -118,7 +117,6 @@ public final class CompoundProposition implements Proposition {
 		}
 		throw new IllegalStateException("Invalid logical operator: " + logicalOperator);
     }
-    
     
     /*
      * Logs only if the proposition is not compound

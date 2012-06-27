@@ -30,6 +30,9 @@ import org.kuali.rice.core.api.util.type.KualiDecimal
 import org.kuali.rice.core.web.format.CurrencyFormatter
 import org.kuali.rice.core.web.format.Formatter
 import org.kuali.rice.core.web.format.IntegerFormatter
+import org.kuali.rice.kns.document.MaintenanceDocumentBase
+import org.kuali.rice.krad.bo.NoteType
+import org.kuali.rice.krad.bo.BusinessObject
 
 /**
  * Tests FieldUtils
@@ -128,9 +131,7 @@ class FieldUtilsTest {
             def f = it.fields[0]
             assertEquals(rafs[i].name, f.propertyName)
             assertEquals(rafs[i].shortLabel, f.fieldLabel)
-            // XXX: conversion does not set this field ??
-            //assertEquals(rafs[i].dataType, f.fieldDataType)
-            assertEquals(new Field("","").fieldDataType, f.fieldDataType)
+            assertEquals(rafs[i].dataType.name().toLowerCase(), f.fieldDataType)
             switch (rafs[i].dataType) {
                 case DataType.STRING:
                     assertEquals(Field.TEXT, f.fieldType)
@@ -146,6 +147,24 @@ class FieldUtilsTest {
                     break
             }
         }
+    }
+
+    @Test
+    void testPopulateFieldsFromBusinessObject() {
+        OnionBo onionBo = new OnionBo();
+
+        Field field = new Field("layer.layer.value", "value");
+        field.fieldType = Field.CONTAINER;
+
+        FieldUtils.populateFieldsFromBusinessObject(Collections.singletonList(field), onionBo);
+    }
+
+    public class OnionBo implements BusinessObject {
+
+        def String value = "foo";
+        def OnionBo layer = null;
+
+        void refresh() {}
     }
 
 //    protected displayRows(List<Row> rows) {

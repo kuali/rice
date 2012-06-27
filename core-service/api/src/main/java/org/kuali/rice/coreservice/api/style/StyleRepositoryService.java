@@ -49,7 +49,7 @@ public interface StyleRepositoryService {
 	 * @return the style with the given name, or null if no style with the given
 	 * name could be found
 	 * 
-	 * @throws IllegalArgumentException if the given styleName is null or blank
+	 * @throws RiceIllegalArgumentException if the given styleName is null or blank
 	 */
 	@WebMethod(operationName = "getStyle")
 	@WebResult(name = "style")
@@ -70,7 +70,7 @@ public interface StyleRepositoryService {
 	 * @return the style with the given name, or null if no style with the given
 	 * name could be found
 	 * 
-	 * @throws IllegalArgumentException if the given style is null
+	 * @throws RiceIllegalArgumentException if the given style is null
 	 */
 	@WebMethod(operationName = "saveStyle")
 	void saveStyle(@WebParam(name = "style") Style style) throws RiceIllegalArgumentException;

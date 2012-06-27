@@ -22,6 +22,7 @@
 
 		<documentType>
 			<name>SinglePeopleFlow-Parallel-Approve</name>
+      <label>SinglePeopleFlow-Parallel-Approve</label>
       <description>Routes to a simple people flow using parallel activation.</description>
       <docHandler>none</docHandler>
 			<routePaths>
@@ -47,6 +48,7 @@
 
     <documentType>
       <name>SinglePeopleFlow-Sequential-Approve</name>
+      <label>SinglePeopleFlow-Sequential-Approve</label>
       <description>Routes to a simple people flow using sequential activation.</description>
       <docHandler>none</docHandler>
       <routePaths>
@@ -72,6 +74,7 @@
 
     <documentType>
       <name>SinglePeopleFlow-PriorityParallel-Approve</name>
+      <label>SinglePeopleFlow-PriorityParallel-Approve</label>
       <description>Routes to a simple people flow using priority-parallel activation.</description>
       <docHandler>none</docHandler>
       <routePaths>
@@ -97,6 +100,7 @@
 
     <documentType>
       <name>MultiplePeopleFlow-PriorityParallel</name>
+      <label>MultiplePeopleFlow-PriorityParallel</label>
       <description>Routes to three different people flows using priority-parallel activation.</description>
       <docHandler>none</docHandler>
       <routePaths>
@@ -129,6 +133,7 @@
 
     <documentType>
       <name>DelegatePeopleFlow-PriorityParallel-Approve</name>
+      <label>MultiplePeopleFlow-PriorityParallel</label>
       <description>Routes to a simple people flow with delegates using priority-parallel activation.</description>
       <docHandler>none</docHandler>
       <routePaths>

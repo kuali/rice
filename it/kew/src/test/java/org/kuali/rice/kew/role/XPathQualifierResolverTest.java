@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.role;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -25,8 +26,10 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -107,36 +110,61 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
  		"<org>BUS</org>" +
  		"</chartOrg>" +
  		"</xmlData>";
-	
+
 	@Test
 	public void testResolve_simpleMap() throws Exception {
-		XPathQualifierResolver resolver = new XPathQualifierResolver();
-        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
-        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, SIMPLE_CONFIG_1));
-		resolver.setExtensionDefinition(extensionDefinition.build());
+        /** Build a set of configs to check, we have 2 currently
+         *  1 - using 'attributes' xml element
+         *  2 - using 'qualifier' xml element ("legacy")
+         *  We need to validate BOTH configurations are supported and interpreted correctly.
+         *  https://jira.kuali.org/browse/KULRICE-7044
+         * */
+        Set<String> configStrings = new HashSet<String>();
+        configStrings.add(SIMPLE_CONFIG_1);
+        configStrings.add(StringUtils.replace(SIMPLE_CONFIG_1, "attributes", "qualifier"));
 
-		RouteContext context = new RouteContext();
-		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
-		context.setDocumentContent(docContent);
-		
-		List<Map<String, String>> maps = resolver.resolve(context);
-		verifyAccountmaps(maps);
+        for (String currentTestConfig : configStrings){
+            XPathQualifierResolver resolver = new XPathQualifierResolver();
+            ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+            extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, currentTestConfig));
+
+            resolver.setExtensionDefinition(extensionDefinition.build());
+
+            RouteContext context = new RouteContext();
+            DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
+            context.setDocumentContent(docContent);
+
+            List<Map<String, String>> maps = resolver.resolve(context);
+            verifyAccountmaps(maps);
+        }
+
 	}
 	
 	@Test
 	public void testResolve_simpleMap_noBaseXPath() throws Exception {
-		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
-        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, SIMPLE_CONFIG_2));
-		resolver.setExtensionDefinition(extensionDefinition.build());
+        /** Build a set of configs to check, we have 2 currently
+         *  1 - using 'attributes' xml element
+         *  2 - using 'qualifier' xml element ("legacy")
+         *  We need to validate BOTH configurations are supported and interpreted correctly.
+         *  https://jira.kuali.org/browse/KULRICE-7044
+         * */
+        Set<String> configStrings = new HashSet<String>();
+        configStrings.add(SIMPLE_CONFIG_2);
+        configStrings.add(StringUtils.replace(SIMPLE_CONFIG_2, "attributes", "qualifier"));
 
-		RouteContext context = new RouteContext();
-		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
-		context.setDocumentContent(docContent);
-		
-		List<Map<String, String>> maps = resolver.resolve(context);
-		verifyAccountmaps(maps);
-		
+        for (String currentTestConfig : configStrings){
+            XPathQualifierResolver resolver = new XPathQualifierResolver();
+            ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+            extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, currentTestConfig));
+            resolver.setExtensionDefinition(extensionDefinition.build());
+
+            RouteContext context = new RouteContext();
+            DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
+            context.setDocumentContent(docContent);
+
+            List<Map<String, String>> maps = resolver.resolve(context);
+            verifyAccountmaps(maps);
+        }
 	}
 	
 	private void verifyAccountmaps(List<Map<String, String>> maps) {
@@ -159,94 +187,126 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	
 	@Test
 	public void testResolve_compoundMap1() throws Exception {
-		XPathQualifierResolver resolver = new XPathQualifierResolver();
-        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
-        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, COMPOUND_CONFIG_1));
-		resolver.setExtensionDefinition(extensionDefinition.build());
-		
-		RouteContext context = new RouteContext();
-		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_1);
-		context.setDocumentContent(docContent);
-		
-		List<Map<String, String>> maps = resolver.resolve(context);
-		assertEquals("Incorrect number of attribute sets", 2, maps.size());
-		
-		String chartKey = "chart";
-		String orgKey = "org";
-		
-		Map<String, String> map1 = maps.get(0);
-		assertEquals(2, map1.size());
-		assertEquals("BL", map1.get(chartKey));
-		assertEquals("BUS", map1.get(orgKey));
-		
-		Map<String, String> map2 = maps.get(1);
-		assertEquals(2, map2.size());
-		assertEquals("IN", map2.get(chartKey));
-		assertEquals("MED", map2.get(orgKey));
+        /** Build a set of configs to check, we have 2 currently
+         *  1 - using 'attributes' xml element
+         *  2 - using 'qualifier' xml element ("legacy")
+         *  We need to validate BOTH configurations are supported and interpreted correctly.
+         *  https://jira.kuali.org/browse/KULRICE-7044
+         * */
+        Set<String> configStrings = new HashSet<String>();
+        configStrings.add(COMPOUND_CONFIG_1);
+        configStrings.add(StringUtils.replace(COMPOUND_CONFIG_1, "attributes", "qualifier"));
+
+        for (String currentTestConfig : configStrings){
+            XPathQualifierResolver resolver = new XPathQualifierResolver();
+            ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+            extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, currentTestConfig));
+            resolver.setExtensionDefinition(extensionDefinition.build());
+
+            RouteContext context = new RouteContext();
+            DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_1);
+            context.setDocumentContent(docContent);
+
+            List<Map<String, String>> maps = resolver.resolve(context);
+            assertEquals("Incorrect number of attribute sets", 2, maps.size());
+
+            String chartKey = "chart";
+            String orgKey = "org";
+
+            Map<String, String> map1 = maps.get(0);
+            assertEquals(2, map1.size());
+            assertEquals("BL", map1.get(chartKey));
+            assertEquals("BUS", map1.get(orgKey));
+
+            Map<String, String> map2 = maps.get(1);
+            assertEquals(2, map2.size());
+            assertEquals("IN", map2.get(chartKey));
+            assertEquals("MED", map2.get(orgKey));
+        }
 	}
 	
 	@Test
 	public void testResolve_compoundMap() throws Exception {
-		XPathQualifierResolver resolver = new XPathQualifierResolver();
-        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
-        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, COMPOUND_CONFIG_1));
-		resolver.setExtensionDefinition(extensionDefinition.build());
-		
-		RouteContext context = new RouteContext();
-		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
-		context.setDocumentContent(docContent);
-		
-		// should fail with this document content
-		
-		try {
-			resolver.resolve(context);
-			fail("Invalid XML was encountered, resolver should have thrown an exception");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// however, should succeed with this
-		
-		context = new RouteContext();
-		docContent = new StandardDocumentContent(COMPOUND_DOC_XML_3);
-		context.setDocumentContent(docContent);
-		
-		List<Map<String, String>> maps = resolver.resolve(context);
-		assertEquals(1, maps.size());
-		assertEquals("BL", maps.get(0).get("chart"));
-		assertEquals("BUS", maps.get(0).get("org"));
+        /** Build a set of configs to check, we have 2 currently
+         *  1 - using 'attributes' xml element
+         *  2 - using 'qualifier' xml element ("legacy")
+         *  We need to validate BOTH configurations are supported and interpreted correctly.
+         *  https://jira.kuali.org/browse/KULRICE-7044
+         * */
+        Set<String> configStrings = new HashSet<String>();
+        configStrings.add(COMPOUND_CONFIG_1);
+        configStrings.add(StringUtils.replace(COMPOUND_CONFIG_1, "attributes", "qualifier"));
+
+        for (String currentTestConfig : configStrings){
+            XPathQualifierResolver resolver = new XPathQualifierResolver();
+            ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+            extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, currentTestConfig));
+            resolver.setExtensionDefinition(extensionDefinition.build());
+
+            RouteContext context = new RouteContext();
+            DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
+            context.setDocumentContent(docContent);
+
+            // should fail with this document content
+            try {
+                resolver.resolve(context);
+                fail("Invalid XML was encountered, resolver should have thrown an exception");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // however, should succeed with this
+            context = new RouteContext();
+            docContent = new StandardDocumentContent(COMPOUND_DOC_XML_3);
+            context.setDocumentContent(docContent);
+
+            List<Map<String, String>> maps = resolver.resolve(context);
+            assertEquals(1, maps.size());
+            assertEquals("BL", maps.get(0).get("chart"));
+            assertEquals("BUS", maps.get(0).get("org"));
+        }
 	}
 	
 	@Test
 	public void testResolve_compoundMap_noBaseXPath() throws Exception {
-		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
-        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, COMPOUND_CONFIG_2));
-		resolver.setExtensionDefinition(extensionDefinition.build());
-		
-		RouteContext context = new RouteContext();
-		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
-		context.setDocumentContent(docContent);
-		
-		// should fail with this document content
-		
-		try {
-			resolver.resolve(context);
-			fail("Invalid XML was encountered, resolver should have thrown an exception");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// however, should succeed with this
-		
-		context = new RouteContext();
-		docContent = new StandardDocumentContent(COMPOUND_DOC_XML_3);
-		context.setDocumentContent(docContent);
-		
-		List<Map<String, String>> maps = resolver.resolve(context);
-		assertEquals(1, maps.size());
-		assertEquals("BL", maps.get(0).get("chart"));
-		assertEquals("BUS", maps.get(0).get("org"));
+        /** Build a set of configs to check, we have 2 currently
+         *  1 - using 'attributes' xml element
+         *  2 - using 'qualifier' xml element ("legacy")
+         *  We need to validate BOTH configurations are supported and interpreted correctly.
+         *  https://jira.kuali.org/browse/KULRICE-7044
+         * */
+        Set<String> configStrings = new HashSet<String>();
+        configStrings.add(COMPOUND_CONFIG_2);
+        configStrings.add(StringUtils.replace(COMPOUND_CONFIG_2, "attributes", "qualifier"));
+
+        for (String currentTestConfig : configStrings){
+            XPathQualifierResolver resolver = new XPathQualifierResolver();
+            ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+            extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, currentTestConfig));
+            resolver.setExtensionDefinition(extensionDefinition.build());
+
+            RouteContext context = new RouteContext();
+            DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
+            context.setDocumentContent(docContent);
+
+            // should fail with this document content
+            try {
+                resolver.resolve(context);
+                fail("Invalid XML was encountered, resolver should have thrown an exception");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // however, should succeed with this
+            context = new RouteContext();
+            docContent = new StandardDocumentContent(COMPOUND_DOC_XML_3);
+            context.setDocumentContent(docContent);
+
+            List<Map<String, String>> maps = resolver.resolve(context);
+            assertEquals(1, maps.size());
+            assertEquals("BL", maps.get(0).get("chart"));
+            assertEquals("BUS", maps.get(0).get("org"));
+        }
 		
 	}
 	

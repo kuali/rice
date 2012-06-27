@@ -131,9 +131,6 @@
 	  <!-- Tells the KualiInitializeListener to look in another location for the Rice configuration. Comma separated list -->
 	  <param name="additional.config.locations" override="false"></param>
 
-    <!-- A comma separated list of additional spring files for the RiceConfigurer -->
-    <param name="rice.additionalSpringFiles" override="false"></param>
-
   	<!-- Portal display parameters -->
 	  <!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.
 	     This is helpful for client apps using the rice portal, because both client and rice config params
@@ -148,6 +145,16 @@
     <param name="kr.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
     <param name="travel.externalizable.images.url" override="false">${application.url}/kr/static/images/</param>
     <param name="krad.externalizable.images.url" override="false">${application.url}/krad/images/</param>
+
+    <!-- Defined images for specific file types (mime type codes) -->
+    <param name="attach.img.application/msword" override="false">word.gif</param>
+    <param name="attach.img.application/vnd.ms-excel" override="false">xls.gif</param>
+    <param name="attach.img.application/pdf" override="false">pdf.gif</param>
+    <param name="attach.img.application/xml" override="false">xml.gif</param>
+    <param name="attach.img.text/xml" override="false">xml.gif</param>
+    <param name="attach.img.application/vnd.openxmlformats-officedocument.wordprocessingml.document" override="false">word.gif</param>
+    <param name="attach.img.application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" override="false">xls.gif</param>
+    <param name="attach.img.default" override="false">clip.gif</param>
 
     <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
     <param name="production.environment.code" override="false">prd</param>
@@ -424,6 +431,7 @@
   <param name="ken.soapExposedService.jaxws.security" override="false">true</param>
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
+  <param name="rice.kew.ignoreUnknownPrincipalIds" override="false">false</param>
 
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
@@ -437,10 +445,13 @@
   <param name="krms.mode" override="false">REMOTE</param>
   <param name="krms.soapExposedService.jaxws.security" override="false">true</param>
   <param name="rice.krms.ruleRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.functionRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.termRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.krmsTypeRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.notificationPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.approvalPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.expose.services.on.bus" override="false">true</param>
+  <param name="krms.ehcache.config.location" override="false">classpath:org/kuali/rice/krms/config/krms.ehcache.xml</param>
 
   <!-- LOCATION -->
 
@@ -451,6 +462,7 @@
   <param name="location.ehcache.config.location" override="false">classpath:org/kuali/rice/location/config/location.ehcache.xml</param>
 
 	<!-- KSB -->
+  <param name="rice.ksb.web.forceEnable" override="false">false</param>
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
 	<param name="ksb.url" override="false">${application.url}/ksb</param>
 	<param name="ksb.mode" override="false">REMOTE</param>
@@ -465,7 +477,7 @@
 	<param name="rice.ksb.expose.services.on.bus" override="false">true</param>
   <param name="rice.ksb.expose.services.on.bus" override="false">true</param>
   <param name="ksb.soapExposedService.jaxws.security" override="false">true</param>
-	
+
 	<!-- CORE -->
   <param name="rice.core.struts.config.files" override="false">/core/WEB-INF/struts-config.xml</param>
   <param name="core.url" override="false">${application.url}/core</param>
@@ -506,12 +518,8 @@
   <param name="rice.kew.responsibilityChangeQueue.secure" override="false">true</param>
   <param name="rice.kew.kewTypeRepositoryService.secure" override="false">true</param>
   <param name="rice.kew.peopleFlowService.secure" override="false">true</param>
+  <param name="rice.kew.extensionRepositoryService.secure" override="false">true</param>
   <param name="rice.kew.immediateEmailReminderQueue.secure" override="false">true</param>
-  <param name="rice.kew.actionRequestDerivedRoleTypeService.secure" override="false">true</param>
-  <param name="rice.kew.adhocReviewPermissionTypeService.secure" override="false">true</param>
-  <param name="rice.kew.documentTypeResponsibilityTypeService.secure" override="false">true</param>
-  <param name="rice.kew.reviewResponsibilityTypeService.secure" override="false">true</param>
-  <param name="rice.kew.routeLogDerivedRoleTypeService.secure" override="false">true</param>
 
   <param name="rice.resourceloader.servicesToCache" override="false">
       userTransaction,

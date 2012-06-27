@@ -21,6 +21,7 @@ import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
+import org.kuali.rice.kew.api.action.ActionType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -138,6 +139,14 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
 	    crit.eq("currentIndicator", Boolean.TRUE);
 	    long count = (Long) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();
         return count > 0;
+    }
+
+    @Override
+    public Timestamp getLastActionTakenDate(String documentId, ActionType actionType) {
+        // TODO - fix this!
+
+        throw new UnsupportedOperationException("The JPA version of this method still needs to be implemented!");
+
     }
 
     public EntityManager getEntityManager() {

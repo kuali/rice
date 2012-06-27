@@ -36,7 +36,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
     @Override
     public DictionaryValidationResult validateView(ViewModel model) {
-        return validateView(model.getPreviousView(), model);
+        return validateView(model.getPostedView(), model);
     }
 
     @Override

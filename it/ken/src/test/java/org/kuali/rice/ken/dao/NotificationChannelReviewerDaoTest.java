@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.ken.dao;
 
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationChannelReviewer;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
@@ -24,13 +24,13 @@ import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import java.util.HashMap;
 
 /**
- * This class tests basic persistence for the {@link NotificationChannelReviewer} business object.
+ * This class tests basic persistence for the {@link org.kuali.rice.ken.bo.NotificationChannelReviewerBo} business object.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    private NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-    private NotificationChannelReviewer mockReviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
+    private NotificationChannelBo mockChannel1 = MockObjectsUtil.getTestChannel1();
+    private NotificationChannelReviewerBo mockReviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
 
     /**
      * @see org.kuali.rice.ken.dao.BusinessObjectPersistenceTestCaseBase#setup()
@@ -49,7 +49,8 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
         HashMap criteria = new HashMap();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
-        NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
+        NotificationChannelReviewerBo
+                reviewer = (NotificationChannelReviewerBo) businessObjectDao.findByUniqueKey(NotificationChannelReviewerBo.class, criteria);
 
         try {
             businessObjectDao.delete(reviewer);
@@ -83,7 +84,8 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
         HashMap criteria = new HashMap();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
-        NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
+        NotificationChannelReviewerBo
+                reviewer = (NotificationChannelReviewerBo) businessObjectDao.findByUniqueKey(NotificationChannelReviewerBo.class, criteria);
 
         boolean success = true;
 
@@ -104,7 +106,8 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
         HashMap criteria = new HashMap();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.REVIEWER_ID, mockReviewer.getReviewerId());
-        NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
+        NotificationChannelReviewerBo
+                reviewer = (NotificationChannelReviewerBo) businessObjectDao.findByUniqueKey(NotificationChannelReviewerBo.class, criteria);
 
         reviewer.setReviewerId("updatedReviewerId");
         reviewer.setReviewerType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
@@ -122,7 +125,8 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
      */
     @Override
     protected boolean validateChanges() {
-        NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findById(NotificationChannelReviewer.class, mockReviewer.getId());
+        NotificationChannelReviewerBo
+                reviewer = (NotificationChannelReviewerBo) businessObjectDao.findById(NotificationChannelReviewerBo.class, mockReviewer.getId());
 
         boolean success = reviewer != null;
         success &= reviewer.getReviewerId().equals("updatedReviewerId");

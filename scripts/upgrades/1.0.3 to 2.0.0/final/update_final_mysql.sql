@@ -3643,14 +3643,18 @@ insert into krew_typ_attr_t values ('2', 2, '1', '2', 'Y', 1);
 
 insert into krim_perm_t
 (perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
-values ('844',
+values ((select perm_id from
+          (select (max(cast(perm_id as decimal)) + 1) as perm_id from krim_perm_t where perm_id is not NULL and cast(perm_id as decimal) < 10000)
+         as tmptable),
         (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'Create / Maintain Record(s)' and nmspc_cd = 'KR-NS'),
         'KR-NS','Create Term Maintenance Document','Allows user to create a new Term maintainence document','Y',1,
         '0dbce939-4f22-4e9b-a4bb-1615c0f411a2');
 
 insert into krim_perm_attr_data_t
 (attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
-values ('884',
+values ((select attr_data_id from
+          (select (max(cast(attr_data_id as decimal)) + 1) as attr_data_id from krim_perm_attr_data_t where attr_data_id is not NULL and cast(attr_data_id as decimal) < 10000)
+         as tmptable),
         (select perm_id from krim_perm_t where nm = 'Create Term Maintenance Document' and nmspc_cd = 'KR-NS'),
         (select kim_typ_id from krim_typ_t where nm = 'Document Type & Existing Records Only' and nmspc_cd = 'KR-NS'),
         (select kim_attr_defn_id from krim_attr_defn_t where nm = 'documentTypeName'),
@@ -3658,7 +3662,9 @@ values ('884',
 
 insert into krim_role_perm_t
 (role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
-values ('1005',
+values ((select role_perm_id from
+          (select (max(cast(role_perm_id as decimal)) + 1) as role_perm_id from krim_role_perm_t where role_perm_id is not NULL and cast(role_perm_id as decimal) < 10000)
+         as tmptable),
         (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
         (select perm_id from krim_perm_t where nm = 'Create Term Maintenance Document' and nmspc_cd = 'KR-NS'),
         'Y', 1, '45f8f55e-23d9-4278-ade8-ddfc870852e6');
@@ -3666,14 +3672,18 @@ values ('1005',
 
 insert into krim_perm_t
 (perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
-values ('845',
+values ((select perm_id from
+          (select (max(cast(perm_id as decimal)) + 1) as perm_id from krim_perm_t where perm_id is not NULL and cast(perm_id as decimal) < 10000)
+         as tmptable),
         (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'Create / Maintain Record(s)' and nmspc_cd = 'KR-NS'),
         'KR-NS','Create Context Maintenance Document','Allows user to create a new Context maintainence document','Y',1,
         'cefeed6d-b5e2-40aa-9034-137db317b532');
 
 insert into krim_perm_attr_data_t
 (attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
-values ('885',
+values ((select attr_data_id from
+          (select (max(cast(attr_data_id as decimal)) + 1) as attr_data_id from krim_perm_attr_data_t where attr_data_id is not NULL and cast(attr_data_id as decimal) < 10000)
+         as tmptable),
         (select perm_id from krim_perm_t where nm = 'Create Context Maintenance Document' and nmspc_cd = 'KR-NS'),
         (select kim_typ_id from krim_typ_t where nm = 'Document Type & Existing Records Only' and nmspc_cd = 'KR-NS'),
         (select kim_attr_defn_id from krim_attr_defn_t where nm = 'documentTypeName'),
@@ -3681,21 +3691,27 @@ values ('885',
 
 insert into krim_role_perm_t
 (role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
-values ('1006',
+values ((select role_perm_id from
+          (select (max(cast(role_perm_id as decimal)) + 1) as role_perm_id from krim_role_perm_t where role_perm_id is not NULL and cast(role_perm_id as decimal) < 10000)
+         as tmptable),
         (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
         (select perm_id from krim_perm_t where nm = 'Create Context Maintenance Document' and nmspc_cd = 'KR-NS'),
         'Y', 1, 'cd7cbc67-c0b2-4785-afa8-8c8d073b78df');
 
 insert into krim_perm_t
 (perm_id, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind, ver_nbr, obj_id)
-values ('846',
+values ((select perm_id from
+          (select (max(cast(perm_id as decimal)) + 1) as perm_id from krim_perm_t where perm_id is not NULL and cast(perm_id as decimal) < 10000)
+         as tmptable),
         (select perm_tmpl_id from krim_perm_tmpl_t where nm = 'Create / Maintain Record(s)' and nmspc_cd = 'KR-NS'),
         'KR-NS','Create TermSpecification Maintenance Document','Allows user to create a new TermSpecification maintainence document','Y',1,
         '02bd9acd-48d9-4fec-acbd-6a441c5ea8c2');
 
 insert into krim_perm_attr_data_t
 (attr_data_id, perm_id, kim_typ_id, kim_attr_defn_id, attr_val, ver_nbr, obj_id)
-values ('886',
+values ((select attr_data_id from
+          (select (max(cast(attr_data_id as decimal)) + 1) as attr_data_id from krim_perm_attr_data_t where attr_data_id is not NULL and cast(attr_data_id as decimal) < 10000)
+         as tmptable),
         (select perm_id from krim_perm_t where nm = 'Create TermSpecification Maintenance Document' and nmspc_cd = 'KR-NS'),
         (select kim_typ_id from krim_typ_t where nm = 'Document Type & Existing Records Only' and nmspc_cd = 'KR-NS'),
         (select kim_attr_defn_id from krim_attr_defn_t where nm = 'documentTypeName'),
@@ -3703,8 +3719,39 @@ values ('886',
 
 insert into krim_role_perm_t
 (role_perm_id, role_id, perm_id, actv_ind, ver_nbr, obj_id)
-values ('1007',
+values ((select role_perm_id from
+          (select (max(cast(role_perm_id as decimal)) + 1) as role_perm_id from krim_role_perm_t where role_perm_id is not NULL and cast(role_perm_id as decimal) < 10000)
+         as tmptable),
         (select role_id from krim_role_t where role_nm = 'Kuali Rules Management System Administrator' and nmspc_cd = 'KR-RULE'),
         (select perm_id from krim_perm_t where nm = 'Create TermSpecification Maintenance Document' and nmspc_cd = 'KR-NS'),
         'Y', 1, '83a270a0-1cdb-4440-ab8b-41cd8afc41d9');
 
+
+--
+-- mysql-2012-02-14.sql
+--
+
+--
+-- KULRICE-6710: Drop krms_cntxt_vld_rule_t, krms_cntxt_vld_actn_t and krms_cntxt_vld_agenda_t tables
+--
+
+-- NOTE that these tables should have been renamed in the master db, but mysteriously still were present.
+-- deleting here.  If you get errors that these tables and sequences don't exist, you can omit these statements
+-- without concern.
+
+drop table krms_cntxt_vld_actn_t;
+drop table krms_cntxt_vld_actn_s;
+drop table krms_cntxt_vld_agenda_t;
+drop table krms_cntxt_vld_agenda_s;
+drop table krms_cntxt_vld_rule_t;
+drop table krms_cntxt_vld_rule_s;
+
+--
+-- mysql-2012-02-23.sql
+--
+
+--
+-- KULRICE-6811: Conversion of WorkflowFunctions to EDLFunctions in eDocLite stylesheets
+--
+
+UPDATE KRCR_STYLE_T set XML=replace(XML,'org.kuali.rice.kew.edl.WorkflowFunctions','org.kuali.rice.edl.framework.util.EDLFunctions');

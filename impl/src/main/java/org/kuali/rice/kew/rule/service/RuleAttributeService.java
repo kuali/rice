@@ -19,7 +19,9 @@ import java.util.List;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.springframework.cache.annotation.CacheEvict;
 
 /**
  * A service which provides data access for {@link org.kuali.rice.kew.rule.bo.RuleAttribute}s.
@@ -30,13 +32,16 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public interface RuleAttributeService extends XmlLoader, XmlExporter {
 
+    @CacheEvict(value={ExtensionDefinition.Cache.NAME}, allEntries = true)
     public void save(RuleAttribute ruleAttribute);
+
+    @CacheEvict(value={ExtensionDefinition.Cache.NAME}, allEntries = true)
     public void delete(String ruleAttributeId);
     public List<RuleAttribute> findByRuleAttribute(RuleAttribute ruleAttribute);
     public RuleAttribute findByRuleAttributeId(String ruleAttributeId);
     public List<RuleAttribute> findAll();
     public RuleAttribute findByName(String name);
-    public RuleAttribute findByClassName(String className);
+    public List<RuleAttribute> findByClassName(String className);
 
     public Object loadRuleAttributeService(RuleAttribute ruleAttribute);
     

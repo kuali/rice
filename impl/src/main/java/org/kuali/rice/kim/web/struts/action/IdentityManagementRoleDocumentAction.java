@@ -482,7 +482,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     /**
-     * @see org.kuali.rice.krad.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
+     * @see org.kuali.rice.kns.web.struts.action.KualiTableRenderAction#switchToPage(org.apache.struts.action.ActionMapping,
      *      org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ActionForward jumpToRoleMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

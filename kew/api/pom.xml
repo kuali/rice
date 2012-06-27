@@ -20,10 +20,10 @@
   <parent>
     <artifactId>rice-kew</artifactId>
     <groupId>org.kuali.rice</groupId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>2.1.1-SNAPSHOT</version>
   </parent>
   <artifactId>rice-kew-api</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>2.1.1-SNAPSHOT</version>
   <name>Rice KEW API</name>
 
   <dependencies>
@@ -67,6 +67,8 @@
     <svc.al.wsdl>${wsdl.dir}/${svc.al.name}.wsdl</svc.al.wsdl>
     <svc.dt.name>DocumentTypeService</svc.dt.name>
     <svc.dt.wsdl>${wsdl.dir}/${svc.dt.name}.wsdl</svc.dt.wsdl>
+    <svc.er.name>ExtensionRepositoryService</svc.er.name>
+    <svc.er.wsdl>${wsdl.dir}/${svc.er.name}.wsdl</svc.er.wsdl>
     <svc.note.name>NoteService</svc.note.name>
     <svc.note.wsdl>${wsdl.dir}/${svc.note.name}.wsdl</svc.note.wsdl>
     <svc.rule.name>RuleService</svc.rule.name>
@@ -93,6 +95,8 @@
     <svc.ierq.wsdl>${wsdl.dir}/${svc.ierq.name}.wsdl</svc.ierq.wsdl>
     <svc.pf.name>PeopleFlowService</svc.pf.name>
     <svc.pf.wsdl>${wsdl.dir}/${svc.pf.name}.wsdl</svc.pf.wsdl>
+    <svc.ps.name>PreferencesService</svc.ps.name>
+    <svc.ps.wsdl>${wsdl.dir}/${svc.ps.name}.wsdl</svc.ps.wsdl>
   </properties>
   <build>
     <plugins>
@@ -143,6 +147,18 @@
               <className>org.kuali.rice.kew.api.doctype.DocumentTypeService</className>
               <outputFile>${svc.dt.wsdl}</outputFile>
               <serviceName>${svc.dt.name}</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>extensionRepositoryService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.api.extension.ExtensionRepositoryService</className>
+              <outputFile>${svc.er.wsdl}</outputFile>
+              <serviceName>${svc.er.name}</serviceName>
             </configuration>
             <goals>
               <goal>java2ws</goal>
@@ -304,6 +320,18 @@
               <goal>java2ws</goal>
             </goals>
           </execution>
+          <execution>
+            <id>preferencesService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.api.preferences.PreferencesService</className>
+              <outputFile>${svc.ps.wsdl}</outputFile>
+              <serviceName>${svc.ps.name}</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -400,6 +428,16 @@
                 <artifact>
                   <file>${svc.pf.wsdl}</file>
                   <classifier>${svc.pf.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+                <artifact>
+                  <file>${svc.ps.wsdl}</file>
+                  <classifier>${svc.ps.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+                <artifact>
+                  <file>${svc.er.wsdl}</file>
+                  <classifier>${svc.er.name}</classifier>
                   <type>wsdl</type>
                 </artifact>
               </artifacts>

@@ -41,34 +41,10 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	private static final Logger LOG = Logger.getLogger( GenericPermissionMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
 
-	/**
-	 * Saves the responsibility via the responsibility update service
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
-	 */
-	@Override
-	public void saveBusinessObject() {
-		try {
-			if ( LOG.isInfoEnabled() ) {
-				LOG.info( "Attempting to save Permission BO via PermissionService: " + getBusinessObject() );
-			}
-            GenericPermissionBo genericPermissionBo = (GenericPermissionBo)getBusinessObject();
-            if (genericPermissionBo.getTemplateId() != null && genericPermissionBo.getTemplate() == null) {
-                genericPermissionBo.setTemplate(
-                        PermissionTemplateBo.from(
-                                KimApiServiceLocator.getPermissionService().getPermissionTemplate(genericPermissionBo.getTemplateId())));
-            }
-			PermissionBo perm = GenericPermissionBo.toPermissionBo(genericPermissionBo);
-			
-			KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
-		} catch ( RuntimeException ex ) {
-			LOG.error( "Exception in saveBusinessObject()", ex );
-			throw ex;
-		}
-	}
-
     /**
-     * @see org.kuali.rice.krad.maintenance.Maintainable#saveDataObject
+     * Saves the responsibility via the responsibility update service
+     *
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
      */
     @Override
     public void saveDataObject() {
@@ -88,18 +64,8 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
             if (permissionExists) {
                 KimApiServiceLocator.getPermissionService().updatePermission(PermissionBo.to(perm));
             } else {
-                //if its a copy the objectId should be empty and versionNumber should be null
-                if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
-                    if(org.apache.commons.lang.StringUtils.isNotBlank(perm.getObjectId())){
-                        perm.setObjectId("");
-                    }
-                    if(null!= perm.getVersionNumber()){
-                        perm.setVersionNumber(null);
-                    }
-                }
                 KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
             }
-            //getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
         } else {
             throw new RuntimeException(
                     "Cannot save object of type: " + getDataObjectClass() + " with permission service");

@@ -24,6 +24,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
 
@@ -86,7 +87,7 @@ public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute
         return dc;
     }
 
-    public boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions) {
+    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
         log.info("isMatch: " + docContent + " " + ruleExtensions);
         try {
             // could be multiple attributes on the incoming doc content!
@@ -106,7 +107,7 @@ public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute
      * @param ruleExtensions the rule extensions
      * @return true if any single attribute's properties are a match for all rule extension values
      */
-    protected boolean isMatch(List<Map<String, String>> propertiesList, List<RuleExtensionBo> ruleExtensions) {
+    protected boolean isMatch(List<Map<String, String>> propertiesList, List<RuleExtension> ruleExtensions) {
         for (Map<String, String> properties: propertiesList) {
             return isMatch(properties, ruleExtensions);
         }
@@ -120,9 +121,9 @@ public abstract class GenericWorkflowAttribute extends AbstractWorkflowAttribute
      * @param ruleExtensions list of rule extensions
      * @return true if all key/value pairs defined by the specified rule extensions are present in the incoming attribute's
      */
-    protected boolean isMatch(Map<String, String> properties, List<RuleExtensionBo> ruleExtensions) {
-        for (RuleExtensionBo ruleExtension: ruleExtensions) {
-            for (RuleExtensionValue ruleExtensionValue: ruleExtension.getExtensionValues()) {
+    protected boolean isMatch(Map<String, String> properties, List<RuleExtension> ruleExtensions) {
+        for (RuleExtension ruleExtension: ruleExtensions) {
+            for (Map.Entry<String, String> ruleExtensionValue: ruleExtension.getExtensionValuesMap().entrySet()) {
                 if (!ObjectUtils.equals(ruleExtensionValue.getValue(), properties.get(ruleExtensionValue.getKey()))) {
                     return false;
                 }

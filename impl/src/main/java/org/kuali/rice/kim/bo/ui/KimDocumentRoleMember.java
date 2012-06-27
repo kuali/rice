@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.membership.MemberType;
@@ -209,10 +210,12 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 
 	protected void populateDerivedValues() {
         if(MemberType.PRINCIPAL.getCode().equals(getMemberTypeCode())){
-            Principal principalInfo = KimApiServiceLocator.getIdentityService().getPrincipal(getMemberId());
-        	if (principalInfo != null) {
-        		setMemberName(principalInfo.getPrincipalName());
-        	}        	        	
+            if(!StringUtils.isEmpty(getMemberId())){
+                Principal principalInfo = KimApiServiceLocator.getIdentityService().getPrincipal(getMemberId());
+                if (principalInfo != null) {
+                    setMemberName(principalInfo.getPrincipalName());
+        	    }
+            }
         } else if(MemberType.GROUP.getCode().equals(getMemberTypeCode())){
         	Group groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
         	if (groupInfo != null) {

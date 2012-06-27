@@ -162,6 +162,15 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         }
     }
 
+    /**
+     * the absolute path on the file system to the root folder of the maven module containing a child of this class
+     * e.g. for krad: [rice-project-dir]/it/krad
+     *
+     * <p>
+     * the user.dir property can be set on the CLI or IDE run configuration e.g. -Duser.dir=/some/dir
+     * </p>
+     * @return the value of a system property 'user.dir' if it exists, null if not
+     */
     protected String getUserDir() {
         return System.getProperty("user.dir");
     }

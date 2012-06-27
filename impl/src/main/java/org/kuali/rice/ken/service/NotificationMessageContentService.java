@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.service;
 
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,7 +40,7 @@ public interface NotificationMessageContentService {
      * @throws IOException
      * @throws XmlException
      */
-    public Notification parseNotificationRequestMessage(InputStream stream) throws IOException, XmlException;
+    public NotificationBo parseNotificationRequestMessage(InputStream stream) throws IOException, XmlException;
     
     /**
      * Parses a Notification request message into business objects.  Performs syntactic and semantic validation.  
@@ -50,21 +50,21 @@ public interface NotificationMessageContentService {
      * @throws IOException
      * @throws XmlException
      */
-    public Notification parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, XmlException;
+    public NotificationBo parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, XmlException;
     
     /**
      * Generates a Notification response message
      * @param response
      * @return String XML representation of a Notification response object
      */
-    public String generateNotificationResponseMessage(NotificationResponse response);
+    public String generateNotificationResponseMessage(NotificationResponseBo response);
 
     /**
      * This method is responsible for marshalling out the passed in Notification object in and XML representation. 
      * @param notification
      * @return String of XML.
      */
-    public String generateNotificationMessage(Notification notification);
+    public String generateNotificationMessage(NotificationBo notification);
     
     /**
      * This method is responsible for marshalling out the passed in Notification object in and XML representation, with 
@@ -73,7 +73,7 @@ public interface NotificationMessageContentService {
      * @param userRecipientId
      * @return String of XML.
      */
-    public String generateNotificationMessage(Notification notification, String userRecipientId);
+    public String generateNotificationMessage(NotificationBo notification, String userRecipientId);
     
     /**
      * This method parses out the serialized XML version of Notification BO and populates a Notification BO with it.
@@ -81,5 +81,5 @@ public interface NotificationMessageContentService {
      * @return Notification
      * @throws Exception
      */
-    public Notification parseSerializedNotificationXml(byte[] xmlAsBytes) throws Exception;
+    public NotificationBo parseSerializedNotificationXml(byte[] xmlAsBytes) throws Exception;
 }

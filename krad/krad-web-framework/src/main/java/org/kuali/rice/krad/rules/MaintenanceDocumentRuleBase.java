@@ -27,9 +27,13 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
+import org.kuali.rice.krad.datadictionary.validation.ErrorLevel;
+import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidationResult;
+import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -51,6 +55,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.util.AutoPopulatingList;
@@ -149,6 +154,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(maintenanceDocument);
+
+        // Validate the document if the header is valid and no pending completion requests
+        if (completeRequestPending) {
+            return true;
+        }
+        
         // get the documentAuthorizer for this document
         MaintenanceDocumentAuthorizer documentAuthorizer =
                 (MaintenanceDocumentAuthorizer) getDocumentDictionaryService().getDocumentAuthorizer(document);
@@ -628,6 +640,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * @return true if it passes DD validation, false otherwise
      */
     protected boolean dataDictionaryValidate(MaintenanceDocument document) {
+        // default to success if no failures
+        boolean success = true;
         LOG.debug("MaintenanceDocument validation beginning");
 
         // explicitly put the errorPath that the dictionaryValidationService
@@ -650,11 +664,23 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             throw new ValidationException("Maintainable's component business object is null.");
         }
 
+        // check if there are errors in validating the business object
         GlobalVariables.getMessageMap().addToErrorPath("dataObject");
+        DictionaryValidationResult dictionaryValidationResult = getDictionaryValidationService().validate(newDataObject);
+        if (dictionaryValidationResult.getNumberOfErrors() > 0) {
+            success &= false;
 
-        getDictionaryValidationService().validate(newDataObject);
-
+            for (ConstraintValidationResult cvr : dictionaryValidationResult) {
+                if (cvr.getStatus() == ErrorLevel.ERROR){
+                    GlobalVariables.getMessageMap().putError(cvr.getAttributePath(), cvr.getErrorKey());
+                }
+            }
+        }
+        // validate default existence checks
+        success &= getDictionaryValidationService().validateDefaultExistenceChecks((BusinessObject) dataObject);
         GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
+
+
 
         // explicitly remove the errorPath we've added
         GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
@@ -835,11 +861,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         // do generic checks that impact primary key violations
-        primaryKeyCheck(document);
+        success &= primaryKeyCheck(document);
 
         // this is happening only on the processSave, since a Save happens in both the
         // Route and Save events.
-        this.dataDictionaryValidate(document);
+        success &= this.dataDictionaryValidate(document);
 
         return success;
     }

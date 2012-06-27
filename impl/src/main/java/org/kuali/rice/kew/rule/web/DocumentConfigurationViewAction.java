@@ -260,8 +260,10 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
             if ( node.getNodeType().contains( "SplitNode" ) ) { // Hacky - but only way when the class may not be present in the KEW JVM
                 lastProcessedNode = flattenSplitNode(node, nodes); // special handling to process all split children before continuing
                 // now, process the join node's children
-                for ( RouteNode nextNode : lastProcessedNode.getNextNodes() ) {
-                    lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+                if (lastProcessedNode != null) {
+                    for ( RouteNode nextNode : lastProcessedNode.getNextNodes() ) {
+                        lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+                    }
                 }
             } else if ( node.getNodeType().contains( "JoinNode" ) ) {
                 lastProcessedNode = node; // skip, handled by the split node

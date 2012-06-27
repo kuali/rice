@@ -231,7 +231,18 @@
           </property>
         </bean>
 
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button" p:methodToCall="foo" p:disabled="true"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="enabled Button" p:methodToCall="foo"/>
+
+        <bean parent="Uif-VerticalBoxGroup" p:instructionalText="Action components with primary, secondary, primary small, and secondary small styling">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="Save" p:methodToCall="foo"/>
+              <bean parent="Uif-SecondaryActionButton" p:actionLabel="Save" p:methodToCall="foo"/>
+              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Save" p:methodToCall="foo"/>
+              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Save" p:methodToCall="foo"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -352,7 +363,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-IframeField" p:label="IframeField" p:width="800px" p:height="550px"
+        <bean parent="Uif-IframeField" p:width="800px" p:height="550px"
               p:source="http://www.kuali.org"/>
       </list>
     </property>

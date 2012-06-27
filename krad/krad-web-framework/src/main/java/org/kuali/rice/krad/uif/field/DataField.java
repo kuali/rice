@@ -74,7 +74,7 @@ public class DataField extends FieldBase implements DataBinding {
     private List<String> hiddenPropertyNames;
     private List<String> informationalDisplayPropertyNames;
 
-    private boolean escapeHtmlInPropertyValue;
+    private boolean escapeHtmlInPropertyValue = true;
 
     private String helpSummary;
     private String helpDescription;

@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -27,6 +23,10 @@ import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Agenda Item business object
@@ -52,6 +52,8 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	private AgendaItemBo whenTrue;
 	private AgendaItemBo whenFalse;
 	private AgendaItemBo always;
+
+    private static SequenceAccessorService sequenceAccessorService;
 	
 	public String getUl(AgendaItemBo firstItem) {
 		return ("<ul>" + getUlHelper(firstItem) + "</ul>");
@@ -238,6 +240,11 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	 */
 	public void setWhenTrue(AgendaItemBo whenTrue) {
 		this.whenTrue = whenTrue;
+        if (whenTrue != null) {
+            setWhenTrueId(whenTrue.getId());
+        } else {
+            setWhenTrueId(null);
+        }
 	}
 
 	/**
@@ -252,6 +259,11 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	 */
 	public void setWhenFalse(AgendaItemBo whenFalse) {
 		this.whenFalse = whenFalse;
+        if (whenFalse != null) {
+            setWhenFalseId(whenFalse.getId());
+        } else {
+            setWhenFalseId(null);
+        }
 	}
 
 	/**
@@ -266,6 +278,11 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
 	 */
 	public void setAlways(AgendaItemBo always) {
 		this.always = always;
+        if (always != null) {
+            setAlwaysId(always.getId());
+        } else {
+            setAlwaysId(null);
+        }
 	}
 	
     /**
@@ -280,6 +297,11 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
      */
     public void setRule(RuleBo rule) {
         this.rule = rule;
+        if (rule != null) {
+            setRuleId(rule.getId());
+        } else {
+            setRuleId(null);
+        }
     }
 
 	
@@ -328,50 +350,76 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
      * @param dts DateTimeStamp to append to the copied AgendaItem name
      * @return AgendaItemBo copy of this AgendaItem with new id and name
      */
-    public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda,  Map<String, RuleBo> oldRuleIdToNew, final String dts) {
+    public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda,  Map<String, RuleBo> oldRuleIdToNew,
+            Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
         // Use deepCopy and update all the ids.
         AgendaItemBo copiedAgendaItem = (AgendaItemBo) ObjectUtils.deepCopy(this);
-
         copiedAgendaItem.setId(getNewId());
-
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
+
+        oldAgendaItemIdToNew.put(this.getId(), copiedAgendaItem);
 
         // Don't create another copy of a rule that we have already copied.
         if (!oldRuleIdToNew.containsKey(this.getRuleId())) {
-            copiedAgendaItem.setRule(this.getRule().copyRule(COPY_OF_TEXT + this.getRule().getName() + " " + dts));
-            copiedAgendaItem.setRuleId(copiedAgendaItem.getRule().getId());
-            oldRuleIdToNew.put(this.getRuleId(), copiedAgendaItem.getRule());
+            if (this.getRule() != null) {
+                copiedAgendaItem.setRule(this.getRule().copyRule(COPY_OF_TEXT + this.getRule().getName() + " " + dts));
+                oldRuleIdToNew.put(this.getRuleId(), copiedAgendaItem.getRule());
+            }
         } else {
             copiedAgendaItem.setRule(oldRuleIdToNew.get(this.getRuleId()));
-            copiedAgendaItem.setRuleId(oldRuleIdToNew.get(this.getRuleId()).getId());
         }
 
         if (copiedAgendaItem.getWhenFalse() != null) {
-            copiedAgendaItem.setWhenFalse(this.getWhenFalse().copyAgendaItem(copiedAgenda, oldRuleIdToNew, dts));
-            copiedAgendaItem.setWhenFalseId(copiedAgendaItem.getWhenFalse().getId());
+            if (!oldAgendaItemIdToNew.containsKey(this.getWhenFalseId())) {
+                copiedAgendaItem.setWhenFalse(this.getWhenFalse().copyAgendaItem(copiedAgenda, oldRuleIdToNew, oldAgendaItemIdToNew, copiedAgendaItems, dts));
+                oldAgendaItemIdToNew.put(this.getWhenFalseId(), copiedAgendaItem.getWhenFalse());
+                copiedAgendaItems.add(copiedAgendaItem.getWhenFalse());
+            } else {
+                copiedAgendaItem.setWhenFalse(oldAgendaItemIdToNew.get(this.getWhenFalseId()));
+            }
         }
 
         if (copiedAgendaItem.getWhenTrue() != null) {
-            copiedAgendaItem.setWhenTrue(this.getWhenTrue().copyAgendaItem(copiedAgenda, oldRuleIdToNew, dts));
-            copiedAgendaItem.setWhenTrueId(copiedAgendaItem.getWhenTrue().getId());
+            if (!oldAgendaItemIdToNew.containsKey(this.getWhenTrueId())) {
+                copiedAgendaItem.setWhenTrue(this.getWhenTrue().copyAgendaItem(copiedAgenda, oldRuleIdToNew, oldAgendaItemIdToNew, copiedAgendaItems, dts));
+                oldAgendaItemIdToNew.put(this.getWhenTrueId(), copiedAgendaItem.getWhenTrue());
+                copiedAgendaItems.add(copiedAgendaItem.getWhenTrue());
+            } else {
+                copiedAgendaItem.setWhenTrue(oldAgendaItemIdToNew.get(this.getWhenTrueId()));
+            }
         }
 
         if (copiedAgendaItem.getAlways() != null) {
-            copiedAgendaItem.setAlways(this.getAlways().copyAgendaItem(copiedAgenda, oldRuleIdToNew, dts));
-            copiedAgendaItem.setAlwaysId(copiedAgendaItem.getAlways().getId());
+            if (!oldAgendaItemIdToNew.containsKey(this.getAlwaysId())) {
+                copiedAgendaItem.setAlways(this.getAlways().copyAgendaItem(copiedAgenda, oldRuleIdToNew, oldAgendaItemIdToNew, copiedAgendaItems, dts));
+                oldAgendaItemIdToNew.put(this.getAlwaysId(), copiedAgendaItem.getAlways());
+                copiedAgendaItems.add(copiedAgendaItem.getAlways());
+            } else {
+                copiedAgendaItem.setAlways(oldAgendaItemIdToNew.get(this.getAlwaysId()));
+            }
         }
-
         return copiedAgendaItem;
+    }
+
+
+    /**
+     * Set the SequenceAccessorService, useful for testing.
+     * @param sas SequenceAccessorService to use for getNewId()
+     */
+    public static void setSequenceAccessorService(SequenceAccessorService sas) {
+        sequenceAccessorService = sas;
     }
 
     /**
      * Returns the next available AgendaItem id.
      * @return String the next available id
      */
-    private static String getNewId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class);
+    private static String getNewId() {
+        if (sequenceAccessorService == null) {
+            // we don't assign to sequenceAccessorService to preserve existing behavior
+            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class) + "";
+        }
+        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class);
         return id.toString();
     }
-
 }

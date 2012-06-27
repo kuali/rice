@@ -177,17 +177,6 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     }
 
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
-    	// need to clear action list cache for users who have this item in their action list
-    	ActionListService actionListSrv = KEWServiceLocator.getActionListService();
-    	Collection actionItems = actionListSrv.findByDocumentId(routeHeader.getDocumentId());
-    	for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-    		ActionItem actionItem = (ActionItem) iter.next();
-    		try {
-    			KEWServiceLocator.getUserOptionsService().saveRefreshUserOption(actionItem.getPrincipalId());
-    		} catch (Exception e) {
-    			LOG.error("error saving refreshUserOption", e);
-    		}
-    	}
     	this.getPersistenceBrokerTemplate().delete(routeHeader);
     }
 

@@ -148,7 +148,7 @@ public class DisapproveAction extends ActionTakenEvent {
 //        if (actionRequests.size() > 0) { //I don't see why this matters let me know if it does rk
         	notificationNodeInstance = ((ActionRequestValue)actionRequests.get(0)).getNodeInstance();
 //        }
-        generateNotifications(notificationNodeInstance);
+        generateAcknowledgementsToPreviousActionTakers(notificationNodeInstance);
 
         LOG.debug("Disapproving document");
         try {
@@ -161,51 +161,5 @@ public class DisapproveAction extends ActionTakenEvent {
             LOG.warn(ex, ex);
             throw new InvalidActionTakenException(ex.getMessage());
         }
-    }
-
-    //generate notifications to all people that have approved the document including the initiator
-    private void generateNotifications(RouteNodeInstance notificationNodeInstance)
-    {
-        String groupName = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                KewApiConstants.KEW_NAMESPACE,
-                KRADConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
-                KewApiConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
-
-        Set<String> systemPrincipalIds = new HashSet<String>();
-
-        if( !StringUtils.isBlank(groupName))
-        {
-            Group systemUserWorkgroup = KimApiServiceLocator.getGroupService().
-                    getGroupByNamespaceCodeAndName(Utilities.parseGroupNamespaceCode(groupName),
-                            Utilities.parseGroupName(groupName));
-
-            List<String> principalIds = KimApiServiceLocator.
-            getGroupService().getMemberPrincipalIds( systemUserWorkgroup.getId());
-
-            if (systemUserWorkgroup != null)
-            {
-                for( String id : principalIds)
-                {
-                    systemPrincipalIds.add(id);
-                }
-            }
-        }
-        ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
-        Collection<ActionTakenValue> actions = KEWServiceLocator.getActionTakenService().findByDocumentId(getDocumentId());
-        //one notification per person
-        Set<String> usersNotified = new HashSet<String>();
-        for (ActionTakenValue action : actions)
-        {
-            if ((action.isApproval() || action.isCompletion()) && !usersNotified.contains(action.getPrincipalId()))
-            {
-                if (!systemPrincipalIds.contains(action.getPrincipalId()))
-                {
-                    ActionRequestValue request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
-                    KEWServiceLocator.getActionRequestService().activateRequest(request);
-                    usersNotified.add(request.getPrincipalId());
-                }
-            }
-        }
-
     }
 }

@@ -190,6 +190,17 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
         }
 
         public static Builder create(PeopleFlowContract contract) {
+            Builder builder = createCopy(contract);
+            builder.setVersionNumber(contract.getVersionNumber());
+            if (contract.getMembers() != null) {
+                for (PeopleFlowMemberContract member : contract.getMembers()) {
+                    builder.getMembers().add(PeopleFlowMember.Builder.create(member));
+                }
+            }
+            return builder;
+        }
+
+        private static Builder createCopy(PeopleFlowContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -197,16 +208,25 @@ public final class PeopleFlowDefinition extends AbstractDataTransferObject imple
             if (contract.getAttributes() != null) {
                 builder.getAttributes().putAll(contract.getAttributes());
             }
-            builder.setTypeId(contract.getTypeId());
-            builder.setDescription(contract.getDescription());
-            if (contract.getMembers() != null) {
-                for (PeopleFlowMemberContract member : contract.getMembers()) {
-                    builder.getMembers().add(PeopleFlowMember.Builder.create(member));
-                }
+            if (StringUtils.isEmpty(contract.getTypeId())) {
+                // type_id is a foreign key, it needs to be either null or a real value, not empty String to avoid SQL Exception
+                builder.setTypeId(null);
+            } else {
+                builder.setTypeId(contract.getTypeId());
             }
+            builder.setDescription(contract.getDescription());
             builder.setId(contract.getId());
             builder.setActive(contract.isActive());
-            builder.setVersionNumber(contract.getVersionNumber());
+            return builder;
+        }
+
+        public static Builder createMaintenanceCopy(PeopleFlowContract contract) {
+            Builder builder = createCopy(contract);
+            if (contract.getMembers() != null) {
+                for (PeopleFlowMemberContract member : contract.getMembers()) {
+                    builder.getMembers().add(PeopleFlowMember.Builder.createCopy(member));
+                }
+            }
             return builder;
         }
 

@@ -543,6 +543,11 @@ public class ActionRequestValue implements Serializable {
         return RecipientType.PRINCIPAL.getCode().equals(getRecipientTypeCd());
     }
 
+    /**
+     * Determines whether the specified principalId is in the recipient graph of this action request
+     * @param principalId the principal id to check
+     * @return whether the specified principalId is in the recipient graph of this action request
+     */
     public boolean isRecipientRoutedRequest(String principalId) {
     	//before altering this method it is used in checkRouteLogAuthentication
     	//don't break that method

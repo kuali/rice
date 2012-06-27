@@ -180,7 +180,7 @@ public class DocumentSearchCustomizationHandlerServiceImpl implements DocumentSe
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        DocumentSearchCustomizer customizer = loadCustomizer(documentTypeName);
+        DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
         Set<DocumentSearchCustomization> customizations = new HashSet<DocumentSearchCustomization>();
         if (customizer.isCustomizeCriteriaEnabled(documentTypeName)) {
             customizations.add(DocumentSearchCustomization.CRITERIA);

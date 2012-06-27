@@ -39,7 +39,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class ExceptionRoutingTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {

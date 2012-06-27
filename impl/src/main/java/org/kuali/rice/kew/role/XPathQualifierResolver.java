@@ -46,12 +46,12 @@ import java.util.Map;
  * <p><pre>
  * <resolverConfig>
  *   <baseXPathExpression>/xmlData/chartOrg</baseXPathExpression>
- *   <attribute name="chart">
+ *   <attributes name="chart">
  *     <xPathExpression>./chart</xPathExpression>
- *   </attribute>
- *   <attribute name="org">
+ *   </attributes>
+ *   <attributes name="org">
  *     <xPathExpression>./org</xPathExpression>
- *   </attribute>
+ *   </attributes>
  * </resolverConfig>
  * </pre>
  * 
@@ -99,9 +99,9 @@ import java.util.Map;
  * <p><pre>
  * <resolverConfig>
  *   <baseXPathExpression>/xmlData/accountNumbers</baseXPathExpression>
- *   <qualifier name="accountNumber">
+ *   <attributes name="accountNumber">
  *     <xPathExpression>./accountNumber</xPathExpression>
- *   </qualifier>
+ *   </attributes>
  * </resolverConfig>
  * </pre>
  * 
@@ -199,12 +199,30 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 			if (!StringUtils.isEmpty(baseExpression)) {
 				resolverConfig.setBaseXPathExpression(baseExpression);
 			}
+            //We need to check for two possible xml configurations
+            //1 - 'attributes'
+            //2- 'qualifier' (legacy)
 			NodeList qualifiers = (NodeList)xPath.evaluate("//resolverConfig/attributes", new InputSource(new StringReader(xmlConfig)), XPathConstants.NODESET);
-			if (qualifiers == null || qualifiers.getLength() == 0) {
+            NodeList qualifiersLegacy = (NodeList)xPath.evaluate("//resolverConfig/qualifier", new InputSource(new StringReader(xmlConfig)), XPathConstants.NODESET);
+
+            if ((qualifiers == null || qualifiers.getLength() == 0) && (qualifiersLegacy == null || qualifiersLegacy.getLength() == 0)) {
 				throw new RiceRuntimeException("Invalid qualifier resolver configuration.  Must contain at least one qualifier!");
 			}
+            //check for standard qualifiers (those using 'attributes' xml elements) and add if they exist
 			for (int index = 0; index < qualifiers.getLength(); index++) {
 				Element qualifierElement = (Element)qualifiers.item(index);
+				String name = qualifierElement.getAttribute("name");
+				NodeList expressions = qualifierElement.getElementsByTagName("xPathExpression");
+				if (expressions.getLength() != 1) {
+					throw new RiceRuntimeException("There should only be a single xPathExpression per qualifier");
+				}
+				Element expressionElement = (Element)expressions.item(0);
+				resolverConfig.getExpressionMap().put(name, expressionElement.getTextContent());
+			}
+
+            //check for legacy qualifiers (those using 'qualifier' xml elements) and add if they exist
+			for (int index = 0; index < qualifiersLegacy.getLength(); index++) {
+				Element qualifierElement = (Element)qualifiersLegacy.item(index);
 				String name = qualifierElement.getAttribute("name");
 				NodeList expressions = qualifierElement.getElementsByTagName("xPathExpression");
 				if (expressions.getLength() != 1) {

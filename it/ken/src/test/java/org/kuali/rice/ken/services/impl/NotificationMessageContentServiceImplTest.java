@@ -18,10 +18,10 @@ package org.kuali.rice.ken.services.impl;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
@@ -64,25 +64,25 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
         NotificationMessageContentService impl = services.getNotificationMessageContentService();
         InputStream is = this.getClass().getResourceAsStream(samplePath);
         System.out.println(is);
-        Notification notification = impl.parseNotificationRequestMessage(is);
+        NotificationBo notification = impl.parseNotificationRequestMessage(is);
         assertEquals(SAMPLE_CHANNEL, notification.getChannel().getName());
         System.out.println(notification.getSenders());
         System.out.println("notification id: " + notification.getId());
-        List<NotificationSender> sl = notification.getSenders();
+        List<NotificationSenderBo> sl = notification.getSenders();
         assertTrue(sl.size() > 0);
-        for (NotificationSender s :sl) {
+        for (NotificationSenderBo s :sl) {
             assertNotNull(s);
             assertNotNull(s.getSenderName());
         }
-        List<NotificationRecipient> rl = notification.getRecipients();
+        List<NotificationRecipientBo> rl = notification.getRecipients();
         assertTrue(rl.size() > 0);
-        for (NotificationRecipient r : rl) {
+        for (NotificationRecipientBo r : rl) {
             assertNotNull(r);
             assertNotNull(r.getRecipientId());
         }
         //fail("Not yet implemented");
 
-        notification.setCreationDateTime(new Timestamp(System.currentTimeMillis()));
+        notification.setCreationDateTimeValue(new Timestamp(System.currentTimeMillis()));
         services.getGenericDao().save(notification);
         //setComplete();
     }
@@ -128,7 +128,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
 
     @Test
     public void testGenerateNotificationResponseMessage() throws Exception {
-	NotificationResponse response = new NotificationResponse();
+	NotificationResponseBo response = new NotificationResponseBo();
 	response.setStatus("PASS");
 	response.setMessage("Here is your response");
 	NotificationMessageContentService impl = services.getNotificationMessageContentService();
@@ -141,7 +141,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
 	NotificationMessageContentService impl = services.getNotificationMessageContentService();
         InputStream is = this.getClass().getResourceAsStream(SAMPLE_SIMPLE_MESSAGE);
         System.out.println(is);
-        Notification notification = impl.parseNotificationRequestMessage(is);
+        NotificationBo notification = impl.parseNotificationRequestMessage(is);
         String XML = impl.generateNotificationMessage(notification);
         assertTrue(XML.length()>0);
     }
@@ -154,7 +154,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
 	
 	NotificationMessageContentService impl = services.getNotificationMessageContentService();
 	
-        Notification notification = impl.parseSerializedNotificationXml(bytes);
+        NotificationBo notification = impl.parseSerializedNotificationXml(bytes);
         
         assertNotNull(notification);
         assertEquals(VALID_CHANNEL, notification.getChannel().getName());

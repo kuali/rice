@@ -53,7 +53,7 @@ import java.util.Collection;
 })
 public class RoleResponsibilityAction extends AbstractDataTransferObject implements RoleResponsibilityActionContract {
 
-    @XmlElement(name = RoleResponsibilityAction.Elements.ID, required = true)
+    @XmlElement(name = RoleResponsibilityAction.Elements.ID, required = false)
     private final String id;
 
     @XmlElement(name = RoleResponsibilityAction.Elements.ROLE_RESPONSIBILITY_ID)
@@ -159,7 +159,7 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
 
     public static class Builder implements RoleResponsibilityActionContract, ModelBuilder, ModelObjectComplete {
 
-        private String Id;
+        private String id;
         private String roleResponsibilityId;
         private String roleMemberId;
         private String actionTypeCode;
@@ -194,23 +194,19 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
 
         @Override
         public RoleResponsibilityAction build() {
-            if (versionNumber == null || Id == null) {
-                throw new IllegalStateException("versionNumber and id must be non-null and " +
-                        "not empty for RoleResponsibilityAction");
-            }
             return new RoleResponsibilityAction(this);
         }
 
         @Override
         public String getId() {
-            return Id;
+            return id;
         }
 
         public void setId(String id) {
-            if (StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id must be non-null and not empty");
+            if (StringUtils.isWhitespace(id)) {
+                throw new IllegalArgumentException("id must be not be whitespace");
             }
-            this.Id = id;
+            this.id = id;
         }
 
         @Override
@@ -282,9 +278,6 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
         }
 
         public void setVersionNumber(Long versionNumber) {
-            if (versionNumber == null) {
-                throw new IllegalArgumentException("versionNumber must be non-null");
-            }
             this.versionNumber = versionNumber;
         }
 

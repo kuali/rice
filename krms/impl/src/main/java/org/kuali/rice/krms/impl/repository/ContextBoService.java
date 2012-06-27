@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.repository;
 
 
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * This is the interface for accessing KRMS repository Context related bos 
@@ -33,6 +35,7 @@ public interface ContextBoService {
      * @throws IllegalArgumentException if the context is null
      * @throws IllegalStateException if the context already exists in the system
      */
+    @CacheEvict(value={ContextDefinition.Cache.NAME}, allEntries = true)
 	public ContextDefinition createContext(ContextDefinition context);
 
     /**
@@ -41,7 +44,8 @@ public interface ContextBoService {
      * @param context  The Context to update
      * @throws IllegalArgumentException if the Context is null
      * @throws IllegalStateException if the Context does not exists in the system
-     */	
+     */
+    @CacheEvict(value={ContextDefinition.Cache.NAME}, allEntries = true)
 	public void updateContext(ContextDefinition context);
 	
 //	public void createContextAttribute(ContextAttribute contextAttribute);
@@ -55,6 +59,7 @@ public interface ContextBoService {
      * A null reference is returned if an invalid or non-existent id is supplied.
      * @throws IllegalArgumentException if the contextId is null or blank.
      */
+    @Cacheable(value= ContextDefinition.Cache.NAME, key="'actionId=' + #p0")
 	public ContextDefinition getContextByContextId( String contextId );
 	
     /**
@@ -69,6 +74,7 @@ public interface ContextBoService {
      * @throws IllegalArgumentException if the either the name or the namespace
      * is null or blank.
      */
+    @Cacheable(value= ContextDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'namespace=' + #p1")
 	public ContextDefinition getContextByNameAndNamespace( String name, String namespace );
 
 	/**

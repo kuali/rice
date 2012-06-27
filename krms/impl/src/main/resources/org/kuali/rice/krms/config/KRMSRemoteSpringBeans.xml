@@ -23,6 +23,10 @@
 
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSCommonSpringBeans.xml" />
 
+  <bean id="rice.krms.cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="krmsLocalCacheManager" />
+  </bean>
+
   <bean id="rice.krms.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
         p:serviceNamespace-ref="rice.krms.serviceNamespace"/>
@@ -32,24 +36,19 @@
         p:serviceName="ruleRepositoryService"
         p:objectType="org.kuali.rice.krms.api.repository.RuleRepositoryService"/>
 
+  <bean id="functionRepositoryService"
+        parent="rice.krms.remote.import"
+        p:serviceName="functionRepositoryService"
+        p:objectType="org.kuali.rice.krms.api.repository.function.FunctionRepositoryService"/>
+
+  <bean id="termRepositoryService"
+        parent="rice.krms.remote.import"
+        p:serviceName="termRepositoryService"
+        p:objectType="org.kuali.rice.krms.api.repository.term.TermRepositoryService"/>
+
   <bean id="krmsTypeRepositoryService"
         parent="rice.krms.remote.import"
         p:serviceName="krmsTypeRepositoryService"
         p:objectType="org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService"/>
-
-  <bean id="notificationPeopleFlowActionTypeService"
-        parent="rice.krms.remote.import"
-        p:serviceName="notificationPeopleFlowActionTypeService"
-        p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
-
-  <bean id="approvalPeopleFlowActionTypeService"
-        parent="rice.krms.remote.import"
-        p:serviceName="approvalPeopleFlowActionTypeService"
-        p:objectType="org.kuali.rice.krms.framework.type.ActionTypeService"/>
-
-  <bean id="comparisonOperatorService"
-        parent="rice.krms.remote.import"
-        p:serviceName="comparisonOperatorService"
-        p:objectType="org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService"/>
 
 </beans>

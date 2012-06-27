@@ -25,6 +25,11 @@ import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 
 import java.util.List;
+/**
+ * This is a contract for EntityTypeContactInfo.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 
 public interface EntityTypeContactInfoContract extends Versioned, GloballyUnique, Inactivatable {
     /**

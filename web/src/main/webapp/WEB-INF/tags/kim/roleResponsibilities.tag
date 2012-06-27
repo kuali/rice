@@ -83,7 +83,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left">  <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.detailObjectsValues"  attributeEntry="${responsibilityAttributes.detailObjectsToDisplay}" readOnly="true"  />
+	               	<div align="left">  <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.detailObjectsToDisplay"  attributeEntry="${responsibilityAttributes.detailObjectsToDisplay}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

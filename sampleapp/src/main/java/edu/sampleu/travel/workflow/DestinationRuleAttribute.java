@@ -104,15 +104,15 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
         return props;
     }
 
-	public List<? extends RemotableAttributeErrorContract> validateRoutingData(Map paramMap) {
+	public List<RemotableAttributeError> validateRoutingData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
 
-	public List<? extends RemotableAttributeErrorContract> validateRuleData(Map paramMap) {
+	public List<RemotableAttributeError> validateRuleData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
 
-    private List<? extends RemotableAttributeErrorContract> validateInputMap(Map paramMap) {
+    private List<RemotableAttributeError> validateInputMap(Map paramMap) {
     	List errors = new ArrayList();
     	this.destination = (String) paramMap.get(DEST_FIELD_KEY);
     	if (this.destination == null  && required) {

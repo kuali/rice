@@ -100,7 +100,7 @@
                         <c:set var="finderClass" value="${fn:replace(attachmentTypesValuesFinderClass,'.','|')}"/>
                         <td class="infoline">
                             <html:select property="newNote.attachment.attachmentTypeCode">
-                                <html:optionsCollection property="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" label="label" value="key"/>
+                                <html:optionsCollection property="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" label="value" value="key"/>
                             </html:select>
                         </td>
                      </c:if>
@@ -109,7 +109,7 @@
                      </c:if>
                      <td class="infoline"><div align="center"><html:image property="methodToCall.insertBONote" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" alt="Add a Note" title="Add a Note" styleClass="tinybutton"/></div></td>	 
 			       </tr>
-			   </c:if>   
+			   </c:if>
 
   <c:forEach var="note" items="${documentNotes}" varStatus="status">
 
@@ -155,9 +155,10 @@
                                     <c:if test="${allowsNoteAttachments eq true}">
                                       <c:if test="${(!empty note.attachment)}">
 										<c:set var="attachmentTypeCode" value ="${note.attachment.attachmentTypeCode}" />
+                    <c:set var="mimeTypeCode" value="${note.attachment.attachmentMimeTypeCode}" />
 									  </c:if>
                                       <c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
-                                        <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                        <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}${kfunc:getAttachmentImageForUrl(mimeTypeCode)}" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                       </c:if>
                                       <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].attachment.attachmentFileName"/>
                                       &nbsp;
@@ -175,7 +176,7 @@
 									 <c:set var="mapKey" value = "getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}" />
 									 <c:set var="attachmentTypeFinderMap" value="${KualiForm.actionFormUtilMap[mapKey]}"  />
                                        <c:forEach items="${attachmentTypeFinderMap}" var="type">
-                                         <c:if test="${type.key eq note.attachment.attachmentTypeCode}">${type.label}</c:if>
+                                         <c:if test="${type.key eq note.attachment.attachmentTypeCode}">${type.value}</c:if>
                                        </c:forEach>
                                      </td>
                                   </c:if>

@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryResolverService;
 import org.kuali.rice.ken.service.NotificationRecipientService;
@@ -81,8 +81,8 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestC
         }
 
         @Override
-        protected Collection<Object> processWorkItems(Collection<Notification> notifications) {
-            for (Notification notification: notifications) {
+        protected Collection<Object> processWorkItems(Collection<NotificationBo> notifications) {
+            for (NotificationBo notification: notifications) {
                 if (notification.getId().longValue() == BAD_NOTIFICATION_ID) {
                     throw new RuntimeException("Intentional heinous exception");
                 }
@@ -99,16 +99,16 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestC
     //this is the one need to tweek on Criteria
     protected void assertProcessResults() {
         // one error should have occurred and the delivery should have been marked unlocked again
-    	Collection<NotificationMessageDelivery> lockedDeliveries = services.getNotificationMessegDeliveryDao().getLockedDeliveries(Notification.class, services.getGenericDao());
+    	Collection<NotificationMessageDelivery> lockedDeliveries = services.getNotificationMessegDeliveryDao().getLockedDeliveries(NotificationBo.class, services.getGenericDao());
          
     	assertEquals(0, lockedDeliveries.size());
 
         // should be 1 unprocessed delivery (the one that had an error)
         HashMap<String, String> queryCriteria = new HashMap<String, String>();
         queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-        Collection<Notification> unprocessedDeliveries = services.getGenericDao().findMatching(Notification.class, queryCriteria);
+        Collection<NotificationBo> unprocessedDeliveries = services.getGenericDao().findMatching(NotificationBo.class, queryCriteria);
         assertEquals(1, unprocessedDeliveries.size());
-        Notification n = unprocessedDeliveries.iterator().next();
+        NotificationBo n = unprocessedDeliveries.iterator().next();
         // #3 is the bad one
         assertEquals(BAD_NOTIFICATION_ID, n.getId().longValue());
     }

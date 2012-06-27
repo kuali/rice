@@ -130,7 +130,14 @@
         <name>getButtonImageUrl</name>
         <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
         <function-signature>java.lang.String getButtonImageUrl(java.lang.String)</function-signature>
-        <example>${kfunc:getButtonImageUrl((imageName)}</example>
+        <example>${kfunc:getButtonImageUrl(imageName)}</example>
+    </function>
+    <function>
+      <description>get a named image for an attachment based on its content type code.</description>
+      <name>getAttachmentImageForUrl</name>
+      <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+      <function-signature>java.lang.String getAttachmentImageForUrl(java.lang.String)</function-signature>
+      <example>${kfunc:getAttachmentImageForUrl(contentType)}</example>
     </function>
     <function>
         <description>check config properties to determine if environment is production</description>
@@ -146,4 +153,26 @@
     	<function-signature>java.lang.String preserveWhitespace(java.lang.String)</function-signature>
     	<example>${kfunc:preserveWhitespace("foo\n\nbar")}</example>
     </function>
+    <function>
+        <description>Fetches the display name of a KIM Group when given the group ID</description>
+        <name>getKimGroupDisplayName</name>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+        <function-signature>java.lang.String getKimGroupDisplayName(java.lang.String)</function-signature>
+        <example>${kfunc:getKimGroupDisplayName("1234")}</example>
+    </function>
+    <function>
+        <description>Fetches the display name for a principal when given the principal ID</description>
+        <name>getPrincipalDisplayName</name>
+        <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+        <function-signature>java.lang.String getPrincipalDisplayName(java.lang.String)</function-signature>
+        <example>${kfunc:getPrincpalDisplayName("1234")}</example>
+    </function>
+    <function>
+      <description>Check to see if a matching qualifier exists</description>
+      <name>matchingQualifierExists</name>
+      <function-class>org.kuali.rice.kim.web.utils.KimWebUtils</function-class>
+      <function-signature>boolean matchingQualifierExists(java.util.List,java.lang.Integer, java.lang.String)</function-signature>
+      <example>${kfunc:matchingQualifierExists(member,index, atttrDefnId)}</example>
+  </function>
+
 </taglib>

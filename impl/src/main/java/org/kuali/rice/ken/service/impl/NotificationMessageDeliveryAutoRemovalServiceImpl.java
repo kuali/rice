@@ -110,7 +110,7 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
     protected void markAutoRemoved(NotificationMessageDelivery messageDelivery) {
         messageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.AUTO_REMOVED);
         // mark as unlocked
-        messageDelivery.setLockedDate(null);
+        messageDelivery.setLockedDateValue(null);
         businessObjectDao.save(messageDelivery);
     }
 

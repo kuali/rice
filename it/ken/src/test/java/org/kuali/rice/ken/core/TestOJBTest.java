@@ -19,9 +19,9 @@ import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.junit.Test;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.dao.BusinessObjectDaoTestCaseBase;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
@@ -100,15 +100,15 @@ public class TestOJBTest extends BusinessObjectDaoTestCaseBase {
 
         System.err.println(fullQueryCriteria.toString());
 
-        Query q = QueryFactory.newQuery(Notification.class, fullQueryCriteria);
+        Query q = QueryFactory.newQuery(NotificationBo.class, fullQueryCriteria);
         System.err.println(q.toString());
 
     }
     @Test
     public void testUpdateRelationships() {
-        NotificationChannel channel1 = MockObjectsUtil.getTestChannel1();
-        NotificationChannel channel2 = MockObjectsUtil.getTestChannel2();
-        NotificationProducer mockProducer1 = MockObjectsUtil.getTestProducer1();
+        NotificationChannelBo channel1 = MockObjectsUtil.getTestChannel1();
+        NotificationChannelBo channel2 = MockObjectsUtil.getTestChannel2();
+        NotificationProducerBo mockProducer1 = MockObjectsUtil.getTestProducer1();
 
         businessObjectDao.save(mockProducer1);
         assertEquals(0, mockProducer1.getChannels().size());
@@ -122,7 +122,7 @@ public class TestOJBTest extends BusinessObjectDaoTestCaseBase {
 
         // ojb doesn't update the collections of the child in the relationship on save, despite auto-update...
         // so I'm forced to load it again
-        mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+        mockProducer1 = (NotificationProducerBo) businessObjectDao.findById(NotificationProducerBo.class, mockProducer1.getId());
         assertEquals(1, mockProducer1.getChannels().size());
 
         channel2.getProducers().add(mockProducer1);	
@@ -130,7 +130,7 @@ public class TestOJBTest extends BusinessObjectDaoTestCaseBase {
 
         assertEquals(1, channel2.getProducers().size());
 
-        mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+        mockProducer1 = (NotificationProducerBo) businessObjectDao.findById(NotificationProducerBo.class, mockProducer1.getId());
 
         assertEquals(2, mockProducer1.getChannels().size());
     }

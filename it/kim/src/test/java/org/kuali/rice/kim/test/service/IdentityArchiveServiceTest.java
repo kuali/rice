@@ -18,6 +18,9 @@ package org.kuali.rice.kim.test.service;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -28,6 +31,8 @@ import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,6 +77,17 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 		final int maxWriteQueueSize =
 			Integer.valueOf(ConfigContext.getCurrentContextConfig().getProperty("kim.identityArchiveServiceImpl.maxWriteQueueSize"));
 
+
+        //flush the archive service before trying this to make sure no records are sitting waiting for flush
+        identityArchiveService.flushToArchive();
+        // give it a second or 2 to flush
+        log.info("Sleeping, waiting for the flush!");
+        for (int j=2; j >= 0; j--) {
+            Thread.sleep(1000);
+            log.info(String.valueOf(j));
+        }
+        log.info("Done sleeping!");
+
 		List<EntityDefault> added = new ArrayList<EntityDefault>();
 
 		// exceed the max write queue size to initiate a flush
@@ -92,9 +108,12 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 			added.add(bogusUserInfo);
 		}
 
-		// give it a second or three to flush
+		// give it a second or 10 to flush
 		log.info("Sleeping, hoping for a flush to occur!");
-		Thread.sleep(1000);
+        for (int j=10; j >= 0; j--) {
+            Thread.sleep(1000);
+            log.info(String.valueOf(j));
+        }
 		log.info("Done sleeping!");
 
 		// these should have been flushed by now, test retrieval

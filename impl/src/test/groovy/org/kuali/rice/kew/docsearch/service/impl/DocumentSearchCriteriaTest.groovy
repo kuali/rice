@@ -38,10 +38,13 @@ class DocumentSearchCriteriaTest {
 
     @Test
     public void test_Xml_Marshal_Unmarshal() {
-        //JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create("name"), XML, DocumentSearchCriteria.class)
-        // DateTimeAdapter ensures DateTimes are marshalled appropriately, but MultiValuedStringMapAdapter is not fully implemented
+        // DateTimeAdapter ensures DateTimes are marshalled appropriately
         DocumentSearchCriteria c = createWithoutDocAttribs("name")
         assertEquals(c, unmarshalJAXB(marshalJAXB(c)))
+
+        // test w/ full object including attributes
+        c = create("name");
+        assertEquals(c, unmarshalJAXB(marshalJAXB(c)));
     }
 
     @Test

@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.krms.api.KrmsConstants;
 
 /**
  * Concrete model object implementation of KRMS KrmsAttributeDefinition. 
@@ -377,5 +378,9 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
         final static String DESCRIPTION = "description";
 		final static String COMPONENT_NAME = "componentName";
 		final static String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0 + "/" + KrmsAttributeDefinition.Constants.TYPE_NAME;
     }
 }

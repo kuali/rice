@@ -177,14 +177,8 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
             throw new RiceIllegalArgumentException(ATTRIBUTE_FIELD_NAME + " attribute must not be null or blank");
         }
 
-        String peopleFlowName = actionDefinition.getAttributes().get(NAME_ATTRIBUTE_FIELD);
-
-        if (StringUtils.isBlank(peopleFlowName)) {
-            throw new RiceIllegalArgumentException(NAME_ATTRIBUTE_FIELD + " attribute must not be null or blank");
-        }
-
         // if the ActionDefinition is valid, constructing the PeopleFlowAction is cake
-        return new PeopleFlowAction(type, peopleFlowId, peopleFlowName);
+        return new PeopleFlowAction(type, peopleFlowId);
     }
 
     @Override
@@ -214,8 +208,12 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         Map<String, String> lookup = new HashMap<String, String>();
         lookup.put(ATTRIBUTE_FIELD_NAME, "id");
         quickFinderBuilder.setLookupParameters(lookup);
+        
+        Map<String,String> fieldConversions = new HashMap<String, String>();
+        fieldConversions.put("id", ATTRIBUTE_FIELD_NAME);
+        fieldConversions.put("name", NAME_ATTRIBUTE_FIELD);
 
-        quickFinderBuilder.setFieldConversions(Collections.singletonMap("id", ATTRIBUTE_FIELD_NAME));
+        quickFinderBuilder.setFieldConversions(fieldConversions);
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));
@@ -250,26 +248,11 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
 
-        RemotableQuickFinder.Builder quickFinderBuilder =
-                RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
-        Map<String, String> lookup = new HashMap<String, String>();
-        lookup.put(NAME_ATTRIBUTE_FIELD, "name");
-        quickFinderBuilder.setLookupParameters(lookup);
-
-        quickFinderBuilder.setFieldConversions(Collections.singletonMap("name", NAME_ATTRIBUTE_FIELD));
-
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));
         controlBuilder.setWatermark("PeopleFlow Name");
 
-        RemotableAttributeLookupSettings.Builder lookupSettingsBuilder = RemotableAttributeLookupSettings.Builder.create();
-        lookupSettingsBuilder.setCaseSensitive(Boolean.TRUE);
-        lookupSettingsBuilder.setInCriteria(true);
-        lookupSettingsBuilder.setInResults(true);
-        lookupSettingsBuilder.setRanged(false);
-
         RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(NAME_ATTRIBUTE_FIELD);
-        builder.setAttributeLookupSettings(lookupSettingsBuilder);
         builder.setRequired(true);
         builder.setDataType(DataType.STRING);
         builder.setControl(controlBuilder);
@@ -278,7 +261,6 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         builder.setMinLength(Integer.valueOf(1));
         builder.setMaxLength(Integer.valueOf(40));
         builder.setConstraintText("size 40");
-        builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
         return builder.build();
     }
@@ -390,19 +372,14 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         private final Type type;
         private final String peopleFlowId;
-        private final String peopleFlowName;
 
-        private PeopleFlowAction(Type type, String peopleFlowId, String peopleFlowName) {
+        private PeopleFlowAction(Type type, String peopleFlowId) {
 
             if (type == null) throw new IllegalArgumentException("type must not be null");
             if (StringUtils.isBlank(peopleFlowId)) throw new IllegalArgumentException("peopleFlowId must not be null or blank");
 
-            // DISABLING for now, see KULRICE-6004
-//            if (StringUtils.isBlank(peopleFlowName)) throw new IllegalArgumentException("peopleFlowName must not be null or blank");
-
             this.type = type;
             this.peopleFlowId = peopleFlowId;
-            this.peopleFlowName = peopleFlowName;
         }
 
         @Override

@@ -39,10 +39,19 @@ public interface RouteModule {
     List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;
 
     /**
-     * The route module will resolve the given responsibilityId and return an object that contains the key to
-     * either a user or a workgroup.
-     * @param rId ResponsibiliyId that we need resolved.
-     * @return The ResponsibleParty containing a key to a user or workgroup.
+     * The route module will re-resolve the given responsibilityId and return an object that contains the key to either
+     * a user, group, or role.  The original responsibility associated with the given id will then be swapped with the
+     * new ResponsibleParty when routing is resolved.
+     *
+     * <p>This method is intended to allow for the calling code to be able to "switch-out" one responsibility for
+     * another (in the case of a change to an assigned reponsibility).</p>
+     *
+     * <p>Returning null from this method will indicate that the original responsibile party should remain unchanged.
+     * This is typically the recommended default for implementation of this method and covers most use cases.</p>
+     *
+     * @param responsibilityId the id of the responsibility to be resolved
+     * @return the responsibility party with which to replace the original responsibility, or null if the responsibility
+     * should remain unchanged.
      */
     ResponsibleParty resolveResponsibilityId(String responsibilityId) throws WorkflowException;
 

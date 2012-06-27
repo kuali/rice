@@ -449,4 +449,6 @@
   <bean id="componentSectionPermissionTypeService"
         class="org.kuali.rice.kns.service.impl.ComponentSectionPermissionTypeServiceImpl"/>
 
+  <bean id="documentHelperService" class="org.kuali.rice.kns.service.impl.DocumentHelperServiceImpl"/>
+
   </beans>

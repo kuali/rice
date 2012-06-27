@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
@@ -46,7 +47,9 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.springframework.util.CollectionUtils;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -178,7 +181,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
-        return hasResp(principalId, namespaceCode, responsibilities, qualification);
+        return hasResp(principalId, namespaceCode, responsibilities, qualification, null);
     }
 
     @Override
@@ -193,15 +196,17 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
 
         // get all the responsibility objects whose name match that requested
-        final List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
-        return hasResp(principalId, namespaceCode, responsibilities, qualification);
+        final List<Responsibility> responsibilities = findResponsibilitiesByTemplate(namespaceCode, respTemplateName);
+        return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
     private boolean hasResp(final String principalId, final String namespaceCode,
-            final List<Responsibility> responsibilities, final Map<String, String> qualification) throws RiceIllegalArgumentException {
+            final List<Responsibility> responsibilities,
+            final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
         // now, filter the full list by the detail passed
         final List<String> ids = new ArrayList<String>();
-        for (Responsibility r : getMatchingResponsibilities(responsibilities, null)) {
+        for (Responsibility r : getMatchingResponsibilities(responsibilities, responsibilityDetails)) {
             ids.add(r.getId());
         }
         final List<String> roleIds = getRoleIdsForResponsibilities(ids);
@@ -214,10 +219,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(responsibilityName, "responsibilityName");
         incomingParamCheck(qualification, "qualification");
+        
+        if ( LOG.isDebugEnabled() ) {
+            logResponsibilityCheck( namespaceCode, responsibilityName, qualification, Collections.<String, String>emptyMap() );
+        }
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
-        return getRespActions(namespaceCode, responsibilities, qualification);
+        return getRespActions(namespaceCode, responsibilities, qualification, null);
     }
 
     @Override
@@ -227,19 +236,32 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(respTemplateName, "respTemplateName");
         incomingParamCheck(qualification, "qualification");
+        
+        if ( LOG.isDebugEnabled() ) {
+            logResponsibilityCheck( namespaceCode, respTemplateName, qualification, responsibilityDetails );
+        }
 
         // get all the responsibility objects whose name match that requested
-        List<Responsibility> responsibilities = findRespsByTemplate(namespaceCode, respTemplateName);
-        return getRespActions(namespaceCode, responsibilities, qualification);
+        List<Responsibility> responsibilities = findResponsibilitiesByTemplate(namespaceCode, respTemplateName);
+        return getRespActions(namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
-    private List<ResponsibilityAction> getRespActions(final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification) {
+    private List<ResponsibilityAction> getRespActions(final String namespaceCode,
+            final List<Responsibility> responsibilities,
+            final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) {
         // now, filter the full list by the detail passed
-        List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, null);
+        List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, responsibilityDetails);
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
         for (Responsibility r : applicableResponsibilities) {
             List<String> roleIds = getRoleIdsForResponsibility(r.getId());
             results.addAll(getActionsForResponsibilityRoles(r, roleIds, qualification));
+        }
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Found " + results.size() + " matching ResponsibilityAction objects");
+            if ( LOG.isTraceEnabled() ) {
+                LOG.trace( results );
+            }
         }
         return results;
     }
@@ -290,29 +312,67 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     private RoleResponsibilityAction getResponsibilityAction(String roleId, String responsibilityId, String roleMemberId) {
-        final Predicate p =
-                or(
-                        and(
-                                equal("roleResponsibility.responsibilityId", responsibilityId),
-                                equal("roleResponsibility.roleId", roleId),
-                                equal("roleResponsibility.active", "Y"),
-                                or(
-                                        equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId),
-                                        equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*")
-                                )
-                        ),
-                        and(
-                                equal("roleResponsibilityId", "*"),
-                                equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId)
-                        )
+        RoleResponsibilityAction result = null;
+
+        // KULRICE-7459: Requisition, PO and its subtype documents are going to final status where they should not.
+        //
+        // need to do in 2 steps due to "*" wildcard convention in column data for role member id and role
+        // responsibility id.  Well, we could do in 1 step w/ straight SQL, but not w/ Criteria API due to the
+        // INNER JOIN automatically created between RoleResponsibility and RoleResponsibilityAction tables.
+
+        final Predicate roleResponsibilityPredicate =
+                and(
+                        equal("responsibilityId", responsibilityId),
+                        equal("roleId", roleId),
+                        equal("active", "Y")
                 );
 
-        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(p);
-        final GenericQueryResults<RoleResponsibilityActionBo> results = criteriaLookupService.lookup(RoleResponsibilityActionBo.class, builder.build());
-        final List<RoleResponsibilityActionBo> bos = results.getResults();
-        //seems a little dubious that we are just returning the first result...
-        return !bos.isEmpty() ? RoleResponsibilityActionBo.to(bos.get(0)) : null;
+        // First get RoleResponsibilityBos
+        final QueryByCriteria.Builder roleResponsibilityQueryBuilder = QueryByCriteria.Builder.create();
+        roleResponsibilityQueryBuilder.setPredicates(roleResponsibilityPredicate);
+        final GenericQueryResults<RoleResponsibilityBo> roleResponsibilityResults =
+                criteriaLookupService.lookup(RoleResponsibilityBo.class, roleResponsibilityQueryBuilder.build());
+        final List<RoleResponsibilityBo> roleResponsibilityBos = roleResponsibilityResults.getResults();
+
+        if (!CollectionUtils.isEmpty(roleResponsibilityBos)) { // if there are any...
+            // Then query RoleResponsibilityActionBos based on them
+
+            List<String> roleResponsibilityIds = new ArrayList<String>(roleResponsibilityBos.size());
+            for (RoleResponsibilityBo roleResponsibilityBo : roleResponsibilityBos) {
+                roleResponsibilityIds.add(roleResponsibilityBo.getRoleResponsibilityId());
+            }
+
+            final Predicate roleResponsibilityActionPredicate =
+                    or(
+                            and(
+                                    in("roleResponsibilityId", roleResponsibilityIds.toArray()),
+                                    or(
+                                            equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId),
+                                            equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, "*")
+                                    )
+                            ),
+                            and(
+                                    equal("roleResponsibilityId", "*"),
+                                    equal(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId)
+                            )
+                    );
+
+            final QueryByCriteria.Builder roleResponsibilityActionQueryBuilder = QueryByCriteria.Builder.create();
+            roleResponsibilityActionQueryBuilder.setPredicates(roleResponsibilityActionPredicate);
+
+            final GenericQueryResults<RoleResponsibilityActionBo> roleResponsibilityActionResults =
+                    criteriaLookupService.lookup(
+                            RoleResponsibilityActionBo.class, roleResponsibilityActionQueryBuilder.build()
+                    );
+
+            final List<RoleResponsibilityActionBo> roleResponsibilityActionBos = roleResponsibilityActionResults.getResults();
+            //seems a little dubious that we are just returning the first result...
+            if (!roleResponsibilityActionBos.isEmpty()) {
+                result = RoleResponsibilityActionBo.to(roleResponsibilityActionBos.get(0));
+            };
+        }
+
+        return result;
     }
 
     @Override
@@ -402,7 +462,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
             final String serviceName = type.getServiceName();
             if (serviceName != null) {
-                ResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(serviceName);
+                ResponsibilityTypeService responsibiltyTypeService = GlobalResourceLoader.getService(QName.valueOf(serviceName));
                 if (responsibiltyTypeService != null) {
                     responsibilityTypeServices.put(responsibility.getTemplate().getId(), responsibiltyTypeService);
                 } else {
@@ -444,14 +504,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return Collections.unmodifiableList(roleIds);
     }
 
-    private List<Responsibility> findRespsByTemplate(final String namespaceCode, final String templateName) {
-        if (namespaceCode == null) {
-            throw new RiceIllegalArgumentException("namespaceCode is null");
-        }
 
-        if (templateName == null) {
-            throw new RiceIllegalArgumentException("name is null");
-        }
+    @Override
+    public List<Responsibility> findResponsibilitiesByTemplate(String namespaceCode, String templateName) {
 
         final Map<String, String> crit = new HashMap<String, String>();
         crit.put("template.namespaceCode", namespaceCode); 
@@ -489,6 +544,30 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     public void setRoleService(final RoleService roleService) {
         this.roleService = roleService;
+    }
+
+    protected void logResponsibilityCheck(String namespaceCode, String responsibilityName, 
+                    Map<String, String> responsibilityDetails, Map<String, String> qualification ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(  '\n' );
+        sb.append( "Get Resp Actions: " ).append( namespaceCode ).append( "/" ).append( responsibilityName ).append( '\n' );
+        sb.append( "             Details:\n" );
+        if ( responsibilityDetails != null ) {
+            sb.append( responsibilityDetails );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        sb.append( "             Qualifiers:\n" );
+        if ( qualification != null ) {
+            sb.append( qualification );
+        } else {
+            sb.append( "                         [null]\n" );
+        }
+        if (LOG.isTraceEnabled()) { 
+            LOG.trace( sb.append(ExceptionUtils.getStackTrace(new Throwable())));
+        } else {
+            LOG.debug(sb.toString());
+        }
     }
 
     private void incomingParamCheck(Object object, String name) {

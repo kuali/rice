@@ -18,6 +18,8 @@ package org.kuali.rice.krms.api.repository.type;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krms.api.KrmsConstants;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -43,6 +45,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName="createKrmsType")
     @WebResult(name = "krmsType")
+    @CacheEvict(value={KrmsTypeDefinition.Cache.NAME}, allEntries = true)
     KrmsTypeDefinition createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -55,6 +58,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName="updateKrmsType")
     @WebResult(name = "krmsType")
+    @CacheEvict(value={KrmsTypeDefinition.Cache.NAME}, allEntries = true)
     KrmsTypeDefinition updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -67,6 +71,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getTypeById")
     @WebResult(name = "type")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'id=' + #p0")
     KrmsTypeDefinition getTypeById(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException;
 
@@ -84,6 +89,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getTypeByName")
     @WebResult(name = "type")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     KrmsTypeDefinition getTypeByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name)
@@ -99,6 +105,7 @@ public interface KrmsTypeRepositoryService {
     @XmlElementWrapper(name = "namespaceTypes", required = true)
     @XmlElement(name = "namespaceType", required = false)
     @WebResult(name = "namespaceTypes")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'allByNamespaceCode=' + #p0")
     List<KrmsTypeDefinition> findAllTypesByNamespace(
     		@WebParam(name = "namespaceCode") String namespaceCode)
         throws RiceIllegalArgumentException;
@@ -112,6 +119,7 @@ public interface KrmsTypeRepositoryService {
     @XmlElementWrapper(name = "types", required = true)
     @XmlElement(name = "type", required = false)
     @WebResult(name = "types")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'all'")
     List<KrmsTypeDefinition> findAllTypes();
 
     /**
@@ -125,6 +133,7 @@ public interface KrmsTypeRepositoryService {
     @XmlElementWrapper(name = "agendaTypes", required = true)
     @XmlElement(name = "agendaType", required = false)
     @WebResult(name = "agendaTypes")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'{AgendaType}contextId=' + #p0")
     List<KrmsTypeDefinition> findAllAgendaTypesByContextId(
             @WebParam(name="contextId") String contextId)
         throws RiceIllegalArgumentException;
@@ -139,6 +148,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getAgendaTypeByAgendaTypeIdAndContextId")
     @WebResult(name = "type")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'agendaTypeId=' + #p0 + '|' + 'contextId=' + #p1")
     KrmsTypeDefinition getAgendaTypeByAgendaTypeIdAndContextId(
             @WebParam(name="agendaTypeId") String agendaTypeId,
             @WebParam(name="contextId") String contextId)
@@ -155,6 +165,7 @@ public interface KrmsTypeRepositoryService {
     @XmlElementWrapper(name = "ruleTypes", required = true)
     @XmlElement(name = "ruleType", required = false)
     @WebResult(name = "ruleTypes")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'{RuleType}contextId=' + #p0")
     List<KrmsTypeDefinition> findAllRuleTypesByContextId(
             @WebParam(name="contextId") String contextId)
         throws RiceIllegalArgumentException;
@@ -169,6 +180,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getRuleTypeByRuleTypeIdAndContextId")
     @WebResult(name = "ruleType")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'ruleTypeId=' + #p0 + '|' + 'contextId=' + #p1")
     KrmsTypeDefinition getRuleTypeByRuleTypeIdAndContextId(
             @WebParam(name="ruleTypeId") String ruleTypeId,
             @WebParam(name="contextId") String contextId)
@@ -185,6 +197,7 @@ public interface KrmsTypeRepositoryService {
     @XmlElementWrapper(name = "actionTypes", required = true)
     @XmlElement(name = "actionType", required = false)
     @WebResult(name = "actionTypes")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'{ActionType}contextId=' + #p0")
     List<KrmsTypeDefinition> findAllActionTypesByContextId(
             @WebParam(name="contextId") String contextId)
         throws RiceIllegalArgumentException;
@@ -199,6 +212,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getActionTypeByActionTypeIdAndContextId")
     @WebResult(name = "actionType")
+    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'actionTypeId=' + #p0 + '|' + 'contextId=' + #p1")
     KrmsTypeDefinition getActionTypeByActionTypeIdAndContextId(
             @WebParam(name="actionTypeId") String actionTypeId,
             @WebParam(name="contextId") String contextId)
@@ -215,6 +229,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getAttributeDefinitionById")
     @WebResult(name = "attribute")
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'attributeDefinitionId=' + #p0")
     KrmsAttributeDefinition getAttributeDefinitionById(@WebParam(name = "attributeDefinitionId") String attributeDefinitionId)
             throws RiceIllegalArgumentException;
 
@@ -231,6 +246,7 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getAttributeDefinitionByName")
     @WebResult(name = "attribute")
+    @Cacheable(value= KrmsAttributeDefinition.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     KrmsAttributeDefinition getAttributeDefinitionByName(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name

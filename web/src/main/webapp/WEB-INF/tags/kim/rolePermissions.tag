@@ -27,7 +27,7 @@
 	                <div align="center">
 	                	<br/>
 						<b>Add Permission ID:</b>
-						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.id}"/>
+             <kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.id}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.permission.UberPermissionBo" fieldConversions=
 	                	"id:permission.permissionId,template.name:permission.permission.template.name,name:permission.permission.name,namespaceCode:permission.permission.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="permission.name" />
@@ -78,7 +78,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	              	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.detailObjectsValues}" readOnly="true"  />
+	              	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permissionDetailValues"  attributeEntry="${permissionAttributes.detailObjectsValues}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

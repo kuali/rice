@@ -88,17 +88,6 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
     	KEWServiceLocator.getRuleService().makeCurrent(getThisRule(), true);
     }
 
-    /**
-     * A complete override of the implementation for saving a Rule
-     */
-    @Override
-    public void saveDataObject() {
-    	WebRuleUtils.clearKeysForSave(getThisRule());
-    	WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
-    	WebRuleUtils.translateFieldValuesForSave(getThisRule());
-    	KEWServiceLocator.getRuleService().makeCurrent(getThisRule(), true);
-    }
-    
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
     	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));
@@ -190,9 +179,6 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		super.setNewCollectionLineDefaultValues(collectionName, addLine);
 		if (KEWPropertyConstants.RESP_SECTION_NAME_SET.contains(collectionName)) {
 			RuleTemplateBo ruleTemplate = getThisRule().getRuleTemplate();
-            //if (ruleTemplate == null && getThisRule().getRuleTemplateId() != null) {
-            //    ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(getThisRule().getRuleTemplateId());
-            //}
 			if(ruleTemplate.getDefaultActionRequestValue() != null && ruleTemplate.getDefaultActionRequestValue().getValue() != null){
 				((RuleResponsibilityBo) addLine).setActionRequestedCd(ruleTemplate.getDefaultActionRequestValue().getValue());
 	        }

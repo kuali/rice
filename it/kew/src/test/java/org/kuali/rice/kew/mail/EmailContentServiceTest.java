@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kew.mail;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -66,13 +68,13 @@ public class EmailContentServiceTest extends KEWTestCase {
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
 		actionListFilter.setDocumentType(doc.getDocumentTypeName());
-		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, actionListFilter);
+		Collection<ActionItemActionListExtension> actionItems = KEWServiceLocator.getActionListService().getActionList(ewestfalPrincipalId, actionListFilter);
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
 		Person person = KimApiServiceLocator.getPersonService().getPerson(ewestfalPrincipalId);
 		// this would blow up before the fix
-		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(actionItems));
+		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(new ArrayList<ActionItem>(actionItems)));
 	}
 	
 	/**
@@ -93,12 +95,12 @@ public class EmailContentServiceTest extends KEWTestCase {
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
 		actionListFilter.setDocumentType(doc.getDocumentTypeName());
-		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user1PrincipalId, actionListFilter);
+		Collection<ActionItemActionListExtension> actionItems = KEWServiceLocator.getActionListService().getActionList(user1PrincipalId, actionListFilter);
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
 		Person person = KimApiServiceLocator.getPersonService().getPerson(user1PrincipalId);
-		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(actionItems));
+		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(new ArrayList<ActionItem>(actionItems)));
 	}
 	
 	/**
@@ -119,11 +121,11 @@ public class EmailContentServiceTest extends KEWTestCase {
 		
 		ActionListFilter actionListFilter = new ActionListFilter();
 		actionListFilter.setDocumentType(doc.getDocumentTypeName());
-		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionList(user1PrincipalId, actionListFilter);
+		Collection<ActionItemActionListExtension> actionItems = KEWServiceLocator.getActionListService().getActionList(user1PrincipalId, actionListFilter);
 
 		EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
 		
 		Person person = KimApiServiceLocator.getPersonService().getPerson(user1PrincipalId);
-		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(actionItems));
+		EmailContent emailContent = emailContentService.generateDailyReminder(person, ActionItem.to(new ArrayList<ActionItem>(actionItems)));
 	}
 }

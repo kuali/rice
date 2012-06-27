@@ -15,31 +15,41 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.Exporter;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
+import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * This class is the action form for inquiries.
@@ -88,7 +98,7 @@ public class InquiryForm extends KualiForm {
         this.inactiveRecordDisplay = null;
     }
 
-        @Override
+    @Override
     public void populate(HttpServletRequest request) {
     // set to null for security reasons (so POJO form base can't access it), then we'll make an new instance of it after
     // POJO form base is done
@@ -364,14 +374,14 @@ public class InquiryForm extends KualiForm {
     }
 
     protected void populateInactiveRecordsInIntoInquirable(Inquirable inquirable, HttpServletRequest request) {
-	for (Enumeration e = request.getParameterNames(); e.hasMoreElements();) {
-	    String paramName = (String) e.nextElement();
-	    if (paramName.startsWith(KRADConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX)) {
-		String collectionName = StringUtils.substringAfter(paramName, KRADConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX);
-		Boolean showInactive = Boolean.parseBoolean(request.getParameter(paramName));
-		inquirable.setShowInactiveRecords(collectionName, showInactive);
-	    }
-	}
+        for (Enumeration e = request.getParameterNames(); e.hasMoreElements();) {
+            String paramName = (String) e.nextElement();
+            if (paramName.startsWith(KRADConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX)) {
+                String collectionName = StringUtils.substringAfter(paramName, KRADConstants.INACTIVE_RECORD_DISPLAY_PARAM_PREFIX);
+                Boolean showInactive = Boolean.parseBoolean(request.getParameter(paramName));
+                inquirable.setShowInactiveRecords(collectionName, showInactive);
+            }
+        }
     }
 
     public String getFormKey() {

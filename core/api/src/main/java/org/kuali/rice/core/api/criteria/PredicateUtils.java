@@ -31,6 +31,26 @@ public final class PredicateUtils {
         throw new UnsupportedOperationException("do not call");
     }
 
+    public static Predicate convertObjectMapToPredicate(Map<String, Object> criteria) {
+        List<Predicate> p = new ArrayList<Predicate>();
+        for (Map.Entry<String, Object> entry : criteria.entrySet()) {
+            if (entry.getValue() != null) {
+                if (entry.getValue() instanceof String) {
+                    p.add(equalIgnoreCase(entry.getKey(), (String)entry.getValue()));
+                } else {
+                    p.add(equal(entry.getKey(), (String)entry.getValue()));
+                }
+
+            }
+        }
+        //wrap everything in an 'and'
+        return and(p.toArray(new Predicate[p.size()]));
+    }
+
+
+    /*
+     * Method to assist in converting a map of values for a lookup 
+     */
     public static Predicate convertMapToPredicate(Map<String, String> criteria) {
         List<Predicate> p = new ArrayList<Predicate>();
         for (Map.Entry<String, String> entry : criteria.entrySet()) {
@@ -98,9 +118,9 @@ public final class PredicateUtils {
             }
         } else {
             if (isNot(value)) {
-                return notEqual(key, stripNot(value));
+                return notEqualIgnoreCase(key, stripNot(value));
             } else {
-                return equal(key, value);
+                return equalIgnoreCase(key, value);
             }
         }
     }
@@ -111,7 +131,7 @@ public final class PredicateUtils {
  		}
 
  		valueEntered = valueEntered.trim();
-
+        valueEntered = valueEntered.replaceAll("%", "*");
  		if(lRet == null){
  			throw new NullPointerException("The list passed in is by reference and should never be null.");
  		}

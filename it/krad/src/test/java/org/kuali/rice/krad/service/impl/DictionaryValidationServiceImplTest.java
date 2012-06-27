@@ -176,7 +176,7 @@ public class DictionaryValidationServiceImplTest {
         Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
         Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
         
-        Assert.assertTrue(hasError(dictionaryValidationResult, "street2", RiceKeyConstants.ERROR_REQUIRED));        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "street2", RiceKeyConstants.ERROR_REQUIRED));
     }
 
 	@Test
@@ -288,9 +288,9 @@ public class DictionaryValidationServiceImplTest {
         dictionaryValidationResult = service.validate(acmeCompany, "org.kuali.rice.krad.datadictionary.validation.Company",companyEntry, true);
         Assert.assertEquals(5, dictionaryValidationResult.getNumberOfErrors());
         
-        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[1].employeeId", RiceKeyConstants.ERROR_REQUIRED));        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[1].employeeId", RiceKeyConstants.ERROR_REQUIRED));
         Assert.assertTrue(hasError(dictionaryValidationResult, "employees[1].employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
-        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[2].employeeId", RiceKeyConstants.ERROR_REQUIRED));        
+        Assert.assertTrue(hasError(dictionaryValidationResult, "employees[2].employeeId", RiceKeyConstants.ERROR_REQUIRED));
         Assert.assertTrue(hasError(dictionaryValidationResult, "employees[2].employeeDetails", RiceKeyConstants.ERROR_REQUIRED));
 
 	}

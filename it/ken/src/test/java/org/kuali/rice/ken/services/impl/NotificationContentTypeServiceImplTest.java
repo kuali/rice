@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
@@ -39,9 +39,9 @@ public class NotificationContentTypeServiceImplTest extends KENTestCase {
         int originalCurrentSize = impl.getAllCurrentContentTypes().size();
         int originalSize = impl.getAllContentTypes().size();
 
-        Notification n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
+        NotificationBo n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
         
-        NotificationContentType ct = n.getContentType(); 
+        NotificationContentTypeBo ct = n.getContentType();
         int originalVersion = ct.getVersion();
         assertTrue(ct.isCurrent());
 
@@ -57,7 +57,7 @@ public class NotificationContentTypeServiceImplTest extends KENTestCase {
         assertEquals(originalVersion + 1, ct.getVersion().intValue());
         
         n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
-        NotificationContentType nct = n.getContentType();
+        NotificationContentTypeBo nct = n.getContentType();
         assertEquals(ct.getId(), nct.getId());
         assertEquals(ct.getVersion(), nct.getVersion());
         assertEquals(ct.isCurrent(), nct.isCurrent());
@@ -71,7 +71,7 @@ public class NotificationContentTypeServiceImplTest extends KENTestCase {
         int originalCurrentSize = impl.getAllCurrentContentTypes().size();
         int originalSize = impl.getAllContentTypes().size();
 
-        NotificationContentType type = new NotificationContentType();
+        NotificationContentTypeBo type = new NotificationContentTypeBo();
         type.setDescription("blah");
         type.setName("test");
         type.setNamespace("test");
@@ -89,7 +89,7 @@ public class NotificationContentTypeServiceImplTest extends KENTestCase {
         assertEquals(true, type.isCurrent());
         assertEquals(Integer.valueOf(0), type.getVersion());
 
-        type = new NotificationContentType();
+        type = new NotificationContentTypeBo();
         type.setDescription("blah 2");
         type.setName("test");
         type.setNamespace("test 2");

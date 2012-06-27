@@ -50,7 +50,6 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 
 		if (object != null){
 			beanWrapper = new BeanWrapperImpl(object);
-            beanWrapper.setAutoGrowNestedPaths(true);
 		}
 	}
 	

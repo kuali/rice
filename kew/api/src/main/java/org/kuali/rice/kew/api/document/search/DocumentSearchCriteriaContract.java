@@ -290,6 +290,18 @@ public interface DocumentSearchCriteriaContract {
     Map<String, List<String>> getDocumentAttributeValues();
 
     /**
+     * Returns a map of custom options for document search when either executing the document search or returning results.
+     * The key of the map is the name of the document attribute, while the list of values contains values of those
+     * attributes to customize against.
+     *
+     * <p>In order for the search options to be processed as part of the criteria during the search, a custom document
+     * search customizer must be used to fill and process these values.
+     * @since 2.1.1
+     * @return
+     */
+    Map<String, List<String>> getSearchOptions();
+
+    /**
      * Return the name under which to save this criteria so that it can be recalled and used again in the future.  If no
      * save name is specified, then this criteria will not be saved for future use.
      * @return

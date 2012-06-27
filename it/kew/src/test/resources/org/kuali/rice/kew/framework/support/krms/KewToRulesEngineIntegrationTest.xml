@@ -22,6 +22,7 @@
 
 		<documentType>
 			<name>RulesEngineIntegration-Simple</name>
+			<label>RulesEngineIntegration-Simple</label>
       <description>Routes to a simple people flow using KRMS rules engine</description>
       <docHandler>none</docHandler>
 			<routePaths>

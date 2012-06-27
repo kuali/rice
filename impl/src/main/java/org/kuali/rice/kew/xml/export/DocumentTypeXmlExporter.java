@@ -195,7 +195,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
             for (Iterator iterator = documentType.getProcesses().iterator(); iterator.hasNext();) {
                 ProcessDefinitionBo process = (ProcessDefinitionBo) iterator.next();
                 Element routePathElement = renderer.renderElement(routePathsElement, ROUTE_PATH);
-                if (!process.isInitial()) {
+                if (!process.isInitial() && process.getInitialRouteNode() != null) {
                     renderer.renderAttribute(routePathElement, INITIAL_NODE, process.getInitialRouteNode().getRouteNodeName());
                     renderer.renderAttribute(routePathElement, PROCESS_NAME, process.getName());
                 }
@@ -238,22 +238,24 @@ public class DocumentTypeXmlExporter implements XmlExporter {
     private void exportNodeGraph(Element parent, RouteNode node, SplitJoinContext splitJoinContext) {
         NodeType nodeType = null;
 
-        String contentFragment = node.getContentFragment();
-        // some of the older versions of rice do not have content fragments
-        if(contentFragment == null || "".equals(contentFragment)){
-        	nodeType = getNodeTypeForNode(node);
-        }else{
-        	// I'm not sure if this should be the default implementation because
-        	// it uses a string comparison instead of a classpath check.
-        	nodeType = this.getNodeTypeForNodeFromFragment(node);
-        }
+        if (node != null) {
+            String contentFragment = node.getContentFragment();
+            // some of the older versions of rice do not have content fragments
+            if(contentFragment == null || "".equals(contentFragment)){
+                nodeType = getNodeTypeForNode(node);
+            }else{
+                // I'm not sure if this should be the default implementation because
+                // it uses a string comparison instead of a classpath check.
+                nodeType = this.getNodeTypeForNodeFromFragment(node);
+            }
 
-        if (nodeType.isAssignableFrom(NodeType.SPLIT)) {
-            exportSplitNode(parent, node, nodeType, splitJoinContext);
-        } else if (nodeType.isAssignableFrom(NodeType.JOIN)) {
-            exportJoinNode(parent, node, nodeType, splitJoinContext);
-        } else {
-            exportSimpleNode(parent, node, nodeType, splitJoinContext);
+            if (nodeType.isAssignableFrom(NodeType.SPLIT)) {
+                exportSplitNode(parent, node, nodeType, splitJoinContext);
+            } else if (nodeType.isAssignableFrom(NodeType.JOIN)) {
+                exportJoinNode(parent, node, nodeType, splitJoinContext);
+            } else {
+                exportSimpleNode(parent, node, nodeType, splitJoinContext);
+            }
         }
     }
 

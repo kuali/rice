@@ -19,7 +19,15 @@ package org.kuali.rice.kim.api.identity.principal;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-
+/**
+ * This is a contract for Principal.
+ *
+ * A principal represents an entity that can authenticate. A principal has an ID that is
+ * used to uniquely identify it. It also has a name that represents the principal's username.
+ * All principals are associated with one and only one entity.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface PrincipalContract extends Inactivatable, Versioned, GloballyUnique {
    /**
      * Gets this {@link PrincipalContract}'s id.

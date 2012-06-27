@@ -52,9 +52,17 @@
 		</reference-descriptor>
 -->
 		<reference-descriptor name="attachment" class-ref="org.kuali.rice.krad.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
-			auto-delete="object" proxy="false"> <!--cannot proxy or ojb breaks on calling hashcode -->
+			auto-delete="object" proxy="true">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
+    <collection-descriptor auto-retrieve="true" auto-update="object" auto-delete="object"
+                           element-class-ref="org.kuali.rice.krad.bo.MultiDocumentAttachment"
+                           name="attachments"
+                           orderby="id"
+                           sort="ASC"
+                           proxy="true">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
 	</class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kns.document.MaintenanceDocumentBase" table="KRNS_MAINT_DOC_T">
@@ -70,13 +78,32 @@
 		</reference-descriptor>
 -->
 		<reference-descriptor name="attachment" class-ref="org.kuali.rice.krad.bo.DocumentAttachment" auto-retrieve="true" auto-update="object"
-			auto-delete="object" proxy="false"> <!--cannot proxy or ojb breaks on calling hashcode -->
+			auto-delete="object" proxy="true">
 			<foreignkey field-ref="documentNumber" />
 		</reference-descriptor>
+    <collection-descriptor auto-retrieve="true" auto-update="object" auto-delete="object"
+                           element-class-ref="org.kuali.rice.krad.bo.MultiDocumentAttachment"
+                           name="attachments"
+                           orderby="id"
+                           sort="ASC"
+                           proxy="true">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
 	</class-descriptor>
 
-	<class-descriptor class="org.kuali.rice.krad.bo.DocumentAttachment" table="KRNS_MAINT_DOC_ATT_T">
-		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
+  <class-descriptor class="org.kuali.rice.krad.bo.DocumentAttachment" table="KRNS_MAINT_DOC_ATT_T">
+    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="attachmentContent" column="ATT_CNTNT" jdbc-type="LONGVARBINARY"/>
+    <field-descriptor name="fileName" column="FILE_NM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="contentType" column="CNTNT_TYP" jdbc-type="VARCHAR"/>
+
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+  </class-descriptor>
+
+	<class-descriptor class="org.kuali.rice.krad.bo.MultiDocumentAttachment" table="KRNS_MAINT_DOC_ATT_LST_T">
+    <field-descriptor name="id" column="ATT_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRNS_MAINT_DOC_ATT_S"/>
+		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="attachmentContent" column="ATT_CNTNT" jdbc-type="LONGVARBINARY"/>
 		<field-descriptor name="fileName" column="FILE_NM" jdbc-type="VARCHAR"/>
 		<field-descriptor name="contentType" column="CNTNT_TYP" jdbc-type="VARCHAR"/>

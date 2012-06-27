@@ -45,8 +45,10 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
 	@Override
 	protected void loadKimObject(HttpServletRequest request, IdentityManagementDocumentFormBase form) {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
-        String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
-        
+        String id = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
+        String altId = request.getParameter(KimConstants.AttributeConstants.GROUP_ID);
+
+        String groupId = StringUtils.isNotEmpty(id) ? id : altId;
         Group group = null;
         if (StringUtils.isNotEmpty(groupId)) {
         	group = KimApiServiceLocator.getGroupService().getGroup(groupId);

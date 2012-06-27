@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.impl.doctype;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -27,6 +28,8 @@ import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -73,6 +76,16 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         }
         org.kuali.rice.kew.doctype.bo.DocumentType documentTypeBo = documentTypeDao.findByName(documentTypeName);
         return org.kuali.rice.kew.doctype.bo.DocumentType.to(documentTypeBo);
+    }
+
+    @Override
+    public List<org.kuali.rice.kew.api.doctype.DocumentType> findAllDocumentTypes() {
+        List<org.kuali.rice.kew.doctype.bo.DocumentType> documentTypeBos = documentTypeDao.findAllCurrent();
+        List<org.kuali.rice.kew.api.doctype.DocumentType> currentDocTypes = new ArrayList<org.kuali.rice.kew.api.doctype.DocumentType>();
+        for (org.kuali.rice.kew.doctype.bo.DocumentType dt : documentTypeBos) {
+            currentDocTypes.add(org.kuali.rice.kew.doctype.bo.DocumentType.to(dt));        
+        }
+        return Collections.unmodifiableList(currentDocTypes);
     }
 
     @Override

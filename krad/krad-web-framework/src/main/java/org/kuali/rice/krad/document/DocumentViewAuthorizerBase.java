@@ -95,6 +95,10 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
             actions.remove(KRADConstants.KUALI_ACTION_CAN_CANCEL);
         }
 
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_RECALL) && !canRecall(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_RECALL);
+        }
+
         if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SAVE) && !canSave(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_SAVE);
         }
@@ -194,6 +198,10 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
 
     public boolean canCancel(Document document, Person user) {
         return getDocumentAuthorizer().canCancel(document, user);
+    }
+
+    public boolean canRecall(Document document, Person user) {
+        return getDocumentAuthorizer().canRecall(document, user);
     }
 
     public boolean canCopy(Document document, Person user) {

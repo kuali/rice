@@ -34,6 +34,8 @@ import org.kuali.rice.kim.impl.permission.PermissionServiceImpl
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo
 import org.kuali.rice.kim.impl.role.RolePermissionBo
 import org.kuali.rice.krad.service.BusinessObjectService
+import org.apache.log4j.LogManager
+import org.apache.log4j.Level
 
 
 class PermissionServiceImplTest {
@@ -61,6 +63,14 @@ class PermissionServiceImplTest {
         for (bo in [firstPermissionBo, secondPermissionBo]) {
             samplePermissions.put(bo.id, bo)
         }
+    }
+
+    // Hack to set log level above the threshold where IdentityService will need to be configured and available
+    // to the GlobalResourceLoader (see PermissionServiceImpl.logAuthorizationCheck & logAuthorizationCheckByTemplate)
+    // and thus break some of the tests in here.
+    @Before
+    void setLogLevel() {
+        LogManager.getLogger(PermissionServiceImpl.class).setLevel(Level.INFO);
     }
 
     @Before

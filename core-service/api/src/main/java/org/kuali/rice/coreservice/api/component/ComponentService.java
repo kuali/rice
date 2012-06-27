@@ -44,7 +44,7 @@ public interface ComponentService {
      * @param namespaceCode the namespaceCode of the component
      * @param componentCode the componentCode of the component
      * @return the component with the given namespaceCode and componentCode
-     * @throws IllegalArgumentException if the namespaceCode or componentCode is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode or componentCode is null or blank
      */
     @WebMethod(operationName = "getComponentByCode")
     @WebResult(name = "component")
@@ -60,7 +60,7 @@ public interface ComponentService {
      *
      * @param namespaceCode the namespaceCode of the component
      * @return a list of components with the given namespaceCode
-     * @throws IllegalArgumentException if the namespaceCode is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode is null or blank
      */
     @WebMethod(operationName = "getAllComponentsByNamespaceCode")
     @WebResult(name = "components")
@@ -77,7 +77,7 @@ public interface ComponentService {
      *
      * @param namespaceCode the namespaceCode of the component
      * @return a list of active components with the given namespaceCode
-     * @throws IllegalArgumentException if the namespaceCode is null or blank
+     * @throws RiceIllegalArgumentException if the namespaceCode is null or blank
      */
     @WebMethod(operationName = "getActiveComponentsByNamespaceCode")
     @WebResult(name = "components")
@@ -94,7 +94,7 @@ public interface ComponentService {
      *
      * @param componentSetId the componentSetId of the component
      * @return a list of components with the given componentSetId
-     * @throws IllegalArgumentException if the componentSetId is null or blank
+     * @throws RiceIllegalArgumentException if the componentSetId is null or blank
      */
     @WebMethod(operationName = "getDerivedComponentSet")
     @WebResult(name = "components")

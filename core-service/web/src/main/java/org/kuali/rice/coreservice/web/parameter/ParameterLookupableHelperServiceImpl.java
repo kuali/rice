@@ -29,8 +29,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -44,14 +46,13 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 
     private static final Log LOG = LogFactory.getLog(ParameterLookupableHelperServiceImpl.class);
     private static final String COMPONENT_NAME = "component.name";
-    private static final String DERIVED_COMPONENT_NAME = "derivedComponent.name";
-    private static final String NAMESPACE_CODE = "namespaceCode";
+    private static final String COMPONENT_CODE = "componentCode";
 
     @Override
     protected boolean allowsMaintenanceEditAction(BusinessObject businessObject) {
-    	
+
         ParameterBo parm = (ParameterBo)businessObject;
-        
+
         Map<String, String> permissionDetails = new HashMap<String, String>();
         permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getComponentCode());
@@ -61,36 +62,49 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
                 KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER, permissionDetails,
                 Collections.<String, String>emptyMap());
     }
-    
+
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
 
-        List<ParameterBo> parametersWithDerivedComponents = null;
-
-        if (fieldValues.containsKey(COMPONENT_NAME) && StringUtils.isNotBlank(fieldValues.get(COMPONENT_NAME))) {
-            // also search based on derived component name
-            Map<String, String> derivedComponentFieldValues = new HashMap<String, String>(fieldValues);
-            String componentName = derivedComponentFieldValues.remove(COMPONENT_NAME);
-            derivedComponentFieldValues.put(DERIVED_COMPONENT_NAME, componentName);
-            parametersWithDerivedComponents = (List<ParameterBo>)super.getSearchResultsUnbounded(derivedComponentFieldValues);
+        if (fieldValues.containsKey(COMPONENT_NAME) && fieldValues.containsKey(COMPONENT_CODE)) {
+            //remove hidden derived component code if component name exists.
+            fieldValues.remove(COMPONENT_CODE);
+            fieldValues.put(COMPONENT_CODE,"");
         }
+
+        String componentNameFieldValue = fieldValues.get(COMPONENT_NAME);
+        fieldValues.remove(COMPONENT_NAME);
 
         List<ParameterBo> results = (List<ParameterBo>)super.getSearchResultsUnbounded(fieldValues);
-        if (parametersWithDerivedComponents != null) {
-            results.addAll(parametersWithDerivedComponents);
-        }
         normalizeParameterComponents(results);
+
+        if (!StringUtils.isBlank(componentNameFieldValue)) {
+            componentNameFieldValue = componentNameFieldValue.trim();
+            componentNameFieldValue = componentNameFieldValue.replace("*", ".*");
+            componentNameFieldValue = ".*" + componentNameFieldValue + ".*";
+
+            Pattern pattern = Pattern.compile(componentNameFieldValue, Pattern.CASE_INSENSITIVE);
+
+            Iterator<ParameterBo> resultsIter = results.iterator();
+            while (resultsIter.hasNext()) {
+                ParameterBo result = resultsIter.next();
+                if (!pattern.matcher(result.getComponent().getName()).matches()) {
+                    resultsIter.remove();
+                }
+            }
+        }
+
         return results;
     }
 
-	private void normalizeParameterComponents(List<ParameterBo> parameters) {
-		// attach the derived components where needed
+    private void normalizeParameterComponents(List<ParameterBo> parameters) {
+        // attach the derived components where needed
         for (ParameterBo parameterBo : parameters) {
             if (parameterBo.getComponent() == null) {
                 parameterBo.setComponent(DerivedComponentBo.toComponentBo(parameterBo.getDerivedComponent()));
             }
         }
-	}
+    }
 
 }
 

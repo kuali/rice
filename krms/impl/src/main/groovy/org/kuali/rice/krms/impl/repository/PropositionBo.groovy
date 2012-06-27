@@ -54,7 +54,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
     String newTermDescription = "new term " + UUID.randomUUID().toString();
     Map<String, String> termParameters = new HashMap<String, String>();
 
-    private SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
+    private static SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
 
     private void setupParameterDisplayString(){
         if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(getPropositionTypeCode())){
@@ -62,9 +62,13 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
             // TODO: enhance to get term names for term type parameters.
             List<PropositionParameterBo> parameters = getParameters();
             if (parameters != null && parameters.size() == 3){
-                setParameterDisplayString(getParamValue(parameters.get(0))
-                        + " " + getParamValue(parameters.get(2))
-                        + " " + getParamValue(parameters.get(1)));
+                StringBuilder sb = new StringBuilder();
+                String valueDisplay = getParamValue(parameters.get(1));
+                sb.append(getParamValue(parameters.get(0))).append(" ").append(getParamValue(parameters.get(2)));
+                if (valueDisplay != null) { // !=null and =null operators values will be null and should not be displayed
+                    sb.append(" ").append(valueDisplay);
+                }
+                setParameterDisplayString(sb.toString())
             } else {
                 // should not happen
             }
@@ -206,7 +210,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
        * three parameters:  a term type paramter (value not assigned)
        *                    a operation parameter
        *                    a constant parameter (value set to empty string)
-       * The returned PropositionBo has an generatedId. The type code, ruleId and TypeId properties are assigned the
+       * The returned PropositionBo has an generatedId. The type code and ruleId properties are assigned the
        * same value as the sibling param passed in.
        * Each PropositionParameter has the id generated, and type, sequenceNumber,
        * propId default values set. The value is set to "".
@@ -224,7 +228,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
           prop.setEditMode(true);
           if (sibling != null){
               prop.setRuleId(sibling.getRuleId());
-              prop.setTypeId(sibling.getTypeId());
           }
 
           // create blank proposition parameters
@@ -269,7 +272,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         prop.setEditMode(true);
         if (existing != null){
             prop.setRuleId(existing.getRuleId());
-            prop.setTypeId(existing.getTypeId());
         }
 
         List <PropositionBo> components = new ArrayList<PropositionBo>(2);
@@ -292,7 +294,6 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         prop.setId(getNewPropId());
         prop.setPropositionTypeCode(PropositionType.COMPOUND.code);
         prop.setRuleId(existing.getRuleId());
-        prop.setTypeId(existing.getTypeId());
         prop.setCompoundOpCode(LogicalOperator.AND.code);  // default to and
         prop.setDescription("");
         prop.setEditMode(true);
@@ -332,17 +333,37 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         newProp.setCompoundComponents(newCompoundComponents);
         return newProp;
     }
-    private static String getNewPropId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
-                PropositionBo.class);
-        return id.toString();
+
+    /**
+     * Set the SequenceAccessorService, useful for testing.
+     * @param sas SequenceAccessorService to use for getNewId()
+     */
+    public static void setSequenceAccessorService(SequenceAccessorService sas) {
+        sequenceAccessorService = sas;
     }
-    private static String getNewPropParameterId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_PARM_S",
-                PropositionParameterBo.class);
+
+    private static String getNewId(String table, Class clazz) {
+        if (sequenceAccessorService == null) {
+            // we don't assign to sequenceAccessorService to preserve existing behavior
+            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
+        }
+        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
         return id.toString();
     }
 
+    /**
+     * Returns the next available Proposition id.
+     * @return String the next available id
+     */
+    private static String getNewPropId(){
+        return getNewId("KRMS_PROP_S", PropositionBo.class);
+    }
+
+    /**
+     * Returns the next available PropParameter id.
+     * @return String the next available id
+     */
+    private static String getNewPropParameterId(){
+        return getNewId("KRMS_PROP_PARM_S", PropositionParameterBo.class);
+    }
 }

@@ -44,6 +44,11 @@ public class BasicJoinEngine implements JoinEngine {
         }
         for (Iterator iter = splitNode.getNextNodeInstances().iterator(); iter.hasNext();) {
             RouteNodeInstance splitNodeNextNode = (RouteNodeInstance) iter.next();
+            // Dilemma: we are given an unsaved join node. For linking to work in absence of joinNode auto-update we must
+            // ensure the join node instance is saved before we save the branch, however this save is done afterwards in
+            // the caller (StandardWorkflowEngine).
+            // If we save here we should probably be sure to take into account simulation context
+            saveNode(context, joinInstance);
             splitNodeNextNode.getBranch().setJoinNode(joinInstance);
             // The saveBranch() call below is necessary for parallel routing to work properly with OJB, but it breaks parallel routing with JPA,
             // so only perform it if KEW is not JPA-enabled.
@@ -105,6 +110,28 @@ public class BasicJoinEngine implements JoinEngine {
     private void saveBranch(RouteContext context, Branch branch) {
         if (!context.isSimulation()) {
             KEWServiceLocator.getRouteNodeService().save(branch);
+        }
+    }
+    
+    // see {@link StandardWorkflowEngine#saveNode}
+    private void saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
+        if (!context.isSimulation()) {
+            KEWServiceLocator.getRouteNodeService().save(nodeInstance);
+        } else {
+            // if we are in simulation mode, lets go ahead and assign some id
+            // values to our beans
+            for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
+                RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iterator.next();
+                if (routeNodeInstance.getRouteNodeInstanceId() == null) {
+                    routeNodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
+                }
+            }
+            if (nodeInstance.getProcess() != null && nodeInstance.getProcess().getRouteNodeInstanceId() == null) {
+                nodeInstance.getProcess().setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
+            }
+            if (nodeInstance.getBranch() != null && nodeInstance.getBranch().getBranchId() == null) {
+                nodeInstance.getBranch().setBranchId(context.getEngineState().getNextSimulationId());
+            }
         }
     }
 

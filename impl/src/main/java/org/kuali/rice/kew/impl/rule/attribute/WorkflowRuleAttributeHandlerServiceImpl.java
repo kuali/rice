@@ -18,6 +18,7 @@ package org.kuali.rice.kew.impl.rule.attribute;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
@@ -97,10 +98,10 @@ public class WorkflowRuleAttributeHandlerServiceImpl implements WorkflowRuleAttr
             throw new RiceIllegalArgumentException("attributeName was null or blank");
         }
         WorkflowRuleAttribute attribute = loadAttribute(attributeName);
-        List<WorkflowServiceError> errors = attribute.validateRoutingData(paramMap);
+        List<RemotableAttributeError> errors = attribute.validateRoutingData(paramMap);
         ValidationResults.Builder builder = ValidationResults.Builder.create();
-        for (WorkflowServiceError error : errors) {
-            builder.addError(error.getArg1(), error.getMessage());
+        for (RemotableAttributeError error : errors) {
+            builder.addError(error.getAttributeName(), error.getMessage());
         }
         return builder.build();
     }
@@ -111,10 +112,10 @@ public class WorkflowRuleAttributeHandlerServiceImpl implements WorkflowRuleAttr
             throw new RiceIllegalArgumentException("attributeName was null or blank");
         }
         WorkflowRuleAttribute attribute = loadAttribute(attributeName);
-        List<WorkflowServiceError> errors = attribute.validateRoutingData(paramMap);
+        List<RemotableAttributeError> errors = attribute.validateRoutingData(paramMap);
         ValidationResults.Builder builder = ValidationResults.Builder.create();
-        for (WorkflowServiceError error : errors) {
-            builder.addError(error.getArg1(), error.getMessage());
+        for (RemotableAttributeError error : errors) {
+            builder.addError(error.getAttributeName(), error.getMessage());
         }
         return builder.build();
     }
@@ -124,7 +125,7 @@ public class WorkflowRuleAttributeHandlerServiceImpl implements WorkflowRuleAttr
         if (StringUtils.isBlank(attributeName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         Object attribute = loadAttribute(attributeName);
         if (WorkflowRuleSearchAttribute.class.isAssignableFrom(attribute.getClass())) {
             errors = ((WorkflowRuleSearchAttribute)attribute).validateSearchData(paramMap);
@@ -132,8 +133,8 @@ public class WorkflowRuleAttributeHandlerServiceImpl implements WorkflowRuleAttr
             errors = ((WorkflowRuleAttribute)attribute).validateRuleData(paramMap);
         }
         ValidationResults.Builder builder = ValidationResults.Builder.create();
-        for (WorkflowServiceError error : errors) {
-            builder.addError(error.getArg1(), error.getMessage());
+        for (RemotableAttributeError error : errors) {
+            builder.addError(error.getAttributeName(), error.getMessage());
         }
         return builder.build();
     }

@@ -22,8 +22,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.test.BaseMaintenanceDocumentTest;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * This class...
  * 
@@ -58,7 +56,7 @@ public class AccountManagerMaintenanceDocumentTest extends BaseMaintenanceDocume
     /**
      * test submitting
      */
-    public void test_RouteNewDoc() throws WorkflowException {
+    public void testRouteNewDoc() throws WorkflowException {
         setupNewAccountMaintDoc(getDocument());
         KRADServiceLocatorWeb.getDocumentService().routeDocument(getDocument(), "submit", null);
         Assert.assertTrue(getDocument().getDocumentHeader().getWorkflowDocument().isFinal());

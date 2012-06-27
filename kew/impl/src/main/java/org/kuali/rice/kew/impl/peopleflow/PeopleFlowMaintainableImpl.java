@@ -106,7 +106,13 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
     public void saveDataObject() {
         ((PeopleFlowBo) getDataObject()).updateAttributeBoValues();
 
-        PeopleFlowDefinition peopleFlowDefinition = PeopleFlowBo.to(((PeopleFlowBo) getDataObject()));
+        PeopleFlowDefinition peopleFlowDefinition;
+        if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
+            peopleFlowDefinition = PeopleFlowBo.maintenanceCopy(((PeopleFlowBo) getDataObject()));
+        } else {
+        // this to method ends up copying a versionNumber to null versionNumber 
+            peopleFlowDefinition = PeopleFlowBo.to(((PeopleFlowBo) getDataObject()));
+        }
         if (StringUtils.isNotBlank(peopleFlowDefinition.getId())) {
             KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
         } else {

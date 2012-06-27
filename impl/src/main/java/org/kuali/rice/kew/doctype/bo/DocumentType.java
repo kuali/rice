@@ -38,11 +38,11 @@ import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
@@ -84,6 +84,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -263,73 +265,83 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public DocumentTypePolicy getAllowUnrequestedActionPolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.ALLOW_UNREQUESTED_ACTION.getName(), Boolean.TRUE);
+        return getPolicyByName(ALLOW_UNREQUESTED_ACTION.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getDefaultApprovePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.DEFAULT_APPROVE.getName(), Boolean.TRUE);
+        return getPolicyByName(DEFAULT_APPROVE.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getUseWorkflowSuperUserDocHandlerUrl() {
-        return getPolicyByName(DocumentTypePolicyEnum.USE_KEW_SUPERUSER_DOCHANDLER.getName(), Boolean.TRUE);
+        return getPolicyByName(USE_KEW_SUPERUSER_DOCHANDLER.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustRoutePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_ROUTE.getName(), Boolean.TRUE);
+        return getPolicyByName(INITIATOR_MUST_ROUTE.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustSavePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_SAVE.getName(), Boolean.TRUE);
+        return getPolicyByName(INITIATOR_MUST_SAVE.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustCancelPolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL.getName(), Boolean.TRUE);
+        return getPolicyByName(INITIATOR_MUST_CANCEL.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getInitiatorMustBlanketApprovePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.INITIATOR_MUST_BLANKET_APPROVE.getName(), Boolean.TRUE);
+        return getPolicyByName(INITIATOR_MUST_BLANKET_APPROVE.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getLookIntoFuturePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.LOOK_FUTURE.getName(), Boolean.FALSE);
+        return getPolicyByName(LOOK_FUTURE.getCode(), Boolean.FALSE);
     }
 
     public DocumentTypePolicy getSuperUserApproveNotificationPolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.SEND_NOTIFICATION_ON_SU_APPROVE.getName(), Boolean.FALSE);
+        return getPolicyByName(SEND_NOTIFICATION_ON_SU_APPROVE.getCode(), Boolean.FALSE);
     }
 
     public DocumentTypePolicy getSupportsQuickInitiatePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.SUPPORTS_QUICK_INITIATE.getName(), Boolean.TRUE);
+        return getPolicyByName(SUPPORTS_QUICK_INITIATE.getCode(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getNotifyOnSavePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
+        return getPolicyByName(NOTIFY_ON_SAVE.getCode(), Boolean.FALSE);
     }
 
     /**
      * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type.
      */
     public DocumentTypePolicy getDocumentStatusPolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
+        return getPolicyByName(DOCUMENT_STATUS_POLICY.getCode(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
     }
 
     /**
      * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type.
      */
     public DocumentTypePolicy getSuPostprocessorOverridePolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.getName(), Boolean.TRUE);
+        return getPolicyByName(ALLOW_SU_POSTPROCESSOR_OVERRIDE.getCode(), Boolean.TRUE);
     }
         
     public DocumentTypePolicy getFailOnInactiveGroup() {
-        return getPolicyByName(DocumentTypePolicyEnum.FAIL_ON_INACTIVE_GROUP.getName(), Boolean.TRUE);
+        return getPolicyByName(FAIL_ON_INACTIVE_GROUP.getCode(), Boolean.TRUE);
     }
     
     public DocumentTypePolicy getEnrouteErrorSuppression() {
-    	return getPolicyByName(DocumentTypePolicyEnum.ENROUTE_ERROR_SUPPRESSION.getName(), Boolean.FALSE);
+    	return getPolicyByName(ENROUTE_ERROR_SUPPRESSION.getCode(), Boolean.FALSE);
     }
     
     public DocumentTypePolicy getRegenerateActionRequestsOnChange() {
-    	return getPolicyByName(DocumentTypePolicyEnum.REGENERATE_ACTION_REQUESTS_ON_CHANGE.getName(), Boolean.TRUE);
+    	return getPolicyByName(REGENERATE_ACTION_REQUESTS_ON_CHANGE.getCode(), Boolean.TRUE);
+    }
+
+    /**
+     * Returns the {@link RECALL_NOTIFICATION} policy on the document if defined, or
+     * the default value for this policy which is true.
+     * @return the RECALL_NOTIFICATION document type policy
+     * @since 2.1
+     */
+    public DocumentTypePolicy getRecallNotification() {
+        return getPolicyByName(RECALL_NOTIFICATION.getCode(), (String) null);
     }
 
     /**
@@ -340,8 +352,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *         false - if the KEW Route Status is not to be displayed
      */
     public Boolean isKEWStatusInUse() {
-        if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
-            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+        if (isPolicyDefined(DOCUMENT_STATUS_POLICY)) {
+            String policyValue = getPolicyByName(DOCUMENT_STATUS_POLICY.getCode(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
             return (policyValue == null || "".equals(policyValue)
                     || KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue)
                     || KewApiConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
@@ -357,8 +369,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *         false - if only the KEW Route Status is to be displayed (default)
      */
     public Boolean isAppDocStatusInUse() {
-        if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
-            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+        if (isPolicyDefined(DOCUMENT_STATUS_POLICY)) {
+            String policyValue = getPolicyByName(DOCUMENT_STATUS_POLICY.getCode(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
             return (KewApiConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue)
                     || KewApiConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
         } else {
@@ -374,8 +386,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *         false - if only one status is to be displayed.
      */
     public Boolean areBothStatusesInUse() {
-        if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
-            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+        if (isPolicyDefined(DOCUMENT_STATUS_POLICY)) {
+            String policyValue = getPolicyByName(DOCUMENT_STATUS_POLICY.getCode(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
             return (KewApiConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
         } else {
             return Boolean.FALSE;
@@ -417,11 +429,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return null;
     }
 
-    public boolean isPolicyDefined(DocumentTypePolicyEnum policyToCheck) {
+    public boolean isPolicyDefined(org.kuali.rice.kew.api.doctype.DocumentTypePolicy policyToCheck) {
         Iterator<DocumentTypePolicy> policyIter = getDocumentTypePolicies().iterator();
         while (policyIter.hasNext()) {
             DocumentTypePolicy policy = policyIter.next();
-            if (policyToCheck.getName().equals(policy.getPolicyName())) {
+            if (policyToCheck.getCode().equals(policy.getPolicyName())) {
                 return true;
             }
         }
@@ -468,21 +480,31 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return documentTypeAttributes.get(0);
     }
 
+    /**
+     * Returns the RuleAttribute for the action list attribute for this DocumentType.  Walks the document type hierarchy
+     * if none exists directly on this DocumentType.
+     * @return The RuleAttribute.  May be null.
+     */
+    public RuleAttribute getCustomActionListRuleAttribute() {
+        List<DocumentTypeAttributeBo> documentTypeAttributes = getDocumentTypeAttributes(KewApiConstants.ACTION_LIST_ATTRIBUTE_TYPE);
+        if (documentTypeAttributes.size() > 1) {
+            throw new IllegalStateException("Encountered more than one ActionListAttribute on this document type: " + getName());
+        }
+        if (documentTypeAttributes.isEmpty()) {
+            return null;
+        }
+        return documentTypeAttributes.get(0).getRuleAttribute();
+    }
+
     public List<ExtensionHolder<SearchableAttribute>> loadSearchableAttributes() {
         List<DocumentTypeAttributeBo> searchableAttributes = getSearchableAttributes();
         List<ExtensionHolder<SearchableAttribute>> loadedAttributes = new ArrayList<ExtensionHolder<SearchableAttribute>>();
         for (DocumentTypeAttributeBo documentTypeAttribute : searchableAttributes) {
             RuleAttribute ruleAttribute = documentTypeAttribute.getRuleAttribute();
             try {
-                Object attributeService = KEWServiceLocator.getRuleAttributeService().loadRuleAttributeService(ruleAttribute, getApplicationId());
-                if (attributeService == null) {
-                    throw new WorkflowRuntimeException("Failed to locate searchable attribute, attribute did not exist: " + ruleAttribute);
-                }
-                if (!(attributeService instanceof SearchableAttribute)) {
-                    throw new WorkflowRuntimeException("Service for given attribute was found, but it does not implement SearchableAttribute: " + attributeService);
-                }
                 ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(ruleAttribute.getId());
-                loadedAttributes.add(new ExtensionHolder<SearchableAttribute>(ruleAttribute, extensionDefinition, (SearchableAttribute)attributeService));
+                SearchableAttribute attributeService = ExtensionUtils.loadExtension(extensionDefinition, getApplicationId());
+                loadedAttributes.add(new ExtensionHolder<SearchableAttribute>(extensionDefinition, attributeService));
             } catch (RiceRemoteServiceConnectionException e) {
                 LOG.warn("Unable to connect to load searchable attribute for " + ruleAttribute, e);
             }
@@ -492,19 +514,19 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public static final class ExtensionHolder<T> {
 
-        private final RuleAttribute ruleAttribute;
+        //private final RuleAttribute ruleAttribute;
         private final ExtensionDefinition extensionDefinition;
         private final T extension;
 
-        public ExtensionHolder(RuleAttribute ruleAttribute, ExtensionDefinition extensionDefinition, T extension) {
-            this.ruleAttribute = ruleAttribute;
+        public ExtensionHolder(ExtensionDefinition extensionDefinition, T extension) {
+            //this.ruleAttribute = ruleAttribute;
             this.extensionDefinition = extensionDefinition;
             this.extension = extension;
         }
 
-        public RuleAttribute getRuleAttribute() {
+        /*public RuleAttribute getRuleAttribute() {
             return ruleAttribute;
-        }
+        }*/
 
         public ExtensionDefinition getExtensionDefinition() {
             return extensionDefinition;
@@ -567,7 +589,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> policies = new HashMap<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String>();
         if (this.documentTypePolicies != null) {
             for (DocumentTypePolicy policy : this.documentTypePolicies) {
-                policies.put(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());
+                policies.put(fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());
             }
         }
         return policies;
@@ -1168,18 +1190,26 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
+        CustomActionListAttribute result = null;
+        RuleAttribute customActionListRuleAttribute = getCustomActionListRuleAttribute();
 
-        ObjectDefinition objDef = getAttributeObjectDefinition(KewApiConstants.ACTION_LIST_ATTRIBUTE_TYPE);
-        if (objDef == null) {
-            return null;
-        }
-        try {
-            return (CustomActionListAttribute) GlobalResourceLoader.getObject(objDef);
-        } catch (RuntimeException e) {
-            LOG.error("Error obtaining custom action list attribute: " + objDef, e);
-            throw e;
+        if (customActionListRuleAttribute != null) {
+            try {
+                ExtensionDefinition extensionDefinition =
+                        KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(customActionListRuleAttribute.getId());
+
+                if (extensionDefinition != null) {
+                    result = ExtensionUtils.loadExtension(extensionDefinition, customActionListRuleAttribute.getApplicationId());
+                } else {
+                    LOG.warn("Could not load ExtensionDefinition for " + customActionListRuleAttribute);
+                }
+
+            } catch (RiceRemoteServiceConnectionException e) {
+                LOG.warn("Unable to connect to load custom action list attribute for " + customActionListRuleAttribute, e);
+            }
         }
 
+        return result;
     }
 
     public CustomEmailAttribute getCustomEmailAttribute() throws ResourceUnavailableException {

@@ -100,7 +100,7 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 	
 	public KSBConfigurer() {
 		super(KsbApiConstants.KSB_MODULE_NAME);
-		setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
+		setValidRunModes(Arrays.asList(RunMode.THIN, RunMode.REMOTE, RunMode.LOCAL));
 		this.internalLifecycles = new ArrayList<Lifecycle>();
 	}
 	
@@ -115,26 +115,32 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 	@Override
 	public List<String> getPrimarySpringFiles(){
 		final List<String> springFileLocations = new ArrayList<String>();
-				
-		boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
-		if (isJpa) {
-			// TODO redo this once we're back to JPA
-        	// springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
-        	throw new UnsupportedOperationException("JPA not currently supported for KSB");
-		}
-		
+
 		springFileLocations.add(SERVICE_BUS_CLIENT_SPRING);
-		
-		if (isMessagePersistenceEnabled()) {
-			springFileLocations.add(MESSAGE_CLIENT_SPRING);
-			springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
-		}
-        
-        if (isBamEnabled()) {
-        	springFileLocations.add(BAM_SPRING);
-        	springFileLocations.add(OJB_BAM_SPRING);
+
+        if (getRunMode() != RunMode.THIN) {
+
+            boolean isJpa = OrmUtils.isJpaEnabled("rice.ksb");
+            if (isJpa) {
+                // TODO redo this once we're back to JPA
+                // springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
+                throw new UnsupportedOperationException("JPA not currently supported for KSB");
+            }
+
+            // Loading these beans unconditionally now, see:
+            // KULRICE-6574: Some KSB beans not defined unless message persistence turned on
+            //
+		    // if (isMessagePersistenceEnabled()) {
+			    springFileLocations.add(MESSAGE_CLIENT_SPRING);
+			    springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
+		    // }
+
+            if (isBamEnabled()) {
+        	    springFileLocations.add(BAM_SPRING);
+        	    springFileLocations.add(OJB_BAM_SPRING);
+            }
         }
-        
+
         if (getRunMode().equals( RunMode.LOCAL )) {
         	springFileLocations.add(REGISTRY_SERVER_SPRING);
         	springFileLocations.add(OJB_REGISTRY_SPRING);
@@ -146,6 +152,15 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
     @Override
     public boolean hasWebInterface() {
         return true;
+    }
+
+    // See KULRICE-7093: KSB Module UI is not available on client applications
+    @Override
+    public boolean shouldRenderWebInterface() {
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.WEB_FORCE_ENABLE)) {
+            return true;
+        }
+        return super.shouldRenderWebInterface();
     }
 
     @Override
@@ -220,7 +235,10 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 			throw new RiceRuntimeException("Failed to initialize KSB on context startup");
 		}
 
-		requeueMessages();
+        // Don't requeue messages if we are in thin client mode
+        if (getRunMode() != RunMode.THIN) {
+		    requeueMessages();
+        }
 	}
 
     protected void doAdditionalContextStoppedLogic() {

@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
+import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.springframework.util.CollectionUtils;
@@ -35,7 +37,7 @@ import org.springframework.util.CollectionUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class TermBoServiceImpl implements TermBoService {
+public class TermBoServiceImpl implements TermBoService, TermRepositoryService {
 	
 	private BusinessObjectService businessObjectService;
 
@@ -62,7 +64,7 @@ public class TermBoServiceImpl implements TermBoService {
 	@Override
 	public TermSpecificationDefinition createTermSpecification(TermSpecificationDefinition termSpec) {
 		if (!StringUtils.isBlank(termSpec.getId())) {
-			throw new IllegalArgumentException("for creation, TermSpecification.id must be null");
+			throw new RiceIllegalArgumentException("for creation, TermSpecification.id must be null");
 		}
 		
 		TermSpecificationBo termSpecBo = TermSpecificationBo.from(termSpec);
@@ -73,12 +75,12 @@ public class TermBoServiceImpl implements TermBoService {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTermDefinition(org.kuali.rice.krms.api.repository.term.TermDefinition)
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#createTerm(org.kuali.rice.krms.api.repository.term.TermDefinition)
 	 */
 	@Override
-	public TermDefinition createTermDefinition(TermDefinition termDef) {
+	public TermDefinition createTerm(TermDefinition termDef) {
 		if (!StringUtils.isBlank(termDef.getId())) {
-			throw new IllegalArgumentException("for creation, TermDefinition.id must be null");
+			throw new RiceIllegalArgumentException("for creation, TermDefinition.id must be null");
 		}
 		
 		TermBo termBo = TermBo.from(termDef);
@@ -94,7 +96,7 @@ public class TermBoServiceImpl implements TermBoService {
 	@Override
 	public TermResolverDefinition createTermResolver(TermResolverDefinition termResolver) {
 		if (!StringUtils.isBlank(termResolver.getId())) {
-			throw new IllegalArgumentException("for creation, TermResolverDefinition.id must be null");
+			throw new RiceIllegalArgumentException("for creation, TermResolverDefinition.id must be null");
 		}
 		
 		TermResolverBo termResolverBo = TermResolverBo.from(termResolver);
@@ -105,14 +107,14 @@ public class TermBoServiceImpl implements TermBoService {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTermById(java.lang.String)
+	 * @see org.kuali.rice.krms.impl.repository.TermBoService#getTerm(java.lang.String)
 	 */
 	@Override
-	public TermDefinition getTermById(String id) {
+	public TermDefinition getTerm(String id) {
 		TermDefinition result = null;
 		
 		if (StringUtils.isBlank(id)) {
-			throw new IllegalArgumentException("id must not be blank or null");
+			throw new RiceIllegalArgumentException("id must not be blank or null");
 		}
 		TermBo termBo = businessObjectService.findBySinglePrimaryKey(TermBo.class, id);
 		
@@ -131,7 +133,7 @@ public class TermBoServiceImpl implements TermBoService {
 		TermResolverDefinition result = null;
 		
 		if (StringUtils.isBlank(id)) {
-			throw new IllegalArgumentException("id must not be blank or null");
+			throw new RiceIllegalArgumentException("id must not be blank or null");
 		}
 		TermResolverBo termResolverBo = businessObjectService.findBySinglePrimaryKey(TermResolverBo.class, id);
 		
@@ -143,14 +145,14 @@ public class TermBoServiceImpl implements TermBoService {
 	}
 
     @Override
-    public List<TermResolverDefinition> getTermResolversByOutputId(String id, String namespace) {
+    public List<TermResolverDefinition> findTermResolversByOutputId(String id, String namespace) {
         List<TermResolverDefinition> results = null;
 
 		if (StringUtils.isBlank(id)) {
-			throw new IllegalArgumentException("id must not be blank or null");
+			throw new RiceIllegalArgumentException("id must not be blank or null");
 		}
         if (StringUtils.isBlank(namespace)) {
-			throw new IllegalArgumentException("namespace must not be blank or null");
+			throw new RiceIllegalArgumentException("namespace must not be blank or null");
 		}
         Map<String, String> criteria = new HashMap<String, String>(2);
 
@@ -173,11 +175,11 @@ public class TermBoServiceImpl implements TermBoService {
     }
 
     @Override
-    public List<TermResolverDefinition> getTermResolversByNamespace(String namespace) {
+    public List<TermResolverDefinition> findTermResolversByNamespace(String namespace) {
         List<TermResolverDefinition> results = null;
 
         if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace must not be blank or null");
+            throw new RiceIllegalArgumentException("namespace must not be blank or null");
         }
 
         Map fieldValues = new HashMap();

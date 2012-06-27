@@ -39,6 +39,7 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -186,6 +187,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         MaintenanceDocument maintenanceDocument = (MaintenanceDocument) document;
 
+        boolean completeRequestPending = RouteToCompletionUtil.checkIfAtleastOneAdHocCompleteRequestExist(maintenanceDocument);
+
+        // Validate the document if the header is valid and no pending completion requests
+        if (completeRequestPending) {
+            return true;
+        }
+        
         // get the documentAuthorizer for this document
         MaintenanceDocumentAuthorizer documentAuthorizer =
                 (MaintenanceDocumentAuthorizer) getDocumentHelperService().getDocumentAuthorizer(document);

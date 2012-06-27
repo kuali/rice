@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2012 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -118,7 +117,6 @@ public class EncryptionService {
 
                 // Decrypt the ciphertext
                 byte[] cleartext1 = cipher2.doFinal(encryptedData);
-                System.out.println("-------- OLD ENCRYPT ------------");
                 return new String(cleartext1, CHARSET);
             } catch (UnsupportedEncodingException ex) {
                 throw new RuntimeException(e);

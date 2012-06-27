@@ -168,7 +168,7 @@ public class DTOConverter {
                 }
 
                 if (attribute instanceof XmlConfiguredAttribute) {
-                    ((XmlConfiguredAttribute)attribute).setExtensionDefinition(RuleAttribute.to(definition.getRuleAttribute()));
+                    ((XmlConfiguredAttribute)attribute).setExtensionDefinition(definition.getExtensionDefinition());
                 }
                 boolean propertiesAsMap = false;
                 if (KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType())) {
@@ -237,10 +237,10 @@ public class DTOConverter {
         if (extensionDefinition == null) {
             throw new WorkflowRuntimeException("Extension " + definition.getAttributeName() + " not found");
         }
-        RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definition.getAttributeName());
+        /*RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(definition.getAttributeName());
         if (ruleAttribute == null) {
             throw new WorkflowRuntimeException("Attribute " + definition.getAttributeName() + " not found");
-        }
+        }*/
 
         ObjectDefinition objectDefinition = new ObjectDefinition(extensionDefinition.getResourceDescriptor());
         if (definition.getParameters() != null) {
@@ -258,7 +258,7 @@ public class DTOConverter {
             }
         }
 
-        return new AttributeDefinition(ruleAttribute, extensionDefinition, objectDefinition);
+        return new AttributeDefinition(extensionDefinition, objectDefinition);
     }
 
     /**

@@ -57,13 +57,11 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
     private String actionRequestId;
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal);
-        this.superUserAction = KewApiConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
+        super(UNDEFINED_ACTION_TAKEN_CODE, KewApiConstants.SUPER_USER_ACTION_REQUEST_APPROVE, routeHeader, principal);
     }
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String actionRequestId, String annotation, boolean runPostProcessor) {
-        super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KewApiConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
+        super(UNDEFINED_ACTION_TAKEN_CODE, KewApiConstants.SUPER_USER_ACTION_REQUEST_APPROVE, routeHeader, principal, annotation, runPostProcessor);
         this.actionRequestId = actionRequestId;
     }
 
@@ -91,7 +89,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         }
     }
 
-    protected void processActionRequests() throws InvalidActionTakenException {
+    protected ActionTakenValue processActionRequests() throws InvalidActionTakenException {
         //this method has been written to process all of the actions though only approvals are currently processed
 
         DocumentType docType = getRouteHeader().getDocumentType();
@@ -155,6 +153,8 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         	}
             }
         }
+
+        return actionTaken;
     }
 
     public void recordAction() throws InvalidActionTakenException {

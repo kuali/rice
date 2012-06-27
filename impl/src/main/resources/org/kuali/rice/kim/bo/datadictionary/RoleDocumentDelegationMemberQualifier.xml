@@ -47,7 +47,7 @@
 		<property name="shortLabel" value="Attr Data Id"/>
 		<property name="maxLength" value="40"/>
 		<property name="validationPattern">
-			<bean parent="AlphaNumericValidationPattern"/>
+			<bean parent="AnyCharacterValidationPattern"/>
 		</property>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="10"/>
@@ -64,7 +64,7 @@
 		<property name="shortLabel" value="Delegation Member Id"/>
 		<property name="maxLength" value="40"/>
 		<property name="validationPattern">
-			<bean parent="AlphaNumericValidationPattern"/>
+			<bean parent="AnyCharacterValidationPattern"/>
 		</property>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="10"/>
@@ -81,7 +81,7 @@
 		<property name="shortLabel" value="Kim Typ Id"/>
 		<property name="maxLength" value="40"/>
 		<property name="validationPattern">
-			<bean parent="AlphaNumericValidationPattern"/>
+			<bean parent="AnyCharacterValidationPattern"/>
 		</property>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="10"/>
@@ -98,7 +98,7 @@
 		<property name="shortLabel" value="Kim Attr Defn Id"/>
 		<property name="maxLength" value="40"/>
 		<property name="validationPattern">
-			<bean parent="AlphaNumericValidationPattern"/>
+			<bean parent="AnyCharacterValidationPattern"/>
 		</property>
 		<property name="control">
 			<bean parent="TextControlDefinition" p:size="10"/>

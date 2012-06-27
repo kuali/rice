@@ -223,9 +223,9 @@
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="documentId" />
-    </reference-descriptor>-->
+    </reference-descriptor>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actiontaken.ActionTakenValue" table="KREW_ACTN_TKN_T">
@@ -818,7 +818,7 @@
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="initialNode" auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="initialNodeId"/>
     </reference-descriptor>
-    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="joinNode" auto-update="true" auto-delete="false" auto-retrieve="true">
+    <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="joinNode" auto-update="false" auto-delete="false" auto-retrieve="true">
       <foreignkey field-ref="joinNodeId"/>
     </reference-descriptor>
     <reference-descriptor class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="splitNode" auto-delete="false" auto-retrieve="true" auto-update="false">

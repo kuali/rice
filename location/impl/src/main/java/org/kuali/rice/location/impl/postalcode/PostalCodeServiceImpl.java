@@ -16,9 +16,13 @@
 package org.kuali.rice.location.impl.postalcode;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.location.api.postalcode.PostalCode;
+import org.kuali.rice.location.api.postalcode.PostalCodeQueryResults;
 import org.kuali.rice.location.api.postalcode.PostalCodeService;
 
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ import java.util.Map;
 public class PostalCodeServiceImpl implements PostalCodeService {
 
     private BusinessObjectService businessObjectService;
+    private CriteriaLookupService criteriaLookupService;
 
     @Override
     public PostalCode getPostalCode(String countryCode, String code) {
@@ -74,7 +79,44 @@ public class PostalCodeServiceImpl implements PostalCodeService {
         return Collections.unmodifiableList(toReturn);
     }
 
+    @Override
+    public PostalCodeQueryResults findPostalCodes(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
+
+        GenericQueryResults<PostalCodeBo> results = criteriaLookupService.lookup(PostalCodeBo.class, queryByCriteria);
+
+        PostalCodeQueryResults.Builder builder = PostalCodeQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<PostalCode.Builder> ims = new ArrayList<PostalCode.Builder>();
+        for (PostalCodeBo bo : results.getResults()) {
+            ims.add(PostalCode.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
     }
 }

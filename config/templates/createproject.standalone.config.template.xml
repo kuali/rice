@@ -19,7 +19,7 @@
 	<!-- App specific parameters -->
 	<param name="application.id">${APP_NAMESPACE}</param>
 	<param name="app.code">${PROJECT_NAME}</param>
-	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="app.context.name">${app.code}</param>
 	<param name="production.environment.code">PRD</param>
 	<param name="http.port">8082</param>
 
@@ -31,8 +31,9 @@
 	<param name="kim.url">${rice.url}/kim</param>
 	
 	<!-- Misc parameters -->
-	<param name="institution">iu</param>
+	<param name="institution">rice</param>
 	<param name="version">03/19/2007 01:59 PM</param>
+	<param name="transaction.timeout">3600</param>
 
 	<!--  Application Datasource params -->
 	<param name="datasource.ojb.platform">Oracle9i</param>
@@ -52,16 +53,16 @@
 	<param name="${PROJECT_NAME}.datasource.accessToUnderlyingConnectionAllowed">${datasource.accessToUnderlyingConnectionAllowed}</param>
 	
 	<!-- Rice datasource params -->
-	<param name="rice.datasource.url"></param>
-	<param name="rice.datasource.username"></param>
-	<param name="rice.datasource.password"></param>
-	<param name="rice.datasource.ojb.platform">Oracle9i</param>
-	<param name="rice.datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
-	<param name="rice.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
-	<param name="rice.datasource.pool.validationQuery">select 1 from dual</param>
-	<param name="rice.datasource.pool.maxWait">30000</param>
-	<param name="rice.datasource.pool.maxSize">5</param>
-	<param name="rice.datasource.pool.minSize">5</param>
+	<param name="datasource.url"></param>
+	<param name="datasource.username"></param>
+	<param name="datasource.password"></param>
+	<param name="datasource.ojb.platform">Oracle9i</param>
+	<param name="datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
+	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
+	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="datasource.pool.maxWait">30000</param>
+	<param name="datasource.pool.maxSize">5</param>
+	<param name="datasource.pool.minSize">5</param>
 
 
 	<!--  runmodes -->

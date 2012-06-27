@@ -29,6 +29,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -331,7 +332,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     protected ValidActions determineValidActionsInternal(DocumentRouteHeaderValue documentBo, String principalId) {
         Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-        return KEWServiceLocator.getActionRegistry().getNewValidActions(principal, documentBo);
+        return KEWServiceLocator.getActionRegistry().getValidActions(principal, documentBo);
     }
 
     @Override
@@ -367,12 +368,14 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         return RequestedActions.create(completeRequested, approveRequested, acknowledgeRequested, fyiRequested);
     }
 
+    @Override
     public DocumentDetail executeSimulation(RoutingReportCriteria reportCriteria) {
         incomingParamCheck(reportCriteria, "reportCriteria");
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Executing routing report [docId=" + reportCriteria.getDocumentId() + ", docTypeName=" + reportCriteria.getDocumentTypeName() + "]");
         }
         SimulationCriteria criteria = SimulationCriteria.from(reportCriteria);
+
         return DTOConverter.convertDocumentDetailNew(KEWServiceLocator.getRoutingReportService().report(criteria));
     }
 
@@ -541,6 +544,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     public DocumentActionResult cancel(DocumentActionParameters parameters) {
         incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, CANCEL_CALLBACK);
+    }
+
+    @Override
+    public DocumentActionResult recall(DocumentActionParameters parameters, final boolean cancel) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(cancel, "cancel");
+        return executeActionInternal(parameters, new StandardDocumentActionCallback() {
+            public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo, String principalId,
+                    String annotation) throws WorkflowException {
+                return KEWServiceLocator.getWorkflowDocumentService().recallDocument(principalId, documentBo, annotation, cancel);
+            }
+            public String getActionName() {
+                return ActionType.RECALL.getLabel();
+            }
+        });
     }
 
     @Override
@@ -967,7 +985,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         if (attribute instanceof GenericXMLRuleAttribute) {
             Map<String, String> attributePropMap = new HashMap<String, String>();
             GenericXMLRuleAttribute xmlAttribute = (GenericXMLRuleAttribute)attribute;
-            xmlAttribute.setExtensionDefinition(RuleAttribute.to(attributeDefinition.getRuleAttribute()));
+            xmlAttribute.setExtensionDefinition(attributeDefinition.getExtensionDefinition());
             for (PropertyDefinition propertyDefinition : definition.getPropertyDefinitions()) {
                 attributePropMap.put(propertyDefinition.getName(), propertyDefinition.getValue());
             }

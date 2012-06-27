@@ -36,21 +36,23 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
+abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SuperUserActionTakenEvent.class);
 
-    protected String superUserAction;
+    protected final String superUserAction;
     //protected DocumentRouteStatusChange event;
     private ActionRequestValue actionRequest;
     public static String AUTHORIZATION = "general.routing.superuser.notAuthorized";
 
-    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
+    protected SuperUserActionTakenEvent(String actionTakenCode, String superUserAction, DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(actionTakenCode, routeHeader, principal);
+        this.superUserAction = superUserAction;
     }
 
-    public SuperUserActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
+    protected SuperUserActionTakenEvent(String actionTakenCode, String superUserAction, DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
         super(actionTakenCode, routeHeader, principal, annotation, runPostProcessor);
+        this.superUserAction = superUserAction;
     }
 
     /* (non-Javadoc)
@@ -80,7 +82,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
 
-        processActionRequests();
+        ActionTakenValue actionTaken = processActionRequests();
 
         try {
         	String oldStatus = getRouteHeader().getDocRouteStatus();
@@ -96,12 +98,13 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             LOG.error("Caught Exception talking to post processor", ex);
             throw new RuntimeException(ex.getMessage());
         }
-
+        
+        processActionTaken(actionTaken);
     }
 
     protected abstract void markDocument() throws WorkflowException;
 
-    protected void processActionRequests() throws InvalidActionTakenException {
+    protected ActionTakenValue processActionRequests() throws InvalidActionTakenException {
         LOG.debug("Processing pending action requests");
 
         ActionTakenValue actionTaken = saveActionTaken();
@@ -114,6 +117,15 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
         }
 
         notifyActionTaken(actionTaken);
+
+        return actionTaken;
+    }
+
+    /**
+     * Allows subclasses to perform any post-processing after the action has been taken
+     */
+    protected void processActionTaken(ActionTakenValue actionTaken) {
+        // no default impl
     }
 
     public ActionRequestValue getActionRequest() {

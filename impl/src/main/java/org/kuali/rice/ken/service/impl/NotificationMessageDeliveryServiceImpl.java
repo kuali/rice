@@ -17,7 +17,7 @@ package org.kuali.rice.ken.service.impl;
 
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
@@ -90,7 +90,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * @see org.kuali.rice.ken.service.NotificationMessageDeliveryService#getNotificationMessageDeliveries(java.lang.Long, java.lang.String)
      */
     //switch to JPA criteria
-    public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries(Notification notification, String userRecipientId) {
+    public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries(NotificationBo notification, String userRecipientId) {
 
     	Map<String, Object> c = new HashMap<String, Object>();
     	c.put(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION, notification.getId());
@@ -121,7 +121,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
 
         // mark messageDeliveries as taken
         for (NotificationMessageDelivery delivery: messageDeliveries) {
-            delivery.setLockedDate(new Timestamp(System.currentTimeMillis()));
+            delivery.setLockedDateValue(new Timestamp(System.currentTimeMillis()));
             businessObjectDao.save(delivery);
         }
         return messageDeliveries;
@@ -140,7 +140,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
     	Collection<NotificationMessageDelivery> messageDeliveries = ntdDao.getMessageDeliveriesForAutoRemoval(new Timestamp(System.currentTimeMillis()), businessObjectDao);
     	
         for (NotificationMessageDelivery d: messageDeliveries) {
-            d.setLockedDate(new Timestamp(System.currentTimeMillis()));
+            d.setLockedDateValue(new Timestamp(System.currentTimeMillis()));
             businessObjectDao.save(d);
         }
         
@@ -162,7 +162,7 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
         }
 
         NotificationMessageDelivery d = deliveries.iterator().next();
-        d.setLockedDate(null);
+        d.setLockedDateValue(null);
 
         businessObjectDao.save(d);
     }

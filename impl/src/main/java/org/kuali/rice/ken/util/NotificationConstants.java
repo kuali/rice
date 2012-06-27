@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.ken.util;
 
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kim.api.KimApiConstants;
 
 /**
  * This class houses all constants for the NotificationSystem.
@@ -248,10 +246,10 @@ public final class NotificationConstants {
         public static final String CONTENT_TYPE_ID = "contentType.id";
         public static final String CONTENT_TYPE_NAME = "contentType.name";
         public static final String PROCESSING_FLAG = "processingFlag";
-        public static final String SEND_DATE_TIME = "sendDateTime";
-        public static final String NOTIFICATION_AUTO_REMOVE_DATE_TIME = "notification.autoRemoveDateTime";
+        public static final String SEND_DATE_TIME = "sendDateTimeValue";
+        public static final String NOTIFICATION_AUTO_REMOVE_DATE_TIME = "notification.autoRemoveDateTimeValue";
         public static final String MESSAGE_DELIVERY_STATUS = "messageDeliveryStatus";
-        public static final String LOCKED_DATE = "lockedDate";
+        public static final String LOCKED_DATE = "lockedDateValue";
         // NotificationMessageDelivery
         public static final String NOTIFICATION = "notification";
         public static final String USER_RECIPIENT_ID = "userRecipientId";
@@ -289,7 +287,7 @@ public final class NotificationConstants {
  * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class NOTIFICATION_PRODUCERS {
-        public static final NotificationProducer NOTIFICATION_SYSTEM_PRODUCER = buildNotificationSystemProducer();
+        public static final NotificationProducerBo NOTIFICATION_SYSTEM_PRODUCER = buildNotificationSystemProducer();
 
         public static final String NOTIFICATION_SYSTEM_PRODUCER_NAME = "Notification System";
         public static final String NOTIFICATION_SYSTEM_PRODUCER_DESCRIPTION = "This producer represents messages sent from the general message sending form.";
@@ -300,8 +298,8 @@ public final class NotificationConstants {
          * default producer that all channels automatically have added to them when they are created.
          * @return NotificationProducer
          */
-        private static final NotificationProducer buildNotificationSystemProducer() {
-            NotificationProducer producer = new NotificationProducer();
+        private static final NotificationProducerBo buildNotificationSystemProducer() {
+            NotificationProducerBo producer = new NotificationProducerBo();
             producer.setName(NOTIFICATION_SYSTEM_PRODUCER_NAME);
             producer.setDescription(NOTIFICATION_SYSTEM_PRODUCER_DESCRIPTION);
             producer.setContactInfo(NOTIFICATION_SYSTEM_PRODUCER_CONTACT_INFO);

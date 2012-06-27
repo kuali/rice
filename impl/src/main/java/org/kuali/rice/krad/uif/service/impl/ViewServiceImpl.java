@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
@@ -53,13 +54,17 @@ public class ViewServiceImpl implements ViewService {
      * @see org.kuali.rice.krad.uif.service.ViewService#getViewById(java.lang.String)
      */
     public View getViewById(String viewId) {
-        LOG.debug("retrieving view instance for id: " + viewId);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("retrieving view instance for id: " + viewId);
+        }
 
         View view = dataDictionaryService.getViewById(viewId);
         if (view == null) {
             LOG.warn("View not found for id: " + viewId);
         } else {
-            LOG.debug("Updating view status to CREATED for view: " + view.getId());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Updating view status to CREATED for view: " + view.getId());
+            }
             view.setViewStatus(ViewStatus.CREATED);
         }
 
@@ -132,35 +137,52 @@ public class ViewServiceImpl implements ViewService {
         ViewHelperService helperService = view.getViewHelperService();
 
         // invoke initialize phase on the views helper service
-        LOG.info("performing initialize phase for view: " + view.getId());
+        // Heavily called method showed up on profile as a hotspot.  Putting log statements in checks cuts execution time by ~75%
+        if (LOG.isEnabledFor(Priority.INFO)) {
+            LOG.info("performing initialize phase for view: " + view.getId());
+        }
         helperService.performInitialization(view, model);
 
         // do indexing
-        LOG.debug("processing indexing for view: " + view.getId());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("processing indexing for view: " + view.getId());
+        }
         view.index();
 
         // update status on view
-        LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
+        }
         view.setViewStatus(ViewStatus.INITIALIZED);
 
         // Apply Model Phase
-        LOG.info("performing apply model phase for view: " + view.getId());
+        if (LOG.isEnabledFor(Priority.INFO)) {
+            LOG.info("performing apply model phase for view: " + view.getId());
+        }
         helperService.performApplyModel(view, model);
 
         // do indexing
-        LOG.info("reindexing after apply model for view: " + view.getId());
+        if (LOG.isEnabledFor(Priority.INFO)) {
+            LOG.info("reindexing after apply model for view: " + view.getId());
+        }
         view.index();
 
         // Finalize Phase
-        LOG.info("performing finalize phase for view: " + view.getId());
+        if (LOG.isEnabledFor(Priority.INFO)) {
+            LOG.info("performing finalize phase for view: " + view.getId());
+        }
         helperService.performFinalize(view, model);
 
         // do indexing
-        LOG.info("processing final indexing for view: " + view.getId());
+        if (LOG.isEnabledFor(Priority.INFO)) {
+            LOG.info("processing final indexing for view: " + view.getId());
+        }
         view.index();
 
         // update status on view
-        LOG.debug("Updating view status to FINAL for view: " + view.getId());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Updating view status to FINAL for view: " + view.getId());
+        }
         view.setViewStatus(ViewStatus.FINAL);
     }
 

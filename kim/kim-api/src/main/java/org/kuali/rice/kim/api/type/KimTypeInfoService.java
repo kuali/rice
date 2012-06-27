@@ -28,6 +28,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.Collection;
 
+/**
+ *
+ * This service provides read operations for KimType
+ *
+ *@author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 @WebService(name = "kimTypeInfoService", targetNamespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KimTypeInfoService {
@@ -41,7 +48,7 @@ public interface KimTypeInfoService {
      *
      * @param id the id to retrieve the kim type by. cannot be null.
      * @return a {@link KimType} or null
-     * @throws IllegalArgumentException if the id is null
+     * @throws RiceIllegalArgumentException if the id is null
      */
     @WebMethod(operationName="getKimType")
     @WebResult(name = "kimType")
@@ -62,7 +69,7 @@ public interface KimTypeInfoService {
      * @param namespaceCode the namespaceCode to retrieve the kim type by. cannot be null.
      * @param name          the name to retrieve the kim type by. cannot be null.
      * @return a {@link KimType} or null
-     * @throws IllegalArgumentException if the namespaceCode or name is null
+     * @throws RiceIllegalArgumentException if the namespaceCode or name is null
      * @throws IllegalStateException    if multiple active results are found for a namespaceCode and name
      */
     @WebMethod(operationName="findKimTypeByNameAndNamespace")

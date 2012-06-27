@@ -34,7 +34,7 @@ function setupPage(validate){
     validateClient = validate;
 	//Make sure form doesn't have any unsaved data when user clicks on any other portal links, closes browser or presses fwd/back browser button
 	jq(window).bind('beforeunload', function(evt){
-		var validateDirty = jq("[name='validateDirty']").val();
+        var validateDirty = jq("[name='validateDirty']").val();
 		if (validateDirty == "true")
 		{
 			var dirty = jq(".uif-field").find("input.dirty");
@@ -356,6 +356,15 @@ jq(document).ready(function() {
     jq(window).unload(function() {
         createLoading(false);
     });
+});
+
+// script that should execute when the page unloads
+jq(window).bind('beforeunload', function (evt) {
+    // clear server form if closing the browser tab/window or going back
+    // TODO: work out back button problem so we can add this clearing
+//    if (!event.clientY || (event.clientY < 0)) {
+//        clearServerSideForm();
+//    }
 });
 
 

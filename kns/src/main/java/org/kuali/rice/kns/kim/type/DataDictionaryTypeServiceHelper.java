@@ -91,7 +91,7 @@ public final class DataDictionaryTypeServiceHelper {
                 b.setMultiple(false);
                 b.setSize(control.getSize());
                 return b;
-            } else if (control.isText()) {
+            } else if (control.isText() || control.isCurrency()) {
                 final RemotableTextInput.Builder b = RemotableTextInput.Builder.create();
                 b.setSize(control.getSize());
                 return b;

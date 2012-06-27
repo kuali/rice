@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -45,7 +46,10 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
 	protected void loadKimObject(HttpServletRequest request,
 			IdentityManagementDocumentFormBase form) {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
+        String id = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
+        String altId =  request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
+        
+        String roleId = StringUtils.isNotEmpty(id) ? id : altId;
         Role role = KimApiServiceLocator.getRoleService().getRole(roleId);
         if (role != null) {
         	getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);

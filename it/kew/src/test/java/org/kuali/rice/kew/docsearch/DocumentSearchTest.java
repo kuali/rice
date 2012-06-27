@@ -19,10 +19,11 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Years;
 import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.RequestedActions;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
@@ -33,15 +34,12 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,7 +53,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class DocumentSearchTest extends KEWTestCase {
@@ -99,6 +96,36 @@ public class DocumentSearchTest extends KEWTestCase {
         savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "for in accounts");
         assertNotNull(savedCriteria);
         assertEquals("for in accounts", savedCriteria.getSaveName());
+    }
+
+    // KULRICE-5755 tests that the Document in the DocumentResult is properly populated
+    @Test public void testDocSearchDocumentResult() throws Exception {
+        String[] docIds = routeTestDocs();
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+        DocumentSearchResult result = results.getSearchResults().get(0);
+        Document doc = result.getDocument();
+
+        // check all the DocumentContract properties
+        assertNotNull(doc.getApplicationDocumentStatus());
+        assertNotNull(doc.getApplicationDocumentStatusDate());
+        assertNotNull(doc.getDateApproved());
+        assertNotNull(doc.getDateCreated());
+        assertNotNull(doc.getDateFinalized());
+        assertNotNull(doc.getDocumentId());
+        assertNotNull(doc.getDocumentTypeName());
+        assertNotNull(doc.getApplicationDocumentId());
+        assertNotNull(doc.getDateLastModified());
+        assertNotNull(doc.getDocumentHandlerUrl());
+        assertNotNull(doc.getDocumentTypeId());
+        assertNotNull(doc.getInitiatorPrincipalId());
+        assertNotNull(doc.getRoutedByPrincipalId());
+        assertNotNull(doc.getStatus());
+        assertNotNull(doc.getTitle());
+        // route variables are currently excluded
+        assertTrue(doc.getVariables().isEmpty());
     }
 
     @Test public void testDocSearch_maxResults() throws Exception {

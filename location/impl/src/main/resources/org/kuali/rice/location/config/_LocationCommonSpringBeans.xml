@@ -46,6 +46,11 @@
     <property name="serviceName" value="globalCacheManager" />
   </bean>
 
+  <bean id="rice.location.import.kualiModuleService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiModuleService" />
+  </bean>
+
   <cache:annotation-driven cache-manager="rice.location.import.globalCacheManager" />
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->

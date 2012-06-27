@@ -17,7 +17,7 @@ package org.kuali.rice.ken.service;
 
 import java.util.Collection;
 
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 
 /**
@@ -55,7 +55,7 @@ public interface NotificationMessageDeliveryService {
      * @param userRecipientId the id of the user whose message deliveries to obtain
      * @return collection of NotificationMessageDelivery objects generated for the given Notification for the given user
      */
-    public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries(Notification notification, String userRecipientId);
+    public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries(NotificationBo notification, String userRecipientId);
     
     /**
      * This method is responsible for atomically finding all untaken, undelivered message deliveries, marking them as taken

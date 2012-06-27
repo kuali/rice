@@ -16,13 +16,16 @@
 package org.kuali.rice.kew.xml;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.xml.utils.DefaultErrorHandler;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.xml.XmlException;
+import org.kuali.rice.core.impl.impex.xml.*;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttributeBo;
+import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -30,7 +33,13 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.exception.GroupNotFoundException;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,10 +47,43 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
-    private List testDoc(String docName, Class expectedException) throws Exception {
+
+    private boolean validate(String docName) throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setValidating(true);
+        dbf.setNamespaceAware( true );
+        dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        db.setEntityResolver(new org.kuali.rice.core.impl.impex.xml.ClassLoaderEntityResolver());
+        db.setErrorHandler(new DefaultHandler() {
+            @Override
+            public void error(SAXParseException e) throws SAXException {
+                this.fatalError(e);
+            }
+            @Override
+            public void fatalError(SAXParseException e) throws SAXException {
+                super.fatalError(e);
+            }
+        });
+        try {
+            db.parse(getClass().getResourceAsStream(docName + ".xml"));
+            return true;
+        } catch (SAXException se) {
+            log.error("Error validating " + docName + ".xml", se);
+            return false;
+        }
+    }
+
+    private List<DocumentType> testDoc(String docName, Class expectedException) throws Exception {
+        return testDoc(docName, true, expectedException);
+    }
+    
+    private List<DocumentType> testDoc(String docName, boolean valid, Class expectedException) throws Exception {
+        assertEquals(valid, validate(docName));
+
         DocumentTypeXmlParser parser = new DocumentTypeXmlParser();
         try {
-            List docTypes = parser.parseDocumentTypes(getClass().getResourceAsStream(docName + ".xml"));
+            List<DocumentType> docTypes = parser.parseDocumentTypes(getClass().getResourceAsStream(docName + ".xml"));
             if (expectedException != null) {
                 fail(docName + " successfully loaded");
             }
@@ -71,7 +113,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithInvalidActivationType() throws Exception {
-        testDoc("BadActivationType", IllegalArgumentException.class);
+        testDoc("BadActivationType", false, IllegalArgumentException.class);
     }
 
     @Test public void testLoadDocWithValidPolicyNames() throws Exception {
@@ -87,7 +129,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithBadPolicyName() throws Exception {
-        testDoc("BadPolicyName", IllegalArgumentException.class);
+        testDoc("BadPolicyName", false, IllegalArgumentException.class);
     }
 
     @Test public void testLoadDocWithBadNextNode() throws Exception {
@@ -102,15 +144,15 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithBadExceptionWG() throws Exception {
-        testDoc("BadExceptionWorkgroup", GroupNotFoundException.class);
+        testDoc("BadExceptionWorkgroup", false, GroupNotFoundException.class);
     }
 
     @Test public void testLoadDocWithBadSuperUserWG() throws Exception {
-        testDoc("BadSuperUserWorkgroup", GroupNotFoundException.class);
+        testDoc("BadSuperUserWorkgroup", false, GroupNotFoundException.class);
     }
 
     @Test public void testLoadDocWithBadBlanketApproveWG() throws Exception {
-        testDoc("BadBlanketApproveWorkgroup", GroupNotFoundException.class);
+        testDoc("BadBlanketApproveWorkgroup", false, GroupNotFoundException.class);
     }
 
     @Test public void testLoadDocWithBadRuleTemplate() throws Exception {
@@ -281,7 +323,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
     
     @Test public void testLoadDocWithNoLabel() throws Exception {
-    	List documentTypes = testDoc("DocTypeWithNoLabel", null);
+    	List documentTypes = testDoc("DocTypeWithNoLabel", false, null);
     	assertEquals("Should have parsed 1 document type", 1, documentTypes.size());
     	
     	DocumentType documentType = (DocumentType)documentTypes.get(0);
@@ -298,7 +340,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     	
     	// now let's ingest a new version without the label, it should maintain the original label and not
     	// end up with a value of Undefined
-    	documentTypes = testDoc("DocTypeWithNoLabelPreviousVersion", null);
+    	documentTypes = testDoc("DocTypeWithNoLabelPreviousVersion", false, null);
     	assertEquals("Should have parsed 1 document type", 1, documentTypes.size());
     	testDocType3 = (DocumentType)documentTypes.get(0);
     	assertEquals("Document type has incorrect name", "TestDocumentType3", testDocType3.getName());
@@ -417,7 +459,23 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
     
     @Test public void testLoadDocWithBlankDocumentStatusPolicyStringValue() throws Exception {
-        testDoc("DocumentStatusPolicyMissingStringValue", XmlException.class);
+        testDoc("DocumentStatusPolicyMissingStringValue", false, XmlException.class);
+    }
+
+    @Test public void testLoadDocWithDocTypePolicyXMLConfig() throws Exception {
+        List<DocumentType> docTypes = testDoc("DocumentTypePolicyConfig", null);
+        assertEquals(1, docTypes.size());
+        DocumentType docType = docTypes.get(0);
+        DocumentTypePolicy policy = docType.getRecallNotification();
+        assertNotNull(policy);
+        assertNotNull(policy.getPolicyStringValue());
+        assertEquals("<config>"
+                    + "<recipients xmlns:r=\"ns:workflow/Rule\" xsi:schemaLocation=\"ns:workflow/Rule resource:Rule\">"
+                    + "<r:principalName>quickstart</r:principalName>"
+                    + "<r:user>quickstart</r:user>"
+                    + "<role name=\"foobar\" namespace=\"KEW\"/>"
+                    + "</recipients>"
+                    + "</config>", policy.getPolicyStringValue().replaceAll("\\n*", ""));
     }
 
     private boolean isActionCodeValidForDocument(WorkflowDocument document, String actionCode) {

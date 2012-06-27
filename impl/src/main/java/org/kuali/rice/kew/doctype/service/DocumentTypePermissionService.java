@@ -91,5 +91,11 @@ public interface DocumentTypePermissionService {
 	 * also considers the document status and initiator of the document.
 	 */
 	boolean canAddRouteLogMessage(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue);
-	
+
+    /**
+     * Determines if the given principal can recall the specified document given the permission details.
+     * @since 2.1
+     */
+    boolean canRecall(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String applicationStatus, String initiatorPrincipalId);
+
 }

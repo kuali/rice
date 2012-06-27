@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -228,9 +227,12 @@ public final class KEWServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().<T>getService(
-				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY)))) ?
-						new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName) : new QName(serviceName));
+        QName name = new QName(serviceName);
+        RunMode kewRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY));
+        if (kewRunMode == RunMode.REMOTE || kewRunMode == RunMode.THIN) {
+            name = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName);
+        }
+		return GlobalResourceLoader.getResourceLoader().<T>getService(name);
 	}
 
 	public static DocumentTypeService getDocumentTypeService() {

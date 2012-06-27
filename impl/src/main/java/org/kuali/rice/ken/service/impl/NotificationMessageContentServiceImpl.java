@@ -23,14 +23,14 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
+import org.kuali.rice.ken.bo.NotificationPriorityBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.util.CompoundNamespaceContext;
@@ -105,7 +105,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * This method implements by taking in a String and then converting that to a byte[];
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#parseNotificationRequestMessage(java.lang.String)
      */
-    public Notification parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, XmlException {
+    public NotificationBo parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, XmlException {
         // this is sort of redundant...but DOM does not perform validation
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
@@ -118,7 +118,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * This method implements by taking in an InputStream and then coverting that to a byte[].
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#parseNotificationRequestMessage(java.io.InputStream)
      */
-    public Notification parseNotificationRequestMessage(InputStream stream) throws IOException, XmlException {
+    public NotificationBo parseNotificationRequestMessage(InputStream stream) throws IOException, XmlException {
         // this is sort of redundant...but DOM does not perform validation
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
@@ -136,7 +136,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * @throws IOException
      * @throws XmlException
      */
-    private Notification parseNotificationRequestMessage(byte[] bytes) throws IOException, XmlException {
+    private NotificationBo parseNotificationRequestMessage(byte[] bytes) throws IOException, XmlException {
         /* First we'll fully parse the DOM with validation turned on */
         Document doc;
         try {
@@ -186,10 +186,10 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 senders.add(nodes.item(i).getTextContent());
             }
             nodes = (NodeList) xpath.evaluate("/nreq:notification/nreq:recipients/nreq:group|/nreq:notification/nreq:recipients/nreq:user", root, XPathConstants.NODESET);
-            List<NotificationRecipient> recipients = new ArrayList<NotificationRecipient>();
+            List<NotificationRecipientBo> recipients = new ArrayList<NotificationRecipientBo>();
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node node = nodes.item(i);
-                NotificationRecipient recipient = new NotificationRecipient();
+                NotificationRecipientBo recipient = new NotificationRecipientBo();
                 // NOTE: assumes validation has occurred; does not check validity of element name
                 if (NotificationConstants.RECIPIENT_TYPES.GROUP.equalsIgnoreCase(node.getLocalName())) {
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
@@ -218,7 +218,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
             /* Construct the Notification business object */
 
-            Notification notification = new Notification();
+            NotificationBo notification = new NotificationBo();
 
             if (!StringUtils.isBlank(title)) {
                 notification.setTitle(title);
@@ -227,20 +227,20 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             /* channel and producer require lookups in the system (i.e. we can't just create new instances out of whole cloth), so
                we call a helper method to retrieve references to the respective objects
              */
-            NotificationChannel channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannel.class, boDao);
+            NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannelBo.class, boDao);
             notification.setChannel(channel);
 
-            NotificationProducer producer = Util.retrieveFieldReference("producer", "name", producerName, NotificationProducer.class, boDao);
+            NotificationProducerBo producer = Util.retrieveFieldReference("producer", "name", producerName, NotificationProducerBo.class, boDao);
             notification.setProducer(producer);
 
             for (String sender: senders) {
-                NotificationSender ns = new NotificationSender();
+                NotificationSenderBo ns = new NotificationSenderBo();
                 LOG.debug("Setting sender: " + sender);
                 ns.setSenderName(sender);
                 notification.addSender(ns);
             }
 
-            for (NotificationRecipient recipient: recipients) {
+            for (NotificationRecipientBo recipient: recipients) {
                 LOG.debug("Setting recipient id: "+ recipient.getRecipientId());
                 notification.addRecipient(recipient);
             }
@@ -263,7 +263,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 } catch (ParseException pe) {
                     throw new XmlException("Invalid 'sendDateTime' value: " + sendDateTime, pe);
                 }
-                notification.setSendDateTime(new Timestamp(d.getTime()));
+                notification.setSendDateTimeValue(new Timestamp(d.getTime()));
             }
             if(StringUtils.isNotBlank(autoRemoveDateTime)) {
                 try {
@@ -271,15 +271,15 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 } catch (ParseException pe) {
                     throw new XmlException("Invalid 'autoRemoveDateTime' value: " + autoRemoveDateTime, pe);
                 }
-                notification.setAutoRemoveDateTime(new Timestamp(d.getTime()));
+                notification.setAutoRemoveDateTimeValue(new Timestamp(d.getTime()));
             }
 
 
             /* we have to look up priority and content type in the system also */
-            NotificationPriority priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriority.class, boDao);
+            NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriorityBo.class, boDao);
             notification.setPriority(priority);
 
-            NotificationContentType contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentType.class, boDao);
+            NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentTypeBo.class, boDao);
             notification.setContentType(contentType);
 
             /* Now handle and validate actual notification content.  This is a tricky part.
@@ -362,7 +362,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * @throws IOException
      * @throws XmlException
      */
-    private void validateContent(Notification notification, String contentType, Element contentElement, String content) throws IOException, XmlException {
+    private void validateContent(NotificationBo notification, String contentType, Element contentElement, String content) throws IOException, XmlException {
         // this debugging relies on a DOM 3 API that is only available with Xerces 2.7.1+ (TypeInfo)
         // commented out for now
         /*LOG.debug(contentElement.getSchemaTypeInfo());
@@ -382,11 +382,11 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
     /**
      * This method will marshall out the NotificationResponse object as a String of XML, using XStream.
-     * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationResponseMessage(org.kuali.rice.ken.bo.NotificationResponse)
+     * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationResponseMessage(org.kuali.rice.ken.bo.NotificationResponseBo)
      */
-    public String generateNotificationResponseMessage(NotificationResponse response) {
+    public String generateNotificationResponseMessage(NotificationResponseBo response) {
 	XStream xstream = new XStream(new DomDriver());
-	xstream.alias("response", NotificationResponse.class);
+	xstream.alias("response", NotificationResponseBo.class);
 	xstream.alias("status", String.class);
 	xstream.alias("message", String.class);
         xstream.alias("notificationId", Long.class);
@@ -397,11 +397,11 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
     /**
      * This method will marshall out the Notification object as a String of XML, using XStream and replaces the
      * full recipient list with just a single recipient.
-     * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationMessage(org.kuali.rice.ken.bo.Notification, java.lang.String)
+     * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationMessage(org.kuali.rice.ken.bo.NotificationBo, java.lang.String)
      */
-    public String generateNotificationMessage(Notification notification, String userRecipientId) {
+    public String generateNotificationMessage(NotificationBo notification, String userRecipientId) {
 	// create a new fresh instance so we don't screw up any references
-	Notification clone = Util.cloneNotificationWithoutObjectReferences(notification);
+	NotificationBo clone = Util.cloneNotificationWithoutObjectReferences(notification);
 
         /* TODO: modify clone recipient list so that:
              1. only the specified user is listed as a recipient (no other users or groups)
@@ -418,7 +418,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 	if(StringUtils.isNotBlank(userRecipientId)) {
 	    clone.getRecipients().clear();
 
-	    NotificationRecipient recipient = new NotificationRecipient();
+	    NotificationRecipientBo recipient = new NotificationRecipientBo();
 	    recipient.setRecipientId(userRecipientId);
 	    recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
 
@@ -427,23 +427,23 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
 	// now marshall out to XML
 	XStream xstream = new XStream(new DomDriver());
-	xstream.alias("notification", Notification.class);
-	xstream.alias("channel", NotificationChannel.class);
-	xstream.alias("contentType", NotificationContentType.class);
+	xstream.alias("notification", NotificationBo.class);
+	xstream.alias("channel", NotificationChannelBo.class);
+	xstream.alias("contentType", NotificationContentTypeBo.class);
         xstream.alias("title", String.class);
-	xstream.alias("priority", NotificationPriority.class);
-	xstream.alias("producer", NotificationProducer.class);
-	xstream.alias("recipient", NotificationRecipient.class);
-	xstream.alias("sender", NotificationSender.class);
+	xstream.alias("priority", NotificationPriorityBo.class);
+	xstream.alias("producer", NotificationProducerBo.class);
+	xstream.alias("recipient", NotificationRecipientBo.class);
+	xstream.alias("sender", NotificationSenderBo.class);
 	String xml = xstream.toXML(clone);
 	return xml;
     }
 
     /**
      * This method will marshall out the Notification object as a String of XML, using XStream.
-     * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationMessage(org.kuali.rice.ken.bo.Notification)
+     * @see org.kuali.rice.ken.service.NotificationMessageContentService#generateNotificationMessage(org.kuali.rice.ken.bo.NotificationBo)
      */
-    public String generateNotificationMessage(Notification notification) {
+    public String generateNotificationMessage(NotificationBo notification) {
 	return generateNotificationMessage(notification, null);
     }
 
@@ -452,9 +452,9 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * Warning: this method does NOT validate the payload content XML
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#parseNotificationXml(byte[])
      */
-    public Notification parseSerializedNotificationXml(byte[] xmlAsBytes) throws Exception {
+    public NotificationBo parseSerializedNotificationXml(byte[] xmlAsBytes) throws Exception {
         Document doc;
-        Notification notification = new Notification();
+        NotificationBo notification = new NotificationBo();
 
         try {
             doc = Util.parse(new InputSource(new ByteArrayInputStream(xmlAsBytes)), false, false, null);
@@ -513,34 +513,34 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             String content = ((String) xpath.evaluate("//notification/content", root)).trim();
 
             // now populate the notification BO instance
-            NotificationChannel channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannel.class, boDao);
+            NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannelBo.class, boDao);
             notification.setChannel(channel);
 
-            NotificationPriority priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriority.class, boDao);
+            NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriorityBo.class, boDao);
             notification.setPriority(priority);
 
-            NotificationContentType contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentType.class, boDao);
+            NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentTypeBo.class, boDao);
             notification.setContentType(contentType);
 
-            NotificationProducer producer = Util.retrieveFieldReference("producer", "name", NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME,
-        	    NotificationProducer.class, boDao);
+            NotificationProducerBo producer = Util.retrieveFieldReference("producer", "name", NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME,
+        	    NotificationProducerBo.class, boDao);
             notification.setProducer(producer);
 
             for (String senderName: senders) {
-                NotificationSender ns = new NotificationSender();
+                NotificationSenderBo ns = new NotificationSenderBo();
                 ns.setSenderName(senderName);
                 notification.addSender(ns);
             }
 
             for (String userRecipientId: userRecipients) {
-                NotificationRecipient recipient = new NotificationRecipient();
+                NotificationRecipientBo recipient = new NotificationRecipientBo();
                 recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
                 recipient.setRecipientId(userRecipientId);
                 notification.addRecipient(recipient);
             }
 
             for (String workgroupRecipientId: workgroupRecipients) {
-                NotificationRecipient recipient = new NotificationRecipient();
+                NotificationRecipientBo recipient = new NotificationRecipientBo();
                 recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
                 recipient.setRecipientId(workgroupRecipientId);
                 notification.addRecipient(recipient);
@@ -561,7 +561,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                     } catch (ParseException pe) {
                         LOG.warn("Invalid 'sendDateTime' value: " + sendDateTime, pe);
                     }
-                    notification.setSendDateTime(new Timestamp(d.getTime()));
+                    notification.setSendDateTimeValue(new Timestamp(d.getTime()));
                 }
 
                 Date d2 = null;
@@ -571,7 +571,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                     } catch (ParseException pe) {
                 	LOG.warn("Invalid 'autoRemoveDateTime' value: " + autoRemoveDateTime, pe);
                     }
-                    notification.setAutoRemoveDateTime(new Timestamp(d2.getTime()));
+                    notification.setAutoRemoveDateTimeValue(new Timestamp(d2.getTime()));
                 }
             }
 

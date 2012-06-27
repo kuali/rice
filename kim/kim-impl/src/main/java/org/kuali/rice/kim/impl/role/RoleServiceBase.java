@@ -15,26 +15,37 @@
  */
 package org.kuali.rice.kim.impl.role;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -43,14 +54,6 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 abstract class RoleServiceBase {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
@@ -87,10 +90,11 @@ abstract class RoleServiceBase {
      */
     private Map<String, String> convertQualifierKeys(Map<String, String> qualification) {
         Map<String, String> convertedQualification = new HashMap<String, String>();
-        if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
+        if (qualification != null && CollectionUtils.isNotEmpty(qualification.entrySet())) {
             for (Map.Entry<String, String> entry : qualification.entrySet()) {
-                if (StringUtils.isNotEmpty(getKimAttributeId(entry.getKey()))) {
-                    convertedQualification.put(getKimAttributeId(entry.getKey()), entry.getValue());
+                String kimAttributeId = getKimAttributeId(entry.getKey());
+                if (StringUtils.isNotEmpty(kimAttributeId)) {
+                    convertedQualification.put(kimAttributeId, entry.getValue());
                 }
             }
         }
@@ -318,6 +322,13 @@ abstract class RoleServiceBase {
         }
         return getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, roleId);
     }
+    
+    protected RoleBoLite getRoleBoLite(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            return null;
+        }
+        return getBusinessObjectService().findBySinglePrimaryKey(RoleBoLite.class, roleId);
+    }
 
     protected DelegateTypeBo getDelegationOfType(String roleId, DelegationType delegationType) {
         List<DelegateTypeBo> roleDelegates = getRoleDelegations(roleId);
@@ -330,7 +341,7 @@ abstract class RoleServiceBase {
 
     private DelegateTypeBo getSecondaryDelegation(String roleId, List<DelegateTypeBo> roleDelegates) {
         DelegateTypeBo secondaryDelegate = null;
-        RoleBo roleBo = getRoleBo(roleId);
+        RoleBoLite roleBo = getRoleBoLite(roleId);
         for (DelegateTypeBo delegate : roleDelegates) {
             if (isDelegationSecondary(delegate.getDelegationType())) {
                 secondaryDelegate = delegate;
@@ -347,7 +358,7 @@ abstract class RoleServiceBase {
 
     protected DelegateTypeBo getPrimaryDelegation(String roleId, List<DelegateTypeBo> roleDelegates) {
         DelegateTypeBo primaryDelegate = null;
-        RoleBo roleBo = getRoleBo(roleId);
+        RoleBoLite roleBo = getRoleBoLite(roleId);
         for (DelegateTypeBo delegate : roleDelegates) {
             if (isDelegationPrimary(delegate.getDelegationType())) {
                 primaryDelegate = delegate;
@@ -400,13 +411,31 @@ abstract class RoleServiceBase {
         // while this is not actually the primary key - there will be at most one row with these criteria
         return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
     }
+    
+    protected RoleBoLite getRoleBoLiteByName(String namespaceCode, String roleName) {
+        if (StringUtils.isBlank(namespaceCode)
+                || StringUtils.isBlank(roleName)) {
+            return null;
+        }
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
+        criteria.put(KimConstants.UniqueKeyConstants.NAME, roleName);
+        criteria.put(KRADPropertyConstants.ACTIVE, "Y");
+        // while this is not actually the primary key - there will be at most one row with these criteria
+        return getBusinessObjectService().findByPrimaryKey(RoleBoLite.class, criteria);
+    }
 
-	protected boolean doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
-		if(CollectionUtils.isNotEmpty(getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier))) {
-			return true;
+	protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
+		List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);
+        List<RoleMember> roleMembers = new ArrayList<RoleMember>();
+        if(CollectionUtils.isNotEmpty(roleMemberBos)) {
+            for (RoleMemberBo bo : roleMemberBos) {
+                roleMembers.add(RoleMemberBo.to(bo));
+            }
+			return roleMembers;
 		}
 
-		return false;
+		return Collections.emptyList();
 	}
 	
 	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleBo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
@@ -439,13 +468,14 @@ abstract class RoleServiceBase {
 		return rms;
 	}
     
-    protected boolean doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
+    //return roleMemberId of match or null if no match
+    protected RoleMember doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
-            if (doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
-                return true;
+            if (rm.isActive() && doesMemberMatch(rm, memberId, memberTypeCode, qualifier)) {
+                return RoleMemberBo.to(rm);
             }
         }
-        return false;
+        return null;
     }
 
     protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, Map<String, String> qualifier) {
@@ -471,7 +501,7 @@ abstract class RoleServiceBase {
      * @return the Role Type Service
      */
     protected RoleTypeService getRoleTypeService(String roleId) {
-        RoleBo roleBo = getRoleBo(roleId);
+        RoleBoLite roleBo = getRoleBoLite(roleId);
         KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
         if (roleType != null) {
             return getRoleTypeService(roleType);
@@ -483,7 +513,7 @@ abstract class RoleServiceBase {
         String serviceName = typeInfo.getServiceName();
         if (serviceName != null) {
             try {
-                KimTypeService service = (KimTypeService) KimImplServiceLocator.getService(serviceName);
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
                 if (service != null && service instanceof RoleTypeService) {
                     return (RoleTypeService) service;
                 }

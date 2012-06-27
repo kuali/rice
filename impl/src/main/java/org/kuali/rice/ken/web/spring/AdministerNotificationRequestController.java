@@ -17,8 +17,8 @@ package org.kuali.rice.ken.web.spring;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannelReviewer;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationRecipientService;
@@ -62,7 +62,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
 
         // outgoing
         private WorkflowDocument document;
-        private Notification notification;
+        private NotificationBo notification;
         private String renderedContent;
         private boolean valid = true;
         private String message;
@@ -79,10 +79,10 @@ public class AdministerNotificationRequestController extends MultiActionControll
         public void setDocument(WorkflowDocument document) {
             this.document = document;
         }
-        public Notification getNotification() {
+        public NotificationBo getNotification() {
             return notification;
         }
-        public void setNotification(Notification notification) {
+        public void setNotification(NotificationBo notification) {
             this.notification = notification;
         }
         public String getRenderedContent() {
@@ -143,11 +143,11 @@ public class AdministerNotificationRequestController extends MultiActionControll
      * @return a Notification BO reconstituted from the serialized XML form in the workflow document
      * @throws Exception if parsing fails
      */
-    private Notification retrieveNotificationForWorkflowDocument(WorkflowDocument document) throws Exception {
+    private NotificationBo retrieveNotificationForWorkflowDocument(WorkflowDocument document) throws Exception {
         String notificationAsXml = document.getApplicationContent();
 
         //parse out the application content into a Notification BO
-        Notification notification = messageContentService.parseSerializedNotificationXml(notificationAsXml.getBytes());
+        NotificationBo notification = messageContentService.parseSerializedNotificationXml(notificationAsXml.getBytes());
 
         return notification;
     }
@@ -182,7 +182,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
         try {
             document = NotificationWorkflowDocument.loadNotificationDocument(initiatorId, command.getDocId());
 
-            Notification notification = retrieveNotificationForWorkflowDocument(document);
+            NotificationBo notification = retrieveNotificationForWorkflowDocument(document);
 
             // set up model
             command.setDocument(document);
@@ -196,16 +196,16 @@ public class AdministerNotificationRequestController extends MultiActionControll
                 command.setMessage("This notification request has been approved.");
             } else if (document.isDisapproved()) {
                 command.setMessage("This notification request has been disapproved.");
-            } else if (notification.getAutoRemoveDateTime() != null && notification.getAutoRemoveDateTime().before(new Date(System.currentTimeMillis()))) {
+            } else if (notification.getAutoRemoveDateTime() != null && notification.getAutoRemoveDateTimeValue().before(new Date(System.currentTimeMillis()))) {
                 /*if (!document.stateIsCanceled()) {
                 workflowDocumentService.terminateWorkflowDocument(new WorkflowDocument(new NetworkIdVO("notsys"), new Long(command.getDocId())));
                 }*/
                 // the autoremove date time has already passed...this notification request is null and void at this time
                 boolean disapproved = document.isDisapproved();
                 if (!document.isDisapproved()) {
-                    List<NotificationChannelReviewer> reviewers = notification.getChannel().getReviewers();
+                    List<NotificationChannelReviewerBo> reviewers = notification.getChannel().getReviewers();
                     String user = null;
-                    for (NotificationChannelReviewer reviewer: reviewers) {
+                    for (NotificationChannelReviewerBo reviewer: reviewers) {
                         if (KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
                             if (reviewer.getReviewerId().equals(request.getRemoteUser())) {
                                 user = request.getRemoteUser();
@@ -315,7 +315,7 @@ public class AdministerNotificationRequestController extends MultiActionControll
             // now construct the workflow document, which will interact with workflow
             WorkflowDocument document = NotificationWorkflowDocument.loadNotificationDocument(userId, command.getDocId());
 
-            Notification notification = retrieveNotificationForWorkflowDocument(document);
+            NotificationBo notification = retrieveNotificationForWorkflowDocument(document);
 
             String initiatorPrincipalId = document.getInitiatorPrincipalId();
             Person initiator = KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);

@@ -110,13 +110,14 @@ public class BackdoorAction extends KualiAction {
                 || uSession.getLoggedInUserPrincipalName().equals(backdoorForm.getBackdoorId()))) {
             return logout(mapping, form, request, response);
         }
-        
+
         try {
         	uSession.setBackdoorUser(backdoorForm.getBackdoorId());
         } catch (RiceRuntimeException e) {
         	LOG.warn("invalid backdoor id " + backdoorForm.getBackdoorId(), e);
-            request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
-            return mapping.findForward("portal");
+            //Commenting this out since it is not being read anywhere
+            //request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
+            return mapping.findForward("invalid_backdoor_portal");
         }
 
         setFormGroupPermission(backdoorForm, request);

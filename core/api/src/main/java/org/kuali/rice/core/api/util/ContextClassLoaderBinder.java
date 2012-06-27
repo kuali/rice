@@ -17,13 +17,13 @@ package org.kuali.rice.core.api.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Utility class that binds/unbinds the context ClassLoader of the current Thread
  * using a ThreadLocal.
- * This class supports re-entrancy by maintaining a stack of context classloaders.
- * NOTE: maybe implement stricter checks, by matching some contextual object or original
- * classloader on bind to the unbind so that they are always matched (within a given context)
+ * NOTE: {@link #doInContextClassLoader(ClassLoader, java.util.concurrent.Callable)} is the only safe way to use this class,
+ * do not use deprecated {@link #bind(ClassLoader)} or {@link #unbind()} methods.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -32,6 +32,7 @@ public final class ContextClassLoaderBinder {
 	/**
      * Stack of previous context classloaders that should be
      * restored on unbind
+     * @deprecated since 2.1, use #doInContextClassLoader. storing references to classloaders is an incredibly bad idea!
      */
     private static final ThreadLocal<List<ClassLoader>> STACK = new ThreadLocal<List<ClassLoader>>() {
         protected List<ClassLoader> initialValue() {
@@ -39,10 +40,16 @@ public final class ContextClassLoaderBinder {
         }
     };
 
+    /**
+     * @deprecated use #doInContextClassLoader
+     */
     private static List<ClassLoader> getStack() {
         return STACK.get();
     }
 
+    /**
+     * @deprecated use #doInContextClassLoader
+     */
     public static void bind(ClassLoader cl) {
         List<ClassLoader> stack = getStack();
         Thread current = Thread.currentThread();
@@ -52,6 +59,9 @@ public final class ContextClassLoaderBinder {
         current.setContextClassLoader(cl);
     }
 
+    /**
+     * @deprecated use #doInContextClassLoader
+     */
     public static void unbind() {
         List<ClassLoader> stack = getStack();
         if (stack.size() == 0) {
@@ -62,5 +72,21 @@ public final class ContextClassLoaderBinder {
         //log.debug("[unbind] Switching CCL from " + Thread.currentThread().getContextClassLoader() + " to " + lastClassLoader);
         stack.remove(stack.size() - 1);
         Thread.currentThread().setContextClassLoader(lastClassLoader);
+    }
+
+    /**
+     * Execute a runnable under a given context classloader
+     * @param cl the classloader to set as the thread context classloader
+     * @param callable the callable
+     */
+    public static <T> T doInContextClassLoader(ClassLoader cl, Callable<T> callable) throws Exception {
+        Thread current = Thread.currentThread();
+        ClassLoader prev = current.getContextClassLoader();
+        try {
+            current.setContextClassLoader(cl);
+            return callable.call();
+        } finally {
+            current.setContextClassLoader(prev);
+        }
     }
 }

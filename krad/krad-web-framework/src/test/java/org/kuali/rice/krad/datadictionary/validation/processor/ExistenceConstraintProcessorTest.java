@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.validation.Address;
 import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
@@ -33,8 +34,8 @@ import java.util.Iterator;
 /**
  * Things this test should check:
  * 
- * 1. presence of a required field value (success) {@link #testRequiredSingleAttributeSuccess}
- * 2. absence of a required field value (failure) {@link #testRequiredSingleAttributeFailure}
+ * 1. presence of a required field value (success) {@link #testPresenceOfRequiredSingleAttributeSuccess()}
+ * 2. absence of a required field value (failure) {@link #testAbsenceOfRequiredSingleAttributeFailure()} RequiredSingleAttributeFailure}
  * 3. presence of an unrequired field value (success) {@link #testPresenceNotRequiredSingleAttributeSuccess}
  * 4. absence of an unrequired field value (success) {@link #testAbsenceNotRequiredSingleAttributeSuccess}
  * 5. presence of a no constraint field value (success) {@link #testPresenceNoConstraintSingleAttributeSuccess}
@@ -159,7 +160,7 @@ public class ExistenceConstraintProcessorTest {
 		// Make sure that it's status is ERROR
 		Assert.assertEquals(ErrorLevel.ERROR, constraintValidationResult.getStatus());
 		Assert.assertEquals(1, dictionaryValidationResult.getNumberOfErrors());
-		Assert.assertEquals("validation.required", constraintValidationResult.getErrorKey());
+		Assert.assertEquals(RiceKeyConstants.ERROR_REQUIRED, constraintValidationResult.getErrorKey());
 		
 		// Make sure that the iterator works too
 		int countConstraints = 0;

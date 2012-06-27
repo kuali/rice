@@ -50,10 +50,10 @@
 		<property name="targetMethod" value="getProperties" />
 	</bean>
 	
-	<import resource="classpath:${PROJECT_NAME}-RiceJTASpringBeans.xml"/>
-	<import resource="classpath:${PROJECT_NAME}-RiceDataSourceSpringBeans.xml"/>
-	<import resource="classpath:${PROJECT_NAME}-RiceSpringBeans.xml"/>
+	<import resource="classpath:RiceJTASpringBeans.xml"/>
+	<import resource="classpath:RiceDataSourceSpringBeans.xml"/>
+	<import resource="classpath:RiceSpringBeans.xml"/>
 	
-	<import resource="classpath:${PROJECT_NAME}-SampleAppModuleBeans.xml"/>
+	<import resource="classpath:SampleAppModuleBeans.xml"/>
 	 
 </beans>

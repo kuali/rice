@@ -110,21 +110,26 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return this.documentSearchCustomizationMediator;
     }
 
+    @Override
 	public void clearNamedSearches(String principalId) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
         for (String clearListName : clearListNames)
         {
             List<UserOptions> records = userOptionsService.findByUserQualified(principalId, clearListName);
             for (UserOptions userOptions : records) {
-                userOptionsService.deleteUserOptions((UserOptions) userOptions);
+                userOptionsService.deleteUserOptions(userOptions);
             }
         }
 	}
 
+    @Override
     public DocumentSearchCriteria getNamedSearchCriteria(String principalId, String searchName) {
-        return getSavedSearchCriteria(principalId, NAMED_SEARCH_ORDER_BASE + searchName);
+        //if not prefixed, prefix it.  otherwise, leave as-is
+        searchName = searchName.startsWith(NAMED_SEARCH_ORDER_BASE) ? searchName : (NAMED_SEARCH_ORDER_BASE + searchName);
+        return getSavedSearchCriteria(principalId, searchName);
     }
 
+    @Override
     public DocumentSearchCriteria getSavedSearchCriteria(String principalId, String searchName) {
         UserOptions savedSearch = userOptionsService.findByOptionId(searchName, principalId);
         if (savedSearch == null) {
@@ -138,7 +143,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         try {
             return DocumentSearchInternalUtils.unmarshalDocumentSearchCriteria(optionValue);
         } catch (IOException e) {
-            throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
+            //we need to remove the offending records, otherwise the User is stuck until User options are cleared out manually
+            LOG.warn("Failed to load saved search for name '" + savedSearch.getOptionId() + "' removing saved search from database.");
+            userOptionsService.deleteUserOptions(savedSearch);
+            return DocumentSearchCriteria.Builder.create().build();
+
         }
     }
 
@@ -160,7 +169,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     @Override
 	public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
 		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
+		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByNameCaseInsensitive(criteria.getDocumentTypeName());
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
         DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
@@ -213,10 +222,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         Map<String, List<DocumentAttribute.AbstractBuilder<?>>> customizedAttributeMap =
                 new LinkedHashMap<String, List<DocumentAttribute.AbstractBuilder<?>>>();
         for (DocumentAttribute customizedAttribute : value.getDocumentAttributes()) {
-            List<DocumentAttribute.AbstractBuilder<?>> attributesForName = customizedAttributeMap.get(value.getDocumentId());
+            List<DocumentAttribute.AbstractBuilder<?>> attributesForName = customizedAttributeMap.get(customizedAttribute.getName());
             if (attributesForName == null) {
                 attributesForName = new ArrayList<DocumentAttribute.AbstractBuilder<?>>();
-                customizedAttributeMap.put(value.getDocumentId(), attributesForName);
+                customizedAttributeMap.put(customizedAttribute.getName(), attributesForName);
             }
             attributesForName.add(DocumentAttributeFactory.loadContractIntoBuilder(customizedAttribute));
         }
@@ -225,11 +234,16 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<DocumentAttribute.AbstractBuilder<?>> newDocumentAttributes = new ArrayList<DocumentAttribute.AbstractBuilder<?>>();
         for (DocumentAttribute.AbstractBuilder<?> documentAttribute : result.getDocumentAttributes()) {
             String name = documentAttribute.getName();
-            if (!documentAttributeNamesCustomized.contains(name) && customizedAttributeMap.containsKey(name)) {
-                documentAttributeNamesCustomized.add(name);
-                newDocumentAttributes.addAll(customizedAttributeMap.get(name));
+            if (customizedAttributeMap.containsKey(name)) {
+                if (!documentAttributeNamesCustomized.contains(name)) {
+                    documentAttributeNamesCustomized.add(name);
+                    newDocumentAttributes.addAll(customizedAttributeMap.get(name));
+                }
+            } else {
+                newDocumentAttributes.add(documentAttribute);
             }
         }
+        result.setDocumentAttributes(newDocumentAttributes);
     }
 
 
@@ -253,15 +267,22 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         DocumentSearchCriteria.Builder comparisonCriteria = createEmptyComparisonCriteria(criteria);
         boolean isCriteriaEmpty = criteria.equals(comparisonCriteria.build());
         boolean isTitleOnly = false;
+        boolean isDocTypeOnly = false;
         if (!isCriteriaEmpty) {
             comparisonCriteria.setTitle(criteria.getTitle());
             isTitleOnly = criteria.equals(comparisonCriteria.build());
         }
 
-        if (isCriteriaEmpty || isTitleOnly) {
+        if (!isCriteriaEmpty && !isTitleOnly) {
+            comparisonCriteria = createEmptyComparisonCriteria(criteria);
+            comparisonCriteria.setDocumentTypeName(criteria.getDocumentTypeName());
+            isDocTypeOnly = criteria.equals(comparisonCriteria.build());
+        }
+
+        if (isCriteriaEmpty || isTitleOnly || isDocTypeOnly) {
             DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
             Integer defaultCreateDateDaysAgoValue = null;
-            if (isCriteriaEmpty) {
+            if (isCriteriaEmpty || isDocTypeOnly) {
                 // if they haven't set any criteria, default the from created date to today minus days from constant variable
                 defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
             } else if (isTitleOnly) {
@@ -269,6 +290,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 // days ago.  This will allow for a more efficient query.
                 defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
             }
+
             if (defaultCreateDateDaysAgoValue != null) {
                 // add a default create date
                 MutableDateTime mutableDateTime = new MutableDateTime();
@@ -649,14 +671,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         for (int i = 0; i < currentOrder.length - 1; i++) {
                             newOrder[i + 1] = currentOrder[i];
                         }
-                        // rejoins items with comma separator...
-                        String newSearchOrder = "";
-                        for (String aNewOrder : newOrder) {
-                            if (!"".equals(newSearchOrder)) {
-                                newSearchOrder += ",";
-                            }
-                            newSearchOrder += aNewOrder;
-                        }
+
+                        String newSearchOrder = rejoinWithCommas(newOrder);
                         // save the search string under the searchName (which used to be the last name in the list)
                         userOptionsService.save(principalId, searchName, savedSearchString);
                         userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
@@ -679,13 +695,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         for (int i = 0; i < currentOrder.length; i++) {
                             newOrder[i + 1] = currentOrder[i];
                         }
-                        String newSearchOrder = "";
-                        for (String aNewOrder : newOrder) {
-                            if (!"".equals(newSearchOrder)) {
-                                newSearchOrder += ",";
-                            }
-                            newSearchOrder += aNewOrder;
-                        }
+
+                        String newSearchOrder = rejoinWithCommas(newOrder);
+                        // save the search string under the searchName (which used to be the last name in the list)
                         userOptionsService.save(principalId, searchName, savedSearchString);
                         userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
                     }
@@ -698,7 +710,23 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
     }
 
-	public ConfigurationService getKualiConfigurationService() {
+    /**
+     * Returns a String result of the String array joined with commas
+     * @param newOrder array to join with commas
+     * @return String of the newOrder array joined with commas
+     */
+    private String rejoinWithCommas(String[] newOrder) {
+        StringBuilder newSearchOrder = new StringBuilder("");
+        for (String aNewOrder : newOrder) {
+            if (newSearchOrder.length() != 0) {
+                newSearchOrder.append(",");
+            }
+            newSearchOrder.append(aNewOrder);
+        }
+        return newSearchOrder.toString();
+    }
+
+    public ConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
 			kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
 		}

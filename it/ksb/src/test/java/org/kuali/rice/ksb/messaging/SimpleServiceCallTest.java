@@ -43,6 +43,21 @@ public class SimpleServiceCallTest extends KSBTestCase {
 	public boolean startClient1() {
 		return true;
 	}
+
+    /**
+     * This test ensures that doing a toString on a service proxy does not cause infinite loop problems along the lines
+     * as reported in https://jira.kuali.org/browse/KULRICE-6708
+     */
+    @Test
+    public void testToStringOnService() {
+        KSBTestUtils.setMessagingToAsync();
+		QName serviceName = new QName("TestCl1", "testJavaAsyncService");
+		SimpleCallback callback = new SimpleCallback();
+	    KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, callback);
+        String toStringValue = testJavaAsyncService.toString();
+        System.out.println("toString value on async service: " + toStringValue);
+        assertTrue("toString should have started with 'Service call proxy' but was instead: " + toStringValue, toStringValue.startsWith("Service call proxy"));
+    }
 	
     @Test
     public void testAsyncJavaCall() throws Exception {

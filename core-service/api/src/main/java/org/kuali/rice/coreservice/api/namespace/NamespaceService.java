@@ -42,7 +42,7 @@ public interface NamespaceService {
      *
      * @param code the code to retrieve the namespace by. cannot be blank.
      * @return a {@link Namespace} or null
-     * @throws IllegalArgumentException if the code is blank
+     * @throws RiceIllegalArgumentException if the code is blank
      */
     @WebMethod(operationName="getNamespace")
     @WebResult(name = "namespace")

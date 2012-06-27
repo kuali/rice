@@ -48,6 +48,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -413,6 +414,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			}
 			// TODO perhaps the policies could also be factored out?
 			checkDefaultApprovalPolicy(document);
+            document.setApprovedDate(new Timestamp(System.currentTimeMillis()));
 
 			LOG.debug("Marking document processed");
 			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KewApiConstants.ROUTE_HEADER_PROCESSED_CD);

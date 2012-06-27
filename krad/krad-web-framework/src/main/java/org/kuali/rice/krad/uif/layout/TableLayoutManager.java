@@ -212,21 +212,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     addLineGroup.getHeader().getHeaderText())) {
                 addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLabel());
             }
-            //Special handling for rowDetailsGroup case - get rid of the link and make the row
-            //details visible in the separate add line
-            if(collectionGroup.getRowDetailsGroup() != null){
-                for(Field f: lineFields){
-                    String role = f.getDataAttributes().get("role");
-                    if(f instanceof FieldGroup && role != null && role.equals("detailsFieldGroup")){
-                        //details group will always be the second item
-                        Component detailsGroup = ((FieldGroup)f).getItems().get(1);
-                        if(detailsGroup != null && detailsGroup instanceof Group){
-                            detailsGroup.setHidden(false);
-                            ((FieldGroup)f).setGroup((Group)detailsGroup);    
-                        }
-                    }
-                }
-            }
             addLineGroup.setItems(lineFields);
 
             List<Component> footerItems = new ArrayList<Component>(actions);

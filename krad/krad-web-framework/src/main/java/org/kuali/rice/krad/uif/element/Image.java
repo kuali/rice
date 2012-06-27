@@ -3,6 +3,7 @@ package org.kuali.rice.krad.uif.element;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Help;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class Image extends ContentElementBase {
 
     private String cutlineText;
     private Message cutlineMessage;
+
+    private Help help;
 
     public Image() {
         super();
@@ -274,5 +277,29 @@ public class Image extends ContentElementBase {
      */
     public void setCaptionHeaderPlacementAboveImage(boolean captionHeaderPlacementAboveImage) {
         this.captionHeaderPlacementAboveImage = captionHeaderPlacementAboveImage;
+    }
+
+    /**
+     * Help configuration object for the Image
+     *
+     * <p>
+     * External help information can be configured for the Image. The
+     * <code>Help</code> object can the configuration for rendering a link to
+     * that help information.
+     * </p>
+     *
+     * @return Help for Image
+     */
+    public Help getHelp() {
+        return this.help;
+    }
+
+    /**
+     * Setter for the Image help content
+     *
+     * @param help
+     */
+    public void setHelp(Help help) {
+        this.help = help;
     }
 }

@@ -164,13 +164,7 @@
   <bean id="Uif-StackedCollectionLayout-WithGridItems" parent="Uif-StackedCollectionLayout-WithGridItems-parentBean"/>
   <bean id="Uif-StackedCollectionLayout-WithGridItems-parentBean" abstract="true" parent="Uif-StackedCollectionLayoutBase">
     <property name="addLineGroup">
-      <bean parent="Uif-CollectionGridItem">
-        <property name="cssClasses">
-          <list merge="true">
-            <value>uif-collectionAddItem</value>
-          </list>
-        </property>
-      </bean>
+      <bean parent="Uif-CollectionGridItem"/>
     </property>
     <property name="lineGroupPrototype">
       <bean parent="Uif-CollectionGridItem"/>
@@ -180,13 +174,7 @@
   <bean id="Uif-StackedCollectionLayout-WithBoxItems" parent="Uif-StackedCollectionLayout-WithBoxItems-parentBean"/>
   <bean id="Uif-StackedCollectionLayout-WithBoxItems-parentBean" abstract="true" parent="Uif-StackedCollectionLayoutBase">
     <property name="addLineGroup">
-      <bean parent="Uif-CollectionHorizontalBoxItem">
-        <property name="cssClasses">
-          <list merge="true">
-            <value>uif-collectionAddItem</value>
-          </list>
-        </property>
-      </bean>
+      <bean parent="Uif-CollectionHorizontalBoxItem"/>
     </property>
     <property name="lineGroupPrototype">
       <bean parent="Uif-CollectionHorizontalBoxItem"/>

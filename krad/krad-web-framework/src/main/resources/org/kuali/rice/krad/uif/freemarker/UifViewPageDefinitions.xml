@@ -32,9 +32,9 @@
         <value>krad/css/global/fss-reset.css</value>
         <value>krad/css/global/fss-layout.css</value>
         <value>krad/css/global/fss-text.css</value>
-        <value>krad/css/global/base.css</value>
         <value>krad/plugins/jqueryUI/jquery-ui-1.8.19.css</value>
         <value>krad/plugins/jgrowl/jquery.jgrowl.css</value>
+        <value>krad/plugins/rice/datatables/jquery.dataTables.css</value>
         <value>krad/plugins/rice/datatables/TableTools.css</value>
         <value>krad/plugins/fancybox/jquery.fancybox.css</value>
         <value>krad/plugins/rice/textpopout/popoutTextarea.css</value>
@@ -42,6 +42,7 @@
         <value>krad/plugins/rice/spinner/smartspinner.css</value>
         <value>krad/plugins/tooltip/jquery.tools.tooltip.css</value>
         <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.css</value>
+        <value>krad/css/global/base.css</value>
       </list>
     </property>
     <property name="scriptFiles">
@@ -56,6 +57,8 @@
         <value>krad/plugins/blockUI/jquery.blockUI.js</value>
         <value>krad/plugins/watermark/jquery.watermark.js</value>
         <value>krad/plugins/validate/jquery.validate.js</value>
+        <value>krad/plugins/tooltip/jquery.tools.min.js</value>
+        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</value>
         <value>krad/plugins/rice/spinner/smartspinner.js</value>
         <value>krad/plugins/rice/menu/krad.navigationMenu.js</value>
         <value>krad/plugins/rice/textpopout/krad.textareaPopout.js</value>
@@ -75,14 +78,12 @@
         <value>krad/plugins/infusion/infusion-1.4.js</value>
         <value>krad/plugins/infusion/infusion.reorderer.js</value>
         <value>krad/scripts/krad.variables.js</value>
+        <value>krad/scripts/krad.message.js</value>
+        <value>krad/scripts/krad.widget.js</value>
         <value>krad/scripts/krad.initialize.js</value>
         <value>krad/scripts/krad.ajax.js</value>
-        <value>krad/scripts/krad.message.js</value>
         <value>krad/scripts/krad.utility.js</value>
         <value>krad/scripts/krad.validate.js</value>
-        <value>krad/scripts/krad.widget.js</value>
-        <value>krad/plugins/tooltip/jquery.tools.min.js</value>
-        <value>krad/plugins/tooltip/jquery.bubblepopup.v2.3.1.min.js</value>
       </list>
     </property>
   </bean>

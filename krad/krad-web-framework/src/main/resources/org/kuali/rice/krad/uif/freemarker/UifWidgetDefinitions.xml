@@ -69,7 +69,7 @@
         <entry key="closeEffect" value="fade"/>
         <entry key="openSpeed" value="200"/>
         <entry key="closeSpeed" value="200"/>
-        <entry key="helpers" value="{overlay:{closeClick:false}}"/>
+        <entry key="helpers" value="{overlay:{css:{cursor:'arrow'},closeClick:false}}"/>
         <entry key="type" value="iframe"/>
       </map>
     </property>
@@ -90,6 +90,7 @@
       <map>
         <entry key="sDom" value="fTrtip"/>
         <entry key="bRetrieve" value="true"/>
+        <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"
                value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
       </map>
@@ -102,7 +103,6 @@
   <bean id="Uif-PagedRichTable-parentBean" parent="Uif-RichTable-parentBean" scope="prototype">
     <property name="templateOptions">
       <map merge="true">
-        <entry key="sScrollX" value="100%"/>
         <entry key="bScrollCollapse" value="true"/>
       </map>
     </property>
@@ -152,6 +152,12 @@
         <value>uif-quickFinderImage</value>
       </list>
     </property>
+    <property name="captionHeader">
+      <null/>
+    </property>
+    <property name="cutlineMessage">
+      <null/>
+    </property>
   </bean>
 
   <bean id="Uif-Inquiry" parent="Uif-Inquiry-parentBean"/>
@@ -189,6 +195,12 @@
         <value>uif-directInquiryImage</value>
       </list>
     </property>
+    <property name="captionHeader">
+      <null/>
+    </property>
+    <property name="cutlineMessage">
+      <null/>
+    </property>
   </bean>
 
   <bean id="Uif-Disclosure" parent="Uif-Disclosure-parentBean"/>
@@ -201,6 +213,10 @@
     <property name="animationSpeed" value="500"/>
     <property name="defaultOpen" value="true"/>
   </bean>
+
+  <bean id="Uif-Scrollpane" parent="Uif-Scrollpane-parentBean"/>
+  <bean id="Uif-Scrollpane-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Scrollpane"
+        scope="prototype" parent="Uif-WidgetBase"/>
 
   <!-- Breadcrumbs and History -->
   <bean id="Uif-Breadcrumbs" parent="Uif-Breadcrumbs-parentBean"/>
@@ -316,15 +332,14 @@
     <property name="toolTip">
       <bean parent="Uif-TooltipHelp"/>
     </property>
-    <property name="helpAction">
-      <bean parent="Uif-ActionImage">
-        <property name="actionImage">
-          <bean parent="Uif-HelpImage"/>
-        </property>
-      </bean>
-    </property>
     <property name="helpDefinition">
       <bean parent="HelpDefinition"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-HelpAction" parent="Uif-ActionImage">
+    <property name="actionImage">
+      <bean parent="Uif-HelpImage"/>
     </property>
   </bean>
 

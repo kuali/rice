@@ -44,9 +44,6 @@
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="disclosure.expandImageSrc"
               value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-    <property name="instructionalMessage">
-      <bean parent="Uif-InstructionalMessage"/>
-    </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
@@ -489,6 +486,11 @@
         <value>uif-collectionGroup</value>
       </list>
     </property>
+    <property name="highlightNewItems" value="true"/>
+    <property name="newItemsCssClass" value="uif-newCollectionItem"/>
+    <property name="highlightAddItem" value="true"/>
+    <property name="addItemCssClass" value="uif-collectionAddItem"/>
+    <property name="renderAddBlankLineButton" value="false"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
@@ -510,6 +512,28 @@
               p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
               p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');" />
       </list>
+    </property>
+    <property name="validatedLineActions">
+      <list>
+        <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
+              p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}">
+          <property name="cssClasses">
+            <list merge="true">
+              <value>uif-saveLineAction</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="addBlankLineAction">
+      <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine" p:actionLabel="Add Line"
+            p:actionEvent="addBlankLine" p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
+            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
+    </property>
+    <property name="addViaLightBoxAction">
+      <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"
+            p:onMouseOverScript="addLineMouseOver(this, 'uif-collectionAddHighlight');"
+            p:onMouseOutScript="addLineMouseOut(this, 'uif-collectionAddHighlight');"/>
     </property>
     <property name="collectionLookup">
       <bean parent="Uif-QuickFinder" p:multipleValuesSelect="true">
@@ -949,12 +973,8 @@
   <!-- Dialog Groups -->
   <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
   <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
-        parent="Uif-VerticalBoxGroup">
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/dialogGroup.ftl"/>
-    <property name="templateName" value="uif_dialogGroup"/>
-    <property name="layoutManager">
-      <bean parent="Uif-VerticalBoxLayout"/>
-    </property>
+        parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Section 1 Title"/>
     <property name="hidden" value="true"/>
     <property name="promptText" value="Would You Like to Continue?"/>
     <property name="availableResponses">
@@ -964,22 +984,24 @@
       </list>
     </property>
     <property name="displayExplanation" value="false"/>
-    <property name="reverseButtonOrder" value="true"/>
+    <property name="reverseButtonOrder" value="false"/>
     <property name="prompt">
       <bean parent="Uif-Message"/>
     </property>
     <property name="explanation">
-      <bean parent="Uif-InputField" p:render="false">
-        <property name="control">
-          <bean parent="Uif-TextAreaControl" />
-        </property>
-      </bean>
+      <bean parent="Uif-DialogExplanation"/>
     </property>
     <property name="responseInputField">
-      <bean parent="Uif-InputField">
+      <bean parent="Uif-InputField" p:propertyName="dialogResponse">
         <property name="control">
           <bean parent="Uif-HorizontalCheckboxesControl"/>
         </property>
+        <property name="onChangeScript" value="
+          writeHiddenToForm('methodToCall','returnFromLightbox');
+          writeHiddenToForm('dialogResponse',jQuery('.uif-dialogButtons').find(':checked').val());
+          writeHiddenToForm('dialogExplanation', coerceValue('dialogExplanation'));
+          jQuery.fancybox.close();
+          jQuery('#kualiForm').submit();"/>
         <property name="cssClasses">
           <list merge="true">
             <value>uif-dialogButtons</value>
@@ -994,19 +1016,115 @@
     </property>
   </bean>
 
+  <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+    <property name="control">
+      <bean parent="Uif-TextAreaControl" />
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-dialogExplanation</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="RUSure-Cancel-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Are you sure you want to cancel?"/>
   </bean>
+
   <bean id="RUSure-Delete-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Are you sure you want to delete?"/>
   </bean>
+
+  <bean id="RUSure-Modify-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="promptText" value="Are you sure you want to modify this document?"/>
+  </bean>
+
   <bean id="RUSure-Disapprove-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Are you sure you want to disapprove this document?"/>
   </bean>
+
   <bean id="RUSure-Close-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Would you like to save this document before you close it?"/>
   </bean>
+
   <bean id="SensitiveData-DialogGroup" parent="Uif-DialogGroup" >
     <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
+  </bean>
+
+  <bean id="OK-Cancel-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Yes-No-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="True-False-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="T" p:value="True"/>
+        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="False"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Checkbox-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="explanation">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+        <property name="control">
+          <bean parent="Uif-VerticalCheckboxesControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="RadioButton-DialogGroup" parent="Uif-DialogGroup" >
+    <property name="displayExplanation" value="true"/>
+    <property name="explanation">
+      <bean parent="Uif-InputField" p:propertyName="dialogExplanation" p:render="false">
+        <property name="control">
+          <bean parent="Uif-VerticalRadioControl">
+            <property name="options">
+              <list>
+                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
+                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="availableResponses">
+      <list>
+        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
+        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
+      </list>
+    </property>
   </bean>
 </beans>

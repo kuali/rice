@@ -104,15 +104,6 @@
     <property name="quickfinder">
       <bean parent="Uif-QuickFinder"/>
     </property>
-    <property name="suggest">
-      <bean parent="Uif-Suggest"/>
-    </property>
-    <property name="instructionalMessage">
-      <bean parent="Uif-InstructionalMessage"/>
-    </property>
-    <property name="constraintMessage">
-      <bean parent="Uif-ConstraintMessage"/>
-    </property>
   </bean>
 
   <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>

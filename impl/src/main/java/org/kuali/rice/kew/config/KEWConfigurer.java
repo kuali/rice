@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
+import org.kuali.rice.kew.lifecycle.StandaloneLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 
@@ -81,8 +81,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public List<Lifecycle> loadLifecycles() throws Exception {
 		
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        if ( !getRunMode().equals( RunMode.REMOTE ) ) { // local or embedded
-			lifecycles.add(createEmbeddedLifeCycle());
+        if ( getRunMode().equals( RunMode.LOCAL ) ) { // local or embedded
+			lifecycles.add(createStandaloneLifeCycle());
 		}
 		return lifecycles;
 	}
@@ -93,8 +93,8 @@ public class KEWConfigurer extends ModuleConfigurer {
      * @return Life Cycle
      * @throws Exception if life cycle not created
      */
-	private Lifecycle createEmbeddedLifeCycle() throws Exception {
-		return new EmbeddedLifeCycle();
+	private Lifecycle createStandaloneLifeCycle() throws Exception {
+		return new StandaloneLifeCycle();
 	}
 
 	@Override

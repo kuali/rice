@@ -29,7 +29,7 @@ import java.util.List;
  * A temporary lifecycle that lives in embedded space.  Will be removed when the embedded plugin is factored out.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EmbeddedLifeCycle extends BaseCompositeLifecycle {
+public class StandaloneLifeCycle extends BaseCompositeLifecycle {
 
     @Override
     protected List<Lifecycle> loadLifecycles() throws Exception {

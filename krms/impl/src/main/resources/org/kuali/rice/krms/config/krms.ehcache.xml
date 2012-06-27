@@ -22,22 +22,18 @@
          Name="krmsCacheManager"
          dynamicConfig="true">
 
-  <defaultCache eternal="false"
-                overflowToDisk="false"
-                timeToLiveSeconds="1800"
-                copyOnRead="false"
-                copyOnWrite="false"/>
+  <defaultCache maxEntriesLocalHeap="5000" timeToLiveSeconds="1800"/>
 
-  <cache name="http://rice.kuali.org/krms/v2_0/AgendaTreeDefinition" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/AgendaItemType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/RuleType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/KRMSTypeType" maxEntriesLocalHeap="200"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/KrmsAttributionDefinitionType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/AgendaType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/ActionType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/ContextDefinitionType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/PropositionType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/TermSpecificationType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/termDefinitionType" maxEntriesLocalHeap="500"/>
-  <cache name="http://rice.kuali.org/krms/v2_0/termResolverDefinitionType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/AgendaTreeDefinition" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/AgendaItemType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/RuleType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/KRMSTypeType" maxEntriesLocalHeap="200" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/KrmsAttributionDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/AgendaType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/ActionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/ContextDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/PropositionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/TermSpecificationType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/termDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/krms/v2_0/termResolverDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
 </ehcache>

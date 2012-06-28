@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheAdminService;
 import org.kuali.rice.core.api.cache.CacheTarget;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -61,6 +62,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public final class DistributedCacheManagerDecorator implements CacheManager, InitializingBean, BeanNameAware, NamedBean {
     
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
+
+    private static final String DISABLE_ALL_CACHES_PARAM = "rice.cache.disableAllCaches";
+    private static final String DISABLED_CACHES_PARAM = "rice.cache.disabledCaches";
 
     private CacheManager cacheManager;
     private String serviceName;
@@ -151,7 +155,12 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         private final Cache cache;
 
         private DistributedCacheDecorator(Cache cache) {
-            this.cache = cache;
+            if (ConfigurationPropertiesHolder.disableAllCaches ||
+                    ConfigurationPropertiesHolder.disabledCaches.contains(cache.getName())) {
+                this.cache = new NoOpCache(cache);
+            } else {
+                this.cache = cache;
+            }
         }
 
         @Override
@@ -317,5 +326,48 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         private DistributedCacheException(Throwable cause) {
             super(cause);
         }
+    }
+
+    // lazy initialization holder class, see Effective Java item #71
+    private static final class ConfigurationPropertiesHolder {
+        static final boolean disableAllCaches =
+                ConfigContext.getCurrentContextConfig().getBooleanProperty(DISABLE_ALL_CACHES_PARAM, false);
+        static final Set<String> disabledCaches = getDisabledCachesConfig();
+
+        private static Set<String> getDisabledCachesConfig() {
+            Set<String> disabledCaches = new HashSet<String>();
+
+            String disabledCachesParam =
+                    ConfigContext.getCurrentContextConfig().getProperty(DISABLED_CACHES_PARAM);
+
+            if (!StringUtils.isBlank(disabledCachesParam)) {
+                for (String cacheName : disabledCachesParam.split(",")) {
+                    cacheName = cacheName.trim();
+                    if (!StringUtils.isBlank(cacheName)) {
+                        disabledCaches.add(cacheName);
+                    }
+                }
+            }
+            return Collections.unmodifiableSet(disabledCaches);
+        }
+    }
+
+    private static final class NoOpCache implements Cache {
+
+        private final Cache inner;
+
+        private NoOpCache(Cache inner) { this.inner = inner; }
+
+        @Override public String getName() { return inner.getName(); }
+
+        @Override public Object getNativeCache()  { return inner; }
+
+        @Override public ValueWrapper get(Object key)  { return null; }
+
+        @Override public void put(Object key, Object value) { }
+
+        @Override public void evict(Object key) { }
+
+        @Override public void clear() { }
     }
 }

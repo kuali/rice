@@ -73,6 +73,7 @@ public final class KRADConstants {
 	public static final String KUALI_ACTION_CAN_SAVE = "canSave";
 	public static final String KUALI_ACTION_CAN_ROUTE = "canRoute";
 	public static final String KUALI_ACTION_CAN_CANCEL = "canCancel";
+    public static final String KUALI_ACTION_CAN_RECALL = "canRecall";
 	public static final String KUALI_ACTION_CAN_RELOAD = "canReload";
 	public static final String KUALI_ACTION_CAN_COPY ="canCopy";
 	public static final String KUALI_ACTION_PERFORM_ROUTE_REPORT = "canPerformRouteReport";
@@ -90,7 +91,8 @@ public final class KRADConstants {
     public static final String KUALI_ACTION_CAN_EXPORT = "canExport";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     public static final String USE_CACHE_ADMINISTRATION_SCREEN = "Use Cache Adminstration Screen";
-
+    public static final String KUALI_ACTION_CAN_COMPLETE = "canComplete";
+    
     public static final class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";
@@ -158,6 +160,8 @@ public final class KRADConstants {
     public static final String EXTERNALIZABLE_HELP_URL_KEY = "externalizable.help.url";
     public static final String APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY = "externalizable.images.url";
     public static final String EXTERNALIZABLE_IMAGES_URL_KEY = "kr.externalizable.images.url";
+    public static final String ATTACHMENT_IMAGE_PREFIX = "attach.img.";
+    public static final String ATTACHMENT_IMAGE_DEFAULT = "attach.img.default";
 //    public static final String REPORTS_DIRECTORY_KEY = "reports.directory";
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String KUALI_RICE_URL_KEY = "kr.url";
@@ -193,7 +197,14 @@ public final class KRADConstants {
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
     public static final String DATA_OBJECT_CLASS_ATTRIBUTE = "dataObjectClassName";
     public static final String CALLING_METHOD = "caller";
+    /**
+     * The {@link org.kuali.rice.kns.question.ConfirmationQuestion} bean
+     */
     public static final String CONFIRMATION_QUESTION = "confirmationQuestion";
+    /**
+     * The {@link org.kuali.rice.kns.question.RecallQuestion} bean
+     */
+    public static final String RECALL_QUESTION= "recallQuestion";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
     public static final String FIELDS_CONVERSION_PARAMETER = "fieldConversions";
     public static final String LOOKUP_READ_ONLY_FIELDS = "readOnlyFields";
@@ -219,6 +230,7 @@ public final class KRADConstants {
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
+    public static final String DOCUMENT_RECALL_QUESTION = "DocRecall";
     public static final String DOCUMENT_SENSITIVE_DATA_QUESTION = "DocSensitiveDataQuestion";
 //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
@@ -358,6 +370,7 @@ public final class KRADConstants {
     public static final String MAINTENANCE_NEW_MAINTAINABLE = "document.newMaintainableObject.";
     public static final String MAINTENANCE_OLD_MAINTAINABLE = "document.oldMaintainableObject.";
     public static final String MAPPING_CANCEL = "cancel";
+    public static final String MAPPING_RECALL = "recall";
     public static final String MAPPING_CLOSE = "close";
     public static final String MAPPING_DISAPPROVE = "disapprove";
 //    public static final String MAPPING_DELETE = "delete";
@@ -458,7 +471,7 @@ public final class KRADConstants {
     public static final String DOWNLOAD_CUSTOM_BO_ATTACHMENT_METHOD ="downloadCustomBOAttachment";
     public static final String NOTE_IDENTIFIER = "noteIdentifier";
     public static final String BO_ATTACHMENT_FILE_NAME = "fileName";
-    public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "fileContentType";
+    public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "contentType";
     public static final String BO_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentBOField";
 
 

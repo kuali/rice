@@ -161,8 +161,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             String namespace) {// Get the term resolver for the term spec
 
         List<TermResolverDefinition> resolvers =
-                KrmsRepositoryServiceLocator.getTermBoService().getTermResolversByOutputId(
-                        termSpecId, namespace);
+                KrmsRepositoryServiceLocator.getTermBoService().findTermResolversByOutputId(termSpecId, namespace);
 
         TermResolverDefinition simplestResolver = null;
 
@@ -323,14 +322,15 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     private void saveNewParameterizedTerms(PropositionBo propositionBo) {
         if (StringUtils.isBlank(propositionBo.getCompoundOpCode())) {
             // it is a simple proposition
-            String termId = propositionBo.getParameters().get(0).getValue();
-            if (termId.startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+             if (!propositionBo.getParameters().isEmpty() && propositionBo.getParameters().get(0).getValue().startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+                String termId = propositionBo.getParameters().get(0).getValue();
                 String termSpecId = termId.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
                 // create new term
                 TermBo newTerm = new TermBo();
                 newTerm.setDescription(propositionBo.getNewTermDescription());
                 newTerm.setSpecificationId(termSpecId);
-                newTerm.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_TERM_S").toString());
+                newTerm.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
+                        KrmsMaintenanceConstants.Sequences.TERM_SPECIFICATION).toString());
 
                 List<TermParameterBo> params = new ArrayList<TermParameterBo>();
                 for (Map.Entry<String, String> entry : propositionBo.getTermParameters().entrySet()) {
@@ -338,7 +338,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                     param.setTermId(newTerm.getId());
                     param.setName(entry.getKey());
                     param.setValue(entry.getValue());
-                    param.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_TERM_PARM_S").toString());
+                    param.setId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
+                            KrmsMaintenanceConstants.Sequences.TERM_PARAMETER).toString());
 
                     params.add(param);
                 }

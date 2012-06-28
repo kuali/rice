@@ -200,7 +200,7 @@ public class RuleXmlParser {
     	if (parentRule == null) {
     		throw new XmlException("Could find the parent rule with name '" + parentRuleName + "'");
     	}
-    	RuleResponsibilityBo ruleResponsibilityNameAndType = parseResponsibilityNameAndType(element);
+    	RuleResponsibilityBo ruleResponsibilityNameAndType = CommonXmlParser.parseResponsibilityNameAndType(element);
     	if (ruleResponsibilityNameAndType == null) {
     		throw new XmlException("Could not locate a valid responsibility declaration for the parent responsibility.");
     	}
@@ -393,7 +393,7 @@ public class RuleXmlParser {
         responsibility.setPriority(priorityNumber);
         responsibility.setApprovePolicy(approvePolicy);
         
-        RuleResponsibilityBo responsibilityNameAndType = parseResponsibilityNameAndType(element);
+        RuleResponsibilityBo responsibilityNameAndType = CommonXmlParser.parseResponsibilityNameAndType(element);
         if (responsibilityNameAndType == null) {
         	throw new XmlException("Could not locate a valid responsibility declaration on a responsibility on rule with description '" + rule.getDescription() + "'");
         }
@@ -403,104 +403,6 @@ public class RuleXmlParser {
         }
         responsibility.setRuleResponsibilityName(responsibilityNameAndType.getRuleResponsibilityName());
         responsibility.setRuleResponsibilityType(responsibilityNameAndType.getRuleResponsibilityType());
-        
-        return responsibility;
-    }
-
-    public RuleResponsibilityBo parseResponsibilityNameAndType(Element element) throws XmlException {
-    	RuleResponsibilityBo responsibility = new RuleResponsibilityBo();
-    	
-    	String principalId = element.getChildText(PRINCIPAL_ID, element.getNamespace());
-        String principalName = element.getChildText(PRINCIPAL_NAME, element.getNamespace());
-        String groupId = element.getChildText(GROUP_ID, element.getNamespace());
-        Element groupNameElement = element.getChild(GROUP_NAME, element.getNamespace());
-        String role = element.getChildText(ROLE, element.getNamespace());
-        Element roleNameElement = element.getChild(ROLE_NAME, element.getNamespace());
-        
-        String user = element.getChildText(USER, element.getNamespace());
-        String workgroup = element.getChildText(WORKGROUP, element.getNamespace());
-        
-        if (!StringUtils.isEmpty(user)) {
-        	principalName = user;
-        	LOG.warn("Rule XML is using deprecated element 'user', please use 'principalName' instead.");
-        }
-        
-        // in code below, we allow core config parameter replacement in responsibilities
-        if (!StringUtils.isBlank(principalId)) {
-        	principalId = Utilities.substituteConfigParameters(principalId);
-        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
-            if (principal == null) {
-            	throw new XmlException("Could not locate principal with the given id: " + principalId);
-            }
-            responsibility.setRuleResponsibilityName(principalId);
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-        } else if (!StringUtils.isBlank(principalName)) {
-        	principalName = Utilities.substituteConfigParameters(principalName);
-        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
-            if (principal == null) {
-            	throw new XmlException("Could not locate principal with the given name: " + principalName);
-            }
-            responsibility.setRuleResponsibilityName(principal.getPrincipalId());
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
-        } else if (!StringUtils.isBlank(groupId)) {
-            groupId = Utilities.substituteConfigParameters(groupId);
-            Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
-            if (group == null) {
-                throw new XmlException("Could not locate group with the given id: " + groupId);
-            }
-            responsibility.setRuleResponsibilityName(groupId);
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
-        } else if (groupNameElement != null) {
-        	String groupName = groupNameElement.getText();
-        	String groupNamespace = groupNameElement.getAttributeValue(NAMESPACE);
-        	if (StringUtils.isBlank(groupName)) {
-        		throw new XmlException("Group name element has no value");
-        	}
-        	if (StringUtils.isBlank(groupNamespace)) {
-        		throw new XmlException("namespace attribute must be specified");
-        	}
-            groupName = Utilities.substituteConfigParameters(groupName);
-            groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespace,
-                    groupName);
-            if (group == null) {
-                throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
-            }
-            responsibility.setRuleResponsibilityName(group.getId());
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
-        } else if (!StringUtils.isBlank(role)) {
-        	role = Utilities.substituteConfigParameters(role);
-        	responsibility.setRuleResponsibilityName(role);
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID);
-        } else if (roleNameElement != null) {
-        	String roleName = roleNameElement.getText();
-        	String attributeClassName = roleNameElement.getAttributeValue(ATTRIBUTE_CLASS_NAME);
-        	if (StringUtils.isBlank(roleName)) {
-        		throw new XmlException("Role name element has no value");
-        	}
-        	if (StringUtils.isBlank(attributeClassName)) {
-        		throw new XmlException("attributeClassName attribute must be specified");
-        	}
-        	roleName = Utilities.substituteConfigParameters(roleName);
-        	attributeClassName = Utilities.substituteConfigParameters(attributeClassName);
-        	responsibility.setRuleResponsibilityName(RoleName.constructRoleValue(attributeClassName, roleName));
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID);
-        } else if (!StringUtils.isBlank(workgroup)) {
-        	LOG.warn("Rule XML is using deprecated element 'workgroup', please use 'groupName' instead.");
-            workgroup = Utilities.substituteConfigParameters(workgroup);
-            String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
-            String workgroupName = Utilities.parseGroupName(workgroup);
-
-            Group workgroupObject = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
-                    workgroupNamespace, workgroupName);
-            if (workgroupObject == null) {
-                throw new XmlException("Could not locate workgroup: " + workgroup);
-            }
-            responsibility.setRuleResponsibilityName(workgroupObject.getId());
-            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
-        } else {
-        	return null;
-        }
         
         return responsibility;
     }

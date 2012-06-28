@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
@@ -222,7 +222,7 @@ public class NotificationController extends MultiActionController {
 
         NotificationMessageDelivery messageDelivery = determineMessageFromRequest(request);
         // now get the notification from the message delivery object
-        Notification notification = messageDelivery.getNotification();
+        NotificationBo notification = messageDelivery.getNotification();
         boolean actionable = false;
 
         if (requestIsFromKEW(request)) {
@@ -244,8 +244,8 @@ public class NotificationController extends MultiActionController {
             throw new RuntimeException("There is no principal for principalNm " + principalNm);
         }
         
-        List<NotificationSender> senders = notification.getSenders();
-        List<NotificationRecipient> recipients = notification.getRecipients();
+        List<NotificationSenderBo> senders = notification.getSenders();
+        List<NotificationRecipientBo> recipients = notification.getRecipients();
 
         String contenthtml = Util.transformContent(notification);
 
@@ -318,7 +318,7 @@ public class NotificationController extends MultiActionController {
         if (delivery == null) {
             throw new RuntimeException("Could not find message delivery with id " + messageDeliveryId);
         }
-        Notification notification = delivery.getNotification();
+        NotificationBo notification = delivery.getNotification();
 
         /*
          * dismiss the message delivery
@@ -327,8 +327,8 @@ public class NotificationController extends MultiActionController {
         Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalNm);
         notificationService.dismissNotificationMessageDelivery(delivery.getId(), principal.getPrincipalId(), action);
 
-        List<NotificationSender> senders = notification.getSenders();
-        List<NotificationRecipient> recipients = notification.getRecipients();
+        List<NotificationSenderBo> senders = notification.getSenders();
+        List<NotificationRecipientBo> recipients = notification.getRecipients();
 
         String contenthtml = Util.transformContent(notification);       
 

@@ -675,7 +675,10 @@
                 <c:when test="${field.fieldType eq field.FILE}">
                     <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" isReadOnly="${isFieldReadOnly}"
                         cellWidth="${dataCellWidth}%" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" fieldName="${field.propertyName}"/>
-
+                    <c:set var="lineNum" value="" />
+                    <c:if test="${fn:contains(field.propertyName, '[') and fn:contains(field.propertyName, '].')}" >
+                      <c:set var="lineNum" value=".line${fn:substringBefore(fn:substringAfter(field.propertyName, '['), '].')}.anchor${tabIndex}"/>
+                    </c:if>
                     <td class="grid" style="width:${dataCellWidth}%;">
                         <c:choose>
                             <c:when test="${isFieldReadOnly}">
@@ -683,6 +686,9 @@
                                     <c:out value="<%=((String) request.getAttribute(\"fileName\"))%>" />&nbsp;
                                 </c:if>
                                 <c:if test="${not empty fieldValue}" >
+                                    <c:if test="${(isInquiry or isLookup)}">
+                                      <html:image property="methodToCall.downloadAttachment${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}${field.imageSrc}" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                    </c:if>
                                     <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
                                 </c:if>
                             </c:when>
@@ -699,8 +705,10 @@
                                             </c:if>
                                         </c:when>
                                         <c:otherwise>
-                                        <div id="replaceDiv" style="display:block;">
-                                            <html:image property="methodToCall.downloadAttachment" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+
+                                          <div id="replaceDiv" style="display:block;">
+
+                                            <html:image property="methodToCall.downloadAttachment${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}${field.imageSrc}" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                             <c:out value="${fieldValue}"/>
                                             &nbsp;&nbsp;
                                                                                         <input type="hidden" name='methodToCall' />
@@ -712,7 +720,7 @@
                                                     submitForm();
                                                 }
                                             </script>
-                                            <html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
+                                           <html:image property="methodToCall.replaceAttachment.${lineNum}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-replace.gif" alt="replace attachment" onclick="excludeSubmitRestriction=true"/>
                                         </div>
                                         <div id="replaceFileDiv" valign="middle" style="display:none;">
                                             ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}

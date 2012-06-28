@@ -20,7 +20,7 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.ken.bo.NotificationChannel;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.api.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.ken.service.UserPreferenceService;
@@ -58,9 +58,9 @@ public class KENAPIServiceImpl implements KENAPIService {
      */
     @Override
     public Collection<String> getAllChannelNames() {
-        Collection<NotificationChannel> chans = channelService.getAllNotificationChannels();
+        Collection<NotificationChannelBo> chans = channelService.getAllNotificationChannels();
         Collection<String> chanNames = new ArrayList<String>(chans.size());
-        for (NotificationChannel c: chans) {
+        for (NotificationChannelBo c: chans) {
             chanNames.add(c.getName());
         }
         return chanNames;

@@ -23,6 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -62,6 +63,49 @@ public class SuperUserActionTest extends KEWTestCase {
 			}
 		}
 	}
+
+    // SUApprove == SUBlanketApprove...what?
+    @Test public void testSuperUserApproveDisallowedOnFinalNode() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "SUApproveFinalNodeDisallowed");
+        document.route("");
+
+        // approve down to last node, at every step (except the last) jhopf should be able to su_approve
+        // omit "bmcgough", the last approver
+        String nodeBeforeLast = null;
+        for (String user: new String[] { "jhopf", "ewestfal", "rkirkend", "natjohns" }) {
+            document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+            System.err.println(document.getCurrentNodeNames());
+            nodeBeforeLast = document.getCurrentNodeNames().iterator().next();
+            assertTrue("jhopf should be able to SU Approve", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
+
+            WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(user), document.getDocumentId()).approve("");
+        }
+
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        // it's the last node, no SU Approve for you!
+        assertFalse("jhopf should NOT be able to SU Approve", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
+
+        // move back a step
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        document.superUserReturnToPreviousNode(ReturnPoint.create("Split"), "returning to non-final node");
+        // now we can SU Approve
+        assertTrue("jhopf should be able to SU Approve", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
+        document.superUserBlanketApprove("blanket approving as jhopf");
+
+        //assertTrue(document.isFinal());
+        assertTrue(document.isProcessed());
+        assertTrue(document.isApproved());
+        assertFalse("jhopf should NOT be able to SU Approve", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
+
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
+        assertEquals("Should be active requests still", 5, requests.size());//number of acks and fyi's configured through rules
+        for (ActionRequestValue request: requests) {
+            System.err.println(request.getActionRequestedLabel() + " -> " + request.getPrincipal().getPrincipalName());
+            if (request.isApproveOrCompleteRequest()) {
+                fail("There should be no approve or complete requests after su approve");
+            }
+        }
+    }
 	
     @Test public void testSuperUserApproveExceptionCases() throws Exception {
     	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "SUApproveDocument");

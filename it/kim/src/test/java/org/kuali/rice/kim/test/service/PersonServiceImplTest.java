@@ -221,7 +221,7 @@ public class PersonServiceImplTest extends KIMTestCase {
     @Test
     public void testFindPeopleInactive() {
         HashMap<String,String> criteria = new HashMap<String,String>();
-        criteria.put( "active", "N" );
+        criteria.put( "principals.active", "N" );
         List<Person> people = personService.findPeople( criteria );
         assertNotNull( "result must not be null", people );
         assertEquals( "wrong number of people returned", 1, people.size() );

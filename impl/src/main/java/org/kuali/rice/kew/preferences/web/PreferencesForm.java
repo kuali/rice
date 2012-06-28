@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.kew.preferences.web;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -59,7 +63,17 @@ public class PreferencesForm extends KualiForm {
         return methodToCall;
     }
     public void setMethodToCall(String methodToCall) {
-        this.methodToCall = methodToCall;
+        Pattern p = Pattern.compile("\\w");
+        if (!StringUtils.isBlank(methodToCall)) {
+            Matcher m = p.matcher(methodToCall);
+            if (m.find()) {
+                this.methodToCall = methodToCall;
+            } else {
+                throw new RiceRuntimeException("invalid characters found in the parameter methodToCall");
+            }
+        } else {
+            this.methodToCall = methodToCall;
+        }
     }
     public Preferences.Builder getPreferences() {
         return preferences;
@@ -115,7 +129,14 @@ public class PreferencesForm extends KualiForm {
 		super.populate(request);
 		
         if (getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER) != null) {
-            setBackLocation(getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER));
+            String returnLocation = getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER);
+            if(returnLocation.contains(">") || returnLocation.contains("<") || returnLocation.contains("\"")) {
+                returnLocation = returnLocation.replaceAll("\"", "%22");
+                returnLocation = returnLocation.replaceAll("<", "%3C");
+                returnLocation = returnLocation.replaceAll(">","%3E");
+                
+            }
+            setBackLocation(returnLocation);
         }
 	}
 

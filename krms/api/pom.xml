@@ -38,10 +38,14 @@
     </dependency>
   </dependencies>
   <properties>
+    <svc.co.name>ComparisonOperatorService</svc.co.name>
+    <svc.co.wsdl>${wsdl.dir}/${svc.co.name}.wsdl</svc.co.wsdl>
     <svc.rr.name>RuleRepositoryService</svc.rr.name>
     <svc.rr.wsdl>${wsdl.dir}/${svc.rr.name}.wsdl</svc.rr.wsdl>
     <svc.fr.name>FunctionRepositoryService</svc.fr.name>
     <svc.fr.wsdl>${wsdl.dir}/${svc.fr.name}.wsdl</svc.fr.wsdl>
+    <svc.ktr.name>KrmsTypeRepositoryService</svc.ktr.name>
+    <svc.ktr.wsdl>${wsdl.dir}/${svc.ktr.name}.wsdl</svc.ktr.wsdl>
   </properties>
   <build>
     <plugins>
@@ -49,6 +53,30 @@
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2ws-plugin</artifactId>
         <executions>
+          <!--<execution>
+            <id>comparisonOperatorService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService</className>
+              <outputFile>${svc.co.wsdl}</outputFile>
+              <serviceName>${svc.co.name}</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>-->
+          <execution>
+            <id>krmsTypeRepositoryService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService</className>
+              <outputFile>${svc.ktr.wsdl}</outputFile>
+              <serviceName>KrmsTypeRepositoryService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
           <execution>
             <id>ruleRepositoryService-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
@@ -94,6 +122,11 @@
                 <artifact>
                   <file>${svc.fr.wsdl}</file>
                   <classifier>${svc.fr.name}</classifier>
+                  <type>wsdl</type>
+                </artifact>
+                <artifact>
+                  <file>${svc.ktr.wsdl}</file>
+                  <classifier>${svc.ktr.name}</classifier>
                   <type>wsdl</type>
                 </artifact>
               </artifacts>

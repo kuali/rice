@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
+import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService;
 
 /**
  * This is the interface for accessing KRMS repository Function related bos 
@@ -24,7 +25,7 @@ import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
  *
  */
 
-public interface FunctionBoService {
+public interface FunctionBoService extends FunctionRepositoryService {
 
     /**
      * This will create a {@link FunctionDefinition} exactly like the function passed in.

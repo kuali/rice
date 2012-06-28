@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -33,13 +34,11 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
     private String nodeName;
     
     public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
-        this.superUserAction = KewApiConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
+        super(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, KewApiConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL, routeHeader, principal);
     }
     
     public SuperUserReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor, String nodeName) {
-        super(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KewApiConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL;
+        super(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, KewApiConstants.SUPER_USER_RETURN_TO_PREVIOUS_ROUTE_LEVEL, routeHeader, principal, annotation, runPostProcessor);
         this.nodeName = nodeName;
     }
     
@@ -53,8 +52,9 @@ public class SuperUserReturnToPreviousNodeAction extends SuperUserActionTakenEve
         returnAction.performAction();
     }
     
-    protected void processActionRequests() throws InvalidActionTakenException {
+    protected ActionTakenValue processActionRequests() throws InvalidActionTakenException {
         //do nothing
+        return null;
     }
 
 }

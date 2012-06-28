@@ -337,7 +337,7 @@ public class MessageMap implements Serializable {
         // check if this error has already been added to the list
         boolean alreadyAdded = false;
         for(ErrorMessage e: errorList){
-            if(e.getErrorKey().equals(errorMessage.getErrorKey())){
+            if(e.equals(errorMessage)){
                 alreadyAdded = true;
                 break;
             }

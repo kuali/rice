@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedMap;
 
@@ -91,7 +91,7 @@ public final class RemotableRadioButtonGroup extends RemotableAbstractControl im
             if (keyLabels instanceof SortedMap) {
                 this.keyLabels = Collections.unmodifiableSortedMap((SortedMap)keyLabels);
             } else {
-                this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
+                this.keyLabels = Collections.unmodifiableMap(new LinkedHashMap<String, String>(keyLabels));
             }
         }
 

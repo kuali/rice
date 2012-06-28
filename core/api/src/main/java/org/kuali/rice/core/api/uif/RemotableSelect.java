@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,7 +154,7 @@ public final class RemotableSelect extends RemotableAbstractControl implements R
                 throw new IllegalArgumentException("keyLabels was null");
             }
 
-            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
+            this.keyLabels = Collections.unmodifiableMap(new LinkedHashMap<String, String>(keyLabels));
         }
 
         @Override

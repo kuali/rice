@@ -17,8 +17,8 @@ package org.kuali.rice.ken.dao;
 
 import java.util.HashMap;
 
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.UserChannelSubscription;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.UserChannelSubscriptionBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -29,11 +29,11 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserChannelSubscriptionDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    NotificationChannel channel1 = MockObjectsUtil.getTestChannel1();
-    NotificationChannel channel2 = MockObjectsUtil.getTestChannel2();
+    NotificationChannelBo channel1 = MockObjectsUtil.getTestChannel1();
+    NotificationChannelBo channel2 = MockObjectsUtil.getTestChannel2();
     
-    UserChannelSubscription subscription1 = new UserChannelSubscription();
-    UserChannelSubscription subscription2 = new UserChannelSubscription();
+    UserChannelSubscriptionBo subscription1 = new UserChannelSubscriptionBo();
+    UserChannelSubscriptionBo subscription2 = new UserChannelSubscriptionBo();
     
     private String[] userIds = {"ag266", "jaf30"};
     private String[] updatedUserIds = {"bh79", "arh14"};
@@ -73,13 +73,13 @@ public class UserChannelSubscriptionDaoTest extends BusinessObjectPersistenceTes
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel1.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.USER_ID, userIds[0]);
-	subscription1 = (UserChannelSubscription) businessObjectDao.findByUniqueKey(UserChannelSubscription.class, criteria);
+	subscription1 = (UserChannelSubscriptionBo) businessObjectDao.findByUniqueKey(UserChannelSubscriptionBo.class, criteria);
 	
 	criteria.clear();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel2.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.USER_ID, userIds[1]);
-	subscription2 = (UserChannelSubscription) businessObjectDao.findByUniqueKey(UserChannelSubscription.class, criteria);
+	subscription2 = (UserChannelSubscriptionBo) businessObjectDao.findByUniqueKey(UserChannelSubscriptionBo.class, criteria);
 	
 	boolean success = true;
 	
@@ -137,20 +137,20 @@ public class UserChannelSubscriptionDaoTest extends BusinessObjectPersistenceTes
      */
     @Override
     protected boolean validateChanges() {
-	subscription1 = new UserChannelSubscription();
-	subscription2 = new UserChannelSubscription();
+	subscription1 = new UserChannelSubscriptionBo();
+	subscription2 = new UserChannelSubscriptionBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel1.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.USER_ID, updatedUserIds[0]);
-	subscription1 = (UserChannelSubscription) businessObjectDao.findByUniqueKey(UserChannelSubscription.class, criteria);
+	subscription1 = (UserChannelSubscriptionBo) businessObjectDao.findByUniqueKey(UserChannelSubscriptionBo.class, criteria);
 	
 	criteria.clear();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.CHANNEL_ID, channel2.getId());
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.USER_ID, updatedUserIds[1]);
-	subscription2 = (UserChannelSubscription) businessObjectDao.findByUniqueKey(UserChannelSubscription.class, criteria);
+	subscription2 = (UserChannelSubscriptionBo) businessObjectDao.findByUniqueKey(UserChannelSubscriptionBo.class, criteria);
 	
 	boolean success = true;
 	

@@ -210,10 +210,10 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		paramMap.put("color", "green");
 		paramMap.put("totalDollar", "500");
 
-		List<WorkflowServiceError> errors = attribute.validateRuleData(paramMap);
+		List<RemotableAttributeError> errors = attribute.validateRuleData(paramMap);
         assertFalse("Error list should contain at least one error.", errors.isEmpty());
         for (Object e: errors) {
-            assertTrue(WorkflowServiceError.class.isAssignableFrom(e.getClass()));
+            assertTrue(RemotableAttributeError.class.isAssignableFrom(e.getClass()));
         }
     }
 

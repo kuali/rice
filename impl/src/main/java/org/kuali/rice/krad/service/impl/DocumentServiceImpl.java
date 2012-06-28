@@ -47,6 +47,7 @@ import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.BlanketApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.CompleteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
@@ -62,6 +63,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.NoteService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -274,6 +276,11 @@ public class DocumentServiceImpl implements DocumentService {
         checkForNulls(document);
 
         Note note = createNoteFromDocument(document, annotation);
+        //if note type is BO, override and link disapprove notes to Doc Header
+        if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)) {
+            note.setNoteTypeCode(NoteType.DOCUMENT_HEADER.getCode());
+            note.setRemoteObjectIdentifier(document.getDocumentHeader().getObjectId());
+        }
         document.addNote(note);
 
         //SAVE THE NOTE
@@ -316,6 +323,22 @@ public class DocumentServiceImpl implements DocumentService {
                 document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
+        return document;
+    }
+
+    @Override
+    public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException {
+        checkForNulls(document);
+
+        Note note = createNoteFromDocument(document, annotation);
+        document.addNote(note);
+        getNoteService().save(note);
+
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().recall(document.getDocumentHeader().getWorkflowDocument(), annotation, cancel);
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -378,6 +401,31 @@ public class DocumentServiceImpl implements DocumentService {
         KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
                 document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
+        return document;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentService#completeDocument(org.kuali.rice.krad.document.Document,
+     *      java.lang.String,
+     *      java.util.List)
+     */
+    @Override
+    public Document completeDocument(Document document, String annotation,
+            List adHocRecipients) throws WorkflowException {
+        checkForNulls(document);
+
+        document.prepareForSave();
+        validateAndPersistDocument(document, new CompleteDocumentEvent(document));
+
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation,
+                adHocRecipients);
+
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
+
+        removeAdHocPersonsAndWorkgroups(document);
+
         return document;
     }
 
@@ -665,7 +713,16 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected void loadNotes(Document document) {
         if (isNoteTargetReady(document)) {
-            List<Note> notes = getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId());
+            List<Note> notes = new ArrayList<Note>();
+            if (StringUtils.isNotBlank(document.getNoteTarget().getObjectId())) {
+                notes.addAll(getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId()));
+            }
+            //notes created on 'disapprove' are linked to Doc Header, so this checks that even if notetype = BO
+            if (document.getNoteType().equals(NoteType.BUSINESS_OBJECT)
+                 && document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+                notes.addAll(getNoteService().getByRemoteObjectId(document.getDocumentHeader().getObjectId()));
+            }
+
             // KULRNE-5692 - force a refresh of the attachments
             // they are not (non-updateable) references and don't seem to update properly upon load
             for (Note note : notes) {
@@ -925,6 +982,11 @@ public class DocumentServiceImpl implements DocumentService {
      * @return true if the note target is ready, false otherwise
      */
     protected boolean isNoteTargetReady(Document document) {
+
+        //special case for disappoved documents
+        if (document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
+            return true;
+        }
         PersistableBusinessObject noteTarget = document.getNoteTarget();
         if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
             return false;
@@ -1066,7 +1128,4 @@ public class DocumentServiceImpl implements DocumentService {
         this.kualiConfigurationService = kualiConfigurationService;
     }
 
-    protected ConfigurationService getKualiConfigurationService() {
-        return kualiConfigurationService;
-    }
 }

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
@@ -57,6 +58,7 @@ import org.kuali.rice.krad.workflow.DocumentInitiator;
 import org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.rice.krad.workflow.KualiTransactionalDocumentInformation;
 import org.springframework.util.AutoPopulatingList;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -224,6 +226,13 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         	KRADServiceLocatorWeb.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
         }
     }
+
+    /**
+     * @see org.kuali.rice.krad.document.Document#afterActionTaken(ActionType, org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
+     */
+    public void afterActionTaken(ActionType performed, ActionTakenEvent event) {
+        // do nothing
+    }
     
     protected List<String> getNonLockingActionTakenCodes() {
         List<String> actionTakenStatusCodes = new ArrayList<String>();
@@ -285,6 +294,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
                 
         getDocumentHeader().setDocumentTemplateNumber(sourceDocumentHeaderId);
 
+        //clear out notes from previous bo
+        this.notes.clear();
         addCopyErrorDocumentNote("copied from document " + sourceDocumentHeaderId);
     }
 
@@ -618,6 +629,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	 */
 	@Override
 	public List<Note> getNotes() {
+        if (CollectionUtils.isEmpty(notes)
+                && getNoteType().equals(NoteType.BUSINESS_OBJECT)
+                && StringUtils.isNotBlank(getNoteTarget().getObjectId()) ) {
+            notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
+        }
+
 		return notes;
 	}
 	
@@ -632,7 +649,13 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 		this.notes = notes;
 	}
 
-    /**
+    @Override
+    protected void postLoad() {
+        super.postLoad();
+        refreshPessimisticLocks();
+    }
+    
+	/**
      * @see org.kuali.rice.krad.document.Document#getPessimisticLocks()
      */
     public List<PessimisticLock> getPessimisticLocks() {

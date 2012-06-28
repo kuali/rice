@@ -109,9 +109,41 @@ public enum DocumentTypePolicy implements Coded {
 
     @XmlEnumValue(Codes.ENROUTE_ERROR_SUPPRESSION) ENROUTE_ERROR_SUPPRESSION(Codes.ENROUTE_ERROR_SUPPRESSION),
 
-    @XmlEnumValue(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE) REGENERATE_ACTION_REQUESTS_ON_CHANGE(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE);
+    @XmlEnumValue(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE) REGENERATE_ACTION_REQUESTS_ON_CHANGE(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE),
 
-    
+    /**
+     * Governs whether FYIs should be sent on *pending* (not completed) action requests when returning to a previous node
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-5931
+     */
+    @XmlEnumValue(Codes.NOTIFY_PENDING_ON_RETURN) NOTIFY_PENDING_ON_RETURN(Codes.NOTIFY_PENDING_ON_RETURN),
+
+    /**
+     * Governs whether FYIs should be sent on *completed* (not pending) action requests when returning to a previous node (for use with Recall)
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-5931
+     */
+    @XmlEnumValue(Codes.NOTIFY_COMPLETED_ON_RETURN) NOTIFY_COMPLETED_ON_RETURN(Codes.NOTIFY_COMPLETED_ON_RETURN),
+    /**
+     * Specifies additional recipients of Recall notifications.  This configuration is supplied as an additional recipients element
+     * in the document policy element, which conforms to the Rule:ResponsibilityIdentifiers group schema.
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-5931
+     */
+    @XmlEnumValue(Codes.RECALL_NOTIFICATION) RECALL_NOTIFICATION(Codes.RECALL_NOTIFICATION),
+    /**
+     * Specifies whether to send acknowledgements on a super user disapprove action
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-7056
+     */
+    @XmlEnumValue(Codes.SEND_NOTIFICATION_ON_SU_DISAPPROVE) SEND_NOTIFICATION_ON_SU_DISAPPROVE(Codes.SEND_NOTIFICATION_ON_SU_DISAPPROVE),
+    /**
+     * Specifies whether to disallow super user approval on the final route node
+     * @since 2.1
+     * @see https://jira.kuali.org/browse/KULRICE-7057
+     */
+    @XmlEnumValue(Codes.ALLOW_SU_FINAL_APPROVAL) ALLOW_SU_FINAL_APPROVAL(Codes.ALLOW_SU_FINAL_APPROVAL);
+
     private final String code;
 
     private DocumentTypePolicy(String code) {
@@ -128,7 +160,7 @@ public enum DocumentTypePolicy implements Coded {
             return null;
         }
         for (DocumentTypePolicy policy : values()) {
-            if (policy.code.equals(code)) {
+            if (policy.code.equalsIgnoreCase(code)) {
                 return policy;
             }
         }
@@ -152,7 +184,12 @@ public enum DocumentTypePolicy implements Coded {
         private static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
         private static final String FAIL_ON_INACTIVE_GROUP = "FAIL_ON_INACTIVE_GROUP";
         private static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";       
-        private static final String ENROUTE_ERROR_SUPPRESSION = "ENROUTE_ERROR_SUPPRESSION";       
+        private static final String ENROUTE_ERROR_SUPPRESSION = "ENROUTE_ERROR_SUPPRESSION";
+        private static final String NOTIFY_PENDING_ON_RETURN = "NOTIFY_PENDING_ON_RETURN";
+        private static final String NOTIFY_COMPLETED_ON_RETURN = "NOTIFY_COMPLETED_ON_RETURN";
+        private static final String RECALL_NOTIFICATION = "RECALL_NOTIFICATION";
+        private static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
+        private static final String ALLOW_SU_FINAL_APPROVAL = "ALLOW_SU_FINAL_APPROVAL";
     }
     
 }

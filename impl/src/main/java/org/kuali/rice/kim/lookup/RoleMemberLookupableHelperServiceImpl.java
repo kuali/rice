@@ -65,8 +65,8 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
     protected static final String ASSIGNED_TO_ROLE_NAMESPACE_CODE = KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
     protected static final String ASSIGNED_TO_ROLE_ROLE_NAME = KimConstants.UniqueKeyConstants.ROLE_NAME;
     protected static final String ASSIGNED_TO_ROLE_MEMBER_ID = "members.memberId";
-    protected static final String DETAIL_OBJECTS_ATTRIBUTE_VALUE = "detailObjects.attributeValue";
-    protected static final String DETAIL_OBJECTS_ATTRIBUTE_NAME = "detailObjects.kimAttribute.attributeName";
+    protected static final String DETAIL_OBJECTS_ATTRIBUTE_VALUE = "attributeDetails.attributeValue";
+    protected static final String DETAIL_OBJECTS_ATTRIBUTE_NAME = "attributeDetails.kimAttribute.attributeName";
     
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {

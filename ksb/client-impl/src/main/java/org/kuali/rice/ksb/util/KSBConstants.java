@@ -52,6 +52,8 @@ public final class KSBConstants {
         public static final String RESTFUL_SERVICE_PATH = "rice.ksb.restfulServicePath";
         public static final String INSTANCE_ID = "rice.ksb.bus.instanceId";
         public static final String REGISTRY_SERVICE_URL = "rice.ksb.registry.serviceUrl";
+        public static final String WEB_FORCE_ENABLE = "rice.ksb.web.forceEnable";
+
         
     	private Config() {
     		throw new UnsupportedOperationException("do not call");

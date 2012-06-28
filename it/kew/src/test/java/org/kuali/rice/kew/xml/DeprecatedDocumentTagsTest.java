@@ -34,6 +34,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -118,7 +119,8 @@ public class DeprecatedDocumentTagsTest extends DocumentSearchTestBase {
             List<Row> rowList = FieldUtils.convertRemotableAttributeFields(remotableAttributeFields);
             assertEquals("The searching rows list should have exactly one element", 1, rowList.size());
             assertEquals("The searching row should have exactly one field", 1, rowList.get(0).getFields().size());
-            assertEquals("The rule attribute field does not have the expected visibility", visibleStates[i], rowList.get(0).getField(0).isColumnVisible());
+            assertEquals("The rule attribute field does not have the expected visibility", visibleStates[i],
+                    rowList.get(0).getField(0).getFieldType() != Field.HIDDEN);
         }
     	// Ensure that the document type called "DocTypeWithSecurity" has the correct group defined for its <security> section.
     	DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("DocTypeWithSecurity");

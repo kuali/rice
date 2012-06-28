@@ -101,11 +101,6 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>-->
 
-
-  <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService">
-      <constructor-arg><value>testAction</value></constructor-arg>
-  </bean>
-
   <!-- Import core beans -->
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
   

@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.mail.EmailBody;
 import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.core.api.mail.EmailSubject;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.preferences.Preferences;
@@ -90,8 +91,8 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
     }
 
     @Override
-    protected void sendPeriodicReminder(Person person, Collection<ActionItem> actionItems, String emailSetting) {
-        actionItems = filterActionItemsToNotify(person.getPrincipalId(), actionItems, emailSetting);
+    protected void sendPeriodicReminder(String principalId, Collection<ActionItemActionListExtension> actionItems, String emailSetting) {
+        actionItems = filterActionItemsToNotify(principalId, actionItems, emailSetting);
         Collection<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
         for(ActionItem actionItem : actionItems) {
             apiActionItems.add(ActionItem.to(actionItem));
@@ -102,6 +103,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
             return;
         }
         EmailContent content;
+        Person person = KimApiServiceLocator.getPersonService().getPerson(principalId);
         if (KewApiConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
             content = getEmailContentGenerator().generateDailyReminder(person, apiActionItems);
         } else if (KewApiConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {

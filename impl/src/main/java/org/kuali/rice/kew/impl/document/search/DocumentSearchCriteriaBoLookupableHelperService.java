@@ -20,6 +20,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -27,6 +28,8 @@ import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
@@ -67,6 +70,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,8 +88,6 @@ import java.util.regex.Pattern;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookupableHelperServiceImpl {
-
-    private static final String DOCUMENT_ATTRIBUTE_PROPERTY_NAME_PREFIX = "documentAttribute.";
 
     static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
     static final String DOCUMENT_TYPE_NAME_PARAM = "documentTypeName";
@@ -389,7 +391,26 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 } else {
                     //may be on the root of the criteria object, try looking there:
                     try {
-                        values = new String[] { ObjectUtils.toString(PropertyUtils.getProperty(criteria, field.getPropertyName())) };
+                        if (field.isRanged() && field.isDatePicker()) {
+                            if (field.getPropertyName().startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+                                String lowerBoundName = field.getPropertyName().replace(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX, "") + "From";
+                                Object lowerBoundDate = PropertyUtils.getProperty(criteria, lowerBoundName);
+                                if (lowerBoundDate != null) {
+                                    values = new String[] { CoreApiServiceLocator.getDateTimeService().toDateTimeString(((org.joda.time.DateTime)lowerBoundDate).toDate()) };
+                                }
+                            } else {
+                                // the upper bound prefix may or may not be on the propertyName.  Using "replace" just in case.
+                                String upperBoundName = field.getPropertyName().replace(KRADConstants.LOOKUP_RANGE_UPPER_BOUND_PROPERTY_PREFIX, "") + "To";
+                                Object upperBoundDate = PropertyUtils.getProperty(criteria, upperBoundName);
+                                if (upperBoundDate != null) {
+                                    values = new String[] { CoreApiServiceLocator.getDateTimeService().toDateTimeString(
+                                        ((org.joda.time.DateTime)upperBoundDate)
+                                                .toDate()) };
+                                }
+                            }
+                        } else {
+                            values = new String[] { ObjectUtils.toString(PropertyUtils.getProperty(criteria, field.getPropertyName())) };
+                        }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {
@@ -484,6 +505,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
+        // KULRICE-6822 Route log link target parameter always causing pop-up
         if (isRouteLogPopup()) {
             link.setTarget("_blank");
         }
@@ -847,7 +869,15 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 wrapDocumentAttributeColumnName(customColumn);
                 // list moving forward if the attribute has more than one value
                 Formatter formatter = customColumn.getFormatter();
-                customColumn.setPropertyValue(formatter.format(documentAttribute.getValue()).toString());
+                Object attributeValue = documentAttribute.getValue();
+                if (formatter.getPropertyType().equals(KualiDecimal.class)
+                        && documentAttribute.getValue() instanceof BigDecimal) {
+                    attributeValue = new KualiDecimal((BigDecimal)attributeValue);
+                } else if (formatter.getPropertyType().equals(KualiPercent.class)
+                        && documentAttribute.getValue() instanceof BigDecimal) {
+                    attributeValue = new KualiPercent((BigDecimal)attributeValue);
+                }
+                customColumn.setPropertyValue(formatter.format(attributeValue).toString());
             }
         }
     }

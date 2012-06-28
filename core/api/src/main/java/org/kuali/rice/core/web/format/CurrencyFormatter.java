@@ -178,8 +178,14 @@ public class CurrencyFormatter extends Formatter {
         return showSymbol() ? string : removeSymbol(string);
         */
         LOG.debug("format '" + obj + "'");
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
+        if (obj instanceof String
+                && StringUtils.isEmpty((String)obj)) {
+            return null;
+        }
+        
 
         NumberFormat formatter = getCurrencyInstanceUsingParseBigDecimal();
         String string = null;

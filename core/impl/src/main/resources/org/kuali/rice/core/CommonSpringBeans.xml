@@ -22,7 +22,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <!--
   ${monitoring.spring.service}
+  -->
 
   <bean id="rice.core.config.propertyPlaceholderConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"

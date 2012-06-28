@@ -17,7 +17,6 @@ package org.kuali.rice.kew.doctype.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
-import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -128,7 +127,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
-			if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
+			if (!documentType.isPolicyDefined(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.INITIATOR_MUST_CANCEL)) {
 				List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
 
                 boolean foundAtLeastOnePermission = false;
@@ -155,6 +154,43 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			return true;
 			}			
 	}
+
+    public boolean canRecall(String principalId, String documentId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String appDocStatus, String initiatorPrincipalId) {
+        validatePrincipalId(principalId);
+        validateDocumentType(documentType);
+        validateRouteNodeNames(routeNodeNames);
+        validateDocumentStatus(documentStatus);
+        // no need to validate appdocstatus, this is a free-form application defined value
+
+        // add appDocStatus to the details
+        List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+        if (!StringUtils.isBlank(appDocStatus)) {
+            for (Map<String, String> details: permissionDetailList) {
+                details.put(KewApiConstants.APP_DOC_STATUS_DETAIL, appDocStatus);
+            }
+        }
+
+        boolean foundAtLeastOnePermission = false;
+        boolean authorizedByPermission = false;
+        boolean principalIsInitiator = StringUtils.equals(initiatorPrincipalId, principalId);
+
+        // loop over permission details, only one of them needs to be authorized
+        for (Map<String, String> permissionDetails : permissionDetailList) {
+            Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
+            if (getPermissionService().isPermissionDefinedByTemplate(KewApiConstants.KEW_NAMESPACE, KewApiConstants.RECALL_PERMISSION, permissionDetails)) {
+                foundAtLeastOnePermission = true;
+                if (getPermissionService().isAuthorizedByTemplate(principalId, KewApiConstants.KEW_NAMESPACE,
+                        KewApiConstants.RECALL_PERMISSION, permissionDetails, roleQualifiers)) {
+                    authorizedByPermission = true;
+                    break;
+                }
+            }
+        }
+
+        // alternative could be to only authorize initiator if the permission is omitted
+        // (i.e. exclude initiator if the initiator does not have the recall permission)
+        return authorizedByPermission;
+    }
 	
 	public boolean canInitiate(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);
@@ -179,7 +215,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
-		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_ROUTE)) {
+		if (!documentType.isPolicyDefined(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.INITIATOR_MUST_ROUTE)) {
 			Map<String, String> permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
 			Map<String, String> roleQualifiers = buildDocumentIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, documentId, permissionDetails.get(KewApiConstants.ROUTE_NODE_NAME_DETAIL));
 			
@@ -236,7 +272,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
-		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_SAVE)) {
+		if (!documentType.isPolicyDefined(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.INITIATOR_MUST_SAVE)) {
 			List<Map<String, String>> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
 
             boolean foundAtLeastOnePermission = false;

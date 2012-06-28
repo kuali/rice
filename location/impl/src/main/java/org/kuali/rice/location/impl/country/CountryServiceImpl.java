@@ -17,6 +17,9 @@ package org.kuali.rice.location.impl.country;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
@@ -25,8 +28,12 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.location.api.campus.Campus;
+import org.kuali.rice.location.api.campus.CampusQueryResults;
 import org.kuali.rice.location.api.country.Country;
+import org.kuali.rice.location.api.country.CountryQueryResults;
 import org.kuali.rice.location.api.country.CountryService;
+import org.kuali.rice.location.impl.campus.CampusBo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +46,7 @@ public final class CountryServiceImpl implements CountryService {
 
     private BusinessObjectService businessObjectService;
     private ParameterService parameterService;
+    private CriteriaLookupService criteriaLookupService;
 
     @Override
     public Country getCountry(final String code) {
@@ -101,6 +109,25 @@ public final class CountryServiceImpl implements CountryService {
         return getCountry(defaultCountryCode);
     }
 
+    @Override
+    public CountryQueryResults findCountries(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
+
+        GenericQueryResults<CountryBo> results = criteriaLookupService.lookup(CountryBo.class, queryByCriteria);
+
+        CountryQueryResults.Builder builder = CountryQueryResults.Builder.create();
+        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
+        builder.setTotalRowCount(results.getTotalRowCount());
+
+        final List<Country.Builder> ims = new ArrayList<Country.Builder>();
+        for (CountryBo bo : results.getResults()) {
+            ims.add(Country.Builder.create(bo));
+        }
+
+        builder.setResults(ims);
+        return builder.build();
+    }
+
     public ParameterService getParameterService() {
         return parameterService;
     }
@@ -131,5 +158,23 @@ public final class CountryServiceImpl implements CountryService {
             countries.add(country);
         }
         return Collections.unmodifiableList(countries);
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
+    }
+
+    /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
     }
 }

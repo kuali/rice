@@ -23,7 +23,7 @@
 
   <bean id="ParameterMaintenanceDocument-parentBean" abstract="true" parent="MaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.coreservice.impl.parameter.ParameterBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.coreservice.web.parameter.ParameterMaintenableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.coreservice.web.parameter.ParameterMaintainableImpl"/>
     <property name="maintainableSections">
       <list>
         <ref bean="ParameterMaintenanceDocument-EditParameter"/>

@@ -43,7 +43,7 @@ public class ActionListDecorator extends TableDecorator {
         try {
         	DisplayParameters displayParameters = actionItem.getDisplayParameters();
             if (displayParameters != null) {
-                Integer index = actionItem.getActionItemIndex();
+                Integer index = actionItem.getActionListIndex();
                 Integer frameHeight = new Integer(290);
                 try {
                     if (displayParameters.getFrameHeight() != null && displayParameters.getFrameHeight() > 0) {

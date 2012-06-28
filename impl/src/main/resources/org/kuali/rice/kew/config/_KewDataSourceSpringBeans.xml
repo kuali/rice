@@ -36,22 +36,4 @@
     <property name="serverDataSource" value="true"/>
   </bean>
 
-  <bean id="kewNonTransactionalDataSource"
-        class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean"
-        lazy-init="true"
-        p:nullAllowed="true"
-        p:nonTransactionalDataSource="true">
-    <property name="preferredDataSourceParams">
-      <list>
-        <value>kew.nonTransactional.datasource</value>
-      </list>
-    </property>
-    <property name="preferredDataSourceJndiParams">
-      <list>
-        <value>kew.nonTransactional.datasource.jndi.location</value>
-      </list>
-    </property>
-    <property name="serverDataSource" value="false"/>
-  </bean>
-
-</beans>
+  </beans>

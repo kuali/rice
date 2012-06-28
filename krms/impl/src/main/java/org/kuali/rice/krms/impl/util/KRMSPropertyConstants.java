@@ -52,6 +52,7 @@ public final class KRMSPropertyConstants {
 
     public static final class Term {
         public static final String TERM_ID ="dataObject.id";
+        public static final String TERM_SPECIFICATION_ID ="dataObject.specificationId";
         public static final String DESCRIPTION = "dataObject.description";
     }
 

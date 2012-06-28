@@ -18,6 +18,7 @@ package org.kuali.rice.krad.document;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kim.api.KimConstants;
@@ -85,6 +86,10 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
     public boolean canCancel(Document document, Person user) {
         return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CANCEL_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canRecall(Document document, Person user) {
+        return KewApiServiceLocator.getWorkflowDocumentActionsService().determineValidActions(document.getDocumentNumber(), user.getPrincipalId()).getValidActions().contains(ActionType.RECALL);
     }
 
     public boolean canCopy(Document document, Person user) {

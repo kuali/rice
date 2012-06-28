@@ -126,16 +126,17 @@
 
                     <div align="center">
 
-                        <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
+                      <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 
-
+                      <c:if test="${canModifyAssignees}">
                         <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                           <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                             <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">
-    				       		        <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${widget}" />
+                              <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${widget}" />
                             </c:if>
                           </c:if>
                         </c:forEach>
+                      </c:if>
 
                       </div>
 
@@ -182,26 +183,26 @@
         <c:if test="${canModifyAssignees}"> 
           <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
         </c:if> 
-      </tr>    
+      </tr>
     <c:if test="${KualiForm.memberTableMetadata.firstRowIndex >= 0}">
         <c:forEach var="member" items="${KualiForm.document.members}" varStatus="statusMember"
                  begin="${KualiForm.memberTableMetadata.firstRowIndex}" 
                  end="${KualiForm.memberTableMetadata.lastRowIndex}">
             <c:set var="rows" value="2"/>
             <c:if test="${fn:length(member.roleRspActions) == 0}">  
-                   <c:set var="rows" value="1"/>            
+                   <c:set var="rows" value="1"/>
             </c:if> 
             <c:set var="inquiryClass" value="org.kuali.rice.kim.api.identity.Person" />
             <c:set var="keyValue" value="principalId" />
             <c:if test='${member.memberTypeCode == "G"}'>
-            	<c:set var="inquiryClass" value="org.kuali.rice.kim.api.group.Group" />
-            	<c:set var="keyValue" value="groupId" />
+            	<c:set var="inquiryClass" value="org.kuali.rice.kim.impl.group.GroupBo" />
+            	<c:set var="keyValue" value="id" />
             </c:if>
             <c:if test='${member.memberTypeCode == "R"}'>
-            	<c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Role" />
-            	<c:set var="keyValue" value="roleId" /> 
+            	<c:set var="inquiryClass" value="org.kuali.rice.kim.impl.role.RoleBo" />
+            	<c:set var="keyValue" value="id" />
             </c:if>
-              
+
               <tr>
                 <th rowspan="${rows}" class="infoline" valign="top">
                     <c:out value="${statusMember.index+1}" />
@@ -250,8 +251,15 @@
                     <c:set var="attrEntry" value="${KualiForm.document.attributeEntry[fieldName]}" />
                     <c:set var="attrDefinition" value="${KualiForm.document.definitionsKeyedByAttributeName[fieldName]}"/>
                     <c:set var="attrReadOnly" value="${(!canModifyAssignees || member.edit)}"/>
-                    <td align="left" valign="middle">
-                        <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+                    <c:set var="index" value="${statusMember.index}"/>
+                    <c:set var="kimAttrId" value="${qualifier.kimAttribute.id}"  />
+                  <td align="left" valign="middle">
+                    <div align="center">
+                      <c:if test="${kfunc:matchingQualifierExists(KualiForm.document.members,index,kimAttrId) }">
+
+                        <kul:htmlControlAttribute property="document.members[${statusMember.index}].qualifier(${qualifier.kimAttribute.id}).attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
+
+                        <c:if test="${!attrReadOnly}">
                           <c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
                             <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                               <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">
@@ -259,8 +267,10 @@
                               </c:if>
                             </c:if>
                           </c:forEach>
-                        </div>
-                    </td>
+                        </c:if>
+                      </c:if>
+                    </div>
+                  </td>
                 </c:forEach>
             <c:if test="${canModifyAssignees}"> 
                 <td>

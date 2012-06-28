@@ -17,7 +17,7 @@ package org.kuali.rice.ken.dao;
 
 import java.util.HashMap;
 
-import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 
@@ -28,8 +28,8 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationContentTypeDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    NotificationContentType mockType1 = MockObjectsUtil.getTestContentType1();
-    NotificationContentType type1 = MockObjectsUtil.getTestContentType1();
+    NotificationContentTypeBo mockType1 = MockObjectsUtil.getTestContentType1();
+    NotificationContentTypeBo type1 = MockObjectsUtil.getTestContentType1();
     
     private String[] updatedDescriptions = {"Test 1 - updated description", "Test 2 - updated description"};
     private String[] namespaces = {"https://forge.cornell.edu/notif_sys/test1", "https://forge.cornell.edu/notif_sys/test1"};
@@ -52,12 +52,12 @@ public class NotificationContentTypeDaoTest extends BusinessObjectPersistenceTes
      */
     @Override
     protected boolean retrieve() {
-	type1 = new NotificationContentType();
+	type1 = new NotificationContentTypeBo();
 	
 	HashMap criteria = new HashMap();
 	
 	criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockType1.getName());
-	type1 = (NotificationContentType) (businessObjectDao.findMatching(NotificationContentType.class, criteria)).iterator().next();
+	type1 = (NotificationContentTypeBo) (businessObjectDao.findMatching(NotificationContentTypeBo.class, criteria)).iterator().next();
 	
 	criteria.clear();
 	

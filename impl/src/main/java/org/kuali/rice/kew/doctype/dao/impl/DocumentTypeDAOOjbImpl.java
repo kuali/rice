@@ -57,19 +57,31 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		return findByName(name, true);
 	}
 
-	public DocumentType findByName(String name, boolean caseSensitive) {
-		Criteria crit = new Criteria();
-		if(!caseSensitive){
-			crit.addEqualTo("UPPER(name)", name.trim().toUpperCase());
-		}else{
-			crit.addEqualTo("name", name);
-		}
-		crit.addEqualTo("currentInd", Boolean.TRUE);
-		DocumentType docType = (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentType.class, crit));
-		return docType;
-	}
+    public DocumentType findByName(String name, boolean caseSensitive) {
+        Criteria crit = new Criteria();
+        if (!caseSensitive) {
+            if (name.contains("*") || name.contains("%")) {
+                name.replace("*", "%");
+                crit.addLike("UPPER(name)", name.trim().toUpperCase());
+            } else {
+                crit.addEqualTo("UPPER(name)", name.trim().toUpperCase());
+            }
+        } else {
+            if (name.contains("*")) {
+                name.replace("*", "%");
+                crit.addLike("name", name.trim().toUpperCase());
+            } else {
+                crit.addEqualTo("name", name);
+            }
 
-	public Integer getMaxVersionNumber(String docTypeName) {
+        }
+        crit.addEqualTo("currentInd", Boolean.TRUE);
+        DocumentType docType = (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(
+                DocumentType.class, crit));
+        return docType;
+    }
+
+    public Integer getMaxVersionNumber(String docTypeName) {
 		return getMostRecentDocType(docTypeName).getVersion();
 	}
 

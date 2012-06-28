@@ -52,7 +52,7 @@
   	  </tr>
    	  <tr>
   	    <td width="33%" align=right class="thnormal">Date Assigned:</td>
-  	    <td width="66%" class="datacell"><c:out value="${actionItem.dateAssignedString}" />&nbsp;</td>
+  	    <td width="66%" class="datacell"><c:out value="${actionItem.dateAssignedStringValue}" />&nbsp;</td>
   	  </tr>
   	  <tr>
   	    <td width="33%" align=right class="thnormal">Action Request ID:</td>

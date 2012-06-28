@@ -453,6 +453,11 @@
                                         these documents. No changes are allowed to a document
                                         that is in Final status. </para>
                                 </listitem>
+                                <listitem>
+                                    <para><emphasis role="bold">Recalled</emphasis>: The document has 
+                                        been recalled after being submitted and canceled. No changes 
+                                        are allowed to a document that is in Recalled status. </para>
+                                </listitem>                                
                             </itemizedlist></para>
                     </listitem>
                     <listitem>
@@ -1362,6 +1367,9 @@
                         <para>Save </para>
                     </listitem>
                     <listitem>
+                        <para>Recall </para>
+                    </listitem>
+                    <listitem>
                         <para>Superuser Actions <itemizedlist>
                                 <listitem>
                                     <para>Superuser Approve Document </para>
@@ -1524,6 +1532,14 @@
                     Saved.</para>
             </sect3>
             <sect3>
+                <title>Recall</title>
+                <para>Use this action to recall a doucment that has been submitted to your action list. 
+                    You can only use this action on a document if you have a specific role for the application
+                    and/or document you are trying to recall. When you use this action, you are given the option 
+                    to recall the document to your action list for updating or you can recall and cancel the doucment
+                    with one action if it is no longer needed.</para>
+            </sect3>            
+            <sect3>
                 <title>Superuser Actions </title>
                 <para>Superuser actions let you move a document past workflow nodes where it may be
                     held up because another user is unavailable to take action on it or due to a
@@ -1582,6 +1598,24 @@
                     action works exactly the same way as the standard Return to Previous Node action
                     except that the Superuser does not need to have a pending request to perform the
                     action.</para>
+            </sect3>
+            <sect3>
+                <title>Superuser Quick Action's Tab</title>
+                <para>With the relese of Rice 2.1 a new option is avaialbe for applications to enable. 
+                    Superuser's can now access documents directly from the standard document search 
+                    and quickly perform approval, acknowledgment, FYI, or disapproval actions from this 
+                    new tab on the document. This streamlined version of the still available superuser 
+                    form of document search will allow for common actions to be taken in a more user 
+                    friendly fashion. Pending actions are displayed in a list that the super user can 
+                    check off and take the actions necessary all at once (see example below). 
+                    Before actions can be taken, a annotation must be provided.</para>
+                <figure><title>New Superuser Tab Example</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/new_superuser_tab.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
             </sect3>
         </sect2>    
     </sect1>

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
@@ -190,7 +191,8 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
 
     public RuleAttribute getRuleAttribute() {
         if (ruleAttribute == null && ruleAttributeId != null) {
-            ruleAttribute = ((RuleAttributeService) KEWServiceLocator.getService(KEWServiceLocator.RULE_ATTRIBUTE_SERVICE)).findByRuleAttributeId(ruleAttributeId);
+            ruleAttribute = RuleAttribute.from(KewApiServiceLocator.getExtensionRepositoryService().getExtensionById(ruleAttributeId));
+            //ruleAttribute = ((RuleAttributeService) KEWServiceLocator.getService(KEWServiceLocator.RULE_ATTRIBUTE_SERVICE)).findByRuleAttributeId(ruleAttributeId);
         }
         return ruleAttribute;
     }

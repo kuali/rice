@@ -152,6 +152,7 @@ public final class DelegateType extends AbstractDataTransferObject implements De
             b.setDelegationId(dtc.getDelegationId());
             b.setDelegationType(dtc.getDelegationType());
             b.setActive(dtc.isActive());
+            b.setKimTypeId(dtc.getKimTypeId());
 
             ArrayList<DelegateMember.Builder> delegateBuilders = new ArrayList<DelegateMember.Builder>();
             for (DelegateMemberContract delegate : dtc.getMembers()) {

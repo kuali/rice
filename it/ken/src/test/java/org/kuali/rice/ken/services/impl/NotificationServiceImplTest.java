@@ -18,9 +18,9 @@ package org.kuali.rice.ken.services.impl;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationResponseBo;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
@@ -57,7 +57,7 @@ public class NotificationServiceImplTest extends KENTestCase {
     public void testGetNotification_validNotification() {
         NotificationService nSvc = services.getNotificationService();
 
-        Notification notification = nSvc.getNotification(TestConstants.NOTIFICATION_1);
+        NotificationBo notification = nSvc.getNotification(TestConstants.NOTIFICATION_1);
 
         assertNotNull(notification.getContent());
         assertTrue(notification.getDeliveryType().equals(TestConstants.NOTIFICATION_1_DELIVERY_TYPE));
@@ -67,7 +67,7 @@ public class NotificationServiceImplTest extends KENTestCase {
     public void testGetNotification_nonExistentNotification() {
         NotificationService nSvc = services.getNotificationService();
 
-        Notification notification = nSvc.getNotification(TestConstants.NON_EXISTENT_ID);
+        NotificationBo notification = nSvc.getNotification(TestConstants.NON_EXISTENT_ID);
 
         assertNull(notification);
     }
@@ -110,15 +110,15 @@ public class NotificationServiceImplTest extends KENTestCase {
 
         Map map = new HashMap();
         map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-        Collection<Notification> notifications = services.getGenericDao().findMatching(Notification.class, map);
+        Collection<NotificationBo> notifications = services.getGenericDao().findMatching(NotificationBo.class, map);
         assertEquals(0, notifications.size());
         final String[] result = new String[1];
 
-        NotificationResponse response = nSvc.sendNotification(notificationMessageAsXml);
+        NotificationResponseBo response = nSvc.sendNotification(notificationMessageAsXml);
 
         LOG.info("response XML: " + response);
         assertEquals(NotificationConstants.RESPONSE_STATUSES.SUCCESS, response.getStatus());
-        notifications = services.getGenericDao().findMatching(Notification.class, map);
+        notifications = services.getGenericDao().findMatching(NotificationBo.class, map);
         assertEquals(1, notifications.size());
         LOG.info("Notification: " + notifications.iterator().next());
 
@@ -162,7 +162,7 @@ public class NotificationServiceImplTest extends KENTestCase {
 
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("producer_not_authorized.xml"));
 
-        NotificationResponse response = nSvc.sendNotification(notificationMessageAsXml);
+        NotificationResponseBo response = nSvc.sendNotification(notificationMessageAsXml);
         assertEquals(NotificationConstants.RESPONSE_STATUSES.FAILURE, response.getStatus());
         assertEquals(NotificationConstants.RESPONSE_MESSAGES.PRODUCER_NOT_AUTHORIZED_FOR_CHANNEL, response.getMessage());
     }
@@ -175,7 +175,7 @@ public class NotificationServiceImplTest extends KENTestCase {
     @Test
     public void testDismiss() throws InterruptedException {
         // first check that the right amount of deliveries are present in the test data
-        Notification n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
+        NotificationBo n = services.getNotificationService().getNotification(TestConstants.NOTIFICATION_1);
         NotificationMessageDeliveryService nmds = services.getNotificationMessageDeliveryService();
         Collection<NotificationMessageDelivery> deliveries = nmds.getNotificationMessageDeliveries(n, TestConstants.TEST_USER_FIVE);
         assertNotNull(deliveries);

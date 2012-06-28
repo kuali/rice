@@ -74,6 +74,7 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
             "routeNodeName",
             "documentTypeName",
             "saveName",
+            "title",
             "isAdvancedSearch"
     };
     private static final Set<String> DIRECT_TRANSLATE_FIELD_NAMES_SET =

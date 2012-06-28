@@ -48,7 +48,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "rkirkend";
         document = this.checkActions(networkId, documentId, 
                 new String[]{KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD},
-                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD,ActionType.RECALL.getCode()});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -57,7 +57,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "pmckown";
         document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
-                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD,ActionType.RECALL.getCode()});
         // check for no super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -66,7 +66,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
                 new String[]{KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD},
-                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,ActionType.RECALL.getCode()});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
         // check for routable "O"
@@ -76,7 +76,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "rkirkend";
         document = this.checkActions(networkId, documentId, 
                 new String[]{KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD},
-                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD,ActionType.RECALL.getCode()});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -85,7 +85,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "pmckown";
         document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
-                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD,ActionType.RECALL.getCode()});
         // check for no super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -94,7 +94,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
                 new String[]{KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD},
-                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,ActionType.RECALL.getCode()});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
         // check for routable "O"
@@ -104,7 +104,7 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
-                new String[]{}, 
+                new String[]{ActionType.RECALL.getCode()},
                 new String[]{KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
@@ -114,7 +114,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "rkirkend";
         document = this.checkActions(networkId, documentId, 
                 new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_APPROVED_CD},
-                new String[]{KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,ActionType.RECALL.getCode()});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for approve "A"
@@ -124,16 +124,30 @@ public class ValidActionsTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         document.approve("");
 
+        // an action has been taken, initiator can no longer recall!
+        this.checkActions("user1", documentId, new String[]{}, new String[]{ActionType.RECALL.getCode()});
+
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         document.approve("");
+
+        // an action has been taken, initiator can no longer recall
+        this.checkActions("user1", documentId, new String[]{}, new String[]{ActionType.RECALL.getCode()});
 
         // SHOULD NOW BE ONLY ACKNOWLEDGED
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         // test for Processed Status on document
         document.acknowledge("");
+
+        // an action has been taken, initiator can no longer recall
+        this.checkActions("user1", documentId, new String[]{}, new String[]{ActionType.RECALL.getCode()});
+
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         document.acknowledge("");
+
+        // an action has been taken, initiator can no longer recall
+        this.checkActions("user1", documentId, new String[]{}, new String[]{ActionType.RECALL.getCode()});
+
     }
 
     private WorkflowDocument checkActions(String networkId,String documentId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {

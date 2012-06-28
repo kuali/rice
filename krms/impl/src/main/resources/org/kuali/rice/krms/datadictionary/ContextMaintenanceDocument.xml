@@ -21,7 +21,7 @@
   <bean id="ContextMaintenanceDocument" parent="ContextMaintenanceDocument-parentBean"/>
   <bean id="ContextMaintenanceDocument-parentBean" abstract="true" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.ContextMaintainable"/>
     <property name="defaultExistenceChecks">
       <list>
         <!--<bean parent="ReferenceDefinition" p:attributeName="extension.accountType" p:attributeToHighlightOnFail="extension.accountTypeCode"/>-->

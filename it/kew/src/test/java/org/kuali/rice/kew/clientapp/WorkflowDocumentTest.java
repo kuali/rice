@@ -94,7 +94,7 @@ public class WorkflowDocumentTest extends KEWTestCase {
         document.route("");
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-        document.returnToPreviousNode("Initiated", "");
+        document.returnToPreviousNode("", "Initiated");
 
         assertFalse("ewestfal should no longer have approval status", document.isApprovalRequested());
         assertFalse("ewestfal should no long have blanket approve status", document.isBlanketApproveCapable());
@@ -120,7 +120,7 @@ public class WorkflowDocumentTest extends KEWTestCase {
         Set<String> currentNodes = document.getNodeNames();
         assertEquals("Should have 1 current node name", 1, currentNodes.size());
         assertEquals("Current node name incorrect", "Template2", currentNodes.iterator().next());
-        document.returnToPreviousNode("Template1", "");
+        document.returnToPreviousNode("", "Template1");
         previousNodeNames = document.getPreviousNodeNames();
         assertEquals("Should have 1 previous Node Name", 1, previousNodeNames.size());
         assertEquals("Previous Node name incorrect", "Initiated", previousNodeNames.get(0));

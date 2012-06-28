@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -34,6 +35,8 @@ import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.bo.Note;
+import org.kuali.rice.krad.bo.PersistableAttachment;
+import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -132,8 +135,49 @@ public class KualiInquiryAction extends KualiAction {
 
 		return continueWithInquiry(mapping, form, request, response);
     }
-    
-    
+
+
+    /**
+     * Downloads the attachment to the user's browser
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return ActionForward
+     * @throws Exception
+     */
+    public ActionForward downloadAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        int line = getSelectedLine(request);
+
+        BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+        if (line < 0) {
+            if (bo instanceof PersistableAttachment) {
+                PersistableAttachment attachment = (PersistableAttachment)bo;
+                if (StringUtils.isNotBlank(attachment.getFileName())
+                        && attachment.getAttachmentContent() != null) {
+                    streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
+                }
+            }
+        } else {
+            if (bo instanceof PersistableAttachmentList) {
+                PersistableAttachmentList<PersistableAttachment> attachmentsBo = (PersistableAttachmentList<PersistableAttachment>)bo;
+                if (CollectionUtils.isEmpty(attachmentsBo.getAttachments())) {
+                    return null;
+                }
+
+                List<? extends PersistableAttachment> attachments = attachmentsBo.getAttachments();
+                if (CollectionUtils.isNotEmpty(attachments)
+                        && attachments.size() > line) {
+                    PersistableAttachment attachment = (PersistableAttachment)attachmentsBo.getAttachments().get(line);
+                    streamToResponse(attachment.getAttachmentContent(), attachment.getFileName(), attachment.getContentType(), response);
+                }
+            }
+        }
+        return null;
+    }
+
     public ActionForward downloadCustomBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	String fileName = request.getParameter(KRADConstants.BO_ATTACHMENT_FILE_NAME);
 		String contentType = request.getParameter(KRADConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
@@ -404,7 +448,7 @@ public class KualiInquiryAction extends KualiAction {
     	
     	if (bo != null) {
     		// get list of populated sections for display
-    		List sections = kualiInquirable.getSections(bo);
+    		List<Section> sections = kualiInquirable.getSections(bo);
         	inquiryForm.setSections(sections);
         	kualiInquirable.addAdditionalSections(sections, bo);
     	} else {

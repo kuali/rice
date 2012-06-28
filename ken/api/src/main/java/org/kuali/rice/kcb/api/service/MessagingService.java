@@ -32,6 +32,8 @@ public interface MessagingService {
      * 
      * @param message message to deliver
      * @return identifier for the message
+     * @throws MessageDeliveryException if unable to deliver message.
+     * @throws RiceIllegalArgumentException if the message is null.
      */
     public Long deliver(MessageDTO message) throws MessageDeliveryException, RiceIllegalArgumentException;
     /**
@@ -39,7 +41,9 @@ public interface MessagingService {
      * 
      * @param messageId id of the message to remove
      * @param user the user under which the action was taken
-     * @param cause the cause or action taken to remove the message 
+     * @param cause the cause or action taken to remove the message
+     * @throws MessageDismissalException if no message for the given messageId is found.
+     * @throws RiceIllegalArgumentException if user, cause is null.
      */
     public void remove(long messageId, String user, String cause) throws MessageDismissalException, RiceIllegalArgumentException;
     
@@ -50,7 +54,9 @@ public interface MessagingService {
      * @param originId origin id of the message to remove
      * @param user the user under which the action was taken
      * @param cause the cause or action taken to remove the message
-     * @return Long the message id of the message removed, if any 
+     * @return Long the message id of the message removed, if any
+     * @throws MessageDismissalException if no message for the given messageId is found.
+     * @throws RiceIllegalArgumentException if originId is null
      */
     public Long removeByOriginId(String originId, String user, String cause) throws MessageDismissalException, RiceIllegalArgumentException;
 }

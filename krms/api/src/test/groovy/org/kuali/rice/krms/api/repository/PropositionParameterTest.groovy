@@ -88,8 +88,8 @@ class PropositionParameterTest {
 		PropositionParameter.Builder.create(ID, "   ", VALUE, PARAMETER_TYPE_C, SEQUENCE_NUMBER_1)
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_null_value() {
+	@Test
+	void test_Builder_create_succeed_null_value() {
 		PropositionParameter.Builder.create(ID, PROP_ID, null, PARAMETER_TYPE_C, SEQUENCE_NUMBER_1)
 	}
 	

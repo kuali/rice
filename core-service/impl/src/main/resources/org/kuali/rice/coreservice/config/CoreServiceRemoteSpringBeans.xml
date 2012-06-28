@@ -56,4 +56,21 @@
   <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl">
     <property name="styleRepositoryService" ref="styleRepositoryService" />
   </bean>
+
+  <bean id="coreServiceServerModuleConfiguration"
+        class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="KR-CR"/>
+    <property name="dataSourceName" value="coreServiceDataSource"/>
+    <property name="initializeDataDictionary" value="false"/>
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.coreservice.</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="coreServiceServerModule" class="org.kuali.rice.coreservice.impl.service.CoreServiceRemoteModuleService">
+    <property name="moduleConfiguration" ref="coreServiceServerModuleConfiguration"/>
+    <property name="kualiModuleService" ref="rice.coreService.import.kualiModuleService"/>
+  </bean>
 </beans>

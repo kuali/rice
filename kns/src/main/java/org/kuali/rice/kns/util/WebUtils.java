@@ -15,6 +15,28 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -29,6 +51,7 @@ import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
@@ -51,27 +74,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * General helper methods for handling requests.
@@ -183,7 +185,7 @@ public class WebUtils {
 	 */
 	private static String getMethodToCallSettingAttribute(ActionForm form, HttpServletRequest request, String string) {
 
-		if (form instanceof ActionForm
+		if (form instanceof KualiForm
 				&& !((KualiForm) form).shouldMethodToCallParameterBeUsed(string, request.getParameter(string), request)) {
 			throw new RuntimeException("Cannot verify that the methodToCall should be " + string);
 		}
@@ -289,7 +291,7 @@ public class WebUtils {
 	 * 
 	 * @param response
 	 * @param contentType
-	 * @param outStream
+	 * @param byteArrayOutputStream
 	 * @param fileName
 	 */
 	public static void saveMimeOutputStreamAsFile(HttpServletResponse response, String contentType,
@@ -316,7 +318,7 @@ public class WebUtils {
 	 * 
 	 * @param response
 	 * @param contentType
-	 * @param outStream
+	 * @param inStream
 	 * @param fileName
 	 */
 	public static void saveMimeInputStreamAsFile(HttpServletResponse response, String contentType,
@@ -771,6 +773,14 @@ public class WebUtils {
 		return buttonImageUrl;
 	}
 
+    public static String getAttachmentImageForUrl(String contentType) {
+        String image = getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ATTACHMENT_IMAGE_PREFIX + contentType);
+        if (StringUtils.isEmpty(image)) {
+            return getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ATTACHMENT_IMAGE_DEFAULT);
+        }
+        return image;
+    }
+
 	/**
 	 * Generates a default button image URL, in the form of:
 	 * ${kr.externalizable.images.url}buttonsmall_${imageName}.gif
@@ -805,5 +815,19 @@ public class WebUtils {
     	String convertedString = startingString.replaceAll("\n", "<br />");
     	convertedString = convertedString.replaceAll("  ", "&nbsp;&nbsp;").replaceAll("(&nbsp; | &nbsp;)", "&nbsp;&nbsp;");
     	return convertedString;
+    }
+    
+    public static String getKimGroupDisplayName(String groupId) {
+    	if(StringUtils.isBlank(groupId)) {
+    		throw new IllegalArgumentException("Group ID must have a value");
+    	}
+    	return KimApiServiceLocator.getGroupService().getGroup(groupId).getName();
+    }
+    
+    public static String getPrincipalDisplayName(String principalId) {
+    	if(StringUtils.isBlank(principalId)) {
+    		throw new IllegalArgumentException("Principal ID must have a value");
+    	}
+    	return KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(principalId).getDefaultName().getCompositeName();
     }
 }

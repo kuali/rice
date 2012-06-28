@@ -72,7 +72,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             if ( LOG.isInfoEnabled() ) {
             	LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
             }
-            DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
+            DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId, true);
             if (!document.isRoutable()) {
                 LOG.debug("Document not routable so returning with doing no action");
                 return;
@@ -209,7 +209,9 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         if (helper.isSubProcessNode(node)) {
             ProcessDefinitionBo subProcess = node.getDocumentType().getNamedProcess(node.getRouteNodeName());
             RouteNode subNode = subProcess.getInitialRouteNode();
-            isInPath = isInPath || isNodeNameInPath(nodeName, subNode, inspected);
+            if (subNode != null) {
+                isInPath = isInPath || isNodeNameInPath(nodeName, subNode, inspected);
+            }
         }
         for (RouteNode nextNode : node.getNextNodes())
         {

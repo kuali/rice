@@ -81,7 +81,7 @@ public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableB
 	}
 
 	public KimTypeBo getKimGroupType() {
-        if (StringUtils.isNotBlank(kimTypeId)) {
+        if (StringUtils.isNotBlank(getKimTypeId())) {
             if ( kimGroupType == null || (!StringUtils.equals( kimGroupType.getId(), kimTypeId )) ) {
 			    kimGroupType = KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
 		    }

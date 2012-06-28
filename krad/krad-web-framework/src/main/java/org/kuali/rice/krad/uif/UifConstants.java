@@ -70,7 +70,7 @@ public class UifConstants {
     }
 
     public static enum WorkflowAction {
-        SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE
+        SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE, COMPLETE
     }
 
     public static class MethodToCallNames {

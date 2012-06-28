@@ -56,4 +56,41 @@
         p:serviceName="postalCodeService"
         p:objectType="org.kuali.rice.location.api.postalcode.PostalCodeService"/>
 
+  <bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="KR-NS"/>
+    <property name="dataSourceName" value="locationDataSource"/>
+    <property name="initializeDataDictionary" value="false"/>
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.location.</value>
+      </list>
+    </property>
+    <property name="externalizableBusinessObjectImplementations">
+      <map>
+        <entry key="org.kuali.rice.location.framework.country.CountryEbo"
+               value="org.kuali.rice.location.impl.country.CountryBo"/>
+        <entry key="org.kuali.rice.location.framework.state.StateEbo"
+               value="org.kuali.rice.location.impl.state.StateBo"/>
+        <entry key="org.kuali.rice.location.framework.postalcode.PostalCodeEbo"
+               value="org.kuali.rice.location.impl.postalcode.PostalCodeBo"/>
+        <entry key="org.kuali.rice.location.framework.county.CountyEbo"
+               value="org.kuali.rice.location.impl.county.CountyBo"/>
+        <entry key="org.kuali.rice.location.framework.campus.CampusEbo"
+               value="org.kuali.rice.location.impl.campus.CampusBo"/>
+        <entry key="org.kuali.rice.location.framework.campus.CampusTypeEbo"
+               value="org.kuali.rice.location.impl.campus.CampusTypeBo"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="locationServerModule" class="org.kuali.rice.location.impl.service.LocationRemoteModuleService">
+    <property name="moduleConfiguration" ref="locationModuleConfiguration"/>
+    <property name="kualiModuleService" ref="rice.location.import.kualiModuleService"/>
+  </bean>
+
+  <bean id="dataDictionaryService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="dataDictionaryService" />
+  </bean>
+
 </beans>

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.converters.collections.CollectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -32,10 +33,12 @@ import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.SerializerService;
 import org.kuali.rice.krad.service.XmlObjectSerializerService;
+import org.kuali.rice.krad.util.DateTimeConverter;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertyType;
 import org.kuali.rice.krad.util.documentserializer.SerializationState;
+import org.springframework.util.AutoPopulatingList;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -66,7 +69,9 @@ public abstract class SerializerServiceBase implements SerializerService  {
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
         xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
-        //xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
+        xstream.addDefaultImplementation(AutoPopulatingList.class, ListProxyDefaultImpl.class);
+        xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
+        xstream.registerConverter(new DateTimeConverter());
     }
         
     public class ProxyConverter extends ReflectionConverter {
@@ -166,18 +171,19 @@ public abstract class SerializerServiceBase implements SerializerService  {
         return new SerializationState();
     }
     
-//    public class AutoPopulatingListConverter extends CollectionConverter {
-//
-//    	public AutoPopulatingListConverter(Mapper mapper){
-//    		super(mapper);
-//    	}
-//
-//    	public boolean canConvert(Class clazz) {
-//    		return clazz.equals(AutoPopulatingList.class);
-//        }
-//
-//    }
-//    
+    public class AutoPopulatingListConverter extends CollectionConverter {
+
+    	public AutoPopulatingListConverter(Mapper mapper){
+    		super(mapper);
+    	}
+
+        @Override
+    	public boolean canConvert(Class clazz) {
+    		return clazz.equals(AutoPopulatingList.class);
+        }
+
+    }
+
     
 }
 

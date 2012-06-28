@@ -15,13 +15,21 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.service.PersistenceService;
+import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.service.PersistenceService;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Map;
 
 /**
  * This class is the service implementation for the Persistence structure.
@@ -33,6 +41,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersistenceServiceImpl extends PersistenceServiceImplBase implements PersistenceService {
 
 	private static Logger LOG = Logger.getLogger(PersistenceServiceImpl.class);
+
+    private KualiModuleService kualiModuleService;
 
 	private PersistenceService persistenceServiceJpa;
 
@@ -69,7 +79,26 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 	 * @see org.kuali.rice.krad.service.PersistenceService#retrieveNonKeyFields(java.lang.Object)
 	 */
 	public void retrieveNonKeyFields(Object persistableObject) {
-		getService(persistableObject.getClass()).retrieveNonKeyFields(persistableObject);
+        if (persistableObject != null &&
+                ExternalizableBusinessObjectUtils.isExternalizableBusinessObject(persistableObject.getClass())) {
+            //
+            // special handling for EBOs
+            //
+            Map<String, ?> criteria = KRADServiceLocatorWeb.getDataObjectMetaDataService().getPrimaryKeyFieldValues(persistableObject);
+            if (!CollectionUtils.isEmpty(criteria)) {
+                ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(persistableObject.getClass());
+                if (moduleService != null) {
+                    Class<? extends ExternalizableBusinessObject> clazz =
+                            ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(persistableObject.getClass());
+                    ExternalizableBusinessObject freshEbo = moduleService.getExternalizableBusinessObject(clazz, (Map<String, Object>)criteria);
+                    if (freshEbo != null) {
+                        BeanUtils.copyProperties(freshEbo, persistableObject);
+                    }
+                }
+            }
+        } else {
+            getService(persistableObject.getClass()).retrieveNonKeyFields(persistableObject);
+        }
 	}
 
 	/**
@@ -160,4 +189,11 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 		return getService(bo.getClass()).isProxied(bo);
 	}
 
+    public KualiModuleService getKualiModuleService() {
+        return kualiModuleService;
+    }
+
+    public void setKualiModuleService(KualiModuleService kualiModuleService) {
+        this.kualiModuleService = kualiModuleService;
+    }
 }

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.ken.dao;
 
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationChannelReviewer;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
@@ -36,10 +36,10 @@ import static org.junit.Assert.assertNotNull;
  */
 @BaselineMode(Mode.CLEAR_DB) // this test can't run in a transaction because of how it is using ojb
 public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCaseBase {
-    NotificationChannel channel1 = MockObjectsUtil.getTestChannel1();
-    NotificationChannel channel2 = MockObjectsUtil.getTestChannel2();
+    NotificationChannelBo channel1 = MockObjectsUtil.getTestChannel1();
+    NotificationChannelBo channel2 = MockObjectsUtil.getTestChannel2();
 
-    NotificationProducer mockProducer1 = MockObjectsUtil.getTestProducer1();
+    NotificationProducerBo mockProducer1 = MockObjectsUtil.getTestProducer1();
 
     private String[] updatedDescriptions = {"Test 1 - updated description", "Test 2 - updated description"};
     private boolean[] updatedSubscribables = {false, true};
@@ -58,21 +58,21 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
      */
     @Override
     protected boolean delete() {
-        NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-        NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+        NotificationChannelBo mockChannel1 = MockObjectsUtil.getTestChannel1();
+        NotificationChannelBo mockChannel2 = MockObjectsUtil.getTestChannel2();
 
-        channel1 = new NotificationChannel();
-        channel2 = new NotificationChannel();
+        channel1 = new NotificationChannelBo();
+        channel2 = new NotificationChannelBo();
 
         HashMap criteria = new HashMap();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel1.getName());
-        channel1 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+        channel1 = (NotificationChannelBo) (businessObjectDao.findMatching(NotificationChannelBo.class, criteria)).iterator().next();
 
         criteria.clear();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel2.getName());
-        channel2 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+        channel2 = (NotificationChannelBo) (businessObjectDao.findMatching(NotificationChannelBo.class, criteria)).iterator().next();
 
         try {
             businessObjectDao.delete(channel1);
@@ -88,21 +88,21 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
      */
     @Override
     protected boolean retrieve() {
-        NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-        NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+        NotificationChannelBo mockChannel1 = MockObjectsUtil.getTestChannel1();
+        NotificationChannelBo mockChannel2 = MockObjectsUtil.getTestChannel2();
 
-        channel1 = new NotificationChannel();
-        channel2 = new NotificationChannel();
+        channel1 = new NotificationChannelBo();
+        channel2 = new NotificationChannelBo();
 
         HashMap criteria = new HashMap();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel1.getName());
-        channel1 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+        channel1 = (NotificationChannelBo) (businessObjectDao.findMatching(NotificationChannelBo.class, criteria)).iterator().next();
 
         criteria.clear();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel2.getName());
-        channel2 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+        channel2 = (NotificationChannelBo) (businessObjectDao.findMatching(NotificationChannelBo.class, criteria)).iterator().next();
 
         boolean success = true;
 
@@ -130,16 +130,16 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
             businessObjectDao.save(channel1);
 
             // reload for collections
-            mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+            mockProducer1 = (NotificationProducerBo) businessObjectDao.findById(NotificationProducerBo.class, mockProducer1.getId());
 
             channel2.getProducers().add(mockProducer1);
             businessObjectDao.save(channel2);
             assertEquals(1, channel2.getProducers().size());
 
-            mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+            mockProducer1 = (NotificationProducerBo) businessObjectDao.findById(NotificationProducerBo.class, mockProducer1.getId());
             assertEquals(2, mockProducer1.getChannels().size());
 
-            channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
+            channel2 = (NotificationChannelBo) businessObjectDao.findById(NotificationChannelBo.class, channel2.getId());
             assertEquals(1, channel2.getProducers().size());
         } catch(Exception e) {
             return false;
@@ -154,7 +154,7 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
     protected boolean update() {
         try {
 
-            channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
+            channel2 = (NotificationChannelBo) businessObjectDao.findById(NotificationChannelBo.class, channel2.getId());
             assertEquals(1, channel2.getProducers().size());
 
             channel1.setDescription(updatedDescriptions[0]);
@@ -163,16 +163,16 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
 
             businessObjectDao.save(channel1);
 
-            mockProducer1 = (NotificationProducer) businessObjectDao.findById(NotificationProducer.class, mockProducer1.getId());
+            mockProducer1 = (NotificationProducerBo) businessObjectDao.findById(NotificationProducerBo.class, mockProducer1.getId());
             assertNotNull(mockProducer1);
             assertEquals(1, mockProducer1.getChannels().size());
 
-            channel2 = (NotificationChannel) businessObjectDao.findById(NotificationChannel.class, channel2.getId());
+            channel2 = (NotificationChannelBo) businessObjectDao.findById(NotificationChannelBo.class, channel2.getId());
             assertEquals(1, channel2.getProducers().size());
 
             channel2.setDescription(updatedDescriptions[1]);
             channel2.setSubscribable(updatedSubscribables[1]);
-            NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
+            NotificationChannelReviewerBo reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
             reviewer.setChannel(channel2);
             channel2.getReviewers().add(reviewer);
 
@@ -190,21 +190,21 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
     @Override
     protected boolean validateChanges() {
         //retrieve fresh again
-        NotificationChannel mockChannel1 = MockObjectsUtil.getTestChannel1();
-        NotificationChannel mockChannel2 = MockObjectsUtil.getTestChannel2();
+        NotificationChannelBo mockChannel1 = MockObjectsUtil.getTestChannel1();
+        NotificationChannelBo mockChannel2 = MockObjectsUtil.getTestChannel2();
 
-        channel1 = new NotificationChannel();
-        channel2 = new NotificationChannel();
+        channel1 = new NotificationChannelBo();
+        channel2 = new NotificationChannelBo();
 
         HashMap criteria = new HashMap();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel1.getName());
-        channel1 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+        channel1 = (NotificationChannelBo) (businessObjectDao.findMatching(NotificationChannelBo.class, criteria)).iterator().next();
 
         criteria.clear();
 
         criteria.put(NotificationConstants.BO_PROPERTY_NAMES.NAME, mockChannel2.getName());
-        channel2 = (NotificationChannel) (businessObjectDao.findMatching(NotificationChannel.class, criteria)).iterator().next();
+        channel2 = (NotificationChannelBo) (businessObjectDao.findMatching(NotificationChannelBo.class, criteria)).iterator().next();
 
         boolean success = true;
 

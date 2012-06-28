@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.config.ConfigurationException;
@@ -31,6 +32,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
@@ -47,7 +49,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class is the base action form for all maintenance documents.
@@ -65,6 +68,8 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     protected Map<String, String> oldMaintainableValues;
     protected Map<String, String> newMaintainableValues;
     protected String maintenanceAction;
+    private static final Pattern ELEMENT_IN_COLLECTION = Pattern.compile("(.*)(\\[)([0-9]*)(\\])(.*)");
+
 
 	/**
      * @see KualiDocumentFormBase#addRequiredNonEditableProperties()
@@ -153,7 +158,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
        }
         
         MaintenanceDocumentBase maintenanceDocument = (MaintenanceDocumentBase) getDocument();
-        
+
         //Handling the Multi-Part Attachment
         for ( Object obj : requestParameters.entrySet() ) {
             String parameter = (String)((Map.Entry)obj).getKey(); 
@@ -162,12 +167,59 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
                 Object propertyValue = requestParameters.get(parameter);
                 
                 if(propertyValue != null && propertyValue instanceof FormFile) {
-                    if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
-                        maintenanceDocument.setFileAttachment((FormFile) propertyValue);
+                    populateAttachmentFile(maintenanceDocument, propertyName, (FormFile) propertyValue);
+                    if (propertyName.startsWith(KRADConstants.MAINTENANCE_ADD_PREFIX)) {
+                        String parsedPropertyName = propertyName.substring(
+                                KRADConstants.MAINTENANCE_ADD_PREFIX.length());
+                        String collectionName = parseAddCollectionName(parseAddCollectionName(parsedPropertyName));
+                        maintenanceDocument.setAttachmentCollectionName(collectionName);
+                        maintenanceDocument.setAttachmentListPropertyName(propertyName.substring(KRADConstants.MAINTENANCE_ADD_PREFIX.length()).substring(collectionName.length() + 1));
+                    } else {
+                        //if property not part of collection
+                        Matcher matcher = ELEMENT_IN_COLLECTION.matcher(propertyName);
+                        if (!matcher.matches()) {
+                            maintenanceDocument.setAttachmentPropertyName(propertyName);
+                        }
                     }
-                    maintenanceDocument.setAttachmentPropertyName(propertyName);
                 }
             }
+        }
+    }
+
+    private void populateAttachmentFile(MaintenanceDocumentBase maintenanceDocument, String propertyName, FormFile propertyValue) {
+         if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
+ 	 	 	 PersistableBusinessObject boClass;
+             String boPropertyName;
+
+             Matcher matcher = ELEMENT_IN_COLLECTION.matcher(propertyName);
+             if (propertyName.startsWith(KRADConstants.MAINTENANCE_ADD_PREFIX)) {
+                 String prefix = matcher.matches() ? "" : KRADConstants.MAINTENANCE_ADD_PREFIX;
+                 String collectionName = parseAddCollectionName(propertyName.substring(prefix.length()));
+                 boClass = maintenanceDocument.getNewMaintainableObject().getNewCollectionLine(collectionName);
+                 boPropertyName = propertyName.substring(prefix.length()).substring(collectionName.length() + 1);
+
+                 setAttachmentProperty(boClass, boPropertyName, propertyValue);
+             } else {
+                 boClass = maintenanceDocument.getNewMaintainableObject().getBusinessObject();
+                 boPropertyName = propertyName;
+                 if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())
+                         && !matcher.matches()) {
+                     maintenanceDocument.setFileAttachment((FormFile) propertyValue);
+                 }
+                 setAttachmentProperty(boClass, boPropertyName, propertyValue);
+             }
+         }
+    }
+
+    private void setAttachmentProperty(PersistableBusinessObject boClass, String propertyName, Object propertyValue) {
+        try {
+            PropertyUtils.setProperty(boClass, propertyName, propertyValue);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("no setter for property '" + boClass.getClass().getName() + "." + propertyName + "'", e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("no setter for property '" + boClass.getClass().getName() + "." + propertyName + "'", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("problem accessing property '" + boClass.getClass().getName() + "." + propertyName + "'", e);
         }
     }
 
@@ -249,8 +301,11 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
     protected void populateAttachmentPropertyForBO(MaintenanceDocumentBase maintenanceDocument) {
         try {
-            Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName());
-            ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
+            Object dataObject = maintenanceDocument.getNewMaintainableObject().getDataObject();
+            if (dataObject instanceof PersistableAttachment) {
+                Class type = ObjectUtils.easyGetPropertyType(maintenanceDocument.getNewMaintainableObject().getDataObject(), maintenanceDocument.getAttachmentPropertyName());
+                ObjectUtils.setObjectProperty(maintenanceDocument.getNewMaintainableObject().getBusinessObject(), maintenanceDocument.getAttachmentPropertyName(), type, maintenanceDocument.getFileAttachment());
+            }
         } catch (FormatException e) {
             throw new RuntimeException("Exception occurred while setting attachment property on NewMaintainable bo", e);
         } catch (IllegalAccessException e) {
@@ -536,15 +591,18 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 		StringBuilder collectionNameBuilder = new StringBuilder();
 
 		boolean firstPathElement = true;
-		for (String pathElement : propertyName.split("\\.")) if (!StringUtils.isBlank(pathElement)) {
-			if (firstPathElement) {
-				firstPathElement = false;
-			} else {
-				collectionNameBuilder.append(".");
-			}
-			collectionNameBuilder.append(pathElement);
-			if (!(pathElement.endsWith("]") && pathElement.contains("["))) break; 
-		}
+        for (String pathElement : propertyName.split("\\.")) {
+            if (!StringUtils.isBlank(pathElement)) {
+                if (firstPathElement) {
+                    firstPathElement = false;
+                } else {
+                    collectionNameBuilder.append(".");
+                }
+                collectionNameBuilder.append(pathElement);
+                if (!(pathElement.endsWith("]") && pathElement.contains("[")))
+                    break;
+            }
+        }
 		String collectionName = collectionNameBuilder.toString();
 		return collectionName;
 	}

@@ -15,13 +15,21 @@
  */
 package org.kuali.rice.kew.actiontaken.dao.impl;
 
+import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -135,6 +143,45 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
 	    crit.addEqualTo("currentIndicator", Boolean.TRUE);
         int count = getPersistenceBrokerTemplate().getCount(new QueryByCriteria(ActionTakenValue.class, crit));
         return count > 0;
+    }
+
+    private static final String LAST_ACTION_TAKEN_DATE_QUERY =
+            "select max(ACTN_DT) from KREW_ACTN_TKN_T where DOC_HDR_ID=? and ACTN_CD=?";
+
+    public Timestamp getLastActionTakenDate(final String documentId, final ActionType actionType) {
+        return (Timestamp) getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+            public Object doInPersistenceBroker(PersistenceBroker broker) {
+                PreparedStatement statement = null;
+                ResultSet resultSet = null;
+                try {
+                    Connection connection = broker.serviceConnectionManager().getConnection();
+                    statement = connection.prepareStatement(LAST_ACTION_TAKEN_DATE_QUERY);
+                    statement.setString(1, documentId);
+                    statement.setString(2, actionType.getCode());
+                    resultSet = statement.executeQuery();
+                    if (!resultSet.next()) {
+                        return null;
+                    } else {
+                        return resultSet.getTimestamp(1);
+                    }
+                } catch (Exception e) {
+                    throw new WorkflowRuntimeException("Error determining Last Action Taken Date.", e);
+                } finally {
+                    if (statement != null) {
+                        try {
+                            statement.close();
+                        } catch (SQLException e) {
+                        }
+                    }
+                    if (resultSet != null) {
+                        try {
+                            resultSet.close();
+                        } catch (SQLException e) {
+                        }
+                    }
+                }
+            }
+        });
     }
 
 }

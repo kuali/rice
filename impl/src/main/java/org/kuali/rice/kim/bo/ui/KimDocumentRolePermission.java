@@ -26,8 +26,11 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.Iterator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -93,6 +96,22 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
         }
 		return permission;
 	}
+
+    public String getPermissionDetailValues() {
+        Permission perm = getPermission();
+        StringBuffer sb = new StringBuffer();
+        if ( perm.getAttributes() != null ) {
+            Iterator<String> keyIter = perm.getAttributes().keySet().iterator();
+            while ( keyIter.hasNext() ) {
+                String key = keyIter.next();
+                sb.append( key ).append( '=' ).append( perm.getAttributes().get(key) );
+                if (keyIter.hasNext()) {
+                    sb.append(KimConstants.KimUIConstants.COMMA_SEPARATOR).append(" ");
+                }
+            }
+        }
+        return sb.toString();
+    }
 
 	/**
 	 * @param permission the permission to set

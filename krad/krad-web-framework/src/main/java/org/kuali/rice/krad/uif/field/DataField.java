@@ -78,7 +78,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private List<String> additionalHiddenPropertyNames;
     private List<String> propertyNamesForAdditionalDisplay;
 
-    private boolean escapeHtmlInPropertyValue;
+    private boolean escapeHtmlInPropertyValue = true;
 
     // widgets
     private Inquiry inquiry;

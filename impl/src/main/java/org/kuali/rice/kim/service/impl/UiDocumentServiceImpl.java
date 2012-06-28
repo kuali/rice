@@ -500,6 +500,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                         if (groupMember.getActiveToDate() != null) {
                                         	docGroup.setActiveToDate(groupMember.getActiveToDate() == null ? null : new Timestamp(groupMember.getActiveToDate().getMillis()));
                                         }
+                                        docGroup.setKimTypeId(group.getKimTypeId());
                                         docGroup.setEdit(true);
                                         docGroups.add(docGroup);
                                     }
@@ -581,7 +582,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(ObjectUtils.isNotNull(actions)){
 					for (RoleResponsibilityActionBo entRoleRspAction :actions) {
 						KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
-						roleRspAction.setRoleResponsibilityId(entRoleRspAction.getRoleResponsibilityId());
+						roleRspAction.setRoleResponsibilityActionId(entRoleRspAction.getId());
+                        roleRspAction.setRoleResponsibilityId(entRoleRspAction.getRoleResponsibilityId());
 						roleRspAction.setActionTypeCode(entRoleRspAction.getActionTypeCode());
 						roleRspAction.setActionPolicyCode(entRoleRspAction.getActionPolicyCode());
 						roleRspAction.setPriorityNumber(entRoleRspAction.getPriorityNumber());
@@ -1679,6 +1681,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 	}
 
+    @SuppressWarnings("unchecked")
+    protected RoleResponsibilityActionBo getRoleResponsibilityActionImpl(String roleResponsibilityActionId){
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(KimConstants.PrimaryKeyConstants.ID, roleResponsibilityActionId);
+        return getBusinessObjectService().findByPrimaryKey(RoleResponsibilityActionBo.class, criteria);
+    }
+
 	@SuppressWarnings("unchecked")
 	protected List<RoleResponsibilityActionBo> getRoleResponsibilityActionImpls(String roleResponsibilityId){
 		Map<String, String> criteria = new HashMap<String, String>();
@@ -1713,6 +1722,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleResponsibilityActionBo roleRespActionImpl: roleRespActionImpls){
 				documentRoleRespAction = new KimDocumentRoleResponsibilityAction();
 				KimCommonUtilsInternal.copyProperties(documentRoleRespAction, roleRespActionImpl);
+
+                //primary key has different name in these objects!  we need to make sure to copy it over
+                documentRoleRespAction.setRoleResponsibilityActionId(roleRespActionImpl.getId());
+
 				// handle the roleResponsibility object being null since not all may be defined when ID value is "*"
 				if ( ObjectUtils.isNotNull(roleRespActionImpl.getRoleResponsibility()) ) {
 					documentRoleRespAction.setKimResponsibility(roleRespActionImpl.getRoleResponsibility().getKimResponsibility());
@@ -1951,8 +1964,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember.setActiveToDate(member.getActiveToDateValue());
 				pndMember.setActive(member.isActive(new Timestamp(System.currentTimeMillis())));
 				if(pndMember.isActive()){
-					KimCommonUtilsInternal.copyProperties(pndMember, member);
-					pndMember.setRoleMemberId(member.getRoleMemberId());
+					//KimCommonUtilsInternal.copyProperties(pndMember, member);
+                    pndMember.setDelegationId(member.getDelegationId());
+                    pndMember.setDelegationMemberId(member.getDelegationMemberId());
+                    pndMember.setDelegationTypeCode(member.getType().getCode());
+                    pndMember.setRoleMemberId(member.getRoleMemberId());
+                    pndMember.setMemberId(member.getMemberId());
+                    pndMember.setMemberTypeCode(member.getType().getCode());
+
 					roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
 					if(roleMember!=null){
 						pndMember.setRoleMemberName(getMemberName(roleMember.getType(), roleMember.getMemberId()));
@@ -2160,7 +2179,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						roleRspAction.setForceAction(documentRoleResponsibilityActions.get(0).isForceAction());
 						roleRspAction.setRoleMemberId("*");
 						roleRspAction.setRoleResponsibilityId(documentRoleResponsibilityActions.get(0).getRoleResponsibilityId());
-						updateResponsibilityActionVersionNumber(roleRspAction, getRoleResponsibilityActionImpls(roleResponsibility.getRoleResponsibilityId()));
+						updateResponsibilityActionVersionNumber(roleRspAction, getRoleResponsibilityActionImpl(roleRspAction.getId()));
 						roleRspActions.add(roleRspAction);
 					}
 				}
@@ -2172,15 +2191,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	// FIXME: This should be pulling by the PK, not using another method which pulls multiple records and then finds
 	// the right one here!
 	protected void updateResponsibilityActionVersionNumber(RoleResponsibilityActionBo newRoleRspAction,
-			List<RoleResponsibilityActionBo> origRoleRespActionImpls){
-		if(ObjectUtils.isNotNull(origRoleRespActionImpls)){
-			for(RoleResponsibilityActionBo origRoleResponsibilityActionImpl: origRoleRespActionImpls){
-				if(origRoleResponsibilityActionImpl.getId()!=null && StringUtils.equals(origRoleResponsibilityActionImpl.getId(),
-						newRoleRspAction.getId())) {
-					newRoleRspAction.setVersionNumber(origRoleResponsibilityActionImpl.getVersionNumber());
-					break;
-				}
-			}
+			RoleResponsibilityActionBo origRoleRespActionImpl){
+		if(ObjectUtils.isNotNull(origRoleRespActionImpl)){
+            if(origRoleRespActionImpl.getId()!=null && StringUtils.equals(origRoleRespActionImpl.getId(), newRoleRspAction.getId())) {
+                newRoleRspAction.setVersionNumber(origRoleRespActionImpl.getVersionNumber());
+                newRoleRspAction.setObjectId(origRoleRespActionImpl.getObjectId());
+            }
 		}
 	}
 
@@ -2194,7 +2210,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleRspActions;
 	}
 
-	protected List<RoleResponsibilityActionBo> getRoleMemberResponsibilityActions(IdentityManagementRoleDocument identityManagementRoleDocument){
+	/*protected List<RoleResponsibilityActionBo> getRoleMemberResponsibilityActions(IdentityManagementRoleDocument identityManagementRoleDocument){
 		List<RoleResponsibilityActionBo> roleRspActions = new ArrayList<RoleResponsibilityActionBo>();
 		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
 			for(KimDocumentRoleMember roleMember: identityManagementRoleDocument.getMembers()){
@@ -2220,7 +2236,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		return roleRspActions;
-	}
+	}*/
 
     protected List<RoleMemberBo> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> origRoleMembers){
         List<RoleMemberBo> roleMembers = new ArrayList<RoleMemberBo>();

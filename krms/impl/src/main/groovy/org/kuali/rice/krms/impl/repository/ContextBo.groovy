@@ -19,7 +19,9 @@ import java.util.Map.Entry
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
+import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract
+import org.kuali.rice.krad.util.ObjectUtils
+import org.apache.commons.lang.StringUtils;
 
 
 public class ContextBo extends PersistableBusinessObjectBase implements ContextDefinitionContract {
@@ -34,8 +36,9 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	List<AgendaBo> agendas = new ArrayList<AgendaBo>()
 
 	List<ContextAttributeBo> attributeBos = new ArrayList<ContextAttributeBo>()
-	List<ContextValidEventBo> validEvents = new ArrayList<ContextValidEventBo>()
-	List<ContextValidActionBo> validActions = new ArrayList<ContextValidActionBo>()
+
+//	List<ContextValidEventBo> validEvents = new ArrayList<ContextValidEventBo>()
+//	List<ContextValidActionBo> validActions = new ArrayList<ContextValidActionBo>()
 
 	Long versionNumber
 
@@ -53,6 +56,28 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 		}
 		return attributes;
 	}
+
+    public ContextBo copyContext(String additionalNameText) {
+        ContextBo copy = ObjectUtils.deepCopy(this);
+        
+        //
+        // set all IDs to null
+        //
+        
+        copy.setId(null);
+
+        // copying a context does not copy the associated agendas
+        copy.setAgendas(null);
+        for (ContextAttributeBo attributeBo : copy.getAttributeBos()) {
+            attributeBo.setId(null);
+        }
+
+        if (!StringUtils.isEmpty(additionalNameText)) {
+            copy.setName(copy.getName() + additionalNameText);
+        }
+        
+        return copy;
+    }
 
 	/**
 	 * Converts a mutable bo to it's immutable counterpart
@@ -104,4 +129,5 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 		bo.versionNumber = im.versionNumber
 		return bo
 	}
+
 } 

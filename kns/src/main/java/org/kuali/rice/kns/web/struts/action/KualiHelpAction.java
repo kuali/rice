@@ -404,7 +404,7 @@ public class KualiHelpAction extends KualiAction {
         // handle doc search custom help urls
     	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
     	    DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(helpForm.getSearchDocumentTypeName());
-    	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
+    	    if (docType != null && !StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
     	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
 
     	        if ( StringUtils.isNotBlank(docSearchHelpUrl) ) {

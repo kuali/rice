@@ -56,7 +56,7 @@ public final class KimAttribute extends AbstractDataTransferObject implements Ki
     @XmlElement(name = KimAttribute.Elements.ID, required = false)
     private final String id;
 
-    @XmlElement(name = KimAttribute.Elements.COMPONENT_NAME, required = true)
+    @XmlElement(name = KimAttribute.Elements.COMPONENT_NAME, required = false)
     private final String componentName;
 
     @XmlElement(name = KimAttribute.Elements.ATTRIBUTE_NAME, required = true)
@@ -201,10 +201,6 @@ public final class KimAttribute extends AbstractDataTransferObject implements Ki
         }
 
         public void setComponentName(final String componentName) {
-            if (StringUtils.isBlank(componentName)) {
-                throw new IllegalArgumentException("componentName is blank");
-            }
-
             this.componentName = componentName;
         }
 
@@ -258,7 +254,7 @@ public final class KimAttribute extends AbstractDataTransferObject implements Ki
         }
 
         public void setVersionNumber(final Long versionNumber) {
-            if (versionNumber == null || versionNumber <= 0) {
+            if (versionNumber <= 0) {
                 throw new IllegalArgumentException("versionNumber is invalid");
             }
 

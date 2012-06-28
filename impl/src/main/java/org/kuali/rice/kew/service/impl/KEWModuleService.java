@@ -16,6 +16,8 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.document.Document;
@@ -191,7 +193,8 @@ public class KEWModuleService extends ModuleServiceBase {
 		return super.getExternalizableBusinessObjectInquiryUrl(
 				inquiryBusinessObjectClass, parameters);
 	}
-	/**
+
+    /**
 	 * We want to be able to use name as an alternate key
 	 *
 	 * @see org.kuali.rice.krad.service.ModuleService#listAlternatePrimaryKeyFieldNames(java.lang.Class)
@@ -210,5 +213,16 @@ public class KEWModuleService extends ModuleServiceBase {
 		}
 
 	}
+
+	@Override
+    public boolean goToCentralRiceForInquiry() {
+        RunMode runMode = getRunMode(KewApiConstants.Namespaces.MODULE_NAME);
+
+        if (RunMode.EMBEDDED.equals(runMode)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 

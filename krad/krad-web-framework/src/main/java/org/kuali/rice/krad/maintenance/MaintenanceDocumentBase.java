@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -24,8 +25,10 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DocumentAttachment;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
+import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
+import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
@@ -58,6 +61,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -93,13 +97,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public static final String NOTES_TAG_NAME = "notes";
 
     @Transient
-    transient private static DocumentDictionaryService documentDictionaryService;
+    private static transient DocumentDictionaryService documentDictionaryService;
     @Transient
-    transient private static MaintenanceDocumentService maintenanceDocumentService;
+    private static transient MaintenanceDocumentService maintenanceDocumentService;
     @Transient
-    transient private static DocumentHeaderService documentHeaderService;
+    private static transient DocumentHeaderService documentHeaderService;
     @Transient
-    transient private static DocumentService documentService;
+    private static transient DocumentService documentService;
 
     @Transient
     protected Maintainable oldMaintainableObject;
@@ -112,13 +116,20 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected boolean fieldsClearedOnCopy;
     @Transient
     protected boolean displayTopicFieldInNotes = false;
-
     @Transient
     protected String attachmentPropertyName;
+    @Transient
+    protected String attachmentListPropertyName;
+    @Transient
+    protected String attachmentCollectionName;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "DOC_HDR_ID", insertable = false, updatable = false)
     protected DocumentAttachment attachment;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "DOC_HDR_ID", insertable = false, updatable = false)
+    protected List<MultiDocumentAttachment> attachments;
 
     public String getAttachmentPropertyName() {
         return this.attachmentPropertyName;
@@ -126,6 +137,22 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     public void setAttachmentPropertyName(String attachmentPropertyName) {
         this.attachmentPropertyName = attachmentPropertyName;
+    }
+
+    public String getAttachmentListPropertyName() {
+        return this.attachmentListPropertyName;
+    }
+
+    public void setAttachmentListPropertyName(String attachmentListPropertyName) {
+        this.attachmentListPropertyName = attachmentListPropertyName;
+    }
+
+    public String getAttachmentCollectionName() {
+        return this.attachmentCollectionName;
+    }
+
+    public void setAttachmentCollectionName(String attachmentCollectionName) {
+        this.attachmentCollectionName = attachmentCollectionName;
     }
 
     public MaintenanceDocumentBase() {
@@ -462,8 +489,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
             //Populate Attachment Property
             if (newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
-                populateAttachmentForBO();
+                populateAttachmentBeforeSave();
             }
+
+            //Populate Attachment Property
+            if (newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
+                populateBoAttachmentListBeforeSave();
+            }
+
 
             newMaintainableObject.saveDataObject();
 
@@ -474,19 +507,22 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();
+            deleteDocumentAttachmentList();
 
             getMaintenanceDocumentService().deleteLocks(documentNumber);
 
             //for issue 3070, check if delete record
             if (this.checkAllowsRecordDeletion() && this.checkMaintenanceAction() &&
-                    this.checkDeletePermission(newMaintainableObject.getDataObject()))
+                    this.checkDeletePermission(newMaintainableObject.getDataObject())) {
                 newMaintainableObject.deleteDataObject();
+            }
         }
 
         // unlock the document when its canceled or disapproved
-        if (workflowDocument.isCanceled() || workflowDocument.isDisapproved()) {
+        if (workflowDocument.isCanceled() || workflowDocument.isDisapproved() || workflowDocument.isRecalled()) {
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();
+            deleteDocumentAttachmentList();
 
             String documentNumber = getDocumentHeader().getDocumentNumber();
             getMaintenanceDocumentService().deleteLocks(documentNumber);
@@ -529,6 +565,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         if (newMaintainableObject != null) {
             newMaintainableObject.setDocumentNumber(documentNumber);
             newMaintainableObject.processAfterRetrieve();
+            if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+                populateAttachmentForBO();
+            }
+            if(newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
+                populateAttachmentListForBO();
+            }
             // If a maintenance lock exists, warn the user.
             checkForLockingDocument(false);
         }
@@ -652,8 +694,23 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
     public void prepareForSave(KualiDocumentEvent event) {
         super.prepareForSave(event);
-
-        populateDocumentAttachment();
+        if(newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+            populateDocumentAttachment();
+            populateAttachmentForBO();
+            //clear out attachment file for old data object so it isn't serialized in doc content
+            if (oldMaintainableObject.getDataObject() instanceof PersistableAttachment) {
+                ((PersistableAttachment)oldMaintainableObject.getDataObject()).setAttachmentContent(null);
+            }
+        }
+        if(newMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
+            populateDocumentAttachmentList();
+            populateAttachmentListForBO();
+            if (oldMaintainableObject.getDataObject() instanceof PersistableAttachmentList) {
+                for (PersistableAttachment pa : ((PersistableAttachmentList<PersistableAttachment>)oldMaintainableObject.getDataObject()).getAttachments()) {
+                    pa.setAttachmentContent(null);
+                }
+            }
+        }
         populateXmlDocumentContentsFromMaintainables();
     }
 
@@ -672,21 +729,22 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
     }
 
-    protected void populateAttachmentForBO() {
-        refreshAttachment();
-
-        PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getDataObject();
-
-        if (attachment != null) {
-            byte[] fileContents;
-            fileContents = attachment.getAttachmentContent();
-            if (fileContents.length > 0) {
-                boAttachment.setAttachmentContent(fileContents);
-                boAttachment.setFileName(attachment.getFileName());
-                boAttachment.setContentType(attachment.getContentType());
+    protected void refreshAttachmentList() {
+        if (ObjectUtils.isNull(attachments)) {
+            this.refreshReferenceObject("attachments");
+            final boolean isProxy = attachments != null && ProxyHelper.isProxy(attachments);
+            if (isProxy && ProxyHelper.getRealObject(attachments) == null) {
+                attachments = null;
             }
         }
     }
+
+    public void populateAttachmentForBO() {
+    // TODO: need to convert this from using struts form file
+
+    }
+
+
 
     public void populateDocumentAttachment() {
         // TODO: need to convert this from using struts form file
@@ -721,9 +779,25 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 ////        }
     }
 
+    public void populateAttachmentListForBO() { }
+
+    public void populateAttachmentBeforeSave() { }
+
+    public void populateDocumentAttachmentList() { }
+
+    public void populateBoAttachmentListBeforeSave() { }
+
+
     public void deleteDocumentAttachment() {
         KRADServiceLocator.getBusinessObjectService().delete(attachment);
         attachment = null;
+    }
+
+    public void deleteDocumentAttachmentList() {
+        if (CollectionUtils.isNotEmpty(attachments)) {
+            KRADServiceLocator.getBusinessObjectService().delete(attachments);
+            attachments = null;
+        }
     }
 
     /**
@@ -731,6 +805,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      *
      * @see org.kuali.rice.krad.document.DocumentBase#validateBusinessRules(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
      */
+    @Override
     public void validateBusinessRules(KualiDocumentEvent event) {
         if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
@@ -738,6 +813,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
 
         // check for locking documents for MaintenanceDocuments
+        // TODO: Why is this here.  This "if" will always be true
         if (this instanceof MaintenanceDocument) {
             checkForLockingDocument(true);
         }
@@ -851,7 +927,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * The {@link NoteType} for maintenance documents is determined by whether or not the underlying {@link
      * Maintainable} supports business object notes or not.  This is determined via a call to {@link
-     * Maintainable#isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
+     * Maintainable#   isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the {@link
      * Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT}. <li>Otherwise, delegate
      * to
      * {@link DocumentBase#getNoteType()} </ul>
@@ -903,6 +979,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     public void setAttachment(DocumentAttachment attachment) {
         this.attachment = attachment;
+    }
+
+    public List<MultiDocumentAttachment> getAttachments() {
+        return this.attachments;
+    }
+
+    public void setAttachments(List<MultiDocumentAttachment> attachment) {
+        this.attachments = attachments;
     }
 
     /**

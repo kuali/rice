@@ -359,10 +359,14 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Operator");
             result &= false;
         }
-        if (StringUtils.isBlank(propConstant)) {
+        if (StringUtils.isBlank(propConstant) && !operator.endsWith("null")) { // ==null and !=null operators have blank values.
             GlobalVariables.getMessageMap().putErrorForSectionId(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Value");
             result &= false;
+        }  else if (operator.endsWith("null")) { // ==null and !=null operators have blank values.
+            if (propConstant != null) {
+                proposition.getParameters().get(1).setValue(null);
+            }
         } else if (!StringUtils.isBlank(termId)) {
             // validate that the constant value is comparable against the term
             String termType = lookupTermType(termId);
@@ -446,7 +450,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         } else {
             //validate normal term
-            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTermById(termId);
+            TermDefinition termDefinition = KrmsRepositoryServiceLocator.getTermBoService().getTerm(termId);
             if (termDefinition == null) {
                 GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                         "error.rule.proposition.simple.invalidTerm", proposition.getDescription());
@@ -469,7 +473,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             String termSpecificationId = key.substring(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
             termSpec = KrmsRepositoryServiceLocator.getTermBoService().getTermSpecificationById(termSpecificationId);
         } else {
-            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTermById(key);
+            TermDefinition term = KrmsRepositoryServiceLocator.getTermBoService().getTerm(key);
             if (term != null) {
                 termSpec = term.getSpecification();
             }
@@ -1711,7 +1715,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (root.getChildren().isEmpty()){
                 PropositionBo blank = PropositionBo.createSimplePropositionBoStub(null,PropositionType.SIMPLE.getCode());
                 blank.setRuleId(rule.getId());
-                blank.setTypeId(rule.getTypeId());  // ?? bug
                 rule.setPropId(blank.getId());
                 rule.setProposition(blank);
                 rule.refreshPropositionTree(true);

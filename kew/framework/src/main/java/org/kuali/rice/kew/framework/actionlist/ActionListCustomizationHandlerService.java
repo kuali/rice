@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.framework.actionlist;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -24,6 +25,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -41,29 +43,22 @@ import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ActionListCustomizationHandlerService {
     
-    // TODO Modeled from DocumentSecurityHandlerService, but get a better description
     /**
-     * Returns a list of Action Item Customizations from the given list of Action Items and Principal ID.
+     * <p>Returns a list of Action Item Customizations from the given list of Action Items and Principal ID.
+     * </p>
      *
-     * <p>This method essentially invokes CustomActionListAttribute???
-     * {@link DocumentSecurityAttribute#isAuthorizedForDocument(String, org.kuali.rice.kew.api.document.Document)}
-     * method for each of the security attributes supplied in the document security directives, passing the associated
-     * list of document ids.</p>
-     *
-     * @param principalId the id of the Principal ???
-     * @param actionItems the list of Action Items to be customized.
-     * 
+     * @param principalId the id of the principal on whose behalf these customizations are being processed
+     * @param actionItems the list of Action Items to get customizations for.
      * @return the list of Action Item Customizations
-     *
      * @throws RiceIllegalArgumentException if the given principalId is a null or blank value
-     * @throws RiceIllegalArgumentException if any of the action items ???
      */
     @WebMethod(operationName = "customizeActionList")
     @WebResult(name = "actionListCustomizations")
     @XmlElementWrapper(name = "actionListCustomizations", required = false)
     @XmlElement(name = "actionListCustomization", required = false)
     List<ActionItemCustomization> customizeActionList(
-            @WebParam(name = "principalId") String principalId, 
+            @WebParam(name = "principalId") String principalId,
             @WebParam(name = "actionItems") List<ActionItem> actionItems)
         throws RiceIllegalArgumentException;
+
 }

@@ -42,16 +42,21 @@ public enum DocumentStatus implements Coded {
 	@XmlEnumValue("P") PROCESSED("P", DocumentStatusCategory.SUCCESSFUL),
 	@XmlEnumValue("F") FINAL("F", DocumentStatusCategory.SUCCESSFUL),
 	@XmlEnumValue("X") CANCELED("X", DocumentStatusCategory.UNSUCCESSFUL),
-	@XmlEnumValue("D") DISAPPROVED("D", DocumentStatusCategory.UNSUCCESSFUL);
+	@XmlEnumValue("D") DISAPPROVED("D", DocumentStatusCategory.UNSUCCESSFUL),
+    /**
+     * When invoked, RECALL & CANCEL action will perform the RECALL and set the route status of the document to the new, terminal status of RECALLED
+     * @since 2.1
+     */
+    @XmlEnumValue("L") RECALLED("L", DocumentStatusCategory.UNSUCCESSFUL);
 
 	private final String code;
     private final DocumentStatusCategory category;
-	
+
 	private DocumentStatus(String code, DocumentStatusCategory category) {
 		this.code = code;
         this.category = category;
 	}
-	
+
 	@Override
 	public String getCode() {
 		return code;
@@ -60,11 +65,11 @@ public enum DocumentStatus implements Coded {
     public DocumentStatusCategory getCategory() {
         return category;
     }
-	
+
 	public String getLabel() {
 	    return name();
 	}
-	
+
 	public static DocumentStatus fromCode(String code) {
 		if (code == null) {
 			return null;
@@ -89,5 +94,5 @@ public enum DocumentStatus implements Coded {
 		}
         return categoryStatuses;
     }
-	
+
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.location.api.postalcode;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.location.api.LocationConstants;
 import org.springframework.cache.annotation.Cacheable;
@@ -51,7 +52,7 @@ public interface PostalCodeService {
      * @param countryCode country code. cannot be blank.
      * @param code postal code value. cannot be blank.
      * @return a {@link PostalCode} or null
-     * @throws IllegalArgumentException country code or postal code value is blank
+     * @throws RiceIllegalArgumentException country code or postal code value is blank
      */
     @WebMethod(operationName="getPostalCode")
     @WebResult(name = "postalCode")
@@ -73,7 +74,7 @@ public interface PostalCodeService {
      *
      * @param countryCode state code. cannot be blank.
      * @return an immutable collection of states
-     * @throws IllegalArgumentException country code is blank
+     * @throws RiceIllegalArgumentException country code is blank
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
     @XmlElementWrapper(name = "postalCodes", required = false)
@@ -82,4 +83,16 @@ public interface PostalCodeService {
     @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #p0")
     List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
+
+    /**
+     * This method find PostalCodes based on a query criteria.  The criteria cannot be null.
+     *
+     * @since 2.0.1
+     * @param queryByCriteria the criteria.  Cannot be null.
+     * @return query results.  will never return null.
+     * @throws IllegalArgumentException if the queryByCriteria is null
+     */
+    @WebMethod(operationName = "findPostalCodes")
+    @WebResult(name = "results")
+    PostalCodeQueryResults findPostalCodes(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

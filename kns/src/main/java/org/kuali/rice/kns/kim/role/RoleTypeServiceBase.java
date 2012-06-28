@@ -219,7 +219,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	}
 
 	/**
-	 * Returns true as a default
+	 * Returns false as a default
 	 * 
 	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#dynamicRoleMembership(java.lang.String, java.lang.String)
 	 */
@@ -233,7 +233,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
             throw new RiceIllegalArgumentException("roleName was null or blank");
         }
 
-        return true;
+        return false;
 	}
 
     @Override

@@ -28,6 +28,13 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
+/**
+ * Implementation of the interface for accessing KRMS repository Action related
+ * business objects.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public final class ActionBoServiceImpl implements ActionBoService {
 
     private BusinessObjectService businessObjectService;

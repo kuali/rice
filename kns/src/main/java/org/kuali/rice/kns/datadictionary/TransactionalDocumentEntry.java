@@ -16,9 +16,9 @@
 package org.kuali.rice.kns.datadictionary;
 
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
-import org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
@@ -42,8 +42,8 @@ public class TransactionalDocumentEntry extends org.kuali.rice.krad.datadictiona
     public TransactionalDocumentEntry() {
         super();
 
-        documentAuthorizerClass = DocumentAuthorizerBase.class;
-        documentPresentationControllerClass = DocumentPresentationControllerBase.class;
+    documentAuthorizerClass = TransactionalDocumentAuthorizerBase.class;
+    documentPresentationControllerClass = TransactionalDocumentPresentationControllerBase.class;
     }
 
     @Override

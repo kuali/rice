@@ -95,13 +95,13 @@
         <artifactId>cxf-java2ws-plugin</artifactId>
         <executions>
           <execution>
-            <id>coreCacheAdminService-wsdl</id>
+            <id>cacheAdminService-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
-              <targetNamespace>http://rice.kuali.org/core</targetNamespace>
+              <!--<targetNamespace>http://rice.kuali.org/core</targetNamespace>-->
               <className>org.kuali.rice.core.api.cache.CacheAdminService</className>
               <outputFile>${svc.cca.wsdl}</outputFile>
-              <serviceName>CoreCacheAdminService</serviceName>
+              <serviceName>${svc.cca.name}</serviceName>
             </configuration>
             <goals>
               <goal>java2ws</goal>

@@ -16,13 +16,18 @@
 package org.kuali.rice.krms.impl.type;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.provider.repository.LazyAgendaTree;
+import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
 import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base class for {@link org.kuali.rice.krms.framework.type.AgendaTypeService} implementations, providing
@@ -31,16 +36,29 @@ import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements AgendaTypeService {
 
     public static final AgendaTypeService defaultAgendaTypeService = new AgendaTypeServiceBase();
+    private static final String NAME_ATTRIBUTE = "name";
 
     @Override
     public Agenda loadAgenda(AgendaDefinition agendaDefinition) {
 
         if (agendaDefinition == null) { throw new RiceIllegalArgumentException("agendaDefinition must not be null"); }
-        RepositoryToEngineTranslatorImpl repositoryToEngineTranslator = KRMSServiceLocatorInternal.getService(
-                "repositoryToEngineTranslator");
-        if (repositoryToEngineTranslator == null) {
+        if (getRepositoryToEngineTranslator() == null) {
             return null;
         }
-        return new BasicAgenda(agendaDefinition.getAttributes(), new LazyAgendaTree(agendaDefinition, repositoryToEngineTranslator));
+
+        // pass the name as a built-in attribute so that it can be used during selection
+        Map<String, String> existingAttributes = new HashMap<String, String>(agendaDefinition.getAttributes());
+        existingAttributes.put(NAME_ATTRIBUTE, agendaDefinition.getName());
+
+        return new BasicAgenda(existingAttributes, new LazyAgendaTree(agendaDefinition, getRepositoryToEngineTranslator()));
+    }
+
+    private RepositoryToEngineTranslator getRepositoryToEngineTranslator() {
+        return RepositoryToEngineTranslatorHolder.instance;
+    }
+
+    // Lazy initialization holder class, see Effective Java item #71
+    private static class RepositoryToEngineTranslatorHolder {
+        static final RepositoryToEngineTranslator instance = KRMSServiceLocatorInternal.getRepositoryToEngineTranslator();
     }
 }

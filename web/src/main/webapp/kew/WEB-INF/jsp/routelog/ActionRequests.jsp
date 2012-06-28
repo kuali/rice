@@ -77,7 +77,7 @@
             <c:if test="${level == 0}"><th>Rule</th></c:if>
             <c:if test="${level != 0}"><td class="thnormal" style="text-align:right;">Rule</td></c:if>
             <td class="datacell1">
-                <kul:inquiry boClassName="org.kuali.rice.kew.rule.RuleBaseValues" keyValues="ruleBaseValuesId=${actionRequest.ruleBaseValuesId}"
+                <kul:inquiry boClassName="org.kuali.rice.kew.rule.RuleBaseValues" keyValues="id=${actionRequest.ruleBaseValuesId}"
                         render="true"><c:out value="${actionRequest.ruleBaseValuesId}" /></kul:inquiry>
             </td>
         </tr>

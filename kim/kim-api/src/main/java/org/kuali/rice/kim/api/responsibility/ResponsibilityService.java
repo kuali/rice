@@ -68,8 +68,8 @@ public interface ResponsibilityService {
      *
      * @param responsibility the responsibility to create
      * @return the id of the newly created object.  will never be null.
-     * @throws IllegalArgumentException if the responsibility is null
-     * @throws IllegalStateException if the responsibility is already existing in the system
+     * @throws RiceIllegalArgumentException if the responsibility is null
+     * @throws RiceIllegalStateException if the responsibility is already existing in the system
      */
     @WebMethod(operationName="createResponsibility")
     @WebResult(name = "responsibility")
@@ -81,8 +81,8 @@ public interface ResponsibilityService {
      * This will up ev a {@link Responsibility}.
      *
      * @param responsibility the responsibility to update
-     * @throws IllegalArgumentException if the responsibility is null
-     * @throws IllegalStateException if the responsibility does not exist in the system
+     * @throws RiceIllegalArgumentException if the responsibility is null
+     * @throws RiceIllegalStateException if the responsibility does not exist in the system
      */
     @WebMethod(operationName="updateResponsibility")
     @WebResult(name = "responsibility")
@@ -99,7 +99,7 @@ public interface ResponsibilityService {
      *
      * @param id the unique id to retrieve the responsibility by. cannot be null or blank.
      * @return a {@link Responsibility} or null
-     * @throws IllegalArgumentException if the id is null or blank
+     * @throws RiceIllegalArgumentException if the id is null or blank
      */
     @WebMethod(operationName = "getResponsibility")
     @WebResult(name = "responsibility")
@@ -112,7 +112,7 @@ public interface ResponsibilityService {
      * @param namespaceCode the namespace code.  cannot be null or blank.
      * @param name the responsibility name. cannot be null or blank.
      * @return a {@link Responsibility} or null
-     * @throws IllegalArgumentException if the id or namespaceCode is null or blank
+     * @throws RiceIllegalArgumentException if the id or namespaceCode is null or blank
      */
     @WebMethod(operationName = "findRespByNamespaceCodeAndName")
     @WebResult(name = "responsibility")
@@ -128,7 +128,7 @@ public interface ResponsibilityService {
      *
      * @param id the unique id to retrieve the template by. cannot be null or blank.
      * @return a {@link Template} or null
-     * @throws IllegalArgumentException if the id is null or blank
+     * @throws RiceIllegalArgumentException if the id is null or blank
      */
     @WebMethod(operationName = "getResponsibilityTemplate")
     @WebResult(name = "template")
@@ -141,7 +141,7 @@ public interface ResponsibilityService {
      * @param namespaceCode the namespace code.  cannot be null or blank.
      * @param name the template name. cannot be null or blank.
      * @return a {@link Template} or null
-     * @throws IllegalArgumentException if the id or namespaceCode is null or blank
+     * @throws RiceIllegalArgumentException if the id or namespaceCode is null or blank
      */
     @WebMethod(operationName = "findRespTemplateByNamespaceCodeAndName")
     @WebResult(name = "template")
@@ -156,11 +156,14 @@ public interface ResponsibilityService {
      * @param respName the responsibility name. cannot be null or blank.
      * @param qualification the qualification for the responsibility. cannot be null.
      * @return true is principal has responsibility
-     * @throws IllegalArgumentException if the principalId, namespaceCode, respName is null or blank
-     * @throws IllegalArgumentException if the qualification is null
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, respName is null or blank
+     * @throws RiceIllegalArgumentException if the qualification is null
      */
     @WebMethod(operationName = "hasResponsibility")
     @WebResult(name = "result")
+    @Cacheable(value= Responsibility.Cache.NAME,
+            key="'{hasResponsibility}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'respName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3)",
+            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isResponsibilityAssignedToDynamicRole(#p1, #p2)")
     boolean hasResponsibility(@WebParam(name = "principalId") String principalId,
                               @WebParam(name = "namespaceCode") String namespaceCode,
                               @WebParam(name = "respName") String respName,
@@ -176,11 +179,14 @@ public interface ResponsibilityService {
      * @param qualification the qualification for the responsibility. cannot be null.
      * @param respDetails the responsibility details. cannot be null.
      * @return true is principal has responsibility
-     * @throws IllegalArgumentException if the principalId, namespaceCode, respName is null or blank
-     * @throws IllegalArgumentException if the qualification or responsibilityDetails is null
+     * @throws RiceIllegalArgumentException if the principalId, namespaceCode, respName is null or blank
+     * @throws RiceIllegalArgumentException if the qualification or responsibilityDetails is null
      */
     @WebMethod(operationName = "hasResponsibilityByTemplate")
     @WebResult(name = "result")
+    @Cacheable(value= Responsibility.Cache.NAME,
+            key="'{hasResponsibilityByTemplate}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1 + '|' + 'respTemplateName=' + #p2 + '|' + 'qualification=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p3) + '|' + 'respDetails=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).mapKey(#p4)",
+            condition="!T(org.kuali.rice.kim.api.cache.KimCacheUtils).isResponsibilityTemplateAssignedToDynamicRole(#p1, #p2)")
     boolean hasResponsibilityByTemplate(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "respTemplateName") String respTemplateName,
@@ -196,8 +202,8 @@ public interface ResponsibilityService {
      * @param respName the responsibility name. cannot be null or blank.
      * @param qualification the qualification for the responsibility. cannot be null.
      * @return an immutable list of ResponsibilityAction. Will not return null.
-     * @throws IllegalArgumentException if the namespaceCode, respName is null or blank
-     * @throws IllegalArgumentException if the qualification or respDetails is null
+     * @throws RiceIllegalArgumentException if the namespaceCode, respName is null or blank
+     * @throws RiceIllegalArgumentException if the qualification or respDetails is null
      */
     @WebMethod(operationName = "getResponsibilityActions")
     @XmlElementWrapper(name = "responsibilityActions", required = true)
@@ -216,8 +222,8 @@ public interface ResponsibilityService {
      * @param qualification the qualification for the responsibility. cannot be null.
      * @param respDetails the responsibility details. can be null.
      * @return an immutable list of ResponsibilityAction. Will not return null.
-     * @throws IllegalArgumentException if the namespaceCode, respName is null or blank
-     * @throws IllegalArgumentException if the qualification or respDetails is null
+     * @throws RiceIllegalArgumentException if the namespaceCode, respName is null or blank
+     * @throws RiceIllegalArgumentException if the qualification or respDetails is null
      */
     @WebMethod(operationName = "getResponsibilityActionsByTemplate")
     @XmlElementWrapper(name = "responsibilityActions", required = true)
@@ -236,12 +242,13 @@ public interface ResponsibilityService {
      *
      * @param id the unique id to retrieve the roleIds for. cannot be null or blank.
      * @return an immutable list of roleIds. Will not return null.
-     * @throws IllegalArgumentException if the id is null or blank or if the qualification is null
+     * @throws RiceIllegalArgumentException if the id is null or blank or if the qualification is null
      */
     @WebMethod(operationName = "getRoleIdsForResponsibility")
     @XmlElementWrapper(name = "roleIds", required = true)
     @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
+    @Cacheable(value=Responsibility.Cache.NAME, key="'{getRoleIdsForResponsibility}' + 'id=' + #p0")
     List<String> getRoleIdsForResponsibility(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -249,7 +256,7 @@ public interface ResponsibilityService {
      *
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return query results.  will never return null.
-     * @throws IllegalArgumentException if the queryByCriteria is null
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findResponsibilities")
     @WebResult(name = "results")
@@ -261,9 +268,29 @@ public interface ResponsibilityService {
      *
      * @param queryByCriteria the criteria.  Cannot be null.
      * @return query results.  will never return null.
-     * @throws IllegalArgumentException if the queryByCriteria is null
+     * @throws RiceIllegalArgumentException if the queryByCriteria is null
      */
     @WebMethod(operationName = "findResponsibilityTemplates")
     @WebResult(name = "results")
     TemplateQueryResults findResponsibilityTemplates(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
+
+    /**
+     * Return the responsibilities for the given unique combination of namespace,
+     *  and responsibility template name.
+     *
+     * @since 2.1.1
+     * @param namespaceCode namespace code for permission. cannot be null or blank.
+     * @param templateName name of permission template.  cannot be null or blank.
+     * @return a list of {@link org.kuali.rice.kim.api.permission.Permission} or null
+     * @throws RiceIllegalArgumentException if the namespaceCode or name is null or blank
+     */
+    @WebMethod(operationName = "findResponsibilitiesByTemplate")
+    @XmlElementWrapper(name = "responsibilities", required = true)
+    @XmlElement(name = "responsibility", required = false)
+    @WebResult(name = "responsibilities")
+    @Cacheable(value=Responsibility.Cache.NAME, key="'namespaceCode=' + #p1 + '|' + 'templateName=' + #p2")
+    List<Responsibility> findResponsibilitiesByTemplate(
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "templateName") String templateName)
+            throws RiceIllegalArgumentException;
 }

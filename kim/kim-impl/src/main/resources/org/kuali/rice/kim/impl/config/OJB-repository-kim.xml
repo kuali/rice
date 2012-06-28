@@ -527,6 +527,17 @@
       <inverse-foreignkey field-ref="roleId" target-field-ref="id"/>
     </collection-descriptor>
   </class-descriptor>
+  
+  <class-descriptor class="org.kuali.rice.kim.impl.role.RoleBoLite" table="KRIM_ROLE_T">
+    <field-descriptor name="id" column="ROLE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_role_id_s" />
+    <field-descriptor name="name" column="ROLE_NM" jdbc-type="VARCHAR" />
+    <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
+    <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+  </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleMemberBo" table="KRIM_ROLE_MBR_T">
     <field-descriptor name="id" column="ROLE_MBR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ROLE_MBR_ID_S"/>

@@ -183,7 +183,9 @@
         abstract="true"
         p:statePropertyName="state"
         class="org.kuali.rice.krad.datadictionary.state.StateMappingBase"/>
-
+  <bean id="UTF8AnyCharacterPatternConstraint"
+        abstract="true"
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint" />
   <!--Constraints-->
   <bean id="ValidCharactersConstraint"
         abstract="true"

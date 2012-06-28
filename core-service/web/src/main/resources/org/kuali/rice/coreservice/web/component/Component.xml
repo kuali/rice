@@ -52,8 +52,8 @@
     <property name="label" value="Namespace Name"/>
     <property name="shortLabel" value="Namespace Nm"/>
   </bean>
-  <bean id="Component-code" parent="Component-code-parentBean"/>
 
+  <bean id="Component-code" parent="Component-code-parentBean"/>
   <bean id="Component-code-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="code"/>
     <property name="forceUppercase" value="false"/>
@@ -149,7 +149,7 @@
     </property>
     <property name="lookupFields">
       <list>
-        <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+        <bean parent="FieldDefinition" p:attributeName="namespaceCode"  p:noLookup="true"/>
         <bean parent="FieldDefinition" p:attributeName="name" p:noLookup="true"/>
         <bean parent="FieldDefinition" p:defaultValue="Y" p:attributeName="active"/>
       </list>

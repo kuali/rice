@@ -73,6 +73,10 @@
         <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
         <value>classpath:edu/sampleu/travel/datadictionary/SampleAppAttributes.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSample.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/AttachmentSampleMaintenanceDocument.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSample.xml</value>
+        <value>classpath:edu/sampleu/travel/datadictionary/MultiAttachmentSampleMaintenanceDocument.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TravelAccountInquiry.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TestKNSInquiries.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TravelAccountLookup.xml</value>

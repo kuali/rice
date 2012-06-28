@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.DataType;
@@ -31,24 +30,10 @@ import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
 import org.kuali.rice.core.api.uif.RemotableSelect;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
-import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kns.datadictionary.control.CheckboxControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.CurrencyControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.HiddenControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.KualiUserControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.MultiselectControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.MultivalueControlDefinitionBase;
-import org.kuali.rice.kns.datadictionary.control.RadioControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.SelectControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
-import org.kuali.rice.kns.datadictionary.control.TextareaControlDefinition;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
-import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
@@ -80,8 +65,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemoteFieldService {
-    private static final Logger LOG = Logger.getLogger(DataDictionaryRemoteFieldServiceImpl.class);
-    
+
     /**
      * @see org.kuali.rice.krad.service.DataDictionaryRemoteFieldService#buildRemotableFieldFromAttributeDefinition(java.lang.String,
      *      java.lang.String)
@@ -167,39 +151,7 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 return b;
             }
         }
-        /* starting kns control checking!!! these be deprecated! */
-        org.kuali.rice.krad.datadictionary.control.ControlDefinition controlDefinition = attr.getControl();
-        if ( controlDefinition != null ) {
-            if (controlDefinition instanceof CheckboxControlDefinition) {
-                return RemotableCheckbox.Builder.create();
-            } else if (controlDefinition instanceof HiddenControlDefinition) {
-                return RemotableHiddenInput.Builder.create();
-            } else if (controlDefinition instanceof SelectControlDefinition) {
-                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
-                b.setMultiple(((SelectControlDefinition) controlDefinition).isMultiselect());
-                b.setSize(((SelectControlDefinition) controlDefinition).getSize());
-            } else if (controlDefinition instanceof MultiselectControlDefinition) {
-                RemotableSelect.Builder b = RemotableSelect.Builder.create(getValues(attr));
-                b.setMultiple(((MultiselectControlDefinition) controlDefinition).isMultiselect());
-                b.setSize(((MultiselectControlDefinition) controlDefinition).getSize());
-            } else if (controlDefinition instanceof RadioControlDefinition) {
-                return RemotableRadioButtonGroup.Builder.create(getValues(attr));
-            } else if (controlDefinition instanceof TextControlDefinition) {
-                final RemotableTextInput.Builder b = RemotableTextInput.Builder.create();
-                b.setSize(((TextControlDefinition) controlDefinition).getSize());
-                return b;
-            } else if (controlDefinition instanceof TextareaControlDefinition) {
-                final RemotableTextarea.Builder b = RemotableTextarea.Builder.create();
-                b.setCols(((TextareaControlDefinition) controlDefinition).getCols());
-                b.setRows(((TextareaControlDefinition) controlDefinition).getRows());
-                return b;
-            } else if (controlDefinition instanceof KualiUserControlDefinition) {
-                final RemotableTextInput.Builder b = RemotableTextInput.Builder.create();
-                b.setSize(((KualiUserControlDefinition) controlDefinition).getSize());
-                return b;
-            }
-        }
-
+        
         return null;
     }
 
@@ -212,35 +164,16 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
      */
     protected Map<String, String> getValues(AttributeDefinition attr) {
         Control control = attr.getControlField();
-        ControlDefinition controlDef = attr.getControl();
 
         if ((control instanceof MultiValueControl)
                 && (((MultiValueControl) control).getOptions() != null)
                 && !((MultiValueControl) control).getOptions().isEmpty()) {
             List<KeyValue> keyValues = ((MultiValueControl) control).getOptions();
-            Map<String, String> options = new HashMap<String, String>();
-            for (KeyValue keyValue : keyValues) {
-                options.put(keyValue.getKey(), keyValue.getValue());
-            }
-            return options;
-        } else if (controlDef instanceof MultivalueControlDefinitionBase) {
-            String keyFinderClassName = controlDef.getValuesFinderClass();
-            if (StringUtils.isNotBlank(keyFinderClassName)) {
-                try {
-                    final Class<KeyValuesFinder> clazz = (Class<KeyValuesFinder>) Class.forName(keyFinderClassName);
-                    final KeyValuesFinder finder = clazz.newInstance();
-                    final Map<String, String> values = finder.getKeyLabelMap();
-                    if ((values != null) && !values.isEmpty()) {
-                        return values;
+                    Map<String, String> options = new HashMap<String, String> ();
+                    for (KeyValue keyValue : keyValues) {
+                        options.put(keyValue.getKey(), keyValue.getValue());
                     }
-                } catch (ClassNotFoundException e) {
-                    LOG.warn("Values Finder Class not found with name: " + keyFinderClassName);
-                } catch (InstantiationException e) {
-                    LOG.warn("Unable to instantiate Values Finder Class with name: " + keyFinderClassName);
-                } catch (IllegalAccessException e) {
-                    LOG.warn("Unable to access Values Finder Class with name: " + keyFinderClassName);
-                }
-            }
+                    return options;
         } else if (attr.getOptionsFinder() != null) {
             return attr.getOptionsFinder().getKeyLabelMap();
         }
@@ -311,7 +244,7 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
                 }
             }
         }
-
+        
         if (StringUtils.isNotBlank(lookupClassName)) {
             String baseUrl = getKualiConfigurationService().getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
             RemotableQuickFinder.Builder builder = RemotableQuickFinder.Builder.create(baseUrl, lookupClassName);

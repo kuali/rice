@@ -75,7 +75,8 @@ public class DataExporter implements Exporter {
 			} else if (dataObjectClass.equals(RuleDelegationBo.class)) {
 				dataSet.getRuleDelegations().add((RuleDelegationBo)dataObject);
 			} else if (dataObjectClass.equals(GroupBo.class)) {
-				dataSet.getGroups().add((Group)dataObject);
+				Group group = GroupBo.to((GroupBo)dataObject);
+                dataSet.getGroups().add(group);
 			}
 		}
 

@@ -53,9 +53,10 @@ public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	public void stop() throws Exception {
 		LOG.info("Stopping the KSB scheduled thread pool...");
 		try {
-			this.shutdownNow();
+            int pendingTasks = this.shutdownNow().size();
+            LOG.info(pendingTasks + " pending tasks...");
 			LOG.info("awaiting termination: " + this.awaitTermination(20, TimeUnit.SECONDS));
-			LOG.info("...KSB scheduled thread pool successfully stopped, isShutdown=" + this.isShutdown());
+			LOG.info("...KSB scheduled thread pool successfully stopped, isShutdown=" + this.isShutdown() + ", isTerminated=" + this.isTerminated());
 		} catch (Exception e) {
 			LOG.warn("Exception thrown shutting down " + KSBScheduledThreadPoolExecutor.class.getSimpleName(), e);
 		}

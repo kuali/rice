@@ -313,7 +313,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('385');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('addparent');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -325,7 +325,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('356');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('edit');
           if (enabled) {
               ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
           }
@@ -337,8 +337,8 @@
           </property>
         </bean>
 
-        <bean parent="Uif-Message" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('391');
+        <bean parent="Uif-MessageField" p:messageText="Move: [" p:style="display: inline;"/>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('left');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');
           }
@@ -349,7 +349,7 @@
                   p:altText="Left"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('397');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('right');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');
           }
@@ -360,7 +360,7 @@
                   p:altText="Right"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('403');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('up');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');
           }
@@ -371,7 +371,7 @@
                   p:altText="Up"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('409');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('down');
           if (enabled) {
               ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');
           }
@@ -384,29 +384,41 @@
         </bean>
         <bean parent="Uif-Message" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('418');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('cut');
           if (enabled) {
               ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');
           }
           "
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
+          <property name="styleClasses">
+            <list merge="true">
+              <value>tree-bar-button</value>
+              <value>kr-cut-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
                   p:altText="Cut"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('424');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('paste');
           if (enabled) {
               ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');
           }
           "
               p:actionLabel="Paste">
+          <property name="styleClasses">
+            <list merge="true">
+              <value>tree-bar-button</value>
+              <value>kr-paste-button</value>
+            </list>
+          </property>
           <property name="actionImage">
             <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('430');
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('delete');
           if (enabled) {
               ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');
           }
@@ -645,9 +657,13 @@
                     </property>
                   </bean>
 
+                  <!-- KULRICE-6728 dont display user entered value if operator is ==null or !=null all others are one or two characters i.e. (?:.|..) -->
                   <!-- user entered value -->
                   <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.parameters[1].value"
-                        p:showLabel="true" p:label="Value" p:maxLength="255" p:required="true">
+                        p:showLabel="true" p:label="Value" p:maxLength="255" p:required="@{#np.proposition.parameters[2].value == null or #np.proposition.parameters[2].value matches '(?:.|..)'}"
+                        p:progressiveRenderAndRefresh="true"
+                        p:refreshWhenChanged="#proposition.parameters[2].value"
+                        p:progressiveRender="@{#np.proposition.parameters[2].value == null or #np.proposition.parameters[2].value matches '(?:.|..)'}">
                     <property name="control">
                       <bean parent="Uif-TextControl" p:style="margin-top:null 2px;" p:watermarkText="Enter a Literal Value" />
                     </property>
@@ -858,8 +874,7 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
-              p:render="@{#dp.agendaItemLineRuleAction.typeId != ''}"
-              p:instructionalText="instructional text" p:constraintText="size 4000">
+              p:render="@{#dp.agendaItemLineRuleAction.typeId != ''}" p:constraintText="size 4000">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="40" p:maxLength="4000" p:watermarkText="Enter a Action Description" p:cssClasses="countdown"/>
           </property>

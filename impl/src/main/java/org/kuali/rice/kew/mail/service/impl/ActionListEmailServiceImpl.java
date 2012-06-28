@@ -36,6 +36,7 @@ import org.kuali.rice.core.api.mail.EmailTo;
 import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -164,6 +165,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                         body,
                         false);
             } else {
+                LOG.info("If this were production, email would be sent to "+ user.getEmailAddressUnmasked());
                 mailer.sendEmail(
                         getEmailFrom(documentType),
                         new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
@@ -175,7 +177,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                         false);
             }
         } catch (Exception e) {
-            LOG.error("Error sending Action List email.", e);
+            LOG.error("Error sending Action List email to " + user.getEmailAddressUnmasked(), e);
         }
     }
     
@@ -339,61 +341,60 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     }
 
     public void sendDailyReminder() {
+        LOG.info("Starting SendDailyReminder");
         if (sendActionListEmailNotification()) {
-            Collection<Person> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
-            for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
-                Person user = userIter.next();
+            Collection<String> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
+            for (Iterator<String> userIter = users.iterator(); userIter.hasNext();) {
+            	String principalId = userIter.next();
                 try {
-                    Collection<ActionItem> actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
+                    Collection<ActionItemActionListExtension> actionItems = getActionListService().getActionList(principalId, null);
                     if (actionItems != null && actionItems.size() > 0) {
-                        sendPeriodicReminder(user, actionItems,
+                        sendPeriodicReminder(principalId, actionItems,
                                 KewApiConstants.EMAIL_RMNDR_DAY_VAL);
                     }
                 } catch (Exception e) {
-                    LOG.error(
-                            "Error sending daily action list reminder to user: "
-                                    + user.getEmailAddressUnmasked(), e);
+                    LOG.error("Error sending daily action list reminder to user: " + principalId, e);
                 }
             }
         }
-        LOG.debug("Daily action list emails sent successful");
+        LOG.info("Daily action list emails successfully sent");
     }
 
     public void sendWeeklyReminder() {
+        LOG.info("Starting sendWeeklyReminder"); 	
         if (sendActionListEmailNotification()) {
-            Collection<Person> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
-            for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
-                Person user = userIter.next();
+            Collection<String> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
+            for (Iterator<String> userIter = users.iterator(); userIter.hasNext();) {
+            	String principalId = userIter.next();
                 try {
-                    Collection<ActionItem> actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
+                    Collection<ActionItemActionListExtension> actionItems = getActionListService().getActionList(principalId, null);
                     if (actionItems != null && actionItems.size() > 0) {
-                        sendPeriodicReminder(user, actionItems,
+                        sendPeriodicReminder(principalId, actionItems,
                                 KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
                     }
                 } catch (Exception e) {
-                    LOG.error(
-                            "Error sending weekly action list reminder to user: "
-                                    + user.getEmailAddressUnmasked(), e);
+                    LOG.error("Error sending weekly action list reminder to user: " + principalId, e);
                 }
             }
         }
-        LOG.debug("Weekly action list emails sent successful");
+        LOG.info("Weekly action list emails successfully sent");
     }
 
-    protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
+    protected void sendPeriodicReminder(String principalId, Collection<ActionItemActionListExtension> actionItems, String emailSetting) {
         String emailBody = null;
-        actionItems = filterActionItemsToNotify(user.getPrincipalId(), actionItems, emailSetting);
+        actionItems = filterActionItemsToNotify(principalId, actionItems, emailSetting);
         // if there are no action items after being filtered, there's no
         // reason to send the email
         if (actionItems.isEmpty()) {
             return;
         }
         if (KewApiConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
-            emailBody = buildDailyReminderBody(user, actionItems);
+            emailBody = buildDailyReminderBody(actionItems);
         } else if (KewApiConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
-            emailBody = buildWeeklyReminderBody(user, actionItems);
+            emailBody = buildWeeklyReminderBody(actionItems);
         }
-        sendEmail(user, getEmailSubject(), new EmailBody(emailBody));
+        Person person = KimApiServiceLocator.getPersonService().getPerson(principalId);
+        sendEmail(person, getEmailSubject(), new EmailBody(emailBody));
     }
 
     /**
@@ -401,10 +402,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
      * user's preferences. If they have opted not to recieve secondary or primary delegation emails
      * then they will not be included.
      */
-    protected Collection<ActionItem> filterActionItemsToNotify(String principalId, Collection<ActionItem> actionItems, String emailSetting) {
-        List<ActionItem> filteredItems = new ArrayList<ActionItem>();
+    protected Collection<ActionItemActionListExtension> filterActionItemsToNotify(String principalId, Collection<ActionItemActionListExtension> actionItems, String emailSetting) {
+        List<ActionItemActionListExtension> filteredItems = new ArrayList<ActionItemActionListExtension>();
         Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(principalId);
-        for (ActionItem actionItem : actionItems) {
+        for (ActionItemActionListExtension actionItem : actionItems) {
             if (!actionItem.getPrincipalId().equals(principalId)) {
                 LOG.warn("Encountered an ActionItem with an incorrect workflow ID.  Was " + actionItem.getPrincipalId()
                         +
@@ -418,15 +419,20 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return filteredItems;
     }
 
-    protected Collection<Person> getUsersWithEmailSetting(String setting) {
-        Set<Person> users = new HashSet<Person>();
+    protected Collection<String> getUsersWithEmailSetting(String setting) {
+        Set<String> users = new HashSet<String>();
         Collection<UserOptions> userOptions = getUserOptionsService().retrieveEmailPreferenceUserOptions(setting);
         for(UserOptions userOption : userOptions) {
-            String workflowId = userOption.getWorkflowId();
+            String principalId = userOption.getWorkflowId();
             try {
-                users.add(KimApiServiceLocator.getPersonService().getPerson(workflowId));
+                if (!users.contains(principalId)) {
+                    users.add(principalId);
+                } else {
+                    LOG.info("User " + principalId + " was already added to the list, so not adding again.");
+                }
             } catch (Exception e) {
-                LOG.error("error retrieving workflow user with ID: " + workflowId);
+                LOG.error("error retrieving workflow user with ID: "
+                        + principalId);
             }
         }
         return users;
@@ -593,8 +599,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return sf.toString();
     }
 
-    public String buildDailyReminderBody(Person user,
-            Collection<ActionItem> actionItems) {
+    public String buildDailyReminderBody(Collection<ActionItemActionListExtension> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf
@@ -609,8 +614,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return sf.toString();
     }
 
-    public String buildWeeklyReminderBody(Person user,
-            Collection<ActionItem> actionItems) {
+    public String buildWeeklyReminderBody(Collection<ActionItemActionListExtension> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf
@@ -625,7 +629,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return sf.toString();
     }
 
-    String getDailyWeeklyMessageBody(Collection<ActionItem> actionItems) {
+    String getDailyWeeklyMessageBody(Collection<ActionItemActionListExtension> actionItems) {
         StringBuffer sf = new StringBuffer();
         HashMap<String, Integer> docTypes = getActionListItemsStat(actionItems);
 
@@ -647,14 +651,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return sf.toString();
     }
 
-    private HashMap<String, Integer> getActionListItemsStat(Collection<ActionItem> actionItems) {
+    private HashMap<String, Integer> getActionListItemsStat(Collection<ActionItemActionListExtension> actionItems) {
         HashMap<String, Integer> docTypes = new LinkedHashMap<String, Integer>();
         Collection<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
         for(ActionItem actionItem : actionItems) {
             apiActionItems.add(ActionItem.to(actionItem));
         }
         Map<String, DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(apiActionItems);
-        Iterator<ActionItem> iter = actionItems.iterator();
+        Iterator<ActionItemActionListExtension> iter = actionItems.iterator();
 
         while (iter.hasNext()) {
             String docTypeName = routeHeaders.get(iter.next().getDocumentId()).getDocumentType().getName();

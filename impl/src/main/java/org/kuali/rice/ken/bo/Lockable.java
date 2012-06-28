@@ -26,11 +26,11 @@ public interface Lockable {
      * Gets the lockedDate attribute. 
      * @return Returns the lockedDate.
      */
-    public Timestamp getLockedDate();
+    public Timestamp getLockedDateValue();
 
     /**
      * Sets the lockedDate attribute value.
      * @param lockedDate The lockedDate to set.
      */
-    public void setLockedDate(Timestamp lockedDate);
+    public void setLockedDateValue(Timestamp lockedDate);
 }

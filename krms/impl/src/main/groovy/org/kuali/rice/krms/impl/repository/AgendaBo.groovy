@@ -41,6 +41,8 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 
     def ContextBo context
 
+    private static SequenceAccessorService sequenceAccessorService;
+
     public AgendaBo() {
         active = true;
         items = new ArrayList<AgendaItemBo>();
@@ -97,15 +99,28 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
         String initAgendaItemId = this.getFirstItemId();
         List<AgendaItemBo> copiedAgendaItems = new ArrayList<AgendaItemBo>();
         Map<String, RuleBo> oldRuleIdToNew = new HashMap<String, RuleBo>();
+        Map<String, AgendaItemBo> oldAgendaItemIdToNew = new HashMap<String, AgendaItemBo>();
+
         for (AgendaItemBo agendaItem: agendaItems) {
-            AgendaItemBo copiedAgendaItem = agendaItem.copyAgendaItem(copiedAgenda, oldRuleIdToNew, dateTimeStamp);
-            if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
-                copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
+            if (!oldAgendaItemIdToNew.containsKey(agendaItem.getId())) {
+                AgendaItemBo copiedAgendaItem = agendaItem.copyAgendaItem(copiedAgenda, oldRuleIdToNew, oldAgendaItemIdToNew, copiedAgendaItems, dateTimeStamp);
+                if (initAgendaItemId != null && initAgendaItemId.equals(agendaItem.getId())) {
+                    copiedAgenda.setFirstItemId(copiedAgendaItem.getId());
+                }
+                copiedAgendaItems.add(copiedAgendaItem);
+                oldAgendaItemIdToNew.put(agendaItem.getId(), copiedAgendaItem);
             }
-            copiedAgendaItems.add(copiedAgendaItem);
         }
         copiedAgenda.setItems(copiedAgendaItems);
         return copiedAgenda;
+    }
+
+    /**
+     * Set the SequenceAccessorService, useful for testing.
+     * @param sas SequenceAccessorService to use for getNewId()
+     */
+    public static void setSequenceAccessorService(SequenceAccessorService sas) {
+        sequenceAccessorService = sas;
     }
 
     /**
@@ -113,8 +128,11 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
      * @return String the next available id
      */
     private static String getNewId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
+        if (sequenceAccessorService == null) {
+            // we don't assign to sequenceAccessorService to preserve existing behavior
+            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class) + "";
+        }
+        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
         return id.toString();
     }
 }

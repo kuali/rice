@@ -600,6 +600,49 @@ public interface WorkflowDocumentActionsService {
             throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
 
     /**
+     * Executes a {@link ActionType#RECALL} action for the given principal and document specified in
+     * the supplied parameters. When a principal cancels a document, all pending action requests on
+     * the document are deactivated and the the principal's action will be recorded on the document
+     * as an {@link ActionTaken}. Additionally, the document will be (synchronously) transitioned to
+     * the {@link DocumentStatus#RECALLED} status.
+     *
+     * TODO: FILL IN DOCS FOR RECALL ACTION
+     * <p>
+     * In order to cancel a document, the principal must have permission to cancel documents of the
+     * appropriate type, and one of the following must hold true:
+     *
+     * <ol>
+     * <li>The document must have a status of {@link DocumentStatus#INITIATED} <strong>or</strong></li>
+     * <li>The document must have a status of {@link DocumentStatus#SAVED} <strong>or</strong></li>
+     * <li>The principal must have a pending "complete" or "approve" request on the document.
+     *
+     * @since 2.1
+     * @param parameters the parameters which indicate which principal is executing the action
+     *        against which document, as well as additional operations to take against the document,
+     *        such as updating document data
+     * @param cancel whether to recall & cancel or recall & return to action list
+     *
+     * @return the result of executing the action, including a view on the updated state of the
+     *         document and related actions
+     *
+     * @throws RiceIllegalArgumentException if {@code parameters} is null
+     * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
+     *         {@code parameters} exists
+     * @throws RiceIllegalArgumentException if no principal with the {@code principalId} specified
+     *         in {@code parameters} exists
+     * @throws InvalidDocumentContentException if the document content on the
+     *         {@link DocumentContentUpdate} supplied with the {@code parameters} is invalid.
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     */
+    @WebMethod(operationName = "recall")
+    @WebResult(name = "documentActionResult")
+    @XmlElement(name = "documentActionResult", required = true)
+    DocumentActionResult recall(@WebParam(name = "parameters") DocumentActionParameters parameters,
+                                @WebParam(name = "cancel") boolean cancel)
+            throws RiceIllegalArgumentException, InvalidDocumentContentException, InvalidActionTakenException;
+
+    /**
      * Executes an {@link ActionType#FYI} action for the given principal and document specified in
      * the supplied parameters. When a principal clears fyis on a document, any of the principal's
      * pending fyis will be satisfied by the principal's action. The principal's action should be

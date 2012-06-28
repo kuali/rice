@@ -15,18 +15,22 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import org.kuali.rice.kew.api.actionlist.DisplayParameters;
-import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kew.api.preferences.Preferences;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.web.RowStyleable;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Alternate model object for action list fetches that do not automatically use
@@ -36,60 +40,148 @@ import javax.persistence.Transient;
  *
  */
 @MappedSuperclass
-public class ActionItemActionListExtension extends ActionItem {
+public class ActionItemActionListExtension extends ActionItem implements RowStyleable {
 
     private static final long serialVersionUID = -8801104028828059623L;
 
     @Transient
-    private Person delegatorPerson = null;
+    private Timestamp lastApprovedDate;
+    @Transient
+    private Map<String, String> customActions = new HashMap<String, String>();
+    @Transient
+    private String rowStyleClass;
+    @Transient
+    private Integer actionListIndex;
+
     @Transient
     private String delegatorName = "";
+    @Transient
+    private String groupName = "";
     @Transient
     private DisplayParameters displayParameters;
     @Transient
     private boolean isInitialized = false;
     @Transient
-    private Group delegatorGroup = null;
-    @Transient
-    private Group group = null;
-    @Transient
-    private DocumentRouteHeaderValue routeHeader;
+    private DocumentRouteHeaderValueActionListExtension routeHeader;
 
-    public Person getDelegatorPerson() {
-        return delegatorPerson;
+    @Transient
+    private boolean lastApprovedDateInitialized = false;
+    @Transient
+    private boolean delegatorNameInitialized = false;
+    @Transient
+    private boolean groupNameInitialized = false;
+
+    public Integer getActionListIndex() {
+        return actionListIndex;
     }
-    
+
+    public void setActionListIndex(Integer actionListIndex) {
+        this.actionListIndex = actionListIndex;
+    }
+
+    public Timestamp getLastApprovedDate() {
+        initializeLastApprovedDate();
+        return this.lastApprovedDate;
+    }
+
+    public Map<String, String> getCustomActions() {
+        return customActions;
+    }
+
+    public void setCustomActions(Map<String, String> customActions) {
+        this.customActions = customActions;
+    }
+
+    public String getRowStyleClass() {
+        return rowStyleClass;
+    }
+
+    public void setRowStyleClass(String rowStyleClass) {
+        this.rowStyleClass = rowStyleClass;
+    }
+
     public String getDelegatorName() {
+        initializeDelegatorName();
         return delegatorName;
     }
 
-    public void initialize(Preferences preferences) throws WorkflowException {
+    public String getGroupName() {
+        initializeGroupName();
+        return groupName;
+    }
+
+    public void initialize(Preferences preferences) {
+        // always re-initialize row style class, just in case they changed a preference!
+        initializeRowStyleClass(preferences);
     	if (isInitialized) {
     		return;
     	}
-        if (getGroupId() != null) {
-            group = super.getGroup();
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowWorkgroupRequest())) {
+            initializeGroupName();
         }
-        if (getDelegatorPrincipalId() != null) {
-        	delegatorPerson = KimApiServiceLocator.getPersonService().getPerson(getDelegatorPrincipalId());
-            if (delegatorPerson != null) {
-                delegatorName = delegatorPerson.getName();
-            }
-        }
-
-        if (getDelegatorGroupId() != null) {
-        	delegatorGroup = KimApiServiceLocator.getGroupService().getGroup(getDelegatorGroupId());
-        	if (delegatorGroup !=null)
-        		delegatorName = delegatorGroup.getName();
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDelegator())) {
+            initializeDelegatorName();
         }
         if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
-        	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getDocumentId()));
+        	initializeLastApprovedDate();
         }
+        this.routeHeader.initialize(preferences);
         isInitialized = true;
     }
 
-    public boolean isInitialized() {
-    	return isInitialized;
+    private void initializeRowStyleClass(Preferences preferences) {
+        //set background colors for document statuses
+        if (KewApiConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
+        } else if (KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDisapproved()));
+        } else if (KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
+        } else if (KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
+        } else if (KewApiConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
+        } else if (KewApiConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
+        } else if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProcessed()));
+        } else if (KewApiConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
+        }
+    }
+
+    private void initializeGroupName() {
+        if (!groupNameInitialized) {
+            if (getGroupId() != null) {
+                Group group = super.getGroup();
+                this.groupName = group.getName();
+            }
+            groupNameInitialized = true;
+        }
+    }
+
+    private void initializeDelegatorName() {
+        if (!delegatorNameInitialized) {
+            if (getDelegatorPrincipalId() != null) {
+                EntityNamePrincipalName name = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(getDelegatorPrincipalId());
+                if (name != null) {
+                    this.delegatorName = name.getDefaultName().getCompositeName();
+                }
+            }
+            if (getDelegatorGroupId() != null) {
+                Group delegatorGroup = KimApiServiceLocator.getGroupService().getGroup(getDelegatorGroupId());
+                if (delegatorGroup !=null)
+                    delegatorName = delegatorGroup.getName();
+            }
+            delegatorNameInitialized = true;
+        }
+    }
+
+    private void initializeLastApprovedDate() {
+        if (!lastApprovedDateInitialized) {
+            this.lastApprovedDate = KEWServiceLocator.getActionTakenService().getLastApprovedDate(getDocumentId());
+            lastApprovedDateInitialized = true;
+        }
     }
 
 	public DisplayParameters getDisplayParameters() {
@@ -100,39 +192,11 @@ public class ActionItemActionListExtension extends ActionItem {
 		this.displayParameters = displayParameters;
 	}
 
-	/**
-	 * @return the group
-	 */
-	public Group getGroup() {
-		return this.group;
-	}
-
-	/**
-	 * @param group the group to set
-	 */
-	public void setGroup(Group group) {
-		this.group = group;
-	}
-
-	/**
-	 * @return the delegatorGroup
-	 */
-	public Group getDelegatorGroup() {
-		return this.delegatorGroup;
-	}
-
-	/**
-	 * @param delegatorGroup the delegatorGroup to set
-	 */
-	public void setDelegatorGroup(Group delegatorGroup) {
-		this.delegatorGroup = delegatorGroup;
-	}
-
-	public DocumentRouteHeaderValue getRouteHeader() {
+	public DocumentRouteHeaderValueActionListExtension getRouteHeader() {
 		return this.routeHeader;
 	}
 
-	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
+	public void setRouteHeader(DocumentRouteHeaderValueActionListExtension routeHeader) {
 		this.routeHeader = routeHeader;
 	}
 

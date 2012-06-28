@@ -34,6 +34,13 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
+/**
+ * Implementation of the interface for accessing KRMS repository Agenda related
+ * business objects. 
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public final class AgendaBoServiceImpl implements AgendaBoService {
 
     // TODO: deal with active flag
@@ -343,8 +350,6 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
 
     private Set<AgendaAttributeBo> buildAgendaAttributeBo(AgendaDefinition im) {
         Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
-
-        ContextBo context = getBusinessObjectService().findBySinglePrimaryKey(ContextBo.class, im.getContextId());
 
         // build a map from attribute name to definition
         Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();

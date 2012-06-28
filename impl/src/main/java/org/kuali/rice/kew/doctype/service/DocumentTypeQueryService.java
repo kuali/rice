@@ -35,7 +35,7 @@ public interface DocumentTypeQueryService extends XmlLoader {
     public DocumentType findByName(String name);
 
     @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME,
-            key="'{BO}' + 'documentTypeId=' + #p0.getId() + '|' + 'docGroupName=' + #p1 + '|' + 'climbHierarchy=' + #p2")
+            key="'{BO}' + 'documentTypeId=' + #p0.getId() + '|' + 'name=' + #p0.getName() + '|' + 'label=' + #p0.getLabel() + '|' +'docGroupName=' + #p1 + '|' + 'climbHierarchy=' + #p2")
     public Collection<DocumentType> find(DocumentType documentType, String docGroupName, boolean climbHierarchy);
 
     @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}{root}' + 'documentTypeId=' + #p0.getId()")

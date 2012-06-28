@@ -86,10 +86,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     @Fetch(value = FetchMode.SELECT)
     private List<RolePermissionBo> rolePermissions = new AutoPopulatingList(RolePermissionBo.class);
 
-    @Transient
-    private KimTypeInfoService kimTypeInfoService;
-    @Transient
-    private DataDictionaryService dataDictionaryService;
 
 
     public Map<String,String> getAttributes() {
@@ -170,14 +166,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         this.rolePermissions = rolePermissions;
     }
 
-    public KimTypeInfoService getKimTypeInfoService() {
-        return kimTypeInfoService;
-    }
-
-    public void setKimTypeInfoService(KimTypeInfoService kimTypeInfoService) {
-        this.kimTypeInfoService = kimTypeInfoService;
-    }
-
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
@@ -254,12 +242,10 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
                     .append(":")
                     .append(bo.getAttributeValue());
             if (permIter.hasNext()) {
-                detailObjects.append(",");
+                detailObjects.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
             }
         }
-        /*return attributeDetails.collect {
-            getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(it.kimAttributeId)) + ":" + it.attributeValue
-        }.join(",")*/
+
         return detailObjects.toString();
     }
 
@@ -269,17 +255,11 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 
 
     private DataDictionaryService getDataDictionaryService() {
-        if(dataDictionaryService == null){
-            dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        }
-        return dataDictionaryService;
+        return KRADServiceLocatorWeb.getDataDictionaryService();
     }
 
 
     private KimTypeInfoService getTypeInfoService() {
-        if(kimTypeInfoService == null){
-            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
-        }
-        return kimTypeInfoService;
+        return KimApiServiceLocator.getKimTypeInfoService();
     }
 }

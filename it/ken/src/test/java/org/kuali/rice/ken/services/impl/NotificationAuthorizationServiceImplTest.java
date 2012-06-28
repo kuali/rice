@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationChannelBo;
+import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
@@ -43,11 +43,13 @@ public class NotificationAuthorizationServiceImplTest extends KENTestCase {
     public void testIsProducerAuthorizedForNotificationChannel_validInput() {
 	HashMap<String, Long> primaryKeys = new HashMap<String, Long>();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.CHANNEL_ID_1);
-	NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+	NotificationChannelBo
+            channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
 	primaryKeys.clear();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.PRODUCER_3.getId());
-	NotificationProducer producer = (NotificationProducer) services.getGenericDao().findByPrimaryKey(NotificationProducer.class, primaryKeys);
+	NotificationProducerBo
+            producer = (NotificationProducerBo) services.getGenericDao().findByPrimaryKey(NotificationProducerBo.class, primaryKeys);
 
 	assertTrue(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
     }
@@ -56,11 +58,13 @@ public class NotificationAuthorizationServiceImplTest extends KENTestCase {
     public void testIsProducerAuthorizedForNotificationChannel_invalidInput() {
 	HashMap primaryKeys = new HashMap();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.CHANNEL_ID_1);
-	NotificationChannel channel = (NotificationChannel) services.getGenericDao().findByPrimaryKey(NotificationChannel.class, primaryKeys);
+	NotificationChannelBo
+            channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
 	primaryKeys.clear();
 	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID,TestConstants. PRODUCER_4.getId());
-	NotificationProducer producer = (NotificationProducer) services.getGenericDao().findByPrimaryKey(NotificationProducer.class, primaryKeys);
+	NotificationProducerBo
+            producer = (NotificationProducerBo) services.getGenericDao().findByPrimaryKey(NotificationProducerBo.class, primaryKeys);
 
 	assertFalse(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
     }

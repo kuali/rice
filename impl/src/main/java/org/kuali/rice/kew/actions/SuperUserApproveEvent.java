@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -27,6 +29,7 @@ import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RequestsNode;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -49,21 +52,32 @@ import java.util.List;
 public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	private static final Logger LOG = Logger.getLogger(SuperUserApproveEvent.class);
+    private final boolean allowFinalApproval;
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal);
-        this.superUserAction = KewApiConstants.SUPER_USER_APPROVE;
+        this(routeHeader, principal, DEFAULT_ANNOTATION, DEFAULT_RUN_POSTPROCESSOR_LOGIC);
     }
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
-        super(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KewApiConstants.SUPER_USER_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, KewApiConstants.SUPER_USER_APPROVE, routeHeader, principal, annotation, runPostProcessor);
+        this.allowFinalApproval = isPolicySet(routeHeader.getDocumentType(), DocumentTypePolicy.ALLOW_SU_FINAL_APPROVAL, true);
+    }
+
+    @Override
+    public String validateActionRules() {
+        String error = super.validateActionRules();
+        if (StringUtils.isBlank(error)) {
+            if (!allowFinalApproval && KEWServiceLocator.getRouteNodeService().findFutureNodeNames(getRouteHeader().getDocumentId()).isEmpty()) {
+                error = "Super User Approval disallowed on final node by " + DocumentTypePolicy.ALLOW_SU_FINAL_APPROVAL.getCode() + " policy";
+            }
+        }
+        return error;
     }
 
 	public void recordAction() throws InvalidActionTakenException {
 		// TODO: this is used because calling this code from SuperUserAction without
         // it causes an optimistic lock
-		setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getDocumentId(), true));
+        //setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(getDocumentId(), true));
 
 		DocumentType docType = getRouteHeader().getDocumentType();
 

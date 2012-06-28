@@ -228,7 +228,7 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_C
   VALUES('KR-WKFLW', 'Backdoor', 'TARGET_FRAME_NAME', 'AD71949E2CCF422D941AAA9D4CB44D10', 1, 'CONFG', 'iframe_51148', 'Defines the target iframe name that the KEW internal portal uses for its menu links.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'Mailer', 'FROM_ADDRESS', '700AB6A6E23740D0B3E00E02A8FB6347', 1, 'CONFG', 'quickstart@localhost', 'Default from email address for notifications.', 'A', 'KUALI')
+  VALUES('KR-WKFLW', 'Mailer', 'FROM_ADDRESS', '700AB6A6E23740D0B3E00E02A8FB6347', 1, 'CONFG', 'rice.test@kuali.org', 'Default from email address for notifications.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES('KR-WKFLW', 'All', 'MAXIMUM_NODES_BEFORE_RUNAWAY', '4656B6E7E9844E2C9E2255014AFC86B5', 1, 'CONFG', NULL, 'The maximum number of nodes the workflow engine will process before it determines the process is a runaway process.  This is prevent infinite "loops" in the workflow engine.', 'A', 'KUALI')

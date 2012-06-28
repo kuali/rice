@@ -216,8 +216,7 @@ public class RouteLogAction extends KewKualiAction {
 		Set<String> preexistingActionRequestIds = getActionRequestIds(document);
         
 		// run the simulation
-        DocumentDetail documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService().executeSimulation(
-                reportCriteria);
+        DocumentDetail documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService(applicationId).executeSimulation(reportCriteria);
 
         // fabricate our ActionRequestValueS from the results
         List<ActionRequestValue> futureActionRequests = 
